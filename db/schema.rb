@@ -98,8 +98,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_194927) do
     t.index ["video_id"], name: "index_couple_videos_on_video_id"
   end
 
-# Could not dump table "couples" because of following StandardError
-#   Unknown type 'uuid' for column 'dancer_id'
+  create_table "couples", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
+    t.integer "dancer_id", null: false
+    t.integer "partner_id", null: false
+    t.index ["dancer_id", "partner_id"], name: "index_couples_on_dancer_id_and_partner_id", unique: true
+    t.index ["dancer_id"], name: "index_couples_on_dancer_id"
+    t.index ["partner_id"], name: "index_couples_on_partner_id"
+  end
 
   create_table "dancer_videos", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
     t.string "dancer_id", null: false
@@ -371,11 +376,27 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_194927) do
     t.datetime "updated_at", null: false
   end
 
-# Could not dump table "user_preferences" because of following StandardError
-#   Unknown type 'uuid' for column 'user_id'
+  create_table "user_preferences", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
+    t.string "username"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "gender"
+    t.string "birth_date"
+    t.string "locale", default: "en", null: false
+    t.string "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_preferences_on_user_id"
+    t.index ["username"], name: "index_user_preferences_on_username", unique: true
+  end
 
-# Could not dump table "user_settings" because of following StandardError
-#   Unknown type 'uuid' for column 'user_id'
+  create_table "user_settings", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.boolean "admin", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_settings_on_user_id"
+  end
 
   create_table "users", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
     t.string "email", null: false
@@ -449,6 +470,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_194927) do
   add_foreign_key "tanda_audio_transfers", "audio_transfers"
   add_foreign_key "tanda_audio_transfers", "tandas"
   add_foreign_key "tandas", "audio_transfers"
+  add_foreign_key "user_preferences", "users"
   add_foreign_key "user_settings", "action_auth_users", column: "user_id"
   add_foreign_key "users", "accounts"
   add_foreign_key "videos", "recordings"
