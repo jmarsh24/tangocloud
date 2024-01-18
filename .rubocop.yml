@@ -1,0 +1,15 @@
+AllCops:
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  NewCops: disable
+  SuggestExtensions: false
+  Exclude:
+    - "vendor/**/*"
+    - "bin/**/*"
+    - "db/schema.rb"
+    - "node_modules/**/*"
+    - "public/**/*"
+    - "scratchpad.rb"
+
+inherit_gem:
+  shimmer: config/rubocop_base.yml
