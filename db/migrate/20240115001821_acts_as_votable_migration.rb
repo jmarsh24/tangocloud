@@ -4,7 +4,6 @@ class ActsAsVotableMigration < ActiveRecord::Migration[7.0]
   def self.up
     create_table :votes, id: false do |t|
       t.primary_key :id, :string, default: -> { "ULID()" }
-
       t.references :votable, polymorphic: true
       t.references :voter, polymorphic: true
 
