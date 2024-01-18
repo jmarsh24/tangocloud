@@ -2,7 +2,7 @@
 
 class CreateRecordings < ActiveRecord::Migration[7.1]
   def change
-    create_table :recordings, id: :uuid, id: false do |t|
+    create_table :recordings, id: false do |t|
       t.primary_key :id, :string, default: -> { "ULID()" }
 
       t.string :title, null: false, default: ""

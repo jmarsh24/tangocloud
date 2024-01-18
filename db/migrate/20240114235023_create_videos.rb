@@ -2,7 +2,7 @@
 
 class CreateVideos < ActiveRecord::Migration[7.1]
   def change
-    create_table :videos, id: :uuid, id: false do |t|
+    create_table :videos, id: false do |t|
       t.primary_key :id, :string, default: -> { "ULID()" }
 
       t.string :youtube_slug, null: false, default: ""

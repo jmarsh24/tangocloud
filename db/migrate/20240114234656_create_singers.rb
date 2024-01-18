@@ -2,7 +2,7 @@
 
 class CreateSingers < ActiveRecord::Migration[7.1]
   def change
-    create_table :singers, id: :uuid, id: false do |t|
+    create_table :singers, id: false do |t|
       t.primary_key :id, :string, default: -> { "ULID()" }
 
       t.string :name, null: false, default: ""
