@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class Identity::PasswordResetsController < ApplicationController
   skip_before_action :authenticate
 
-  before_action :set_user, only: %i[ edit update ]
+  before_action :set_user, only: [:edit, :update]
 
   def new
   end
@@ -27,17 +29,18 @@ class Identity::PasswordResetsController < ApplicationController
   end
 
   private
-    def set_user
-      @user = User.find_by_token_for!(:password_reset, params[:sid])
-    rescue StandardError
-      redirect_to new_identity_password_reset_path, alert: "That password reset link is invalid"
-    end
 
-    def user_params
-      params.permit(:password, :password_confirmation)
-    end
+  def set_user
+    @user = User.find_by_token_for!(:password_reset, params[:sid])
+  rescue
+    redirect_to new_identity_password_reset_path, alert: "That password reset link is invalid"
+  end
 
-    def send_password_reset_email
-      UserMailer.with(user: @user).password_reset.deliver_later
-    end
+  def user_params
+    params.permit(:password, :password_confirmation)
+  end
+
+  def send_password_reset_email
+    UserMailer.with(user: @user).password_reset.deliver_later
+  end
 end
