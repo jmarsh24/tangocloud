@@ -1,4 +1,4 @@
-# README
+/Users/jm_mbp/Developer/tangocloud-1/api/.rspec# README
 
 This README would normally document whatever steps are necessary to get the
 application up and running.
