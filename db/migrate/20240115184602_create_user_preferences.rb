@@ -10,7 +10,7 @@ class CreateUserPreferences < ActiveRecord::Migration[7.1]
       t.string :gender
       t.string :birth_date
       t.string :locale, default: "en", null: false
-      t.belongs_to :user, null: false, type: :uuid
+      t.belongs_to :user, null: false, foreign_key: true, type: :string
       t.timestamps
     end
   end
