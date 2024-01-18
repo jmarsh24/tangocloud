@@ -9,7 +9,7 @@ MIGRATION_CLASS =
 
 class CreateFriendlyIdSlugs < MIGRATION_CLASS
   def change
-    create_table :friendly_id_slugs, id: :uuid, id: false do |t|
+    create_table :friendly_id_slugs, id: false do |t|
       t.primary_key :id, :string, default: -> { "ULID()" }
 
       t.string :slug, null: false

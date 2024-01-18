@@ -2,7 +2,7 @@
 
 class CreateTandas < ActiveRecord::Migration[7.1]
   def change
-    create_table :tandas, id: :uuid, id: false do |t|
+    create_table :tandas, id: false do |t|
       t.primary_key :id, :string, default: -> { "ULID()" }
 
       t.string :name, null: false, default: ""

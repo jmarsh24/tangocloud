@@ -2,7 +2,7 @@
 
 class CreateCompositions < ActiveRecord::Migration[7.1]
   def change
-    create_table :compositions, id: :uuid, id: false do |t|
+    create_table :compositions, id: false do |t|
       t.primary_key :id, :string, default: -> { "ULID()" }
 
       t.string :title, null: false, default: ""

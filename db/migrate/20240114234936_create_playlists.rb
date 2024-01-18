@@ -2,7 +2,7 @@
 
 class CreatePlaylists < ActiveRecord::Migration[7.1]
   def change
-    create_table :playlists, id: :uuid, id: false do |t|
+    create_table :playlists, id: false do |t|
       t.primary_key :id, :string, default: -> { "ULID()" }
 
       t.string :title, null: false, default: ""

@@ -2,7 +2,7 @@
 
 class CreateLyrics < ActiveRecord::Migration[7.1]
   def change
-    create_table :lyrics, id: :uuid, id: false do |t|
+    create_table :lyrics, id: false do |t|
       t.primary_key :id, :string, default: -> { "ULID()" }
 
       t.string :locale, null: false, default: ""
