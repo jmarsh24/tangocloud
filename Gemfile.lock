@@ -355,7 +355,6 @@ GEM
     parser (3.3.0.4)
       ast (~> 2.4.1)
       racc
-    pg (1.5.4)
     progress_bar (1.3.3)
       highline (>= 1.6, < 3)
       options (~> 2.3.0)
@@ -625,7 +624,6 @@ DEPENDENCIES
   litestack
   newrelic_rpm
   oj
-  pg
   progress_bar
   propshaft
   pry-rails
