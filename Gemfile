@@ -7,6 +7,9 @@ ruby File.read(File.join(__dir__, ".ruby-version")).strip
 gem "puma"
 gem "rails", "7.1.3"
 
+# Database
+gem "sqlite3"
+
 # Performance
 gem "bootsnap", require: false
 gem "oj"
@@ -36,7 +39,6 @@ gem "rails-i18n"
 gem "shimmer"
 gem "slim-rails"
 gem "socialization"
-gem "strong_migrations"
 gem "translate_client"
 gem "yael"
 
