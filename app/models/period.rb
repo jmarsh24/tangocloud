@@ -4,13 +4,13 @@
 #
 # Table name: periods
 #
-#  id               :uuid             not null, primary key
-#  name             :string           default(""), not null
+#  id               :integer          not null, primary key
+#  name             :string           not null
 #  description      :text
 #  start_year       :integer          default(0), not null
 #  end_year         :integer          default(0), not null
 #  recordings_count :integer          default(0), not null
-#  slug             :string           default(""), not null
+#  slug             :string           not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #

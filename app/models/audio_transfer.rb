@@ -4,12 +4,12 @@
 #
 # Table name: audio_transfers
 #
-#  id                :uuid             not null, primary key
-#  method            :string           default(""), not null
+#  id                :integer          not null, primary key
+#  method            :string           not null
 #  external_id       :string
 #  recording_date    :date
-#  transfer_agent_id :uuid
-#  audio_id          :uuid
+#  transfer_agent_id :integer
+#  audio_id          :integer
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #

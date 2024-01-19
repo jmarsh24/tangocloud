@@ -4,15 +4,15 @@
 #
 # Table name: composers
 #
-#  id         :uuid             not null, primary key
-#  name       :string           default(""), not null
+#  id         :integer          not null, primary key
+#  name       :string           not null
 #  birth_date :date
 #  death_date :date
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
 class Composer < ApplicationRecord
-  has_many :compositions
+  has_many :compositions, dependent: :destroy
 
   validates :name, presence: true
 end

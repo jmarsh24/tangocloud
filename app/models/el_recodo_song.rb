@@ -4,22 +4,29 @@
 #
 # Table name: el_recodo_songs
 #
-#  id              :uuid             not null, primary key
-#  date            :date             not null
-#  ert_number      :integer          default(0), not null
-#  music_id        :integer          default(0), not null
-#  title           :string           not null
-#  style           :string           not null
-#  orchestra       :string           not null
-#  singer          :string           not null
-#  composer        :string           not null
-#  author          :string           not null
-#  label           :string           not null
-#  duration        :string           not null
-#  lyrics          :text
-#  page_updated_at :datetime         not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  id                   :integer          not null, primary key
+#  date                 :date             not null
+#  ert_number           :integer          default(0), not null
+#  music_id             :integer          default(0), not null
+#  title                :string           not null
+#  style                :string
+#  orchestra            :string
+#  singer               :string
+#  composer             :string
+#  author               :string
+#  label                :string
+#  lyrics               :text
+#  normalized_title     :string
+#  normalized_orchestra :string
+#  normalized_singer    :string
+#  normalized_composer  :string
+#  normalized_author    :string
+#  search_data          :string
+#  synced_at            :datetime         not null
+#  page_updated_at      :datetime         not null
+#  recording_id         :uuid
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
 #
 class ElRecodoSong < ApplicationRecord
   validates :date, presence: true

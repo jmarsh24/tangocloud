@@ -4,8 +4,8 @@
 #
 # Table name: dancers
 #
-#  id          :uuid             not null, primary key
-#  name        :string           default(""), not null
+#  id          :integer          not null, primary key
+#  name        :string           not null
 #  nickname    :string
 #  nationality :string
 #  birth_date  :date
@@ -15,8 +15,8 @@
 #
 class Dancer < ApplicationRecord
   validates :name, presence: true
-  has_many :dancer_videos
+  has_many :dancer_videos, dependent: :destroy
   has_many :videos, through: :dancer_videos
-  has_many :couples
+  has_many :couples, dependent: :destroy
   has_many :partners, through: :couples
 end

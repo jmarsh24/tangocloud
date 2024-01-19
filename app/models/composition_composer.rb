@@ -4,9 +4,9 @@
 #
 # Table name: composition_composers
 #
-#  id             :uuid             not null, primary key
-#  composition_id :uuid             not null
-#  composer_id    :uuid             not null
+#  id             :integer          not null, primary key
+#  composition_id :integer          not null
+#  composer_id    :integer          not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #

@@ -4,18 +4,18 @@
 #
 # Table name: subscriptions
 #
-#  id                  :uuid             not null, primary key
-#  name                :string           default(""), not null
-#  description         :string
-#  type                :integer          default("free"), not null
-#  start_date          :datetime         not null
-#  end_date            :datetime         not null
-#  action_auth_user_id :uuid
-#  created_at          :datetime         not null
-#  updated_at          :datetime         not null
+#  id          :integer          not null, primary key
+#  name        :string           not null
+#  description :string
+#  type        :integer          default("free"), not null
+#  start_date  :datetime         not null
+#  end_date    :datetime         not null
+#  user_id     :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
 #
 class Subscription < ApplicationRecord
-  belongs_to :action_auth_user, class_name: "User", foreign_key: "action_auth_user_id"
+  belongs_to :action_auth_user, class_name: "User"
 
   validates :name, presence: true
   validates :type, presence: true
