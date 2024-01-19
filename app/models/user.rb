@@ -13,6 +13,11 @@ class User < ApplicationRecord
   belongs_to :account
 
   has_many :sessions, dependent: :destroy
+  has_many :playlists, dependent: :destroy
+  has_many :tandas, dependent: :destroy
+  has_one :user_setting, dependent: :destroy
+  has_one :user_preference, dependent: :destroy
+  has_one :subscription, dependent: :destroy
 
   validates :email, presence: true, uniqueness: true, format: {with: URI::MailTo::EMAIL_REGEXP}
   validates :password, allow_nil: true, length: {minimum: 12}
@@ -30,4 +35,7 @@ class User < ApplicationRecord
   after_update if: :password_digest_previously_changed? do
     sessions.where.not(id: Current.session).delete_all
   end
+
+  delegate :admin?, to: :user_setting, allow_nil: true
+  delegate :email, :username, :first_name, :last_name, to: :user_preference, allow_nil: true
 end
