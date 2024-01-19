@@ -15,13 +15,13 @@
 #  updated_at  :datetime         not null
 #
 class Subscription < ApplicationRecord
-  belongs_to :action_auth_user, class_name: "User"
+  belongs_to :user
 
   validates :name, presence: true
   validates :type, presence: true
   validates :start_date, presence: true
   validates :end_date, presence: true
-  validates :action_auth_user_id, presence: true
+  validates :user_id, presence: true
   validates :type, inclusion: {in: ["free", "premium", "hifi"]}
   enum type: {free: 0, premium: 1, hifi: 2}
 end

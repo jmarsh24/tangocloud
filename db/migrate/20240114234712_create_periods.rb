@@ -2,7 +2,8 @@
 
 class CreatePeriods < ActiveRecord::Migration[7.1]
   def change
-    create_table :periods do |t|
+    create_table :periods, force: true, id: false do |t|
+      t.primary_key :id, :string, default: -> { "ULID()" }
       t.string :name, null: false
       t.text :description
       t.integer :start_year, null: false, default: 0

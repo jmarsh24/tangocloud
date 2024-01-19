@@ -2,51 +2,22 @@
 
 # == Schema Information
 #
-# Table name: users
+# Table name: action_auth_users
 #
-#  id              :integer          not null, primary key
-#  email           :string           not null
-#  password_digest :string           not null
-#  verified        :boolean          default(FALSE), not null
-#  account_id      :integer          not null
+#  id              :uuid             not null, primary key
+#  email           :string
+#  password_digest :string
+#  verified        :boolean
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  webauthn_id     :string
 #
-class User < ApplicationRecord
-  has_secure_password
-
-  generates_token_for :email_verification, expires_in: 2.days do
-    email
-  end
-  generates_token_for :password_reset, expires_in: 20.minutes do
-    password_salt.last(10)
-  end
-
-  belongs_to :account
-
-  has_many :sessions, dependent: :destroy
+class User < ActionAuth::User
   has_many :playlists, dependent: :destroy
   has_many :tandas, dependent: :destroy
   has_one :user_setting, dependent: :destroy
   has_one :user_preference, dependent: :destroy
-  has_one :subscription, dependent: :destroy
-
-  validates :email, presence: true, uniqueness: true, format: {with: URI::MailTo::EMAIL_REGEXP}
-  validates :password, allow_nil: true, length: {minimum: 12}
-
-  normalizes :email, with: -> { _1.strip.downcase }
-
-  before_validation if: :email_changed?, on: :update do
-    self.verified = false
-  end
-
-  before_validation on: :create do
-    self.account = Account.new
-  end
-
-  after_update if: :password_digest_previously_changed? do
-    sessions.where.not(id: Current.session).delete_all
-  end
+  has_one :subscription, dependent: :destroy, foreign_key: "action_auth_user_id"
 
   delegate :admin?, to: :user_setting, allow_nil: true
   delegate :email, :username, :first_name, :last_name, to: :user_preference, allow_nil: true

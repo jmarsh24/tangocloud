@@ -2,9 +2,10 @@
 
 class ActsAsVotableMigration < ActiveRecord::Migration[7.0]
   def self.up
-    create_table :votes do |t|
-      t.references :votable, polymorphic: true
-      t.references :voter, polymorphic: true
+    create_table :votes, force: true, id: false do |t|
+      t.primary_key :id, :string, default: -> { "ULID()" }
+      t.belongs_to :votable, polymorphic: true
+      t.belongs_to :voter, polymorphic: true
       t.boolean :vote_flag
       t.string :vote_scope
       t.integer :vote_weight

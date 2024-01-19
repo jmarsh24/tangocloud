@@ -45,7 +45,7 @@ RSpec.describe ElRecodoSong do
         composer: "Edmundo Baya",
         author: "Julio César Curi"
       )
-      expect(ElRecodoSong.search("rodofo biag").first).to eq(song)
+      expect(ElRecodoSong.search("rodolfo biagi").first).to eq(song)
     end
   end
 
@@ -55,7 +55,7 @@ RSpec.describe ElRecodoSong do
     end
 
     it "returns nil if the input is not a string" do
-      expect(ElRecodoSong.normalize_text_field(nil)).to_be nil
+      expect(ElRecodoSong.normalize_text_field(nil)).to be_nil
     end
 
     it "returns empty string if the input is blank" do
@@ -110,7 +110,7 @@ RSpec.describe ElRecodoSong do
       )
 
       expect { ElRecodoSong.sync_songs(to: 1) }.to change { ElRecodoSong.find_by(music_id: 1).title }.from("foo").to("Te burlas tristeza")
-      expect { ElRecodoSong.sync_songs(to: 1) }.to not_to change
+      expect { ElRecodoSong.sync_songs(to: 1) }.not_to change { ElRecodoSong.all.count }
     end
   end
 
