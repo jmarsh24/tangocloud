@@ -8,7 +8,6 @@ class CreateActionAuthSessions < ActiveRecord::Migration[7.1]
       t.belongs_to :action_auth_user, null: false, foreign_key: true, type: :string
       t.string :user_agent
       t.string :ip_address
-
       t.timestamps
     end
   end
