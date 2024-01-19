@@ -336,7 +336,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_194927) do
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
-  create_table "taggings", force: :cascade do |t|
+  create_table "taggings", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
     t.string "tag_id", null: false
     t.string "taggable_type"
     t.integer "taggable_id"
@@ -359,7 +359,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_194927) do
     t.index ["tenant"], name: "index_taggings_on_tenant"
   end
 
-  create_table "tags", force: :cascade do |t|
+  create_table "tags", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -461,7 +461,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_194927) do
   add_foreign_key "lyrics", "compositions"
   add_foreign_key "playlist_audio_transfers", "audio_transfers"
   add_foreign_key "playlist_audio_transfers", "playlists"
-  add_foreign_key "playlists", "users"
+  add_foreign_key "playlists", "action_auth_users", column: "user_id"
   add_foreign_key "recording_singers", "recordings"
   add_foreign_key "recording_singers", "singers"
   add_foreign_key "recordings", "compositions"
@@ -470,7 +470,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_194927) do
   add_foreign_key "recordings", "orchestras"
   add_foreign_key "recordings", "periods"
   add_foreign_key "recordings", "singers"
-  add_foreign_key "subscriptions", "users"
+  add_foreign_key "subscriptions", "action_auth_users", column: "user_id"
   add_foreign_key "taggings", "tags"
   add_foreign_key "tandas", "audio_transfers"
   add_foreign_key "user_preferences", "action_auth_users", column: "user_id"
