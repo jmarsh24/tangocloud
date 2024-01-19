@@ -39,7 +39,6 @@ gem "rails-i18n"
 gem "shimmer"
 gem "slim-rails"
 gem "socialization"
-gem "sqlite-ulid"
 gem "translate_client"
 gem "yael"
 

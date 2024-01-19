@@ -2,9 +2,7 @@
 
 class CreateOrchestras < ActiveRecord::Migration[7.1]
   def change
-    create_table :orchestras, id: :uuid, id: false do |t|
-      t.primary_key :id, :string, default: -> { "ULID()" }
-
+    create_table :orchestras do |t|
       t.string :name, null: false
       t.integer :rank, null: false, default: 0
       t.string :sort_name

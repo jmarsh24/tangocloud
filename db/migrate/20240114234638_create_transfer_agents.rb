@@ -2,9 +2,7 @@
 
 class CreateTransferAgents < ActiveRecord::Migration[7.1]
   def change
-    create_table :transfer_agents, id: :uuid, id: false do |t|
-      t.primary_key :id, :string, default: -> { "ULID()" }
-
+    create_table :transfer_agents do |t|
       t.string :name, null: false
       t.string :description
       t.string :url
