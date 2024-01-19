@@ -12,7 +12,7 @@ class CreatePlaylists < ActiveRecord::Migration[7.1]
       t.integer :listens_count, null: false, default: 0
       t.integer :shares_count, null: false, default: 0
       t.integer :followers_count, null: false, default: 0
-      t.references :action_auth_user, null: false, foreign_key: true, type: :string
+      t.references :user, null: false, foreign_key: true, type: :string
       t.timestamps
     end
   end

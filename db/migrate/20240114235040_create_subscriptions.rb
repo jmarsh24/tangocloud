@@ -9,7 +9,7 @@ class CreateSubscriptions < ActiveRecord::Migration[7.1]
       t.integer :type, null: false, default: "0"
       t.datetime :start_date, null: false, default: ""
       t.datetime :end_date, null: false, default: ""
-      t.references :action_auth_user, foreign_key: true, type: :string
+      t.references :user, foreign_key: true, null: false, type: :string
       t.timestamps
     end
   end
