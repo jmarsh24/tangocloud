@@ -14,7 +14,6 @@ development:
 
 test:
   <<: *default
-  port: 5432
   database: tangocloud_test
 
 production:
