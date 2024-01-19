@@ -2,8 +2,7 @@
 
 class CreateLyricists < ActiveRecord::Migration[7.1]
   def change
-    create_table :lyricists, force: true, id: false do |t|
-      t.primary_key :id, :string, default: -> { "ULID()" }
+    create_table :lyricists, id: :uuid do |t|
       t.string :name, null: false
       t.string :slug, null: false, index: true
       t.string :sort_name

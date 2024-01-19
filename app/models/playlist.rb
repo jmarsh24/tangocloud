@@ -26,6 +26,6 @@ class Playlist < ApplicationRecord
   validates :shares_count, presence: true, numericality: {only_integer: true}
   validates :followers_count, presence: true, numericality: {only_integer: true}
 
-  belongs_to :user, class_name: "User"
+  belongs_to :user, class_name: "ActionAuth::User", inverse_of: :playlists
   has_many :playlist_audio_transfers, dependent: :destroy
 end

@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y google-chrome-stable libvips42 sqlite3
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y google-chrome-stable libvips42 postgresql-client libpq-dev
 
       - name: Checkout code
         uses: actions/checkout@v4

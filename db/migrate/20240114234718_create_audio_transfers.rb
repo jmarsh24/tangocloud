@@ -2,14 +2,13 @@
 
 class CreateAudioTransfers < ActiveRecord::Migration[7.1]
   def change
-    create_table :audio_transfers, force: true, id: false do |t|
-      t.primary_key :id, :string, default: -> { "ULID()" }
+    create_table :audio_transfers, id: :uuid do |t|
       t.string :method, null: false
       t.string :external_id
       t.date :recording_date
 
-      t.belongs_to :transfer_agent, null: false, foreign_key: true, type: :string
-      t.belongs_to :audio, null: false, foreign_key: true, type: :string
+      t.belongs_to :transfer_agent, foreign_key: true, type: :uuid
+      t.belongs_to :audio, foreign_key: true, type: :uuid
       t.timestamps
     end
   end
