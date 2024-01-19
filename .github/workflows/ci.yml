@@ -56,4 +56,4 @@ jobs:
       - name: Run Tests
         env:
           RAILS_ENV: test
-        run: bin/rails db:setup bin/rspec --format documentation
+        run: bin/rails db:setup && bin/rspec --format documentation
