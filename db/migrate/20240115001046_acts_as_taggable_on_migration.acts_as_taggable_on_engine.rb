@@ -3,15 +3,13 @@
 # This migration comes from acts_as_taggable_on_engine (originally 1)
 class ActsAsTaggableOnMigration < ActiveRecord::Migration[6.0]
   def self.up
-    create_table ActsAsTaggableOn.tags_table, force: true, id: false do |t|
-      t.primary_key :id, :string, default: -> { "ULID()" }
+    create_table ActsAsTaggableOn.tags_table, type: :uuid do |t|
       t.string :name
       t.timestamps
     end
 
-    create_table ActsAsTaggableOn.taggings_table, force: true, id: false do |t|
-      t.primary_key :id, :string, default: -> { "ULID()" }
-      t.belongs_to :tag, null: false, type: :string, foreign_key: {to_table: ActsAsTaggableOn.tags_table}
+    create_table ActsAsTaggableOn.taggings_table, type: :uuid do |t|
+      t.belongs_to :tag, foreign_key: {to_table: ActsAsTaggableOn.tags_table}
 
       # You should make sure that the column created is
       # long enough to store the required class names.

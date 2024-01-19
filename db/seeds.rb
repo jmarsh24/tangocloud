@@ -3,7 +3,7 @@
 if !ActionAuth::User.exists?(email: "admin@tangocloud.app")
   user = ActionAuth::User.create!(
     email: "admin@tangocloud.app",
-    password: "PASSWORD1234",
+    password: "adminpassword",
     verified: true
   )
 

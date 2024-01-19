@@ -7,6 +7,10 @@ servers:
     hosts:
       - 167.235.70.96
     cmd: bundle exec puma -C /rails/config/puma.rb
+  worker:
+    hosts:
+      - 94.130.104.7
+    cmd: bundle exec good_job execute
 registry:
   server: ghcr.io
   username:
@@ -16,11 +20,27 @@ registry:
 env:
   clear:
     KAMAL_CONTAINER_NAME: tangocloud
+    HOST: tangotube.tv
+    RAILS_ENV: production
+    RAILS_LOG_TO_STDOUT: true
+    DB_HOST: 167.235.70.96
   secret:
     - RAILS_MASTER_KEY
-
-builder:
-  multiarch: false
-
+    - POSTGRES_PASSWORD
+accessories:
+  db:
+    image: postgres:15
+    host: 167.235.70.96
+    port: 5432
+    env:
+      clear:
+        POSTGRES_USER: "postgres"
+        POSTGRES_DB: "tangotube_production"
+      secret:
+        - POSTGRES_PASSWORD
+    files:
+      - config/postgres/production.conf:/var/postgres/data/postgresql.conf
+    volumes:
+      - /var/postgres/data:/var/lib/postgresql/data
 healthcheck:
   log_lines: 10_000

@@ -8,7 +8,7 @@ gem "puma"
 gem "rails", "7.1.3"
 
 # Database
-gem "sqlite3"
+gem "pg"
 
 # Performance
 gem "bootsnap", require: false
@@ -19,7 +19,6 @@ gem "acts_as_list"
 gem "acts-as-taggable-on"
 gem "acts_as_votable"
 gem "apollo_upload_server"
-gem "authentication-zero"
 gem "avo"
 gem "bcrypt"
 gem "dotenv-rails"
@@ -31,7 +30,6 @@ gem "graphql"
 gem "groupdate"
 gem "kamal"
 gem "kaminari"
-gem "litestack"
 gem "progress_bar"
 gem "pundit"
 gem "rack-cors"
@@ -41,7 +39,6 @@ gem "slim-rails"
 gem "socialization"
 gem "translate_client"
 gem "yael"
-gem "sqlpkg"
 gem "action_auth"
 
 # Assets
