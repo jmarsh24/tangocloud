@@ -6,9 +6,9 @@ on:
       - main
 
 jobs:
-  Deploy:
+  deploy:
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     env:
       DOCKER_BUILDKIT: 1
