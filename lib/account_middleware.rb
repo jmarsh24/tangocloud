@@ -8,7 +8,7 @@ class AccountMiddleware
   def call(env)
     request = ActionDispatch::Request.new(env)
 
-    if m = /\A(\/(\d{1,}))/.match(request.path_info)
+    if (m = /\A(\/(\d{1,}))/.match(request.path_info))
       script_name, account_id, path_info = [m[1], m[2], m.post_match]
       request.script_name = script_name
       request.path_info = path_info.presence || "/"
