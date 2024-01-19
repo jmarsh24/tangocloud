@@ -4,16 +4,15 @@
 #
 # Table name: compositions
 #
-#  id             :uuid             not null, primary key
-#  title          :string           default(""), not null
-#  tangotube_slug :string
-#  genre_id       :uuid             not null
-#  lyricist_id    :uuid             not null
-#  composer_id    :uuid             not null
-#  listens_count  :integer
-#  popularity     :integer
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
+#  id            :integer          not null, primary key
+#  title         :string           not null
+#  genre_id      :integer          not null
+#  lyricist_id   :integer          not null
+#  composer_id   :integer          not null
+#  listens_count :integer
+#  popularity    :integer
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
 #
 class Composition < ApplicationRecord
   belongs_to :lyricist

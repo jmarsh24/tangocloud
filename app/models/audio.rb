@@ -4,9 +4,9 @@
 #
 # Table name: audios
 #
-#  id          :uuid             not null, primary key
+#  id          :integer          not null, primary key
 #  duration    :integer          default(0), not null
-#  format      :string           default(""), not null
+#  format      :string           not null
 #  bit_rate    :integer
 #  sample_rate :integer
 #  channels    :integer
@@ -15,7 +15,7 @@
 #  updated_at  :datetime         not null
 #
 class Audio < ApplicationRecord
-  has_many :audio_transfers
+  has_many :audio_transfers, dependent: :destroy
   has_many :transfer_agents, through: :audio_transfers
 
   validates :duration, presence: true

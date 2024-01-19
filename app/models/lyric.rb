@@ -4,10 +4,10 @@
 #
 # Table name: lyrics
 #
-#  id             :uuid             not null, primary key
-#  locale         :string           default(""), not null
-#  content        :text             default(""), not null
-#  composition_id :uuid             not null
+#  id             :integer          not null, primary key
+#  locale         :string           not null
+#  content        :text             not null
+#  composition_id :integer          not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #

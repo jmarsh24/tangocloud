@@ -4,15 +4,14 @@
 #
 # Table name: genres
 #
-#  id          :uuid             not null, primary key
-#  name        :string           default(""), not null
+#  id          :integer          not null, primary key
+#  name        :string           not null
 #  description :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
 class Genre < ApplicationRecord
-  has_many :videos
+  has_many :videos, dependent: :destroy
 
   validates :name, presence: true
-
 end

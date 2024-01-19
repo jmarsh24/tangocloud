@@ -4,9 +4,9 @@
 #
 # Table name: dancer_videos
 #
-#  id        :uuid             not null, primary key
-#  dancer_id :uuid             not null
-#  video_id  :uuid             not null
+#  id        :integer          not null, primary key
+#  dancer_id :integer          not null
+#  video_id  :integer          not null
 #
 class DancerVideo < ApplicationRecord
   belongs_to :dancer
@@ -15,5 +15,4 @@ class DancerVideo < ApplicationRecord
   validates :dancer_id, presence: true
   validates :video_id, presence: true
   validates :dancer_id, uniqueness: {scope: :video_id}
-
 end

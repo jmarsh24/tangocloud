@@ -4,16 +4,15 @@
 #
 # Table name: labels
 #
-#  id           :uuid             not null, primary key
-#  name         :string           default(""), not null
+#  id           :integer          not null, primary key
+#  name         :string           not null
 #  description  :text
 #  founded_date :date
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #
 class Label < ApplicationRecord
-  has_many :videos
+  has_many :videos, dependent: :destroy
 
   validates :name, presence: true
-
 end

@@ -4,9 +4,9 @@
 #
 # Table name: lyricists
 #
-#  id         :uuid             not null, primary key
-#  name       :string           default(""), not null
-#  slug       :string           default(""), not null
+#  id         :integer          not null, primary key
+#  name       :string           not null
+#  slug       :string           not null
 #  sort_name  :string
 #  birth_date :date
 #  death_date :date
@@ -16,9 +16,8 @@
 #
 class Lyricist < ApplicationRecord
   extend FriendlyId
-  has_many :lyrics
+  has_many :lyrics, dependent: :destroy
 
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true
-
 end

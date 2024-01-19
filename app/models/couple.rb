@@ -4,14 +4,14 @@
 #
 # Table name: couples
 #
-#  id         :uuid             not null, primary key
-#  dancer_id  :uuid             not null
-#  partner_id :uuid             not null
+#  id         :integer          not null, primary key
+#  dancer_id  :integer          not null
+#  partner_id :integer          not null
 #
 class Couple < ApplicationRecord
   belongs_to :dancer
   belongs_to :partner, class_name: "Dancer"
-  has_many :couple_videos
+  has_many :couple_videos, dependent: :destroy
   has_many :videos, through: :couple_videos
 
   validates :dancer_id, presence: true

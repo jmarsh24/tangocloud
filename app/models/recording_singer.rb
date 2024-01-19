@@ -4,9 +4,9 @@
 #
 # Table name: recording_singers
 #
-#  id           :uuid             not null, primary key
-#  recording_id :uuid             not null
-#  singer_id    :uuid             not null
+#  id           :integer          not null, primary key
+#  recording_id :integer          not null
+#  singer_id    :integer          not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #
