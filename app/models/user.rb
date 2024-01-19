@@ -17,7 +17,7 @@ class User < ActionAuth::User
   has_many :tandas, dependent: :destroy
   has_one :user_setting, dependent: :destroy
   has_one :user_preference, dependent: :destroy
-  has_one :subscription, dependent: :destroy, foreign_key: "action_auth_user_id"
+  has_one :subscription, dependent: :destroy, foreign_key: "action_auth_user_id", inverse_of: :user
 
   delegate :admin?, to: :user_setting, allow_nil: true
   delegate :email, :username, :first_name, :last_name, to: :user_preference, allow_nil: true
