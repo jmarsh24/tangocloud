@@ -15,7 +15,7 @@
       "version": "3.2.2"
     },
     "ghcr.io/devcontainers/features/node:1": {
-      "version": 20
+      "version": 21
     },
     "ghcr.io/devcontainers/features/common-utils:2": {
       "username": "vscode",
@@ -56,6 +56,12 @@
   },
 
   "forwardPorts": [2222, 5433, 6080],
+
+  "portsAttributes": {
+    "6080": {
+      "label": "playwright"
+    }
+  },
 
   "postCreateCommand": ".devcontainer/boot.sh",
 
