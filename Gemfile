@@ -15,6 +15,7 @@ gem "bootsnap", require: false
 gem "oj"
 
 # Extensions
+gem "action_auth"
 gem "acts_as_list"
 gem "acts-as-taggable-on"
 gem "acts_as_votable"
@@ -37,9 +38,9 @@ gem "rails-i18n"
 gem "shimmer"
 gem "slim-rails"
 gem "socialization"
+gem "solid_cache"
 gem "translate_client"
 gem "yael"
-gem "action_auth"
 
 # Assets
 gem "image_processing"
