@@ -1,5 +1,5 @@
 {
-  "name": "Your Project Name",
+  "name": "TangoCloud",
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
@@ -34,7 +34,24 @@
 
   "customizations": {
     "vscode": {
-      "extensions": ["Shopify.ruby-lsp", "EditorConfig.EditorConfig"]
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "GitHub.copilot",
+        "esbenp.prettier-vscode",
+        "sianglim.slim",
+        "Shopify.ruby-lsp",
+        "EditorConfig.EditorConfig",
+        "eamodio.gitlens",
+        "GraphQL.vscode-graphql"
+      ],
+      "settings": {
+        "typescript.tsdk": "node_modules/typescript/lib",
+        "rubyLsp.rubyVersionManager": "none",
+        "[ruby]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "Shopify.ruby-lsp"
+        }
+      }
     }
   },
 
