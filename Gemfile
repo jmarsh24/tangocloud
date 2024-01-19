@@ -9,6 +9,7 @@ gem "rails", "7.1.3"
 
 # Database
 gem "pg"
+gem "good_job"
 
 # Performance
 gem "bootsnap", require: false
