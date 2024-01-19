@@ -78,6 +78,7 @@ group :development do
   gem "pry-rails"
   gem "rb-fsevent"
   gem "web-console"
+  gem "brakeman"
 end
 
 group :test do
