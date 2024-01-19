@@ -247,10 +247,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_194927) do
     t.integer "listens_count", default: 0, null: false
     t.integer "shares_count", default: 0, null: false
     t.integer "followers_count", default: 0, null: false
-    t.string "action_auth_user_id", null: false
+    t.string "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["action_auth_user_id"], name: "index_playlists_on_action_auth_user_id"
+    t.index ["user_id"], name: "index_playlists_on_user_id"
   end
 
   create_table "recording_singers", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
@@ -311,10 +311,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_194927) do
     t.integer "type", default: 0, null: false
     t.datetime "start_date", null: false
     t.datetime "end_date", null: false
-    t.string "action_auth_user_id"
+    t.string "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["action_auth_user_id"], name: "index_subscriptions_on_action_auth_user_id"
+    t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
   create_table "taggings", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
@@ -391,7 +391,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_194927) do
   end
 
   create_table "user_settings", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
-    t.integer "user_id", null: false
+    t.string "user_id", null: false
     t.boolean "admin", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -455,4 +455,23 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_194927) do
   add_foreign_key "lyrics", "compositions"
   add_foreign_key "playlist_audio_transfers", "audio_transfers"
   add_foreign_key "playlist_audio_transfers", "playlists"
+  add_foreign_key "playlists", "users"
+  add_foreign_key "recording_singers", "recordings"
+  add_foreign_key "recording_singers", "singers"
+  add_foreign_key "recordings", "compositions"
+  add_foreign_key "recordings", "genres"
+  add_foreign_key "recordings", "labels"
+  add_foreign_key "recordings", "orchestras"
+  add_foreign_key "recordings", "periods"
+  add_foreign_key "recordings", "singers"
+  add_foreign_key "sessions", "users"
+  add_foreign_key "subscriptions", "users"
+  add_foreign_key "taggings", "tags"
+  add_foreign_key "tanda_audio_transfers", "audio_transfers"
+  add_foreign_key "tanda_audio_transfers", "tandas"
+  add_foreign_key "tandas", "audio_transfers"
+  add_foreign_key "user_preferences", "users"
+  add_foreign_key "user_settings", "users"
+  add_foreign_key "users", "accounts"
+  add_foreign_key "videos", "recordings"
 end
