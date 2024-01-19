@@ -9,11 +9,8 @@ class AddWebauthnCredentials < ActiveRecord::Migration[7.1]
       t.string :public_key, null: false
       t.string :nickname, null: false
       t.bigint :sign_count, null: false, default: 0
-
       t.index :external_id, unique: true
-
       t.belongs_to :action_auth_user, null: false, foreign_key: true, type: :string
-
       t.timestamps
     end
   end
