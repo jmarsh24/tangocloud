@@ -20,13 +20,12 @@
 class Playlist < ApplicationRecord
   validates :title, presence: true
   validates :public, presence: true, inclusion: {in: [true, false]}
-  validates :action_auth_user_id, presence: true
   validates :songs_count, presence: true, numericality: {only_integer: true}
   validates :likes_count, presence: true, numericality: {only_integer: true}
   validates :listens_count, presence: true, numericality: {only_integer: true}
   validates :shares_count, presence: true, numericality: {only_integer: true}
   validates :followers_count, presence: true, numericality: {only_integer: true}
 
-  belongs_to :action_auth_user, class_name: "User"
+  belongs_to :user, class_name: "User"
   has_many :playlist_audio_transfers, dependent: :destroy
 end

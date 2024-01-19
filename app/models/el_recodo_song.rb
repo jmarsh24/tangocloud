@@ -40,10 +40,7 @@ class ElRecodoSong < ApplicationRecord
   scope :search, ->(query) {
     return all if query.blank?
 
-    sanitized_query = sanitize_sql_like(query.downcase)
-    select("*, similarity(search_data, '#{sanitized_query}') AS similarity")
-      .where("? <% search_data", sanitized_query)
-      .order("similarity DESC")
+    where("search_data like ?", "%#{query}%")
   }
 
   class << self

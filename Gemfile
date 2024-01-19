@@ -42,6 +42,7 @@ gem "socialization"
 gem "translate_client"
 gem "yael"
 gem "sqlpkg"
+gem "action_auth"
 
 # Assets
 gem "image_processing"

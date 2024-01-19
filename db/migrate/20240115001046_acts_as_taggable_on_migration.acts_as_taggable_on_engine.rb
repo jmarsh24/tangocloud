@@ -9,12 +9,12 @@ class ActsAsTaggableOnMigration < ActiveRecord::Migration[6.0]
     end
 
     create_table ActsAsTaggableOn.taggings_table do |t|
-      t.references :tag, foreign_key: {to_table: ActsAsTaggableOn.tags_table}
+      t.belongs_to :tag, null: false, type: :string, foreign_key: {to_table: ActsAsTaggableOn.tags_table}
 
       # You should make sure that the column created is
       # long enough to store the required class names.
-      t.references :taggable, polymorphic: true
-      t.references :tagger, polymorphic: true
+      t.belongs_to :taggable, polymorphic: true
+      t.belongs_to :tagger, polymorphic: true
 
       # Limit is created to prevent MySQL error on index
       # length for MyISAM table type: http://bit.ly/vgW2Ql

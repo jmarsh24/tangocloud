@@ -2,7 +2,8 @@
 
 class CreateGenres < ActiveRecord::Migration[7.1]
   def change
-    create_table :genres do |t|
+    create_table :genres, force: true, id: false do |t|
+      t.primary_key :id, :string, default: -> { "ULID()" }
       t.string :name, null: false
       t.string :description
       t.timestamps
