@@ -2,11 +2,9 @@
 
 class CreateCoupleVideos < ActiveRecord::Migration[7.1]
   def change
-    create_table :couple_videos, id: :uuid, id: false do |t|
-      t.primary_key :id, :string, default: -> { "ULID()" }
-
-      t.references :couple, null: false, foreign_key: true, type: :string, type: :uuid
-      t.references :video, null: false, foreign_key: true, type: :string, type: :uuid
+    create_table :couple_videos do |t|
+      t.references :couple, null: false, foreign_key: true
+      t.references :video, null: false, foreign_key: true
     end
   end
 end

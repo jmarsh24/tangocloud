@@ -14,18 +14,44 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_194927) do
   create_table "accounts", force: :cascade do |t|
   end
 
-# Could not dump table "album_audio_transfers" because of following StandardError
-#   Unknown type 'uuid' for column 'album_id'
+  create_table "album_audio_transfers", force: :cascade do |t|
+    t.integer "album_id", null: false
+    t.integer "audio_transfer_id", null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["album_id"], name: "index_album_audio_transfers_on_album_id"
+    t.index ["audio_transfer_id"], name: "index_album_audio_transfers_on_audio_transfer_id"
+  end
 
-# Could not dump table "albums" because of following StandardError
-#   Unknown type 'uuid' for column 'transfer_agent_id'
+  create_table "albums", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description"
+    t.date "release_date"
+    t.integer "type", default: 0, null: false
+    t.integer "recordings_count", default: 0, null: false
+    t.string "slug", null: false
+    t.string "external_id"
+    t.integer "transfer_agent_id"
+    t.index ["slug"], name: "index_albums_on_slug"
+    t.index ["transfer_agent_id"], name: "index_albums_on_transfer_agent_id"
+  end
 
-# Could not dump table "audio_transfers" because of following StandardError
-#   Unknown type 'uuid' for column 'transfer_agent_id'
+  create_table "audio_transfers", force: :cascade do |t|
+    t.string "method", null: false
+    t.string "external_id"
+    t.date "recording_date"
+    t.integer "transfer_agent_id"
+    t.integer "audio_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["audio_id"], name: "index_audio_transfers_on_audio_id"
+    t.index ["transfer_agent_id"], name: "index_audio_transfers_on_transfer_agent_id"
+  end
 
-  create_table "audios", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
+  create_table "audios", force: :cascade do |t|
     t.integer "duration", default: 0, null: false
-    t.string "format", default: "", null: false
+    t.string "format", null: false
     t.integer "bit_rate"
     t.integer "sample_rate"
     t.integer "channels"
@@ -34,24 +60,45 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_194927) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "composers", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
-    t.string "name", default: "", null: false
+  create_table "composers", force: :cascade do |t|
+    t.string "name", null: false
     t.date "birth_date"
     t.date "death_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-# Could not dump table "composition_composers" because of following StandardError
-#   Unknown type 'uuid' for column 'composition_id'
+  create_table "composition_composers", force: :cascade do |t|
+    t.integer "composition_id", null: false
+    t.integer "composer_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["composer_id"], name: "index_composition_composers_on_composer_id"
+    t.index ["composition_id"], name: "index_composition_composers_on_composition_id"
+  end
 
-# Could not dump table "compositions" because of following StandardError
-#   Unknown type 'uuid' for column 'genre_id'
+  create_table "compositions", force: :cascade do |t|
+    t.string "title", null: false
+    t.integer "genre_id", null: false
+    t.integer "lyricist_id", null: false
+    t.integer "composer_id", null: false
+    t.integer "listens_count"
+    t.integer "popularity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["composer_id"], name: "index_compositions_on_composer_id"
+    t.index ["genre_id"], name: "index_compositions_on_genre_id"
+    t.index ["lyricist_id"], name: "index_compositions_on_lyricist_id"
+  end
 
-# Could not dump table "couple_videos" because of following StandardError
-#   Unknown type 'uuid' for column 'couple_id'
+  create_table "couple_videos", force: :cascade do |t|
+    t.integer "couple_id", null: false
+    t.integer "video_id", null: false
+    t.index ["couple_id"], name: "index_couple_videos_on_couple_id"
+    t.index ["video_id"], name: "index_couple_videos_on_video_id"
+  end
 
-  create_table "couples", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
+  create_table "couples", force: :cascade do |t|
     t.integer "dancer_id", null: false
     t.integer "partner_id", null: false
     t.index ["dancer_id", "partner_id"], name: "index_couples_on_dancer_id_and_partner_id", unique: true
@@ -59,11 +106,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_194927) do
     t.index ["partner_id"], name: "index_couples_on_partner_id"
   end
 
-# Could not dump table "dancer_videos" because of following StandardError
-#   Unknown type 'uuid' for column 'dancer_id'
+  create_table "dancer_videos", force: :cascade do |t|
+    t.integer "dancer_id", null: false
+    t.integer "video_id", null: false
+    t.index ["dancer_id"], name: "index_dancer_videos_on_dancer_id"
+    t.index ["video_id"], name: "index_dancer_videos_on_video_id"
+  end
 
-  create_table "dancers", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
-    t.string "name", default: "", null: false
+  create_table "dancers", force: :cascade do |t|
+    t.string "name", null: false
     t.string "nickname"
     t.string "nationality"
     t.date "birth_date"
@@ -72,43 +123,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_194927) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "el_recodo_songs", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
-    t.date "date", null: false
-    t.integer "ert_number", default: 0, null: false
-    t.integer "music_id", default: 0, null: false
-    t.string "title", null: false
-    t.string "style"
-    t.string "orchestra"
-    t.string "singer"
-    t.string "composer"
-    t.string "author"
-    t.string "label"
-    t.text "lyrics"
-    t.string "normalized_title"
-    t.string "normalized_orchestra"
-    t.string "normalized_singer"
-    t.string "normalized_composer"
-    t.string "normalized_author"
-    t.string "search_data"
-    t.datetime "synced_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "page_updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.string "recording_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["date"], name: "index_el_recodo_songs_on_date"
-    t.index ["ert_number"], name: "index_el_recodo_songs_on_ert_number"
-    t.index ["music_id"], name: "index_el_recodo_songs_on_music_id", unique: true
-    t.index ["normalized_composer"], name: "index_el_recodo_songs_on_normalized_composer"
-    t.index ["normalized_orchestra"], name: "index_el_recodo_songs_on_normalized_orchestra"
-    t.index ["normalized_singer"], name: "index_el_recodo_songs_on_normalized_singer"
-    t.index ["normalized_title"], name: "index_el_recodo_songs_on_normalized_title"
-    t.index ["page_updated_at"], name: "index_el_recodo_songs_on_page_updated_at"
-    t.index ["recording_id"], name: "index_el_recodo_songs_on_recording_id"
-    t.index ["search_data"], name: "index_el_recodo_songs_on_search_data"
-    t.index ["synced_at"], name: "index_el_recodo_songs_on_synced_at"
-  end
+# Could not dump table "el_recodo_songs" because of following StandardError
+#   Unknown type 'uuid' for column 'recording_id'
 
-  create_table "friendly_id_slugs", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
+  create_table "friendly_id_slugs", force: :cascade do |t|
     t.string "slug", null: false
     t.integer "sluggable_id", null: false
     t.string "sluggable_type", limit: 50
@@ -119,24 +137,24 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_194927) do
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
-  create_table "genres", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
-    t.string "name", default: "", null: false
+  create_table "genres", force: :cascade do |t|
+    t.string "name", null: false
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "labels", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
-    t.string "name", default: "", null: false
+  create_table "labels", force: :cascade do |t|
+    t.string "name", null: false
     t.text "description"
     t.date "founded_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "lyricists", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
-    t.string "name", default: "", null: false
-    t.string "slug", default: "", null: false
+  create_table "lyricists", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug", null: false
     t.string "sort_name"
     t.date "birth_date"
     t.date "death_date"
@@ -146,45 +164,94 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_194927) do
     t.index ["slug"], name: "index_lyricists_on_slug"
   end
 
-# Could not dump table "lyrics" because of following StandardError
-#   Unknown type 'uuid' for column 'composition_id'
+  create_table "lyrics", force: :cascade do |t|
+    t.string "locale", null: false
+    t.text "content", null: false
+    t.integer "composition_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["composition_id"], name: "index_lyrics_on_composition_id"
+  end
 
-  create_table "orchestras", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
-    t.string "name", default: "", null: false
+  create_table "orchestras", force: :cascade do |t|
+    t.string "name", null: false
     t.integer "rank", default: 0, null: false
     t.string "sort_name"
     t.date "birth_date"
     t.date "death_date"
-    t.string "slug", default: "", null: false
+    t.string "slug", null: false
     t.index ["slug"], name: "index_orchestras_on_slug"
   end
 
-  create_table "periods", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
-    t.string "name", default: "", null: false
+  create_table "periods", force: :cascade do |t|
+    t.string "name", null: false
     t.text "description"
     t.integer "start_year", default: 0, null: false
     t.integer "end_year", default: 0, null: false
     t.integer "recordings_count", default: 0, null: false
-    t.string "slug", default: "", null: false
+    t.string "slug", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_periods_on_slug"
   end
 
-# Could not dump table "playlist_audio_transfers" because of following StandardError
-#   Unknown type 'uuid' for column 'playlist_id'
+  create_table "playlist_audio_transfers", force: :cascade do |t|
+    t.integer "playlist_id", null: false
+    t.integer "audio_transfer_id", null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["audio_transfer_id"], name: "index_playlist_audio_transfers_on_audio_transfer_id"
+    t.index ["playlist_id"], name: "index_playlist_audio_transfers_on_playlist_id"
+  end
 
-# Could not dump table "playlists" because of following StandardError
-#   Unknown type 'uuid' for column 'action_auth_user_id'
+  create_table "playlists", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "description"
+    t.boolean "public", default: true, null: false
+    t.integer "songs_count", default: 0, null: false
+    t.integer "likes_count", default: 0, null: false
+    t.integer "listens_count", default: 0, null: false
+    t.integer "shares_count", default: 0, null: false
+    t.integer "followers_count", default: 0, null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_playlists_on_user_id"
+  end
 
-# Could not dump table "recording_singers" because of following StandardError
-#   Unknown type 'uuid' for column 'recording_id'
+  create_table "recording_singers", force: :cascade do |t|
+    t.integer "recording_id", null: false
+    t.integer "singer_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recording_id"], name: "index_recording_singers_on_recording_id"
+    t.index ["singer_id"], name: "index_recording_singers_on_singer_id"
+  end
 
-# Could not dump table "recordings" because of following StandardError
-#   Unknown type 'uuid' for column 'orchestra_id'
+  create_table "recordings", force: :cascade do |t|
+    t.string "title", null: false
+    t.integer "bpm"
+    t.integer "type", default: 0, null: false
+    t.date "release_date"
+    t.date "recorded_date"
+    t.string "tangotube_slug"
+    t.integer "orchestra_id"
+    t.integer "singer_id"
+    t.integer "composition_id"
+    t.integer "label_id"
+    t.integer "genre_id"
+    t.integer "period_id"
+    t.index ["composition_id"], name: "index_recordings_on_composition_id"
+    t.index ["genre_id"], name: "index_recordings_on_genre_id"
+    t.index ["label_id"], name: "index_recordings_on_label_id"
+    t.index ["orchestra_id"], name: "index_recordings_on_orchestra_id"
+    t.index ["period_id"], name: "index_recordings_on_period_id"
+    t.index ["singer_id"], name: "index_recordings_on_singer_id"
+  end
 
-  create_table "sessions", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
-    t.string "user_id", null: false
+  create_table "sessions", force: :cascade do |t|
+    t.integer "user_id", null: false
     t.string "user_agent"
     t.string "ip_address"
     t.datetime "created_at", null: false
@@ -192,9 +259,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_194927) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
-  create_table "singers", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
-    t.string "name", default: "", null: false
-    t.string "slug", default: "", null: false
+  create_table "singers", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug", null: false
     t.integer "rank", default: 0, null: false
     t.string "sort_name"
     t.text "bio"
@@ -205,10 +272,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_194927) do
     t.index ["slug"], name: "index_singers_on_slug"
   end
 
-# Could not dump table "subscriptions" because of following StandardError
-#   Unknown type 'uuid' for column 'action_auth_user_id'
+  create_table "subscriptions", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "description"
+    t.integer "type", default: 0, null: false
+    t.datetime "start_date", null: false
+    t.datetime "end_date", null: false
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_subscriptions_on_user_id"
+  end
 
-  create_table "taggings", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
+  create_table "taggings", force: :cascade do |t|
     t.integer "tag_id"
     t.string "taggable_type"
     t.integer "taggable_id"
@@ -231,7 +307,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_194927) do
     t.index ["tenant"], name: "index_taggings_on_tenant"
   end
 
-  create_table "tags", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
+  create_table "tags", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -239,35 +315,45 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_194927) do
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
-# Could not dump table "tanda_audio_transfers" because of following StandardError
-#   Unknown type 'uuid' for column 'tanda_id'
+  create_table "tanda_audio_transfers", force: :cascade do |t|
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
-# Could not dump table "tandas" because of following StandardError
-#   Unknown type 'uuid' for column 'audio_transfer_id'
+  create_table "tandas", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "description"
+    t.boolean "public", default: true, null: false
+    t.integer "audio_transfer_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["audio_transfer_id"], name: "index_tandas_on_audio_transfer_id"
+  end
 
-  create_table "transfer_agents", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
-    t.string "name", default: "", null: false
+  create_table "transfer_agents", force: :cascade do |t|
+    t.string "name", null: false
     t.string "description"
     t.string "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "user_preferences", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
+  create_table "user_preferences", force: :cascade do |t|
     t.string "username"
     t.string "first_name"
     t.string "last_name"
     t.string "gender"
     t.string "birth_date"
     t.string "locale", default: "en", null: false
-    t.string "user_id", null: false
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_user_preferences_on_user_id"
     t.index ["username"], name: "index_user_preferences_on_username", unique: true
   end
 
-  create_table "user_settings", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
+  create_table "user_settings", force: :cascade do |t|
     t.integer "user_id", null: false
     t.boolean "admin", default: false
     t.datetime "created_at", null: false
@@ -275,21 +361,28 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_194927) do
     t.index ["user_id"], name: "index_user_settings_on_user_id"
   end
 
-  create_table "users", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
+  create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "password_digest", null: false
     t.boolean "verified", default: false, null: false
-    t.string "account_id", null: false
+    t.integer "account_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_users_on_account_id"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
-# Could not dump table "videos" because of following StandardError
-#   Unknown type 'uuid' for column 'recording_id'
+  create_table "videos", force: :cascade do |t|
+    t.string "youtube_slug", null: false
+    t.string "title", null: false
+    t.string "description", null: false
+    t.integer "recording_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recording_id"], name: "index_videos_on_recording_id"
+  end
 
-  create_table "votes", id: :string, default: -> { "ULID()" }, force: :cascade do |t|
+  create_table "votes", force: :cascade do |t|
     t.string "votable_type"
     t.integer "votable_id"
     t.string "voter_type"
@@ -321,8 +414,21 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_194927) do
   add_foreign_key "couples", "dancers", column: "partner_id"
   add_foreign_key "dancer_videos", "dancers"
   add_foreign_key "dancer_videos", "videos"
-  add_foreign_key "el_recodo_songs", "recordings"
   add_foreign_key "lyrics", "compositions"
   add_foreign_key "playlist_audio_transfers", "audio_transfers"
   add_foreign_key "playlist_audio_transfers", "playlists"
+  add_foreign_key "playlists", "users"
+  add_foreign_key "recording_singers", "recordings"
+  add_foreign_key "recording_singers", "singers"
+  add_foreign_key "recordings", "compositions"
+  add_foreign_key "recordings", "genres"
+  add_foreign_key "recordings", "labels"
+  add_foreign_key "recordings", "orchestras"
+  add_foreign_key "recordings", "periods"
+  add_foreign_key "recordings", "singers"
+  add_foreign_key "subscriptions", "users"
+  add_foreign_key "taggings", "tags"
+  add_foreign_key "tandas", "audio_transfers"
+  add_foreign_key "user_settings", "users"
+  add_foreign_key "videos", "recordings"
 end

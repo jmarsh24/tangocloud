@@ -2,9 +2,7 @@
 
 class CreateElRecodoSongs < ActiveRecord::Migration[7.1]
   def change
-    create_table :el_recodo_songs, id: :uuid, id: false do |t|
-      t.primary_key :id, :string, default: -> { "ULID()" }
-
+    create_table :el_recodo_songs do |t|
       t.date :date, null: false
       t.integer :ert_number, null: false, default: 0
       t.integer :music_id, null: false, default: 0
@@ -34,7 +32,7 @@ class CreateElRecodoSongs < ActiveRecord::Migration[7.1]
       t.index :normalized_composer, opclass: :gist_trgm_ops, using: :gist
       t.datetime :synced_at, null: false, default: -> { "CURRENT_TIMESTAMP" }
       t.datetime :page_updated_at, null: false, default: -> { "CURRENT_TIMESTAMP" }
-      t.references :recording, type: :uuid, foreign_key: true, type: :string
+      t.references :recording, type: :uuid
       t.timestamps
     end
   end

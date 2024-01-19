@@ -2,9 +2,7 @@
 
 class CreateAlbums < ActiveRecord::Migration[7.1]
   def change
-    create_table :albums, id: :uuid, id: false do |t|
-      t.primary_key :id, :string, default: -> { "ULID()" }
-
+    create_table :albums do |t|
       t.string :title, null: false
       t.text :description
       t.date :release_date
@@ -12,7 +10,7 @@ class CreateAlbums < ActiveRecord::Migration[7.1]
       t.integer :recordings_count, null: false, default: 0
       t.string :slug, null: false, index: true
       t.string :external_id
-      t.references :transfer_agent, foreign_key: true, type: :string, type: :uuid
+      t.references :transfer_agent, foreign_key: true
     end
   end
 end
