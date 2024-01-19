@@ -14,12 +14,12 @@ development:
 
 test:
   <<: *default
+  port: 5432
   database: tangocloud_test
 
 production:
   <<: *default
   host: <%= ENV["DB_HOST"] %>
   database: tangotube_production
-  username: postgres
   password: <%= ENV["POSTGRES_PASSWORD"] %>
   port: 5432
