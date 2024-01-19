@@ -2,8 +2,7 @@
 
 class CreateCouples < ActiveRecord::Migration[7.1]
   def change
-    create_table :couples, id: false do |t|
-      t.primary_key :id, :string, default: -> { "ULID()" }
+    create_table :couples do |t|
       t.references :dancer, null: false, foreign_key: {to_table: :dancers}
       t.references :partner, null: false, foreign_key: {to_table: :dancers}
     end

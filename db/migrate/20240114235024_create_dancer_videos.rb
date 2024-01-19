@@ -2,10 +2,9 @@
 
 class CreateDancerVideos < ActiveRecord::Migration[7.1]
   def change
-    create_table :dancer_videos, id: false do |t|
-      t.primary_key :id, :string, default: -> { "ULID()" }
-      t.references :dancer, null: false, foreign_key: true, type: :string
-      t.references :video, null: false, foreign_key: true, type: :string
+    create_table :dancer_videos do |t|
+      t.references :dancer, null: false, foreign_key: true
+      t.references :video, null: false, foreign_key: true
     end
   end
 end

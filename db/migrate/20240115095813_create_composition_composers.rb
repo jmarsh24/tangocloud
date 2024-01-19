@@ -2,10 +2,9 @@
 
 class CreateCompositionComposers < ActiveRecord::Migration[7.1]
   def change
-    create_table :composition_composers, id: false do |t|
-      t.primary_key :id, :string, default: -> { "ULID()" }
-      t.references :composition, null: false, foreign_key: true, type: :string
-      t.references :composer, null: false, foreign_key: true, type: :string
+    create_table :composition_composers do |t|
+      t.references :composition, null: false, foreign_key: true
+      t.references :composer, null: false, foreign_key: true
       t.timestamps
     end
   end

@@ -2,10 +2,9 @@
 
 class CreateAudios < ActiveRecord::Migration[7.1]
   def change
-    create_table :audios, id: false do |t|
-      t.primary_key :id, :string, default: -> { "ULID()" }
+    create_table :audios do |t|
       t.integer :duration, null: false, default: 0
-      t.string :format, null: false, default: ""
+      t.string :format, null: false
       t.integer :bit_rate
       t.integer :sample_rate
       t.integer :channels
