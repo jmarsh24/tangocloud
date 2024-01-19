@@ -490,6 +490,10 @@ GEM
     smart_properties (1.17.0)
     socialization (2.0.1)
       activerecord
+    solid_cache (0.3.0)
+      activejob (>= 7)
+      activerecord (>= 7)
+      railties (>= 7)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -615,6 +619,7 @@ DEPENDENCIES
   shimmer
   slim-rails
   socialization
+  solid_cache
   standard
   translate_client
   web-console
