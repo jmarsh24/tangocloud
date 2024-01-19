@@ -2,12 +2,11 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
-<%- unless skip_brakeman? -%>
   scan:
     runs-on: ubuntu-latest
 
@@ -23,8 +22,6 @@ jobs:
 
       - name: Scan for security vulnerabilities
         run: bin/brakeman
-<% end -%>
-<%- unless skip_rubocop? -%>
 
   lint:
     runs-on: ubuntu-latest
@@ -40,7 +37,6 @@ jobs:
 
       - name: Lint code for consistent style
         run: bin/rubocop
-<% end -%>
 
   test:
     runs-on: ubuntu-latest
