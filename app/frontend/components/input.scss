@@ -1,0 +1,41 @@
+.input--text,
+.input--email {
+  .input__input {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--input-border-primary-default);
+    background: var(--input-bg-primary-default);
+  }
+}
+
+.input--select {
+  position: relative;
+
+  &::after {
+    content: "";
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    margin-top: -6px;
+    width: 12px;
+    height: 12px;
+    background-image: url(../images/icons/chevron-down.svg);
+    background-size: 12px 12px;
+    background-repeat: no-repeat;
+    background-position: center;
+    pointer-events: none;
+  }
+
+  .input__input {
+    padding-right: 18px;
+    outline: none;
+  }
+}
+
+.input--no-label {
+  label {
+    display: none;
+  }
+}
