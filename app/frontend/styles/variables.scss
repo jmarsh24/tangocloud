@@ -5,6 +5,7 @@
   --button-bg-primary-active: #0075ff;
   --button-bg-primary-base: #2e8eff;
   --button-bg-primary-tint: #2e8eff;
+  --button-bg-primary-hover: #0075ff;
   --button-bg-secondary-base: #ffffff;
   --button-text-primary-active: #ffffff;
   --button-text-primary-default: #ffffff;
@@ -15,7 +16,7 @@
   --color-tint: #0075ff;
 }
 @mixin h1-regular() {
-  font-size: 22px;
+  font-size: 48px;
   text-decoration: none;
   font-family: var(--font);
   font-weight: 400;
@@ -24,7 +25,7 @@
   list-spacing: 0;
 }
 @mixin h1-bold() {
-  font-size: 22px;
+  font-size: 48px;
   text-decoration: none;
   font-family: var(--font);
   font-weight: 700;
@@ -95,4 +96,59 @@
   line-height: auto;
   list-spacing: 0;
 }
+@mixin caption-regular() {
+  font-size: 14px;
+  text-decoration: none;
+  font-family: var(--font);
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: auto;
+  list-spacing: 0;
+}
+@mixin caption-bold() {
+  font-size: 14px;
+  text-decoration: none;
+  font-family: var(--font);
+  font-weight: 700;
+  letter-spacing: normal;
+  line-height: auto;
+  list-spacing: 0;
+}
+@mixin caption-italic() {
+  font-size: 14px;
+  text-decoration: none;
+  font-family: var(--font);
+  font-weight: auto;
+  letter-spacing: normal;
+  line-height: auto;
+  list-spacing: 0;
+}
+@mixin tiny-regular() {
+  font-size: 12px;
+  text-decoration: none;
+  font-family: var(--font);
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: auto;
+  list-spacing: 0;
+}
+@mixin tiny-bold() {
+  font-size: 12px;
+  text-decoration: none;
+  font-family: var(--font);
+  font-weight: 700;
+  letter-spacing: normal;
+  line-height: auto;
+  list-spacing: 0;
+}
+@mixin mini-regular() {
+  font-size: 10px;
+  text-decoration: none;
+  font-family: var(--font);
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: auto;
+  list-spacing: 0;
+}
+
 $tablet: 740px;
