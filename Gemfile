@@ -21,7 +21,7 @@ gem "acts_as_list"
 gem "acts-as-taggable-on"
 gem "acts_as_votable"
 gem "apollo_upload_server"
-# gem "avo"
+gem "avo"
 gem "bcrypt"
 gem "dotenv-rails"
 gem "faker"
@@ -44,9 +44,12 @@ gem "translate_client"
 gem "yael"
 
 # Assets
+gem "stimulus-rails"
 gem "image_processing"
 gem "propshaft"
 gem "ruby-vips"
+gem "vite_rails"
+gem "turbo-rails"
 
 # External Services
 gem "aws-sdk-s3", require: false

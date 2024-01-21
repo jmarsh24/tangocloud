@@ -1,12 +1,39 @@
 {
-  "name": "app",
-  "private": "true",
+  "scripts": {
+    "format": "prettier --write \"app/**/*.{tsx,ts,scss,json}\"",
+    "lint": "yarn lint:types && yarn lint:style && yarn lint:format",
+    "lint:types": "tsc --noEmit -p tsconfig.json",
+    "lint:style": "eslint app/**/*.ts --max-warnings 0",
+    "lint:format": "prettier --list-different \"app/**/*.{ts,scss,json}\""
+  },
+  "license": "MIT",
   "dependencies": {
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "^7.3.0",
-    "esbuild": "^0.19.11"
+    "@nerdgeschoss/shimmer": "^0.0.32",
+    "autoprefixer": "^10.4.16",
+    "sass": "^1.69.5",
+    "stimulus-vite-helpers": "^3.0.1",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.0",
+    "vite-plugin-ruby": "^5.0.0",
+    "vite-plugin-sass-glob-import": "^2.0.0"
   },
-  "scripts": {
-    "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets"
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.11.0",
+    "@typescript-eslint/parser": "^6.11.0",
+    "eslint": "^8.53.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "prettier": "^3.1.0",
+    "vite-plugin-full-reload": "^1.1.0",
+    "vite-plugin-stimulus-hmr": "^3.0.0"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "volta": {
+    "node": "20.10.0",
+    "yarn": "1.22.19"
   }
 }

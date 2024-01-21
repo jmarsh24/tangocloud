@@ -1,0 +1,10 @@
+doctype html
+html lang=I18n.locale
+  = render "components/head"
+  body.app class=Rails.env
+    - if @project
+      input type="checkbox" id="sidebar-toggle"
+      .app__sidebar = render "components/sidebar", projects: current_user.projects, project: @project
+    .app__main
+      .app__nav = render "components/navigation_bar", projects: current_user.projects, project: @project if current_user&.projects&.any?
+      .app__content = yield
