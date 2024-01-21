@@ -20,8 +20,9 @@ registry:
 env:
   clear:
     KAMAL_CONTAINER_NAME: tangocloud
-    HOST: tangotube.tv
+    HOST: tangocloud.app
     RAILS_ENV: production
+    RAILS_LOG_LEVEL: debug
     RAILS_LOG_TO_STDOUT: true
     DB_HOST: 167.235.70.96
   secret:
@@ -34,8 +35,7 @@ accessories:
     port: 5432
     env:
       clear:
-        POSTGRES_USER: "postgres"
-        POSTGRES_DB: "tangotube_production"
+        POSTGRES_DB: "tangocloud_production"
       secret:
         - POSTGRES_PASSWORD
     files:
