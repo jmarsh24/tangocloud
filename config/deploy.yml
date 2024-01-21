@@ -10,7 +10,7 @@ servers:
   worker-1:
     hosts:
       - 195.201.147.15
-    cmd: bundle exec good_job --queues='background-sync:1;-background-sync;'
+    cmd: bundle exec good_job --queues='background-sync:1;-background-sync:2;'
   worker-2:
     hosts:
       - 195.201.147.15
