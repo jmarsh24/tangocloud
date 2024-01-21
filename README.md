@@ -1,24 +1,49 @@
-/Users/jm_mbp/Developer/tangocloud-1/api/.rspec# README
+# TangoCloud
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a music streaming platform for tango.
 
-Things you may want to cover:
+## Release
+[![CD](https://github.com/jmarsh24/tangocloud/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/jmarsh24/tangocloud/actions/workflows/deploy.yml)
+[![CI](https://github.com/jmarsh24/tangocloud/actions/workflows/ci.yml/badge.svg)](https://github.com/jmarsh24/tangocloud/actions/workflows/ci.yml)
 
-* Ruby version
+## Getting Started
 
-* System dependencies
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-* Configuration
+## Getting Started
 
-* Database creation
+Clone the repo with this link. `https://github.com/jmarsh24/tangocloud.git`
 
-* Database initialization
+### Repository
 
-* How to run the test suite
+Make sure the nerdgeschoss development is running correctly (https://github.com/nerdgeschoss/development-environment) and follow the usual setup steps outlined there.
 
-* Services (job queues, cache servers, search engines, etc.)
+Then install dependencies and prepare the database with:
 
-* Deployment instructions
+Make sure you have ruby version **3.2.2** up and running on your local dev environment.
 
-* ...
+In order to get the project up and running you can use `bin/setup`. This will create a database and install any missing packages. (This has been written for mac OS, so it may not install some dependencies...)
+
+To start the server you can run `bin/dev`. This will start the worker and web processes. The server api server will be available at `localhost:3000`
+
+If you need to add any secrets to the repository you can request the RAILS_MASTER_KEY from the project administrator. Once you have this key all the environment variables can be viewed/edited by running
+
+`bin/rails credentials:edit`
+
+### Run Tests
+You can watch any changes and run tests on that specific file by running the command `bin/guard`. 
+If you would like to run a specific test once you can run `bin/rspec`
+
+### Linting
+Run `bin/rubocop -A` in order lint the ruby.
+
+
+
+
+
+
+
+
+
+
+
