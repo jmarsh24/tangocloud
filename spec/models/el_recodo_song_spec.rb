@@ -45,7 +45,7 @@ RSpec.describe ElRecodoSong do
         composer: "Edmundo Baya",
         author: "Julio César Curi"
       )
-      expect(ElRecodoSong.search("rodolfo biagi").first).to eq(song)
+      expect(ElRecodoSong.search("rodolf biagi").first).to eq(song)
     end
   end
 
