@@ -39,12 +39,9 @@ Run `bin/rubocop -A` in order lint the ruby.
 
 ## Built With
 
-[Ruby on Rails]([http://www.dropwizard.io/1.0.2/docs/](https://rubyonrails.org/)) - The back-end framework
-[React Native]([https://maven.apache.org/](https://reactnative.dev/)) - The front-end framework
-[Expo Dev]([https://rometools.github.io/rome/](https://expo.dev/)) - iOS and Android Deployment
-
-
-
+- [Ruby on Rails](https://rubyonrails.org/) - The back-end framework
+- [React Native](https://reactnative.dev/) - The front-end framework
+- [Expo Dev](https://expo.dev/) - iOS and Android Deployment
 
 
 
