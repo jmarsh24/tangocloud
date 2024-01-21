@@ -20,15 +20,15 @@ module Import
         :page_updated_at
       ).freeze
 
-      def initialize(id)
-        @id = id
+      def initialize(music_id:)
+        @music_id = music_id
       end
 
       def metadata
         Metadata.new(
           date:,
           ert_number:,
-          music_id:,
+          music_id: @music_id,
           title:,
           style:,
           orchestra:,
@@ -88,10 +88,6 @@ module Import
         @label ||= extract_info("LABEL")
       end
 
-      def music_id
-        @id
-      end
-
       def ert_number
         text = parse_html.at_css(".text-secondary small")&.text
         text&.split(": ERT-")&.last&.strip&.to_i
@@ -122,7 +118,7 @@ module Import
 
       def fetch_page
         begin
-          response = faraday.get("https://www.el-recodo.com/music?id=#{@id}&lang=en")
+          response = faraday.get("https://www.el-recodo.com/music?id=#{@music_id}&lang=en")
           if response.status == 429
             Rails.logger.error("El Recodo Song Scraper: Too Many Requests")
             raise TooManyRequestsError
