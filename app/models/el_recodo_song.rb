@@ -53,7 +53,7 @@ class ElRecodoSong < ApplicationRecord
       I18n.transliterate(text).downcase.strip
     end
 
-    def sync_songs(from: 1, to: 20_000, batch_size: 100)
+    def sync_songs(from: 1, to: 20_000, batch_size: 100, interval: 30)
       should_stop = false
 
       (from..to).each_slice(batch_size) do |batch|
@@ -61,7 +61,7 @@ class ElRecodoSong < ApplicationRecord
 
         song_data_batch = []
         batch.each do |music_id|
-          sleep(1)
+          sleep(interval)
           Rails.logger.info("Syncing song #{music_id}...")
 
           begin
