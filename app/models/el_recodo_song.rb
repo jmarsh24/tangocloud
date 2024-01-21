@@ -29,6 +29,8 @@
 #  updated_at           :datetime         not null
 #
 class ElRecodoSong < ApplicationRecord
+  include TextNormalizable
+
   validates :date, presence: true
   validates :ert_number, presence: true
   validates :music_id, presence: true, uniqueness: true
@@ -45,67 +47,6 @@ class ElRecodoSong < ApplicationRecord
                      .where("? <% search_data", sanitized_query)
                      .order("similarity DESC")
                  }
-
-  class << self
-    def normalize_text_field(text)
-      return text unless text.is_a?(String)
-
-      I18n.transliterate(text).downcase.strip
-    end
-
-    def sync_songs(from: 1, to: 20_000, batch_size: 100, interval: 30)
-      should_stop = false
-
-      (from..to).each_slice(batch_size) do |batch|
-        break if should_stop == true
-
-        song_data_batch = []
-        batch.each do |music_id|
-          sleep(interval)
-          Rails.logger.info("Syncing song #{music_id}...")
-
-          begin
-            song_metadata = Import::ElRecodo::SongScraper.new(music_id).metadata
-          rescue Import::ElRecodo::SongScraper::TooManyRequestsError
-            should_stop = true
-            break
-          end
-
-          if song_metadata.blank?
-            Rails.logger.info("Song #{music_id} not found")
-            next
-          end
-
-          normalized_title = normalize_text_field(song_metadata.title)
-          normalized_orchestra = normalize_text_field(song_metadata.orchestra)
-          normalized_singer = normalize_text_field(song_metadata.singer)
-          normalized_composer = normalize_text_field(song_metadata.composer)
-          normalized_author = normalize_text_field(song_metadata.author)
-
-          search_data = [
-            normalized_title,
-            normalized_orchestra,
-            normalized_singer,
-            normalized_composer,
-            normalized_author
-          ].join(" ")
-
-          metadata = song_metadata.to_h.merge!(
-            normalized_title:,
-            normalized_orchestra:,
-            normalized_singer:,
-            normalized_composer:,
-            normalized_author:,
-            search_data:
-          )
-
-          song_data_batch << metadata
-        end
-
-        ElRecodoSong.upsert_all(song_data_batch, unique_by: :music_id)
-      end
-    end
-  end
 
   def update_search_data
     self.normalized_title = self.class.normalize_text_field(title)
