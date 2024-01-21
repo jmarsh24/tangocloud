@@ -3,6 +3,17 @@
 require "rails_helper"
 
 RSpec.describe Import::ElRecodo::SongSynchronizer do
+  describe "#sync_songs" do
+    it "enqueues jobs for the specified range of music IDs" do
+      expect do
+        Import::ElRecodo::SongSynchronizer.new.sync_songs(from: 1, to: 2, interval: 20)
+      end.to have_enqueued_job(Import::ElRecodo::SyncSongJob).exactly(2).times
+
+      expect(Import::ElRecodo::SyncSongJob).to have_been_enqueued.with(music_id: 1, interval: 20)
+      expect(Import::ElRecodo::SyncSongJob).to have_been_enqueued.with(music_id: 2, interval: 20)
+    end
+  end
+
   describe "#sync_song" do
     before do
       stub_request(:get, "https://www.el-recodo.com/music?id=1&lang=en").to_return(status: 200, body: File.read("spec/fixtures/el_recodo_song.html"))
