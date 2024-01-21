@@ -19,6 +19,6 @@ test:
 production:
   <<: *default
   host: <%= ENV["DB_HOST"] %>
-  database: tangotube_production
+  database: tangocloud_production
   password: <%= ENV["POSTGRES_PASSWORD"] %>
   port: 5432
