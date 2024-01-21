@@ -16,7 +16,7 @@ Clone the repo with this link. `https://github.com/jmarsh24/tangocloud.git`
 
 ### Repository
 
-Make sure the nerdgeschoss development is running correctly (https://github.com/nerdgeschoss/development-environment) and follow the usual setup steps outlined there.
+Make sure the nerdgeschoss development is running correctly (https://github.com/nerdgeschoss/development-environment) and follow the usual setup steps outlined there. This will create a docker server to run the postgres database.
 
 Then install dependencies and prepare the database with:
 
