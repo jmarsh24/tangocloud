@@ -38,10 +38,13 @@ class ElRecodoSong < ApplicationRecord
   before_validation :update_search_data
 
   scope :search, ->(query) {
-    return all if query.blank?
+                   return all if query.blank?
 
-    where("search_data like ?", "%#{query}%")
-  }
+                   sanitized_query = sanitize_sql_like(query.downcase)
+                   select("*, similarity(search_data, '#{sanitized_query}') AS similarity")
+                     .where("? <% search_data", sanitized_query)
+                     .order("similarity DESC")
+                 }
 
   class << self
     def normalize_text_field(text)
