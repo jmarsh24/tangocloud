@@ -21,7 +21,7 @@ RSpec.configure do |config|
   config.include ActiveSupport::Testing::TimeHelpers
   config.include ActiveJob::TestHelper
 
-  config.fixture_path = ["#{::Rails.root}/spec/fixtures"]
+  config.fixture_paths = ["#{::Rails.root}/spec/fixtures"]
   config.use_transactional_fixtures = true
   config.global_fixtures = :all
   config.infer_spec_type_from_file_location!
