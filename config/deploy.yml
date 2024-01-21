@@ -7,10 +7,14 @@ servers:
     hosts:
       - 94.130.104.7
     cmd: bundle exec puma -C /rails/config/puma.rb
-  worker:
+  worker-1:
     hosts:
       - 195.201.147.15
-    cmd: bundle exec good_job execute
+    cmd: bundle exec good_job --queues='*'
+  worker-2:
+    hosts:
+      - 195.201.147.15
+    cmd: bundle exec good_job --queues='-background-sync'
 registry:
   server: ghcr.io
   username:
