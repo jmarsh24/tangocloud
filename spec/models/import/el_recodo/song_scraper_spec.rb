@@ -51,5 +51,16 @@ RSpec.describe Import::ElRecodo::SongScraper do
         expect { song_scraper.metadata }.to raise_error(Import::ElRecodo::SongScraper::PageNotFoundError)
       end
     end
+
+    context "when the page is not found (302)" do
+      before do
+        stub_request(:get, "https://www.el-recodo.com/music?id=#{music_id}&lang=en")
+          .to_return(status: 302)
+      end
+
+      it "raises a PageNotFoundError" do
+        expect { song_scraper.metadata }.to raise_error(Import::ElRecodo::SongScraper::PageNotFoundError)
+      end
+    end
   end
 end
