@@ -16,6 +16,8 @@
 #  updated_at :datetime         not null
 #
 class UserPreference < ApplicationRecord
+  belongs_to :user
+
   validates :username, presence: true
   validates :locale, presence: true
   validates :user_id, presence: true
