@@ -16,6 +16,8 @@ require "action_view/railtie"
 require "action_cable/engine"
 # require "rails/test_unit/railtie"
 
+require_relative "../lib/middleware/silent_logger_middleware"
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -24,6 +26,7 @@ Config = Shimmer::Config.instance # rubocop:disable Style/MutableConstant
 
 module Tangocloud
   class Application < Rails::Application
+    config.middleware.insert_before Rails::Rack::Logger, SilentLoggerMiddleware
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
 
