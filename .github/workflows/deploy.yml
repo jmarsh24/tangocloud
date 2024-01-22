@@ -21,9 +21,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set PATH
-        run: echo "/home/developer/actions-runner/_work/_tool/Ruby/3.2.2/x64/bin:$PATH" >> $GITHUB_PATH
-
       - name: Install dependencies
         run: |
           gem install specific_install
