@@ -26,7 +26,7 @@ Config = Shimmer::Config.instance # rubocop:disable Style/MutableConstant
 
 module Tangocloud
   class Application < Rails::Application
-    config.middleware.insert_before Rails::Rack::Logger, SilentLoggerMiddleware
+    config.middleware.insert_before Rails::Rack::Logger, Middleware::SilentLoggerMiddleware
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
 
