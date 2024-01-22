@@ -89,6 +89,16 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    user_name: Config.smtp_username,
+    password: Config.smtp_password,
+    address: Config.smtp_address,
+    port: 587,
+    authentication: :login,
+    enable_starttls_auto: true
+  }
+
   # Enable DNS rebinding protection and other `Host` header attacks.
   # config.hosts = [
   #   "example.com",     # Allow requests from example.com
