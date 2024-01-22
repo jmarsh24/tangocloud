@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    action_auth (0.2.10)
+    action_auth (0.2.11)
       bcrypt (~> 3.1.0)
       rails (~> 7.1)
     actioncable (7.1.3)
