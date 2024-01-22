@@ -4,6 +4,9 @@ module Import
   module ElRecodo
     class SongScraper
       class TooManyRequestsError < StandardError; end
+
+      class PageNotFoundError < StandardError; end
+
       Metadata = Data.define(
         :date,
         :ert_number,
@@ -122,6 +125,9 @@ module Import
           if response.status == 429
             Rails.logger.error("El Recodo Song Scraper: Too Many Requests")
             raise TooManyRequestsError
+          elsif response.status == 404
+            Rails.logger.error("El Recodo Song Scraper: Page Not Found")
+            raise PageNotFoundError
           end
         rescue Faraday::Error => e
           Rails.logger.error("El Recodo Song Scraper: #{e.message}")
