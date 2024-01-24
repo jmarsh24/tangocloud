@@ -17,6 +17,8 @@ module Import
         :singer,
         :composer,
         :author,
+        :soloist,
+        :director,
         :label,
         :lyrics,
         :synced_at,
@@ -38,6 +40,8 @@ module Import
           singer:,
           composer:,
           author:,
+          soloist:,
+          director:,
           label:,
           lyrics:,
           synced_at:,
@@ -85,6 +89,14 @@ module Import
 
       def author
         @author ||= extract_info("AUTHOR")
+      end
+
+      def soloist
+        @soloist ||= extract_info("SOLOIST")
+      end
+
+      def director
+        @director ||= extract_info("DIRECTOR")
       end
 
       def label

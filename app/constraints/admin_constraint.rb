@@ -2,7 +2,7 @@
 
 class AdminConstraint
   def self.matches?(request)
-    user = current_user(request).becomes(User)
+    user = current_user(request)&.becomes(User)
     user&.admin?
   end
 
