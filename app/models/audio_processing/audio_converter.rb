@@ -5,11 +5,11 @@ module AudioProcessing
     attr_reader :file, :format, :bitrate, :sample_rate, :channels, :codec, :output_directory
 
     DEFAULT_OPTIONS = {
-      format: "aac",
+      format: "m4a",
       bitrate: "320k",
       sample_rate: 48000,
       channels: 1,
-      codec: "aac_at",
+      codec: "alac",
       output_directory: "converted_audio_files",
       filename: nil
     }.freeze
@@ -36,7 +36,7 @@ module AudioProcessing
         audio_bitrate: bitrate,
         audio_sample_rate: sample_rate,
         audio_channels: channels,
-        custom: ["-movflags", "+faststart"]
+        custom: ["-vn", "-movflags", "+faststart", "-map_metadata", "0", "-q:a", "2"]
       }
 
       movie.transcode(output, conversion_options) do |progress|
