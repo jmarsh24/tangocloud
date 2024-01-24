@@ -10,7 +10,7 @@ class Avo::Resources::ElRecodoSong < Avo::BaseResource
     query: -> { query.search(params[:q]) },
     item: -> do
       {
-        title: "#{record.title} - #{record.orchestra.titleize_name} - #{record.singer} - #{record.style.titleize_name}"
+        title: "#{record.title} - #{record&.orchestra&.titleize_name} - #{record&.singer} - #{record&.style&.titleize_name}"
       }
     end
   }
@@ -28,15 +28,15 @@ class Avo::Resources::ElRecodoSong < Avo::BaseResource
     field :external, as: :text do
       link_to "Link", "https://www.el-recodo.com/music?id=#{record.music_id}", target: "_blank", rel: "noopener"
     end
-    field :title, as: :text, readonly: true, format_using: -> { value.truncate 28 }
-    field :orchestra, as: :text, readonly: true, format_using: -> { value.titleize_name }
+    field :title, as: :text, readonly: true, format_using: -> { value&.truncate 28 }
+    field :orchestra, as: :text, readonly: true, format_using: -> { value&.titleize_name }
     field :date, as: :date, readonly: true, sortable: true
-    field :style, as: :text, readonly: true, format_using: -> { value.titleize.truncate 8 }
-    field :singer, as: :text, readonly: true, format_using: -> { value.truncate 24 }
-    field :author, as: :text, readonly: true, format_using: -> { value.truncate 24 }
-    field :composer, as: :text, readonly: true, format_using: -> { value.titleize_name }
-    field :soloist, as: :text, readonly: true, format_using: -> { value.titleize_name }
-    field :director, as: :text, readonly: true, format_using: -> { value.titleize_name }
+    field :style, as: :text, readonly: true, format_using: -> { value&.titleize&.truncate 8 }
+    field :singer, as: :text, readonly: true, format_using: -> { value&.truncate 24 }
+    field :author, as: :text, readonly: true, format_using: -> { value&.truncate 24 }
+    field :composer, as: :text, readonly: true, format_using: -> { value&.titleize_name }
+    field :soloist, as: :text, readonly: true, format_using: -> { value&.titleize_name }
+    field :director, as: :text, readonly: true, format_using: -> { value&.titleize_name }
     field :label, as: :text, readonly: true, only_on: :show
     field :lyrics, as: :textarea, readonly: true, only_on: :show
     field :synced_at, as: :date_time, readonly: true, only_on: :show
