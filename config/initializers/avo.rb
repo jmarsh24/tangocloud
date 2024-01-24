@@ -2,7 +2,7 @@
 
 Avo.configure do |config|
   config.current_user_method = :current_user
-  config.per_page_steps = [48, 96, 256, 512, 1024]
+  config.per_page_steps = [48, 96, 256]
   config.id_links_to_resource = true
   config.resource_controls_placement = :left
   config.full_width_index_view = true
