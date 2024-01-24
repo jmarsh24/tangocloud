@@ -56,10 +56,9 @@ module AudioProcessing
     end
 
     def generate_output_filename
-      dir = File.dirname(file)
-      basename = File.basename(file, ".*")
+      basename = @filename || File.basename(file, ".*")
       timestamp = Time.now.strftime("%Y%m%d%H%M%S")
-      "#{dir}/#{basename}_#{timestamp}.#{format}"
+      "#{@output_directory}/#{basename}_#{timestamp}.#{format}"
     end
   end
 end
