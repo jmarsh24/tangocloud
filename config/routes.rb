@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   mount ActionAuth::Engine => "action_auth"
   constraints AdminConstraint do
     mount GoodJob::Engine => "good_job"
+    mount Avo::Engine => "admin"
   end
 
   root "pages#home"

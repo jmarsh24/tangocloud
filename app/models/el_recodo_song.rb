@@ -54,15 +54,19 @@ class ElRecodoSong < ApplicationRecord
     self.normalized_singer = self.class.normalize_text_field(singer)
     self.normalized_composer = self.class.normalize_text_field(composer)
     self.normalized_author = self.class.normalize_text_field(author)
+    self.normalized_soloist = self.class.normalize_text_field(soloist)
+    self.normalized_director = self.class.normalize_text_field(director)
 
     fields_to_search = [
       normalized_title,
       normalized_orchestra,
       normalized_singer,
       normalized_composer,
-      normalized_author
+      normalized_author,
+      normalized_soloist,
+      normalized_director
     ]
 
-    self.search_data = fields_to_search.join(" ")
+    self.search_data = fields_to_search.compact.join(" ")
   end
 end
