@@ -2,6 +2,9 @@
 
 class Avo::Resources::ElRecodoSong < Avo::BaseResource
   self.includes = []
+  self.index_query = -> {
+    query.order(music_id: :asc)
+  }
   self.search = {
     query: -> { query.search(params[:q]) },
     item: -> do
@@ -12,13 +15,13 @@ class Avo::Resources::ElRecodoSong < Avo::BaseResource
   }
 
   def fields
-    field :id, as: :id, readonly: true, only_on: :show, sortable: true
-    field :ert_number, as: :number, readonly: true, only_on: :show
-    field :music_id, as: :number, readonly: true
+    field :id, as: :id, readonly: true, only_on: :show
+    field :ert_number, as: :number, readonly: true, sortable: true, only_on: :show
+    field :music_id, as: :number, readonly: true, sortable: true
     field :title, as: :text, readonly: true
     field :orchestra, as: :text, readonly: true
     field :singer, as: :text, readonly: true
-    field :date, as: :date, readonly: true
+    field :date, as: :date, readonly: true, sortable: true
     field :style, as: :text, readonly: true
     field :composer, as: :text, readonly: true
     field :author, as: :text, readonly: true
