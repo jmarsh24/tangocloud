@@ -1,21 +1,21 @@
 # frozen_string_literal: true
 
 class Avo::Actions::ExportCsv < Avo::BaseAction
-  self.name = "Export CSV"
-  self.may_download_file = true
+  self.name = "Export csv"
+  self.no_confirmation = false
 
-  def handle(models:, resource:, fields:, **)
-    columns = models.first.class.columns_hash.keys
-    # Uncomment below to use the user-selected fields
-    # columns = get_columns_from_fields(fields)
+  def handle(**args)
+    records, resource = args.values_at(:records, :resource)
 
-    return error "No record selected" if models.blank?
+    return error "No record selected" if records.blank?
+
+    attributes = get_attributes records.first
 
     file = CSV.generate(headers: true) do |csv|
-      csv << columns
+      csv << attributes
 
-      models.each do |record|
-        csv << columns.map do |attr|
+      records.each do |record|
+        csv << attributes.map do |attr|
           record.send(attr)
         end
       end
@@ -24,7 +24,9 @@ class Avo::Actions::ExportCsv < Avo::BaseAction
     download file, "#{resource.plural_name}.csv"
   end
 
-  def get_columns_from_fields(fields)
-    fields.select { |key, value| value }.keys
+  def get_attributes(record)
+    # return ["id", "created_at"] # uncomment this and fill in for custom model properties
+
+    record.class.columns_hash.keys
   end
 end
