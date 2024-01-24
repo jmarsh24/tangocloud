@@ -13,6 +13,24 @@
     background-color: var(--button-bg-primary-hover);
   }
 
+  &--secondary {
+    color: var(--button-text-secondary-default);
+    background-color: var(--button-bg-secondary-base);
+
+    &:hover {
+      background-color: var(--button-bg-secondary-hover);
+    }
+  }
+
+  &--danger {
+    color: var(--button-text-danger-default);
+    background-color: var(--button-bg-danger-base);
+
+    &:hover {
+      background-color: var(--button-bg-danger-hover);
+    }
+  }
+
   @include caption-regular();
 }
 

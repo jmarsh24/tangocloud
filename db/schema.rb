@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_21_114156) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_24_175750) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -185,6 +185,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_21_114156) do
     t.datetime "page_updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "soloist"
+    t.string "director"
+    t.string "normalized_soloist"
+    t.string "normalized_director"
     t.index ["date"], name: "index_el_recodo_songs_on_date"
     t.index ["ert_number"], name: "index_el_recodo_songs_on_ert_number"
     t.index ["music_id"], name: "index_el_recodo_songs_on_music_id", unique: true
