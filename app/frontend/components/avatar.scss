@@ -1,7 +1,9 @@
 .avatar {
   width: 100px;
-  flex: 0 0 30px;
-  aspect-ratio: 1;
+  height: 100px;
+  object-fit: cover;
+  object-position: center;
+  background-color: var(--color-gray-200);
   border-radius: 50%;
 
   &--new-user {

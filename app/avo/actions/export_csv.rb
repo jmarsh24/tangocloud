@@ -11,18 +11,19 @@ class Avo::Actions::ExportCsv < Avo::BaseAction
 
     attributes = get_attributes records.first
 
-    file = CSV.generate(headers: true) do |csv|
+    # Generate CSV, specify semicolon as column separator
+    file = CSV.generate(headers: true, col_sep: ";", force_quotes: true) do |csv|
       csv << attributes
 
       records.each do |record|
         csv << attributes.map do |attr|
-          record.send(attr)
+          value = record.send(attr)
+          process_value(value)  # Process values to ensure proper CSV formatting
         end
       end
     end
 
     file_name = "#{resource.plural_name}_#{Time.zone.now.strftime("%Y%m%d%H%M%S")}.csv"
-
     download file, file_name
   end
 
