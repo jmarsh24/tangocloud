@@ -15,5 +15,5 @@
       "@/*": ["./app/frontend/*"],
     },
   },
-  "exclude": ["**/dist", "**/node_modules", "**/public", "**/vendor", "figma"],
+  "exclude": ["**/dist", "**/node_modules", "**/public", "**/vendor", "./app"],
 }
