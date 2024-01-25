@@ -7,24 +7,22 @@ class Avo::Actions::ExportCsv < Avo::BaseAction
 
   def handle(**args)
     records, resource = args.values_at(:records, :resource)
+
     records = resource.model_class.all if records.blank?
 
     attributes = get_attributes records.first
 
-    # Generate CSV, specify semicolon as column separator
-    file = CSV.generate(headers: true, col_sep: ";", force_quotes: true) do |csv|
+    file = CSV.generate(headers: true) do |csv|
       csv << attributes
 
       records.each do |record|
         csv << attributes.map do |attr|
-          value = record.send(attr)
-          process_value(value)  # Process values to ensure proper CSV formatting
+          record.send(attr)
         end
       end
     end
 
-    file_name = "#{resource.plural_name}_#{Time.zone.now.strftime("%Y%m%d%H%M%S")}.csv"
-    download file, file_name
+    download file, "#{resource.plural_name}.csv"
   end
 
   def get_attributes(record)
