@@ -13,13 +13,13 @@ class Avo::Resources::User < Avo::BaseResource
     field :verified, as: :boolean, readonly: true
     field :avatar, as: :file, is_image: true, as_avatar: :rounded
     field :email, as: :text, disabled: -> { view == :edit }
-    field :webauthn_id, as: :text, hide_on: :all
-    field :playlists, as: :has_many, hide_on: :index
-    field :tandas, as: :has_many, hide_on: :index
     field :first_name, as: :text
     field :last_name, as: :text
+    field :webauthn_id, as: :text, hide_on: :all
+    field :playlists, as: :has_many, hide_on: :all
+    field :tandas, as: :has_many, hide_on: :all
     field :user_setting, as: :has_one, hide_on: :index
     field :user_preference, as: :has_one, hide_on: :index
-    field :subscription, as: :has_one, hide_on: :index
+    field :subscription, as: :has_one, hide_on: :all
   end
 end
