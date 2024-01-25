@@ -26,8 +26,9 @@ RSpec.describe UserPreference, type: :model do
 
     it "returns avatar if attached" do
       user = User.create!(email: "admin@tangocloud.app", password: "adminpassword", password_confirmation: "adminpassword")
-      user.avatar.attach(io: File.open(Rails.root.join("spec", "fixtures", "files", "new-user.svg")), filename: "new-user.svg", content_type: "image/svg")
-      expect(user.avatar_thumbnail).to eq(user.avatar)
+      user.avatar.attach(io: File.open(Rails.root.join("spec", "fixtures", "files", "tangocloud_logo.png")), filename: "tangocloud_logo.png", content_type: "image/png")
+
+      expect(user.avatar_thumbnail.filename.to_s).to include("tangocloud_logo.webp")
     end
   end
 end
