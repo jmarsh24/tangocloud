@@ -7,19 +7,10 @@ on:
     branches: [main]
 
 jobs:
-  changes:
+  scan:
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: read
-    outputs:
-      api: ${{ steps.filter.outputs.api }}
+
     steps:
-      - uses: dorny/paths-filter@v2
-        id: filter
-        with:
-          filters: |
-            api:
-              - 'api/**'
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -28,10 +19,9 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
-          working-directory: api
 
       - name: Scan for security vulnerabilities
-        run: bin/brakeman
+        run: cd api bin/brakeman
 
   lint:
     runs-on: ubuntu-latest
