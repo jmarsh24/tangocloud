@@ -29,9 +29,9 @@ class UserPreference < ApplicationRecord
     blob.variant :large, resize_to_limit: [500, 500], saver: {strip: true, quality: 75, lossless: false, alpha_q: 85, reduction_effort: 6, smart_subsample: true}, format: "webp"
   end
 
-  def avatar_thumbnail(width: 80)
-    if avatar.attached?
-      avatar.variant(:large)
+  def avatar_thumbnail(width: 160)
+    if avatar&.attached?
+      avatar.variant(:large).processed.url
     else
       Gravatar.new(email).url(width:)
     end
