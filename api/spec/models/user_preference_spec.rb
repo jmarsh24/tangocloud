@@ -31,4 +31,19 @@ RSpec.describe UserPreference, type: :model do
       expect(user.avatar_thumbnail.filename.to_s).to include("tangocloud_logo.webp")
     end
   end
+
+  describe "#set_default_username" do
+    it "sets username to email if username is blank" do
+      user = User.create!(email: "admin@tangocloud.app", password: "adminpassword", password_confirmation: "adminpassword")
+
+      expect(user.user_preference.username).to eq("admin")
+    end
+
+    it "creates a unique username if username is taken" do
+      User.create!(email: "admin@tangocloud.app", password: "adminpassword", password_confirmation: "adminpassword")
+      user2 = User.create!(email: "admin@exmaple.com", password: "adminpassword", password_confirmation: "adminpassword")
+
+      expect(user2.user_preference.username).to eq("admin1")
+    end
+  end
 end
