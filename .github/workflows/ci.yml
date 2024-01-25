@@ -7,29 +7,31 @@ on:
     branches: [main]
 
 jobs:
-  scan:
+  changes:
     runs-on: ubuntu-latest
-  steps:
-    - uses: dorny/paths-filter@v2
-      id: filter
-      with:
-        filters: |
-          api:
-            - 'api/**'
+    permissions:
+      pull-requests: read
+    outputs:
+      api: ${{ steps.filter.outputs.api }}
+    steps:
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            api:
+              - 'api/**'
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v4
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+          working-directory: api
 
-        - name: Set up Ruby
-          uses: ruby/setup-ruby@v1
-          with:
-            ruby-version: .ruby-version
-            bundler-cache: true
-            working-directory: api
-
-        - name: Scan for security vulnerabilities
-          run: cd api && bin/brakeman
+      - name: Scan for security vulnerabilities
+        run: bin/brakeman
 
   lint:
     runs-on: ubuntu-latest
