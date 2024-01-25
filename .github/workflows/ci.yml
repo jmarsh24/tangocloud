@@ -21,7 +21,7 @@ jobs:
           bundler-cache: true
 
       - name: Scan for security vulnerabilities
-        run: bin/brakeman
+        run: cd api && bin/brakeman
 
   lint:
     runs-on: ubuntu-latest
@@ -36,7 +36,7 @@ jobs:
           bundler-cache: true
 
       - name: Lint code for consistent style
-        run: bin/rubocop
+        run: cd api && bin/rubocop
 
   test:
     runs-on: ubuntu-latest
@@ -67,4 +67,4 @@ jobs:
           DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/app
           RAILS_ENV: test
           CI: true
-        run: bin/rails db:setup && bin/rspec --format documentation
+        run: cd api && bin/rails db:setup && bin/rspec --format documentation
