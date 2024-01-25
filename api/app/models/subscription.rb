@@ -22,6 +22,5 @@ class Subscription < ApplicationRecord
   validates :start_date, presence: true
   validates :end_date, presence: true
   validates :user_id, presence: true
-  validates :type, inclusion: {in: ["free", "premium", "hifi"]}
-  enum type: {free: 0, premium: 1, hifi: 2}
+  enum type: {free: "free", premium: "premium", hifi: "hifi"}
 end

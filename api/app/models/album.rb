@@ -21,7 +21,7 @@ class Album < ApplicationRecord
   belongs_to :transfer_agent, optional: true
   has_many :recordings, dependent: :destroy
 
-  enum type: {compilation: 0, original: 1}
+  enum type: {compilation: "compilation", original: "original"}
 
   validates :title, presence: true
   validates :type, presence: true, inclusion: {in: Album.types.keys}

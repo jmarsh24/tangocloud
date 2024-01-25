@@ -34,5 +34,5 @@ class Recording < ApplicationRecord
   validates :type, presence: true
   validates :release_date, presence: true
   validates :recorded_date, presence: true
-  enum type: {studio: 0, live: 1}
+  enum type: {studio: "studio", live: "live"}
 end
