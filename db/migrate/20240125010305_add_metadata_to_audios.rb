@@ -8,5 +8,6 @@ class AddMetadataToAudios < ActiveRecord::Migration[7.1]
     remove_column :audios, :format, :string
     add_column :audios, :length, :float
     add_column :audios, :encoder, :string
+    add_column :audios, :metadata, :jsonb, default: {}, null: false
   end
 end
