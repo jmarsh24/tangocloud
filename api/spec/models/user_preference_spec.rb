@@ -5,7 +5,7 @@
 # Table name: user_preferences
 #
 #  id         :uuid             not null, primary key
-#  username   :string           not null
+#  username   :string
 #  first_name :string
 #  last_name  :string
 #  gender     :string

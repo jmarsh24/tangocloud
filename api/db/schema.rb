@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_25_032226) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_25_211408) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -526,7 +526,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_032226) do
   end
 
   create_table "user_preferences", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "username", null: false
+    t.string "username"
     t.string "first_name"
     t.string "last_name"
     t.string "gender"
