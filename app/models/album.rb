@@ -33,4 +33,15 @@ class Album < ApplicationRecord
     blob.variant :medium, resize: "300x300"
     blob.variant :large, resize: "500x500"
   end
+
+  class << self
+    def search(query)
+      return all if query.blank?
+
+      sanitized_query = sanitize_sql_like(query.downcase)
+      select("*, similarity(title, '#{sanitized_query}') AS similarity")
+        .where("title % ?", sanitized_query)
+        .order("similarity DESC")
+    end
+  end
 end

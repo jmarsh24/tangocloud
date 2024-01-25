@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_24_175750) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_24_235421) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -73,6 +73,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_24_175750) do
     t.string "external_id"
     t.uuid "transfer_agent_id"
     t.index ["slug"], name: "index_albums_on_slug"
+    t.index ["title"], name: "index_albums_on_title", opclass: :gist_trgm_ops, using: :gist
     t.index ["transfer_agent_id"], name: "index_albums_on_transfer_agent_id"
   end
 
