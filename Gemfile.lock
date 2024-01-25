@@ -95,7 +95,7 @@ GEM
       actionpack (>= 6.1.6)
       graphql (>= 1.8)
     ast (2.4.2)
-    avo (3.3.0)
+    avo (3.3.1)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
