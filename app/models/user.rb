@@ -22,12 +22,14 @@ class User < ActionAuth::User
   delegate :admin?, to: :user_setting, allow_nil: true
   delegate :admin, to: :user_setting, allow_nil: true
   delegate :username, :first_name, :last_name, to: :user_preference, allow_nil: true
+  delegate :avatar, to: :user_preference, allow_nil: true
+  delegate :avatar_thumbnail, to: :user_preference, allow_nil: true
 
-  def user_setting
-    super || build_user_setting
-  end
-
-  def user_preference
-    super || build_user_preference
+  after_create_commit :create_user_setting
+  after_create_commit :create_user_preference
+  class << self
+    def search(query)
+      where("email ILIKE ?", "%#{query}%")
+    end
   end
 end

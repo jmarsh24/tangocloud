@@ -41,6 +41,8 @@ env:
     RAILS_LOG_LEVEL: debug
     RAILS_LOG_TO_STDOUT: true
     DB_HOST: 167.235.70.96
+    CLOUDFLARE_PUBLIC: true
+    CLOUDFLARE_BUCKET: tangocloud
   secret:
     - RAILS_MASTER_KEY
     - POSTGRES_PASSWORD

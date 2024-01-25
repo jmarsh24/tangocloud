@@ -2,12 +2,12 @@
 
 class Avo::Actions::ExportCsv < Avo::BaseAction
   self.name = "Export csv"
-  self.no_confirmation = false
+  self.no_confirmation = true
+  self.standalone = true
 
   def handle(**args)
     records, resource = args.values_at(:records, :resource)
-
-    return error "No record selected" if records.blank?
+    records = resource.model_class.all if records.blank?
 
     attributes = get_attributes records.first
 
@@ -21,7 +21,9 @@ class Avo::Actions::ExportCsv < Avo::BaseAction
       end
     end
 
-    download file, "#{resource.plural_name}.csv"
+    file_name = "#{resource.plural_name}_#{Time.zone.now.strftime("%Y%m%d%H%M%S")}.csv"
+
+    download file, file_name
   end
 
   def get_attributes(record)

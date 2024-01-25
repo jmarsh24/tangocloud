@@ -4,6 +4,8 @@
     h2.text--h4-bold coming soon...
   .stack.stack--24.stack--justify-center.stack--align-center
     - if user_signed_in?
+      - if current_user.becomes(User).avatar&.attached?
+        = image_tag current_user.becomes(User).avatar_thumbnail(width: 256), class: "avatar avatar--large"
       = link_to "Admin", avo_path, class: "button"
       = link_to "Background Jobs", good_job_path, class: "button"
       = link_to "Security", user_sessions_path, class: "button button--secondary"
