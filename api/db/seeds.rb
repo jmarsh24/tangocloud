@@ -5,7 +5,7 @@ if !ActionAuth::User.exists?(email: "admin@tangocloud.app")
     email: "admin@tangocloud.app",
     password: "adminpassword",
     verified: true
-  )
+  ).becomes(User)
 
   user.user_setting.update!(admin: true)
 end
