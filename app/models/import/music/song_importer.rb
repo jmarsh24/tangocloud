@@ -18,19 +18,54 @@ module Import
 
         ActiveRecord::Base.transaction do
           audio = Audio.create!(
-            channels: @metadata.channels,
+            bit_rate: @metadata.bit_rate,
             sample_rate: @metadata.samplerate,
-            bit_rate: @metadata.bitrate,
+            channels: @metadata.channels,
             bit_depth: @metadata.bitdepth,
-            duration: @metadata.duration,
-            format: @metadata.filetype,
-            duration: @metadata.duration
+            bit_rate_mode: @metadata.bit_rate_mode,
+            codec: @metadata.codec,
+            length: @metadata.duration,
+            encoder: @metadata.encoder,
+            metadata: @metadata.to_h
           )
-          audio_transfer = AudioTransfer.create(file_path: file)
+
+          audio.file.attach(io: File.open(file), filename: File.basename(file))
+          transfer_agent = TransferAgent.find_or_create_by(name: @metadata.encoded_by) # TODO: This is not correct
+          audio_transfer = transfer_agent.audio_transfer.create!(
+            audio:,
+            transfer_agent:,
+            file_path:,
+            external_id: nil, # possible to add this
+            recording_date: nil,
+            method: nil
+          )
+
           album = find_or_create_album
-          recording = create_recording(album)
-          create_audio(recording)
-          link_artists(recording)
+          album.audio_transfer.create!(audio_transfer:, position: @metadata&.track)
+          lyricist = Lyricist.find_or_create_by(name: @metadata.lyricist)
+          composer = Composer.find_or_create_by(name: @metadata.composer)
+          lyric = Lyric.find_or_create_by(
+            content: @metadata.lyrics,
+            locale: "es"
+          )
+          composition = Composition.find_or_create_by!(
+            title: @metadata.title,
+            lyricist:,
+            composer:
+          )
+          composition.lyrics << lyric
+          composition.save!
+          orchestra = Orchestra.find_or_create_by(name: @metadata.artist)
+          audio_transfer.recordings.create!(title: @metadata.title,
+            bpm: @metadata.bpm,
+            year: @metadata.date,
+            release_date: @metadata.date,
+            el_recodo_song: ElRecodoSong.find_by(title: @metadata.music_id), # TODO: This is not correct
+            singer: Singer.find_or_create_by(name: @metadata.album_artist),
+            orchestra:,
+            composition:,
+            label: Label.find_or_create_by(name: @metadata.publisher),
+            genre: Genre.find_or_create_by(name: @metadata.genre))
         end
       end
 
@@ -38,38 +73,10 @@ module Import
 
       def find_or_create_album
         album_title = @metadata.album
-        album = Album.find_or_create_by(title: album_title) do |album|
+        Album.find_or_create_by(title: album_title) do |album|
           cover_art = AudioProcessing::CoverArtExtractor.new(file:).extract_cover_art
           album.cover_image.attach(io: File.open(cover_art), filename: "#{album_title}.jpg") if cover_art.present?
         end
-      end
-
-      def create_recording(album)
-        album.recordings.create(
-          title: @metadata.title,
-          year: @metadata.year
-        )
-      end
-
-      def create_audio(recording)
-        recording.audios.create(
-          file_path:,
-          format: File.extname(file_path).downcase
-        )
-      end
-
-      def link_artists(recording)
-        singer = Singer.find_or_create_by(name: @metadata.artist)
-        recording.singers << singer
-
-        orchestra = Orchestra.find_or_create_by(name: @metadata.albumartist)
-        recording.orchestras << orchestra
-
-        lyricist = Lyricist.find_or_create_by(name: @metadata.lyricist)
-        recording.lyricists << lyricist
-
-        composer = Composer.find_or_create_by(name: @metadata.composer)
-        recording.composers << composer
       end
     end
   end

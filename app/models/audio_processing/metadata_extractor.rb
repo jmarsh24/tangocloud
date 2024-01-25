@@ -28,7 +28,8 @@ module AudioProcessing
       :media_type,
       :lyrics,
       :format,
-      :comment
+      :comment,
+      :bpm
     ).freeze
 
     def initialize(file:)
@@ -67,8 +68,9 @@ module AudioProcessing
         encoded_by: tags.dig(:encoded_by),
         encoder: tags.dig(:encoder),
         media_type: tags.dig(:tmed),
-        lyrics: tags.dig(:"lyrics-eng") || tags.dig(:lyrics),
-        comment: tags.dig(:comment)
+        lyrics: tags.dig(:"lyrics-eng") || tags.dig(:lyrics) || tags.dig(:unsyncedlyrics),
+        comment: tags.dig(:comment),
+        bpm: tags.dig(:bpm)
       )
     end
   end
