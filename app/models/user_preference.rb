@@ -23,5 +23,16 @@ class UserPreference < ApplicationRecord
   validates :user_id, presence: true
   validates :locale, inclusion: {in: ["en", "es"]}
 
-  has_one_attached :avatar, dependent: :purge_later
+  has_one_attached :avatar do |blob|
+    blob.variant :small, resize_to_limit: [160, 160], saver: {strip: true, quality: 75, lossless: false, alpha_q: 85, reduction_effort: 6, smart_subsample: true}, format: "webp"
+    blob.variant :large, resize_to_limit: [500, 500], saver: {strip: true, quality: 75, lossless: false, alpha_q: 85, reduction_effort: 6, smart_subsample: true}, format: "webp"
+  end
+
+  def avatar_thumbnail(width: 80)
+    if avatar.attached?
+      avatar.variant(:small)
+    else
+      Gravatar.new(email).url(width:)
+    end
+  end
 end
