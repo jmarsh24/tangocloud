@@ -30,10 +30,10 @@ class UserPreference < ApplicationRecord
   end
 
   def avatar_thumbnail(width: 160)
-    # if avatar&.attached?
-    #   avatar
-    # else
+    if avatar.attached?
+      avatar.variant(:large)
+    else
       Gravatar.new(email).url(width:)
-    # end
+    end
   end
 end
