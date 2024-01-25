@@ -19,6 +19,7 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
+          working-directory: api
 
       - name: Scan for security vulnerabilities
         run: cd api && bin/brakeman
