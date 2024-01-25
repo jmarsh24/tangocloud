@@ -4,7 +4,7 @@
 #
 # Table name: playlists
 #
-#  id              :integer          not null, primary key
+#  id              :uuid             not null, primary key
 #  title           :string           not null
 #  description     :string
 #  public          :boolean          default(TRUE), not null
@@ -13,7 +13,7 @@
 #  listens_count   :integer          default(0), not null
 #  shares_count    :integer          default(0), not null
 #  followers_count :integer          default(0), not null
-#  user_id         :integer          not null
+#  user_id         :uuid             not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #

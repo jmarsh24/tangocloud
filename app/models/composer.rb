@@ -4,7 +4,7 @@
 #
 # Table name: composers
 #
-#  id         :integer          not null, primary key
+#  id         :uuid             not null, primary key
 #  name       :string           not null
 #  birth_date :date
 #  death_date :date

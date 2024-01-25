@@ -4,14 +4,14 @@
 #
 # Table name: user_preferences
 #
-#  id         :integer          not null, primary key
-#  username   :string
+#  id         :uuid             not null, primary key
+#  username   :string           not null
 #  first_name :string
 #  last_name  :string
 #  gender     :string
 #  birth_date :string
 #  locale     :string           default("en"), not null
-#  user_id    :integer          not null
+#  user_id    :uuid             not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #

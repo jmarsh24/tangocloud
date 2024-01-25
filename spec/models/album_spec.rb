@@ -4,7 +4,7 @@
 #
 # Table name: albums
 #
-#  id                :integer          not null, primary key
+#  id                :uuid             not null, primary key
 #  title             :string           not null
 #  description       :text
 #  release_date      :date
@@ -12,7 +12,7 @@
 #  recordings_count  :integer          default(0), not null
 #  slug              :string           not null
 #  external_id       :string
-#  transfer_agent_id :integer
+#  transfer_agent_id :uuid
 #
 require "rails_helper"
 

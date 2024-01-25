@@ -4,7 +4,7 @@
 #
 # Table name: audios
 #
-#  id          :integer          not null, primary key
+#  id          :uuid             not null, primary key
 #  duration    :integer          default(0), not null
 #  format      :string           not null
 #  bit_rate    :integer
