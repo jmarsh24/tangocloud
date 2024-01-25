@@ -19,9 +19,11 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
+          working-directory: ./api
 
       - name: Scan for security vulnerabilities
         run: bin/brakeman
+        working-directory: ./api
 
   lint:
     runs-on: ubuntu-latest
@@ -34,9 +36,11 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
+          working-directory: ./api
 
       - name: Lint code for consistent style
         run: bin/rubocop
+        working-directory: ./api
 
   test:
     runs-on: ubuntu-latest
@@ -46,7 +50,6 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: app
         ports:
           - 5432:5432
     steps:
@@ -61,10 +64,11 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
+          working-directory: ./api
 
       - name: Run Tests
         env:
           DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/app
           RAILS_ENV: test
-          CI: true
         run: bin/rails db:setup && bin/rspec --format documentation
+        working-directory: ./api
