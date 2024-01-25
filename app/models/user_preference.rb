@@ -22,4 +22,6 @@ class UserPreference < ApplicationRecord
   validates :locale, presence: true
   validates :user_id, presence: true
   validates :locale, inclusion: {in: ["en", "es"]}
+
+  has_one_attached :avatar, dependent: :purge_later
 end
