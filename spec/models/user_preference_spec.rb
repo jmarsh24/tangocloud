@@ -18,5 +18,16 @@
 require "rails_helper"
 
 RSpec.describe UserPreference, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe "#user_avatar" do
+    it "returns gravatar if no avatar attached" do
+      user = User.create!(email: "admin@tangocloud.app", password: "adminpassword", password_confirmation: "adminpassword")
+      expect(user.avatar_thumbnail).to eq("https://www.gravatar.com/avatar/db28ff81643ae82b641f7ac3905975a1?d=mm&s=160")
+    end
+
+    it "returns avatar if attached" do
+      user = User.create!(email: "admin@tangocloud.app", password: "adminpassword", password_confirmation: "adminpassword")
+      user.avatar.attach(io: File.open(Rails.root.join("spec", "fixtures", "files", "new-user.svg")), filename: "new-user.svg", content_type: "image/svg")
+      expect(user.avatar_thumbnail).to eq(user.avatar)
+    end
+  end
 end
