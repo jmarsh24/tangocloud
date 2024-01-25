@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_25_010305) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_25_015636) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -78,7 +78,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_010305) do
   end
 
   create_table "audio_transfers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "method", null: false
+    t.string "method"
     t.string "external_id"
     t.date "recording_date"
     t.uuid "transfer_agent_id"
@@ -120,10 +120,21 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_010305) do
     t.index ["composition_id"], name: "index_composition_composers_on_composition_id"
   end
 
+  create_table "composition_lyrics", force: :cascade do |t|
+    t.string "locale", null: false
+    t.uuid "composition_id", null: false
+    t.uuid "lyricist_id", null: false
+    t.uuid "lyrics_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["composition_id"], name: "index_composition_lyrics_on_composition_id"
+    t.index ["lyricist_id"], name: "index_composition_lyrics_on_lyricist_id"
+    t.index ["lyrics_id"], name: "index_composition_lyrics_on_lyrics_id"
+  end
+
   create_table "compositions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title", null: false
     t.string "tangotube_slug"
-    t.uuid "genre_id", null: false
     t.uuid "lyricist_id", null: false
     t.uuid "composer_id", null: false
     t.integer "listens_count"
@@ -131,7 +142,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_010305) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["composer_id"], name: "index_compositions_on_composer_id"
-    t.index ["genre_id"], name: "index_compositions_on_genre_id"
     t.index ["lyricist_id"], name: "index_compositions_on_lyricist_id"
   end
 
@@ -558,8 +568,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_010305) do
   add_foreign_key "audio_transfers", "transfer_agents"
   add_foreign_key "composition_composers", "composers"
   add_foreign_key "composition_composers", "compositions"
+  add_foreign_key "composition_lyrics", "compositions"
+  add_foreign_key "composition_lyrics", "lyricists"
+  add_foreign_key "composition_lyrics", "lyrics", column: "lyrics_id"
   add_foreign_key "compositions", "composers"
-  add_foreign_key "compositions", "genres"
   add_foreign_key "compositions", "lyricists"
   add_foreign_key "couple_videos", "couples"
   add_foreign_key "couple_videos", "videos"

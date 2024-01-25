@@ -32,6 +32,7 @@ RSpec.describe AudioProcessing::MetadataExtractor do
       expect(metadata.format).to eq("aiff")
       expect(metadata.comment).to be_nil
       expect(metadata.encoder).to be_nil
+      expect(metadata.bpm).to be_nil
     end
 
     it "returns a hash of metadata for flac" do
@@ -51,7 +52,7 @@ RSpec.describe AudioProcessing::MetadataExtractor do
       expect(metadata.encoded_by).to be_nil
       expect(metadata.encoder).to eq("X Lossless Decoder 20191004")
       expect(metadata.media_type).to be_nil
-      expect(metadata.lyrics).to be_nil
+      expect(metadata.lyrics).to eq("Vago como sombra atormentada\nbajo el gris de la recova,\nme contemplo y no soy nada...\nSoy como mi lancha carbonera\nque ha quedado recalada,\nbien atada a la ribera.\nYo también atado a mi pasado\nsoy un barco que está anclado\ny siento en mi carne sus amarras\ncomo garfios, como garras.\nLloro aquellos días\nque jamás han de volver;\nsueño aquellos besos\nque ya nunca he de tener,\nsoy como mi lancha carbonera\nque ha quedado en la ribera,\n¡sin partir más!\n\nAquellos besos que perdí\nal presentir que no me amaba,\nfueron tormentas de dolor\nllenas de horror.\n¡Hoy no soy nada!\nYo sólo sé que pené,\nque caí y que rodé\nal abismo del fracaso...\nYo sólo sé que tu adiós,\nen la burla del dolor,\nme acompaña paso a paso.\nAhora que sé que no vendrás,\nvago sin fin por la recova,\nbusco valor para partir;\npara alejarme... y así\nmatando mi obsesión,\nlejos de ti, poder morir.\n\nPero vivo atado a mi pasado,\ntu recuerdo me encadena,\nsoy un barco que está anclado.\nSé que únicamente con la muerte\ncesarán mis amarguras;\ncambiará mi mala suerte.\nVago con la atroz melancolía\nde una noche gris y fría;\ny siento en mi carne sus amarras\ncomo garfios, como garras.\nNada me consuela en esta cruel desolación.\nSolo voy marchando con mi pobre corazón.\nSoy como mi lancha carbonera,\nque ha quedado en la ribera,\nsin partir más.")
       expect(metadata.duration).to eq(211.196854)
       expect(metadata.bit_rate).to eq(1208597)
       expect(metadata.codec_name).to eq("flac")
@@ -62,6 +63,7 @@ RSpec.describe AudioProcessing::MetadataExtractor do
       expect(metadata.bit_rate_mode).to be_nil
       expect(metadata.format).to eq("flac")
       expect(metadata.comment).to eq("1944-07-21")
+      expect(metadata.bpm).to be_nil
     end
   end
 end
