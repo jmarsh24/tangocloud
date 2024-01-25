@@ -31,10 +31,10 @@ class User < ActionAuth::User
   end
 
   def user_setting
-    super || create_user_setting
+    super || (persisted? && create_user_setting)
   end
 
   def user_preference
-    super || create_user_preference
+    super || (persisted? && create_user_preference)
   end
 end
