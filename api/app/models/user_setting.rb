@@ -13,7 +13,6 @@
 class UserSetting < ApplicationRecord
   belongs_to :user
 
-  validates :admin, presence: true
   validates :user_id, presence: true
   validates :user_id, uniqueness: true
   validates :admin, inclusion: {in: [true, false]}
