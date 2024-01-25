@@ -4,6 +4,7 @@
     h2.text--h4-bold coming soon...
   .stack.stack--24.stack--justify-center.stack--align-center
     - if user_signed_in?
+      = binding.irb
       = image_tag current_user.becomes(User).avatar_thumbnail, class: "avatar"
       = link_to "Admin", avo_path, class: "button"
       = link_to "Background Jobs", good_job_path, class: "button"
