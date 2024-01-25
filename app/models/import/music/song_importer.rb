@@ -75,7 +75,9 @@ module Import
         album_title = @metadata.album
         Album.find_or_create_by(title: album_title) do |album|
           cover_art = AudioProcessing::CoverArtExtractor.new(file:).extract_cover_art
-          album.cover_image.attach(io: File.open(cover_art), filename: "#{album_title}.jpg") if cover_art.present?
+          if cover_art.present? && album.cover_image.blank?
+            album.cover_image.attach(io: File.open(cover_art), filename: "#{album_title}.jpg")
+          end
         end
       end
     end
