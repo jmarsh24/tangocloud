@@ -4,7 +4,7 @@
 #
 # Table name: el_recodo_songs
 #
-#  id                   :integer          not null, primary key
+#  id                   :uuid             not null, primary key
 #  date                 :date             not null
 #  ert_number           :integer          default(0), not null
 #  music_id             :integer          default(0), not null
@@ -24,9 +24,12 @@
 #  search_data          :string
 #  synced_at            :datetime         not null
 #  page_updated_at      :datetime         not null
-#  recording_id         :uuid
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
+#  soloist              :string
+#  director             :string
+#  normalized_soloist   :string
+#  normalized_director  :string
 #
 class ElRecodoSong < ApplicationRecord
   include TextNormalizable

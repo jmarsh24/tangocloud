@@ -4,7 +4,7 @@
 #
 # Table name: lyricists
 #
-#  id         :integer          not null, primary key
+#  id         :uuid             not null, primary key
 #  name       :string           not null
 #  slug       :string           not null
 #  sort_name  :string

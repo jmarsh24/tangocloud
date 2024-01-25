@@ -3,19 +3,30 @@
 module Import
   module Music
     class SongImporter
-      attr_reader :file_path
+      attr_reader :file
 
-      SUPPORTED_FORMATS = [".aif", ".flac", ".mp3", ".aac", ".m4a"].freeze
+      SUPPORTED_MIME_TYPES = ["audio/x-aiff", "audio/flac", "audio/mp4", "audio/mpeg"].freeze
 
-      def initialize(file_path:)
-        @file_path = file_path
-        @tag = WahWah.open(file_path)
+      def initialize(file:)
+        @file = file.to_s
+        @metadata = AudioProcessing::MetadataExtractor.new(file:).extract_metadata
       end
 
       def import
-        return unless SUPPORTED_FORMATS.include?(File.extname(file_path).downcase)
+        mime_type = Marcel::MimeType.for(Pathname.new(file))
+        return unless SUPPORTED_MIME_TYPES.include?(mime_type)
 
         ActiveRecord::Base.transaction do
+          audio = Audio.create!(
+            channels: @metadata.channels,
+            sample_rate: @metadata.samplerate,
+            bit_rate: @metadata.bitrate,
+            bit_depth: @metadata.bitdepth,
+            duration: @metadata.duration,
+            format: @metadata.filetype,
+            duration: @metadata.duration
+          )
+          audio_transfer = AudioTransfer.create(file_path: file)
           album = find_or_create_album
           recording = create_recording(album)
           create_audio(recording)
@@ -26,14 +37,17 @@ module Import
       private
 
       def find_or_create_album
-        Album.find_or_create_by(title: @tag.album) do |album|
+        album_title = @metadata.album
+        album = Album.find_or_create_by(title: album_title) do |album|
+          cover_art = AudioProcessing::CoverArtExtractor.new(file:).extract_cover_art
+          album.cover_image.attach(io: File.open(cover_art), filename: "#{album_title}.jpg") if cover_art.present?
         end
       end
 
       def create_recording(album)
         album.recordings.create(
-          title: @tag.title,
-          year: @tag.year
+          title: @metadata.title,
+          year: @metadata.year
         )
       end
 
@@ -45,20 +59,16 @@ module Import
       end
 
       def link_artists(recording)
-        # Create or find the singer
-        singer = Singer.find_or_create_by(name: @tag.artist)
+        singer = Singer.find_or_create_by(name: @metadata.artist)
         recording.singers << singer
 
-        # Create or find the orchestra
-        orchestra = Orchestra.find_or_create_by(name: @tag.albumartist)
+        orchestra = Orchestra.find_or_create_by(name: @metadata.albumartist)
         recording.orchestras << orchestra
 
-        # Create or find the lyricist
-        lyricist = Lyricist.find_or_create_by(name: @tag.lyricist)
+        lyricist = Lyricist.find_or_create_by(name: @metadata.lyricist)
         recording.lyricists << lyricist
 
-        # Create or find the composer
-        composer = Composer.find_or_create_by(name: @tag.composer)
+        composer = Composer.find_or_create_by(name: @metadata.composer)
         recording.composers << composer
       end
     end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_24_235421) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_25_010305) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -90,14 +90,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_24_235421) do
   end
 
   create_table "audios", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "duration", default: 0, null: false
-    t.string "format", null: false
     t.integer "bit_rate"
     t.integer "sample_rate"
     t.integer "channels"
     t.integer "bit_depth"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "bit_rate_mode"
+    t.string "codec"
+    t.float "length"
+    t.string "encoder"
   end
 
   create_table "composers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

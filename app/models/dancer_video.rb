@@ -4,9 +4,9 @@
 #
 # Table name: dancer_videos
 #
-#  id        :integer          not null, primary key
-#  dancer_id :integer          not null
-#  video_id  :integer          not null
+#  id        :uuid             not null, primary key
+#  dancer_id :uuid             not null
+#  video_id  :uuid             not null
 #
 class DancerVideo < ApplicationRecord
   belongs_to :dancer

@@ -2,15 +2,15 @@
 
 # == Schema Information
 #
-# Table name: users
+# Table name: action_auth_users
 #
-#  id              :integer          not null, primary key
-#  email           :string           not null
-#  password_digest :string           not null
-#  verified        :boolean          default(FALSE), not null
-#  account_id      :integer          not null
+#  id              :uuid             not null, primary key
+#  email           :string
+#  password_digest :string
+#  verified        :boolean
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  webauthn_id     :string
 #
 require "rails_helper"
 

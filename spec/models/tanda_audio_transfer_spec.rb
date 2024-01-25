@@ -4,10 +4,12 @@
 #
 # Table name: tanda_audio_transfers
 #
-#  id         :integer          not null, primary key
-#  position   :integer          default(0), not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                :uuid             not null, primary key
+#  position          :integer          default(0), not null
+#  tanda_id          :uuid             not null
+#  audio_transfer_id :uuid             not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
 #
 require "rails_helper"
 

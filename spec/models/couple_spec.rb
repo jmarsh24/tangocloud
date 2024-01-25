@@ -4,9 +4,9 @@
 #
 # Table name: couples
 #
-#  id         :integer          not null, primary key
-#  dancer_id  :integer          not null
-#  partner_id :integer          not null
+#  id         :uuid             not null, primary key
+#  dancer_id  :uuid             not null
+#  partner_id :uuid             not null
 #
 require "rails_helper"
 

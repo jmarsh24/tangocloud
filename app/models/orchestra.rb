@@ -4,7 +4,7 @@
 #
 # Table name: orchestras
 #
-#  id         :integer          not null, primary key
+#  id         :uuid             not null, primary key
 #  name       :string           not null
 #  rank       :integer          default(0), not null
 #  sort_name  :string
