@@ -4,7 +4,7 @@
 #
 # Table name: genres
 #
-#  id          :integer          not null, primary key
+#  id          :uuid             not null, primary key
 #  name        :string           not null
 #  description :string
 #  created_at  :datetime         not null

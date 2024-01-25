@@ -4,19 +4,19 @@
 #
 # Table name: recordings
 #
-#  id             :integer          not null, primary key
-#  title          :string           not null
-#  bpm            :integer
-#  type           :integer          default("studio"), not null
-#  release_date   :date
-#  recorded_date  :date
-#  tangotube_slug :string
-#  orchestra_id   :integer
-#  singer_id      :integer
-#  composition_id :integer
-#  label_id       :integer
-#  genre_id       :integer
-#  period_id      :integer
+#  id                :uuid             not null, primary key
+#  title             :string           not null
+#  bpm               :integer
+#  type              :integer          default("studio"), not null
+#  release_date      :date
+#  recorded_date     :date
+#  el_recodo_song_id :uuid
+#  orchestra_id      :uuid
+#  singer_id         :uuid
+#  composition_id    :uuid
+#  label_id          :uuid
+#  genre_id          :uuid
+#  period_id         :uuid
 #
 class Recording < ApplicationRecord
   extend FriendlyId

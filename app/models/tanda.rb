@@ -4,11 +4,12 @@
 #
 # Table name: tandas
 #
-#  id                :integer          not null, primary key
+#  id                :uuid             not null, primary key
 #  name              :string           not null
 #  description       :string
 #  public            :boolean          default(TRUE), not null
-#  audio_transfer_id :integer          not null
+#  audio_transfer_id :uuid             not null
+#  user_id           :uuid             not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #

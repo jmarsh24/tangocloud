@@ -4,7 +4,7 @@
 #
 # Table name: periods
 #
-#  id               :integer          not null, primary key
+#  id               :uuid             not null, primary key
 #  name             :string           not null
 #  description      :text
 #  start_year       :integer          default(0), not null

@@ -42,7 +42,6 @@ gem "socialization"
 gem "solid_cache"
 gem "translate_client"
 gem "yael"
-gem "wahwah"
 gem "streamio-ffmpeg"
 
 # Assets

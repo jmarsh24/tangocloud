@@ -4,11 +4,11 @@
 #
 # Table name: videos
 #
-#  id           :integer          not null, primary key
+#  id           :uuid             not null, primary key
 #  youtube_slug :string           not null
 #  title        :string           not null
 #  description  :string           not null
-#  recording_id :integer          not null
+#  recording_id :uuid             not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #
