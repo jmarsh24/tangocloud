@@ -100,6 +100,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_010305) do
     t.string "codec"
     t.float "length"
     t.string "encoder"
+    t.jsonb "metadata", default: {}, null: false
   end
 
   create_table "composers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
