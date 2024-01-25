@@ -14,8 +14,6 @@ class Avo::Resources::User < Avo::BaseResource
     field :avatar, as: :file, is_image: true, as_avatar: :rounded
     field :email, as: :text, disabled: -> { view == :edit }
     field :webauthn_id, as: :text, only_on: :show
-    field :action_auth_sessions, as: :has_many
-    field :action_auth_webauthn_credentials, as: :has_many
     field :playlists, as: :has_many, hide_on: :index
     field :tandas, as: :has_many, hide_on: :index
     field :first_name, as: :text
