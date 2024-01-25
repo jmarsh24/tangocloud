@@ -1,0 +1,66 @@
+service: tangocloud
+
+image: jmarsh24/tangocloud
+
+servers:
+  web:
+    hosts:
+      - 94.130.104.7
+    cmd: bundle exec puma -C /rails/config/puma.rb
+  worker-1:
+    hosts:
+      - 195.201.147.15
+    cmd: bundle exec good_job --queues='background_sync:1;-background_sync:2'
+  worker-2:
+    hosts:
+      - 195.201.147.15
+    cmd: bundle exec good_job --queues='-background_sync:3'
+  worker-3: # web worker used just for el-recodo-sync
+    hosts:
+      - 94.130.104.7
+    cmd: bundle exec good_job --queues='background_sync:1;-background_sync:2'
+  worker-4: # extra worker used just for el-recodo-sync
+    hosts:
+      - 162.55.178.198
+    cmd: bundle exec good_job --queues='background_sync:1;-background_sync:2'
+  worker-5: # github-runner used used just for el-recodo-sync
+    hosts:
+      - 49.13.197.47
+    cmd: bundle exec good_job --queues='background_sync:1;-background_sync:2'
+registry:
+  server: ghcr.io
+  username:
+    - KAMAL_REGISTRY_USERNAME
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+env:
+  clear:
+    KAMAL_CONTAINER_NAME: tangocloud
+    HOST: tangocloud.app
+    RAILS_ENV: production
+    RAILS_LOG_LEVEL: debug
+    RAILS_LOG_TO_STDOUT: true
+    DB_HOST: 167.235.70.96
+    CLOUDFLARE_PUBLIC: true
+    CLOUDFLARE_BUCKET: tangocloud
+  secret:
+    - RAILS_MASTER_KEY
+    - POSTGRES_PASSWORD
+accessories:
+  db:
+    image: postgres:15
+    host: 167.235.70.96
+    port: 5432
+    env:
+      clear:
+        POSTGRES_DB: "tangocloud_production"
+      secret:
+        - POSTGRES_PASSWORD
+    files:
+      - config/postgres/production.conf:/var/postgres/data/postgresql.conf
+    volumes:
+      - /var/postgres/data:/var/lib/postgresql/data
+builder:
+  multiarch: false
+healthcheck:
+  log_lines: 10_000

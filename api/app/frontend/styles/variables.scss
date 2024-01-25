@@ -1,0 +1,125 @@
+:root {
+  --font: "Circular";
+  --color-background: #f4f6f8;
+  --button-bg-primary-active: #0075ff;
+  --button-bg-primary-base: #2e8eff;
+  --button-bg-primary-tint: #2e8eff;
+  --button-bg-primary-hover: #0075ff;
+  --button-bg-secondary-base: #ffa726;
+  --button-bg-secondary-hover: #ff9d0b;
+  --button-bg-secondary-active: #fb8c00;
+  --button-bg-danger-base: #ff3b30;
+  --button-bg-danger-active: #ff3b30;
+  --button-bg-danger-hover: #ff251a;
+  --button-text-danger-default: #ffffff;
+  --button-text-primary-active: #ffffff;
+  --button-text-primary-default: #ffffff;
+  --button-text-primary-hover: #ffffff;
+  --button-text-secondary-active: #ffffff;
+  --button-text-secondary-default: #ffffff;
+  --button-text-secondary-hover: #ffffff;
+  --color-tint: #0075ff;
+}
+@mixin h1-regular() {
+  font-size: 48px;
+  font-family: var(--font);
+  font-weight: 900;
+}
+@mixin h1-bold() {
+  font-size: 48px;
+  font-family: var(--font);
+  font-weight: 700;
+}
+@mixin h2-regular() {
+  font-size: 36px;
+  font-family: var(--font);
+  font-weight: 900;
+
+  line-height: 28px;
+}
+@mixin h2-bold() {
+  font-size: 36px;
+  font-family: var(--font);
+  font-weight: 700;
+
+  line-height: 28px;
+}
+@mixin h3-regular() {
+  font-size: 24px;
+  font-family: var(--font);
+  font-weight: 900;
+
+  line-height: 25.2px;
+}
+@mixin h3-bold() {
+  font-size: 24px;
+  font-family: var(--font);
+  font-weight: 700;
+
+  line-height: 25.2px;
+}
+@mixin h4-regular() {
+  font-size: 18px;
+  font-family: var(--font);
+  font-weight: 900;
+
+  line-height: 22.4px;
+}
+@mixin h4-bold() {
+  font-size: 18px;
+  font-family: var(--font);
+  font-weight: 700;
+
+  line-height: 22.4px;
+}
+@mixin paragraph-regular() {
+  font-size: 18px;
+  font-family: var(--font);
+  font-weight: 900;
+
+  line-height: auto;
+}
+@mixin caption-regular() {
+  font-size: 14px;
+  font-family: var(--font);
+  font-weight: 900;
+
+  line-height: auto;
+}
+@mixin caption-bold() {
+  font-size: 14px;
+  font-family: var(--font);
+  font-weight: 700;
+
+  line-height: auto;
+}
+@mixin caption-italic() {
+  font-size: 14px;
+  font-family: var(--font);
+  font-weight: auto;
+
+  line-height: auto;
+}
+@mixin tiny-regular() {
+  font-size: 12px;
+  font-family: var(--font);
+  font-weight: 900;
+
+  line-height: auto;
+}
+@mixin tiny-bold() {
+  font-size: 12px;
+  font-family: var(--font);
+  font-weight: 700;
+
+  line-height: auto;
+}
+@mixin mini-regular() {
+  font-size: 10px;
+  font-family: var(--font);
+  font-weight: 900;
+
+  line-height: auto;
+}
+
+$tablet: 740px;
