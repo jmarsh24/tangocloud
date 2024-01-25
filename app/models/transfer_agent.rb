@@ -4,7 +4,7 @@
 #
 # Table name: transfer_agents
 #
-#  id          :integer          not null, primary key
+#  id          :uuid             not null, primary key
 #  name        :string           not null
 #  description :string
 #  url         :string

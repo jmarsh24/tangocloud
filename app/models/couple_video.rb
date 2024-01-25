@@ -4,9 +4,9 @@
 #
 # Table name: couple_videos
 #
-#  id        :integer          not null, primary key
-#  couple_id :integer          not null
-#  video_id  :integer          not null
+#  id        :uuid             not null, primary key
+#  couple_id :uuid             not null
+#  video_id  :uuid             not null
 #
 class CoupleVideo < ApplicationRecord
   belongs_to :couple

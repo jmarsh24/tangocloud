@@ -4,7 +4,7 @@
 #
 # Table name: dancers
 #
-#  id          :integer          not null, primary key
+#  id          :uuid             not null, primary key
 #  name        :string           not null
 #  nickname    :string
 #  nationality :string

@@ -4,8 +4,8 @@
 #
 # Table name: user_settings
 #
-#  id         :integer          not null, primary key
-#  user_id    :integer          not null
+#  id         :uuid             not null, primary key
+#  user_id    :uuid             not null
 #  admin      :boolean          default(FALSE)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null

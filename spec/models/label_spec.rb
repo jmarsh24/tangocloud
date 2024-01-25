@@ -4,7 +4,7 @@
 #
 # Table name: labels
 #
-#  id           :integer          not null, primary key
+#  id           :uuid             not null, primary key
 #  name         :string           not null
 #  description  :text
 #  founded_date :date
