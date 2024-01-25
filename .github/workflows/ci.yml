@@ -71,6 +71,5 @@ jobs:
         env:
           DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/app
           RAILS_ENV: test
-          CI: true
         run: bin/rails db:setup && bin/rspec --format documentation
         working-directory: ./api
