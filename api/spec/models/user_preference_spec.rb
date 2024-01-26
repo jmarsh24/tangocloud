@@ -18,7 +18,7 @@
 require "rails_helper"
 
 RSpec.describe UserPreference, type: :model do
-  let!(:user) { User.create!(email: "user@tangocloud.app", password: "userpassword", password_confirmation: "userpassword").becomes(User)}
+  let!(:user) { User.create!(email: "user@tangocloud.app", password: "userpassword", password_confirmation: "userpassword").becomes(User) }
 
   describe "#user_avatar" do
     it "returns gravatar if no avatar attached" do
