@@ -7,7 +7,6 @@
 #  id                :uuid             not null, primary key
 #  title             :string           not null
 #  bpm               :integer
-#  type              :integer          default("studio"), not null
 #  release_date      :date
 #  recorded_date     :date
 #  el_recodo_song_id :uuid
@@ -17,6 +16,7 @@
 #  label_id          :uuid
 #  genre_id          :uuid
 #  period_id         :uuid
+#  type              :enum             default("studio"), not null
 #
 require "rails_helper"
 
