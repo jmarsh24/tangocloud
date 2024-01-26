@@ -15,6 +15,14 @@ servers:
     hosts:
       - 195.201.147.15
     cmd: bundle exec good_job --queues='-background_sync:3'
+  worker-3: # web worker used just for el-recodo-sync
+    hosts:
+      - 94.130.104.7
+    cmd: bundle exec good_job --queues='background_sync:1;-background_sync:2'
+  worker-4: # extra worker used just for el-recodo-sync
+    hosts:
+      - 49.13.197.47
+    cmd: bundle exec good_job --queues='background_sync:1;-background_sync:2'
 registry:
   server: ghcr.io
   username:
