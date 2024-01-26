@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe LabelPolicy, type: :policy do
+RSpec.describe RecordLabelPolicy, type: :policy do
   let(:user) { User.new }
 
   subject { described_class }

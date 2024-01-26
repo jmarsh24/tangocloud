@@ -23,6 +23,7 @@ module AudioProcessing
       :catalog_number,
       :composer,
       :performer,
+      :record_label,
       :encoded_by,
       :encoder,
       :media_type,
@@ -70,6 +71,7 @@ module AudioProcessing
         media_type: tags.dig(:tmed),
         lyrics: tags.dig(:"lyrics-eng") || tags.dig(:lyrics) || tags.dig(:unsyncedlyrics),
         comment: tags.dig(:comment),
+        record_label: tags.dig(:publisher),
         bpm: tags.dig(:bpm)
       )
     end

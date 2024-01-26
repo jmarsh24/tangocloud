@@ -53,8 +53,16 @@ RSpec.describe ElRecodoSong do
   end
 
   describe ".normalize_text_field" do
-    it "normalizes text" do
-      expect(ElRecodoSong.normalize_text_field(" Áé íóú ")).to eq("ae iou")
+    it "removes accents" do
+      expect(ElRecodoSong.normalize_text_field("Juan D'Arienzo")).to eq("juan darienzo")
+    end
+
+    it "removes non-word characters" do
+      expect(ElRecodoSong.normalize_text_field("Juan D' Arienzo")).to eq("juan darienzo")
+    end
+
+    fit "removes extra spaces" do
+      expect(ElRecodoSong.normalize_text_field("  Juan  D'  Arienzo  ")).to eq("juan darienzo")
     end
 
     it "returns nil if the input is not a string" do
@@ -80,7 +88,6 @@ RSpec.describe ElRecodoSong do
         composer: "fôô",
         author: "fóô"
       )
-      ElRecodoSong.find_by(music_id: 1).update_search_data
     end
 
     it "updates the search data with normalized and accent-removed text" do

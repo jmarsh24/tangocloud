@@ -16,6 +16,7 @@
 #
 class Lyricist < ApplicationRecord
   extend FriendlyId
+  friendly_id :name, use: :slugged
   has_many :lyrics, dependent: :destroy
 
   validates :name, presence: true

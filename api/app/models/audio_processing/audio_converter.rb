@@ -28,13 +28,11 @@ module AudioProcessing
 
     def convert
       ensure_output_directory_exists
-      # cover_art_path = extract_cover_art # Extract cover art from the original file
       output = generate_output_filename
       movie = FFMPEG::Movie.new(file)
 
       custom_options = [
         "-i", file,                          # Input audio file
-        # "-i", cover_art_path,                # Input cover art file, if it exists
         "-map", "0:a:0",                     # Map the first (audio) stream from the first input (audio file)
         "-codec:a", codec,                   # Audio codec
         "-b:a", bitrate,                     # Audio bitrate (enforce 320k)
@@ -44,15 +42,12 @@ module AudioProcessing
         "-map_metadata", "0",                # Copy metadata from the first input (audio file)
         "-id3v2_version", "3"                # Ensure compatibility with ID3v2
       ]
-      # custom_options.insert(4, "-map", "1:v:0") if cover_art_path # Map the first (video/image) stream from the second input (cover art), if it exists
 
       movie.transcode(output, custom_options) do |progress|
         puts progress
       end
 
-      # Clean up the temporary cover art file
-      # FileUtils.rm(cover_art_path) if cover_art_path && File.exist?(cover_art_path)
-
+      yield output if block_given?
       output
     rescue FFMPEG::Error => e
       puts "Failed to convert file: #{e.message}"
