@@ -18,12 +18,14 @@ module Types
       ids.map { |id| context.schema.object_from_id(id, context) }
     end
 
-    # Add root-level fields here.
-    # They will be entry points for queries on your schema.
+    field :search_el_recodo_songs, [Types::ElRecodoSongType], null: false do
+      argument :query, String, required: true
+    end
 
-    # TODO: remove me
-    field :test_field, String, null: false,
-      description: "An example field added by the generator"
+    def search_el_recodo_songs(query:)
+      ElRecodoSong.search(query)
+    end
+
     def test_field
       "Hello World!"
     end
