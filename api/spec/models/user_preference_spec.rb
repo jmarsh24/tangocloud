@@ -21,7 +21,7 @@ RSpec.describe UserPreference, type: :model do
   describe "#user_avatar" do
     it "returns gravatar if no avatar attached" do
       user = User.create!(email: "user@tangocloud.app", password: "userpassword", password_confirmation: "userpassword")
-      expect(user.avatar_thumbnail).to eq("https://www.gravatar.com/avatar/db28ff81643ae82b641f7ac3905975a1?d=mm&s=160")
+      expect(user.avatar_thumbnail).to eq("https://www.gravatar.com/avatar/4b97cac98c2b2c889c95ba49f1899297?d=mm&s=160")
     end
 
     it "returns avatar if attached" do
@@ -41,7 +41,7 @@ RSpec.describe UserPreference, type: :model do
 
     it "creates a unique username if username is taken" do
       User.create!(email: "user@tangocloud.app", password: "userpassword", password_confirmation: "userpassword")
-      user2 = User.create!(email: "user@exmaple.com", password: "userpassword", password_confirmation: "userpassword")
+      user2 = User.create!(email: "user@example.com", password: "userpassword", password_confirmation: "userpassword")
 
       expect(user2.user_preference.username).to eq("user1")
     end
