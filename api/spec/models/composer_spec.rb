@@ -10,6 +10,7 @@
 #  death_date :date
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  slug       :string           not null
 #
 require "rails_helper"
 

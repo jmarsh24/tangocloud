@@ -17,14 +17,14 @@ class Avo::Resources::Recording < Avo::BaseResource
     field :orchestra_id, as: :text
     field :singer_id, as: :text
     field :composition_id, as: :text
-    field :label_id, as: :text
+    field :record_label_id, as: :text
     field :genre_id, as: :text
     field :period_id, as: :text
     field :el_recodo_song, as: :belongs_to
     field :orchestra, as: :belongs_to
     field :singer, as: :belongs_to
     field :song, as: :belongs_to
-    field :label, as: :belongs_to
+    field :record_label, as: :belongs_to
     field :genre, as: :belongs_to
   end
 end

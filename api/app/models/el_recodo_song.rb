@@ -51,6 +51,8 @@ class ElRecodoSong < ApplicationRecord
                      .order("similarity DESC")
                  }
 
+  private
+
   def update_search_data
     self.normalized_title = self.class.normalize_text_field(title)
     self.normalized_orchestra = self.class.normalize_text_field(orchestra)

@@ -16,4 +16,5 @@ class Lyric < ApplicationRecord
 
   validates :locale, presence: true
   validates :content, presence: true
+  validates :locale, uniqueness: {scope: :composition_id}
 end

@@ -14,6 +14,7 @@
 #
 class Orchestra < ApplicationRecord
   extend FriendlyId
+  friendly_id :name, use: :slugged
   has_many :orchestra_recordings, dependent: :destroy
   has_many :recordings, through: :orchestra_recordings
   has_many :singers, through: :recordings
@@ -25,4 +26,12 @@ class Orchestra < ApplicationRecord
   validates :rank, presence: true, numericality: {only_integer: true}
   validates :sort_name, presence: true
   validates :slug, presence: true, uniqueness: true
+
+  before_validation :set_sort_name
+
+  private
+
+  def set_sort_name
+    self.sort_name = I18n.transliterate(name).downcase
+  end
 end

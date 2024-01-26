@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_26_001615) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_26_101449) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -105,7 +105,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_26_001615) do
     t.string "slug", null: false
     t.string "external_id"
     t.uuid "transfer_agent_id"
-    t.enum "type", default: "compilation", null: false, enum_type: "album_type"
+    t.enum "album_type", default: "compilation", null: false, enum_type: "album_type"
     t.index ["slug"], name: "index_albums_on_slug"
     t.index ["title"], name: "index_albums_on_title", opclass: :gist_trgm_ops, using: :gist
     t.index ["transfer_agent_id"], name: "index_albums_on_transfer_agent_id"
@@ -119,7 +119,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_26_001615) do
     t.uuid "audio_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "recording_id"
     t.index ["audio_id"], name: "index_audio_transfers_on_audio_id"
+    t.index ["recording_id"], name: "index_audio_transfers_on_recording_id"
     t.index ["transfer_agent_id"], name: "index_audio_transfers_on_transfer_agent_id"
   end
 
@@ -143,6 +145,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_26_001615) do
     t.date "death_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "slug", null: false
+    t.index ["slug"], name: "index_composers_on_slug", unique: true
   end
 
   create_table "composition_composers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -171,8 +175,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_26_001615) do
     t.string "tangotube_slug"
     t.uuid "lyricist_id", null: false
     t.uuid "composer_id", null: false
-    t.integer "listens_count"
-    t.integer "popularity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["composer_id"], name: "index_compositions_on_composer_id"
@@ -371,6 +373,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_26_001615) do
     t.uuid "composition_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["composition_id", "locale"], name: "index_lyrics_on_composition_id_and_locale", unique: true
     t.index ["composition_id"], name: "index_lyrics_on_composition_id"
   end
 
@@ -439,16 +442,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_26_001615) do
     t.uuid "orchestra_id"
     t.uuid "singer_id"
     t.uuid "composition_id"
-    t.uuid "label_id"
+    t.uuid "record_label_id"
     t.uuid "genre_id"
     t.uuid "period_id"
     t.enum "type", default: "studio", null: false, enum_type: "recording_type"
     t.index ["composition_id"], name: "index_recordings_on_composition_id"
     t.index ["el_recodo_song_id"], name: "index_recordings_on_el_recodo_song_id"
     t.index ["genre_id"], name: "index_recordings_on_genre_id"
-    t.index ["label_id"], name: "index_recordings_on_label_id"
     t.index ["orchestra_id"], name: "index_recordings_on_orchestra_id"
     t.index ["period_id"], name: "index_recordings_on_period_id"
+    t.index ["record_label_id"], name: "index_recordings_on_record_label_id"
     t.index ["singer_id"], name: "index_recordings_on_singer_id"
   end
 
@@ -601,6 +604,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_26_001615) do
   add_foreign_key "album_audio_transfers", "audio_transfers"
   add_foreign_key "albums", "transfer_agents"
   add_foreign_key "audio_transfers", "audios"
+  add_foreign_key "audio_transfers", "recordings"
   add_foreign_key "audio_transfers", "transfer_agents"
   add_foreign_key "composition_composers", "composers"
   add_foreign_key "composition_composers", "compositions"
@@ -624,7 +628,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_26_001615) do
   add_foreign_key "recordings", "compositions"
   add_foreign_key "recordings", "el_recodo_songs"
   add_foreign_key "recordings", "genres"
-  add_foreign_key "recordings", "labels"
+  add_foreign_key "recordings", "labels", column: "record_label_id"
   add_foreign_key "recordings", "orchestras"
   add_foreign_key "recordings", "periods"
   add_foreign_key "recordings", "singers"

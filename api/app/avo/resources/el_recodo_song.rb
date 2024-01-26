@@ -37,7 +37,7 @@ class Avo::Resources::ElRecodoSong < Avo::BaseResource
     field :composer, as: :text, readonly: true, format_using: -> { value&.titleize_name }
     field :soloist, as: :text, readonly: true, format_using: -> { value&.titleize_name }
     field :director, as: :text, readonly: true, format_using: -> { value&.titleize_name }
-    field :label, as: :text, readonly: true, only_on: :show
+    field :record_label, as: :text, readonly: true, only_on: :show
     field :lyrics, as: :textarea, readonly: true, only_on: :show
     field :synced_at, as: :date_time, readonly: true, only_on: :show
     field :page_updated_at, as: :date_time, readonly: true, only_on: :show

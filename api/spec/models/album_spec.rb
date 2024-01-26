@@ -12,7 +12,7 @@
 #  slug              :string           not null
 #  external_id       :string
 #  transfer_agent_id :uuid
-#  type              :enum             default("compilation"), not null
+#  album_type        :enum             default("compilation"), not null
 #
 require "rails_helper"
 

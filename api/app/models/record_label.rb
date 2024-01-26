@@ -11,8 +11,8 @@
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #
-require "rails_helper"
+class RecordLabel < ApplicationRecord
+  has_many :videos, dependent: :destroy
 
-RSpec.describe Label, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  validates :name, presence: true
 end

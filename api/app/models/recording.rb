@@ -26,8 +26,10 @@ class Recording < ApplicationRecord
   belongs_to :orchestra, optional: true
   belongs_to :singer, optional: true
   belongs_to :song, optional: true
-  belongs_to :label, optional: true
+  belongs_to :record_label, optional: true
   belongs_to :genre, optional: true
+  has_one :audio_transfer, dependent: :destroy
+  has_one :audio, through: :audio_transfer
 
   validates :title, presence: true
   validates :bpm, presence: true

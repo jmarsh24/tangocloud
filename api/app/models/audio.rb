@@ -21,12 +21,5 @@ class Audio < ApplicationRecord
   has_many :audio_transfers, dependent: :destroy
   has_many :transfer_agents, through: :audio_transfers
 
-  validates :duration, presence: true
-  validates :format, presence: true
-  validates :bit_rate, numericality: {only_integer: true}
-  validates :sample_rate, numericality: {only_integer: true}
-  validates :channels, numericality: {only_integer: true}
-  validates :bit_depth, numericality: {only_integer: true}
-
   has_one_attached :file, dependent: :purge_later
 end
