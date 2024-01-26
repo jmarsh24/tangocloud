@@ -12,7 +12,7 @@
 #  action_auth_user_id :uuid
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
-#  type                :enum             default("free"), not null
+#  subscription_type   :enum             default("free"), not null
 #
 require "rails_helper"
 

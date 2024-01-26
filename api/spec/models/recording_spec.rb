@@ -13,10 +13,10 @@
 #  orchestra_id      :uuid
 #  singer_id         :uuid
 #  composition_id    :uuid
-#  label_id          :uuid
+#  record_label_id   :uuid
 #  genre_id          :uuid
 #  period_id         :uuid
-#  type              :enum             default("studio"), not null
+#  recording_type    :enum             default("studio"), not null
 #
 require "rails_helper"
 

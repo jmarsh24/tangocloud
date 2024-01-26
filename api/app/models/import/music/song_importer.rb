@@ -3,6 +3,7 @@
 module Import
   module Music
     class SongImporter
+      include TextNormalizable
       attr_reader :file
 
       SUPPORTED_MIME_TYPES = ["audio/x-aiff", "audio/flac", "audio/mp4", "audio/mpeg"].freeze
@@ -62,25 +63,45 @@ module Import
 
           orchestra = Orchestra.find_or_create_by!(name: @metadata.artist)
 
-          if @metadata.record_label.present?
-            label = Label.find_or_create_by!(name: @metadata.label)
+          record_label = if @metadata.record_label.present?
+            Label.find_or_create_by!(name: @metadata.record_label)
           end
 
-          if @metadata.album_artist.present?
-            genre = Genre.find_or_create_by!(name: @metadata.genre)
+          genre = if @metadata.genre.present?
+            Genre.find_or_create_by!(name: @metadata.genre)
           end
-          binding.irb
-          audio_transfer.recording.create!(
+
+          # TODO: This is not correct
+          el_recodo_song = ElRecodoSong.find_by!(
+            normalized_title: self.class.normalize_text_field(@metadata.title),
+            normalized_orchestra: self.class.normalize_text_field(@metadata.album_artist)
+          )
+
+          singer = if @metadata.singer.present?
+            Singer.find_or_create_by!(name: @metadata.singer)
+          end
+
+          parsed_date =
+            begin
+              Date.parse(@metadata.date)
+            rescue Date::Error
+              # If parsing fails, set a default date, e.g., January 1st of the given year
+              year = @metadata.date.to_i
+              Date.new(year, 1, 1) if year > 0
+            end
+
+          Recording.create!(
             title: @metadata.title,
             bpm: @metadata.bpm,
-            year: @metadata.date,
-            release_date: @metadata.date,
-            el_recodo_song: ElRecodoSong.find_by!(normalized_title: I18n.transliterate(@metadata.title).downcase, normalized_orchestra: I18n.transliterate(@metadata.album_artist).downcase), # TODO: This is not correct
-            singer: Singer.find_or_create_by!(name: @metadata.album_artist),
+            recorded_date: parsed_date,
+            release_date: parsed_date,
+            el_recodo_song:,
+            singer:,
             orchestra:,
             composition:,
-            label:,
-            genre:
+            record_label:,
+            genre:,
+            audio_transfer:
           )
         end
       end
