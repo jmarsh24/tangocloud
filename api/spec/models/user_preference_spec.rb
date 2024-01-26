@@ -18,14 +18,14 @@
 require "rails_helper"
 
 RSpec.describe UserPreference, type: :model do
+  let!(:user) { User.create!(email: "user@tangocloud.app", password: "userpassword", password_confirmation: "userpassword").becomes(User)}
+
   describe "#user_avatar" do
     it "returns gravatar if no avatar attached" do
-      user = User.create!(email: "user@tangocloud.app", password: "userpassword", password_confirmation: "userpassword")
       expect(user.avatar_thumbnail).to eq("https://www.gravatar.com/avatar/4b97cac98c2b2c889c95ba49f1899297?d=mm&s=160")
     end
 
     it "returns avatar if attached" do
-      user = User.create!(email: "user@tangocloud.app", password: "userpassword", password_confirmation: "userpassword")
       user.avatar.attach(io: File.open(Rails.root.join("spec", "fixtures", "files", "tangocloud_logo.png")), filename: "tangocloud_logo.png", content_type: "image/png")
 
       expect(user.avatar_thumbnail.filename.to_s).to include("tangocloud_logo.webp")
@@ -34,13 +34,10 @@ RSpec.describe UserPreference, type: :model do
 
   describe "#set_default_username" do
     it "sets username to email if username is blank" do
-      user = User.create!(email: "user@tangocloud.app", password: "userpassword", password_confirmation: "userpassword")
-
       expect(user.user_preference.username).to eq("user")
     end
 
     it "creates a unique username if username is taken" do
-      User.create!(email: "user@tangocloud.app", password: "userpassword", password_confirmation: "userpassword")
       user2 = User.create!(email: "user@example.com", password: "userpassword", password_confirmation: "userpassword")
 
       expect(user2.user_preference.username).to eq("user1")
