@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/scott-knight/graphiql-rails.git
+  revision: ffc0cfad09650ab1154a07becc05ecc64bd136cc
+  branch: fix-assets-remove-sprokets
+  specs:
+    graphiql-rails (1.9.0)
+      railties
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -214,9 +222,6 @@ GEM
       fugit (>= 1.1)
       railties (>= 6.0.0)
       thor (>= 0.14.1)
-    graphiql-rails (1.9.0)
-      railties
-      sprockets-rails
     graphql (2.2.5)
       racc (~> 1.4)
     groupdate (6.4.0)
@@ -516,13 +521,6 @@ GEM
       activejob (>= 7)
       activerecord (>= 7)
       railties (>= 7)
-    sprockets (4.2.1)
-      concurrent-ruby (~> 1.0)
-      rack (>= 2.2.4, < 4)
-    sprockets-rails (3.4.2)
-      actionpack (>= 5.2)
-      activesupport (>= 5.2)
-      sprockets (>= 3.0.0)
     sshkit (1.22.0)
       mutex_m
       net-scp (>= 1.1.2)
@@ -623,7 +621,7 @@ DEPENDENCIES
   faraday
   friendly_id
   good_job
-  graphiql-rails
+  graphiql-rails!
   graphql
   groupdate
   guard
