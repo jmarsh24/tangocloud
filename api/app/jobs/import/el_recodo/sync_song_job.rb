@@ -7,6 +7,6 @@ class Import::ElRecodo::SyncSongJob < ApplicationJob
 
   def perform(music_id:, interval:)
     sleep(interval)
-    Import::ElRecodo::SongSynchronizer.new.sync_song(music_id:)
+    ::Import::ElRecodo::SongSynchronizer.new.sync_song(music_id:)
   end
 end
