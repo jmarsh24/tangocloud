@@ -1,7 +1,6 @@
 .container.stack.stack--24
-  .stack.stack--12.stack--justify-center.stack--align-center
-  .logo
   .stack.stack--24.stack--justify-center.stack--align-center
+    .logo
     - if user_signed_in?
       = image_tag current_user.becomes(User).avatar_thumbnail, class: "avatar"
       = link_to "Admin", avo_path, class: "button"
