@@ -44,7 +44,6 @@ export default (): ExpoConfig => {
     },
     extra: {
       apiUrl,
-      loginProxy,
       currentVersion,
     },
     plugins: ['expo-router'],
