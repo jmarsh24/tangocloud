@@ -14,12 +14,6 @@ class Avo::Resources::ElRecodoSong < Avo::BaseResource
       }
     end
   }
-  self.pagination = -> do
-    {
-      type: :countless,
-      size: []
-    }
-  end
 
   def fields
     field :id, as: :id, readonly: true, only_on: :show

@@ -13,10 +13,10 @@
 #  orchestra_id      :uuid
 #  singer_id         :uuid
 #  composition_id    :uuid
-#  label_id          :uuid
+#  record_label_id   :uuid
 #  genre_id          :uuid
 #  period_id         :uuid
-#  type              :enum             default("studio"), not null
+#  recording_type    :enum             default("studio"), not null
 #
 class Recording < ApplicationRecord
   extend FriendlyId
@@ -30,11 +30,11 @@ class Recording < ApplicationRecord
   belongs_to :genre, optional: true
   has_one :audio_transfer, dependent: :destroy
   has_one :audio, through: :audio_transfer
+  belongs_to :period, optional: true
+  belongs_to :composition, optional: true
 
   validates :title, presence: true
-  validates :bpm, presence: true
-  validates :type, presence: true
-  validates :release_date, presence: true
   validates :recorded_date, presence: true
-  enum type: {studio: "studio", live: "live"}
+
+  enum recording_type: {studio: "studio", live: "live"}
 end

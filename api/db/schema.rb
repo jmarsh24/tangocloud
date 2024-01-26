@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_26_101449) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_26_111013) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -445,7 +445,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_26_101449) do
     t.uuid "record_label_id"
     t.uuid "genre_id"
     t.uuid "period_id"
-    t.enum "type", default: "studio", null: false, enum_type: "recording_type"
+    t.enum "recording_type", default: "studio", null: false, enum_type: "recording_type"
+    t.string "slug"
     t.index ["composition_id"], name: "index_recordings_on_composition_id"
     t.index ["el_recodo_song_id"], name: "index_recordings_on_el_recodo_song_id"
     t.index ["genre_id"], name: "index_recordings_on_genre_id"
@@ -453,6 +454,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_26_101449) do
     t.index ["period_id"], name: "index_recordings_on_period_id"
     t.index ["record_label_id"], name: "index_recordings_on_record_label_id"
     t.index ["singer_id"], name: "index_recordings_on_singer_id"
+    t.index ["slug"], name: "index_recordings_on_slug", unique: true
   end
 
   create_table "singers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -483,7 +485,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_26_101449) do
     t.uuid "action_auth_user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.enum "type", default: "free", null: false, enum_type: "subscription_type"
+    t.enum "subscription_type", default: "free", null: false, enum_type: "subscription_type"
     t.index ["action_auth_user_id"], name: "index_subscriptions_on_action_auth_user_id"
   end
 

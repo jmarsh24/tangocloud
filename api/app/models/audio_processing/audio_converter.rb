@@ -10,7 +10,7 @@ module AudioProcessing
       sample_rate: 48000,
       channels: 1,
       codec: "libmp3lame",
-      output_directory: "converted_audio_files",
+      output_directory: "tmp/converted_audio_files",
       filename: nil
     }.freeze
 

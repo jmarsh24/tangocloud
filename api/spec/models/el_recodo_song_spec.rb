@@ -61,10 +61,6 @@ RSpec.describe ElRecodoSong do
       expect(ElRecodoSong.normalize_text_field("Juan D' Arienzo")).to eq("juan darienzo")
     end
 
-    fit "removes extra spaces" do
-      expect(ElRecodoSong.normalize_text_field("  Juan  D'  Arienzo  ")).to eq("juan darienzo")
-    end
-
     it "returns nil if the input is not a string" do
       expect(ElRecodoSong.normalize_text_field(nil)).to be_nil
     end

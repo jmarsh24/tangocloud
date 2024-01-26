@@ -12,7 +12,7 @@
 #  audio_id          :uuid
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  recording_id      :uuid             not null
+#  recording_id      :uuid
 #
 class AudioTransfer < ApplicationRecord
   belongs_to :audio, dependent: :destroy
