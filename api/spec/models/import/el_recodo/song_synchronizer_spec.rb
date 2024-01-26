@@ -5,8 +5,10 @@ require "rails_helper"
 RSpec.describe Import::ElRecodo::SongSynchronizer do
   describe "#sync_songs" do
     it "enqueues jobs for the specified range of music IDs" do
+      ElRecodoSong.create!(title: "random song", music_id: 1, date: Date.today, page_updated_at: Time.now)
+      ElRecodoSong.create!(title: "random song 2", music_id: 2, date: Date.today, page_updated_at: Time.now)
       expect do
-        Import::ElRecodo::SongSynchronizer.new.sync_songs(from: 1, to: 2, interval: 20)
+        Import::ElRecodo::SongSynchronizer.new.sync_songs(interval: 20)
       end.to have_enqueued_job(Import::ElRecodo::SyncSongJob).exactly(2).times
 
       expect(Import::ElRecodo::SyncSongJob).to have_been_enqueued.with(music_id: 1, interval: 20)

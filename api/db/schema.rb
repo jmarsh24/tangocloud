@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_25_211408) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_26_001615) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -21,6 +21,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_211408) do
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
   enable_extension "unaccent"
+
+  # Custom types defined in this database.
+  # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "album_type", ["compilation", "original"]
+  create_enum "recording_type", ["studio", "live"]
+  create_enum "subscription_type", ["free", "premium", "hifi"]
 
   create_table "action_auth_sessions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "action_auth_user_id", null: false
@@ -95,11 +101,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_211408) do
     t.string "title", null: false
     t.text "description"
     t.date "release_date"
-    t.integer "type", default: 0, null: false
     t.integer "recordings_count", default: 0, null: false
     t.string "slug", null: false
     t.string "external_id"
     t.uuid "transfer_agent_id"
+    t.enum "type", default: "compilation", null: false, enum_type: "album_type"
     t.index ["slug"], name: "index_albums_on_slug"
     t.index ["title"], name: "index_albums_on_title", opclass: :gist_trgm_ops, using: :gist
     t.index ["transfer_agent_id"], name: "index_albums_on_transfer_agent_id"
@@ -427,7 +433,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_211408) do
   create_table "recordings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title", null: false
     t.integer "bpm"
-    t.integer "type", default: 0, null: false
     t.date "release_date"
     t.date "recorded_date"
     t.uuid "el_recodo_song_id"
@@ -437,6 +442,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_211408) do
     t.uuid "label_id"
     t.uuid "genre_id"
     t.uuid "period_id"
+    t.enum "type", default: "studio", null: false, enum_type: "recording_type"
     t.index ["composition_id"], name: "index_recordings_on_composition_id"
     t.index ["el_recodo_song_id"], name: "index_recordings_on_el_recodo_song_id"
     t.index ["genre_id"], name: "index_recordings_on_genre_id"
@@ -469,12 +475,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_211408) do
   create_table "subscriptions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
-    t.integer "type", default: 0, null: false
     t.datetime "start_date", null: false
     t.datetime "end_date", null: false
     t.uuid "action_auth_user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.enum "type", default: "free", null: false, enum_type: "subscription_type"
     t.index ["action_auth_user_id"], name: "index_subscriptions_on_action_auth_user_id"
   end
 

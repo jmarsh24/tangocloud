@@ -8,11 +8,11 @@
 #  title             :string           not null
 #  description       :text
 #  release_date      :date
-#  type              :integer          default("compilation"), not null
 #  recordings_count  :integer          default(0), not null
 #  slug              :string           not null
 #  external_id       :string
 #  transfer_agent_id :uuid
+#  type              :enum             default("compilation"), not null
 #
 class Album < ApplicationRecord
   extend FriendlyId
@@ -21,7 +21,7 @@ class Album < ApplicationRecord
   belongs_to :transfer_agent, optional: true
   has_many :recordings, dependent: :destroy
 
-  enum type: {compilation: 0, original: 1}
+  enum type: {compilation: "compilation", original: "original"}
 
   validates :title, presence: true
   validates :type, presence: true, inclusion: {in: Album.types.keys}
