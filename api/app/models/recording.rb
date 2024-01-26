@@ -7,7 +7,6 @@
 #  id                :uuid             not null, primary key
 #  title             :string           not null
 #  bpm               :integer
-#  type              :integer          default("studio"), not null
 #  release_date      :date
 #  recorded_date     :date
 #  el_recodo_song_id :uuid
@@ -17,6 +16,7 @@
 #  label_id          :uuid
 #  genre_id          :uuid
 #  period_id         :uuid
+#  type              :enum             default("studio"), not null
 #
 class Recording < ApplicationRecord
   extend FriendlyId
@@ -34,5 +34,5 @@ class Recording < ApplicationRecord
   validates :type, presence: true
   validates :release_date, presence: true
   validates :recorded_date, presence: true
-  enum type: {studio: 0, live: 1}
+  enum type: {studio: "studio", live: "live"}
 end
