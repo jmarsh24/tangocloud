@@ -1,15 +1,19 @@
 .app {
-  min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  height: 100dvh;
 
   &__main {
     max-width: 1200px;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
   }
 
   &__content {
     padding-top: 60px;
+    max-width: 90%;
   }
 }
