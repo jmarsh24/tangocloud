@@ -20,12 +20,12 @@ require "rails_helper"
 RSpec.describe UserPreference, type: :model do
   describe "#user_avatar" do
     it "returns gravatar if no avatar attached" do
-      user = User.create!(email: "admin@tangocloud.app", password: "adminpassword", password_confirmation: "adminpassword")
+      user = User.create!(email: "user@tangocloud.app", password: "userpassword", password_confirmation: "userpassword")
       expect(user.avatar_thumbnail).to eq("https://www.gravatar.com/avatar/db28ff81643ae82b641f7ac3905975a1?d=mm&s=160")
     end
 
     it "returns avatar if attached" do
-      user = User.create!(email: "admin@tangocloud.app", password: "adminpassword", password_confirmation: "adminpassword")
+      user = User.create!(email: "user@tangocloud.app", password: "userpassword", password_confirmation: "userpassword")
       user.avatar.attach(io: File.open(Rails.root.join("spec", "fixtures", "files", "tangocloud_logo.png")), filename: "tangocloud_logo.png", content_type: "image/png")
 
       expect(user.avatar_thumbnail.filename.to_s).to include("tangocloud_logo.webp")
@@ -34,16 +34,16 @@ RSpec.describe UserPreference, type: :model do
 
   describe "#set_default_username" do
     it "sets username to email if username is blank" do
-      user = User.create!(email: "admin@tangocloud.app", password: "adminpassword", password_confirmation: "adminpassword")
+      user = User.create!(email: "user@tangocloud.app", password: "userpassword", password_confirmation: "userpassword")
 
-      expect(user.user_preference.username).to eq("admin")
+      expect(user.user_preference.username).to eq("user")
     end
 
     it "creates a unique username if username is taken" do
-      User.create!(email: "admin@tangocloud.app", password: "adminpassword", password_confirmation: "adminpassword")
-      user2 = User.create!(email: "admin@exmaple.com", password: "adminpassword", password_confirmation: "adminpassword")
+      User.create!(email: "user@tangocloud.app", password: "userpassword", password_confirmation: "userpassword")
+      user2 = User.create!(email: "user@exmaple.com", password: "userpassword", password_confirmation: "userpassword")
 
-      expect(user2.user_preference.username).to eq("admin1")
+      expect(user2.user_preference.username).to eq("user1")
     end
   end
 end
