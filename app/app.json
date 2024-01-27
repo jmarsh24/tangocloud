@@ -2,7 +2,7 @@
   "expo": {
     "name": "app",
     "slug": "app",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -13,8 +13,12 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "infoPlist": { "UIBackgroundModes": ["audio"] },
-      "supportsTablet": true
+      "infoPlist": {
+        "UIBackgroundModes": ["audio"],
+        "NSMicrophoneUsageDescription": "This app needs access to the microphone for streaming live music."
+      },
+      "supportsTablet": true,
+      "bundleIdentifier": "tangocloud"
     },
     "android": {
       "adaptiveIcon": {
@@ -24,6 +28,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "40b28cff-7ae4-44c3-b2b4-da1eb1d5081b"
+      }
     }
   }
 }
