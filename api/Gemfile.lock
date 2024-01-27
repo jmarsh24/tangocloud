@@ -190,6 +190,15 @@ GEM
     dry-cli (1.0.0)
     dry-initializer (3.1.1)
     ed25519 (1.3.0)
+    elastic-transport (8.3.1)
+      faraday (< 3)
+      multi_json
+    elasticsearch (8.12.1)
+      base64
+      elastic-transport (~> 8.3)
+      elasticsearch-api (= 8.12.1)
+    elasticsearch-api (8.12.1)
+      multi_json
     erubi (1.12.0)
     et-orbi (1.2.7)
       tzinfo
@@ -241,6 +250,7 @@ GEM
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
     hashdiff (1.1.0)
+    hashie (5.0.0)
     highline (2.1.0)
     httparty (0.21.0)
       mini_mime (>= 1.0.0)
@@ -500,6 +510,9 @@ GEM
     ruby-vips (2.2.0)
       ffi (~> 1.12)
     ruby2_keywords (0.0.5)
+    searchkick (5.3.1)
+      activemodel (>= 6.1)
+      hashie
     sentry-rails (5.16.1)
       railties (>= 5.0)
       sentry-ruby (~> 5.16.1)
@@ -617,6 +630,7 @@ DEPENDENCIES
   cuprite
   debug
   dotenv-rails
+  elasticsearch
   faker
   faraday
   friendly_id
@@ -651,6 +665,7 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec
   ruby-vips
+  searchkick
   sentry-rails
   sentry-ruby
   shimmer

@@ -23,7 +23,7 @@ module Types
     end
 
     def search_el_recodo_songs(query:)
-      ElRecodoSong.search(query)
+      ElRecodoSong.search_songs(query).results
     end
 
     def test_field
