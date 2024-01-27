@@ -37,8 +37,7 @@ class ElRecodoSong < ApplicationRecord
     search(query,
       fields: ["title^5", "composer", "author", "lyrics", "orchestra", "singer"],
       match: :word_middle,
-      misspellings: {below: 5}
-    )
+      misspellings: {below: 5})
   end
 
   def search_data
