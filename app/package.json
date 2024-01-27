@@ -4,7 +4,6 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "API_URL=http://localhost:3000/graphql expo start",
-    "start:staging": "API_URL=https://tangocloud.app/graphql expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
