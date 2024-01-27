@@ -13,7 +13,7 @@ export default function App() {
   const [sound, setSound] = useState();
   const [query, setQuery] = useState("");
   const [songs, setSongs] = useState([]);
-  const debounceInterval = 1000; // 500 milliseconds
+  const debounceInterval = 500; // 500 milliseconds
   const debounceTimer = useRef(null); // Using useRef to persist the timer
 
   async function playSound() {
@@ -37,6 +37,7 @@ export default function App() {
   }, [sound]);
 
   const searchSongs = async () => {
+    const searchQuery = query || "*"; // Use '*' if query is empty
     try {
       const response = await fetch("http://192.168.0.2:3000/graphql", {
         method: "POST",
@@ -45,18 +46,19 @@ export default function App() {
         },
         body: JSON.stringify({
           query: `
-            query {
-              searchElRecodoSongs(query: "${query}") {
-                id
-                title
-                orchestra
-                singer
-                composer
-                author
-                date
-              }
+          query {
+            searchElRecodoSongs(query: "${searchQuery}") {
+              id
+              title
+              orchestra
+              singer
+              composer
+              author
+              date
+              style
             }
-          `,
+          }
+        `,
         }),
       });
 
@@ -87,9 +89,15 @@ export default function App() {
       <Button title="Play A Pan y Agua" onPress={playSound} />
       <ScrollView style={styles.results}>
         {songs.map((song, index) => (
-          <Text key={index} style={styles.songItem}>
-            {song.title} by {song.orchestra}
-          </Text>
+          <View key={index} style={styles.songCard}>
+            <Text style={styles.songTitle}>{song.title}</Text>
+            <Text style={styles.songDetails}>
+              {song.orchestra} - {song.singer}
+            </Text>
+            <Text style={styles.songSubDetails}>
+              {song.style} - {song.date}
+            </Text>
+          </View>
         ))}
       </ScrollView>
     </View>
@@ -111,15 +119,35 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingLeft: 20,
     borderRadius: 50,
+    paddingRight: 20,
+    fontSize: 16,
+    paddingBottom: 20,
+    paddingTop: 20,
   },
   results: {
     marginTop: 20,
     width: "80%",
   },
-  songItem: {
+  songCard: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 5,
     paddingTop: 10,
     paddingBottom: 10,
     borderBottomWidth: 1,
     borderBottomColor: "gray",
+    marginBottom: 10,
+  },
+  songTitle: {
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  songDetails: {
+    fontSize: 14,
+    color: "black",
+  },
+  songSubDetails: {
+    fontSize: 12,
+    color: "gray",
   },
 });

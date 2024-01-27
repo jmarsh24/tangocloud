@@ -7,7 +7,6 @@ module Types
     field :artist, String, null: true
     field :album, String, null: true
     field :date, GraphQL::Types::ISO8601Date, null: true
-    field :genre, String, null: true
     field :lyrics, String, null: true
     field :ert_number, Integer, null: true
     field :music_id, Integer, null: true
