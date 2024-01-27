@@ -1,3 +1,4 @@
 web: bundle exec rails s -p ${PORT:-3000} -b 0.0.0.0
 worker: bundle exec good_job
 vite: bin/vite dev
+app: cd ../app && yarn start
