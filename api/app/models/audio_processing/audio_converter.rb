@@ -5,11 +5,11 @@ module AudioProcessing
     attr_reader :file, :format, :bitrate, :sample_rate, :channels, :codec, :output_directory
 
     DEFAULT_OPTIONS = {
-      format: "mp3",
+      format: "m4a",
       bitrate: "320k",
       sample_rate: 48000,
       channels: 1,
-      codec: "libmp3lame",
+      codec: "aac_at",
       output_directory: "tmp/converted_audio_files",
       filename: nil
     }.freeze
