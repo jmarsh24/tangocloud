@@ -16,7 +16,7 @@ export default (): ExpoConfig => {
     orientation: 'portrait',
     icon,
     userInterfaceStyle: 'light',
-    scheme: 'laic',
+    scheme: 'tangocloud',
     splash: {
       image: './assets/splash.png',
       resizeMode: 'contain',
