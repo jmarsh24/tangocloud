@@ -31,6 +31,7 @@ export default (): ExpoConfig => {
       },
     },
     android: {
+      package: bundleIdentifier,
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
         backgroundColor: '#FFFFFF',
