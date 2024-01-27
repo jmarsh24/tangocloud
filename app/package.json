@@ -5,8 +5,8 @@
   "scripts": {
     "start": "API_URL=http://localhost:3000/graphql expo start",
     "start:staging": "API_URL=https://tangocloud.app/graphql expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "graphql:schema": "rover graph introspect http://localhost:3000/graphql --output shared/schema.gql",
     "graphql:types": "graphql-codegen",
