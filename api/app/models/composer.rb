@@ -10,6 +10,7 @@
 #  death_date :date
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  slug       :string           not null
 #
 class Composer < ApplicationRecord
   has_many :compositions, dependent: :destroy

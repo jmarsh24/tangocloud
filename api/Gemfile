@@ -42,6 +42,8 @@ gem "socialization"
 gem "solid_cache"
 gem "translate_client"
 gem "yael"
+gem "elasticsearch"
+gem "searchkick"
 
 # Assets
 gem "stimulus-rails"
