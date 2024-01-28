@@ -31,7 +31,7 @@ env:
     DB_HOST: 167.235.70.96
     CLOUDFLARE_PUBLIC: true
     CLOUDFLARE_BUCKET: tangocloud
-    ELASTICSEARCH_URL: 49.13.161.182:9200
+    ELASTICSEARCH_URL: 49.13.197.47:9200
   secret:
     - RAILS_MASTER_KEY
     - POSTGRES_PASSWORD
@@ -50,8 +50,8 @@ accessories:
     volumes:
       - /var/postgres/data:/var/lib/postgresql/data
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.11.1-arm64
-    host: 49.13.161.182
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0-arm64
+    host: 49.13.197.47
     port: 9200
     environment:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"

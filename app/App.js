@@ -39,7 +39,7 @@ export default function App() {
   const searchSongs = async () => {
     const searchQuery = query || "*"; // Use '*' if query is empty
     try {
-      const response = await fetch("http://192.168.0.2:3000/graphql", {
+      const response = await fetch("https://tangocloud.app/graphql", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
