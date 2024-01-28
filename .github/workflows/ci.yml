@@ -84,12 +84,12 @@ jobs:
           bundler-cache: true
           working-directory: ./api
 
-      - name: Verify Elasticsearch connection from host
-        env:
-          ELASTIC_SEARCH_URL: http://localhost:${{ job.services.elasticsearch.ports[9200] }}
-        run: |
-          echo $ELASTIC_SEARCH_URL
-          curl -fsSL "$ELASTIC_SEARCH_URL/_cat/health?h=status"
+      # - name: Verify Elasticsearch connection from host
+      #   env:
+      #     ELASTIC_SEARCH_URL: http://localhost:${{ job.services.elasticsearch.ports[9200] }}
+      #   run: |
+      #     echo $ELASTIC_SEARCH_URL
+      #     curl -fsSL "$ELASTIC_SEARCH_URL/_cat/health?h=status"
 
       - name: Run Tests
         env:
