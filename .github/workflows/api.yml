@@ -1,4 +1,4 @@
-name: CD
+name: api
 
 on:
   push:
@@ -9,6 +9,8 @@ jobs:
   deploy:
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     runs-on: self-hosted
+    permissions:
+      pull-requests: read
 
     env:
       DOCKER_BUILDKIT: 1
