@@ -69,10 +69,7 @@ func (a *App) MapSong(musicId uint, audioFilePath string) {
 		log.Fatal(err)
 	}
 
-	//TODO test for FLAC AIF, M4A
-	//and also for MP3 files. even if there are more tags available in MP3s
 	//TODO store album info in comments somewhere before replacing it !!
-	//TODO flat destination folders
 	cmdArguments := constructCommand(audioFilePath, recording)
 
 	cmd := exec.Command("ffmpeg", cmdArguments...)
@@ -117,10 +114,8 @@ func constructCommand(audioFilePath string, recording *Recording) []string {
 	}
 
 	if extension == "m4a" {
-		//"-map", "a:0",//for m4a
 		cmdArguments = append(cmdArguments, "-map", "a:0")
 	} else if extension == "aif" {
-		//"-write_id3v2", "1", //for aiff
 		cmdArguments = append(cmdArguments, "-write_id3v2", "1")
 	}
 
@@ -130,8 +125,8 @@ func constructCommand(audioFilePath string, recording *Recording) []string {
 		"-metadata", "title="+recording.Title,
 		"-metadata", "album="+album,
 
-		"-metadata", "artist="+recording.Singers, //author m4a??
-		"-metadata", "date="+recording.Date.Format("2006-01-02"), //year m4a??
+		"-metadata", "artist="+recording.Singers,
+		"-metadata", "date="+recording.Date.Format("2006-01-02"),
 
 		"-metadata", "genre="+recording.Style,
 		"-metadata", "album_artist="+recording.Orchestra,
