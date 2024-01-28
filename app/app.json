@@ -15,7 +15,8 @@
     "ios": {
       "infoPlist": {
         "UIBackgroundModes": ["audio"],
-        "NSMicrophoneUsageDescription": "This app needs access to the microphone for streaming live music."
+        "NSMicrophoneUsageDescription": "This app needs access to the speaker for streaming music.",
+        "ITSAppUsesNonExemptEncryption": false
       },
       "supportsTablet": true,
       "bundleIdentifier": "tangocloud"
