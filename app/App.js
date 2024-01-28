@@ -2,42 +2,82 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   StyleSheet,
-  Button,
   TextInput,
   Text,
   ScrollView,
+  Pressable,
 } from "react-native";
 import { Audio } from "expo-av";
 
 export default function App() {
   const [sound, setSound] = useState();
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [query, setQuery] = useState("");
   const [songs, setSongs] = useState([]);
-  const debounceInterval = 500; // 500 milliseconds
-  const debounceTimer = useRef(null); // Using useRef to persist the timer
+  const debounceInterval = 500;
+  const debounceTimer = useRef(null);
+  const audioLinks = [
+    "https://pub-10ab067adc844f51b24c57dee2e3e3ce.r2.dev/sample_audio_mp3_amarras.mp3",
+    "https://pub-10ab067adc844f51b24c57dee2e3e3ce.r2.dev/029_-_Nunca_tuvo_novio_20240126123537.mp3",
+  ];
 
-  async function playSound() {
+  async function loadSound(trackIndex) {
+    if (sound) {
+      await sound.unloadAsync();
+    }
     console.log("Loading Sound");
-    const { sound } = await Audio.Sound.createAsync({
-      uri: "https://pub-10ab067adc844f51b24c57dee2e3e3ce.r2.dev/sample_audio_mp3_amarras.mp3",
+    const { sound: newSound } = await Audio.Sound.createAsync({
+      uri: audioLinks[trackIndex],
     });
-    setSound(sound);
-
-    console.log("Playing Sound");
-    await sound.playAsync();
+    setSound(newSound);
+    if (isPlaying) {
+      await newSound.playAsync();
+    }
   }
 
   useEffect(() => {
+    loadSound(currentTrackIndex);
     return sound
       ? () => {
           console.log("Unloading Sound");
           sound.unloadAsync();
         }
       : undefined;
-  }, [sound]);
+  }, [currentTrackIndex]);
+
+  const togglePlayback = async () => {
+    if (!sound) {
+      return;
+    }
+    if (isPlaying) {
+      console.log("Pausing Sound");
+      await sound.pauseAsync();
+    } else {
+      console.log("Playing Sound");
+      await sound.playAsync();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  const playNext = () => {
+    let nextIndex = currentTrackIndex + 1;
+    if (nextIndex >= audioLinks.length) {
+      nextIndex = 0;
+    }
+    setCurrentTrackIndex(nextIndex);
+  };
+
+  const playPrevious = () => {
+    let previousIndex = currentTrackIndex - 1;
+    if (previousIndex < 0) {
+      previousIndex = audioLinks.length - 1;
+    }
+    setCurrentTrackIndex(previousIndex);
+  };
 
   const searchSongs = async () => {
-    const searchQuery = query || "*"; // Use '*' if query is empty
+    const searchQuery = query || "*";
     try {
       const response = await fetch("https://api.tangocloud.app/graphql", {
         method: "POST",
@@ -79,6 +119,9 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.logo}>
+        <Text style={{ color: "#007aff" }}>Tango</Text>Cloud
+      </Text>
       <TextInput
         style={styles.searchBar}
         placeholder="Search for songs"
@@ -86,7 +129,21 @@ export default function App() {
         autoCorrect={false}
         onChangeText={handleSearchChange}
       />
-      <Button title="Play A Pan y Agua" onPress={playSound} />
+      <View style={styles.playbackMenu}>
+        <View style={styles.buttonContainer}>
+          <Pressable style={styles.button} onPress={playPrevious}>
+            <Text style={styles.buttonText}>Previous</Text>
+          </Pressable>
+          <Pressable style={styles.button} onPress={togglePlayback}>
+            <Text style={styles.buttonText}>
+              {isPlaying ? "Pause" : "Play"}
+            </Text>
+          </Pressable>
+          <Pressable style={styles.button} onPress={playNext}>
+            <Text style={styles.buttonText}>Next</Text>
+          </Pressable>
+        </View>
+      </View>
       <ScrollView style={styles.results}>
         {songs.map((song, index) => (
           <View key={index} style={styles.songCard}>
@@ -107,47 +164,95 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: "#F5FCFF",
+    backgroundColor: "#121212",
     paddingTop: 50,
+    paddingBottom: 60,
   },
   searchBar: {
     height: 40,
-    width: "80%",
-    borderColor: "gray",
+    width: "90%",
+    backgroundColor: "#1e1e1e",
+    borderColor: "#1e1e1e",
     borderWidth: 1,
     paddingLeft: 20,
-    borderRadius: 50,
+    borderRadius: 30,
     paddingRight: 20,
     fontSize: 16,
-    paddingBottom: 20,
+    color: "#fff",
+    marginBottom: 20,
+  },
+  button: {
+    padding: 10,
+    backgroundColor: "#007aff",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: 300,
+  },
+  playbackMenu: {
+    position: "absolute",
+    bottom: 0,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    width: "100%",
+    borderTopColor: "#282828",
+    borderTopWidth: 1,
     paddingTop: 20,
+    backgroundColor: "#181818",
+    paddingVertical: 20,
+    zIndex: 1,
   },
   results: {
-    marginTop: 20,
-    width: "80%",
+    flex: 1,
+    width: "100%",
+    paddingLeft: 20,
+    paddingRight: 20,
   },
   songCard: {
+    backgroundColor: "#1e1e1e",
     display: "flex",
     flexDirection: "column",
     gap: 5,
-    paddingTop: 10,
-    paddingBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "gray",
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 10,
+    paddingRight: 10,
+    borderRadius: 8,
     marginBottom: 10,
+    marginTop: 10,
   },
   songTitle: {
     fontWeight: "bold",
     fontSize: 16,
+    color: "#fff",
+    marginLeft: 10,
   },
   songDetails: {
     fontSize: 14,
-    color: "black",
+    color: "gray",
+    marginLeft: 10,
   },
   songSubDetails: {
     fontSize: 12,
     color: "gray",
+    marginLeft: 10,
+  },
+  logo: {
+    fontSize: 24,
+    color: "#fff",
+    fontWeight: "bold",
+    marginBottom: 20,
   },
 });
