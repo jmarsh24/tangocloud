@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     backgroundColor: "#fff",
-    paddingTop: 15,
+    paddingTop: 10,
   },
   searchBar: {
     height: 40,
