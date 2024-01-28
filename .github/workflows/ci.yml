@@ -65,7 +65,13 @@ jobs:
           --health-retries=10
     steps:
       - name: Install packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y google-chrome-stable libvips42 postgresql-client libpq-dev ffmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y google-chrome-stable
+          sudo apt-get install --no-install-recommends -y libvips42
+          sudo apt-get install --no-install-recommends -y postgresql-client
+          sudo apt-get install --no-install-recommends -y libpq-dev
+          sudo apt-get install --no-install-recommends -y ffmpeg
 
       - name: Checkout code
         uses: actions/checkout@v4
