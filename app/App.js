@@ -119,9 +119,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.logo}>
-        <Text style={{ color: "#007aff" }}>Tango</Text>Cloud
-      </Text>
+      <Text style={styles.logo}>TangoCloud</Text>
       <TextInput
         style={styles.searchBar}
         placeholder="Search for songs"
@@ -166,22 +164,23 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: "#121212",
+    backgroundColor: "#fff",
     paddingTop: 50,
     paddingBottom: 60,
   },
   searchBar: {
     height: 40,
     width: "90%",
-    backgroundColor: "#1e1e1e",
-    borderColor: "#1e1e1e",
+    backgroundColor: "#f0f0f0",
+    borderColor: "#f0f0f0",
     borderWidth: 1,
     paddingLeft: 20,
     borderRadius: 30,
     paddingRight: 20,
     fontSize: 16,
-    color: "#fff",
+    color: "#333",
     marginBottom: 20,
+    outlineWidth: 0,
   },
   button: {
     padding: 10,
@@ -207,10 +206,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     width: "100%",
-    borderTopColor: "#282828",
+    borderTopColor: "#e0e0e0",
     borderTopWidth: 1,
     paddingTop: 20,
-    backgroundColor: "#181818",
+    backgroundColor: "#f8f8f8",
     paddingVertical: 20,
     zIndex: 1,
   },
@@ -251,7 +250,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     fontSize: 24,
-    color: "#fff",
+    color: "#000",
     fontWeight: "bold",
     marginBottom: 20,
   },
