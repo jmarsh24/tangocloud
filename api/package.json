@@ -8,14 +8,11 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@expo/metro-runtime": "~3.1.1",
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "^7.3.0",
     "@nerdgeschoss/shimmer": "^0.0.32",
     "autoprefixer": "^10.4.16",
-    "expo": "^50.0.4",
-    "react-dom": "18.2.0",
-    "react-native-web": "~0.19.6",
+    "postcss": "^8.4.33",
     "sass": "^1.69.5",
     "stimulus-vite-helpers": "^3.0.1",
     "typescript": "^5.2.2",
@@ -37,7 +34,7 @@
     "node": "20"
   },
   "volta": {
-    "node": "20.10.0",
-    "yarn": "1.22.19"
+    "node": "20.11.0",
+    "yarn": "3.6.3"
   }
 }

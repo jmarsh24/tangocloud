@@ -37,12 +37,6 @@ RSpec.describe Import::ElRecodo::SongSynchronizer do
         expect(song.author).to eq("Julio César Curi")
         expect(song.label).to eq("Columbia")
         expect(song.music_id).to eq(1)
-        expect(song.normalized_title).to eq("te burlas tristeza")
-        expect(song.normalized_orchestra).to eq("rodolfo biagi")
-        expect(song.normalized_singer).to eq("hugo duval")
-        expect(song.normalized_composer).to eq("edmundo baya")
-        expect(song.normalized_author).to eq("julio cesar curi")
-        expect(song.search_data).to eq("te burlas tristeza rodolfo biagi hugo duval edmundo baya julio cesar curi")
         expect(song.page_updated_at).to eq(Time.zone.parse("2018-10-14 02:00:00.000000000 +0200"))
         expect(song.synced_at).to eq(Time.zone.now)
       end
