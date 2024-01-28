@@ -72,15 +72,10 @@ jobs:
           bundler-cache: true
           working-directory: ./api
 
-      - name: Check Elasticsearch health
-        run: |
-          curl -X GET "http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=50s"
-        working-directory: ./api
-
       - name: Run Tests
         env:
           DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/test
           RAILS_ENV: test
-          ELASTICSEARCH_URL: 127.0.0.1:9200
+          ELASTICSEARCH_URL: localhost:9200
         run: bin/rspec --format documentation
         working-directory: ./api
