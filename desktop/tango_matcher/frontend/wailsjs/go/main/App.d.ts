@@ -6,9 +6,9 @@ export function GetAudioFilesInFolder(arg1:string):Promise<Array<main.AudioFile>
 
 export function GetFoldersInFolder(arg1:string):Promise<Array<string>>;
 
-export function GetRecordingsWithFilter(arg1:string,arg2:string,arg3:string,arg4:string):Promise<Array<main.Recording>>;
+export function GetMatchingRecords(arg1:string,arg2:string,arg3:string,arg4:string,arg5:string,arg6:string,arg7:string):Promise<Array<main.Mapping>>;
 
-export function GetSongTags():Promise<void>;
+export function GetRecordingsWithFilter(arg1:string,arg2:string,arg3:string,arg4:string,arg5:string,arg6:string):Promise<Array<main.Recording>>;
 
 export function ImportCsvFile():Promise<void>;
 

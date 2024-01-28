@@ -10,12 +10,12 @@ export function GetFoldersInFolder(arg1) {
   return window['go']['main']['App']['GetFoldersInFolder'](arg1);
 }
 
-export function GetRecordingsWithFilter(arg1, arg2, arg3, arg4) {
-  return window['go']['main']['App']['GetRecordingsWithFilter'](arg1, arg2, arg3, arg4);
+export function GetMatchingRecords(arg1, arg2, arg3, arg4, arg5, arg6, arg7) {
+  return window['go']['main']['App']['GetMatchingRecords'](arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 }
 
-export function GetSongTags() {
-  return window['go']['main']['App']['GetSongTags']();
+export function GetRecordingsWithFilter(arg1, arg2, arg3, arg4, arg5, arg6) {
+  return window['go']['main']['App']['GetRecordingsWithFilter'](arg1, arg2, arg3, arg4, arg5, arg6);
 }
 
 export function ImportCsvFile() {

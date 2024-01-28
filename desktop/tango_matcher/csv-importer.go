@@ -6,9 +6,19 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/google/uuid"
 )
+
+func first(n int, _ error) int {
+	return n
+}
+
+func (a *App) ImportCsvFile() {
+	filePath := "C:/dev-perso/desktop/tango_matcher/elrecodo.csv"
+	FillDatabaseFromCsvFile(filePath)
+}
 
 func FillDatabaseFromCsvFile(csvFilePath string) {
 
@@ -40,7 +50,10 @@ func FillDatabaseFromCsvFile(csvFilePath string) {
 
 		recording.Id = uuid.MustParse(lineItems[0])
 
-		recording.Date = lineItems[1]
+		format := "2006-01-02"
+		date, _ := time.Parse(format, lineItems[1])
+
+		recording.Date = date
 		recording.ErtNumber = lineItems[2]
 		recording.MusicId = uint(first(strconv.Atoi(lineItems[3])))
 
