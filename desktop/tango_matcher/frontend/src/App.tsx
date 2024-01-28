@@ -1,6 +1,15 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import './App.css';
-import {ImportCsvFile, GetFoldersInFolder, GetAudioFilesInFolder, GetRecordingsWithFilter, PrintLog, GetSongTags, MapSong} from "../wailsjs/go/main/App";
+import {ImportCsvFile, GetFoldersInFolder, GetAudioFilesInFolder, GetRecordingsWithFilter, PrintLog, MapSong, GetMatchingRecords} from "../wailsjs/go/main/App";
+
+interface Mapping {
+	MatchingWordOne : string;
+	MatchingWordTwo : string;
+	MusicId         : number;
+    RecordingTitle  : string;
+	FilePath        : string;
+    FileName        : string;
+}
 
 interface Recording {
     Date      : string;
@@ -35,11 +44,19 @@ function App() {
     const [orchestra, setOrchestra] = useState<string>();
     const [singer, setSinger] = useState<string>();
     const [title, setTitle] = useState<string>();
+    const [startDate, setStartDate] = useState<string>();
+    const [endDate, setEndDate] = useState<string>();
 
     const [recordingList, setRecordingList] = useState<Recording[]>([]);
 
     const [selectedRecording, setSelectedRecording] = useState<number>(0);
     const [selectedFilePath, setSelectedFilePath] = useState<string>("");
+
+    const [matchingRecords, setMatchingRecords] = useState<Mapping[]>([]);
+
+    useEffect(() => {
+        getFilesInFolder()
+    }, []);
 
     function importCsv(){
         ImportCsvFile();
@@ -59,18 +76,33 @@ function App() {
         setFolderList(folders)
     }
 
-    async function getRecordingsWithFilter() {
-        setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', 'title').then(c => c))
+    async function onOrchestraFilterChange(orchestra : string) {
+        setOrchestra(orchestra);
+        setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', 'title', startDate!, endDate!).then(c => c))
     }
 
     async function onSingerFilterChange(singer : string) {
         setSinger(singer);
-        setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', 'title').then(c => c))
+        setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', 'title', startDate!, endDate!).then(c => c))
     }
 
     async function onTitleFilterChange(title : string) {
         setTitle(title);
-        setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', 'title').then(c => c))
+        setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', 'title', startDate!, endDate!).then(c => c))
+    }
+
+    async function onStartDateFilterChange(startDate : string) {
+        setStartDate(startDate);
+        setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', 'title', startDate ?? '', endDate ?? '').then(c => c))
+    }
+
+    async function onEndDateFilterChange(endDate : string) {
+        setEndDate(endDate);
+        setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', 'title', startDate ?? '', endDate ?? '').then(c => c))
+    }
+
+    async function getMatchingRecords() {
+        setMatchingRecords(await GetMatchingRecords(folderPath, orchestra ?? '', singer ?? '', title ?? '', "title", startDate ?? '', endDate ?? ''))
     }
 
     function onSelectRecordingRow(musicId : number) {
@@ -99,15 +131,20 @@ function App() {
         MapSong(selectedRecording, selectedFilePath)
     }
 
-    function printTags() {
-        GetSongTags()
-    }
-
     return (
         <div id="app">
             <div id="header" className="menu-bar">
-                <button onClick={getFilesInFolder}>Get Songs in Directory</button>
+                {/* <button onClick={importCsv} className='red-background'>Import CSV to DB</button> */}
+                {/* <button onClick={getFilesInFolder}>Get Songs in Directory</button> */}
+                <button onClick={getMatchingRecords} className='red-background'>Get Matching Records</button>
             </div>
+
+            <div className='matches'>
+                {matchingRecords.map((item, index) => (
+                <p key={index}>{index}: {item.FileName} == {item.RecordingTitle}({item.MusicId})</p>
+                ))}
+            </div>
+
             <div id="contents">
                 <div id="left-panel" className="panel">
                     <div className='file-filters'>
@@ -130,7 +167,7 @@ function App() {
                             <tbody>
                                 {fileList.map((item, index) => (
                                 <tr key={index} onClick={() => onSelectFileRow(item.Path)} className={"recording-row " + (selectedFilePath === item.Path ? "selected-row" : "")}>
-                                    <td>{item.Name}</td>
+                                    <td>{index}: {item.Name}</td>
                                 </tr>
                                 ))}   
                             </tbody>
@@ -147,7 +184,7 @@ function App() {
                     <div className='recording-filters'>
                         <div className='filters'>
                             <span>Orchestra</span>
-                            <input type="text" id="orchestra" name="orchestra" value={orchestra} onChange={(e) => setOrchestra(e.target.value)}/>
+                            <input type="text" id="orchestra" name="orchestra" value={orchestra} onChange={(e) => onOrchestraFilterChange(e.target.value)}/>
                         </div>
                                         
                         <div className='filters'>
@@ -159,12 +196,22 @@ function App() {
                             <span>Title</span>
                             <input type="text" id="title" name="title" value={title} onChange={(e) => onTitleFilterChange(e.target.value)}/>
                         </div>
+
+                        <div className='filters'>
+                            <span>Start</span>
+                            <input type="text" maxLength={4} id="startDate" name="startDate" value={startDate} onChange={(e) => onStartDateFilterChange(e.target.value)}/>
+                        </div>
+
+                        <div className='filters'>
+                            <span>End</span>
+                            <input type="text" maxLength={4} id="endDate" name="endDate" value={endDate} onChange={(e) => onEndDateFilterChange(e.target.value)}/>
+                        </div>
                     </div>
-                    
                     <div>
                         <table>
                             <thead>
                                 <tr>
+                                    <th>Index</th>
                                     <th>MusicId</th>
                                     <th>Title</th>
                                     <th>Orchestra</th>
@@ -176,6 +223,7 @@ function App() {
                             <tbody>
                                 {recordingList.map((item, index) => (
                                 <tr key={index} onClick={() => onSelectRecordingRow(item.MusicId)} className={"recording-row " + (selectedRecording === item.MusicId ? "selected-row" : "")}>
+                                    <td>{index}</td>
                                     <td>{item.MusicId}</td>
                                     <td>{item.Title}</td>
                                     <td>{item.Orchestra}</td>

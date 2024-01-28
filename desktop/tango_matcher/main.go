@@ -3,10 +3,15 @@ package main
 import (
 	"embed"
 	"log"
+	"strings"
+	"unicode"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
+	"golang.org/x/text/runes"
+	"golang.org/x/text/transform"
+	"golang.org/x/text/unicode/norm"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -20,6 +25,7 @@ func connectToSQLite() (*gorm.DB, error) {
 		return nil, err
 	}
 
+	//TODO Take this connection from the pool
 	return db, nil
 }
 
@@ -57,6 +63,21 @@ func main() {
 	}
 }
 
-func first(n int, _ error) int {
-	return n
+func longestWord(s string) string {
+	best, length := "", 0
+	for _, word := range strings.Split(s, " ") {
+		if len(word) > length {
+			best, length = word, len(word)
+		}
+	}
+	return best
+}
+
+func removeAccents(s string) string {
+	t := transform.Chain(norm.NFD, runes.Remove(runes.In(unicode.Mn)), norm.NFC)
+	output, _, e := transform.String(t, s)
+	if e != nil {
+		panic(e)
+	}
+	return output
 }

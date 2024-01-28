@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"time"
 
 	"github.com/google/uuid"
@@ -11,7 +12,7 @@ type Recording struct {
 	MusicId uint      `gorm:"primary_key"`
 	Id      uuid.UUID `gorm:"type:uuid;uniqueIndex;"`
 
-	Date      string
+	Date      time.Time
 	ErtNumber string
 
 	Title     string
@@ -62,7 +63,7 @@ func getRecordingByID(db *gorm.DB, userID uint) (*Recording, error) {
 	return &recording, nil
 }
 
-func getRecordings(db *gorm.DB, orchestra string, singer string, title string, orderby string, ismapped bool) ([]Recording, error) {
+func getRecordings(db *gorm.DB, orchestra string, singer string, title string, orderby string, ismapped bool, startYear string, endYear string) ([]Recording, error) {
 	var recordings []Recording
 
 	filteredResults := db
@@ -78,6 +79,15 @@ func getRecordings(db *gorm.DB, orchestra string, singer string, title string, o
 	}
 
 	filteredResults = filteredResults.Where("is_mapped = ?", ismapped)
+
+	if startYear != "" {
+		filteredResults = filteredResults.Where("date >= ?", startYear+"-01-01 00:00:00")
+	}
+	if endYear != "" {
+		filteredResults = filteredResults.Where("date <= ?", endYear+"-12-31 00:00:00")
+	}
+
+	filteredResults = filteredResults.Where("style IN ?", []string{"TANGO", "MILONGA", "VALS"})
 
 	if err := filteredResults.Order(orderby).Find(&recordings).Error; err != nil {
 		return recordings, err
@@ -100,4 +110,14 @@ func deleteRecording(db *gorm.DB, recording *Recording) error {
 		return result.Error
 	}
 	return nil
+}
+
+func (a *App) GetRecordingsWithFilter(orchestra string, singer string, title string, orderby string, startDate string, endDate string) []Recording {
+	db, err := connectToSQLite()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	recordings, _ := getRecordings(db, orchestra, singer, title, orderby, false, startDate, endDate)
+	return recordings
 }
