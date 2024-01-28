@@ -29,7 +29,6 @@ require "rails_helper"
 RSpec.describe ElRecodoSong do
   describe ".search" do
     xit "returns songs that match the query with mispelling" do
-
       stub_request(:get, "http://localhost:9208/el_recodo_songs_test*/_alias").to_return(status: 200, body: "", headers: {})
       stub_request(:post, "http://localhost:9208/_bulk").to_return(status: 200, body: "", headers: {})
       stub_request(:post, "http://localhost:9208/el_recodo_songs_test/_search").to_return(status: 200, body: "", headers: {})
