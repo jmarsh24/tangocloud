@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
   songCard: {
-    backgroundColor: "#1e1e1e",
+    backgroundColor: "#f0f0f0",
     display: "flex",
     flexDirection: "column",
     gap: 5,
@@ -235,17 +235,17 @@ const styles = StyleSheet.create({
   songTitle: {
     fontWeight: "bold",
     fontSize: 16,
-    color: "#fff",
+    color: "#333",
     marginLeft: 10,
   },
   songDetails: {
     fontSize: 14,
-    color: "gray",
+    color: "#555",
     marginLeft: 10,
   },
   songSubDetails: {
     fontSize: 12,
-    color: "gray",
+    color: "#777",
     marginLeft: 10,
   },
   logo: {
