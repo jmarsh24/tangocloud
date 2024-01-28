@@ -57,7 +57,7 @@ jobs:
         image: elasticsearch:8.12.0
         ports:
           - 9200:9200
-        options: -e="discovery.type=single-node"
+        options: -e="discovery.type=single-node" --health-cmd="curl http://localhost:9200/_cluster/health" --health-interval=10s --health-timeout=5s --health-retries=10
     steps:
       - name: Install packages
         run: sudo apt-get update && sudo apt-get install --no-install-recommends -y google-chrome-stable libvips42 postgresql-client libpq-dev ffmpeg
@@ -74,7 +74,7 @@ jobs:
 
       - name: Check Elasticsearch health
         run: |
-          curl -X GET "http://127.0.0.1:9200/_cluster/health?wait_for_status=yellow&timeout=50s"
+          curl -X GET "http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=50s"
         working-directory: ./api
 
       - name: Run Tests
