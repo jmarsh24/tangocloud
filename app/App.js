@@ -79,7 +79,7 @@ export default function App() {
   const searchSongs = async () => {
     const searchQuery = query || "*";
     try {
-      const response = await fetch("https://api.tangocloud.app/graphql", {
+      const response = await fetch("https://tangocloud.app/graphql", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
