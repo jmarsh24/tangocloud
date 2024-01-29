@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import './App.css';
-import {ImportCsvFile, GetFoldersInFolder, GetAudioFilesInFolder, GetRecordingsWithFilter, PrintLog, MapSong, GetMatchingRecords} from "../wailsjs/go/main/App";
+import {ImportCsvFile, GetFoldersInFolder, GetAudioFilesInFolder, GetRecordingsWithFilter, PrintLog, MapSong, GetMatchingRecords, MapAllMatchingRecordings} from "../wailsjs/go/main/App";
 
 interface Mapping {
 	MatchingWordOne : string;
@@ -102,6 +102,15 @@ function App() {
     }
 
     async function getMatchingRecords() {
+
+        if (fileList.length == 0) {
+            return;
+        }
+
+        if (recordingList.length == 0) {
+            return;
+        }
+
         setMatchingRecords(await GetMatchingRecords(folderPath, orchestra ?? '', singer ?? '', title ?? '', "title", startDate ?? '', endDate ?? ''))
     }
 
@@ -127,22 +136,57 @@ function App() {
         setFolderPath(constructPath());
     }
 
-    function mapRecordingToFile() {
-        MapSong(selectedRecording, selectedFilePath)
+    function addMappingToMatchingRecords() {
+        setMatchingRecords([]);
+
+        const mapping: Mapping = {
+            MusicId  : selectedRecording,
+            FilePath : selectedFilePath,
+            FileName : selectedFilePath.substring(selectedFilePath.lastIndexOf("\\")+1),
+            RecordingTitle : recordingList.filter(r=>r.MusicId == selectedRecording)[0].Title,
+            MatchingWordOne : "",
+            MatchingWordTwo : ""
+        }
+        
+        setMatchingRecords([...matchingRecords, mapping]);
+
+        setSelectedFilePath("");
+        setSelectedRecording(0);
+    }
+
+    async function mapAllMatchingRecordings() {
+        await MapAllMatchingRecordings(matchingRecords)
+
+        setFileList(await GetAudioFilesInFolder(constructPath()).then(c => c))
+        setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', 'title', startDate!, endDate!).then(c => c))
+        setMatchingRecords([]);
+    }
+
+    function cleanMatchingRecordings() {
+        setMatchingRecords([]);
+    }
+
+    function removeMatching(matching : Mapping) {
+        setMatchingRecords(matchingRecords.filter(item => item !== matching));
     }
 
     return (
         <div id="app">
             <div id="header" className="menu-bar">
                 {/* <button onClick={importCsv} className='red-background'>Import CSV to DB</button> */}
-                {/* <button onClick={getFilesInFolder}>Get Songs in Directory</button> */}
-                <button onClick={getMatchingRecords} className='red-background'>Get Matching Records</button>
+                {/* <button onClick={getTags}>Get Tags</button> */}
             </div>
 
             <div className='matches'>
                 {matchingRecords.map((item, index) => (
-                <p key={index}>{index}: {item.FileName} == {item.RecordingTitle}({item.MusicId})</p>
+                <div>
+                    <span key={index}>{index}: {item.FileName} == {item.RecordingTitle}({item.MusicId})</span>
+                    <button onClick={() => removeMatching(item)} className='red-background'>Remove Matching</button>
+                </div>
                 ))}
+                {matchingRecords.length == 0 ? <button onClick={getMatchingRecords} className='red-background'>Get Matching Records</button> : ""}
+                {matchingRecords.length != 0 ? <button onClick={mapAllMatchingRecordings} className='red-background'>Map All Matching Records</button> : ""}
+                {matchingRecords.length != 0 ? <button onClick={cleanMatchingRecordings} className='red-background'>Clean Matching Records</button> : ""}
             </div>
 
             <div id="contents">
@@ -177,7 +221,7 @@ function App() {
                     </div>
                 </div>
                 <div id="transfer-bar">
-                <button onClick={mapRecordingToFile}>Map</button>
+                <button onClick={addMappingToMatchingRecords}>Add Map</button>
                 </div>
                 <div id="right-panel" className="panel">
 
