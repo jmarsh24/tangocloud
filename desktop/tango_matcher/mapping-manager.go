@@ -152,7 +152,9 @@ func constructCommand(audioFilePath string, recording *Recording) ([]string, str
 	extension := inputItems[len(inputItems)-1]
 	formattedDate := strings.Replace(recording.Date.Format("2006-01-02"), "-", "", -1)
 	outputFolder := getOutputFolder(*recording)
+
 	newFileName := outputFolder + "\\" + formattedDate + " - " + recording.Title + " - " + recording.Singers + " - " + recording.Style + "." + extension
+	newFileName = removeAccents(strings.ToLower(newFileName))
 
 	sList := strings.Split(audioFilePath, "\\")
 	album := sList[len(sList)-2]
@@ -172,26 +174,30 @@ func constructCommand(audioFilePath string, recording *Recording) ([]string, str
 	// cmdArguments = append(cmdArguments, "-id3v2_version", "3")
 	// }
 
-	commentTag := "Id: ERT-" + strconv.Itoa(int(recording.MusicId)) + " | Source: " + getSourceInfo(audioFilePath) + " | Label: " + recording.Label + " | Date: " + recording.Date.Format("2006-01-02") + " | OriginalAlbum: " + oldAlbumTag
+	commentTag := strings.ToLower("Id: ERT-" + strconv.Itoa(int(recording.MusicId)) + " | Source: " + getSourceInfo(audioFilePath) + " | Label: " + recording.Label + " | Date: " + recording.Date.Format("2006-01-02") + " | OriginalAlbum: " + oldAlbumTag)
+
+	//TODO everyting lowercase
 
 	cmdArguments = append(cmdArguments,
 		"-c", "copy",
 
-		"-metadata", "title="+recording.Title,
-		"-metadata", "album="+album,
+		"-metadata", "title="+strings.ToLower(recording.Title),
+		"-metadata", "album="+strings.ToLower(album), // is it good really as album data
 
-		"-metadata", "artist="+recording.Singers,
+		"-metadata", "artist="+strings.ToLower(recording.Singers),
 		"-metadata", "date="+recording.Date.Format("2006-01-02"),
 
-		"-metadata", "genre="+recording.Style,
-		"-metadata", "album_artist="+recording.Orchestra,
-		"-metadata", "composer=Author: "+recording.Author+" | Composer: "+recording.Composer,
+		"-metadata", "genre="+strings.ToLower(recording.Style),
+		"-metadata", "album_artist="+strings.ToLower(recording.Orchestra),
+		"-metadata", "composer=author: "+strings.ToLower(recording.Author)+" | composer: "+strings.ToLower(recording.Composer),
 
 		"-metadata", "publisher=",
 		"-metadata", "color=",
 		"-metadata", "creator=",
+		"-metadata", "description="+commentTag, //TO TRY: maybe for Justin's M4A
 
 		"-metadata", "Comment="+commentTag,
+		"-metadata", "TIT3="+commentTag,
 		"-metadata", "Lyrics="+recording.Lyrics,
 		newFileName)
 
@@ -200,7 +206,7 @@ func constructCommand(audioFilePath string, recording *Recording) ([]string, str
 
 // TODO now they are all FREE....
 func getSourceInfo(audioFilePath string) string {
-	temp := strings.Replace(audioFilePath, "TT-TTT", "", -1)
+	temp := strings.Replace(audioFilePath, "TT-TTT", "", 1)
 	source := "FREE"
 	if strings.Contains(temp, "TTT") {
 		source = "TTT"
