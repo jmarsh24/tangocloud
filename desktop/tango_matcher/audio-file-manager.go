@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io/fs"
 	"log"
 	"os"
 	"path/filepath"
@@ -20,7 +21,14 @@ func (a *App) GetAudioFilesInFolder(folderPath string) []AudioFile {
 		log.Fatal(err)
 	}
 
-	for _, file := range files {
+	unAssignedFiles := []fs.DirEntry{}
+	for i := 0; i < len(files); i++ {
+		if !strings.Contains(files[i].Name(), "_DONE_") {
+			unAssignedFiles = append(unAssignedFiles, files[i])
+		}
+	}
+
+	for _, file := range unAssignedFiles {
 		if (strings.HasSuffix(file.Name(), ".flac")) || (strings.HasSuffix(file.Name(), ".aif")) || (strings.HasSuffix(file.Name(), ".m4a")) || (strings.HasSuffix(file.Name(), ".mp3")) {
 			filename := filepath.Join(folderPath, file.Name())
 

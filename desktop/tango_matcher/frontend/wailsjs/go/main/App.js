@@ -22,6 +22,10 @@ export function ImportCsvFile() {
   return window['go']['main']['App']['ImportCsvFile']();
 }
 
+export function MapAllMatchingRecordings(arg1) {
+  return window['go']['main']['App']['MapAllMatchingRecordings'](arg1);
+}
+
 export function MapSong(arg1, arg2) {
   return window['go']['main']['App']['MapSong'](arg1, arg2);
 }
