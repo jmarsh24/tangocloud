@@ -173,8 +173,6 @@ function App() {
     return (
         <div id="app">
             <div id="header" className="menu-bar">
-                {/* <button onClick={importCsv} className='red-background'>Import CSV to DB</button> */}
-                {/* <button onClick={getTags}>Get Tags</button> */}
             </div>
 
             <div className='matches'>

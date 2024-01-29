@@ -87,7 +87,7 @@ func (a *App) MapSong(musicId uint, audioFilePath string) {
 		log.Fatal(err)
 	}
 
-	cmdArguments, newFileName := constructCommand(audioFilePath, recording)
+	cmdArguments, newFileName, commentTag := constructCommand(audioFilePath, recording)
 	cmd := exec.Command("ffmpeg", cmdArguments...)
 	cmd.Stderr = os.Stderr
 	cmd.Stdout = os.Stdout
@@ -103,6 +103,22 @@ func (a *App) MapSong(musicId uint, audioFilePath string) {
 	e := os.Rename(audioFilePath, dir+"_DONE_"+file)
 	if e != nil {
 		log.Fatal(e)
+	}
+
+	if strings.Contains(newFileName, ".flac") {
+		tagCmdArguments := []string{
+			newFileName,
+			"--comment",
+			commentTag,
+		}
+
+		cmdTag := exec.Command("tag", tagCmdArguments...)
+		cmdTag.Stderr = os.Stderr
+		cmdTag.Stdout = os.Stdout
+		err = cmdTag.Run()
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	recording.IsMapped = true
@@ -131,7 +147,7 @@ func getOutputFolder(recording Recording) string {
 	return outputFolder
 }
 
-func constructCommand(audioFilePath string, recording *Recording) ([]string, string) {
+func constructCommand(audioFilePath string, recording *Recording) ([]string, string, string) {
 	inputItems := strings.Split(audioFilePath, ".")
 	extension := inputItems[len(inputItems)-1]
 	formattedDate := strings.Replace(recording.Date.Format("2006-01-02"), "-", "", -1)
@@ -148,11 +164,15 @@ func constructCommand(audioFilePath string, recording *Recording) ([]string, str
 		audioFilePath,
 	}
 
-	if extension == "m4a" {
-		cmdArguments = append(cmdArguments, "-map", "a:0")
-	} else if extension == "aif" {
-		cmdArguments = append(cmdArguments, "-write_id3v2", "1")
-	}
+	// if extension == "m4a" {
+	cmdArguments = append(cmdArguments, "-map", "a:0")
+	// }
+	// else if extension == "aif" {
+	cmdArguments = append(cmdArguments, "-write_id3v2", "1")
+	// cmdArguments = append(cmdArguments, "-id3v2_version", "3")
+	// }
+
+	commentTag := "Id: ERT-" + strconv.Itoa(int(recording.MusicId)) + " | Source: " + getSourceInfo(audioFilePath) + " | Label: " + recording.Label + " | Date: " + recording.Date.Format("2006-01-02") + " | OriginalAlbum: " + oldAlbumTag
 
 	cmdArguments = append(cmdArguments,
 		"-c", "copy",
@@ -167,22 +187,24 @@ func constructCommand(audioFilePath string, recording *Recording) ([]string, str
 		"-metadata", "album_artist="+recording.Orchestra,
 		"-metadata", "composer=Author: "+recording.Author+" | Composer: "+recording.Composer,
 
-		// "-metadata", "publisher=Source: " + source + ", Label: " + recording.Label, //maybe doesn't work with m4a
+		"-metadata", "publisher=",
+		"-metadata", "color=",
+		"-metadata", "creator=",
 
-		//TODO old album data in comments should be only for TT
-		"-metadata", "comment=Id: ERT-"+strconv.Itoa(int(recording.MusicId))+" | Source: "+getSourceInfo(audioFilePath)+" | Label: "+recording.Label+" | OriginalAlbum: "+oldAlbumTag,
-		"-metadata", "lyrics="+recording.Lyrics,
+		"-metadata", "Comment="+commentTag,
+		"-metadata", "Lyrics="+recording.Lyrics,
 		newFileName)
 
-	return cmdArguments, newFileName
+	return cmdArguments, newFileName, commentTag
 }
 
-// TODO error. It finds TTT always because my directory is called TT-TTT....
+// TODO now they are all FREE....
 func getSourceInfo(audioFilePath string) string {
+	temp := strings.Replace(audioFilePath, "TT-TTT", "", -1)
 	source := "FREE"
-	if strings.Contains(audioFilePath, "TTT") {
+	if strings.Contains(temp, "TTT") {
 		source = "TTT"
-	} else if strings.Contains(audioFilePath, "TT -") {
+	} else if strings.Contains(temp, "TT -") {
 		source = "TT"
 	}
 
