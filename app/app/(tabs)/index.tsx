@@ -1,31 +1,73 @@
-import { StyleSheet } from 'react-native';
+import { ActivityIndicator, FlatList, Text, View, StyleSheet } from 'react-native';
+import TrackListItem from '../../components/TrackListItem';
+import { gql, useQuery } from '@apollo/client';
 
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
+const query = gql`
+  query MyQuery($genres: String!) {
+    recommendations(seed_genres: $genres) {
+      tracks {
+        id
+        name
+        preview_url
+        artists {
+          id
+          name
+        }
+        album {
+          id
+          name
+          images {
+            url
+            width
+            height
+          }
+        }
+      }
+    }
+  }
+`;
 
-export default function TabOneScreen() {
+export default function HomeScreen() {
+  const { data, loading, error } = useQuery(query, {
+    variables: { genres: 'drum-and-bass,house' },
+  });
+
+  if (loading) {
+    return <ActivityIndicator />;
+  }
+
+  if (error) {
+    return (
+      <View style={styles.centeredView}>
+        <Text style={styles.errorText}>
+          The people who are crazy enough to think they can change the world are the ones who do.
+        </Text>
+      </View>
+    );
+  }
+
+  const tracks = data?.recommendations?.tracks || [];
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
-    </View>
+    <FlatList
+      data={tracks}
+      renderItem={({ item }) => <TrackListItem track={item} />}
+      showsVerticalScrollIndicator={false}
+    />
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  centeredView: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
   },
-  title: {
-    fontSize: 20,
+  errorText: {
+    color: 'white',
+    fontSize: 24,
     fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
+    textAlign: 'center',
+    paddingHorizontal: 20, // to ensure the text is not cut off on small screens
+  }
 });

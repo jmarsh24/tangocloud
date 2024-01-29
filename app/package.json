@@ -1,15 +1,12 @@
 {
   "name": "app",
-  "version": "1.0.0",
+  "version": "1.0.6",
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
-    "lint": "yarn lint:style && yarn lint:types && yarn lint:format",
-    "lint:style": "next lint -f github-annotations",
+    "lint": "yarn lint:types && yarn lint:format",
     "lint:types": "tsc --noEmit",
     "lint:format": "prettier --list-different \"src/**/*.{tsx,ts,css,scss,json,yml}\" \"*.yml\"",
-    "i18n:pull": "translate pull --format i18n-js --out src/locale/en.json --locale en",
-    "i18n:push": "translate push --format i18n-js --in src/locale/en.json --locale en",
     "format": "prettier --write \"src/**/*.{tsx,ts,css,scss,json,yml}\" \"*.yml\"",
     "test": "playwright test",
     "storybook": "storybook dev -p 6006",
@@ -20,6 +17,7 @@
     "build": "expo export --platform web"
   },
   "dependencies": {
+    "@apollo/client": "^3.8.10",
     "@expo/metro-runtime": "~3.1.1",
     "@expo/vector-icons": "^14.0.0",
     "@nerdgeschoss/react-use-form-library": "^0.0.68",
