@@ -1,51 +1,15 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { usePlayerContext } from '../providers/PlayerProvider';
+import { usePlayerContext } from '@/providers/PlayerProvider';
 import { useEffect, useState } from 'react';
 import { AVPlaybackStatus, Audio } from 'expo-av';
 import { Sound } from 'expo-av/build/Audio';
-import { gql, useMutation, useQuery } from '@apollo/client';
-
-const insertFavoriteMutation = gql`
-  mutation MyMutation($userId: String!, $trackId: String!) {
-    insertFavorites(userid: $userId, trackid: $trackId) {
-      id
-      trackid
-      userid
-    }
-  }
-`;
-
-const removeFavoriteMutation = gql`
-  mutation MyMutation($trackId: String!, $userId: String!) {
-    deleteFavorites(trackid: $trackId, userid: $userId) {
-      id
-    }
-  }
-`;
-
-const isFavoriteQuery = gql`
-  query MyQuery($trackId: String!, $userId: String!) {
-    favoritesByTrackidAndUserid(trackid: $trackId, userid: $userId) {
-      id
-      trackid
-      userid
-    }
-  }
-`;
+import Colors from '@/constants/Colors';
 
 const Player = () => {
   const [sound, setSound] = useState<Sound>();
   const [isPlaying, setIsPlaying] = useState(false);
   const { track } = usePlayerContext();
-
-  const [insertFavorite] = useMutation(insertFavoriteMutation);
-  const [removeFavorite] = useMutation(removeFavoriteMutation);
-
-  const { data, refetch } = useQuery(isFavoriteQuery, {
-    variables: { userId: 'vadim', trackId: track?.id || '' },
-  });
-  const isLiked = data?.favoritesByTrackidAndUserid?.length > 0;
 
   useEffect(() => {
     playTrack();
@@ -65,9 +29,6 @@ const Player = () => {
       await sound.unloadAsync();
     }
 
-    // if (!track?.preview_url) {
-    //   return;
-    // }
     const { sound: newSound } = await Audio.Sound.createAsync({
       uri: "https://pub-10ab067adc844f51b24c57dee2e3e3ce.r2.dev/sample_audio_mp3_amarras.mp3",
     });
@@ -96,49 +57,21 @@ const Player = () => {
     }
   };
 
-  const onLike = async () => {
-    if (!track) return;
-    if (isLiked) {
-      await removeFavorite({
-        variables: { userId: 'vadim', trackId: track.id },
-      });
-    } else {
-      await insertFavorite({
-        variables: { userId: 'vadim', trackId: track.id },
-      });
-    }
-    refetch();
-  };
-
-  if (!track) {
-    return null;
-  }
-
-  const image = track?.album?.images?.[0];
-
   return (
     <View style={styles.container}>
       <View style={styles.player}>
-        {image && <Image source={{ uri: image.url }} style={styles.image} />}
-
-        <View style={{ flex: 1 }}>
-          <Text style={styles.title}>{track.title}</Text>
-          <Text style={styles.subtitle}>{track.orchestra}</Text>
+        <Image source={require('@/assets/images/album_art.jpg')} style={styles.image} />
+        <View style={styles.info}>
+          <Text style={styles.title}>{track?.title}</Text>
+          <Text style={styles.subtitle}>{track?.orchestra}</Text>
         </View>
 
-        <Ionicons
-          onPress={onLike}
-          name={isLiked ? 'heart' : 'heart-outline'}
-          size={20}
-          color={'white'}
-          style={{ marginHorizontal: 10 }}
-        />
         <Ionicons
           onPress={onPlayPause}
           disabled={false}
           name={isPlaying ? 'pause' : 'play'}
           size={22}
-          color={track?.preview_url ? 'white' : 'gray'}
+          color={track ? 'white' : 'gray'}
         />
       </View>
     </View>
@@ -153,28 +86,30 @@ const styles = StyleSheet.create({
     height: 75,
     padding: 10,
   },
+  info: {
+    flex: 1
+  },
   player: {
-    backgroundColor: '#286660',
+    backgroundColor: "1B137D",
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 5,
-    padding: 3,
-    paddingRight: 15,
+    padding: 10,
   },
   title: {
-    color: 'white',
+    color: 'red',
   },
   subtitle: {
     color: 'lightgray',
     fontSize: 12,
   },
   image: {
-    height: '100%',
-    aspectRatio: 1,
+    width: 50,
+    height: 50,
     marginRight: 10,
     borderRadius: 5,
-  },
+  }
 });
 
 export default Player;

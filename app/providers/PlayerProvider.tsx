@@ -1,5 +1,5 @@
 import { PropsWithChildren, createContext, useState, useContext } from 'react';
-import { Track } from '../types';
+import { Track } from '@/types';
 
 type PlayerContextType = {
   track?: Track;

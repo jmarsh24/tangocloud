@@ -1,4 +1,4 @@
-import { ActivityIndicator, FlatList, Text, View, StyleSheet } from 'react-native';
+import { ActivityIndicator, FlatList } from 'react-native';
 import TrackListItem from '@/components/TrackListItem';
 import { gql, useQuery } from '@apollo/client';
 
@@ -17,23 +17,16 @@ const query = gql`
   }
 `;
 
-export default function HomeScreen() {
+export default function LibraryScreen() {
   const { data, loading, error } = useQuery(query);
 
   if (loading) {
     return <ActivityIndicator />;
   }
-
   if (error) {
-    return (
-      <View style={styles.centeredView}>
-        <Text style={styles.errorText}>
-          The people who are crazy enough to think they can change the world are the ones who do.
-        </Text>
-      </View>
-    );
+    console.log(error);
   }
-
+  console.log(data);
   const tracks = data?.searchElRecodoSongs || [];
 
   return (
@@ -44,17 +37,3 @@ export default function HomeScreen() {
     />
   );
 }
-
-const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  errorText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    paddingHorizontal: 20,
-  }
-});

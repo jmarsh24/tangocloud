@@ -19,7 +19,9 @@ module Types
     end
 
     field :search_el_recodo_songs, [Types::ElRecodoSongType], null: false do
-      argument :query, String, required: true
+      argument :query, String, required: true, description: "Query to search for."
+      argument :page, Integer, required: false, description: "Page number."
+      argument :per_page, Integer, required: false, description: "Number of results per page."
     end
 
     def search_el_recodo_songs(query:)

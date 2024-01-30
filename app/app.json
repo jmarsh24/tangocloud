@@ -2,11 +2,12 @@
   "expo": {
     "name": "app",
     "slug": "app",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "owner": "jmarsh24",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
+    "scheme": "tangocloudapp",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
