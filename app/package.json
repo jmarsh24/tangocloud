@@ -77,6 +77,6 @@
   "private": true,
   "volta": {
     "node": "20.11.0",
-    "yarn": "3.6.3"
+    "yarn": "1.22.19"
   }
 }
