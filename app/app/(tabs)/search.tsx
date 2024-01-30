@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     color: Colors.light.text,
+    backgroundColor: Colors.light.tint,
     paddingVertical: 4,
     paddingLeft: 30,
     paddingRight: 4,

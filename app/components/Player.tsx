@@ -71,7 +71,7 @@ const Player = () => {
           disabled={false}
           name={isPlaying ? 'pause' : 'play'}
           size={22}
-          color={track ? 'white' : 'gray'}
+          color={track ? Colors.light.text : Colors.light.tint }
         />
       </View>
     </View>
@@ -81,21 +81,21 @@ const Player = () => {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: -75,
+    top: -90,
     width: '100%',
-    height: 75,
     padding: 10,
   },
   info: {
     flex: 1,
   },
   player: {
-    backgroundColor: "black",
+    backgroundColor: "#1B137D",
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 5,
-    padding: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 10
   },
   title: {
     color: Colors.light.text,
