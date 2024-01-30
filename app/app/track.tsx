@@ -32,14 +32,29 @@ export default function trackScreen() {
   const vinylSize = screenWidth * 0.8; // 80% of screen width
   const albumArtSize = vinylSize * 0.36; // 36% of the vinyl size
 
-  return (
+return (
     <View style={styles.container}>
-      <Animated.View style={[styles.vinyl, { width: vinylSize, height: vinylSize, borderRadius: vinylSize / 2, transform: [{ rotate: spin }] }]}>
+      <Animated.View style={[styles.vinyl, { 
+        width: vinylSize, 
+        height: vinylSize, 
+        borderRadius: vinylSize / 2, 
+        transform: [{ rotate: spin }] 
+      }]}>
         <View style={[styles.centralHole, { borderRadius: vinylSize * 0.02 }]} />
-        <Image source={require('@/assets/images/album_art.jpg')} style={[styles.albumArt, { width: albumArtSize, height: albumArtSize, borderRadius: albumArtSize / 2 }]} />
+        <Image 
+          source={require('@/assets/images/album_art.jpg')} 
+          style={[styles.albumArt, { 
+            width: albumArtSize, 
+            height: albumArtSize, 
+            borderRadius: albumArtSize / 2 
+          }]} 
+        />
       </Animated.View>
-      <Text style={styles.title}>{track.title}</Text>
-      <Text style={styles.artist}>{track.artist}</Text>
+
+      <View style={styles.trackInfo}>
+        <Text style={styles.title}>{track.title}</Text>
+        <Text style={styles.artist}>{track.artist}</Text>
+      </View>
 
       <View style={styles.controls}>
         <TouchableOpacity>
@@ -65,8 +80,9 @@ export default function trackScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between', // Distribute space evenly
+    alignItems: 'center', // Center horizontally
+    paddingVertical: 100, // Add some top padding
   },
     vinyl: {
     justifyContent: 'center',
@@ -84,6 +100,10 @@ const styles = StyleSheet.create({
     borderWidth: 5,
     borderColor: 'black'
   },
+  trackInfo: {
+    alignItems: 'center', // Center the track information
+    
+  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -92,12 +112,12 @@ const styles = StyleSheet.create({
   artist: {
     fontSize: 18,
     color: 'gray',
-    marginBottom: 20,
   },
   controls: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '100%',
     paddingHorizontal: 50,
+    paddingBottom: 20, // Add some bottom padding
   },
 });

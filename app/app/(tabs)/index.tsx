@@ -37,7 +37,7 @@ export default function HomeScreen() {
         <TouchableOpacity 
           key={index} 
           style={styles.buttonStyle}
-          onPress={() => handlePress(orchestra)} 
+          // onPress={() => handlePress(orchestra)} 
         >
           <Image source={images[orchestra]} style={styles.songAlbumArt} />
           <Text style={styles.buttonText}>{orchestra}</Text>
