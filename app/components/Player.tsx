@@ -87,10 +87,10 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   info: {
-    flex: 1
+    flex: 1,
   },
   player: {
-    backgroundColor: "1B137D",
+    backgroundColor: "black",
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
@@ -98,10 +98,10 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   title: {
-    color: 'red',
+    color: Colors.light.text,
   },
   subtitle: {
-    color: 'lightgray',
+    color: Colors.light.text,
     fontSize: 12,
   },
   image: {
