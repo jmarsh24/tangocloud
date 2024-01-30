@@ -87,7 +87,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingBottom: 10,
     paddingHorizontal: 10,
-    gap: 12
+    gap: 12,
+    padding: 10,
   },
   searchContainer: {
     flex: 1,
