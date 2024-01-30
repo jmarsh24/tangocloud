@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
+import { Link, Stack } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { usePlayerContext } from '@/providers/PlayerProvider';
 import { useEffect, useState } from 'react';
@@ -59,21 +60,23 @@ const Player = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.player}>
-        <Image source={require('@/assets/images/album_art.jpg')} style={styles.image} />
-        <View style={styles.info}>
-          <Text style={styles.title}>{track?.title}</Text>
-          <Text style={styles.subtitle}>{track?.orchestra}</Text>
-        </View>
+      <Link href="/track" asChild>
+        <View style={styles.player}>
+          <Image source={require('@/assets/images/album_art.jpg')} style={styles.image} />
+          <View style={styles.info}>
+            <Text style={styles.title}>{track?.title}</Text>
+            <Text style={styles.subtitle}>{track?.orchestra}</Text>
+          </View>
 
-        <Ionicons
-          onPress={onPlayPause}
-          disabled={false}
-          name={isPlaying ? 'pause' : 'play'}
-          size={22}
-          color={track ? Colors.light.text : Colors.light.tint }
-        />
-      </View>
+          <Ionicons
+            onPress={onPlayPause}
+            disabled={false}
+            name={isPlaying ? 'pause' : 'play'}
+            size={22}
+            color={track ? Colors.light.text : Colors.light.tint }
+          />
+        </View>
+      </Link>
     </View>
   );
 };

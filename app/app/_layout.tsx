@@ -10,6 +10,8 @@ import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 import PlayerProvider from '@/providers/PlayerProvider';
 import ApolloClientProvider from '@/providers/ApolloClientProvider';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Drawer } from 'expo-router/drawer';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -56,10 +58,29 @@ function RootLayoutNav() {
       <ApolloClientProvider>
         <PlayerProvider>
           <Stack>
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <Drawer>
+                <Drawer.Screen
+                  name="index"
+                  options={{
+                    drawerLabel: 'Home',
+                    title: 'overview',
+                    
+                  }}
+                />
+                <Drawer.Screen
+                  name="user"
+                  options={{
+                    drawerLabel: 'User',
+                    title: 'overview',
+                  }}
+                />
+              </Drawer>
+            </GestureHandlerRootView>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-            <Stack.Screen name="search" />
-            <Stack.Screen name="library" />
+            <Stack.Screen name="(drawer)/user" options={{ headerShown: false }} />
+            <Stack.Screen name="track" options={{ presentation: 'modal' }} />
           </Stack>
         </PlayerProvider>
       </ApolloClientProvider>

@@ -37,7 +37,7 @@ export default function TabLayout() {
           title: 'Home',
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           headerLeft: () => (
-            <Link href="/modal" asChild>
+            <Link href="/user" asChild>
               <Image source={require('@/assets/images/avatar.jpg')} style={styles.image} />
             </Link>
           ),
@@ -49,7 +49,7 @@ export default function TabLayout() {
           title: 'Search',
           tabBarIcon: ({ color }) => <TabBarIcon name="search1" color={color} />,
           headerLeft: () => (
-            <Link href="/modal" asChild>
+            <Link href="/user" asChild>
               <Image source={require('@/assets/images/avatar.jpg')} style={styles.image} />
             </Link>
           ),
