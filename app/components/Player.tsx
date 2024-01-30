@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
-import { Link, Stack } from 'expo-router';
+import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { usePlayerContext } from '@/providers/PlayerProvider';
 import { useEffect, useState } from 'react';
@@ -58,9 +58,13 @@ const Player = () => {
     }
   };
 
+  if (!track || !track.title) {
+    return null; // Don't render the player if there is no track or track title
+  }
+
   return (
     <View style={styles.container}>
-      <Link href="/track" asChild>
+      <Link href="/track">
         <View style={styles.player}>
           <Image source={require('@/assets/images/album_art.jpg')} style={styles.image} />
           <View style={styles.info}>
@@ -82,23 +86,19 @@ const Player = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+   container: {
     position: 'absolute',
     top: -90,
-    width: '100%',
     padding: 10,
-  },
-  info: {
-    flex: 1,
   },
   player: {
     backgroundColor: "#1B137D",
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 5,
     paddingHorizontal: 15,
-    paddingVertical: 10
+    paddingVertical: 10,
+    width: '100%',
   },
   title: {
     color: Colors.light.text,
@@ -112,7 +112,10 @@ const styles = StyleSheet.create({
     height: 50,
     marginRight: 10,
     borderRadius: 5,
-  }
+  },
+  info: {
+    flex: 1, // Take up all available space after the image
+  },
 });
 
 export default Player;
