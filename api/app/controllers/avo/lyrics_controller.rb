@@ -1,4 +1,3 @@
-
 # frozen_string_literal: true
 
 # This controller has been generated to enable Rails' resource routes.
