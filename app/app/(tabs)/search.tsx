@@ -9,7 +9,7 @@ import {
 import TrackListItem from '@/components/TrackListItem';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AntDesign } from '@expo/vector-icons';
-import { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import Colors from '@/constants/Colors';
 
@@ -30,12 +30,36 @@ const query = gql`
 
 export default function SearchScreen() {
   const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
 
-  const { data, loading, error } = useQuery(query, {
-    variables: { q: search },
+  const { data, loading, error, fetchMore } = useQuery(query, {
+    variables: { q: search, page: 1, per_page: 10 },
+    fetchPolicy: 'cache-and-network',
   });
 
   const tracks = data?.searchElRecodoSongs || [];
+
+  const loadMoreTracks = useCallback(() => {
+    if (isFetchingMore) return;
+
+    setIsFetchingMore(true);
+    setPage(prevPage => prevPage + 1);
+
+    fetchMore({
+      variables: { q: search, page: page + 1, per_page: 10 },
+      updateQuery: (prev, { fetchMoreResult }) => {
+        setIsFetchingMore(false);
+        if (!fetchMoreResult) return prev;
+        return Object.assign({}, prev, {
+          searchElRecodoSongs: [
+            ...prev.searchElRecodoSongs,
+            ...fetchMoreResult.searchElRecodoSongs,
+          ],
+        });
+      },
+    });
+  }, [isFetchingMore, search, page, fetchMore]);
 
   const ItemSeparator = () => <View style={styles.itemSeperator} />;
 
@@ -70,10 +94,12 @@ export default function SearchScreen() {
       <FlatList
         data={tracks}
         renderItem={({ item }) => <TrackListItem track={item} />}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={item => item.id + Math.random().toString()} // Example of creating a more unique key
         ItemSeparatorComponent={ItemSeparator}
         showsVerticalScrollIndicator={false}
         style={styles.list}
+        onEndReached={loadMoreTracks}
+        onEndReachedThreshold={0.5} // Trigger the load more function when halfway through the last item
       />
     </SafeAreaView>
   );
