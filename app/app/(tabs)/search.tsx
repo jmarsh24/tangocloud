@@ -137,6 +137,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     color: Colors.light.searchIcon,
     left: 10,
+    zIndex: 1,
   },
   clearIcon: {
     position: 'absolute',
