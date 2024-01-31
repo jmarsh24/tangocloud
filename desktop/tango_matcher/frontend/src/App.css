@@ -81,7 +81,23 @@
     background-color: crimson;
 }
 
-.matches {
+.green-background {
     background-color: forestgreen;
+}
+
+.matches {
+    background-color: lightgreen;
     color: black;
+}
+
+.to-be-matched-row {
+    background-color: orange;
+}
+
+.single-matching-record {
+    padding: 4px;
+}
+
+.duplicate {
+    font-weight: bold;
 }

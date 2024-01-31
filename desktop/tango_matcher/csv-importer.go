@@ -16,7 +16,7 @@ func first(n int, _ error) int {
 }
 
 func (a *App) ImportCsvFile() {
-	filePath := "C:/dev-perso/desktop/tango_matcher/elrecodo.csv"
+	filePath := "elrecodo.csv"
 	FillDatabaseFromCsvFile(filePath)
 }
 
@@ -85,10 +85,11 @@ func FillDatabaseFromCsvFile(csvFilePath string) {
 		// recording.created_at = lineItems[20]
 		// recording.updated_at = lineItems[21]
 
-		log.Println(recording.MusicId)
+		//log.Println(recording.MusicId)
 
 		err = createRecording(db, &recording)
 		if err != nil {
+			log.Println(err)
 			log.Fatal(err)
 		}
 	}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -69,25 +70,25 @@ func getRecordings(db *gorm.DB, orchestra string, singer string, title string, o
 	filteredResults := db
 
 	if orchestra != "" {
-		filteredResults = filteredResults.Where("n_orchestra LIKE ?", "%"+orchestra+"%")
+		filteredResults = filteredResults.Where("n_orchestra LIKE ?", "%"+strings.ToLower(orchestra)+"%")
 	}
 	if singer != "" {
-		filteredResults = filteredResults.Where("n_singer LIKE ?", "%"+singer+"%")
+		filteredResults = filteredResults.Where("n_singer LIKE ?", "%"+strings.ToLower(singer)+"%")
 	}
 	if title != "" {
-		filteredResults = filteredResults.Where("n_title LIKE ?", "%"+title+"%")
+		filteredResults = filteredResults.Where("n_title LIKE ?", "%"+strings.ToLower(title)+"%")
 	}
 
 	filteredResults = filteredResults.Where("is_mapped = ?", ismapped)
 
 	if startYear != "" {
-		filteredResults = filteredResults.Where("date >= ?", startYear+"-01-01 00:00:00")
+		filteredResults = filteredResults.Where("date >= ?", "19"+startYear+"-01-01 00:00:00")
 	}
 	if endYear != "" {
-		filteredResults = filteredResults.Where("date <= ?", endYear+"-12-31 00:00:00")
+		filteredResults = filteredResults.Where("date <= ?", "19"+endYear+"-12-31 00:00:00")
 	}
 
-	filteredResults = filteredResults.Where("style IN ?", []string{"TANGO", "MILONGA", "VALS"})
+	filteredResults = filteredResults.Where("style IN ?", []string{"TANGO", "MILONGA", "VALS", "CANDOMBE", "RANCHERA"})
 
 	if err := filteredResults.Order(orderby).Find(&recordings).Error; err != nil {
 		return recordings, err

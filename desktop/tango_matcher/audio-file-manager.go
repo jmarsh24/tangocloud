@@ -29,7 +29,7 @@ func (a *App) GetAudioFilesInFolder(folderPath string) []AudioFile {
 	}
 
 	for _, file := range unAssignedFiles {
-		if (strings.HasSuffix(file.Name(), ".flac")) || (strings.HasSuffix(file.Name(), ".aif")) || (strings.HasSuffix(file.Name(), ".m4a")) || (strings.HasSuffix(file.Name(), ".mp3")) {
+		if (strings.HasSuffix(file.Name(), ".flac")) || (strings.HasSuffix(file.Name(), ".aif")) || (strings.HasSuffix(file.Name(), ".aiff")) || (strings.HasSuffix(file.Name(), ".m4a")) || (strings.HasSuffix(file.Name(), ".mp3")) {
 			filename := filepath.Join(folderPath, file.Name())
 
 			var a AudioFile
