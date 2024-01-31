@@ -23,10 +23,8 @@ Rails.application.routes.draw do
     mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
   end
 
-  constraints AdminConstraint do
-    mount GoodJob::Engine => "good_job"
-    mount Avo::Engine => "admin"
-  end
+  mount GoodJob::Engine => "good_job"
+  mount Avo::Engine => "admin"
 
   post "/graphql", to: "graphql#execute"
 
