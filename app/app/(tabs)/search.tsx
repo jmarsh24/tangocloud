@@ -64,7 +64,7 @@ export default function SearchScreen() {
   const ItemSeparator = () => <View style={styles.itemSeperator} />;
 
   return (
-    <SafeAreaView>
+    <View>
       <View style={styles.header}>
         <View style={styles.searchContainer}>
           <AntDesign name="search1" size={20} style={styles.searchIcon} />
@@ -101,7 +101,7 @@ export default function SearchScreen() {
         onEndReached={loadMoreTracks}
         onEndReachedThreshold={0.5} // Trigger the load more function when halfway through the last item
       />
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -157,4 +157,4 @@ const styles = StyleSheet.create({
   itemSeperator: {
     height: 10,
   },
-});
+}); 
