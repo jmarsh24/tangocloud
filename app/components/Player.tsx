@@ -13,10 +13,6 @@ const Player = () => {
   const { track } = usePlayerContext();
 
   useEffect(() => {
-    playTrack();
-  }, [track]);
-
-  useEffect(() => {
     return sound
       ? () => {
           console.log('Unloading Sound');
