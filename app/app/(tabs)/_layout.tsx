@@ -1,19 +1,19 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import AntDesign from '@expo/vector-icons/AntDesign';
 import { Link, Tabs } from 'expo-router';
-import { Pressable, useColorScheme, Text, View } from 'react-native';
+import { useColorScheme, View, StyleSheet, Image } from 'react-native';
 import { BottomTabBar } from '@react-navigation/bottom-tabs';
 
-import Colors from '../../constants/Colors';
-import Player from '../../components/Player';
+import Colors from '@/constants/Colors';
+import Player from '@/components/Player';
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
 function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
+  name: React.ComponentProps<typeof AntDesign>['name'];
   color: string;
 }) {
-  return <FontAwesome size={22} style={{ marginBottom: -3 }} {...props} />;
+  return <AntDesign size={22} style={{ marginBottom: -3 }} {...props} />;
 }
 
 export default function TabLayout() {
@@ -36,18 +36,9 @@ export default function TabLayout() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
+          headerLeft: () => (
+            <Link href="/user" asChild>
+              <Image source={require('@/assets/images/avatar.jpg')} style={styles.image} />
             </Link>
           ),
         }}
@@ -56,18 +47,36 @@ export default function TabLayout() {
         name="search"
         options={{
           title: 'Search',
-          headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="search1" color={color} />,
+          headerLeft: () => (
+            <Link href="/user" asChild>
+              <Image source={require('@/assets/images/avatar.jpg')} style={styles.image} />
+            </Link>
+          ),
         }}
       />
 
       <Tabs.Screen
-        name="favorites"
+        name="library"
         options={{
-          title: 'Favorites',
-          tabBarIcon: ({ color }) => <TabBarIcon name="heart" color={color} />,
+          title: 'My Library',
+          tabBarIcon: ({ color }) => <TabBarIcon name="book" color={color} />,
+          headerLeft: () => (
+            <Link href="/modal" asChild>
+              <Image source={require('@/assets/images/avatar.jpg')} style={styles.image} />
+            </Link>
+          ),
         }}
       />
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  image: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    marginLeft: 10,
+  },
+});
