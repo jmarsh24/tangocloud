@@ -38,7 +38,7 @@ env:
 accessories:
   db:
     image: postgres:15
-    host: 10.1.0.3
+    host: 167.235.70.96
     port: 5432
     env:
       clear:
