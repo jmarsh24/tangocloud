@@ -21,6 +21,27 @@
   --color-tint: #0075ff;
   --color-background-input-primary-default: #fff;
   --border-input-primary-active: #0075ff;
+  --input-border-primary-default: #dfe1e5;
+  --input-bg-primary-default: hsla(0, 0%, 100%, 0.8);
+  --input-bg-primary-hover: #fff;
+  --input-bg-primary-active: #fff;
+  --input-bg-primary-focus: #fff;
+  --input-bg-primary-error: #fff;
+  --input-bg-primary-disabled: #f4f6f8;
+  --input-bg-primary-readonly: #f4f6f8;
+  --input-bg-primary-readonly-hover: #f4f6f8;
+  --input-bg-primary-readonly-active: #f4f6f8;
+  --input-bg-primary-readonly-focus: #f4f6f8;
+  --input-bg-primary-readonly-error: #f4f6f8;
+  --input-bg-primary-readonly-disabled: #f4f6f8;
+  --input-bg-primary-readonly-tint: #f4f6f8;
+  --input-bg-primary-readonly-tint-hover: #f4f6f8;
+  --input-bg-primary-readonly-tint-active: #f4f6f8;
+  --input-bg-primary-readonly-tint-focus: #f4f6f8;
+  --input-bg-primary-readonly-tint-error: #f4f6f8;
+  --input-bg-primary-readonly-tint-disabled: #f4f6f8;
+  --input-bg-primary-tint: #f4f6f8;
+  --link-color-primary-default: #007aff;
 }
 @mixin h1-regular() {
   font-size: 48px;
@@ -35,7 +56,7 @@
 @mixin h2-regular() {
   font-size: 36px;
   font-family: var(--font);
-  font-weight: 900;
+  font-weight: 600;
 
   line-height: 28px;
 }

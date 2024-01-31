@@ -1,67 +1,27 @@
+.input-container {
+}
+
+.input-label {
+  font-size: 16px;
+}
+
 .input {
-  padding: var(--spacing-2xs) var(--spacing-xs);
-  border-radius: var(--border-button-md);
-  background-color: var(--color-background-input-primary-default);
-  border: var(--border-input-primary-active);
-  border-color: transparent;
-
-  &__icon {
-    color: var(--color-background-icon-action-secondary-default);
-  }
-
-  &__input {
-    background-color: transparent;
-    border: none;
-    color: var(--color-text-input-primary-default);
-    width: 100%;
-    // @include font-style-input-primary-default;
-    &::placeholder {
-      color: var(--color-text-input-primary-placeholder);
-    }
-    &:focus {
-      outline: none;
-    }
-  }
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--input-border-primary-default);
+  background: var(--input-bg-primary-default);
+  width: 100%;
+  font-size: 16px;
 }
 
-.input--text,
-.input--email {
-  .input__input {
-    width: 100%;
-    padding: 8px 12px;
-    border-radius: 8px;
-    border: 1px solid var(--input-border-primary-default);
-    background: var(--input-bg-primary-default);
-  }
+.input:not(:placeholder-shown) ~ .input-label,
+.input:focus ~ .input-label {
+  font-size: 12px;
+  top: -10px;
+  left: 10px;
+  color: var(--color-text-input-primary-default);
 }
 
-.input--select {
-  position: relative;
-
-  &::after {
-    content: "";
-    display: block;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    margin-top: -6px;
-    width: 12px;
-    height: 12px;
-    background-image: url(../images/icons/chevron-down.svg);
-    background-size: 12px 12px;
-    background-repeat: no-repeat;
-    background-position: center;
-    pointer-events: none;
-  }
-
-  .input__input {
-    padding-right: 18px;
-    outline: none;
-  }
-}
-
-.input--no-label {
-  label {
-    display: none;
-  }
+.input.has-content ~ .input-label {
+  display: none;
 }

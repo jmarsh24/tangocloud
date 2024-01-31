@@ -1,5 +1,4 @@
 h1 Reset your password
-
 = form_with(url: identity_password_reset_path, method: :patch) do |form|
   .stack
     - if @user.errors.any?
@@ -12,17 +11,13 @@ h1 Reset your password
           - @user.errors.each do |error|
             li
               = error.full_message
-
     = form.hidden_field :sid, value: params[:sid]
-
     div
       = form.label :password, "New password"
       = form.password_field :password, required: true, autofocus: true, autocomplete: "new-password", class: "input input--password"
       div 12 characters minimum.
-
     div
       = form.label :password_confirmation, "Confirm new password"
       = form.password_field :password_confirmation, required: true, autocomplete: "new-password", class: "input input--password"
-
     div
       = form.submit "Save changes", class: "button button--primary"

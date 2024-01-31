@@ -1,7 +1,7 @@
 .container.stack.stack--24
   .stack.stack--24.stack--justify-center.stack--align-center
     .logo
-    - if Current.user.admin?
+    - if Current.user&.admin?
       = image_tag Current.user.avatar_thumbnail, class: "avatar"
       = link_to "Admin", avo_path, class: "button button--primary"
       = link_to "Background Jobs", good_job_path, class: "button button--primary"
