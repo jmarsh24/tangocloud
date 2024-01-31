@@ -77,7 +77,19 @@ func removeAccents(s string) string {
 	t := transform.Chain(norm.NFD, runes.Remove(runes.In(unicode.Mn)), norm.NFC)
 	output, _, e := transform.String(t, s)
 	if e != nil {
-		panic(e)
+		log.Fatal(e)
 	}
 	return output
 }
+
+// func removeDuplicates(slice []Mapping) []Mapping {
+// 	allKeys := make(map[Mapping]bool)
+// 	list := []Mapping{}
+// 	for _, item := range slice {
+// 		if _, value := allKeys[item]; !value {
+// 			allKeys[item] = true
+// 			list = append(list, item)
+// 		}
+// 	}
+// 	return list
+// }
