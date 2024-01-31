@@ -40,8 +40,7 @@ class ElRecodoSong < ApplicationRecord
       misspellings: {below: 5},
       page:,
       per_page:,
-      load: false
-    )
+      load: false)
   end
 
   def search_data
