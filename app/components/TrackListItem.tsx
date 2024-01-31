@@ -1,6 +1,7 @@
 import { Text, View, StyleSheet, Image, Pressable } from 'react-native';
-import { Track } from '../types';
-import { usePlayerContext } from '../providers/PlayerProvider';
+import { Track } from '@/types';
+import { usePlayerContext } from '@/providers/PlayerProvider';
+import Colors from '@/constants/Colors';
 
 type TrackListItemProps = {
   track: Track;
@@ -10,12 +11,9 @@ export default function TrackListItem({ track }: TrackListItemProps) {
   const { setTrack } = usePlayerContext();
 
   return (
-    <Pressable onPress={() => setTrack(track)} style={styles.container}>
-      {/* <Image
-        source={{ uri: track.album.images[0]?.url }}
-        style={styles.image}
-      /> */}
-      <View style={styles.songCard}>
+    <Pressable onPress={() => setTrack(track)} style={styles.songCard}>
+      <Image source={require('@/assets/images/album_art.jpg')} style={styles.songAlbumArt} />
+      <View style={styles.songTextContainer}>
         <Text style={styles.songTitle}>{track.title}</Text>
         <Text style={styles.songDetails}>
           {track.orchestra} - {track.singer}
@@ -29,44 +27,42 @@ export default function TrackListItem({ track }: TrackListItemProps) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 5,
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-  },
-  image: {
-    width: 50,
-    aspectRatio: 1,
-    borderRadius: 5,
-    marginRight: 10,
-  }, 
   songCard: {
     flex: 1,
-    backgroundColor: "black",
+    backgroundColor: Colors.light.tint,
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "row",
     gap: 5,
-    paddingTop: 20,
-    paddingBottom: 20,
+    paddingTop: 10,
+    paddingBottom: 10,
     paddingLeft: 10,
     paddingRight: 10,
     borderRadius: 8,
   },
+  songAlbumArt: {
+    width: 56,
+    height: 56,
+    aspectRatio: 1,
+    borderRadius: 5,
+  }, 
   songTitle: {
     fontWeight: "bold",
     fontSize: 16,
-    color: "white",
+    color: Colors.light.text,
     marginLeft: 10,
   },
   songDetails: {
     fontSize: 14,
-    color: "#999",
+    color: Colors.light.text,
     marginLeft: 10,
   },
   songSubDetails: {
     fontSize: 12,
-    color: "#888",
+    color: Colors.light.text,
     marginLeft: 10,
-  }
+  },
+  songTextContainer: {
+    display: "flex",
+    flexDirection: "column",
+  },
 });

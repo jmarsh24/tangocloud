@@ -33,11 +33,14 @@ class ElRecodoSong < ApplicationRecord
   validates :title, presence: true
   validates :page_updated_at, presence: true
 
-  def self.search_songs(query)
+  def self.search_songs(query, page: 1, per_page: 10)
     search(query,
       fields: ["title^5", "composer", "author", "lyrics", "orchestra", "singer"],
       match: :word_middle,
-      misspellings: {below: 5})
+      misspellings: {below: 5},
+      page:,
+      per_page:,
+      load: false)
   end
 
   def search_data
