@@ -4,18 +4,15 @@
 #
 # Table name: audios
 #
-#  id            :uuid             not null, primary key
-#  bit_rate      :integer
-#  sample_rate   :integer
-#  channels      :integer
-#  bit_depth     :integer
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  bit_rate_mode :string
-#  codec         :string
-#  length        :float
-#  encoder       :string
-#  metadata      :jsonb            not null
+#  id          :uuid             not null, primary key
+#  duration    :integer          default(0), not null
+#  format      :string           not null
+#  bit_rate    :integer
+#  sample_rate :integer
+#  channels    :integer
+#  bit_depth   :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
 #
 class Audio < ApplicationRecord
   has_many :audio_transfers, dependent: :destroy

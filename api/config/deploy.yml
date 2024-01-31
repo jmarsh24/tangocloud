@@ -6,7 +6,7 @@ servers:
   web:
     hosts:
       - 94.130.104.7
-    cmd: bundle exec puma -C /rails/config/puma.rb
+    cmd: bin/rails s -C /rails/config/puma.rb
   worker-1:
     hosts:
       - 195.201.147.15

@@ -3,10 +3,10 @@ p style="color: green"
 p style="color: red"
   = alert
 .stack.stack--24
-  h1.text--h2-regular Sign in
+  h1.text--h2-regular Sign in to your account
   = form_with(url: sign_in_path) do |form|
     .stack
-      .stack.stack--16
+      .stack.stack--16.card
         .input-container
           = form.label :email, class: "input--no-label"
           = form.email_field :email, value: params[:email_hint], required: true, autofocus: true, autocomplete: "email", class: "input input--email"
