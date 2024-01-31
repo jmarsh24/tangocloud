@@ -1,3 +1,29 @@
+.input {
+  padding: var(--spacing-2xs) var(--spacing-xs);
+  border-radius: var(--border-button-md);
+  background-color: var(--color-background-input-primary-default);
+  border: var(--border-input-primary-active);
+  border-color: transparent;
+
+  &__icon {
+    color: var(--color-background-icon-action-secondary-default);
+  }
+
+  &__input {
+    background-color: transparent;
+    border: none;
+    color: var(--color-text-input-primary-default);
+    width: 100%;
+    // @include font-style-input-primary-default;
+    &::placeholder {
+      color: var(--color-text-input-primary-placeholder);
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
 .input--text,
 .input--email {
   .input__input {

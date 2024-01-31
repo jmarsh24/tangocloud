@@ -1,0 +1,25 @@
+h1 Activity Log
+
+#sessions.stack
+  - @events.each do |event|
+    div id="#{dom_id(event)}"
+      p
+        strong User Agent:
+        = event.user_agent
+
+      p
+        strong Action:
+        = event.action
+
+      p
+        strong Ip Address:
+        = event.ip_address
+
+      p
+        strong Created at:
+        = event.created_at
+
+br
+
+div
+  = link_to "Back", root_path

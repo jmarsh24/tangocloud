@@ -1,0 +1,30 @@
+p style="color: green"
+  = notice
+p style="color: red"
+  = alert
+
+h1 Sign in
+
+= form_with(url: sign_in_path) do |form|
+  div
+    = form.label :email
+    = form.email_field :email, value: params[:email_hint], required: true, autofocus: true, autocomplete: "email", class: "input input--email"
+
+  div
+    = form.label :password, class: "input"
+    = form.password_field :password, required: true, autocomplete: "current-password", class: "input input--password"
+
+  div
+    = form.submit "Sign in"
+
+br
+
+div
+  = button_to "Sign in with OmniAuth", "/auth/developer", "data-turbo": false, class: "button button--primary"
+
+br
+
+div
+  = link_to "Sign up", sign_up_path, class: "button button--primary"
+  |
+  = link_to "Forgot your password?", new_identity_password_reset_path, class: "button button--secondary"

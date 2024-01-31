@@ -1,0 +1,32 @@
+p style="color: red"
+  = alert
+- if Current.user.verified?
+  h1 Change your email
+- else
+  h1 Verify your email
+  p We sent a verification email to the address below. Check that email and follow those instructions to confirm it's your email address.
+  p
+    = button_to "Re-send verification email", identity_email_verification_path
+= form_with(url: identity_email_path, method: :patch) do |form|
+  .stack
+    - if @user.errors.any?
+      div style="color: red"
+        h2
+          = pluralize(@user.errors.count, "error")
+          prohibited this user from being saved:
+
+        ul
+          - @user.errors.each do |error|
+            li
+              = error.full_message
+    div
+      = form.label :email, "New email"
+      = form.email_field :email, required: true, autofocus: true, class: "input input--email"
+    div
+      = form.label :password_challenge
+      = form.password_field :password_challenge, required: true, autocomplete: "current-password", class: "input"
+    div
+      = form.submit "Save changes"
+br
+div
+  = link_to "Back", root_path
