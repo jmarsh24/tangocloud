@@ -28,11 +28,10 @@ module AudioProcessing
       :media_type,
       :lyrics,
       :format,
-      :comment,
+      :comments,
       :bpm,
       :ert_number,
       :source,
-      :label,
       :lyricist,
       :original_album
     ).freeze
@@ -50,7 +49,7 @@ module AudioProcessing
 
       audio_stream = streams.find { |stream| stream[:codec_type] == "audio" }
 
-      comment = comment || tags.dig(:description) || tags.dig(:tit3)
+      comments = comments || tags.dig(:description) || tags.dig(:tit3)
 
       Metadata.new(
         duration: format[:duration].to_f,
@@ -75,25 +74,24 @@ module AudioProcessing
         encoder: tags.dig(:encoder),
         media_type: tags.dig(:tmed),
         lyrics: tags.dig(:"lyrics-eng") || tags.dig(:lyrics) || tags.dig(:unsyncedlyrics),
-        comment:,
-        record_label: tags.dig(:publisher),
-        singer: tags.dig(:singer),
+        comments:,
+        record_label: record_label(comments),
+        singer: tags.dig(:artist),
         bpm: tags.dig(:bpm),
-        ert_number: ert_number(comment),
-        source: source(comment),
-        label: label(comment),
+        ert_number: ert_number(comments),
+        source: source(comments),
         lyricist: extract_roles(tags.dig(:composer)).lyricist,
         composer: extract_roles(tags.dig(:composer)).composer,
-        original_album: original_album(comment)
+        original_album: original_album(comments)
       )
     end
 
-    def ert_number(comment)
-      comment.match(/id: (\w+-\d+)/)&.captures&.first&.split("-")&.last.to_i
+    def ert_number(comments)
+      comments.match(/id: (\w+-\d+)/)&.captures&.first&.split("-")&.last.to_i
     end
 
-    def source(comment)
-      source = comment.match(/source: (\w+)/)&.captures&.first
+    def source(comments)
+      source = comments.match(/source: (\w+)/)&.captures&.first
 
       return "TangoTunes" if source == "tt"
       return "TangoTimeTravel" if source == "ttt"
@@ -101,12 +99,12 @@ module AudioProcessing
       nil
     end
 
-    def label(comment)
-      comment.match(/label: (\w+)/)&.captures&.first
+    def record_label(comments)
+      comments.match(/label: ([\w\s]+?) \|/)&.captures&.first
     end
 
-    def original_album(comment)
-      match = comment.match(/original_album: (.*?)(?:\s*\||\r\n|$)/)
+    def original_album(comments)
+      match = comments.match(/original_album: (.*?)(?:\s*\||\r\n|$)/)
       match&.captures&.first
     end
 

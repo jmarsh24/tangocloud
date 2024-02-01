@@ -1,6 +1,6 @@
 module AudioProcessing
   class AudioConverter
-    attr_reader :file, :format, :bitrate, :sample_rate, :channels, :codec, :output_directory
+    attr_reader :file, :format, :bitrate, :sample_rate, :channels, :codec, :movie, :output_directory
 
     DEFAULT_OPTIONS = {
       format: "aac",
@@ -22,12 +22,12 @@ module AudioProcessing
       @codec = options[:codec]
       @output_directory = options[:output_directory]
       @filename = options[:filename]
+      @movie = FFMPEG::Movie.new(file.to_s)
     end
 
     def convert
       ensure_output_directory_exists
       output = generate_output_filename
-      movie = FFMPEG::Movie.new(file)
 
       custom_options = [
         "-i", file,                          # Input audio file
@@ -40,7 +40,7 @@ module AudioProcessing
         "-id3v2_version", "3"                # Ensure compatibility with ID3v2
       ]
 
-      movie.transcode(output, custom_options) do |progress|
+      @movie.transcode(output, custom_options) do |progress|
         puts progress
       end
 
