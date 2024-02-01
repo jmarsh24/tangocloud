@@ -122,9 +122,19 @@ module Import
       end
 
       def safe_parse_date(date_string)
-        Date.parse(date_string)
-      rescue ArgumentError, TypeError
-        nil
+        year, month, day = date_string.split("-")
+
+        # Set defaults if month or day are '00'
+        month = "01" if month == "00"
+        day = "01" if day == "00"
+
+        # Construct a new date - if the original day or month were '00', they are replaced with '01'
+        begin
+          Date.new(year.to_i, month.to_i, day.to_i)
+        rescue ArgumentError => e
+          Rails.error("El Recodo Song Scraper: #{e.message}")
+          raise e
+        end
       end
 
       def parse_html

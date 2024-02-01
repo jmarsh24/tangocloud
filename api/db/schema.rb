@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_26_111013) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_31_022935) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -225,11 +225,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_26_111013) do
     t.string "author"
     t.string "label"
     t.text "lyrics"
-    t.string "normalized_title"
-    t.string "normalized_orchestra"
-    t.string "normalized_singer"
-    t.string "normalized_composer"
-    t.string "normalized_author"
     t.string "search_data"
     t.datetime "synced_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "page_updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
@@ -237,18 +232,22 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_26_111013) do
     t.datetime "updated_at", null: false
     t.string "soloist"
     t.string "director"
-    t.string "normalized_soloist"
-    t.string "normalized_director"
     t.index ["date"], name: "index_el_recodo_songs_on_date"
     t.index ["ert_number"], name: "index_el_recodo_songs_on_ert_number"
     t.index ["music_id"], name: "index_el_recodo_songs_on_music_id", unique: true
-    t.index ["normalized_composer"], name: "index_el_recodo_songs_on_normalized_composer", opclass: :gist_trgm_ops, using: :gist
-    t.index ["normalized_orchestra"], name: "index_el_recodo_songs_on_normalized_orchestra", opclass: :gist_trgm_ops, using: :gist
-    t.index ["normalized_singer"], name: "index_el_recodo_songs_on_normalized_singer", opclass: :gist_trgm_ops, using: :gist
-    t.index ["normalized_title"], name: "index_el_recodo_songs_on_normalized_title", opclass: :gist_trgm_ops, using: :gist
     t.index ["page_updated_at"], name: "index_el_recodo_songs_on_page_updated_at"
     t.index ["search_data"], name: "index_el_recodo_songs_on_search_data", opclass: :gist_trgm_ops, using: :gist
     t.index ["synced_at"], name: "index_el_recodo_songs_on_synced_at"
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "action", null: false
+    t.string "user_agent"
+    t.string "ip_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_events_on_user_id"
   end
 
   create_table "friendly_id_slugs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -457,6 +456,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_26_111013) do
     t.index ["slug"], name: "index_recordings_on_slug", unique: true
   end
 
+  create_table "sessions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "user_agent"
+    t.string "ip_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
   create_table "singers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "slug", null: false
@@ -550,26 +558,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_26_111013) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "user_preferences", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "username"
+  create_table "users", force: :cascade do |t|
+    t.string "email", null: false
+    t.string "password_digest", null: false
+    t.boolean "verified", default: false, null: false
+    t.string "provider"
+    t.string "uid"
+    t.string "username", null: false
     t.string "first_name"
     t.string "last_name"
-    t.string "gender"
-    t.string "birth_date"
-    t.string "locale", default: "en", null: false
-    t.uuid "user_id", null: false
+    t.boolean "admin", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_user_preferences_on_user_id"
-    t.index ["username"], name: "index_user_preferences_on_username", unique: true
-  end
-
-  create_table "user_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "user_id", null: false
-    t.boolean "admin", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_user_settings_on_user_id"
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
   create_table "videos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -621,6 +623,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_26_111013) do
   add_foreign_key "couples", "dancers", column: "partner_id"
   add_foreign_key "dancer_videos", "dancers"
   add_foreign_key "dancer_videos", "videos"
+  add_foreign_key "events", "users"
   add_foreign_key "lyrics", "compositions"
   add_foreign_key "playlist_audio_transfers", "audio_transfers"
   add_foreign_key "playlist_audio_transfers", "playlists"
@@ -634,13 +637,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_26_111013) do
   add_foreign_key "recordings", "orchestras"
   add_foreign_key "recordings", "periods"
   add_foreign_key "recordings", "singers"
+  add_foreign_key "sessions", "users"
   add_foreign_key "subscriptions", "action_auth_users"
   add_foreign_key "taggings", "tags"
   add_foreign_key "tanda_audio_transfers", "audio_transfers"
   add_foreign_key "tanda_audio_transfers", "tandas"
   add_foreign_key "tandas", "action_auth_users", column: "user_id"
   add_foreign_key "tandas", "audio_transfers"
-  add_foreign_key "user_preferences", "action_auth_users", column: "user_id"
-  add_foreign_key "user_settings", "action_auth_users", column: "user_id"
   add_foreign_key "videos", "recordings"
 end

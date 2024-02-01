@@ -1,10 +1,6 @@
 name: CI
 
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+on: [push, pull_request]
 
 jobs:
   scan:
@@ -47,14 +43,38 @@ jobs:
     services:
       postgres:
         image: postgres:15
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
         ports:
-          - 5432:5432
+          - 9200:9200
+        options: >-
+          -e "discovery.type=single-node"
+          -e "xpack.security.enabled=false"
+          --health-cmd "curl http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=50s"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+
     steps:
       - name: Install packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y google-chrome-stable libvips42 postgresql-client libpq-dev
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y google-chrome-stable
+          sudo apt-get install --no-install-recommends -y libvips42
+          sudo apt-get install --no-install-recommends -y postgresql-client
+          sudo apt-get install --no-install-recommends -y libpq-dev
+          sudo apt-get install --no-install-recommends -y ffmpeg
 
       - name: Checkout code
         uses: actions/checkout@v4
@@ -66,9 +86,17 @@ jobs:
           bundler-cache: true
           working-directory: ./api
 
+      # - name: Verify Elasticsearch connection from host
+      #   env:
+      #     ELASTIC_SEARCH_URL: http://localhost:${{ job.services.elasticsearch.ports[9200] }}
+      #   run: |
+      #     echo $ELASTIC_SEARCH_URL
+      #     curl -fsSL "$ELASTIC_SEARCH_URL/_cat/health?h=status"
+
       - name: Run Tests
         env:
-          DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/app
+          DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/test
           RAILS_ENV: test
-        run: bin/rails db:setup && bin/rspec --format documentation
+          ELASTICSEARCH_URL: http://localhost:${{ job.services.elasticsearch.ports[9200] }}
+        run: bin/rspec --format documentation
         working-directory: ./api

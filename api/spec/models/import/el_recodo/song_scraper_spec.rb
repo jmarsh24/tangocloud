@@ -53,6 +53,19 @@ RSpec.describe Import::ElRecodo::SongScraper do
       end
     end
 
+    context "when date is not valid" do
+      before do
+        music_2896_html = Rails.root.join("spec/fixtures/el_recodo_music_id_2896.html")
+        stub_request(:get, "https://www.el-recodo.com/music?id=2896&lang=en")
+          .to_return(status: 200, body: File.read(music_2896_html))
+      end
+
+      it "converts the date to the first day of the month or day" do
+        metadata = described_class.new(music_id: 2896).metadata
+        expect(metadata.date).to eq(Date.new(1950, 11, 1))
+      end
+    end
+
     context "when the server returns Too Many Requests (429)" do
       before do
         stub_request(:get, "https://www.el-recodo.com/music?id=1&lang=en")
