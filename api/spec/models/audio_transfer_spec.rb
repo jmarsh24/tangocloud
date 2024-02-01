@@ -11,7 +11,7 @@ end
 #  id                :uuid             not null, primary key
 #  external_id       :string
 #  transfer_agent_id :uuid
+#  recording_id      :uuid
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  recording_id      :uuid
 #
