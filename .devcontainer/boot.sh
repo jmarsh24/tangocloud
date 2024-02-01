@@ -4,6 +4,7 @@ echo "Setting SSH password for vscode user..."
 sudo usermod --password "$(echo vscode | openssl passwd -1 -stdin)" vscode
 
 echo "Updating RubyGems..."
+cd api
 gem update --system -N
 
 echo "Installing dependencies..."
@@ -15,5 +16,7 @@ yarn install
 
 echo "Creating database..."
 bin/rails db:prepare
+
+cd ..
 
 echo "Done!"
