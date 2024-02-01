@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 if !User.exists?(email: "admin@tangocloud.app")
   User.create!(
     email: "admin@tangocloud.app",

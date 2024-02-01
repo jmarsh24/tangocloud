@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CreateGenres < ActiveRecord::Migration[7.1]
   def change
     create_table :genres, id: :uuid do |t|

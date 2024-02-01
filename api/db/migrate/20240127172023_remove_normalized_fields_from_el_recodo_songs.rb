@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class RemoveNormalizedFieldsFromElRecodoSongs < ActiveRecord::Migration[7.1]
   def change
     remove_column :el_recodo_songs, :normalized_title, :string

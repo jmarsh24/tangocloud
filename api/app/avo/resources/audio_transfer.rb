@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Avo::Resources::AudioTransfer < Avo::BaseResource
   self.includes = []
   # self.search = {

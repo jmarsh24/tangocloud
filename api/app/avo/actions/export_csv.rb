@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Avo::Actions::ExportCsv < Avo::BaseAction
   self.name = "Export csv"
   self.no_confirmation = true

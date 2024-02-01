@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class PlaylistPolicy < ApplicationPolicy
   class Scope < Scope
     # NOTE: Be explicit about which records you allow access to!

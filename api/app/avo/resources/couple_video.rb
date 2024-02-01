@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Avo::Resources::CoupleVideo < Avo::BaseResource
   self.includes = []
   self.visible_on_sidebar = false
