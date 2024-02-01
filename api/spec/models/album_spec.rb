@@ -1,3 +1,9 @@
+require "rails_helper"
+
+RSpec.describe Album, type: :model do
+  pending "add some examples to (or delete) #{__FILE__}"
+end
+
 # == Schema Information
 #
 # Table name: albums
@@ -12,8 +18,3 @@
 #  transfer_agent_id :uuid
 #  album_type        :enum             default("compilation"), not null
 #
-require "rails_helper"
-
-RSpec.describe Album, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
-end

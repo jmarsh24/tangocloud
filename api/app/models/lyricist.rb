@@ -1,3 +1,12 @@
+class Lyricist < ApplicationRecord
+  extend FriendlyId
+  friendly_id :name, use: :slugged
+  has_many :lyrics, dependent: :destroy
+
+  validates :name, presence: true
+  validates :slug, presence: true, uniqueness: true
+end
+
 # == Schema Information
 #
 # Table name: lyricists
@@ -12,11 +21,3 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-class Lyricist < ApplicationRecord
-  extend FriendlyId
-  friendly_id :name, use: :slugged
-  has_many :lyrics, dependent: :destroy
-
-  validates :name, presence: true
-  validates :slug, presence: true, uniqueness: true
-end

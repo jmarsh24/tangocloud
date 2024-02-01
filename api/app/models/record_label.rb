@@ -1,3 +1,9 @@
+class RecordLabel < ApplicationRecord
+  has_many :videos, dependent: :destroy
+
+  validates :name, presence: true
+end
+
 # == Schema Information
 #
 # Table name: record_labels
@@ -9,8 +15,3 @@
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #
-class RecordLabel < ApplicationRecord
-  has_many :videos, dependent: :destroy
-
-  validates :name, presence: true
-end

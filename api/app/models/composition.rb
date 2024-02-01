@@ -1,3 +1,12 @@
+class Composition < ApplicationRecord
+  belongs_to :lyricist
+  belongs_to :composer
+  has_many :recordings, dependent: :destroy
+  has_many :lyrics, dependent: :destroy
+
+  validates :title, presence: true
+end
+
 # == Schema Information
 #
 # Table name: compositions
@@ -10,11 +19,3 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #
-class Composition < ApplicationRecord
-  belongs_to :lyricist
-  belongs_to :composer
-  has_many :recordings, dependent: :destroy
-  has_many :lyrics, dependent: :destroy
-
-  validates :title, presence: true
-end

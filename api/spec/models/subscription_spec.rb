@@ -1,3 +1,9 @@
+require "rails_helper"
+
+RSpec.describe Subscription, type: :model do
+  pending "add some examples to (or delete) #{__FILE__}"
+end
+
 # == Schema Information
 #
 # Table name: subscriptions
@@ -12,8 +18,3 @@
 #  updated_at          :datetime         not null
 #  subscription_type   :enum             default("free"), not null
 #
-require "rails_helper"
-
-RSpec.describe Subscription, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
-end

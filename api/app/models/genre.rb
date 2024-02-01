@@ -1,3 +1,9 @@
+class Genre < ApplicationRecord
+  has_many :videos, dependent: :destroy
+
+  validates :name, presence: true
+end
+
 # == Schema Information
 #
 # Table name: genres
@@ -8,8 +14,3 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
-class Genre < ApplicationRecord
-  has_many :videos, dependent: :destroy
-
-  validates :name, presence: true
-end

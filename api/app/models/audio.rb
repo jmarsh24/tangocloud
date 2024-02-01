@@ -1,3 +1,10 @@
+class Audio < ApplicationRecord
+  belongs_to :audio_transfer, dependent: :destroy
+  has_many :transfer_agents, through: :audio_transfers
+
+  has_one_attached :file, dependent: :purge_later
+end
+
 # == Schema Information
 #
 # Table name: audios
@@ -16,9 +23,3 @@
 #  bitrate           :integer
 #  audio_transfer_id :uuid
 #
-class Audio < ApplicationRecord
-  belongs_to :audio_transfer, dependent: :destroy
-  has_many :transfer_agents, through: :audio_transfers
-
-  has_one_attached :file, dependent: :purge_later
-end
