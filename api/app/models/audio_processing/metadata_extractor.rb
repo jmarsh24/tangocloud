@@ -2,7 +2,7 @@
 
 module AudioProcessing
   class MetadataExtractor
-    attr_reader :file
+    attr_reader :file, :movie
 
     Metadata = Data.define(
       :duration,
@@ -41,6 +41,7 @@ module AudioProcessing
 
     def initialize(file:)
       @file = file.to_s
+      @movie = FFMPEG::Movie.new(file)
     end
 
     def extract_metadata
@@ -104,6 +105,10 @@ module AudioProcessing
 
     def label(comment)
       comment.match(/label: (\w+)/)&.captures&.first
+    end
+
+    def original_album(comment)
+      comment.match(/original album: (\w+)/)&.captures&.first
     end
 
     def extract_roles(composer_tag)
