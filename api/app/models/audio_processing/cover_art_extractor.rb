@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module AudioProcessing
   class CoverArtExtractor
     attr_reader :file
