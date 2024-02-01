@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Types
   class QueryType < Types::BaseObject
     field :node, Types::NodeType, null: true, description: "Fetches an object given its ID." do

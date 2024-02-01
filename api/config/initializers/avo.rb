@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 Avo.configure do |config|
   config.current_user_method = :current_user
   config.per_page_steps = [48, 96, 256]

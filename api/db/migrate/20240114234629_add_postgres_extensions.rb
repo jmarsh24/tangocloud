@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AddPostgresExtensions < ActiveRecord::Migration[7.1]
   def change
     enable_extension "btree_gin"

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This migration comes from action_auth (originally 20231107165548)
 class CreateActionAuthUsers < ActiveRecord::Migration[7.1]
   def change

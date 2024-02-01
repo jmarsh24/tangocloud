@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CreateUserPreferences < ActiveRecord::Migration[7.1]
   def change
     create_table :user_preferences, id: :uuid do |t|

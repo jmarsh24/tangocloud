@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AddMissingElRecodoFields < ActiveRecord::Migration[7.1]
   def change
     add_column :el_recodo_songs, :soloist, :string

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Identity::EmailsController < ApplicationController
   before_action :set_user
 

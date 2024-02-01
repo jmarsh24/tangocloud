@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Import::ElRecodo::SyncSongJob < ApplicationJob
   include GoodJob::ActiveJobExtensions::Concurrency
   queue_as :background_sync

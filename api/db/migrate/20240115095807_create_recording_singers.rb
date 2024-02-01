@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CreateRecordingSingers < ActiveRecord::Migration[7.1]
   def change
     create_table :recording_singers, id: :uuid do |t|
