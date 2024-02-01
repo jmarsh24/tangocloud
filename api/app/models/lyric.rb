@@ -1,3 +1,11 @@
+class Lyric < ApplicationRecord
+  belongs_to :composition
+
+  validates :locale, presence: true
+  validates :content, presence: true
+  validates :locale, uniqueness: {scope: :composition_id}
+end
+
 # == Schema Information
 #
 # Table name: lyrics
@@ -9,10 +17,3 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #
-class Lyric < ApplicationRecord
-  belongs_to :composition
-
-  validates :locale, presence: true
-  validates :content, presence: true
-  validates :locale, uniqueness: {scope: :composition_id}
-end

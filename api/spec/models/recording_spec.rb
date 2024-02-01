@@ -1,3 +1,9 @@
+require "rails_helper"
+
+RSpec.describe Recording, type: :model do
+  pending "add some examples to (or delete) #{__FILE__}"
+end
+
 # == Schema Information
 #
 # Table name: recordings
@@ -17,8 +23,3 @@
 #  recording_type    :enum             default("studio"), not null
 #  slug              :string
 #
-require "rails_helper"
-
-RSpec.describe Recording, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
-end

@@ -1,17 +1,3 @@
-# == Schema Information
-#
-# Table name: albums
-#
-#  id                :uuid             not null, primary key
-#  title             :string           not null
-#  description       :text
-#  release_date      :date
-#  recordings_count  :integer          default(0), not null
-#  slug              :string           not null
-#  external_id       :string
-#  transfer_agent_id :uuid
-#  album_type        :enum             default("compilation"), not null
-#
 class Album < ApplicationRecord
   extend FriendlyId
   friendly_id :title, use: :slugged
@@ -42,3 +28,18 @@ class Album < ApplicationRecord
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: albums
+#
+#  id                :uuid             not null, primary key
+#  title             :string           not null
+#  description       :text
+#  release_date      :date
+#  recordings_count  :integer          default(0), not null
+#  slug              :string           not null
+#  external_id       :string
+#  transfer_agent_id :uuid
+#  album_type        :enum             default("compilation"), not null
+#

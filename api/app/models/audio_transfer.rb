@@ -1,3 +1,9 @@
+class AudioTransfer < ApplicationRecord
+  has_many :audios, dependent: :destroy
+  belongs_to :transfer_agent, dependent: :destroy
+  belongs_to :recording, dependent: :destroy
+end
+
 # == Schema Information
 #
 # Table name: audio_transfers
@@ -9,8 +15,3 @@
 #  updated_at        :datetime         not null
 #  recording_id      :uuid
 #
-class AudioTransfer < ApplicationRecord
-  has_many :audios, dependent: :destroy
-  belongs_to :transfer_agent, dependent: :destroy
-  belongs_to :recording, dependent: :destroy
-end

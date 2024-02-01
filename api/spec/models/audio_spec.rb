@@ -1,3 +1,9 @@
+require "rails_helper"
+
+RSpec.describe Audio, type: :model do
+  pending "add some examples to (or delete) #{__FILE__}"
+end
+
 # == Schema Information
 #
 # Table name: audios
@@ -16,8 +22,3 @@
 #  bitrate           :integer
 #  audio_transfer_id :uuid
 #
-require "rails_helper"
-
-RSpec.describe Audio, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
-end

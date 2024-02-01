@@ -1,3 +1,12 @@
+class Composer < ApplicationRecord
+  extend FriendlyId
+  friendly_id :name, use: :slugged
+
+  has_many :compositions, dependent: :destroy
+
+  validates :name, presence: true
+end
+
 # == Schema Information
 #
 # Table name: composers
@@ -10,11 +19,3 @@
 #  updated_at :datetime         not null
 #  slug       :string           not null
 #
-class Composer < ApplicationRecord
-  extend FriendlyId
-  friendly_id :name, use: :slugged
-
-  has_many :compositions, dependent: :destroy
-
-  validates :name, presence: true
-end

@@ -1,13 +1,3 @@
-# == Schema Information
-#
-# Table name: recording_singers
-#
-#  id           :uuid             not null, primary key
-#  recording_id :uuid             not null
-#  singer_id    :uuid             not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#
 class RecordingSinger < ApplicationRecord
   belongs_to :recording
   belongs_to :singer
@@ -24,3 +14,14 @@ class RecordingSinger < ApplicationRecord
     recording_singer
   end
 end
+
+# == Schema Information
+#
+# Table name: recording_singers
+#
+#  id           :uuid             not null, primary key
+#  recording_id :uuid             not null
+#  singer_id    :uuid             not null
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#

@@ -1,3 +1,9 @@
+class CompositionLyric < ApplicationRecord
+  belongs_to :composition
+  belongs_to :composer
+  belongs_to :lyricist
+end
+
 # == Schema Information
 #
 # Table name: composition_lyrics
@@ -10,8 +16,3 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #
-class CompositionLyric < ApplicationRecord
-  belongs_to :composition
-  belongs_to :composer
-  belongs_to :lyricist
-end

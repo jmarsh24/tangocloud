@@ -1,3 +1,5 @@
+require "rails_helper"
+
 # == Schema Information
 #
 # Table name: users
@@ -15,4 +17,3 @@
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
-require "rails_helper"
