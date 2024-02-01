@@ -29,6 +29,11 @@ RSpec.describe Import::Music::SongImporter do
         expect(audio_transfer.external_id).to be_nil
       end
 
+      it "creates a reference to the el recodo song" do
+        expect(audio_transfer.recording.el_recodo_song).to be_present
+        expect(audio_transfer.recording.el_recodo_song.title).to eq("Volver a soñar")
+      end
+
       it "creates a new audio with correct attributes" do
         audio = audio_transfer.audios.first
         expect(audio).to be_present
@@ -119,13 +124,18 @@ RSpec.describe Import::Music::SongImporter do
         expect(audio.sample_rate).to eq(48000)
         expect(audio.channels).to eq(1)
         expect(audio.codec).to eq("aac_at")
-        expect(audio.length).to eq(165)
+        expect(audio.length).to eq(163)
         expect(audio.metadata).to be_present
       end
 
       it "creates a new audio transfer" do
         expect(audio_transfer).to be_present
         expect(audio_transfer.external_id).to be_nil
+      end
+
+      it "creates a reference to the el recodo song" do
+        expect(audio_transfer.recording.el_recodo_song).to be_present
+        expect(audio_transfer.recording.el_recodo_song.title).to eq("Comme il faut")
       end
 
       it "creates a new composition" do
