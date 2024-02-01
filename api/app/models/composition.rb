@@ -7,8 +7,6 @@ class Composition < ApplicationRecord
   validates :title, presence: true
   validates :lyricist_id, presence: true
   validates :composer_id, presence: true
-  validates :listens_count, presence: true, numericality: {greater_than_or_equal_to: 0}
-  validates :popularity, presence: true, numericality: {greater_than_or_equal_to: 0}
 end
 
 # == Schema Information
@@ -18,7 +16,6 @@ end
 #  id             :uuid             not null, primary key
 #  title          :string           not null
 #  tangotube_slug :string
-#  genre_id       :uuid             not null
 #  lyricist_id    :uuid             not null
 #  composer_id    :uuid             not null
 #  created_at     :datetime         not null

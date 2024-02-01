@@ -11,7 +11,6 @@ end
 #  id                :uuid             not null, primary key
 #  name              :string           not null
 #  description       :string
-#  type              :integer          default(0), not null
 #  start_date        :datetime         not null
 #  end_date          :datetime         not null
 #  subscription_type :enum             default("free"), not null

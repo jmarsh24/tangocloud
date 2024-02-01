@@ -5,7 +5,6 @@ class CreateAlbums < ActiveRecord::Migration[7.1]
       t.string :title, null: false
       t.text :description
       t.date :release_date
-      t.integer :type, null: false, default: "0"
       t.integer :recordings_count, null: false, default: 0
       t.string :slug, index: {unique: true}, null: false
       t.string :external_id

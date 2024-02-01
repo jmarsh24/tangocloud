@@ -11,7 +11,6 @@ end
 #  id             :uuid             not null, primary key
 #  title          :string           not null
 #  tangotube_slug :string
-#  genre_id       :uuid             not null
 #  lyricist_id    :uuid             not null
 #  composer_id    :uuid             not null
 #  created_at     :datetime         not null

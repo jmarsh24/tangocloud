@@ -8,7 +8,7 @@ class Avo::Resources::Recording < Avo::BaseResource
     field :id, as: :id
     field :title, as: :text
     field :bpm, as: :number
-    field :type, as: :select, enum: ::Recording.types
+    field :recording_type, as: :select, enum: ::Recording.types
     field :release_date, as: :date
     field :recorded_date, as: :date
     field :el_recodo_song_id, as: :text

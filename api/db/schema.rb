@@ -70,7 +70,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_032226) do
     t.string "title", null: false
     t.text "description"
     t.date "release_date"
-    t.integer "type", default: 0, null: false
     t.integer "recordings_count", default: 0, null: false
     t.string "slug", null: false
     t.string "external_id"
@@ -138,13 +137,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_032226) do
   create_table "compositions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title", null: false
     t.string "tangotube_slug"
-    t.uuid "genre_id", null: false
     t.uuid "lyricist_id", null: false
     t.uuid "composer_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["composer_id"], name: "index_compositions_on_composer_id"
-    t.index ["genre_id"], name: "index_compositions_on_genre_id"
     t.index ["lyricist_id"], name: "index_compositions_on_lyricist_id"
   end
 
@@ -414,7 +411,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_032226) do
   create_table "recordings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title", null: false
     t.integer "bpm"
-    t.integer "type", default: 0, null: false
     t.date "release_date"
     t.date "recorded_date"
     t.string "slug", null: false
@@ -468,7 +464,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_032226) do
   create_table "subscriptions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
-    t.integer "type", default: 0, null: false
     t.datetime "start_date", null: false
     t.datetime "end_date", null: false
     t.enum "subscription_type", default: "free", null: false, enum_type: "subscription_type"
@@ -548,7 +543,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_032226) do
   add_foreign_key "composition_lyrics", "lyricists"
   add_foreign_key "composition_lyrics", "lyrics", column: "lyrics_id"
   add_foreign_key "compositions", "composers"
-  add_foreign_key "compositions", "genres"
   add_foreign_key "compositions", "lyricists"
   add_foreign_key "couple_videos", "couples"
   add_foreign_key "couple_videos", "videos"
