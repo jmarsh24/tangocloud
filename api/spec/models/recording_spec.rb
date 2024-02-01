@@ -11,8 +11,11 @@ end
 #  id                :uuid             not null, primary key
 #  title             :string           not null
 #  bpm               :integer
+#  type              :integer          default(0), not null
 #  release_date      :date
 #  recorded_date     :date
+#  slug              :string           not null
+#  recording_type    :enum             default("studio"), not null
 #  el_recodo_song_id :uuid
 #  orchestra_id      :uuid
 #  singer_id         :uuid
@@ -20,6 +23,4 @@ end
 #  record_label_id   :uuid
 #  genre_id          :uuid
 #  period_id         :uuid
-#  recording_type    :enum             default("studio"), not null
-#  slug              :string
 #
