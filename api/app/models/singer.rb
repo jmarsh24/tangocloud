@@ -1,3 +1,15 @@
+class Singer < ApplicationRecord
+  extend FriendlyId
+  has_many :recording_singers, dependent: :destroy
+  has_many :recordings, through: :recording_singers
+  friendly_id :name, use: :slugged
+
+  validates :name, presence: true
+  validates :slug, presence: true, uniqueness: true
+  validates :rank, presence: true, numericality: {only_integer: true}
+  validates :sort_name, presence: true
+end
+
 # == Schema Information
 #
 # Table name: singers
@@ -13,14 +25,3 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-class Singer < ApplicationRecord
-  extend FriendlyId
-  has_many :recording_singers, dependent: :destroy
-  has_many :recordings, through: :recording_singers
-  friendly_id :name, use: :slugged
-
-  validates :name, presence: true
-  validates :slug, presence: true, uniqueness: true
-  validates :rank, presence: true, numericality: {only_integer: true}
-  validates :sort_name, presence: true
-end

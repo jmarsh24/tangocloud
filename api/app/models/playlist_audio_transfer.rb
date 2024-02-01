@@ -1,3 +1,10 @@
+class PlaylistAudioTransfer < ApplicationRecord
+  belongs_to :playlist
+  belongs_to :audio_transfer
+
+  validates :position, presence: true, numericality: {only_integer: true}
+end
+
 # == Schema Information
 #
 # Table name: playlist_audio_transfers
@@ -9,9 +16,3 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #
-class PlaylistAudioTransfer < ApplicationRecord
-  belongs_to :playlist
-  belongs_to :audio_transfer
-
-  validates :position, presence: true, numericality: {only_integer: true}
-end

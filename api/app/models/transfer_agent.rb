@@ -1,14 +1,3 @@
-# == Schema Information
-#
-# Table name: transfer_agents
-#
-#  id          :uuid             not null, primary key
-#  name        :string           not null
-#  description :string
-#  url         :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#
 class TransferAgent < ApplicationRecord
   validates :name, presence: true
 
@@ -23,3 +12,15 @@ class TransferAgent < ApplicationRecord
     blob.variant :large, resize: "500x500"
   end
 end
+
+# == Schema Information
+#
+# Table name: transfer_agents
+#
+#  id          :uuid             not null, primary key
+#  name        :string           not null
+#  description :string
+#  url         :string
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
