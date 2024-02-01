@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe AudioProcessing::AudioConverter do
-  let(:test_file_path) { "spec/fixtures/tone.mp3" }
+  let(:test_file_path) { "spec/fixtures/audio/tone.mp3" }
   let(:output_directory) { "tmp/converted_audio_files" }
   let(:converter) { AudioProcessing::AudioConverter.new(file: test_file_path, output_directory:) }
 
@@ -18,7 +18,7 @@ RSpec.describe AudioProcessing::AudioConverter do
   describe "#convert" do
     it "converts the file to the specified format" do
       output = converter.convert
-      expect(File.extname(output)).to eq(".mp3")
+      expect(File.extname(output)).to eq(".aac")
       basename = File.basename(test_file_path, ".*")
       expect(output).to include(basename)
       expect(output).to match(/\d{14}/)

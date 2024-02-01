@@ -41,7 +41,7 @@ module AudioProcessing
 
     def initialize(file:)
       @file = file.to_s
-      @movie = FFMPEG::Movie.new(file)
+      @movie = FFMPEG::Movie.new(file.to_s)
     end
 
     def extract_metadata
@@ -84,14 +84,14 @@ module AudioProcessing
         ert_number: ert_number(comment),
         source: source(comment),
         label: label(comment),
-        lyricist: extract_roles(comment).lyricist,
-        composer: extract_roles(comment).composer,
+        lyricist: extract_roles(tags.dig(:composer)).lyricist,
+        composer: extract_roles(tags.dig(:composer)).composer,
         original_album: original_album(comment)
       )
     end
 
     def ert_number(comment)
-      comment.match(/id: (\w+-\d+)/)&.captures&.first
+      comment.match(/id: (\w+-\d+)/)&.captures&.first&.split("-")&.last.to_i
     end
 
     def source(comment)
@@ -108,7 +108,8 @@ module AudioProcessing
     end
 
     def original_album(comment)
-      comment.match(/original album: (\w+)/)&.captures&.first
+      match = comment.match(/original_album: (.*?)(?:\s*\||\r\n|$)/)
+      match&.captures&.first
     end
 
     def extract_roles(composer_tag)

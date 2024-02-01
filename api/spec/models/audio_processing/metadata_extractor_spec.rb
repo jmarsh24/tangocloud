@@ -5,24 +5,34 @@ require "rails_helper"
 RSpec.describe AudioProcessing::MetadataExtractor do
   describe "#extract_metadata" do
     it "returns a hash of metadata for aif" do
-      file = Rails.root.join("spec/fixtures/029_-_Nunca_tuvo_novio.aif")
+      file = Rails.root.join("spec/fixtures/audio/19380307_comme_il_faut_instrumental_tango_2758.aif")
       metadata = AudioProcessing::MetadataExtractor.new(file:).extract_metadata
 
-      expect(metadata.title).to eq("Nunca tuvo novio")
-      expect(metadata.artist).to eq("Pedro Laurenz / Alberto Podestá")
-      expect(metadata.album).to eq("Todos de Pedro Laurenz 1937-1968, Tango Time Travel 5")
-      expect(metadata.date).to eq("1943-04-16")
-      expect(metadata.track).to eq("029")
-      expect(metadata.genre).to eq("Tango")
-      expect(metadata.album_artist).to eq("Pedro Laurenz")
-      expect(metadata.catalog_number).to eq("Record: 60-0063-A, Matrix: 84311, Take : 1")
-      expect(metadata.composer).to eq("A. Bardi, E. Cadícamo")
-      expect(metadata.performer).to eq("Pedro Laurenz")
-      expect(metadata.encoded_by).to eq("© 2021 TangoTimeTravel.org, 78-rpm shellac collection of first fixations")
-      expect(metadata.media_type).to eq("TT/78")
-      expect(metadata.lyrics).to eq("Pobre solterona te has quedado\nsin ilusión, sin fe...\nTu corazón de angustias se ha enfermado,\npuesta de sol es hoy tu vida trunca.\nSigues como entonces, releyendo\nel novelón sentimental,\nen el que una niña aguarda en vano\nconsumida por un mal de amor.\n\nEn la soledad\nde tu pieza de soltera está el dolor.\nTriste realidad\nes el fin de tu jornada sin amor...\nLloras y al llorar\nvan las lágrimas temblando tu emoción;\nen las hojas de tu viejo novelón\nte ves sin fuerza palpitar.\nDeja de llorar\npor el príncipe soñado que no fue\njunto a ti a volcar\nel rimero melodioso de su voz.\nTras el ventanal,\nmientras pega la llovizna en el cristal\ncon tus ojos más nublados de dolor\nsoñás un paisaje de amor.\n\nNunca tuvo novio, ¡pobrecita!\n¿Por qué el amor no fue\na su jardin humilde de muchacha\na reanimar las flores de sus años?.\n¡Yo, con mi montón de desengaños\nigual que vos, vivo sin luz,\nsin una caricia venturosa\nque haga olvidar mi cruz!")
-      expect(metadata.duration).to eq(199.272698)
-      expect(metadata.bit_rate).to eq(783426)
+      expect(metadata.title).to eq("comme il faut")
+      expect(metadata.artist).to eq("instrumental")
+      expect(metadata.album).to eq("tt - todo de anibal, 1938-1942 [aiff]")
+      expect(metadata.date).to eq("1938-03-07")
+      expect(metadata.track).to be_nil
+      expect(metadata.genre).to eq("tango")
+      expect(metadata.album_artist).to eq("anibal troilo")
+      expect(metadata.catalog_number).to be_nil
+      expect(metadata.composer).to eq("eduardo arolas")
+      expect(metadata.performer).to be_nil
+      expect(metadata.encoded_by).to be_nil
+      expect(metadata.encoder).to eq("Lavf60.16.100")
+      expect(metadata.media_type).to be_nil
+      expect(metadata.date).to eq("1938-03-07")
+      expect(metadata.track).to be_nil
+      expect(metadata.genre).to eq("tango")
+      expect(metadata.album_artist).to eq("anibal troilo")
+      expect(metadata.catalog_number).to be_nil
+      expect(metadata.composer).to eq("eduardo arolas")
+      expect(metadata.performer).to be_nil
+      expect(metadata.encoded_by).to be_nil
+      expect(metadata.media_type).to be_nil
+      expect(metadata.lyrics).to eq("Luna, farol y canción,\ndulce emoción del ayer\nfue en París,\ndonde viví tu amor.\nTango, Champagne, corazón,\nnoche de amor\nque no está,\nen mi sueño vivirá...\n\nEs como debe ser, con ilusión viví\nlas alegrías y las tristezas;\nen esa noche fue que yo sentí por vos\nuna esperanza en mi corazón.\nEs como debe ser en la pasión de ley,\ntus ojos negros y tu belleza.\nSiempre serás mi amor en bello amanecer\npara mi vida, dulce ilusión.\n\nEn este tango\nte cuento mi tristeza,\ndolor y llanto\nque dejo en esta pieza.\nQuiero que oigas mi canción\nhecha de luna y de farol\ny que tu amor, mujer,\nvuelva hacia mí.")
+      expect(metadata.duration).to eq(163.879002)
+      expect(metadata.bit_rate).to eq(705671)
       expect(metadata.codec_name).to eq("pcm_s16be")
       expect(metadata.codec_long_name).to eq("PCM signed 16-bit big-endian")
       expect(metadata.sample_rate).to eq(44100)
@@ -30,31 +40,36 @@ RSpec.describe AudioProcessing::MetadataExtractor do
       expect(metadata.bit_depth).to eq(0)
       expect(metadata.bit_rate_mode).to be_nil
       expect(metadata.format).to eq("aiff")
-      expect(metadata.comment).to be_nil
-      expect(metadata.encoder).to be_nil
+      expect(metadata.comment).to eq("id: ert-2758 | source: tt | label: odeon | date: 1938-03-07 | original_album: 9326 - 7160 a tangotunes\r\n")
+      expect(metadata.encoder).to eq("Lavf60.16.100")
       expect(metadata.bpm).to be_nil
+      expect(metadata.ert_number).to eq(2758)
+      expect(metadata.source).to eq("TangoTunes")
+      expect(metadata.label).to eq("odeon")
+      expect(metadata.lyricist).to eq("gabriel clausi")
+      expect(metadata.original_album).to eq("9326 - 7160 a tangotunes")
     end
 
     it "returns a hash of metadata for flac" do
-      file = Rails.root.join("spec/fixtures/Amarras 79782-1_RP.flac")
+      file = Rails.root.join("spec/fixtures/audio/19401008_volver_a_sonar_roberto_rufino_tango_2476.flac")
       metadata = AudioProcessing::MetadataExtractor.new(file:).extract_metadata
 
-      expect(metadata.title).to eq("Amarras")
-      expect(metadata.artist).to eq("Héctor Mauré")
-      expect(metadata.album).to eq("BAVE 79782-1 - 60-0497 A TangoTunes")
-      expect(metadata.date).to eq("1944")
+      expect(metadata.title).to eq("volver a sonar")
+      expect(metadata.artist).to eq("roberto rufino")
+      expect(metadata.album).to eq("tt - todo de carlos -1939-1941 [flac]")
+      expect(metadata.date).to eq("1940-10-08")
       expect(metadata.track).to be_nil
-      expect(metadata.genre).to eq("Tango")
-      expect(metadata.album_artist).to eq("Juan D’Arienzo")
+      expect(metadata.genre).to eq("tango")
+      expect(metadata.album_artist).to eq("carlos di sarli")
       expect(metadata.catalog_number).to be_nil
-      expect(metadata.composer).to eq("Aut: Carmelo Santiago, Com: Carlos Marchisio")
+      expect(metadata.composer).to eq("andres fraga")
       expect(metadata.performer).to be_nil
       expect(metadata.encoded_by).to be_nil
-      expect(metadata.encoder).to eq("X Lossless Decoder 20191004")
+      expect(metadata.encoder).to eq("Lavf60.16.100")
       expect(metadata.media_type).to be_nil
-      expect(metadata.lyrics).to eq("Vago como sombra atormentada\nbajo el gris de la recova,\nme contemplo y no soy nada...\nSoy como mi lancha carbonera\nque ha quedado recalada,\nbien atada a la ribera.\nYo también atado a mi pasado\nsoy un barco que está anclado\ny siento en mi carne sus amarras\ncomo garfios, como garras.\nLloro aquellos días\nque jamás han de volver;\nsueño aquellos besos\nque ya nunca he de tener,\nsoy como mi lancha carbonera\nque ha quedado en la ribera,\n¡sin partir más!\n\nAquellos besos que perdí\nal presentir que no me amaba,\nfueron tormentas de dolor\nllenas de horror.\n¡Hoy no soy nada!\nYo sólo sé que pené,\nque caí y que rodé\nal abismo del fracaso...\nYo sólo sé que tu adiós,\nen la burla del dolor,\nme acompaña paso a paso.\nAhora que sé que no vendrás,\nvago sin fin por la recova,\nbusco valor para partir;\npara alejarme... y así\nmatando mi obsesión,\nlejos de ti, poder morir.\n\nPero vivo atado a mi pasado,\ntu recuerdo me encadena,\nsoy un barco que está anclado.\nSé que únicamente con la muerte\ncesarán mis amarguras;\ncambiará mi mala suerte.\nVago con la atroz melancolía\nde una noche gris y fría;\ny siento en mi carne sus amarras\ncomo garfios, como garras.\nNada me consuela en esta cruel desolación.\nSolo voy marchando con mi pobre corazón.\nSoy como mi lancha carbonera,\nque ha quedado en la ribera,\nsin partir más.")
-      expect(metadata.duration).to eq(211.196854)
-      expect(metadata.bit_rate).to eq(1208597)
+      expect(metadata.lyrics).to eq("No sé si fue mi mano\nO fue la tuya\nQue escribió,\nLa carta del adiós\nEn nuestro amor.\n \nNo quiero ni saber\nQuién fue culpable\nDe los dos,\nNi pido desazones\nNi rencor.\n \nMe queda del ayer\nEnvuelto en tu querer,\nEl rastro de un perfume antiguo.\nMe queda de tu amor\nEl lánguido sabor\nDe un néctar\nQue ya nunca beberé.\n \nPor eso que esta estrofa\nAl muerto idilio, no es capaz,\nDe hacerlo entre los dos resucitar.\nSi acaso algo pretendo\nEs por ofrenda al corazón,\nSalvarlo del olvido, nada más...")
+      expect(metadata.duration).to eq(165.158396)
+      expect(metadata.bit_rate).to eq(1320140)
       expect(metadata.codec_name).to eq("flac")
       expect(metadata.codec_long_name).to eq("FLAC (Free Lossless Audio Codec)")
       expect(metadata.sample_rate).to eq(96000)
@@ -62,8 +77,15 @@ RSpec.describe AudioProcessing::MetadataExtractor do
       expect(metadata.bit_depth).to eq(24)
       expect(metadata.bit_rate_mode).to be_nil
       expect(metadata.format).to eq("flac")
-      expect(metadata.comment).to eq("1944-07-21")
-      expect(metadata.bpm).to be_nil
+      expect(metadata.comment).to eq("id: ert-2476 | source: tt | label: rca victor | date: 1940-10-08 | original_album: bave 39533 - 39110 b tangotunes\r\n")
+      expect(metadata.bpm).to eq("130.78")
+      expect(metadata.encoder).to eq("Lavf60.16.100")
+      expect(metadata.bpm).to eq("130.78")
+      expect(metadata.ert_number).to eq(2476)
+      expect(metadata.source).to eq("TangoTunes")
+      expect(metadata.label).to eq("rca")
+      expect(metadata.lyricist).to eq("francisco garcia jimenez")
+      expect(metadata.original_album).to eq("bave 39533 - 39110 b tangotunes")
     end
   end
 end
