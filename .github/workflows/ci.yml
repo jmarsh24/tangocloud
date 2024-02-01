@@ -92,11 +92,15 @@ jobs:
       #   run: |
       #     echo $ELASTIC_SEARCH_URL
       #     curl -fsSL "$ELASTIC_SEARCH_URL/_cat/health?h=status"
-
+      - name: Check Translations
+        run: bundle exec i18n-tasks health
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
       - name: Run Tests
         env:
           DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/test
           RAILS_ENV: test
+          RSPEC_RETRY_RETRY_COUNT: 3
           ELASTICSEARCH_URL: http://localhost:${{ job.services.elasticsearch.ports[9200] }}
         run: bin/rspec --format documentation
         working-directory: ./api
