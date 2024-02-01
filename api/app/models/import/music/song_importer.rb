@@ -16,7 +16,6 @@ module Import
         return unless SUPPORTED_MIME_TYPES.include?(mime_type)
 
         ActiveRecord::Base.transaction do
-
           lyricist = Lyricist.find_or_create_by!(name: @metadata.lyricist)
           composer = Composer.find_or_create_by!(name: @metadata.composer)
 

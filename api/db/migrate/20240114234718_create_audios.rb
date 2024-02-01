@@ -3,6 +3,7 @@ class CreateAudios < ActiveRecord::Migration[7.1]
     create_table :audios, id: :uuid do |t|
       t.integer :duration, null: false, default: 0
       t.string :format, null: false
+      t.string :codec, null: false
       t.integer :bit_rate
       t.integer :sample_rate
       t.integer :channels
