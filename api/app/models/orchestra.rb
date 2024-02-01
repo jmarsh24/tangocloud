@@ -10,16 +10,7 @@ class Orchestra < ApplicationRecord
 
   validates :name, presence: true
   validates :rank, presence: true, numericality: {only_integer: true}
-  validates :sort_name, presence: true
   validates :slug, presence: true, uniqueness: true
-
-  before_validation :set_sort_name
-
-  private
-
-  def set_sort_name
-    self.sort_name = I18n.transliterate(name).downcase
-  end
 end
 
 # == Schema Information
