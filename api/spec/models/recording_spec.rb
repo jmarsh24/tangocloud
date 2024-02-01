@@ -17,6 +17,7 @@
 #  genre_id          :uuid
 #  period_id         :uuid
 #  recording_type    :enum             default("studio"), not null
+#  slug              :string
 #
 require "rails_helper"
 
