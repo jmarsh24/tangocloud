@@ -18,7 +18,6 @@ module Import
             SongImporter.new(file:).import
           rescue => e
             Rails.logger.error "Failed to import #{file}: #{e.message}"
-            raise e
           end
         end
       end
