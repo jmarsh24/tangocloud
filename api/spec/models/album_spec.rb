@@ -12,7 +12,6 @@ end
 #  title             :string           not null
 #  description       :text
 #  release_date      :date
-#  type              :integer          default(0), not null
 #  recordings_count  :integer          default(0), not null
 #  slug              :string           not null
 #  external_id       :string

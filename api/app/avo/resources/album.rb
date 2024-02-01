@@ -9,7 +9,7 @@ class Avo::Resources::Album < Avo::BaseResource
     field :title, as: :text
     field :description, as: :textarea
     field :release_date, as: :date
-    field :type, as: :select, enum: ::Album.types
+    field :album_type, as: :select, enum: ::Album.types
     field :recordings_count, as: :number
     field :slug, as: :text
     field :external_id, as: :text

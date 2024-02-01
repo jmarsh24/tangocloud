@@ -4,7 +4,6 @@ class CreateSubscriptions < ActiveRecord::Migration[7.1]
     create_table :subscriptions, id: :uuid do |t|
       t.string :name, null: false
       t.string :description
-      t.integer :type, null: false, default: "0"
       t.datetime :start_date, null: false
       t.datetime :end_date, null: false
       t.enum :subscription_type, default: "free", null: false, enum_type: :subscription_type

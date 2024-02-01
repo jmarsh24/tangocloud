@@ -11,7 +11,6 @@ end
 #  id                :uuid             not null, primary key
 #  title             :string           not null
 #  bpm               :integer
-#  type              :integer          default(0), not null
 #  release_date      :date
 #  recorded_date     :date
 #  slug              :string           not null

@@ -4,7 +4,6 @@ class CreateRecordings < ActiveRecord::Migration[7.1]
     create_table :recordings, id: :uuid do |t|
       t.string :title, null: false
       t.integer :bpm
-      t.integer :type, null: false, default: "0"
       t.date :release_date
       t.date :recorded_date
       t.string :slug, index: {unique: true}, null: false

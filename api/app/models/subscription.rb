@@ -2,7 +2,7 @@ class Subscription < ApplicationRecord
   belongs_to :user
 
   validates :name, presence: true
-  validates :type, presence: true
+  validates :subscription_type, presence: true
   validates :start_date, presence: true
   validates :end_date, presence: true
   validates :user_id, presence: true
@@ -16,7 +16,6 @@ end
 #  id                :uuid             not null, primary key
 #  name              :string           not null
 #  description       :string
-#  type              :integer          default(0), not null
 #  start_date        :datetime         not null
 #  end_date          :datetime         not null
 #  subscription_type :enum             default("free"), not null
