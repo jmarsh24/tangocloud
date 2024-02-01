@@ -5,6 +5,11 @@ class Composition < ApplicationRecord
   has_many :lyrics, dependent: :destroy
 
   validates :title, presence: true
+  validates :genre_id, presence: true
+  validates :lyricist_id, presence: true
+  validates :composer_id, presence: true
+  validates :listens_count, presence: true, numericality: {greater_than_or_equal_to: 0}
+  validates :popularity, presence: true, numericality: {greater_than_or_equal_to: 0}
 end
 
 # == Schema Information

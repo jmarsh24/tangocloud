@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   app:
@@ -8,15 +8,24 @@ services:
     volumes:
       - ../..:/workspaces:cached
     command: sleep infinity
-  postgres:
-    image: postgres:15-alpine
-    restart: unless-stopped
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
+  postgres-15:
+    restart: always
+    image: "postgres:15.1"
+    command: postgres -c shared_preload_libraries=pg_stat_statements -c pg_stat_statements.track=all
     ports:
-      - 5433:5432
+      - "54315:5432"
+    volumes:
+      - ./volumes/postgres-15:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_DB: postgres
-volumes:
-  postgres-data:
+      POSTGRES_HOST_AUTH_METHOD: trust
+  elasticsearch-8:
+    restart: always
+    image: "elasticsearch:8.11.1"
+    volumes:
+      - ./volumes/elasticsearch-8:/usr/share/elasticsearch/data
+    ports:
+      - "9208:9200"
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false

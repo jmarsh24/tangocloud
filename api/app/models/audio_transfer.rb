@@ -2,6 +2,14 @@ class AudioTransfer < ApplicationRecord
   has_many :audios, dependent: :destroy
   belongs_to :transfer_agent, dependent: :destroy
   belongs_to :recording, dependent: :destroy
+  belongs_to :audio
+  belongs_to :transfer_agent
+
+  validates :method, presence: true
+  validates :string, presence: true
+  validates :url, presence: true
+  validates :transfer_agent_id, presence: true
+  validates :audio_id, presence: true
 end
 
 # == Schema Information

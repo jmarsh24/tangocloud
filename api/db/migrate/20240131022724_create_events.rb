@@ -1,7 +1,7 @@
 class CreateEvents < ActiveRecord::Migration[7.1]
   def change
-    create_table :events do |t|
-      t.references :user, null: false, foreign_key: true
+    create_table :events, id: :uuid do |t|
+      t.references :user, null: false, foreign_key: true, type: :uuid
       t.string :action, null: false
       t.string :user_agent
       t.string :ip_address
