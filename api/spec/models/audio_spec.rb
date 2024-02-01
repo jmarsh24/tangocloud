@@ -12,7 +12,6 @@ end
 #  duration          :integer          default(0), not null
 #  format            :string           not null
 #  codec             :string           not null
-#  bit_depth         :integer
 #  bit_rate          :integer
 #  sample_rate       :integer
 #  channels          :integer
