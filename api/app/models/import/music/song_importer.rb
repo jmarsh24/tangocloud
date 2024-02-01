@@ -82,7 +82,7 @@ module Import
           audio_converter = AudioProcessing::AudioConverter.new(file:)
 
           audio = audio_transfer.audios.create!(
-            bit_rate: audio_converter.bitrate,
+            bit_rate: audio_converter.bitrate.to_i,
             sample_rate: audio_converter.sample_rate,
             channels: audio_converter.channels,
             codec: audio_converter.codec,
