@@ -11,6 +11,7 @@ end
 #  id                :uuid             not null, primary key
 #  duration          :integer          default(0), not null
 #  format            :string           not null
+#  codec             :string           not null
 #  bit_rate          :integer
 #  sample_rate       :integer
 #  channels          :integer
