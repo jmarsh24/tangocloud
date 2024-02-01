@@ -1,9 +1,7 @@
 import {useEffect, useState} from 'react';
 import './App.css';
-import {EventsOn, LogPrint} from "../wailsjs/runtime/runtime"
+import {EventsOn} from "../wailsjs/runtime/runtime"
 import {ImportCsvFile, GetFoldersInFolder, GetAudioFilesInFolder, GetRecordingsWithFilter, PrintLog, MapSong, GetMatchingRecords, MapAllRecordings} from "../wailsjs/go/main/App";
-import { debounce } from "lodash"
-import React from 'react';
 
 interface Mapping {
 	MatchingWordOne : string;
@@ -43,13 +41,14 @@ function App() {
 
     const [folderPath, setFolderPath] = useState<string>("C:\\Users\\ext.dozen\\Music\\TT-TTT\\");
     const [fileList, setFileList] = useState<AudioFile[]>([]);
-    const [folderList, setFolderList] = useState<string[]>([]);    
+    const [folderList, setFolderList] = useState<string[]>([]);
 
     const [orchestra, setOrchestra] = useState<string>();
     const [singer, setSinger] = useState<string>();
     const [title, setTitle] = useState<string>();
     const [startDate, setStartDate] = useState<string>();
     const [endDate, setEndDate] = useState<string>();
+    const [orderBy, setOrderBy] = useState<string>('title');
 
     const [recordingList, setRecordingList] = useState<Recording[]>([]);
 
@@ -87,27 +86,27 @@ function App() {
 
     async function onOrchestraFilterChange(orchestra : string) {
         setOrchestra(orchestra);
-        setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', 'title', startDate ?? '', endDate ?? '').then(c => c));      
+        setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', orderBy, startDate ?? '', endDate ?? '').then(c => c));
     }
 
     async function onSingerFilterChange(singer : string) {
         setSinger(singer);
-        setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', 'title', startDate ?? '', endDate ?? '').then(c => c));      
+        setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', orderBy, startDate ?? '', endDate ?? '').then(c => c));
     }
 
     async function onTitleFilterChange(title : string) {
         setTitle(title);
-        setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', 'title', startDate ?? '', endDate ?? '').then(c => c));     
+        setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', orderBy, startDate ?? '', endDate ?? '').then(c => c));
     }
 
     async function onStartDateFilterChange(startDate : string) {
         setStartDate(startDate);
-        setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', 'title', startDate ?? '', endDate ?? '').then(c => c));     
+        setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', orderBy, startDate ?? '', endDate ?? '').then(c => c));
     }
 
     async function onEndDateFilterChange(endDate : string) {
         setEndDate(endDate);
-        setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', 'title', startDate ?? '', endDate ?? '').then(c => c));      
+        setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', orderBy, startDate ?? '', endDate ?? '').then(c => c));
     }
 
     async function getMatchingRecords() {
@@ -120,10 +119,10 @@ function App() {
             return;
         }
 
-        setMatchingRecords(removeDuplicates(await GetMatchingRecords(folderPath, orchestra ?? '', singer ?? '', title ?? '', "title", startDate ?? '', endDate ?? '')))
+        setMatchingRecords(removeDuplicates(await GetMatchingRecords(folderPath, orchestra ?? '', singer ?? '', title ?? '', orderBy, startDate ?? '', endDate ?? '')))
     }
 
-    function removeDuplicates(mappings : Mapping[]) : Mapping[] {   
+    function removeDuplicates(mappings : Mapping[]) : Mapping[] {
         return [...new Map(mappings.map(v => [v.RecordingTitle, v] || [v.FileName, v])).values()]
     }
 
@@ -141,7 +140,7 @@ function App() {
     function onSelectFileRow(path : string) {
         setSelectedFilePath(path);
     }
-    
+
     async function addDirectory(newPath : string) {
         relativePath.push(newPath);
         setRelativePath(relativePath);
@@ -168,7 +167,7 @@ function App() {
             MatchingWordTwo : "",
             Finished : false
         }
-        
+
         setMatchingRecords(removeDuplicates([...matchingRecords, mapping]));
 
         setSelectedFilePath("");
@@ -177,8 +176,8 @@ function App() {
 
     async function isAllDoneEventCallback(isAllDone : boolean) {
         setFileList(await GetAudioFilesInFolder(constructPath()).then(c => c))
-        setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', 'title', startDate!, endDate!).then(c => c))
-        
+        setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', orderBy, startDate!, endDate!).then(c => c))
+
         setMatchingRecords([]);
         setLoading(false);
     }
@@ -186,12 +185,22 @@ function App() {
     async function mappingEventCallback(musicId : number) {
         matchingRecords.filter(f => f.MusicId == musicId)[0].Finished = true;
         setMatchingRecords([...matchingRecords]);
+
+        if(!matchingRecords.filter(f=>!f.Finished)[0]) {
+            PrintLog("ALL FINISHED")
+            setFileList(await GetAudioFilesInFolder(constructPath()).then(c => c))
+
+            setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', orderBy, startDate ?? '', endDate ?? '').then(c => c))
+
+            setMatchingRecords([]);
+            setLoading(false);
+        }
     }
 
     async function mapAllMatchingRecordings() {
         EventsOn("mapping_done", async (musicId : number) => mappingEventCallback(musicId));
-        EventsOn("mappings_all_done", async (isAllDone : boolean) => isAllDoneEventCallback(isAllDone));
-        
+        //EventsOn("mappings_all_done", async (isAllDone : boolean) => isAllDoneEventCallback(isAllDone));
+
         setLoading(true);
         await MapAllRecordings(matchingRecords)
     }
@@ -214,31 +223,22 @@ function App() {
         return matched != null;
     }
 
+    const onOrderByChange = async (e : React.ChangeEvent<HTMLInputElement>) => {
+        setOrderBy(e.target.value);
+        setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', e.target.value, startDate ?? '', endDate ?? '').then(c => c));
+    }
+
     return (
         <div id="app">
-            <div className='matches'>
-                {matchingRecords.map((item, index) => (
-                <div key={index}>
-                    {item.Finished && <span className='green-background'>FINISHED</span>}
-                    <span>({index}) {item.FileName} == {item.RecordingTitle} ({item.MusicId})</span>
-                    {!item.Finished && <button onClick={() => removeMatching(item)} className='red-background'>Remove</button>}
-                </div>
-                ))}
 
-                {loading && <span>Loading</span>}
-                {matchingRecords.length == 0 ? <button onClick={getMatchingRecords}>Match Records</button> : ""}
-                {matchingRecords.length != 0 ? <button onClick={mapAllMatchingRecordings} className='green-background'>Map All Now</button> : ""}
-                {matchingRecords.length != 0 ? <button onClick={cleanMatchingRecordings} className='red-background'>Clear All</button> : ""}
-
-                {/* <button onClick={importCsv}>Import CSV</button> */}
-            </div>
-
-            <div id="contents">
-                <div id="left-panel" className="panel">
-                    <div className='file-filters'>
+                <div id="left" className='panel'>
+                    <div className='commands'>
                         <button onClick={goBack}>BACK</button>
-                        <span>Folder Path</span>
-                        <input type="text" id="folderPath" value={folderPath || ''} name="folderPath" onChange={(e) => setFolderPath(e.target.value)}/>
+                        <div className='filter'>
+                            <span className='label'>Folder Path</span>
+                            <input type="text" id="folderPath" value={folderPath || ''} name="folderPath"
+                                   onChange={(e) => setFolderPath(e.target.value)}/>
+                        </div>
                     </div>
                     <div>
                         {folderList.map((item, index) => (
@@ -248,90 +248,125 @@ function App() {
                     <div>
                         <table>
                             <thead>
-                                <tr>
-                                    <th>Filename</th>
-                                </tr>
+                            <tr>
+                                <th></th>
+                                <th>Filename</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                {fileList.map((item, index) => (
-                                <tr key={index} onClick={() => onSelectFileRow(item.Path)} 
-                                    className={"recording-row " + 
-                                    (selectedFilePath === item.Path ? "selected-row " : "") + 
-                                    (isFileSelectedAsAMatch(item.Name) ? "to-be-matched-row " : "")
+                            {fileList.map((item, index) => (
+                                <tr key={index} onClick={() => onSelectFileRow(item.Path)}
+                                    className={"recording-row " +
+                                        (selectedFilePath === item.Path ? "selected-row " : "") +
+                                        (isFileSelectedAsAMatch(item.Name) ? "to-be-matched-row " : "")
                                     }>
                                     {/* (findDuplicates(matchingRecords).filter(m => m.FileName == item.Name) ? "duplicate":"") */}
-                                    <td>{index}: {item.Name}</td>
+                                    <td>{index}</td>
+                                    <td>{item.Name}</td>
                                 </tr>
-                                ))}   
+                            ))}
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div id="transfer-bar">
-                <button onClick={addMappingToMatchingRecords}>Add Map</button>
+
+                <div id='matches' className='panel'>
+                    <div className='commands'>
+                        {loading && <span className='red-background'>LOADING</span>}
+                        {matchingRecords.length == 0 ? <button onClick={getMatchingRecords}>Match Records</button> : ""}
+                        {matchingRecords.length != 0 ?
+                            <button onClick={mapAllMatchingRecordings} className='green-background'>Map All
+                                Now</button> : ""}
+                        {matchingRecords.length != 0 ?
+                            <button onClick={cleanMatchingRecordings} className='red-background'>Clear All</button> : ""}
+                        <button onClick={addMappingToMatchingRecords}>Add Map</button>
+                    </div>
+
+                    {matchingRecords.map((item, index) => (
+                        <div key={index} className='matching-data'>
+                            <div>{index}</div>
+                            <div className='mapping'>
+                                <p className='p-slim'>{item.FileName.substring(0, 45) + '...'}</p>
+                                <p className='p-slim'>{item.RecordingTitle.substring(0, 40) + '...'} [{item.MusicId}]</p>
+                            </div>
+                            {item.Finished && <span className='green-background'>FINISHED</span>}
+                            {!item.Finished &&
+                                <button onClick={() => removeMatching(item)} className='red-background'>Remove</button>}
+                        </div>
+                    ))}
                 </div>
-                <div id="right-panel" className="panel">
 
-                    <div className='recording-filters'>
-                        <div className='filters'>
-                            <span>Orchestra</span>
-                            <input type="text" id="orchestra" name="orchestra" value={orchestra || ''} onChange={(e) => onOrchestraFilterChange(e.target.value)}/>
-                        </div>
-                                        
-                        <div className='filters'>
-                            <span>Singer</span>
-                            <input type="text" id="singer" name="singer" value={singer || ''} onChange={(e) => onSingerFilterChange(e.target.value)}/>
+                <div id="right" className='panel'>
+                    <div className='commands'>
+                        <div className='filter'>
+                            <span className='label'>Orchestra</span>
+                            <input type="text" id="orchestra" name="orchestra" value={orchestra || ''}
+                                   onChange={(e) => onOrchestraFilterChange(e.target.value)}/>
                         </div>
 
-                        <div className='filters'>
-                            <span>Title</span>
-                            <input type="text" id="title" name="title" value={title || ''} onChange={(e) => onTitleFilterChange(e.target.value)}/>
+                        <div className='filter'>
+                            <span className='label'>Singer</span>
+                            <input type="text" id="singer" name="singer" value={singer || ''}
+                                   onChange={(e) => onSingerFilterChange(e.target.value)}/>
                         </div>
 
-                        <div className='filters'>
-                            <span>Start</span>
-                            <input type="text" maxLength={2} id="startDate" name="startDate" value={startDate || ''} onChange={(e) => onStartDateFilterChange(e.target.value)}/>
+                        <div className='filter'>
+                            <span className='label'>Title</span>
+                            <input type="text" id="title" name="title" value={title || ''}
+                                   onChange={(e) => onTitleFilterChange(e.target.value)}/>
                         </div>
 
-                        <div className='filters'>
-                            <span>End</span>
-                            <input type="text" maxLength={2} id="endDate" name="endDate" value={endDate || ''} onChange={(e) => onEndDateFilterChange(e.target.value)}/>
+                        <div className='filter'>
+                            <span className='label'>Start</span>
+                            <input type="text" maxLength={2} id="startDate" name="startDate" value={startDate || ''}
+                                   onChange={(e) => onStartDateFilterChange(e.target.value)}/>
+                        </div>
+
+                        <div className='filter'>
+                            <span className='label'>End</span>
+                            <input type="text" maxLength={2} id="endDate" name="endDate" value={endDate || ''}
+                                   onChange={(e) => onEndDateFilterChange(e.target.value)}/>
+                        </div>
+
+                        <div className='filter' onChange={onOrderByChange}>
+                            <input type="radio" id="title" name="orderby" value="title" checked={orderBy === "title"}/>
+                            <label htmlFor="title">Title</label><br/>
+                            <input type="radio" id="date" name="orderby" value="date" checked={orderBy === "date"}/>
+                            <label htmlFor="date">Date</label><br/>
                         </div>
                     </div>
-                    <div>
-                        <table>
+                        <table className='recording-table'>
                             <thead>
-                                <tr>
-                                    <th>Index</th>
-                                    <th>MusicId</th>
-                                    <th>Title</th>
-                                    <th>Orchestra</th>
-                                    <th>Singer</th>
-                                    <th>Style</th>
-                                    <th>Date</th>
-                                </tr>
+                            <tr>
+                                <th></th>
+                                <th>MusicId</th>
+                                <th>Title</th>
+                                <th>Orchestra</th>
+                                <th>Singer</th>
+                                <th>Style</th>
+                                <th>Date</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                {recordingList.map((item, index) => (
-                                <tr key={index} onClick={() => onSelectRecordingRow(item.MusicId)} 
-                                className={"recording-row " + 
-                                (selectedRecording === item.MusicId ? "selected-row " : "") + 
-                                (isRecordingSelectedAsAMatch(item.MusicId) ? "to-be-matched-row " : "")}>
-                                {/* (findDuplicates(matchingRecords).filter(m => m.MusicId == item.MusicId) ? "duplicate":"") */}
+                            {recordingList.map((item, index) => (
+                                <tr key={index} onClick={() => onSelectRecordingRow(item.MusicId)}
+                                    className={"recording-row " +
+                                        (selectedRecording === item.MusicId ? "selected-row " : "") +
+                                        (isRecordingSelectedAsAMatch(item.MusicId) ? "to-be-matched-row " : "")}>
+                                    {/* (findDuplicates(matchingRecords).filter(m => m.MusicId == item.MusicId) ? "duplicate":"") */}
                                     <td>{index}</td>
                                     <td>{item.MusicId}</td>
                                     <td>{item.Title}</td>
                                     <td>{item.Orchestra}</td>
                                     <td>{item.Singers}</td>
                                     <td>{item.Style}</td>
-                                    <td>{item.Date}</td>
+                                    <td>{item.Date.substring(0, 10)}</td>
                                 </tr>
-                                ))}   
+                            ))}
                             </tbody>
                         </table>
-                    </div>
                 </div>
-            </div>
+
         </div>
     )
 }

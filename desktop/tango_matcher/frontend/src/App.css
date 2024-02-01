@@ -1,55 +1,89 @@
 #app {
+    overflow: hidden;
     height: 100vh;
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-}
-
-.menu-bar {
-    height: 20px;
-    display: flex;
-    flex-direction: row;
-}
-
-#header {
-    background-color: black;
-}
-
-#footer {
-    background-color: black;
-}
-
-#contents {
     flex-grow: 1;
     display: flex;
     flex-direction: row;
 
-    .panel {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-    }
+    #matches {
+        overflow-y: scroll;
+        box-sizing: content-box;
+        width: 25%;
 
-    #left-panel {
-        background-color: darkgray;
-    }
-    
-    #right-panel {
-        background-color: dimgrey;
-
-        .recording-filters {
+        .matching-data {
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            margin-top: 2px;
+            margin-bottom: 2px;
+
+            .mapping {
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                padding-left: 14px;
+
+                &:hover {
+                    cursor: pointer;
+                    background-color: white;
+                    color: black;
+                }
+            }
+        }
+
+        .p-slim {
+            margin: 0;
+            padding: 0;
+            text-align: start;
         }
     }
 
-    #transfer-bar {
-        background-color: black;
-        width: 50px;
+    #left {
+        overflow-y: scroll;
+        width: 20%;
+        display: flex;
+        flex-direction: column;
+
+        input {
+            flex-grow: 2;
+        }
+    }
+    
+    #right {
+        overflow-y: scroll;
+        width: 55%;
+        display: flex;
+        flex-direction: column;
+
+        .filter {
+            display: flex;
+            input {
+                width: 100%;
+            }
+        }
+
+        .recording-table {
+            width: 100%;
+        }
     }
 }
 
+.panel {
+    margin: 4px;
+
+    .commands {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        border: white 2px solid;
+        padding: 2px;
+        height: 30px;
+        width: 100%;
+
+        .filter {
+            display: flex;
+        }
+    }
+}
 
 .selected-row {
     background-color: forestgreen;
@@ -59,23 +93,9 @@
     cursor: pointer;
 }
 
-.filters {
-    background-color: red;
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
+.label {
+    margin-right: 4px;
 }
-
-.file-filters {
-    background-color: red;
-    display: flex;
-    width: 100%;
-    
-    input {
-        flex-grow: 2;
-    }
-}
-
 
 .red-background {
     background-color: crimson;
@@ -83,11 +103,6 @@
 
 .green-background {
     background-color: forestgreen;
-}
-
-.matches {
-    background-color: lightgreen;
-    color: black;
 }
 
 .to-be-matched-row {

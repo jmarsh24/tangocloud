@@ -73,7 +73,7 @@ func (a *App) GetMatchingRecords(folderPath string, orchestra string, singer str
 func (a *App) MapAllRecordings(mappings []Mapping) {
 	go func() {
 		for i := 0; i < len(mappings); i++ {
-			a.MapSong(mappings[i].MusicId, removeAccents(mappings[i].FilePath))
+			a.MapSong(mappings[i].MusicId, mappings[i].FilePath)
 			runtime.EventsEmit(a.ctx, "mapping_done", int(mappings[i].MusicId))
 		}
 
@@ -96,8 +96,9 @@ func (a *App) MapSong(musicId uint, audioFilePath string) {
 		log.Fatal(err)
 	}
 
-	cmdArguments, newFileName, commentTag := constructCommand(audioFilePath, recording)
+	cmdArguments, newFileName, _ := constructCommand(audioFilePath, recording)
 	cmd := exec.Command("ffmpeg", cmdArguments...)
+	cmd.Stderr = os.Stderr
 
 	err = cmd.Run()
 	if err != nil {
@@ -106,35 +107,36 @@ func (a *App) MapSong(musicId uint, audioFilePath string) {
 
 	dir, file := filepath.Split(audioFilePath)
 
-	e := os.Rename(audioFilePath, dir+"_DONE_"+file)
+	e := os.Rename(audioFilePath, dir+"_DONE_"+removeAccents(file))
 	if e != nil {
 		log.Fatal(e)
 	}
 
-	if strings.Contains(newFileName, ".flac") {
-		tagCmdArguments := []string{
-			newFileName,
-			"--hideinfo",
-			"--hidetags",
-			// "--hidenames",
-			"--comment",
-			commentTag,
-		}
-
-		//https://wiki.hydrogenaud.io/index.php?title=Tag_(tagging_software)#Command_line_help
-		cmdTag := exec.Command("tag", tagCmdArguments...)
-		cmdTag.Stderr = os.Stderr
-		cmdTag.Stdout = os.Stdout
-		err = cmdTag.Run()
-		if err != nil {
-			log.Fatal(e)
-		}
-	}
+	//if strings.Contains(newFileName, ".flac") {
+	//	tagCmdArguments := []string{
+	//		newFileName,
+	//		"--hideinfo",
+	//		"--hidetags",
+	//		// "--hidenames",
+	//		"--comment",
+	//		commentTag,
+	//	}
+	//
+	//	//https://wiki.hydrogenaud.io/index.php?title=Tag_(tagging_software)#Command_line_help
+	//	cmdTag := exec.Command("tag", tagCmdArguments...)
+	//	// cmdTag.Stderr = os.Stderr
+	//	// cmdTag.Stdout = os.Stdout
+	//	err = cmdTag.Run()
+	//	if err != nil {
+	//		log.Fatal(err)
+	//	}
+	//}
 
 	recording.IsMapped = true
-	recording.RelativeFilePath = dir + "_DONE_" + file + "|" + newFileName
+	recording.RelativeFilePath = dir + "_DONE_" + removeAccents(file) + "|" + newFileName
 	recording.MapDate = time.Now()
 	recording.AudioSource = getSourceInfo(audioFilePath)
+
 	err = updateRecording(db, recording)
 	if e != nil {
 		log.Fatal(e)
@@ -148,7 +150,7 @@ func getOutputFolder(recording Recording) string {
 	}
 
 	outputBasePath := "C:\\Users\\ext.dozen\\Music\\TT-TTT-tagged\\"
-	outputFolder := removeAccents(outputBasePath + lastOutputFolder)
+	outputFolder := strings.Replace(strings.ToLower(removeAccents(outputBasePath+lastOutputFolder)), " ", "_", -1)
 	err := os.MkdirAll(outputFolder, os.ModePerm)
 	if err != nil {
 		log.Fatal(err)
@@ -169,7 +171,7 @@ func constructCommand(audioFilePath string, recording *Recording) ([]string, str
 		recording.Singers + "_" +
 		recording.Style + "_" +
 		strconv.Itoa(int(recording.MusicId)) + "." + extension
-	newFileName = removeAccents(strings.ToLower(newFileName))
+	newFileName = strings.Replace(removeAccents(strings.ToLower(newFileName)), " ", "_", -1)
 
 	sList := strings.Split(audioFilePath, "\\")
 	album := sList[len(sList)-2]
@@ -192,15 +194,15 @@ func constructCommand(audioFilePath string, recording *Recording) ([]string, str
 		"-hide_banner",
 		"-loglevel", "error",
 
-		"-metadata", "title="+strings.ToLower(recording.Title),
+		"-metadata", "title="+strings.ToLower(removeAccents(recording.Title)),
 		"-metadata", "album="+strings.ToLower(album), // is it good really as album data ??
 
-		"-metadata", "artist="+strings.ToLower(strings.Replace(recording.Singers, " y ", " / ", -1)),
+		"-metadata", "artist="+removeAccents(strings.ToLower(strings.Replace(recording.Singers, " y ", " / ", -1))),
 		"-metadata", "date="+recording.Date.Format("2006-01-02"),
 
 		"-metadata", "genre="+strings.ToLower(recording.Style),
-		"-metadata", "album_artist="+strings.ToLower(strings.Replace(recording.Orchestra, " y ", " / ", -1)),
-		"-metadata", "composer="+strings.ToLower("LYRICIST: "+strings.Replace(recording.Author, " y ", " / ", -1)+" | COMPOSER: "+strings.Replace(recording.Composer, " y ", " / ", -1)),
+		"-metadata", "album_artist="+removeAccents(strings.ToLower(strings.Replace(recording.Orchestra, " y ", " / ", -1))),
+		"-metadata", "composer="+removeAccents(strings.ToLower("LYRICIST: "+strings.Replace(recording.Author, " y ", " / ", -1)+" | COMPOSER: "+strings.Replace(recording.Composer, " y ", " / ", -1))),
 
 		"-metadata", "publisher=",
 		"-metadata", "color=",
@@ -223,7 +225,6 @@ func getSourceInfo(audioFilePath string) string {
 	} else if strings.Contains(temp, "TT -") {
 		source = "TT"
 	}
-
 	return source
 }
 
