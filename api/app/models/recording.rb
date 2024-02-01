@@ -3,11 +3,10 @@ class Recording < ApplicationRecord
   friendly_id :title, use: :slugged
 
   belongs_to :el_recodo_song, optional: true
-  belongs_to :orchestra, optional: true
+  belongs_to :orchestra
   belongs_to :singer, optional: true
-  belongs_to :song, optional: true
   belongs_to :record_label, optional: true
-  belongs_to :genre, optional: true
+  belongs_to :genre
   has_many :audio_transfers, dependent: :destroy
   has_many :audio, through: :audio_transfers, dependent: :destroy
   belongs_to :period, optional: true
@@ -26,8 +25,11 @@ end
 #  id                :uuid             not null, primary key
 #  title             :string           not null
 #  bpm               :integer
+#  type              :integer          default(0), not null
 #  release_date      :date
 #  recorded_date     :date
+#  slug              :string           not null
+#  recording_type    :enum             default("studio"), not null
 #  el_recodo_song_id :uuid
 #  orchestra_id      :uuid
 #  singer_id         :uuid
@@ -35,6 +37,4 @@ end
 #  record_label_id   :uuid
 #  genre_id          :uuid
 #  period_id         :uuid
-#  recording_type    :enum             default("studio"), not null
-#  slug              :string
 #

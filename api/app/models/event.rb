@@ -11,8 +11,8 @@ end
 #
 # Table name: events
 #
-#  id         :bigint           not null, primary key
-#  user_id    :bigint           not null
+#  id         :uuid             not null, primary key
+#  user_id    :uuid             not null
 #  action     :string           not null
 #  user_agent :string
 #  ip_address :string

@@ -6,8 +6,6 @@ class CreateCompositions < ActiveRecord::Migration[7.1]
       t.belongs_to :genre, null: false, foreign_key: true, type: :uuid
       t.belongs_to :lyricist, null: false, foreign_key: true, type: :uuid
       t.belongs_to :composer, null: false, foreign_key: true, type: :uuid
-      t.integer :listens_count
-      t.integer :popularity
 
       t.timestamps
     end

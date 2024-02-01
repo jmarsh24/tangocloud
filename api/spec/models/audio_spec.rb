@@ -9,16 +9,14 @@ end
 # Table name: audios
 #
 #  id                :uuid             not null, primary key
+#  duration          :integer          default(0), not null
+#  format            :string           not null
 #  bit_rate          :integer
 #  sample_rate       :integer
 #  channels          :integer
+#  length            :integer          default(0), not null
+#  metadata          :jsonb            not null
+#  audio_transfer_id :uuid             not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  codec             :string
-#  length            :float
-#  encoder           :string
-#  metadata          :jsonb            not null
-#  format            :string
-#  bitrate           :integer
-#  audio_transfer_id :uuid
 #

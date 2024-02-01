@@ -6,7 +6,9 @@ class CreateAudios < ActiveRecord::Migration[7.1]
       t.integer :bit_rate
       t.integer :sample_rate
       t.integer :channels
-      t.integer :bit_depth
+      t.integer :length, null: false, default: 0
+      t.jsonb :metadata, default: {}, null: false
+      t.belongs_to :audio_transfer, null: false, foreign_key: true, type: :uuid
       t.timestamps
     end
   end

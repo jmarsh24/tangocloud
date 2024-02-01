@@ -14,10 +14,7 @@ gem "bootsnap", require: false
 gem "oj"
 
 # Extensions
-gem "action_auth"
 gem "acts_as_list"
-gem "acts-as-taggable-on"
-gem "acts_as_votable"
 gem "apollo_upload_server"
 gem "authentication-zero"
 gem "avo"
