@@ -18,7 +18,7 @@ RSpec.describe Import::ElRecodo::SongSynchronizer do
 
   describe "#sync_song" do
     before do
-      stub_request(:get, "https://www.el-recodo.com/music?id=1&lang=en").to_return(status: 200, body: File.read("spec/fixtures/el_recodo_music_id_1.html"))
+      stub_request(:get, "https://www.el-recodo.com/music?id=1&lang=en").to_return(status: 200, body: File.read("spec/fixtures/html/el_recodo_music_id_1.html"))
     end
 
     context "when the song does not exist" do

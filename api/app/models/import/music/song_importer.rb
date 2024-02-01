@@ -46,8 +46,8 @@ module Import
 
           transfer_agent.audio_transfers << audio_transfer
 
+
           lyricist = Lyricist.find_or_create_by!(name: @metadata.lyricist)
-          binding.irb
           composer = Composer.find_or_create_by!(name: @metadata.composer)
 
           composition = Composition.find_or_create_by!(
@@ -72,11 +72,7 @@ module Import
             Genre.find_or_create_by!(name: @metadata.genre)
           end
 
-          # TODO: This is not correct
-          el_recodo_song = ElRecodoSong.find_by!(
-            normalized_title: self.class.normalize_text_field(@metadata.title),
-            normalized_orchestra: self.class.normalize_text_field(@metadata.album_artist)
-          )
+          el_recodo_song = ElRecodoSong.find_by!(ert_number: @metadata.ert_number)
 
           singer = if @metadata.singer.present?
             Singer.find_or_create_by!(name: @metadata.singer)

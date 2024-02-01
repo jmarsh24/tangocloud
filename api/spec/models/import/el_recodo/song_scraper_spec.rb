@@ -6,7 +6,7 @@ RSpec.describe Import::ElRecodo::SongScraper do
   describe "#metadata" do
     context "for normal songs" do
       before do
-        music_1_html = Rails.root.join("spec/fixtures/el_recodo_music_id_1.html")
+        music_1_html = Rails.root.join("spec/fixtures/html/el_recodo_music_id_1.html")
         stub_request(:get, "https://www.el-recodo.com/music?id=1&lang=en")
           .to_return(status: 200, body: File.read(music_1_html))
       end
@@ -30,7 +30,7 @@ RSpec.describe Import::ElRecodo::SongScraper do
 
     context "for songs with director and soloist" do
       before do
-        music_6417_html = Rails.root.join("spec/fixtures/el_recodo_music_id_6417.html")
+        music_6417_html = Rails.root.join("spec/fixtures/html/el_recodo_music_id_6417.html")
         stub_request(:get, "https://www.el-recodo.com/music?id=6417&lang=en")
           .to_return(status: 200, body: File.read(music_6417_html))
       end
@@ -55,7 +55,7 @@ RSpec.describe Import::ElRecodo::SongScraper do
 
     context "when date is not valid" do
       before do
-        music_2896_html = Rails.root.join("spec/fixtures/el_recodo_music_id_2896.html")
+        music_2896_html = Rails.root.join("spec/fixtures/html/el_recodo_music_id_2896.html")
         stub_request(:get, "https://www.el-recodo.com/music?id=2896&lang=en")
           .to_return(status: 200, body: File.read(music_2896_html))
       end
