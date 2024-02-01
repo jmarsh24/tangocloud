@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"strings"
 	"time"
@@ -90,9 +91,12 @@ func getRecordings(db *gorm.DB, orchestra string, singer string, title string, o
 
 	filteredResults = filteredResults.Where("style IN ?", []string{"TANGO", "MILONGA", "VALS", "CANDOMBE", "RANCHERA"})
 
-	if err := filteredResults.Order(orderby).Find(&recordings).Error; err != nil {
-		return recordings, err
+	tx := filteredResults.Order(orderby).Find(&recordings)
+	if tx.Error != nil {
+		return recordings, tx.Error
 	}
+
+	fmt.Println("Recording Count", len(recordings))
 
 	return recordings, nil
 }
