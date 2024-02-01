@@ -16,33 +16,6 @@ module Import
         return unless SUPPORTED_MIME_TYPES.include?(mime_type)
 
         ActiveRecord::Base.transaction do
-          transfer_agent = TransferAgent.find_or_create_by(name: @metadata.encoded_by || "Unknown")
-
-          audio = Audio.create(
-            bit_rate: @metadata.bit_rate,
-            sample_rate: @metadata.sample_rate,
-            channels: @metadata.channels,
-            bit_depth: @metadata.bit_depth,
-            bit_rate_mode: @metadata.bit_rate_mode,
-            codec: @metadata.codec_name,
-            length: @metadata.duration,
-            encoder: @metadata.encoder,
-            metadata: @metadata.to_h
-          )
-
-          AudioProcessing::AudioConverter.new(file:).convert do |file|
-            audio.file.attach(io: File.open(file), filename: File.basename(file))
-          end
-
-          audio_transfer = AudioTransfer.create!(
-            audio:,
-            transfer_agent:,
-            external_id: nil, # possible to add this
-            recording_date: nil,
-            method: "audio transfer"
-          )
-
-          transfer_agent.audio_transfers << audio_transfer
 
           lyricist = Lyricist.find_or_create_by!(name: @metadata.lyricist)
           composer = Composer.find_or_create_by!(name: @metadata.composer)
@@ -59,10 +32,10 @@ module Import
             composition:
           )
 
-          orchestra = Orchestra.find_or_create_by!(name: @metadata.artist)
+          orchestra = Orchestra.find_or_create_by!(name: @metadata.album_artist)
 
           record_label = if @metadata.record_label.present?
-            Label.find_or_create_by!(name: @metadata.record_label)
+            RecordLabel.find_or_create_by!(name: @metadata.record_label)
           end
 
           genre = if @metadata.genre.present?
@@ -84,7 +57,7 @@ module Import
               Date.new(year, 1, 1) if year > 0
             end
 
-          Recording.create!(
+          recording = Recording.create!(
             title: @metadata.title,
             bpm: @metadata.bpm,
             recorded_date: parsed_date,
@@ -94,9 +67,36 @@ module Import
             orchestra:,
             composition:,
             record_label:,
-            genre:,
-            audio_transfer:
+            genre:
           )
+
+          transfer_agent = TransferAgent.find_or_create_by(name: @metadata.encoded_by || "Unknown")
+
+          audio_transfer = AudioTransfer.create!(
+            external_id: @metadata.catalog_number,
+            transfer_agent:,
+            recording:
+          )
+
+          transfer_agent.audio_transfers << audio_transfer
+
+          audio_converter = AudioProcessing::AudioConverter.new(file:)
+
+          audio = audio_transfer.audios.create!(
+            bit_rate: audio_converter.bitrate,
+            sample_rate: audio_converter.sample_rate,
+            channels: audio_converter.channels,
+            codec: audio_converter.codec,
+            length: audio_converter.movie.duration.to_i,
+            format: audio_converter.format,
+            metadata: @metadata
+          )
+
+          audio_converter.convert do |file|
+            audio.file.attach(io: File.open(file), filename: File.basename(file))
+          end
+
+          audio_transfer
         end
       end
     end

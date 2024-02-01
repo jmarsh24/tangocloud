@@ -14,7 +14,6 @@
 #  author          :string
 #  label           :string
 #  lyrics          :text
-#  search_data     :string
 #  synced_at       :datetime         not null
 #  page_updated_at :datetime         not null
 #  created_at      :datetime         not null

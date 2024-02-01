@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_01_091938) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_01_125518) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -112,15 +112,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_01_091938) do
   end
 
   create_table "audio_transfers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "method"
     t.string "external_id"
-    t.date "recording_date"
     t.uuid "transfer_agent_id"
-    t.uuid "audio_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "recording_id"
-    t.index ["audio_id"], name: "index_audio_transfers_on_audio_id"
     t.index ["recording_id"], name: "index_audio_transfers_on_recording_id"
     t.index ["transfer_agent_id"], name: "index_audio_transfers_on_transfer_agent_id"
   end
@@ -129,14 +125,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_01_091938) do
     t.integer "bit_rate"
     t.integer "sample_rate"
     t.integer "channels"
-    t.integer "bit_depth"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "bit_rate_mode"
     t.string "codec"
     t.float "length"
     t.string "encoder"
     t.jsonb "metadata", default: {}, null: false
+    t.string "format"
+    t.integer "bitrate"
+    t.uuid "audio_transfer_id"
+    t.index ["audio_transfer_id"], name: "index_audios_on_audio_transfer_id"
   end
 
   create_table "composers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -605,9 +603,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_01_091938) do
   add_foreign_key "album_audio_transfers", "albums"
   add_foreign_key "album_audio_transfers", "audio_transfers"
   add_foreign_key "albums", "transfer_agents"
-  add_foreign_key "audio_transfers", "audios"
   add_foreign_key "audio_transfers", "recordings"
   add_foreign_key "audio_transfers", "transfer_agents"
+  add_foreign_key "audios", "audio_transfers"
   add_foreign_key "composition_composers", "composers"
   add_foreign_key "composition_composers", "compositions"
   add_foreign_key "composition_lyrics", "compositions"

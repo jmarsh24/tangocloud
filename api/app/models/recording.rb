@@ -27,10 +27,10 @@ class Recording < ApplicationRecord
   belongs_to :song, optional: true
   belongs_to :record_label, optional: true
   belongs_to :genre, optional: true
-  has_one :audio_transfer, dependent: :destroy
-  has_one :audio, through: :audio_transfer
+  has_many :audio_transfers, dependent: :destroy
+  has_many :audio, through: :audio_transfers, dependent: :destroy
   belongs_to :period, optional: true
-  belongs_to :composition, optional: true
+  belongs_to :composition
 
   validates :title, presence: true
   validates :recorded_date, presence: true

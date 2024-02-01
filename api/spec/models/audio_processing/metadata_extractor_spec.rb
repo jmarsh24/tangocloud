@@ -38,12 +38,12 @@ RSpec.describe AudioProcessing::MetadataExtractor do
       expect(metadata.bit_depth).to eq(0)
       expect(metadata.bit_rate_mode).to be_nil
       expect(metadata.format).to eq("aiff")
-      expect(metadata.comment).to eq("id: ert-2758 | source: tt | label: odeon | date: 1938-03-07 | original_album: 9326 - 7160 a tangotunes\r\n")
+      expect(metadata.comments).to eq("id: ert-2758 | source: tt | label: odeon | date: 1938-03-07 | original_album: 9326 - 7160 a tangotunes\r\n")
       expect(metadata.encoder).to eq("Lavf60.16.100")
       expect(metadata.bpm).to be_nil
       expect(metadata.ert_number).to eq(2758)
       expect(metadata.source).to eq("TangoTunes")
-      expect(metadata.label).to eq("odeon")
+      expect(metadata.record_label).to eq("odeon")
       expect(metadata.lyricist).to eq("gabriel clausi")
       expect(metadata.original_album).to eq("9326 - 7160 a tangotunes")
     end
@@ -75,13 +75,14 @@ RSpec.describe AudioProcessing::MetadataExtractor do
       expect(metadata.bit_depth).to eq(24)
       expect(metadata.bit_rate_mode).to be_nil
       expect(metadata.format).to eq("flac")
-      expect(metadata.comment).to eq("id: ert-2476 | source: tt | label: rca victor | date: 1940-10-08 | original_album: bave 39533 - 39110 b tangotunes\r\n")
+      expect(metadata.comments).to eq("id: ert-2476 | source: tt | label: rca victor | date: 1940-10-08 | original_album: bave 39533 - 39110 b tangotunes\r\n")
       expect(metadata.bpm).to eq("130.78")
       expect(metadata.encoder).to eq("Lavf60.16.100")
       expect(metadata.bpm).to eq("130.78")
       expect(metadata.ert_number).to eq(2476)
       expect(metadata.source).to eq("TangoTunes")
-      expect(metadata.label).to eq("rca")
+      expect(metadata.record_label).to eq("rca victor")
+      expect(metadata.singer).to eq("roberto rufino")
       expect(metadata.lyricist).to eq("francisco garcia jimenez")
       expect(metadata.original_album).to eq("bave 39533 - 39110 b tangotunes")
     end
