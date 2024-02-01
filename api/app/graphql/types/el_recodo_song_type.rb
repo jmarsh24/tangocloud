@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Types
   class ElRecodoSongType < Types::BaseObject
     field :id, ID, null: true

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CreateCouples < ActiveRecord::Migration[7.1]
   def change
     create_table :couples, id: :uuid do |t|

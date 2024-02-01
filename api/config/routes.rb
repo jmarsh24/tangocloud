@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 Rails.application.routes.draw do
   get "sign_in", to: "sessions#new"
   post "sign_in", to: "sessions#create"
@@ -23,8 +21,10 @@ Rails.application.routes.draw do
     mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
   end
 
-  mount GoodJob::Engine => "good_job"
-  mount Avo::Engine => "admin"
+  constraints Constraints::AdminConstraint do
+    mount GoodJob::Engine => "good_job"
+    mount Avo::Engine => "admin"
+  end
 
   post "/graphql", to: "graphql#execute"
 

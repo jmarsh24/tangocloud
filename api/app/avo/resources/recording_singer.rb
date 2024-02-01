@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Avo::Resources::RecordingSinger < Avo::BaseResource
   self.includes = []
   # self.search = {

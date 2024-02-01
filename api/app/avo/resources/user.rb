@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Avo::Resources::User < Avo::BaseResource
   self.includes = [:user_preference, :user_setting]
   self.search = {

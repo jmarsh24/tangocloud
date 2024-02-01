@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 ActionAuth.configure do |config|
   config.webauthn_enabled = true
   config.webauthn_origin = "https://#{Config.host}"
