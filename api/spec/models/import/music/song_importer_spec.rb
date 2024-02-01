@@ -30,7 +30,7 @@ RSpec.describe Import::Music::SongImporter do
       end
 
       it "creates a new audio with correct attributes" do
-        audio = audio_transfer.audio
+        audio = audio_transfer.audios.first
         expect(audio).to be_present
         expect(audio.format).to eq("aac")
         expect(audio.bit_rate).to eq(320)
@@ -48,8 +48,8 @@ RSpec.describe Import::Music::SongImporter do
       end
 
       it "creates a new lyric" do
-        lyric = audio_transfer.recording.composition.lyrics
-        expect(lyric.locale).to eq("es")
+        lyric = audio_transfer.recording.composition.lyrics.where(locale: "es").first
+        expect(lyric.content).to be_present
       end
 
       it "creates a new orchestra" do
@@ -92,6 +92,8 @@ RSpec.describe Import::Music::SongImporter do
     end
 
     context "when song is from aif" do
+      subject(:audio_transfer) { described_class.new(file: aif_file).import }
+
       before do
         ElRecodoSong.create!(
           date: Date.new(1938, 3, 7),
@@ -106,60 +108,61 @@ RSpec.describe Import::Music::SongImporter do
           label: "Odeon",
           page_updated_at: Date.new(2013, 7, 10)
         )
-        described_class.new(file: aif_file).import
+        audio_transfer
       end
 
       it "creates a new audio with correct attributes" do
-        el_recodo_song = ElRecodoSong.find_by!(ert_number: 2758)
-        expect(el_recodo_song.audio).to be_present
-        expect(el_recodo_song.audio.bit_rate).to eq(1411)
-        expect(el_recodo_song.audio.sample_rate).to eq(44100)
-        expect(el_recodo_song.audio.channels).to eq(2)
-        expect(el_recodo_song.audio.bit_depth).to eq(16)
-        expect(el_recodo_song.audio.bit_rate_mode).to eq("CBR")
-        expect(el_recodo_song.audio.codec).to eq("PCM S16 LE (s16l)")
-        expect(el_recodo_song.audio.length).to eq(2.0)
-        expect(el_recodo_song.audio.encoder).to eq("Lavf58.20.100")
+        audio = audio_transfer.audios.first
+        expect(audio).to be_present
+        expect(audio.format).to eq("aac")
+        expect(audio.bit_rate).to eq(320)
+        expect(audio.sample_rate).to eq(48000)
+        expect(audio.channels).to eq(1)
+        expect(audio.codec).to eq("aac_at")
+        expect(audio.length).to eq(165)
+        expect(audio.metadata).to be_present
       end
 
       it "creates a new audio transfer" do
-
+        expect(audio_transfer).to be_present
+        expect(audio_transfer.external_id).to be_nil
       end
 
       it "creates a new composition" do
-
+        expect(audio_transfer.recording.composition.title).to eq("comme il faut")
       end
 
       it "creates a new lyric" do
-
+        lyric = audio_transfer.recording.composition.lyrics.where(locale: "es").first
+        expect(lyric).to be_present
       end
 
       it "creates a new orchestra" do
-
+        expect(audio_transfer.recording.orchestra.name).to eq("anibal troilo")
       end
 
       it "creates a new record label" do
-
+        expect(audio_transfer.recording.record_label.name).to eq("odeon")
       end
 
       it "creates a new genre" do
-
+        expect(audio_transfer.recording.genre.name).to eq("tango")
       end
 
       it "creates a new singer" do
-
+        expect(audio_transfer.recording.singer.name).to eq("instrumental")
       end
 
       it "creates a new lyricist" do
-
+        expect(audio_transfer.recording.composition.lyricist.name).to eq("gabriel clausi")
       end
 
       it "creates a new composer" do
-
+        expect(audio_transfer.recording.composition.composer.name).to eq("eduardo arolas")
       end
 
       it "creates a new recording" do
-
+        expect(audio_transfer.recording.title).to eq("comme il faut")
       end
     end
 
