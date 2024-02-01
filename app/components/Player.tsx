@@ -12,14 +12,29 @@ const Player = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const { track } = usePlayerContext();
 
+
   useEffect(() => {
-    return sound
-      ? () => {
-          console.log('Unloading Sound');
-          sound.unloadAsync();
-        }
-      : undefined;
-  }, [sound]);
+    if (!track) {
+      return;
+    }
+    playTrack();
+  }, [track]);
+
+useEffect(() => {
+    const setAudioMode = async () => {
+      try {
+        await Audio.setAudioModeAsync({
+          playsInSilentModeIOS: true,
+          shouldDuckAndroid: true,
+          staysActiveInBackground: true,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    setAudioMode();
+  }, []);
 
   const playTrack = async () => {
     if (sound) {
