@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_31_022935) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_01_091938) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -225,7 +225,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_31_022935) do
     t.string "author"
     t.string "label"
     t.text "lyrics"
-    t.string "search_data"
     t.datetime "synced_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "page_updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "created_at", null: false
@@ -236,7 +235,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_31_022935) do
     t.index ["ert_number"], name: "index_el_recodo_songs_on_ert_number"
     t.index ["music_id"], name: "index_el_recodo_songs_on_music_id", unique: true
     t.index ["page_updated_at"], name: "index_el_recodo_songs_on_page_updated_at"
-    t.index ["search_data"], name: "index_el_recodo_songs_on_search_data", opclass: :gist_trgm_ops, using: :gist
     t.index ["synced_at"], name: "index_el_recodo_songs_on_synced_at"
   end
 
