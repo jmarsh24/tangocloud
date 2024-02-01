@@ -40,4 +40,8 @@ class Avo::Resources::ElRecodoSong < Avo::BaseResource
   def actions
     action Avo::Actions::ExportCsv
   end
+
+  def filters
+    filter Avo::Filters::ErtNumber
+  end
 end

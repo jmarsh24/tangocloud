@@ -6,7 +6,7 @@ servers:
   web:
     hosts:
       - 94.130.104.7
-    cmd: bundle exec puma -C /rails/config/puma.rb
+    cmd: bin/rails s -C /rails/config/puma.rb
   worker-1:
     hosts:
       - 195.201.147.15
@@ -15,14 +15,6 @@ servers:
     hosts:
       - 195.201.147.15
     cmd: bundle exec good_job --queues='-background_sync:3'
-  worker-3: # web worker used just for el-recodo-sync
-    hosts:
-      - 94.130.104.7
-    cmd: bundle exec good_job --queues='background_sync:1;-background_sync:2'
-  worker-5: # github-runner used used just for el-recodo-sync
-    hosts:
-      - 49.13.197.47
-    cmd: bundle exec good_job --queues='background_sync:1;-background_sync:2'
 registry:
   server: ghcr.io
   username:
@@ -36,9 +28,10 @@ env:
     RAILS_ENV: production
     RAILS_LOG_LEVEL: debug
     RAILS_LOG_TO_STDOUT: true
-    DB_HOST: 167.235.70.96
+    DB_HOST: 10.1.0.3
     CLOUDFLARE_PUBLIC: true
     CLOUDFLARE_BUCKET: tangocloud
+    ELASTICSEARCH_URL: 10.1.0.5:9200
   secret:
     - RAILS_MASTER_KEY
     - POSTGRES_PASSWORD
@@ -56,6 +49,18 @@ accessories:
       - config/postgres/production.conf:/var/postgres/data/postgresql.conf
     volumes:
       - /var/postgres/data:/var/lib/postgresql/data
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0-arm64
+    host: 10.1.0.5
+    port: 9200
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    files:
+      - config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    volumes:
+      - /var/lib/elasticsearch/data:/usr/share/elasticsearch/data
 builder:
   multiarch: false
 healthcheck:

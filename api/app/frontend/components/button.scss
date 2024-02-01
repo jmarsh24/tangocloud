@@ -4,13 +4,20 @@
   align-items: center;
   width: 100%;
   border-radius: 8px;
-  color: var(--button-text-primary-default);
-  background-color: var(--button-bg-primary-base);
   padding: 8px 12px;
   cursor: pointer;
 
   &:hover {
     background-color: var(--button-bg-primary-hover);
+  }
+
+  &--primary {
+    color: var(--button-text-primary-default);
+    background-color: var(--button-bg-primary-base);
+
+    &:hover {
+      background-color: var(--button-bg-primary-hover);
+    }
   }
 
   &--secondary {

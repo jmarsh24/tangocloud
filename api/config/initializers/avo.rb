@@ -9,4 +9,5 @@ Avo.configure do |config|
   config.cache_resources_on_index_view = true
   config.raise_error_on_missing_policy = true
   config.home_path = -> { resources_el_recodo_songs_path }
+  config.license_key = Config.avo_license_key
 end
