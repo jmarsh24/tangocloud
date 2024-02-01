@@ -1,21 +1,22 @@
 module Import
   module Music
     class DirectoryImporter
-      def initialize(directory_path)
-        @directory_path = directory_path
+      def initialize(directory)
+        @directory = directory.to_s
       end
 
       def import
-        return unless Dir.exist?(@directory_path)
+        return unless Dir.exist?(@directory)
 
-        Dir.glob(File.join(@directory_path, "*")).each do |file_path|
-          next unless MusicImporter::SUPPORTED_FORMATS.include?(File.extname(file_path).downcase)
+        Dir.glob(File.join(@directory, "*")).each do |file|
+          mime_type = MIME::Types.type_for(file).first
+          next unless mime_type && SongImporter::SUPPORTED_MIME_TYPES.include?(mime_type.content_type)
 
           begin
-            MusicImporter.new(file_path).import
+            SongImporter.new(file:).import
           rescue => e
-            Rails.logger.error "Failed to import #{file_path}: #{e.message}"
-            # Handle the error as per your requirement
+            Rails.logger.error "Failed to import #{file}: #{e.message}"
+            raise e
           end
         end
       end
