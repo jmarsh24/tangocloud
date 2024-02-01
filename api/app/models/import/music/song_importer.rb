@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Import
   module Music
     class SongImporter
@@ -45,7 +43,6 @@ module Import
           )
 
           transfer_agent.audio_transfers << audio_transfer
-
 
           lyricist = Lyricist.find_or_create_by!(name: @metadata.lyricist)
           composer = Composer.find_or_create_by!(name: @metadata.composer)

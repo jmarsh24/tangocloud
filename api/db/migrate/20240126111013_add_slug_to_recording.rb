@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AddSlugToRecording < ActiveRecord::Migration[7.1]
   def change
     add_column :recordings, :slug, :string

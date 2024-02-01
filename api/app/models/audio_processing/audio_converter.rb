@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module AudioProcessing
   class AudioConverter
     attr_reader :file, :format, :bitrate, :sample_rate, :channels, :codec, :output_directory

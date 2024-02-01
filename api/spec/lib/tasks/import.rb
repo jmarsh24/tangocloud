@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 namespace :import do
   desc "Import music files"
   task music: :environment do

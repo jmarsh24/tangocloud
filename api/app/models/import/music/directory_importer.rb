@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Import
   module Music
     class DirectoryImporter
