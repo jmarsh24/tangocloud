@@ -2,7 +2,7 @@
 
 # == Schema Information
 #
-# Table name: labels
+# Table name: record_labels
 #
 #  id           :uuid             not null, primary key
 #  name         :string           not null

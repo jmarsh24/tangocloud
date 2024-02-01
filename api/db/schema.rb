@@ -346,14 +346,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_31_022935) do
     t.index ["scheduled_at"], name: "index_good_jobs_on_scheduled_at", where: "(finished_at IS NULL)"
   end
 
-  create_table "labels", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name", null: false
-    t.text "description"
-    t.date "founded_date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "lyricists", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "slug", null: false
@@ -421,6 +413,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_31_022935) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_playlists_on_user_id"
+  end
+
+  create_table "record_labels", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.date "founded_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "recording_singers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -633,9 +633,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_31_022935) do
   add_foreign_key "recordings", "compositions"
   add_foreign_key "recordings", "el_recodo_songs"
   add_foreign_key "recordings", "genres"
-  add_foreign_key "recordings", "labels", column: "record_label_id"
   add_foreign_key "recordings", "orchestras"
   add_foreign_key "recordings", "periods"
+  add_foreign_key "recordings", "record_labels"
   add_foreign_key "recordings", "singers"
   add_foreign_key "sessions", "users"
   add_foreign_key "subscriptions", "action_auth_users"

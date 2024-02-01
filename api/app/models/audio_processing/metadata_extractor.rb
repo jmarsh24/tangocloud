@@ -2,7 +2,7 @@
 
 module AudioProcessing
   class MetadataExtractor
-    attr_reader :file, :movie
+    attr_reader :file
 
     Metadata = Data.define(
       :duration,
@@ -31,12 +31,16 @@ module AudioProcessing
       :lyrics,
       :format,
       :comment,
-      :bpm
+      :bpm,
+      :ert_number,
+      :source,
+      :label,
+      :lyricist,
+      :original_album
     ).freeze
 
     def initialize(file:)
       @file = file.to_s
-      @movie = FFMPEG::Movie.new(@file)
     end
 
     def extract_metadata
@@ -46,6 +50,8 @@ module AudioProcessing
       tags = format.dig(:tags).transform_keys(&:downcase)
 
       audio_stream = streams.find { |stream| stream[:codec_type] == "audio" }
+
+      comment = comment || tags.dig(:description) || tags.dig(:tit3)
 
       Metadata.new(
         duration: format[:duration].to_f,
@@ -65,17 +71,51 @@ module AudioProcessing
         genre: tags.dig(:genre),
         album_artist: tags.dig(:album_artist),
         catalog_number: tags.dig(:catalognumber),
-        composer: tags.dig(:composer),
         performer: tags.dig(:performer),
         encoded_by: tags.dig(:encoded_by),
         encoder: tags.dig(:encoder),
         media_type: tags.dig(:tmed),
         lyrics: tags.dig(:"lyrics-eng") || tags.dig(:lyrics) || tags.dig(:unsyncedlyrics),
-        comment: tags.dig(:comment),
+        comment:,
         record_label: tags.dig(:publisher),
         singer: tags.dig(:singer),
-        bpm: tags.dig(:bpm)
+        bpm: tags.dig(:bpm),
+        ert_number: ert_number(comment),
+        source: source(comment),
+        label: label(comment),
+        lyricist: extract_roles(comment).lyricist,
+        composer: extract_roles(comment).composer,
+        original_album: original_album(comment)
       )
+    end
+
+    def ert_number(comment)
+      comment.match(/id: (\w+-\d+)/)&.captures&.first
+    end
+
+    def source(comment)
+      source = comment.match(/source: (\w+)/)&.captures&.first
+
+      return "TangoTunes" if source == "tt"
+      return "TangoTimeTravel" if source == "ttt"
+
+      nil
+    end
+
+    def label(comment)
+      comment.match(/label: (\w+)/)&.captures&.first
+    end
+
+    def extract_roles(composer_tag)
+      composer = extract_role(composer_tag, /composer:\s*([^|]+)/i)
+      lyricist = extract_role(composer_tag, /lyricist:\s*([^|]+)/i)
+
+      Data.define(:composer, :lyricist).new(composer:, lyricist:)
+    end
+
+    def extract_role(tag, regex)
+      match = tag.match(regex)
+      match ? match[1].strip : nil
     end
   end
 end

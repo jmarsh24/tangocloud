@@ -5,7 +5,7 @@ module AudioProcessing
     attr_reader :file, :format, :bitrate, :sample_rate, :channels, :codec, :output_directory
 
     DEFAULT_OPTIONS = {
-      format: "m4a",
+      format: "aac",
       bitrate: "320k",
       sample_rate: 48000,
       channels: 1,
@@ -39,7 +39,6 @@ module AudioProcessing
         "-ar", sample_rate.to_s,             # Audio sample rate
         "-ac", channels.to_s,                # Number of audio channels
         "-movflags", "+faststart",           # Fast start for streaming
-        "-map_metadata", "0",                # Copy metadata from the first input (audio file)
         "-id3v2_version", "3"                # Ensure compatibility with ID3v2
       ]
 
