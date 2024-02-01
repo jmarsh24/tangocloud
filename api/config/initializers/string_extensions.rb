@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class String
   def titleize_name
     split(/(\s|-)/).map do |word|  # Split on spaces and hyphens

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Avo::Filters::ErtNumber < Avo::Filters::TextFilter
   self.name = "Ert Number"
   self.button_label = "Filter by ERT Number"

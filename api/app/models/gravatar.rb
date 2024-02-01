@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Gravatar
   def initialize(email)
     @digest = Digest::MD5.hexdigest(email.to_s.downcase)

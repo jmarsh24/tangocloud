@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class TangocloudSchema < GraphQL::Schema
   mutation(Types::MutationType)
   query(Types::QueryType)

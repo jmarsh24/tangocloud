@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ConvertEnumsToNative < ActiveRecord::Migration[7.1]
   def change
     create_enum :album_type, ["compilation", "original"]

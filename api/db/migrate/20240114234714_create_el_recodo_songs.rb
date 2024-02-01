@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CreateElRecodoSongs < ActiveRecord::Migration[7.1]
   def change
     create_table :el_recodo_songs, id: :uuid do |t|

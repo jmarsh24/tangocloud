@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Avo::Resources::ElRecodoSong < Avo::BaseResource
   self.title = "El Recodo Songs"
   self.includes = []
