@@ -7,7 +7,6 @@ class Audio < ApplicationRecord
   validates :bit_rate, numericality: {only_integer: true}
   validates :sample_rate, numericality: {only_integer: true}
   validates :channels, numericality: {only_integer: true}
-  validates :bit_depth, numericality: {only_integer: true}
 
   has_one_attached :file, dependent: :purge_later
 end
@@ -20,6 +19,7 @@ end
 #  duration          :integer          default(0), not null
 #  format            :string           not null
 #  codec             :string           not null
+#  bit_depth         :integer
 #  bit_rate          :integer
 #  sample_rate       :integer
 #  channels          :integer
