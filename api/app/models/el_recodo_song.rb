@@ -1,5 +1,5 @@
 class ElRecodoSong < ApplicationRecord
-  searchkick word_middle: [:title, :composer, :author, :lyrics, :orchestra, :singer]
+  searchkick word_middle: [:title, :composer, :author, :lyrics, :orchestra, :singer], callbacks: :async
 
   validates :date, presence: true
   validates :ert_number, presence: true
