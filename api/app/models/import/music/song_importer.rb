@@ -27,7 +27,7 @@ module Import
           )
 
           if @metadata.lyrics.present?
-              composition.lyrics.find_or_create_by!(
+            composition.lyrics.find_or_create_by!(
               content: @metadata.lyrics,
               locale: "es",
               composition:
@@ -73,6 +73,16 @@ module Import
           )
 
           transfer_agent = TransferAgent.find_or_create_by(name: @metadata.encoded_by || "Unknown")
+
+          album = Album.find_or_create_by!(
+            title: @metadata.album,
+            release_date: parsed_date
+          )
+
+          AudioProcessing::AlbumArtExtractor.new(file:).extract do |file|
+            next unless file.present?
+            album.album_art.attach(io: File.open(file), filename: File.basename(file))
+          end
 
           audio_transfer = AudioTransfer.create!(
             external_id: @metadata.catalog_number,

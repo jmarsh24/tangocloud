@@ -9,7 +9,6 @@ class CreateAlbums < ActiveRecord::Migration[7.1]
       t.string :slug, index: {unique: true}, null: false
       t.string :external_id
       t.enum :album_type, null: false, default: "compilation", enum_type: :album_type
-      t.belongs_to :transfer_agent, foreign_key: true, type: :uuid
     end
   end
 end
