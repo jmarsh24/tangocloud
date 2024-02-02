@@ -1,3 +1,62 @@
+class Recording < ApplicationRecord
+  extend FriendlyId
+  friendly_id :title, use: :slugged
+  searchkick word_middle: [:title, :composer_name, :author, :lyrics, :orchestra_name, :singer_name]
+
+  belongs_to :el_recodo_song, optional: true
+  belongs_to :orchestra
+  belongs_to :composition
+  belongs_to :record_label, optional: true
+  belongs_to :genre
+  has_many :audio_transfers, dependent: :destroy
+  has_many :audio, through: :audio_transfers, dependent: :destroy
+  belongs_to :period, optional: true
+  has_many :recording_singers, dependent: :destroy
+  has_many :singers, through: :recording_singers
+  has_many :lyrics, through: :composition
+  has_many :tanda_recordings, dependent: :destroy
+  has_many :tandas, through: :tanda_recordings
+
+  validates :title, presence: true
+  validates :recorded_date, presence: true
+
+  enum recording_type: {studio: "studio", live: "live"}
+
+  def self.search_recordings(query, page: 1, per_page: 10)
+    Recording.search(query,
+      fields: [
+        "title^5",
+        "composer_names",
+        "lyricist_names",
+        "lyrics",
+        "orchestra_name",
+        "singer_names",
+        "genre",
+        "period",
+        "recorded_date"
+      ],
+      match: :word_middle,
+      misspellings: {below: 5},
+      page:,
+      per_page:,
+      load: false)
+  end
+
+  def search_data
+    {
+      title:,
+      composer_names: composition.composer.name,
+      lyricist_names: composition.lyricist.name,
+      lyrics: lyrics.map(&:content),
+      orchestra_name: orchestra&.name,
+      singer_names: singers.map(&:name).join(" "),
+      genre: genre&.name,
+      period: period&.name,
+      recorded_date:
+    }
+  end
+end
+
 # == Schema Information
 #
 # Table name: recordings
@@ -7,30 +66,13 @@
 #  bpm               :integer
 #  release_date      :date
 #  recorded_date     :date
+#  slug              :string           not null
+#  recording_type    :enum             default("studio"), not null
 #  el_recodo_song_id :uuid
 #  orchestra_id      :uuid
 #  singer_id         :uuid
 #  composition_id    :uuid
-#  label_id          :uuid
+#  record_label_id   :uuid
 #  genre_id          :uuid
 #  period_id         :uuid
-#  type              :enum             default("studio"), not null
 #
-class Recording < ApplicationRecord
-  extend FriendlyId
-  friendly_id :title, use: :slugged
-
-  belongs_to :el_recodo_song, optional: true
-  belongs_to :orchestra, optional: true
-  belongs_to :singer, optional: true
-  belongs_to :song, optional: true
-  belongs_to :label, optional: true
-  belongs_to :genre, optional: true
-
-  validates :title, presence: true
-  validates :bpm, presence: true
-  validates :type, presence: true
-  validates :release_date, presence: true
-  validates :recorded_date, presence: true
-  enum type: {studio: "studio", live: "live"}
-end

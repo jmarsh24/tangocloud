@@ -14,8 +14,8 @@ end
 #
 # Table name: sessions
 #
-#  id         :bigint           not null, primary key
-#  user_id    :bigint           not null
+#  id         :uuid             not null, primary key
+#  user_id    :uuid             not null
 #  user_agent :string
 #  ip_address :string
 #  created_at :datetime         not null

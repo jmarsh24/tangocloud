@@ -1,5 +1,6 @@
 class Orchestra < ApplicationRecord
   extend FriendlyId
+  friendly_id :name, use: :slugged
   has_many :orchestra_recordings, dependent: :destroy
   has_many :recordings, through: :orchestra_recordings
   has_many :singers, through: :recordings
@@ -9,7 +10,6 @@ class Orchestra < ApplicationRecord
 
   validates :name, presence: true
   validates :rank, presence: true, numericality: {only_integer: true}
-  validates :sort_name, presence: true
   validates :slug, presence: true, uniqueness: true
 end
 
