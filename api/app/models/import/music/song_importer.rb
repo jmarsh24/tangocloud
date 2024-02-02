@@ -16,8 +16,9 @@ module Import
         return unless SUPPORTED_MIME_TYPES.include?(mime_type)
 
         ActiveRecord::Base.transaction do
-          lyricist = Lyricist.find_or_create_by!(name: @metadata.lyricist)
-          composer = Composer.find_or_create_by!(name: @metadata.composer)
+          Rails.logger.info("Importing song from #{file.inspect}")
+          lyricist = Lyricist.find_or_create_by!(name: @metadata.lyricist) if @metadata.lyricist.present?
+          composer = Composer.find_or_create_by!(name: @metadata.composer) if @metadata.composer.present?
 
           composition = Composition.find_or_create_by!(
             title: @metadata.title,
@@ -25,11 +26,13 @@ module Import
             composer:
           )
 
-          composition.lyrics.find_or_create_by!(
-            content: @metadata.lyrics,
-            locale: "es",
-            composition:
-          )
+          if @metadata.lyrics.present?
+              composition.lyrics.find_or_create_by!(
+              content: @metadata.lyrics,
+              locale: "es",
+              composition:
+            )
+          end
 
           orchestra = Orchestra.find_or_create_by!(name: @metadata.album_artist)
 

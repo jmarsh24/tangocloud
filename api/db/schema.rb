@@ -138,7 +138,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_032226) do
   create_table "compositions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title", null: false
     t.string "tangotube_slug"
-    t.uuid "lyricist_id", null: false
+    t.uuid "lyricist_id"
     t.uuid "composer_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
