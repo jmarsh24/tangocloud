@@ -318,17 +318,17 @@ function App() {
 
                         <div className='filter'>
                             <span className='label'>Start</span>
-                            <input type="text" maxLength={2} id="startDate" name="startDate" value={startDate || ''}
+                            <input type="text" maxLength={2} id="startDate" name="startDate" value={startDate || ''} className='date-input'
                                    onChange={(e) => onStartDateFilterChange(e.target.value)}/>
                         </div>
 
                         <div className='filter'>
                             <span className='label'>End</span>
-                            <input type="text" maxLength={2} id="endDate" name="endDate" value={endDate || ''}
+                            <input type="text" maxLength={2} id="endDate" name="endDate" value={endDate || ''} className='date-input'
                                    onChange={(e) => onEndDateFilterChange(e.target.value)}/>
                         </div>
 
-                        <div className='filter' onChange={onOrderByChange}>
+                        <div className='filter dates' onChange={onOrderByChange}>
                             <input type="radio" id="title" name="orderby" value="title" checked={orderBy === "title"}/>
                             <label htmlFor="title">Title</label><br/>
                             <input type="radio" id="date" name="orderby" value="date" checked={orderBy === "date"}/>
@@ -339,11 +339,11 @@ function App() {
                             <thead>
                             <tr>
                                 <th></th>
-                                <th>MusicId</th>
+                                <th>Ert</th>
                                 <th>Title</th>
                                 <th>Orchestra</th>
                                 <th>Singer</th>
-                                <th>Style</th>
+                                <th></th>
                                 <th>Date</th>
                             </tr>
                             </thead>
@@ -359,7 +359,7 @@ function App() {
                                     <td>{item.Title}</td>
                                     <td>{item.Orchestra}</td>
                                     <td>{item.Singers}</td>
-                                    <td>{item.Style}</td>
+                                    <td>{item.Style.substring(0,1)}</td>
                                     <td>{item.Date.substring(0, 10)}</td>
                                 </tr>
                             ))}

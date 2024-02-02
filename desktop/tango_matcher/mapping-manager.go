@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"io/fs"
 	"log"
 	"os"
@@ -10,8 +11,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 type Mapping struct {
@@ -96,7 +95,7 @@ func (a *App) MapSong(musicId uint, audioFilePath string) {
 		log.Fatal(err)
 	}
 
-	cmdArguments, newFileName, _ := constructCommand(audioFilePath, recording)
+	cmdArguments, newFileName := constructCommand(audioFilePath, recording)
 	cmd := exec.Command("ffmpeg", cmdArguments...)
 	cmd.Stderr = os.Stderr
 
@@ -112,31 +111,10 @@ func (a *App) MapSong(musicId uint, audioFilePath string) {
 		log.Fatal(e)
 	}
 
-	//if strings.Contains(newFileName, ".flac") {
-	//	tagCmdArguments := []string{
-	//		newFileName,
-	//		"--hideinfo",
-	//		"--hidetags",
-	//		// "--hidenames",
-	//		"--comment",
-	//		commentTag,
-	//	}
-	//
-	//	//https://wiki.hydrogenaud.io/index.php?title=Tag_(tagging_software)#Command_line_help
-	//	cmdTag := exec.Command("tag", tagCmdArguments...)
-	//	// cmdTag.Stderr = os.Stderr
-	//	// cmdTag.Stdout = os.Stdout
-	//	err = cmdTag.Run()
-	//	if err != nil {
-	//		log.Fatal(err)
-	//	}
-	//}
-
 	recording.IsMapped = true
 	recording.RelativeFilePath = dir + "_DONE_" + removeAccents(file) + "|" + newFileName
 	recording.MapDate = time.Now()
 	recording.AudioSource = getSourceInfo(audioFilePath)
-
 	err = updateRecording(db, recording)
 	if e != nil {
 		log.Fatal(e)
@@ -159,7 +137,7 @@ func getOutputFolder(recording Recording) string {
 	return outputFolder
 }
 
-func constructCommand(audioFilePath string, recording *Recording) ([]string, string, string) {
+func constructCommand(audioFilePath string, recording *Recording) ([]string, string) {
 	inputItems := strings.Split(audioFilePath, ".")
 	extension := inputItems[len(inputItems)-1]
 	formattedDate := strings.Replace(recording.Date.Format("2006-01-02"), "-", "", -1)
@@ -183,7 +161,7 @@ func constructCommand(audioFilePath string, recording *Recording) ([]string, str
 		audioFilePath,
 	}
 
-	cmdArguments = append(cmdArguments, "-map", "a:0")
+	cmdArguments = append(cmdArguments, "-map", "0")
 	cmdArguments = append(cmdArguments, "-write_id3v2", "1")
 
 	commentTag := removeAccents(strings.ToLower("Id: ERT-" + strconv.Itoa(int(recording.MusicId)) + " | SOURCE: " + getSourceInfo(audioFilePath) + " | LABEL: " + recording.Label + " | DATE: " + recording.Date.Format("2006-01-02") + " | ORIGINAL_ALBUM: " + oldAlbumTag))
@@ -214,7 +192,7 @@ func constructCommand(audioFilePath string, recording *Recording) ([]string, str
 		"-metadata", "Lyrics="+recording.Lyrics,
 		newFileName)
 
-	return cmdArguments, newFileName, commentTag
+	return cmdArguments, newFileName
 }
 
 func getSourceInfo(audioFilePath string) string {
