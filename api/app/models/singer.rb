@@ -7,7 +7,6 @@ class Singer < ApplicationRecord
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true
   validates :rank, presence: true, numericality: {only_integer: true}
-  validates :sort_name, presence: true
 end
 
 # == Schema Information

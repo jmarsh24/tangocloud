@@ -4,7 +4,7 @@ require "rails_helper"
 #
 # Table name: users
 #
-#  id              :bigint           not null, primary key
+#  id              :uuid             not null, primary key
 #  email           :string           not null
 #  password_digest :string           not null
 #  verified        :boolean          default(FALSE), not null

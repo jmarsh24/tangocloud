@@ -1,5 +1,5 @@
 class Audio < ApplicationRecord
-  has_many :audio_transfers, dependent: :destroy
+  belongs_to :audio_transfer, dependent: :destroy
   has_many :transfer_agents, through: :audio_transfers
 
   validates :duration, presence: true
@@ -7,7 +7,8 @@ class Audio < ApplicationRecord
   validates :bit_rate, numericality: {only_integer: true}
   validates :sample_rate, numericality: {only_integer: true}
   validates :channels, numericality: {only_integer: true}
-  validates :bit_depth, numericality: {only_integer: true}
+
+  has_one_attached :file, dependent: :purge_later
 end
 
 # == Schema Information
@@ -15,16 +16,15 @@ end
 # Table name: audios
 #
 #  id                :uuid             not null, primary key
+#  duration          :integer          default(0), not null
+#  format            :string           not null
+#  codec             :string           not null
 #  bit_rate          :integer
 #  sample_rate       :integer
 #  channels          :integer
+#  length            :integer          default(0), not null
+#  metadata          :jsonb            not null
+#  audio_transfer_id :uuid             not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  codec             :string
-#  length            :float
-#  encoder           :string
-#  metadata          :jsonb            not null
-#  format            :string
-#  bitrate           :integer
-#  audio_transfer_id :uuid
 #
