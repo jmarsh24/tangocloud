@@ -16,6 +16,16 @@ module Types
       ids.map { |id| context.schema.object_from_id(id, context) }
     end
 
+    field :search_recordings, [Types::RecordingType], null: false, description: "Search for recordings." do
+      argument :query, String, required: true, description: "Query to search for."
+      argument :page, Integer, required: false, description: "Page number."
+      argument :per_page, Integer, required: false, description: "Number of results per page."
+    end
+
+    def search_recordings(query:, page: 1, per_page: 10)
+      Recording.search_recordings(query, page:, per_page:).results
+    end
+
     field :search_el_recodo_songs, [Types::ElRecodoSongType], null: false do
       argument :query, String, required: true, description: "Query to search for."
       argument :page, Integer, required: false, description: "Page number."
@@ -24,10 +34,6 @@ module Types
 
     def search_el_recodo_songs(query:)
       ElRecodoSong.search_songs(query).results
-    end
-
-    def test_field
-      "Hello World!"
     end
   end
 end
