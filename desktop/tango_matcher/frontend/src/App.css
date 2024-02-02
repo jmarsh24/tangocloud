@@ -28,7 +28,7 @@
     #matches {
         overflow-y: scroll;
         box-sizing: content-box;
-        width: 25%;
+        width: 30%;
 
         .matching-data {
             display: flex;
@@ -70,7 +70,7 @@
     
     #right {
         overflow-y: scroll;
-        width: 55%;
+        width: 50%;
         display: flex;
         flex-direction: column;
 
@@ -78,6 +78,10 @@
             display: flex;
             input {
                 width: 100%;
+            }
+
+            .date-input {
+                width: 40px;
             }
         }
 
@@ -88,16 +92,20 @@
 }
 
 .panel {
-    margin: 4px;
+    overflow-x: hidden;
+    margin: 2px;
 
     .commands {
         display: flex;
         align-items: center;
         justify-content: space-around;
-        border: white 2px solid;
-        padding: 2px;
         height: 30px;
         width: 100%;
+
+        .dates {
+            width: 180px;
+            padding-right: 8px;
+        }
 
         .filter {
             display: flex;
