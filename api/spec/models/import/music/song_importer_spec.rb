@@ -24,7 +24,7 @@ RSpec.describe Import::Music::SongImporter do
         audio_transfer
       end
 
-      fit "sucessfully creates an audio_transfer with the correct attributes" do
+      it "sucessfully creates an audio_transfer with the correct attributes" do
         expect(audio_transfer).to be_present
         expect(audio_transfer.external_id).to be_nil
         # creates a reference to the el recodo song
@@ -119,6 +119,10 @@ RSpec.describe Import::Music::SongImporter do
         #  creates a new lyric
         lyric = audio_transfer.recording.composition.lyrics.where(locale: "es").first
         expect(lyric).to be_present
+        # creates a new album
+        expect(audio_transfer.album.title).to eq("tt - todo de anibal, 1938-1942 [aiff]")
+        #  creates a new album_art
+        expect(audio_transfer.album.album_art).to be_attached
         #  creates a new orchestra
         expect(audio_transfer.recording.orchestra.name).to eq("anibal troilo")
         #  creates a new record label
