@@ -1,7 +1,7 @@
 if !User.exists?(email: "admin@tangocloud.app")
   User.create!(
     email: "admin@tangocloud.app",
-    password: "adminpassword",
+    password: "tangocloud123",
     username: "admin",
     first_name: "Admin",
     last_name: "User",
