@@ -10,6 +10,8 @@ end
 #
 #  id                :uuid             not null, primary key
 #  external_id       :string
+#  position          :integer          default(0), not null
+#  album_id          :uuid
 #  transfer_agent_id :uuid
 #  recording_id      :uuid
 #  created_at        :datetime         not null

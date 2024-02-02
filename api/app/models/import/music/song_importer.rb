@@ -79,15 +79,17 @@ module Import
             release_date: parsed_date
           )
 
-          AudioProcessing::AlbumArtExtractor.new(file:).extract do |file|
-            next unless file.present?
-            album.album_art.attach(io: File.open(file), filename: File.basename(file))
+          if !album.album_art.attached?
+            AudioProcessing::AlbumArtExtractor.new(file:).extract do |file|
+              album.album_art.attach(io: File.open(file), filename: File.basename(file))
+            end
           end
 
-          audio_transfer = AudioTransfer.create!(
+          audio_transfer = album.audio_transfers.create!(
             external_id: @metadata.catalog_number,
             transfer_agent:,
-            recording:
+            recording:,
+            position: @metadata.track || album.audio_transfers.count + 1
           )
 
           transfer_agent.audio_transfers << audio_transfer
