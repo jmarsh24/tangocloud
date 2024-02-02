@@ -1,5 +1,5 @@
 module Types
-  class RecordLabel < Types::BaseObject
+  class RecordLabelType < Types::BaseObject
     field :id, ID, null: true
     field :name, String, null: true
     field :description, String, null: true

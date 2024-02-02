@@ -6,8 +6,6 @@ RSpec.describe Import::Music::SongImporter do
 
   describe "#import" do
     context "when song is from flac" do
-      subject(:audio_transfer) { described_class.new(file: flac_file).import }
-
       before do
         ElRecodoSong.create!(
           date: Date.new(1940, 10, 8),
@@ -21,10 +19,10 @@ RSpec.describe Import::Music::SongImporter do
           label: "RCA Victor",
           page_updated_at: Date.new(2013, 7, 10)
         )
-        audio_transfer
       end
 
       it "sucessfully creates an audio_transfer with the correct attributes" do
+        audio_transfer = described_class.new(file: flac_file).import
         expect(audio_transfer).to be_present
         expect(audio_transfer.external_id).to be_nil
         # creates a reference to the el recodo song
@@ -61,7 +59,7 @@ RSpec.describe Import::Music::SongImporter do
         genre = audio_transfer.recording.genre
         expect(genre.name).to eq("tango")
         # creates a new singer
-        singer = audio_transfer.recording.singer
+        singer = audio_transfer.recording.singers.first
         expect(singer.name).to eq("roberto rufino")
         # creates a new lyricist
         lyricist = audio_transfer.recording.composition.lyricist
@@ -79,8 +77,6 @@ RSpec.describe Import::Music::SongImporter do
     end
 
     context "when song is from aif" do
-      subject(:audio_transfer) { described_class.new(file: aif_file).import }
-
       before do
         ElRecodoSong.create!(
           date: Date.new(1938, 3, 7),
@@ -95,10 +91,10 @@ RSpec.describe Import::Music::SongImporter do
           label: "Odeon",
           page_updated_at: Date.new(2013, 7, 10)
         )
-        audio_transfer
       end
 
       it "creates a new audio with correct attributes" do
+        audio_transfer = described_class.new(file: aif_file).import
         audio = audio_transfer.audios.first
         expect(audio).to be_present
         expect(audio.format).to eq("aac")
@@ -130,7 +126,7 @@ RSpec.describe Import::Music::SongImporter do
         #  creates a new genre
         expect(audio_transfer.recording.genre.name).to eq("tango")
         #  creates a new singer
-        expect(audio_transfer.recording.singer.name).to eq("instrumental")
+        expect(audio_transfer.recording.singers).to eq([])
         #  creates a new lyricist
         expect(audio_transfer.recording.composition.lyricist.name).to eq("gabriel clausi")
         #  creates a new composer
