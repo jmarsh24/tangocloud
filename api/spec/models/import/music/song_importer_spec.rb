@@ -24,17 +24,13 @@ RSpec.describe Import::Music::SongImporter do
         audio_transfer
       end
 
-      it "sucessfully creates an audio_transfer with the correct attributes" do
+      fit "sucessfully creates an audio_transfer with the correct attributes" do
         expect(audio_transfer).to be_present
         expect(audio_transfer.external_id).to be_nil
-      end
-
-      it "creates a reference to the el recodo song" do
+        # creates a reference to the el recodo song
         expect(audio_transfer.recording.el_recodo_song).to be_present
         expect(audio_transfer.recording.el_recodo_song.title).to eq("Volver a soñar")
-      end
-
-      it "creates a new audio with correct attributes" do
+        # creates a new audio with correct attributes
         audio = audio_transfer.audios.first
         expect(audio).to be_present
         expect(audio.format).to eq("aac")
@@ -44,50 +40,36 @@ RSpec.describe Import::Music::SongImporter do
         expect(audio.codec).to eq("aac_at")
         expect(audio.length).to eq(165)
         expect(audio.metadata).to be_present
-      end
-
-      it "creates a new composition" do
+        # creates a new composition
         composition = audio_transfer.recording.composition
-
         expect(composition.title).to eq("volver a sonar")
-      end
-
-      it "creates a new lyric" do
+        # creates a new lyric
         lyric = audio_transfer.recording.composition.lyrics.where(locale: "es").first
         expect(lyric.content).to be_present
-      end
-
-      it "creates a new orchestra" do
+        # creates a new orchestra
         orchestra = audio_transfer.recording.orchestra
         expect(orchestra.name).to eq("carlos di sarli")
-      end
-
-      it "creates a new record label" do
+        # creates a new album
+        album = audio_transfer.album
+        expect(album.title).to eq("tt - todo de carlos -1939-1941 [flac]")
+        # creates a new album_art
+        expect(album.album_art).to be_attached
+        # creates a new record label
         record_label = audio_transfer.recording.record_label
         expect(record_label.name).to eq("rca victor")
-      end
-
-      it "creates a new genre" do
+        # creates a new genre
         genre = audio_transfer.recording.genre
         expect(genre.name).to eq("tango")
-      end
-
-      it "creates a new singer" do
+        # creates a new singer
         singer = audio_transfer.recording.singer
         expect(singer.name).to eq("roberto rufino")
-      end
-
-      it "creates a new lyricist" do
+        # creates a new lyricist
         lyricist = audio_transfer.recording.composition.lyricist
         expect(lyricist.name).to eq("francisco garcia jimenez")
-      end
-
-      it "creates a new composer" do
+        # creates a new composer
         composer = audio_transfer.recording.composition.composer
         expect(composer.name).to eq("andres fraga")
-      end
-
-      it "creates a new recording" do
+        # creates a new recording
         recording = audio_transfer.recording
         expect(recording.title).to eq("volver a sonar")
         expect(recording.bpm).to eq(130)
@@ -126,65 +108,31 @@ RSpec.describe Import::Music::SongImporter do
         expect(audio.codec).to eq("aac_at")
         expect(audio.length).to eq(163)
         expect(audio.metadata).to be_present
-      end
-
-      it "creates a new audio transfer" do
+        #  creates a new audio transfer
         expect(audio_transfer).to be_present
         expect(audio_transfer.external_id).to be_nil
-      end
-
-      it "creates a reference to the el recodo song" do
+        #  creates a reference to the el recodo song
         expect(audio_transfer.recording.el_recodo_song).to be_present
         expect(audio_transfer.recording.el_recodo_song.title).to eq("Comme il faut")
-      end
-
-      it "creates a new composition" do
+        #  creates a new composition
         expect(audio_transfer.recording.composition.title).to eq("comme il faut")
-      end
-
-      it "creates a new lyric" do
+        #  creates a new lyric
         lyric = audio_transfer.recording.composition.lyrics.where(locale: "es").first
         expect(lyric).to be_present
-      end
-
-      it "creates a new orchestra" do
+        #  creates a new orchestra
         expect(audio_transfer.recording.orchestra.name).to eq("anibal troilo")
-      end
-
-      it "creates a new record label" do
+        #  creates a new record label
         expect(audio_transfer.recording.record_label.name).to eq("odeon")
-      end
-
-      it "creates a new genre" do
+        #  creates a new genre
         expect(audio_transfer.recording.genre.name).to eq("tango")
-      end
-
-      it "creates a new singer" do
+        #  creates a new singer
         expect(audio_transfer.recording.singer.name).to eq("instrumental")
-      end
-
-      it "creates a new lyricist" do
+        #  creates a new lyricist
         expect(audio_transfer.recording.composition.lyricist.name).to eq("gabriel clausi")
-      end
-
-      it "creates a new composer" do
+        #  creates a new composer
         expect(audio_transfer.recording.composition.composer.name).to eq("eduardo arolas")
-      end
-
-      it "creates a new recording" do
+        #  creates a new recording
         expect(audio_transfer.recording.title).to eq("comme il faut")
-      end
-    end
-
-    context "when an el recodo song does not exist" do
-      it "raises an error" do
-
-      end
-    end
-
-    context "when an el recodo song does not exist" do
-      it "raises an error" do
-
       end
     end
   end

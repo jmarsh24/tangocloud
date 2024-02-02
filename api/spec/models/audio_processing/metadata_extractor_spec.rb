@@ -20,7 +20,6 @@ RSpec.describe AudioProcessing::MetadataExtractor do
       expect(metadata.encoder).to eq("Lavf60.16.100")
       expect(metadata.media_type).to be_nil
       expect(metadata.date).to eq("1938-03-07")
-      expect(metadata.track).to be_nil
       expect(metadata.genre).to eq("tango")
       expect(metadata.album_artist).to eq("anibal troilo")
       expect(metadata.catalog_number).to be_nil
@@ -30,7 +29,7 @@ RSpec.describe AudioProcessing::MetadataExtractor do
       expect(metadata.media_type).to be_nil
       expect(metadata.lyrics).to eq("Luna, farol y canción,\ndulce emoción del ayer\nfue en París,\ndonde viví tu amor.\nTango, Champagne, corazón,\nnoche de amor\nque no está,\nen mi sueño vivirá...\n\nEs como debe ser, con ilusión viví\nlas alegrías y las tristezas;\nen esa noche fue que yo sentí por vos\nuna esperanza en mi corazón.\nEs como debe ser en la pasión de ley,\ntus ojos negros y tu belleza.\nSiempre serás mi amor en bello amanecer\npara mi vida, dulce ilusión.\n\nEn este tango\nte cuento mi tristeza,\ndolor y llanto\nque dejo en esta pieza.\nQuiero que oigas mi canción\nhecha de luna y de farol\ny que tu amor, mujer,\nvuelva hacia mí.")
       expect(metadata.duration).to eq(163.879002)
-      expect(metadata.bit_rate).to eq(705671)
+      expect(metadata.bit_rate).to eq(708991)
       expect(metadata.codec_name).to eq("pcm_s16be")
       expect(metadata.codec_long_name).to eq("PCM signed 16-bit big-endian")
       expect(metadata.sample_rate).to eq(44100)
@@ -67,7 +66,7 @@ RSpec.describe AudioProcessing::MetadataExtractor do
       expect(metadata.media_type).to be_nil
       expect(metadata.lyrics).to eq("No sé si fue mi mano\nO fue la tuya\nQue escribió,\nLa carta del adiós\nEn nuestro amor.\n \nNo quiero ni saber\nQuién fue culpable\nDe los dos,\nNi pido desazones\nNi rencor.\n \nMe queda del ayer\nEnvuelto en tu querer,\nEl rastro de un perfume antiguo.\nMe queda de tu amor\nEl lánguido sabor\nDe un néctar\nQue ya nunca beberé.\n \nPor eso que esta estrofa\nAl muerto idilio, no es capaz,\nDe hacerlo entre los dos resucitar.\nSi acaso algo pretendo\nEs por ofrenda al corazón,\nSalvarlo del olvido, nada más...")
       expect(metadata.duration).to eq(165.158396)
-      expect(metadata.bit_rate).to eq(1320140)
+      expect(metadata.bit_rate).to eq(1324082)
       expect(metadata.codec_name).to eq("flac")
       expect(metadata.codec_long_name).to eq("FLAC (Free Lossless Audio Codec)")
       expect(metadata.sample_rate).to eq(96000)
@@ -85,6 +84,13 @@ RSpec.describe AudioProcessing::MetadataExtractor do
       expect(metadata.singer).to eq("roberto rufino")
       expect(metadata.lyricist).to eq("francisco garcia jimenez")
       expect(metadata.original_album).to eq("bave 39533 - 39110 b tangotunes")
+    end
+
+    it "returns track_number for m4a" do
+      file = Rails.root.join("spec/fixtures/audio/19421009_no_te_apures_carablanca_juan_carlos_miranda_tango_1918.m4a")
+      metadata = AudioProcessing::MetadataExtractor.new(file:).extract_metadata
+
+      expect(metadata.track).to eq("17")
     end
   end
 end
