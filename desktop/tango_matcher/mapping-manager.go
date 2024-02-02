@@ -95,7 +95,7 @@ func (a *App) MapSong(musicId uint, audioFilePath string) {
 		log.Fatal(err)
 	}
 
-	cmdArguments, _, _ := constructCommand(audioFilePath, recording) // _ =>> newFileName
+	cmdArguments, newFileName := constructCommand(audioFilePath, recording)
 	cmd := exec.Command("ffmpeg", cmdArguments...)
 	cmd.Stderr = os.Stderr
 
@@ -137,7 +137,7 @@ func getOutputFolder(recording Recording) string {
 	return outputFolder
 }
 
-func constructCommand(audioFilePath string, recording *Recording) ([]string, string, string) {
+func constructCommand(audioFilePath string, recording *Recording) ([]string, string) {
 	inputItems := strings.Split(audioFilePath, ".")
 	extension := inputItems[len(inputItems)-1]
 	formattedDate := strings.Replace(recording.Date.Format("2006-01-02"), "-", "", -1)
@@ -192,7 +192,7 @@ func constructCommand(audioFilePath string, recording *Recording) ([]string, str
 		"-metadata", "Lyrics="+recording.Lyrics,
 		newFileName)
 
-	return cmdArguments, newFileName, commentTag
+	return cmdArguments, newFileName
 }
 
 func getSourceInfo(audioFilePath string) string {
