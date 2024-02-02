@@ -4,15 +4,6 @@ class RecordingSinger < ApplicationRecord
 
   validates :recording_id, presence: true
   validates :singer_id, presence: true
-
-  def self.create_from_recording(recording)
-    recording_singer = RecordingSinger.new(
-      recording_id: recording.id,
-      singer_id: recording.singer_id
-    )
-    recording_singer.save!
-    recording_singer
-  end
 end
 
 # == Schema Information

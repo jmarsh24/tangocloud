@@ -46,8 +46,8 @@ module Import
 
           el_recodo_song = ElRecodoSong.find_by!(ert_number: @metadata.ert_number)
 
-          singer = if @metadata.singer.present?
-            Singer.find_or_create_by!(name: @metadata.singer)
+          if @metadata.singer.present? && @metadata.singer.downcase != "instrumental"
+            singer = Singer.find_or_create_by!(name: @metadata.artist)
           end
 
           parsed_date =
@@ -65,12 +65,13 @@ module Import
             recorded_date: parsed_date,
             release_date: parsed_date,
             el_recodo_song:,
-            singer:,
             orchestra:,
             composition:,
             record_label:,
             genre:
           )
+
+          recording.singers << singer if singer.present?
 
           transfer_agent = TransferAgent.find_or_create_by(name: @metadata.encoded_by || "Unknown")
 
@@ -109,7 +110,6 @@ module Import
           audio_converter.convert do |file|
             audio.file.attach(io: File.open(file), filename: File.basename(file))
           end
-
           audio_transfer
         end
       end

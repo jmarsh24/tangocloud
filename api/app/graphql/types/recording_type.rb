@@ -11,7 +11,7 @@ module Types
     field :orchestra, Types::OrchestraType, null: true
     field :singer, Types::SingerType, null: true
     field :composition, Types::CompositionType, null: true
-    # field :record_label, Types::RecordLabelType, null: true
+    field :record_label, Types::RecordLabelType, null: true
     field :genre, Types::GenreType, null: true
     field :period, Types::PeriodType, null: true
   end
