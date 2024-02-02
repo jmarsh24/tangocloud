@@ -74,9 +74,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_032226) do
     t.string "slug", null: false
     t.string "external_id"
     t.enum "album_type", default: "compilation", null: false, enum_type: "album_type"
-    t.uuid "transfer_agent_id"
     t.index ["slug"], name: "index_albums_on_slug", unique: true
-    t.index ["transfer_agent_id"], name: "index_albums_on_transfer_agent_id"
   end
 
   create_table "audio_transfers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -534,7 +532,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_032226) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "album_audio_transfers", "albums"
   add_foreign_key "album_audio_transfers", "audio_transfers"
-  add_foreign_key "albums", "transfer_agents"
   add_foreign_key "audio_transfers", "recordings"
   add_foreign_key "audio_transfers", "transfer_agents"
   add_foreign_key "audios", "audio_transfers"

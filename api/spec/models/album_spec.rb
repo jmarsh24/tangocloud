@@ -8,13 +8,12 @@ end
 #
 # Table name: albums
 #
-#  id                :uuid             not null, primary key
-#  title             :string           not null
-#  description       :text
-#  release_date      :date
-#  recordings_count  :integer          default(0), not null
-#  slug              :string           not null
-#  external_id       :string
-#  album_type        :enum             default("compilation"), not null
-#  transfer_agent_id :uuid
+#  id               :uuid             not null, primary key
+#  title            :string           not null
+#  description      :text
+#  release_date     :date
+#  recordings_count :integer          default(0), not null
+#  slug             :string           not null
+#  external_id      :string
+#  album_type       :enum             default("compilation"), not null
 #
