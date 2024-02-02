@@ -11,7 +11,7 @@ RSpec.describe Import::Music::DirectoryImporter do
 
     it "calls SongImporter#import the correct number of times for supported files" do
       importer.import
-      expect(Import::Music::SongImporter).to have_received(:new).exactly(2).times
+      expect(Import::Music::SongImporter).to have_received(:new).exactly(4).times
     end
 
     it "does not import unsupported files" do
