@@ -1,7 +1,6 @@
 class Recording < ApplicationRecord
   extend FriendlyId
   friendly_id :title, use: :slugged
-
   searchkick word_middle: [:title, :composer_name, :author, :lyrics, :orchestra_name, :singer_name]
 
   belongs_to :el_recodo_song, optional: true
@@ -15,15 +14,18 @@ class Recording < ApplicationRecord
   has_many :recording_singers, dependent: :destroy
   has_many :singers, through: :recording_singers
   has_many :lyrics, through: :composition
+  has_many :tanda_recordings, dependent: :destroy
+  has_many :tandas, through: :tanda_recordings
 
   validates :title, presence: true
   validates :recorded_date, presence: true
 
   enum recording_type: {studio: "studio", live: "live"}
 
-  def self.search(query, page: 1, per_page: 10)
+  def self.search_recordings(query, page: 1, per_page: 10)
     Recording.search(query,
-      fields: ["title^5",
+      fields: [
+        "title^5",
         "composer_names",
         "lyricist_names",
         "lyrics",
@@ -31,7 +33,8 @@ class Recording < ApplicationRecord
         "singer_names",
         "genre",
         "period",
-        "recorded_date"],
+        "recorded_date"
+      ],
       match: :word_middle,
       misspellings: {below: 5},
       page:,
