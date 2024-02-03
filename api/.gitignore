@@ -50,3 +50,5 @@ node_modules
 *.local
 
 .yarn/cache
+*.dmp
+*.dump
