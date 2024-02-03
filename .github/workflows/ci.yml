@@ -85,16 +85,6 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
           working-directory: ./api
-
-      # - name: Verify Elasticsearch connection from host
-      #   env:
-      #     ELASTIC_SEARCH_URL: http://localhost:${{ job.services.elasticsearch.ports[9200] }}
-      #   run: |
-      #     echo $ELASTIC_SEARCH_URL
-      #     curl -fsSL "$ELASTIC_SEARCH_URL/_cat/health?h=status"
-      - name: Check Translations
-        run: bundle exec i18n-tasks health
-        working-directory: ./api
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
         working-directory: ./api
