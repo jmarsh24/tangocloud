@@ -60,7 +60,6 @@ RSpec.describe "#signIn mutation" do
     expect(result.dig("errors", 0, "message")).to eq("Incorrect Email/Password")
   end
 
-  f
   it "fails with wrong password" do
     result = TangocloudSchema.execute(mutation, variables: {
       login: "user@example.com",
