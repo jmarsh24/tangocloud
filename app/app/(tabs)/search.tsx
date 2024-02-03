@@ -57,7 +57,7 @@ export default function SearchScreen() {
       variables: { query: search, page: page + 1, per_page: 10 },
       updateQuery: (prev, { fetchMoreResult }) => {
         setIsFetchingMore(false);
-        debugger
+
         if (!fetchMoreResult) return prev;
         return Object.assign({}, prev, {
           searchRecordings: [
