@@ -465,14 +465,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_032226) do
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
-  create_table "tanda_audio_transfers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "tanda_recordings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "position", default: 0, null: false
     t.uuid "tanda_id", null: false
-    t.uuid "audio_transfer_id", null: false
+    t.uuid "recording_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["audio_transfer_id"], name: "index_tanda_audio_transfers_on_audio_transfer_id"
-    t.index ["tanda_id"], name: "index_tanda_audio_transfers_on_tanda_id"
+    t.index ["recording_id"], name: "index_tanda_recordings_on_recording_id"
+    t.index ["tanda_id"], name: "index_tanda_recordings_on_tanda_id"
   end
 
   create_table "tandas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -555,8 +555,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_032226) do
   add_foreign_key "recordings", "singers"
   add_foreign_key "sessions", "users"
   add_foreign_key "subscriptions", "users"
-  add_foreign_key "tanda_audio_transfers", "audio_transfers"
-  add_foreign_key "tanda_audio_transfers", "tandas"
+  add_foreign_key "tanda_recordings", "recordings"
+  add_foreign_key "tanda_recordings", "tandas"
   add_foreign_key "tandas", "audio_transfers"
   add_foreign_key "videos", "recordings"
 end

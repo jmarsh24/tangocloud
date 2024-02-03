@@ -1,4 +1,4 @@
-class CreateTandaAudioTransfers < ActiveRecord::Migration[7.1]
+class CreateTandaRecordings < ActiveRecord::Migration[7.1]
   def change
     create_table :tanda_recordings, id: :uuid do |t|
       t.integer :position, null: false, default: 0

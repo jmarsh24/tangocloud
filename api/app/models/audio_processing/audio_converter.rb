@@ -9,7 +9,8 @@ module AudioProcessing
       channels: 1,
       codec: "aac_at",
       output_directory: "tmp/converted_audio_files",
-      filename: nil
+      filename: nil,
+      strip_metadata: true
     }.freeze
 
     def initialize(file:, **options)
@@ -23,11 +24,12 @@ module AudioProcessing
       @output_directory = options[:output_directory]
       @filename = options[:filename]
       @movie = FFMPEG::Movie.new(file.to_s)
+      @strip_metadata = options[:strip_metadata]
     end
 
     def convert
       Dir.mkdir(output_directory) unless Dir.exist?(output_directory)
-      Tempfile.create([@filename || File.basename(file, ".*"), ".#{format}"], @output_directory) do |tempfile|
+      Tempfile.create([@filename || File.basename(file, ".*"), ".#{format}"], output_directory) do |tempfile|
         output = tempfile.path
 
         custom_options = [
@@ -40,6 +42,8 @@ module AudioProcessing
           "-movflags", "+faststart",           # Fast start for streaming
           "-id3v2_version", "3"                # Ensure compatibility with ID3v2
         ]
+
+        custom_options += ["-map_metadata", "-1"] if @strip_metadata
 
         @movie.transcode(output, custom_options) do |progress|
           puts progress

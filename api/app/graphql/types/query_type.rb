@@ -35,5 +35,11 @@ module Types
     def search_el_recodo_songs(query:)
       ElRecodoSong.search_songs(query).results
     end
+
+    field :who_am_i, String, null: false,
+      description: "Who am I"
+    def who_am_i
+      "You've authenticated as #{context[:current_user].presence || "guest"}."
+    end
   end
 end
