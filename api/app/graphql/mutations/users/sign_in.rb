@@ -10,11 +10,18 @@ module Mutations::Users
 
     def resolve(login:, password:)
       user = User.find_by_email_or_username(login)
-      binding.irb
+      errors = {}
+
       if user&.authenticate(password)
-        { token: AuthToken.token(user), user: user }
+        context[:current_user] = user
+        token = AuthToken.token(user)
+
+        {token: AuthToken.token(user), user:, success: true}
       else
-        raise GraphQL::ExecutionError, "Incorrect login credentials"
+        user = nil
+        context[:current_user] = nil
+
+        raise GraphQL::ExecutionError, "Incorrect Email/Password"
       end
     end
   end
