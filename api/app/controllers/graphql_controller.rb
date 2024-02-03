@@ -11,7 +11,7 @@ class GraphQLController < ApplicationController
     context = {
       current_user:
     }
-    result = TangocloudSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
+    result = TangocloudSchema.execute(query, variables:, context:, operation_name:)
     render json: result
   rescue => e
     raise e unless Rails.env.development?
