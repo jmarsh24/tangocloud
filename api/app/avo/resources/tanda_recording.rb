@@ -1,4 +1,4 @@
-class Avo::Resources::TandaRecordings < Avo::BaseResource
+class Avo::Resources::TandaRecording < Avo::BaseResource
   self.includes = []
   self.visible_on_sidebar = false
 
