@@ -10,7 +10,7 @@ module Mutations::Users
 
     def resolve(login:, password:)
       user = User.find_by_email_or_username(login)
-
+      binding.irb
       if user&.authenticate(password)
         { token: AuthToken.token(user), user: user }
       else
