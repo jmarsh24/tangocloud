@@ -1,4 +1,6 @@
 class Audio < ApplicationRecord
+  include Rails.application.routes.url_helpers
+
   belongs_to :audio_transfer, dependent: :destroy
   has_many :transfer_agents, through: :audio_transfers
 
@@ -9,6 +11,10 @@ class Audio < ApplicationRecord
   validates :channels, numericality: {only_integer: true}
 
   has_one_attached :file, dependent: :purge_later
+
+  def file_url
+    rails_blob_path(self.file, disposition: "attachment")
+  end
 end
 
 # == Schema Information

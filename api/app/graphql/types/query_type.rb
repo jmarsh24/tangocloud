@@ -41,5 +41,13 @@ module Types
     def who_am_i
       "You've authenticated as #{context[:current_user].presence || "guest"}."
     end
+
+    field :get_audio, Types::AudioType, null: false, description: "Get audio by ID." do
+      argument :id, ID, required: true, description: "ID of the audio."
+    end
+
+    def get_audio(id:)
+      Audio.find(id)
+    end
   end
 end
