@@ -8,9 +8,9 @@ class Recording < ApplicationRecord
   belongs_to :composition
   belongs_to :record_label, optional: true
   belongs_to :genre
+  belongs_to :period, optional: true
   has_many :audio_transfers, dependent: :destroy
   has_many :audio, through: :audio_transfers, dependent: :destroy
-  belongs_to :period, optional: true
   has_many :recording_singers, dependent: :destroy
   has_many :singers, through: :recording_singers
   has_many :lyrics, through: :composition
