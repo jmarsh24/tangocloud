@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe TandaRecoding, type: :policy do
+RSpec.describe TandaRecording, type: :policy do
   let(:user) { User.new }
 
   subject { described_class }
