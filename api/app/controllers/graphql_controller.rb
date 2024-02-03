@@ -1,4 +1,4 @@
-class GraphqlController < ApplicationController
+class GraphQLController < ApplicationController
   # If accessing from outside this domain, nullify the session
   # This allows for outside API access while preventing CSRF attacks,
   # but you'll have to authenticate your user separately
@@ -9,10 +9,9 @@ class GraphqlController < ApplicationController
     query = params[:query]
     operation_name = params[:operationName]
     context = {
-      # Query context goes here, for example:
-      # current_user: current_user,
+      current_user:
     }
-    result = TangocloudSchema.execute(query, variables:, context:, operation_name:)
+    result = TangocloudSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
   rescue => e
     raise e unless Rails.env.development?
