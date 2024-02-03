@@ -57,9 +57,10 @@ RSpec.describe "#signIn mutation" do
 
     expect(result.dig("data", "signIn", "user", "id")).to be_nil
     expect(result.dig("data", "signIn", "token")).to be_nil
-    expect(result.dig("errors", 0, "message")).to eq("Incorrect login credentials")
+    expect(result.dig("errors", 0, "message")).to eq("Incorrect Email/Password")
   end
 
+  f
   it "fails with wrong password" do
     result = TangocloudSchema.execute(mutation, variables: {
       login: "user@example.com",
@@ -68,7 +69,7 @@ RSpec.describe "#signIn mutation" do
 
     expect(result.dig("data", "signIn", "user", "id")).to be_nil
     expect(result.dig("data", "signIn", "token")).to be_nil
-    expect(result.dig("errors", 0, "message")).to eq("Incorrect login credentials")
+    expect(result.dig("errors", 0, "message")).to eq("Incorrect Email/Password")
   end
 
   it "fails with wrong email" do
@@ -79,6 +80,6 @@ RSpec.describe "#signIn mutation" do
 
     expect(result.dig("data", "signIn", "user", "id")).to be_nil
     expect(result.dig("data", "signIn", "token")).to be_nil
-    expect(result.dig("errors", 0, "message")).to eq("Incorrect login credentials")
+    expect(result.dig("errors", 0, "message")).to eq("Incorrect Email/Password")
   end
 end
