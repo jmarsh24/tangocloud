@@ -270,6 +270,7 @@ GEM
       reline (>= 0.4.2)
     jmespath (1.6.2)
     json (2.7.1)
+    jwt (2.7.1)
     kamal (1.3.1)
       activesupport (>= 7.0)
       base64 (~> 0.2)
@@ -396,7 +397,6 @@ GEM
       nio4r (~> 2.0)
     pundit (2.3.1)
       activesupport (>= 3.0.0)
-    pwned (2.4.1)
     raabro (1.4.0)
     racc (1.7.3)
     rack (3.0.8)
@@ -650,6 +650,7 @@ DEPENDENCIES
   guard-rspec
   i18n-tasks
   image_processing
+  jwt
   kamal
   kaminari
   letter_opener
@@ -665,7 +666,6 @@ DEPENDENCIES
   pry-rails
   puma
   pundit
-  pwned
   rack-cors
   rack_session_access
   rails (= 7.1.3)
