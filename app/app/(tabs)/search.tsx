@@ -16,11 +16,11 @@ const query = gql`
   query MyQuery($query: String!) {
        searchRecordings(query: $query) {
               title
-							# audios {
-              #   id
-              #   length
-              #   fileUrl
-              # }
+							audios {
+                id
+                length
+                fileUrl
+              }
               orchestra {
                 name
               }
@@ -41,7 +41,7 @@ export default function SearchScreen() {
   const [isFetchingMore, setIsFetchingMore] = useState(false);
 
   const { data, loading, error, fetchMore } = useQuery(query, {
-    variables: { query: search, page: 1, per_page: 10 },
+    variables: { query: search, page: 1, per_page: 30 },
     fetchPolicy: 'cache-and-network',
   });
 

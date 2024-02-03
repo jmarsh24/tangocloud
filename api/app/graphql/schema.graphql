@@ -63,13 +63,11 @@ type ElRecodoSong {
 }
 
 type Genre {
-  createdAt: ISO8601Date
-  id: ID
+  createdAt: ISO8601DateTime!
+  description: String
+  id: ID!
   name: String!
-  rank: Int
-  slug: String
-  sortName: String
-  updatedAt: ISO8601Date
+  updatedAt: ISO8601DateTime!
 }
 
 """
@@ -203,8 +201,8 @@ type RecordLabel {
 }
 
 type Recording {
-  audio: Audio
   audioTransfer: AudioTransfer!
+  audios: [Audio!]
   bpm: Int
   composer: Composer
   composition: Composition
@@ -218,7 +216,7 @@ type Recording {
   recordedDate: ISO8601Date
   recordingType: String!
   releaseDate: ISO8601Date
-  singer: Singer
+  singers: Singer
   slug: String!
   title: String!
 }
