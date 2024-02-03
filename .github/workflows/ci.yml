@@ -94,8 +94,10 @@ jobs:
       #     curl -fsSL "$ELASTIC_SEARCH_URL/_cat/health?h=status"
       - name: Check Translations
         run: bundle exec i18n-tasks health
+        working-directory: ./api
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
+        working-directory: ./api
       - name: Run Tests
         env:
           DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/test
