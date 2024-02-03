@@ -13,10 +13,10 @@ class User < ApplicationRecord
 
   validates :email, presence: true, uniqueness: true, format: {with: URI::MailTo::EMAIL_REGEXP}
   validates :password, allow_nil: true, length: {minimum: 12}
-  validates :password, not_pwned: {message: "might easily be guessed"}
   validates :username, presence: true, uniqueness: true, length: {minimum: 3, maximum: 32}, format: {with: /\A[a-zA-Z0-9_]+\z/}
 
   normalizes :email, with: -> { _1.strip.downcase }
+  normalizes :username, with: -> { _1.strip.downcase }
 
   before_validation if: :email_changed?, on: :update do
     self.verified = false
@@ -41,6 +41,23 @@ class User < ApplicationRecord
   has_one_attached :avatar do |blob|
     blob.variant :small, resize_to_limit: [160, 160], saver: {strip: true, quality: 75, lossless: false, alpha_q: 85, reduction_effort: 6, smart_subsample: true}, format: "webp"
     blob.variant :large, resize_to_limit: [500, 500], saver: {strip: true, quality: 75, lossless: false, alpha_q: 85, reduction_effort: 6, smart_subsample: true}, format: "webp"
+  end
+  class << self
+    def find_by_email_or_username(email_or_username)
+      find_by(email: email_or_username) || find_by(username: email_or_username)
+    end
+  end
+
+  def name=(full_name)
+    self.first_name, self.last_name = full_name.to_s.squish.split(/\s/, 2)
+  end
+
+  def name
+    [first_name, last_name].join(" ")
+  end
+
+  def to_s
+    name
   end
 
   def avatar_thumbnail(width: 160)

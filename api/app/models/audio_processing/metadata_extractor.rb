@@ -43,24 +43,21 @@ module AudioProcessing
 
     def extract_metadata
       metadata = movie.metadata
-      streams = metadata[:streams]
-      format = metadata[:format]
-      tags = format.dig(:tags).transform_keys(&:downcase)
-
-      audio_stream = streams.find { |stream| stream[:codec_type] == "audio" }
-
+      streams = metadata.dig(:streams)
+      format = metadata.dig(:format)
+      tags = format.dig(:tags)&.transform_keys(&:downcase) || {}
+      audio_stream = streams.find { |stream| stream.dig(:codec_type) == "audio" }
       comments = comments || tags.dig(:description) || tags.dig(:tit3)
-
       Metadata.new(
-        duration: format[:duration].to_f,
-        bit_rate: format[:bit_rate].to_i,
-        bit_depth: audio_stream[:bits_per_raw_sample].to_i,
-        bit_rate_mode: audio_stream[:bit_rate_mode],
-        format: format[:format_name],
-        codec_name: audio_stream[:codec_name],
-        codec_long_name: audio_stream[:codec_long_name],
-        sample_rate: audio_stream[:sample_rate].to_i,
-        channels: audio_stream[:channels],
+        duration: format.dig(:duration).to_f,
+        bit_rate: format.dig(:bit_rate).to_i,
+        bit_depth: audio_stream.dig(:bits_per_raw_sample).to_i,
+        bit_rate_mode: audio_stream.dig(:bit_rate_mode),
+        format: format.dig(:format_name),
+        codec_name: audio_stream.dig(:codec_name),
+        codec_long_name: audio_stream.dig(:codec_long_name),
+        sample_rate: audio_stream.dig(:sample_rate).to_i,
+        channels: audio_stream.dig(:channels),
         title: tags.dig(:title),
         artist: tags.dig(:artist),
         album: tags.dig(:album),
@@ -80,17 +77,21 @@ module AudioProcessing
         bpm: tags.dig(:bpm),
         ert_number: ert_number(comments),
         source: source(comments),
-        lyricist: extract_roles(tags.dig(:composer)).lyricist,
-        composer: extract_roles(tags.dig(:composer)).composer,
+        lyricist: extract_roles(tags.dig(:composer))&.lyricist,
+        composer: extract_roles(tags.dig(:composer))&.composer,
         original_album: original_album(comments)
       )
     end
 
     def ert_number(comments)
+      return nil unless comments
+
       comments.match(/id: (\w+-\d+)/)&.captures&.first&.split("-")&.last.to_i
     end
 
     def source(comments)
+      return nil unless comments
+
       source = comments.match(/source: (\w+)/)&.captures&.first
 
       return "TangoTunes" if source == "tt"
@@ -100,15 +101,21 @@ module AudioProcessing
     end
 
     def record_label(comments)
+      return nil unless comments
+
       comments.match(/label: ([\w\s]+?) \|/)&.captures&.first
     end
 
     def original_album(comments)
+      return nil unless comments
+
       match = comments.match(/original_album: (.*?)(?:\s*\||\r\n|$)/)
       match&.captures&.first
     end
 
     def extract_roles(composer_tag)
+      return nil unless composer_tag
+
       composer = extract_role(composer_tag, /composer:\s*([^|]+)/i)
       lyricist = extract_role(composer_tag, /lyricist:\s*([^|]+)/i)
 
@@ -116,6 +123,8 @@ module AudioProcessing
     end
 
     def extract_role(tag, regex)
+      return nil unless tag
+
       match = tag.match(regex)
       match ? match[1].strip : nil
     end
