@@ -13,7 +13,7 @@ class Audio < ApplicationRecord
   has_one_attached :file, dependent: :purge_later
 
   def file_url
-    rails_blob_path(self.file, disposition: "attachment")
+    rails_blob_path(file, disposition: "attachment")
   end
 end
 
