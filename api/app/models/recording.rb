@@ -45,8 +45,8 @@ class Recording < ApplicationRecord
   def search_data
     {
       title:,
-      composer_names: composition.composer.name,
-      lyricist_names: composition.lyricist.name,
+      composer_names: composition&.composer&.name,
+      lyricist_names: composition&.lyricist&.name,
       lyrics: lyrics.map(&:content),
       orchestra_name: orchestra&.name,
       singer_names: singers.map(&:name).join(" "),
