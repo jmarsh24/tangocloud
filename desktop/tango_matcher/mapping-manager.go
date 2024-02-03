@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"io/fs"
 	"log"
 	"os"
@@ -19,13 +20,6 @@ type Mapping struct {
 	RecordingTitle  string
 	FilePath        string
 	FileName        string
-}
-
-func (a *App) MapAllMatchingRecordings(mappings []Mapping) {
-	for i := 0; i < len(mappings); i++ {
-		fmt.Println("TO BE MAPPED", mappings[i].MusicId, mappings[i].FilePath)
-		a.MapSong(mappings[i].MusicId, mappings[i].FilePath)
-	}
 }
 
 func (a *App) GetMatchingRecords(folderPath string, orchestra string, singer string, title string, orderby string, startDate string, endDate string) []Mapping {
@@ -57,8 +51,11 @@ func (a *App) GetMatchingRecords(folderPath string, orchestra string, singer str
 
 		for i := 0; i < len(unAssignedFiles); i++ {
 
-			if strings.Contains(strings.ToLower(removeAccents(files[i].Name())), strings.ToLower(removeAccents(mapping.MatchingWordOne))) &&
-				strings.Contains(strings.ToLower(removeAccents(files[i].Name())), strings.ToLower(removeAccents(mapping.MatchingWordTwo))) {
+			cleanedFileName := strings.Replace(strings.Replace(strings.ToLower(removeAccents(files[i].Name())), "(", " ", -1), "(", " ", -1)
+			cleanedFirstWord := strings.Replace(strings.Replace(strings.ToLower(removeAccents(mapping.MatchingWordOne)), "(", " ", -1), "(", " ", -1)
+			cleanedSecondWord := strings.Replace(strings.Replace(strings.ToLower(removeAccents(mapping.MatchingWordTwo)), "(", " ", -1), "(", " ", -1)
+
+			if strings.Contains(cleanedFileName, cleanedFirstWord) && strings.Contains(cleanedFileName, cleanedSecondWord) {
 				mapping.FilePath = folderPath + "\\" + files[i].Name()
 				mapping.FileName = files[i].Name()
 			}
@@ -69,14 +66,25 @@ func (a *App) GetMatchingRecords(folderPath string, orchestra string, singer str
 		}
 	}
 
-	// for i := 0; i < len(mappings); i++ {
-	// 	fmt.Println(mappings[i].MatchingWordOne, mappings[i].MatchingWordTwo, mappings[i].MusicId, mappings[i].FilePath)
-	// }
-
-	return mappings
+	return mappings //removeDuplicates
 }
 
+func (a *App) MapAllRecordings(mappings []Mapping) {
+	go func() {
+		for i := 0; i < len(mappings); i++ {
+			a.MapSong(mappings[i].MusicId, mappings[i].FilePath)
+			runtime.EventsEmit(a.ctx, "mapping_done", int(mappings[i].MusicId))
+		}
+
+		runtime.EventsEmit(a.ctx, "mappings_all_done", true)
+	}()
+}
+
+// update recordings set is_mapped = 0, map_date = null, relative_file_path = null, audio_source = null where is_mapped = 1;
 func (a *App) MapSong(musicId uint, audioFilePath string) {
+
+	fmt.Println("MapSong: ", musicId, audioFilePath)
+
 	db, err := connectToSQLite()
 	if err != nil {
 		log.Fatal(err)
@@ -87,42 +95,24 @@ func (a *App) MapSong(musicId uint, audioFilePath string) {
 		log.Fatal(err)
 	}
 
-	cmdArguments, newFileName, commentTag := constructCommand(audioFilePath, recording)
+	cmdArguments, newFileName := constructCommand(audioFilePath, recording)
 	cmd := exec.Command("ffmpeg", cmdArguments...)
 	cmd.Stderr = os.Stderr
-	cmd.Stdout = os.Stdout
 
 	err = cmd.Run()
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	dir, file := filepath.Split(audioFilePath)
-	// fmt.Println(dir, file)
 
-	e := os.Rename(audioFilePath, dir+"_DONE_"+file)
+	e := os.Rename(audioFilePath, dir+"_DONE_"+removeAccents(file))
 	if e != nil {
 		log.Fatal(e)
 	}
 
-	if strings.Contains(newFileName, ".flac") {
-		tagCmdArguments := []string{
-			newFileName,
-			"--comment",
-			commentTag,
-		}
-
-		cmdTag := exec.Command("tag", tagCmdArguments...)
-		cmdTag.Stderr = os.Stderr
-		cmdTag.Stdout = os.Stdout
-		err = cmdTag.Run()
-		if err != nil {
-			panic(err)
-		}
-	}
-
 	recording.IsMapped = true
-	recording.RelativeFilePath = dir + "_DONE_" + file + "|" + newFileName
+	recording.RelativeFilePath = dir + "_DONE_" + removeAccents(file) + "|" + newFileName
 	recording.MapDate = time.Now()
 	recording.AudioSource = getSourceInfo(audioFilePath)
 	err = updateRecording(db, recording)
@@ -138,23 +128,28 @@ func getOutputFolder(recording Recording) string {
 	}
 
 	outputBasePath := "C:\\Users\\ext.dozen\\Music\\TT-TTT-tagged\\"
-	outputFolder := outputBasePath + lastOutputFolder
+	outputFolder := strings.Replace(strings.ToLower(removeAccents(outputBasePath+lastOutputFolder)), " ", "_", -1)
 	err := os.MkdirAll(outputFolder, os.ModePerm)
 	if err != nil {
-		log.Println(err)
+		log.Fatal(err)
 	}
 
 	return outputFolder
 }
 
-func constructCommand(audioFilePath string, recording *Recording) ([]string, string, string) {
+func constructCommand(audioFilePath string, recording *Recording) ([]string, string) {
 	inputItems := strings.Split(audioFilePath, ".")
 	extension := inputItems[len(inputItems)-1]
 	formattedDate := strings.Replace(recording.Date.Format("2006-01-02"), "-", "", -1)
 	outputFolder := getOutputFolder(*recording)
 
-	newFileName := outputFolder + "\\" + formattedDate + " - " + recording.Title + " - " + recording.Singers + " - " + recording.Style + "." + extension
-	newFileName = removeAccents(strings.ToLower(newFileName))
+	newFileName := outputFolder + "\\" +
+		formattedDate + "_" +
+		recording.Title + "_" +
+		recording.Singers + "_" +
+		recording.Style + "_" +
+		strconv.Itoa(int(recording.MusicId)) + "." + extension
+	newFileName = strings.Replace(removeAccents(strings.ToLower(newFileName)), " ", "_", -1)
 
 	sList := strings.Split(audioFilePath, "\\")
 	album := sList[len(sList)-2]
@@ -166,30 +161,26 @@ func constructCommand(audioFilePath string, recording *Recording) ([]string, str
 		audioFilePath,
 	}
 
-	// if extension == "m4a" {
-	cmdArguments = append(cmdArguments, "-map", "a:0")
-	// }
-	// else if extension == "aif" {
+	cmdArguments = append(cmdArguments, "-map", "0")
 	cmdArguments = append(cmdArguments, "-write_id3v2", "1")
-	// cmdArguments = append(cmdArguments, "-id3v2_version", "3")
-	// }
 
-	commentTag := strings.ToLower("Id: ERT-" + strconv.Itoa(int(recording.MusicId)) + " | Source: " + getSourceInfo(audioFilePath) + " | Label: " + recording.Label + " | Date: " + recording.Date.Format("2006-01-02") + " | OriginalAlbum: " + oldAlbumTag)
-
-	//TODO everyting lowercase
+	commentTag := removeAccents(strings.ToLower("Id: ERT-" + strconv.Itoa(int(recording.MusicId)) + " | SOURCE: " + getSourceInfo(audioFilePath) + " | LABEL: " + recording.Label + " | DATE: " + recording.Date.Format("2006-01-02") + " | ORIGINAL_ALBUM: " + oldAlbumTag))
 
 	cmdArguments = append(cmdArguments,
 		"-c", "copy",
 
-		"-metadata", "title="+strings.ToLower(recording.Title),
-		"-metadata", "album="+strings.ToLower(album), // is it good really as album data
+		"-hide_banner",
+		"-loglevel", "error",
 
-		"-metadata", "artist="+strings.ToLower(recording.Singers),
+		"-metadata", "title="+strings.ToLower(removeAccents(recording.Title)),
+		"-metadata", "album="+strings.ToLower(album), // is it good really as album data ??
+
+		"-metadata", "artist="+removeAccents(strings.ToLower(strings.Replace(recording.Singers, " y ", " / ", -1))),
 		"-metadata", "date="+recording.Date.Format("2006-01-02"),
 
 		"-metadata", "genre="+strings.ToLower(recording.Style),
-		"-metadata", "album_artist="+strings.ToLower(recording.Orchestra),
-		"-metadata", "composer=author: "+strings.ToLower(recording.Author)+" | composer: "+strings.ToLower(recording.Composer),
+		"-metadata", "album_artist="+removeAccents(strings.ToLower(strings.Replace(recording.Orchestra, " y ", " / ", -1))),
+		"-metadata", "composer="+removeAccents(strings.ToLower("LYRICIST: "+strings.Replace(recording.Author, " y ", " / ", -1)+" | COMPOSER: "+strings.Replace(recording.Composer, " y ", " / ", -1))),
 
 		"-metadata", "publisher=",
 		"-metadata", "color=",
@@ -201,10 +192,9 @@ func constructCommand(audioFilePath string, recording *Recording) ([]string, str
 		"-metadata", "Lyrics="+recording.Lyrics,
 		newFileName)
 
-	return cmdArguments, newFileName, commentTag
+	return cmdArguments, newFileName
 }
 
-// TODO now they are all FREE....
 func getSourceInfo(audioFilePath string) string {
 	temp := strings.Replace(audioFilePath, "TT-TTT", "", 1)
 	source := "FREE"
@@ -213,7 +203,6 @@ func getSourceInfo(audioFilePath string) string {
 	} else if strings.Contains(temp, "TT -") {
 		source = "TT"
 	}
-
 	return source
 }
 

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CreateTransferAgents < ActiveRecord::Migration[7.1]
   def change
     create_table :transfer_agents, id: :uuid do |t|

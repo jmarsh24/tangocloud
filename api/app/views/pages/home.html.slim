@@ -1,12 +1,15 @@
 .container.stack.stack--24
   .stack.stack--24.stack--justify-center.stack--align-center
     .logo
-    - if user_signed_in?
-      = image_tag current_user.becomes(User).avatar_thumbnail, class: "avatar"
-      = link_to "Admin", avo_path, class: "button"
-      = link_to "Background Jobs", good_job_path, class: "button"
-      = link_to "Security", user_sessions_path, class: "button button--secondary"
-      = button_to "Sign Out", user_session_path(current_session), method: :delete, class: "button button--danger"
+    - if Current.user
+      = image_tag Current.user.avatar_thumbnail, class: "avatar"
+      - if Current.user.admin?
+        = link_to "Admin", avo_path, class: "button button--primary"
+        = link_to "Background Jobs", good_job_path, class: "button button--primary"
+      = link_to "Devices & Sessions", sessions_path, class: "button button--secondary"
+      = link_to "Change email address", edit_identity_email_path, class: "button button--secondary"
+      = link_to "Change password", edit_password_path, class: "button button--secondary"
+      = button_to "Sign Out", Current.session, method: :delete, class: "button button--danger"
     - else
-      = link_to "Sign In", new_user_session_path, class: "button"
-      = link_to "Sign Up", new_user_registration_path, class: "button"
+      = link_to "Sign In", sign_in_path, class: "button button--primary"
+      = link_to "Sign Up", sign_up_path, class: "button button--primary"

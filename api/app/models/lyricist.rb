@@ -1,4 +1,11 @@
-# frozen_string_literal: true
+class Lyricist < ApplicationRecord
+  extend FriendlyId
+  friendly_id :name, use: :slugged
+  has_many :lyrics, dependent: :destroy
+
+  validates :name, presence: true
+  validates :slug, presence: true, uniqueness: true
+end
 
 # == Schema Information
 #
@@ -14,10 +21,3 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-class Lyricist < ApplicationRecord
-  extend FriendlyId
-  has_many :lyrics, dependent: :destroy
-
-  validates :name, presence: true
-  validates :slug, presence: true, uniqueness: true
-end

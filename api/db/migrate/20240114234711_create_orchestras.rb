@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CreateOrchestras < ActiveRecord::Migration[7.1]
   def change
     create_table :orchestras, id: :uuid do |t|
@@ -8,7 +6,7 @@ class CreateOrchestras < ActiveRecord::Migration[7.1]
       t.string :sort_name
       t.date :birth_date
       t.date :death_date
-      t.string :slug, null: false, index: true
+      t.string :slug, index: {unique: true}, null: false
     end
   end
 end

@@ -1,13 +1,3 @@
-# frozen_string_literal: true
-
-# == Schema Information
-#
-# Table name: couples
-#
-#  id         :uuid             not null, primary key
-#  dancer_id  :uuid             not null
-#  partner_id :uuid             not null
-#
 class Couple < ApplicationRecord
   belongs_to :dancer
   belongs_to :partner, class_name: "Dancer"
@@ -27,3 +17,12 @@ class Couple < ApplicationRecord
     errors.add(:dancer_id, "dancer should be greater than partner") if dancer.id < partner.id
   end
 end
+
+# == Schema Information
+#
+# Table name: couples
+#
+#  id         :uuid             not null, primary key
+#  dancer_id  :uuid             not null
+#  partner_id :uuid             not null
+#

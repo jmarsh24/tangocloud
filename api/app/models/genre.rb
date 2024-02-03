@@ -1,4 +1,8 @@
-# frozen_string_literal: true
+class Genre < ApplicationRecord
+  has_many :videos, dependent: :destroy
+
+  validates :name, presence: true
+end
 
 # == Schema Information
 #
@@ -10,8 +14,3 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
-class Genre < ApplicationRecord
-  has_many :videos, dependent: :destroy
-
-  validates :name, presence: true
-end

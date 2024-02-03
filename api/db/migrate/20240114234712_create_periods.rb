@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CreatePeriods < ActiveRecord::Migration[7.1]
   def change
     create_table :periods, id: :uuid do |t|
@@ -8,7 +6,7 @@ class CreatePeriods < ActiveRecord::Migration[7.1]
       t.integer :start_year, null: false, default: 0
       t.integer :end_year, null: false, default: 0
       t.integer :recordings_count, null: false, default: 0
-      t.string :slug, null: false, index: true
+      t.string :slug, index: {unique: true}, null: false
       t.timestamps
     end
   end

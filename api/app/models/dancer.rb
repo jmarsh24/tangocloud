@@ -1,4 +1,10 @@
-# frozen_string_literal: true
+class Dancer < ApplicationRecord
+  validates :name, presence: true
+  has_many :dancer_videos, dependent: :destroy
+  has_many :videos, through: :dancer_videos
+  has_many :couples, dependent: :destroy
+  has_many :partners, through: :couples
+end
 
 # == Schema Information
 #
@@ -13,10 +19,3 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
-class Dancer < ApplicationRecord
-  validates :name, presence: true
-  has_many :dancer_videos, dependent: :destroy
-  has_many :videos, through: :dancer_videos
-  has_many :couples, dependent: :destroy
-  has_many :partners, through: :couples
-end

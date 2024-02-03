@@ -12,7 +12,6 @@ const Player = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const { track } = usePlayerContext();
 
-
   useEffect(() => {
     if (!track) {
       return;

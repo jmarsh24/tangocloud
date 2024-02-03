@@ -6,7 +6,6 @@ servers:
   web:
     hosts:
       - 94.130.104.7
-    cmd: bundle exec puma -C /rails/config/puma.rb
   worker-1:
     hosts:
       - 195.201.147.15
@@ -28,10 +27,10 @@ env:
     RAILS_ENV: production
     RAILS_LOG_LEVEL: debug
     RAILS_LOG_TO_STDOUT: true
-    DB_HOST: 167.235.70.96
+    DB_HOST: 10.1.0.3
     CLOUDFLARE_PUBLIC: true
     CLOUDFLARE_BUCKET: tangocloud
-    ELASTICSEARCH_URL: 49.13.197.47:9200
+    ELASTICSEARCH_URL: 10.1.0.5:9200
   secret:
     - RAILS_MASTER_KEY
     - POSTGRES_PASSWORD

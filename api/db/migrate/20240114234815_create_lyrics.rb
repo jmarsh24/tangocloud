@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CreateLyrics < ActiveRecord::Migration[7.1]
   def change
     create_table :lyrics, id: :uuid do |t|
@@ -8,5 +6,6 @@ class CreateLyrics < ActiveRecord::Migration[7.1]
       t.belongs_to :composition, null: false, foreign_key: true, type: :uuid
       t.timestamps
     end
+    add_index :lyrics, [:locale, :composition_id], unique: true
   end
 end

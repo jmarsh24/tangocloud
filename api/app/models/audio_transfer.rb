@@ -1,26 +1,22 @@
-# frozen_string_literal: true
+class AudioTransfer < ApplicationRecord
+  belongs_to :transfer_agent, dependent: :destroy
+  belongs_to :recording, dependent: :destroy
+  belongs_to :album
+  has_many :audios, dependent: :destroy
+
+  validates :transfer_agent_id, presence: true
+end
 
 # == Schema Information
 #
 # Table name: audio_transfers
 #
 #  id                :uuid             not null, primary key
-#  method            :string
 #  external_id       :string
-#  recording_date    :date
+#  position          :integer          default(0), not null
+#  album_id          :uuid
 #  transfer_agent_id :uuid
-#  audio_id          :uuid
+#  recording_id      :uuid
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  recording_id      :uuid
 #
-class AudioTransfer < ApplicationRecord
-  belongs_to :audio
-  belongs_to :transfer_agent
-
-  validates :method, presence: true
-  validates :string, presence: true
-  validates :url, presence: true
-  validates :transfer_agent_id, presence: true
-  validates :audio_id, presence: true
-end

@@ -1,11 +1,11 @@
-# frozen_string_literal: true
-
-if !ActionAuth::User.exists?(email: "admin@tangocloud.app")
-  user = ActionAuth::User.create!(
+if !User.exists?(email: "admin@tangocloud.app")
+  User.create!(
     email: "admin@tangocloud.app",
-    password: "adminpassword",
-    verified: true
-  ).becomes(User)
-
-  user.user_setting&.update!(admin: true)
+    password: "tangocloud123",
+    username: "admin",
+    first_name: "Admin",
+    last_name: "User",
+    verified: true,
+    admin: true
+  )
 end

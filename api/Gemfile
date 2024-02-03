@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 source "https://rubygems.org"
 ruby File.read(File.join(__dir__, ".ruby-version")).strip
 
@@ -16,11 +14,9 @@ gem "bootsnap", require: false
 gem "oj"
 
 # Extensions
-gem "action_auth"
 gem "acts_as_list"
-gem "acts-as-taggable-on"
-gem "acts_as_votable"
 gem "apollo_upload_server"
+gem "authentication-zero"
 gem "avo"
 gem "bcrypt"
 gem "dotenv-rails"
@@ -30,8 +26,12 @@ gem "friendly_id"
 gem "graphiql-rails", git: "https://github.com/scott-knight/graphiql-rails.git", branch: "fix-assets-remove-sprokets"
 gem "graphql"
 gem "groupdate"
+gem "jwt"
 gem "kamal"
 gem "kaminari"
+gem "mime"
+gem "omniauth"
+gem "omniauth-rails_csrf_protection"
 gem "progress_bar"
 gem "pundit"
 gem "rack-cors"
@@ -42,6 +42,7 @@ gem "socialization"
 gem "solid_cache"
 gem "translate_client"
 gem "yael"
+gem "streamio-ffmpeg"
 gem "elasticsearch"
 gem "searchkick"
 
@@ -62,7 +63,7 @@ gem "sentry-ruby"
 
 group :development, :test do
   gem "capybara"
-  gem "cuprite"
+  gem "capybara-playwright-driver"
   gem "debug"
   gem "i18n-tasks"
   gem "rack_session_access"

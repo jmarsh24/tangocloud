@@ -1,4 +1,17 @@
-# frozen_string_literal: true
+class Orchestra < ApplicationRecord
+  extend FriendlyId
+  friendly_id :name, use: :slugged
+  has_many :orchestra_recordings, dependent: :destroy
+  has_many :recordings, through: :orchestra_recordings
+  has_many :singers, through: :recordings
+  has_many :compositions, through: :recordings
+  has_many :composers, through: :compositions
+  has_many :lyricists, through: :compositions
+
+  validates :name, presence: true
+  validates :rank, presence: true, numericality: {only_integer: true}
+  validates :slug, presence: true, uniqueness: true
+end
 
 # == Schema Information
 #
@@ -12,17 +25,3 @@
 #  death_date :date
 #  slug       :string           not null
 #
-class Orchestra < ApplicationRecord
-  extend FriendlyId
-  has_many :orchestra_recordings, dependent: :destroy
-  has_many :recordings, through: :orchestra_recordings
-  has_many :singers, through: :recordings
-  has_many :compositions, through: :recordings
-  has_many :composers, through: :compositions
-  has_many :lyricists, through: :compositions
-
-  validates :name, presence: true
-  validates :rank, presence: true, numericality: {only_integer: true}
-  validates :sort_name, presence: true
-  validates :slug, presence: true, uniqueness: true
-end

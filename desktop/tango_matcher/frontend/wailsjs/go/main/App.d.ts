@@ -12,7 +12,7 @@ export function GetRecordingsWithFilter(arg1:string,arg2:string,arg3:string,arg4
 
 export function ImportCsvFile():Promise<void>;
 
-export function MapAllMatchingRecordings(arg1:Array<main.Mapping>):Promise<void>;
+export function MapAllRecordings(arg1:Array<main.Mapping>):Promise<void>;
 
 export function MapSong(arg1:number,arg2:string):Promise<void>;
 

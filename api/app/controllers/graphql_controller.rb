@@ -1,25 +1,28 @@
-# frozen_string_literal: true
-
-class GraphqlController < ApplicationController
+class GraphQLController < ApplicationController
   # If accessing from outside this domain, nullify the session
   # This allows for outside API access while preventing CSRF attacks,
   # but you'll have to authenticate your user separately
-  # protect_from_forgery with: :null_session
-  skip_before_action :verify_authenticity_token
+  protect_from_forgery with: :null_session
 
   def execute
     variables = prepare_variables(params[:variables])
     query = params[:query]
     operation_name = params[:operationName]
     context = {
-      # Query context goes here, for example:
-      # current_user: current_user,
+      current_user:
     }
     result = TangocloudSchema.execute(query, variables:, context:, operation_name:)
     render json: result
   rescue => e
     raise e unless Rails.env.development?
     handle_error_in_development(e)
+  end
+
+  def current_user
+    return nil if request.headers["Authorization"].blank?
+    token = request.headers["Authorization"].split(" ").last
+    return nil if token.blank?
+    AuthToken.verify(token)
   end
 
   private
