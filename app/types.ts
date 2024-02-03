@@ -6,7 +6,7 @@ export type Track = {
   composer: string;
   author: string;
   date: string;
-  style: string;
+  genre: string;
 };
 // export type Album = {
 //   id: string;

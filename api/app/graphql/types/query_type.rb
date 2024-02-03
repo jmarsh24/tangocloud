@@ -22,7 +22,7 @@ module Types
       argument :per_page, Integer, required: false, description: "Number of results per page."
     end
 
-    def search_recordings(query:, page: 1, per_page: 10)
+  def search_recordings(query:, page: 1, per_page: 10)
       Recording.search_recordings(query, page:, per_page:).results
     end
 

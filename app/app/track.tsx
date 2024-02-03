@@ -53,7 +53,7 @@ return (
 
       <View style={styles.trackInfo}>
         <Text style={styles.title}>{track.title}</Text>
-        <Text style={styles.artist}>{track.artist}</Text>
+        {/* <Text style={styles.artist}>{track.orchestra}</Text> */}
       </View>
 
       <View style={styles.controls}>

@@ -7,23 +7,30 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import TrackListItem from '@/components/TrackListItem';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState, useCallback } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import Colors from '@/constants/Colors';
 
 const query = gql`
-  query MyQuery($q: String!) {
-    searchElRecodoSongs(query: $q) {
-              id
+  query MyQuery($query: String!) {
+       searchRecordings(query: $query) {
               title
-              orchestra
-              singer
-              composer
-              author
-              date
-              style
+							# audios {
+              #   id
+              #   length
+              #   fileUrl
+              # }
+              orchestra {
+                name
+              }
+      				# singers {
+              #   name
+              # }
+              # genre {
+              #   name
+              # }
+              recordedDate
             }
   }
 `;
@@ -34,11 +41,11 @@ export default function SearchScreen() {
   const [isFetchingMore, setIsFetchingMore] = useState(false);
 
   const { data, loading, error, fetchMore } = useQuery(query, {
-    variables: { q: search, page: 1, per_page: 10 },
+    variables: { query: search, page: 1, per_page: 10 },
     fetchPolicy: 'cache-and-network',
   });
 
-  const tracks = data?.searchElRecodoSongs || [];
+  const tracks = data?.searchRecordings || [];
 
   const loadMoreTracks = useCallback(() => {
     if (isFetchingMore) return;
@@ -47,14 +54,15 @@ export default function SearchScreen() {
     setPage(prevPage => prevPage + 1);
 
     fetchMore({
-      variables: { q: search, page: page + 1, per_page: 10 },
+      variables: { query: search, page: page + 1, per_page: 10 },
       updateQuery: (prev, { fetchMoreResult }) => {
         setIsFetchingMore(false);
+        debugger
         if (!fetchMoreResult) return prev;
         return Object.assign({}, prev, {
-          searchElRecodoSongs: [
-            ...prev.searchElRecodoSongs,
-            ...fetchMoreResult.searchElRecodoSongs,
+          searchRecordings: [
+            ...prev.searchRecordings,
+            ...fetchMoreResult.searchRecordings,
           ],
         });
       },
@@ -64,7 +72,7 @@ export default function SearchScreen() {
   const ItemSeparator = () => <View style={styles.itemSeperator} />;
 
   return (
-    <SafeAreaView>
+    <View>
       <View style={styles.header}>
         <View style={styles.searchContainer}>
           <AntDesign name="search1" size={20} style={styles.searchIcon} />
@@ -101,7 +109,7 @@ export default function SearchScreen() {
         onEndReached={loadMoreTracks}
         onEndReachedThreshold={0.5} // Trigger the load more function when halfway through the last item
       />
-    </SafeAreaView>
+    </View>
   );
 }
 

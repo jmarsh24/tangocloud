@@ -1,3 +1,30 @@
+type Audio {
+  audioTransferId: Uuid!
+  bitRate: Int
+  channels: Int
+  codec: String!
+  createdAt: ISO8601DateTime!
+  duration: Int!
+  fileUrl: String!
+  format: String!
+  id: ID!
+  length: Int!
+  metadata: JSON!
+  sampleRate: Int
+  updatedAt: ISO8601DateTime!
+}
+
+type AudioTransfer {
+  albumId: ID
+  createdAt: ISO8601Date
+  externalId: String
+  id: ID
+  position: Int
+  recordingId: ID
+  transferAgentId: ID
+  updatedAt: ISO8601Date
+}
+
 type Composer {
   birthDate: ISO8601Date
   deathDate: ISO8601Date
@@ -55,6 +82,11 @@ An ISO 8601-encoded datetime
 """
 scalar ISO8601DateTime @specifiedBy(url: "https://tools.ietf.org/html/rfc3339")
 
+"""
+Represents untyped JSON
+"""
+scalar JSON
+
 type Lyric {
   composition: Composition
   content: String
@@ -111,6 +143,15 @@ type Period {
 }
 
 type Query {
+  """
+  Get audio by ID.
+  """
+  getAudio(
+    """
+    ID of the audio.
+    """
+    id: ID!
+  ): Audio!
   searchElRecodoSongs(
     """
     Page number.
@@ -162,11 +203,15 @@ type RecordLabel {
 }
 
 type Recording {
+  audio: Audio
+  audioTransfer: AudioTransfer!
   bpm: Int
+  composer: Composer
   composition: Composition
   elRecodoSong: ElRecodoSong
   genre: Genre
   id: ID!
+  lyricist: Lyricist
   orchestra: Orchestra
   period: Period
   recordLabel: RecordLabel
@@ -204,6 +249,8 @@ type User {
   username: String!
   verified: Boolean!
 }
+
+type Uuid
 
 type ValidationErrors {
   details: String!
