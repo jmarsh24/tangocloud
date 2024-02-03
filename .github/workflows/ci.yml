@@ -5,9 +5,6 @@ on: [push, pull_request]
 jobs:
   scan:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./api
 
     steps:
       - name: Checkout code
@@ -18,15 +15,14 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
+          working-directory: ./api
 
       - name: Scan for security vulnerabilities
         run: bin/brakeman
+        working-directory: ./api
 
   lint:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./api
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -36,15 +32,14 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
+          working-directory: ./api
 
       - name: Lint code for consistent style
         run: bin/rubocop
+        working-directory: ./api
 
   test:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./api
     services:
       postgres:
         image: postgres:15
@@ -89,10 +84,20 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
+          working-directory: ./api
+
+      # - name: Verify Elasticsearch connection from host
+      #   env:
+      #     ELASTIC_SEARCH_URL: http://localhost:${{ job.services.elasticsearch.ports[9200] }}
+      #   run: |
+      #     echo $ELASTIC_SEARCH_URL
+      #     curl -fsSL "$ELASTIC_SEARCH_URL/_cat/health?h=status"
       - name: Check Translations
         run: bundle exec i18n-tasks health
+        working-directory: ./api
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
+        working-directory: ./api
       - name: Run Tests
         env:
           DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/test
@@ -100,3 +105,4 @@ jobs:
           RSPEC_RETRY_RETRY_COUNT: 3
           ELASTICSEARCH_URL: http://localhost:${{ job.services.elasticsearch.ports[9200] }}
         run: bin/rspec --format documentation
+        working-directory: ./api
