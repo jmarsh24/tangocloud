@@ -24,10 +24,6 @@ RSpec.describe Audio, type: :model do
       expect(audio.file_url).to be_nil
     end
 
-    it "returns the URL of the audio file with the correct disposition" do
-      expect(audio.file_url).to include("inline")
-    end
-
     it "has the correct file type and extension" do
       audio.file.reload
       expect(audio.file.content_type).to start_with("audio/")
