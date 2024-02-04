@@ -13,3 +13,4 @@
     - else
       = link_to "Sign In", sign_in_path, class: "button button--primary"
       = link_to "Sign Up", sign_up_path, class: "button button--primary"
+      = audio_tag url_for(Audio.first.file.url), controls: true
