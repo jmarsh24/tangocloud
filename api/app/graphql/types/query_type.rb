@@ -23,6 +23,8 @@ module Types
     end
 
     def search_recordings(query:, page: 1, per_page: 10)
+      raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
+
       Recording.search_recordings(query, page:, per_page:).results
     end
 
@@ -33,6 +35,8 @@ module Types
     end
 
     def search_el_recodo_songs(query:)
+      raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
+
       ElRecodoSong.search_songs(query).results
     end
 
@@ -40,6 +44,16 @@ module Types
       description: "Who am I"
     def who_am_i
       "You've authenticated as #{context[:current_user].presence || "guest"}."
+    end
+
+    field :get_audio, Types::AudioType, null: false, description: "Get audio by ID." do
+      argument :id, ID, required: true, description: "ID of the audio."
+    end
+
+    def get_audio(id:)
+      raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
+
+      Audio.find(id)
     end
   end
 end

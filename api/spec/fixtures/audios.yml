@@ -1,0 +1,8 @@
+volver_a_sonar_tango_tunes_1940:
+  duration: 180
+  audio_transfer: volver_a_sonar_tango_tunes
+  format: "flac"
+  sample_rate: 44100
+  channels: 1
+  codec: "flac"
+  bit_rate: 123

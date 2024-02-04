@@ -25,8 +25,8 @@ RSpec.describe "#signUp mutation" do
   end
 
   it "is successful with correct data" do
-    username = "admin"
-    email = "admin@tangocloud.app"
+    username = "new_user"
+    email = "new_user@example.com"
     result = TangocloudSchema.execute(mutation, variables: {
       username:,
       email:,
@@ -42,7 +42,7 @@ RSpec.describe "#signUp mutation" do
   it "fails in case of wrong email format" do
     wrong_email = "test.user"
     result = TangocloudSchema.execute(mutation, variables: {
-      username: "admin",
+      username: "new_user",
       email: wrong_email,
       password: SecureRandom.hex
     })
@@ -55,8 +55,8 @@ RSpec.describe "#signUp mutation" do
 
   it "fails in case of no password" do
     result = TangocloudSchema.execute(mutation, variables: {
-      username: "admin",
-      email: "admin@tangocloud.app",
+      username: "new_user",
+      email: "new_user@example.com",
       password: ""
     })
 
@@ -69,7 +69,7 @@ RSpec.describe "#signUp mutation" do
   it "fails in case of no username" do
     result = TangocloudSchema.execute(mutation, variables: {
       username: "",
-      email: "admin@tangocloud.app",
+      email: "new_user@example.com",
       password: SecureRandom.hex
     })
 
@@ -81,7 +81,7 @@ RSpec.describe "#signUp mutation" do
 
   it "fails in case of no email" do
     result = TangocloudSchema.execute(mutation, variables: {
-      username: "admin",
+      username: "new_user",
       email: "",
       password: SecureRandom.hex
     })
@@ -93,24 +93,24 @@ RSpec.describe "#signUp mutation" do
   end
 
   it "fails in case of duplicate email" do
-    email = "admin@tangocloud.app"
-    User.create!(username: "admin", email: "admin@tangocloud.app", password: SecureRandom.hex)
+    email = "new_user@example.com"
+    User.create!(username: "new_user", email: "new_user@example.com", password: SecureRandom.hex)
     result = TangocloudSchema.execute(mutation, variables: {
-      username: "admin",
+      username: "new_user",
       email:,
       password: SecureRandom.hex
     })
 
     expect(result.dig("data", "signUp", "user")).to be_nil
     expect(result.dig("data", "signUp", "success")).to be(false)
-    expect(result.dig("data", "signUp", "errors", "details")).to eq("{\"email\":[{\"error\":\"taken\",\"value\":\"admin@tangocloud.app\"}],\"username\":[{\"error\":\"taken\",\"value\":\"admin\"}]}")
+    expect(result.dig("data", "signUp", "errors", "details")).to eq("{\"email\":[{\"error\":\"taken\",\"value\":\"new_user@example.com\"}],\"username\":[{\"error\":\"taken\",\"value\":\"new_user\"}]}")
     expect(result.dig("data", "signUp", "errors", "fullMessages")).to include("Email has already been taken")
   end
 
   it "fails in case of duplicate username" do
-    username = "admin"
-    email = "admin@tangocloud.app"
-    User.create!(username: "admin", email:, password: SecureRandom.hex)
+    username = "new_user"
+    email = "new_user@example.com"
+    User.create!(username: "new_user", email:, password: SecureRandom.hex)
     result = TangocloudSchema.execute(mutation, variables: {
       username:,
       email:,
@@ -119,7 +119,7 @@ RSpec.describe "#signUp mutation" do
 
     expect(result.dig("data", "signUp", "user")).to be_nil
     expect(result.dig("data", "signUp", "success")).to be(false)
-    expect(result.dig("data", "signUp", "errors", "details")).to eq("{\"email\":[{\"error\":\"taken\",\"value\":\"admin@tangocloud.app\"}],\"username\":[{\"error\":\"taken\",\"value\":\"admin\"}]}")
+    expect(result.dig("data", "signUp", "errors", "details")).to eq("{\"email\":[{\"error\":\"taken\",\"value\":\"new_user@example.com\"}],\"username\":[{\"error\":\"taken\",\"value\":\"new_user\"}]}")
     expect(result.dig("data", "signUp", "errors", "fullMessages")).to include("Username has already been taken")
   end
 end

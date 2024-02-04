@@ -28,6 +28,8 @@ Rails.application.routes.draw do
 
   post "/graphql", to: "graphql#execute"
 
+  resources :audios, only: :show
+
   root "pages#home"
   get "up", to: "rails/health#show", as: :rails_health_check
 end
