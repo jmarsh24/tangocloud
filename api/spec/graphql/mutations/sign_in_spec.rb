@@ -1,8 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "#signIn mutation" do
-  let!(:password) { SecureRandom.hex }
-  let!(:user) { User.create!(username: "admin", email: "user@example.com", password:) }
+  let!(:user) { users(:normal) }
   let(:mutation) do
     <<~GQL
       mutation signIn($login: String!, $password: String!) {
@@ -24,24 +23,24 @@ RSpec.describe "#signIn mutation" do
 
   it "is successful with correct email and password" do
     result = TangocloudSchema.execute(mutation, variables: {
-      login: "user@example.com",
-      password:
+      login: user.email,
+      password: "password"
     })
 
     expect(result.dig("data", "signIn", "errors")).to be_nil
-    expect(result.dig("data", "signIn", "user", "email")).to eq("user@example.com")
+    expect(result.dig("data", "signIn", "user", "email")).to eq(user.email)
     expect(result.dig("data", "signIn", "user", "id")).to be_present
     expect(result.dig("data", "signIn", "token")).to be_present
   end
 
   it "is successful with correct username and password" do
     result = TangocloudSchema.execute(mutation, variables: {
-      login: "admin",
-      password:
+      login: user.username,
+      password: "password"
     })
 
     expect(result.dig("data", "signIn", "errors")).to be_nil
-    expect(result.dig("data", "signIn", "user", "email")).to eq("user@example.com")
+    expect(result.dig("data", "signIn", "user", "email")).to eq(user.email)
     expect(result.dig("data", "signIn", "user", "id")).to be_present
     expect(result.dig("data", "signIn", "token")).to be_present
   end
@@ -49,7 +48,7 @@ RSpec.describe "#signIn mutation" do
   it "fails with wrong username" do
     result = TangocloudSchema.execute(mutation, variables: {
       login: "wrong-username",
-      password:
+      password: "password"
     })
 
     expect(result.dig("data", "signIn", "user", "id")).to be_nil

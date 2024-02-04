@@ -3,7 +3,7 @@ admin:
   first_name: "Admin"
   last_name: "User"
   email: "admin@tangocloud.app"
-  password_digest: <%= BCrypt::Password.create("Secret1*3*5*") %>
+  password_digest: <%= BCrypt::Password.create("password") %>
   verified: true
   admin: true
 normal:
@@ -11,6 +11,6 @@ normal:
   first_name: "Normal"
   last_name: "User"
   email: "normal_user@example.com"
-  password_digest: <%= BCrypt::Password.create("Secret1*3*5*") %>
+  password_digest: <%= BCrypt::Password.create("password") %>
   verified: true
   admin: false
