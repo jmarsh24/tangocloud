@@ -10,26 +10,6 @@ RSpec.describe Audio, type: :model do
       expect(audio.signed_url).to eq(expected_url)
     end
   end
-
-  describe "#file_url" do
-    let(:audio) { audios(:volver_a_sonar_tango_tunes_1940) }
-
-    it "returns the URL of the audio file" do
-      expect(audio.file_url).to be_present
-    end
-
-    it "returns nil if the audio file is not attached" do
-      audio.file.purge
-
-      expect(audio.file_url).to be_nil
-    end
-
-    it "has the correct file type and extension" do
-      audio.file.reload
-      expect(audio.file.content_type).to start_with("audio/")
-      expect(audio.file.filename.extension).to eq("flac")
-    end
-  end
 end
 
 # == Schema Information  validates :duration, presence: true

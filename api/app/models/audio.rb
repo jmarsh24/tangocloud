@@ -15,12 +15,6 @@ class Audio < ApplicationRecord
   def signed_url
     audio_url(signed_id)
   end
-
-  def file_url
-    return unless file.attached?
-
-    rails_blob_url(file)
-  end
 end
 
 # == Schema Information
