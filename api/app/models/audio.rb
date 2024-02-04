@@ -9,10 +9,13 @@ class Audio < ApplicationRecord
   validates :bit_rate, numericality: {only_integer: true}
   validates :sample_rate, numericality: {only_integer: true}
   validates :channels, numericality: {only_integer: true}
+  validates :codec, presence: true
 
   has_one_attached :file, dependent: :purge_later
 
   def file_url
+    return unless file.attached?
+
     rails_blob_url(file, disposition: "attachment", expires_in: 1.hour)
   end
 end

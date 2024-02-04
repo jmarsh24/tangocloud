@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
   skip_before_action :authenticate, only: [:new, :create]
+  skip_after_action :verify_authorized
 
   before_action :set_session, only: :destroy
 
