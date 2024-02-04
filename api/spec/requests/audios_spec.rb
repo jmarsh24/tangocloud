@@ -17,9 +17,10 @@ RSpec.describe "Audios", type: :request do
         admin_user = users(:admin)
 
         user_token = AuthToken.token(admin_user)
-
+        puts user_token
         get audio.signed_url, headers: {Authorization: user_token}
-
+        puts response.header
+        puts response.body
         expect(response).to have_http_status 302
 
         follow_redirect!
