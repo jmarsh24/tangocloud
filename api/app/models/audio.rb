@@ -18,7 +18,7 @@ class Audio < ApplicationRecord
   def file_url
     return unless file.attached?
 
-    Rails.application.routes.url_helpers.rails_blob_url(file, disposition: "inline")
+    Rails.application.routes.url_helpers.rails_blob_url(file)
   end
 end
 

@@ -12,7 +12,7 @@ RSpec.describe "Audios", type: :request do
     end
 
     context "when user is logged in" do
-      fit "redirects to audio file if user is authorized" do
+      it "redirects to audio file if user is authorized" do
         audio = audios(:volver_a_sonar_tango_tunes_1940)
         user = users(:admin)
 
@@ -28,7 +28,7 @@ RSpec.describe "Audios", type: :request do
         expect(response.content_type).to eq("audio/flac")
         expect(response.body).to eq(audio.file.download)
         expect(response.headers["Content-Length"]).to eq(audio.file.byte_size.to_s)
-        expect(response.headers["Content-Disposition"]).to eq("inline; filename=\"#{audio.file.filename}\"")
+        expect(response.headers["Content-Disposition"]).to eq("inline; filename=\"19401008_volver_a_sonar_roberto_rufino_tango_2476.flac\"; filename*=UTF-8''19401008_volver_a_sonar_roberto_rufino_tango_2476.flac")
       end
 
       it "returns 401 unauthorized if user is not authorized" do
