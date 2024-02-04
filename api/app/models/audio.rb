@@ -1,4 +1,5 @@
 class Audio < ApplicationRecord
+  include Rails.application.routes.url_helpers
   belongs_to :audio_transfer, dependent: :destroy
   has_many :transfer_agents, through: :audio_transfers
 
@@ -12,13 +13,13 @@ class Audio < ApplicationRecord
   has_one_attached :file, dependent: :purge_later
 
   def signed_url
-    Rails.application.routes.url_helpers.audio_url(signed_id)
+    audio_url(signed_id)
   end
 
   def file_url
     return unless file.attached?
 
-    Rails.application.routes.url_helpers.rails_blob_url(file)
+    rails_blob_url(file)
   end
 end
 
