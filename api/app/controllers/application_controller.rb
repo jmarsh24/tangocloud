@@ -4,11 +4,12 @@ class ApplicationController < ActionController::Base
   before_action :set_current_request_details
   before_action :authenticate
   after_action :verify_authorized
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   private
 
   def current_user
-    @current_user ||= Current.user
+    @current_user ||= Current.user || AuthToken.verify(request.headers["Authorization"])
   end
 
   def authenticate
@@ -22,5 +23,9 @@ class ApplicationController < ActionController::Base
   def set_current_request_details
     Current.user_agent = request.user_agent
     Current.ip_address = request.ip
+  end
+
+  def user_not_authorized(exception)
+    head :unauthorized
   end
 end

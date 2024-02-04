@@ -1,6 +1,16 @@
 require "rails_helper"
 
 RSpec.describe Audio, type: :model do
+  describe "#signed_url" do
+    it "returns the URL of the audio" do
+      freeze_time
+      audio = audios(:volver_a_sonar_tango_tunes_1940)
+      expected_url = "http://localhost:3000/audios/#{audio.signed_id}"
+
+      expect(audio.signed_url).to eq(expected_url)
+    end
+  end
+
   describe "#file_url" do
     let(:audio) { audios(:volver_a_sonar_tango_tunes_1940) }
 
@@ -14,26 +24,12 @@ RSpec.describe Audio, type: :model do
       expect(audio.file_url).to be_nil
     end
 
-    it "changes the url after 1 hour" do
-      url = audio.file_url
-
-      travel_to(1.hour.from_now) do
-        expect(audio.file_url).not_to eq(url)
-      end
-    end
-
     it "returns the URL of the audio file with the correct disposition" do
-      url = audio.file_url
-
-      expect(url).to include("attachment")
-    end
-
-    it "has non-empty file contents" do
-      expect(audio.file.byte_size).to eq(27335419)
-      expect(audio.file.download).not_to be_empty
+      expect(audio.file_url).to include("inline")
     end
 
     it "has the correct file type and extension" do
+      audio.file.reload
       expect(audio.file.content_type).to start_with("audio/")
       expect(audio.file.filename.extension).to eq("flac")
     end

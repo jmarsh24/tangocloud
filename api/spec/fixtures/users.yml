@@ -1,12 +1,16 @@
 admin:
+  username: "admin"
   first_name: "Admin"
   last_name: "User"
   email: "admin@tangocloud.app"
-  password: "tangocloud123"
+  password_digest: <%= BCrypt::Password.create("Secret1*3*5*") %>
+  verified: true
   admin: true
-normal_user:
+normal:
+  username: "normal_user"
   first_name: "Normal"
   last_name: "User"
   email: "normal_user@example.com"
-  password: "normal_user123"
+  password_digest: <%= BCrypt::Password.create("Secret1*3*5*") %>
+  verified: true
   admin: false
