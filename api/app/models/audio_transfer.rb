@@ -3,8 +3,6 @@ class AudioTransfer < ApplicationRecord
   belongs_to :recording, dependent: :destroy
   belongs_to :album
   has_many :audios, dependent: :destroy
-
-  validates :transfer_agent_id, presence: true
 end
 
 # == Schema Information
