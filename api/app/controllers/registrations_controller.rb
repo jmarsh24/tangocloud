@@ -1,5 +1,6 @@
 class RegistrationsController < ApplicationController
   skip_before_action :authenticate
+  skip_after_action :verify_authorized
 
   def new
     @user = User.new

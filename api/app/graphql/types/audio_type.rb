@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Types
   class AudioType < Types::BaseObject
     field :id, ID, null: false
