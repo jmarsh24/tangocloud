@@ -1,0 +1,6 @@
+volver_a_sonar:
+  title: "Volver a sonar"
+  recorded_date: <%= Date.new(1940, 10, 8) %>
+  genre: tango
+  composition: volver_a_sonar
+  slug: "volver-a-sonar-carlos-di-sarli-1940"

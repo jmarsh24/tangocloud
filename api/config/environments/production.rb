@@ -107,5 +107,7 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = {host: Config.host}
   Rails.application.routes.default_url_options[:host] = Config.host
+
   config.active_storage.resolve_model_to_route = :rails_storage_proxy
+  config.active_storage.draw_routes = false
 end

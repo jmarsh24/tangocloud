@@ -7,8 +7,19 @@ class Audio < ApplicationRecord
   validates :bit_rate, numericality: {only_integer: true}
   validates :sample_rate, numericality: {only_integer: true}
   validates :channels, numericality: {only_integer: true}
+  validates :codec, presence: true
 
   has_one_attached :file, dependent: :purge_later
+
+  def signed_url
+    Rails.application.routes.url_helpers.audio_url(signed_id)
+  end
+
+  def file_url
+    return unless file.attached?
+
+    Rails.application.routes.url_helpers.rails_blob_url(file)
+  end
 end
 
 # == Schema Information

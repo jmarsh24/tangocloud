@@ -10,7 +10,7 @@ class Recording < ApplicationRecord
   belongs_to :genre
   belongs_to :period, optional: true
   has_many :audio_transfers, dependent: :destroy
-  has_many :audio, through: :audio_transfers, dependent: :destroy
+  has_many :audios, through: :audio_transfers, dependent: :destroy
   has_many :recording_singers, dependent: :destroy
   has_many :singers, through: :recording_singers
   has_many :lyrics, through: :composition
@@ -38,8 +38,7 @@ class Recording < ApplicationRecord
       match: :word_middle,
       misspellings: {below: 5},
       page:,
-      per_page:,
-      load: false)
+      per_page:)
   end
 
   def search_data

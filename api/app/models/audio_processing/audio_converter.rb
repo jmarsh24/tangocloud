@@ -32,6 +32,10 @@ module AudioProcessing
       Tempfile.create([@filename || File.basename(file, ".*"), ".#{format}"], output_directory) do |tempfile|
         output = tempfile.path
 
+        if Config.ci?
+          codec = "aac"
+        end
+
         custom_options = [
           "-i", file,                          # Input audio file
           "-map", "0:a:0",                     # Map the first (audio) stream from the first input (audio file)

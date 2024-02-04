@@ -13,4 +13,3 @@ cloudflare:
   secret_access_key: <%= Config.cloudflare_secret_access_key %>
   region: auto
   bucket: <%= Config.cloudflare_bucket %>
-  public: <%= Config.cloudflare_public %>

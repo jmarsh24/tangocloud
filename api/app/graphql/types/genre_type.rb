@@ -1,11 +1,11 @@
+# frozen_string_literal: true
+
 module Types
   class GenreType < Types::BaseObject
-    field :id, ID, null: true
+    field :id, ID, null: false
     field :name, String, null: false
-    field :slug, String, null: true
-    field :rank, Integer, null: true
-    field :sort_name, String, null: true
-    field :created_at, GraphQL::Types::ISO8601Date, null: true
-    field :updated_at, GraphQL::Types::ISO8601Date, null: true
+    field :description, String
+    field :created_at, GraphQL::Types::ISO8601DateTime, null: false
+    field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
   end
 end

@@ -15,7 +15,7 @@ class PasswordsController < ApplicationController
   private
 
   def set_user
-    @user = Current.user
+    @user = authorize Current.user
   end
 
   def user_params
