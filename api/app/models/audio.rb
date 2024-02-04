@@ -1,6 +1,5 @@
 class Audio < ApplicationRecord
   include Rails.application.routes.url_helpers
-  belongs_to :audio_transfer, dependent: :destroy
   has_many :transfer_agents, through: :audio_transfers
 
   validates :duration, presence: true
