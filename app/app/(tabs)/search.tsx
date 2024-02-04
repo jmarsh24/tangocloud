@@ -27,9 +27,9 @@ const query = gql`
       				# singers {
               #   name
               # }
-              # genre {
-              #   name
-              # }
+              genre {
+                name
+              }
               recordedDate
             }
   }

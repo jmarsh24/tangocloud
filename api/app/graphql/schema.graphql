@@ -216,7 +216,7 @@ type Recording {
   recordedDate: ISO8601Date
   recordingType: String!
   releaseDate: ISO8601Date
-  singers: Singer
+  singers: [Singer!]
   slug: String!
   title: String!
 }
