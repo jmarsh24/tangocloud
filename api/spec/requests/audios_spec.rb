@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "Audios", type: :request do
-  describe "GET /audios/:id/file" do
+  describe "GET /audios/:id" do
     context "when user is not logged in" do
       it "returns 401 unauthorized" do
         audio = audios(:volver_a_sonar_tango_tunes_1940)
