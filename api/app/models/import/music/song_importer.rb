@@ -70,7 +70,6 @@ module Import
             record_label:,
             genre:
           )
-
           recording.singers << singer if singer.present?
 
           transfer_agent = TransferAgent.find_or_create_by(name: @metadata.encoded_by || "Unknown")
@@ -107,6 +106,7 @@ module Import
             metadata: @metadata
           )
 
+          binding.irb
           audio_converter.convert do |file|
             audio.file.attach(io: File.open(file), filename: File.basename(file))
           end
