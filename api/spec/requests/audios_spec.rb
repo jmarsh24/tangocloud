@@ -12,11 +12,11 @@ RSpec.describe "Audios", type: :request do
     end
 
     context "when user is logged in" do
-      it "redirects to audio file if user is authorized" do
+      fit "redirects to audio file if user is authorized" do
         audio = audios(:volver_a_sonar_tango_tunes_1940)
-        user = users(:admin)
+        admin_user = users(:admin)
 
-        user_token = AuthToken.token(user)
+        user_token = AuthToken.token(admin_user)
 
         get audio.signed_url, headers: {Authorization: user_token}
 
