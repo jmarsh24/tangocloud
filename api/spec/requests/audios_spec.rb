@@ -12,7 +12,7 @@ RSpec.describe "Audios", type: :request do
     end
 
     context "when user is logged in" do
-      fit "redirects to audio file if user is authorized" do
+      it "redirects to audio file if user is authorized" do
         audio = audios(:volver_a_sonar_tango_tunes_1940)
         admin_user = users(:admin)
 
