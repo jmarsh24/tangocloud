@@ -28,7 +28,6 @@ env:
     RAILS_LOG_LEVEL: debug
     RAILS_LOG_TO_STDOUT: true
     DB_HOST: 10.1.0.3
-    CLOUDFLARE_PUBLIC: true
     CLOUDFLARE_BUCKET: tangocloud
     ELASTICSEARCH_URL: 10.1.0.5:9200
   secret:
