@@ -1,6 +1,6 @@
 class AuthToken
   def self.key
-    Config.jwt_secret
+    Config.jwt_secret || "test_secret_key"
   end
 
   def self.token(user)
