@@ -22,7 +22,9 @@ module Types
       argument :per_page, Integer, required: false, description: "Number of results per page."
     end
 
-  def search_recordings(query:, page: 1, per_page: 10)
+    def search_recordings(query:, page: 1, per_page: 10)
+      raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
+
       Recording.search_recordings(query, page:, per_page:).results
     end
 
@@ -33,6 +35,8 @@ module Types
     end
 
     def search_el_recodo_songs(query:)
+      raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
+
       ElRecodoSong.search_songs(query).results
     end
 
@@ -47,6 +51,8 @@ module Types
     end
 
     def get_audio(id:)
+      raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
+
       Audio.find(id)
     end
   end
