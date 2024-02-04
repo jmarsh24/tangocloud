@@ -106,7 +106,6 @@ module Import
             metadata: @metadata
           )
 
-          binding.irb
           audio_converter.convert do |file|
             audio.file.attach(io: File.open(file), filename: File.basename(file))
           end
