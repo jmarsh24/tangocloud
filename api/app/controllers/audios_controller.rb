@@ -2,7 +2,11 @@ class AudiosController < ApplicationController
   before_action :set_audio, only: [:show]
 
   def show
-    redirect_to @audio.file_url
+    if @audio.file.attached?
+      redirect_to @audio.file_url
+    else
+      render json: { error: "File not found" }, status: :not_found
+    end
   end
 
   private
