@@ -109,5 +109,4 @@ Rails.application.configure do
   Rails.application.routes.default_url_options[:host] = Config.host
 
   config.active_storage.resolve_model_to_route = :rails_storage_proxy
-  # config.active_storage.draw_routes = false
 end
