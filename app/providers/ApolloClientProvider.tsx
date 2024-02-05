@@ -7,7 +7,7 @@ const client = new ApolloClient({
   headers: { 'authorization': process.env.EXPO_PUBLIC_ADMIN_AUTH_TOKEN || 'default_token_or_empty_string' },
 });
 
-const ApolloClientProvider = ({ children }: PropsWithChildren) => {
+const ApolloClientProvider = ({ children }: PropsWithChildren<{}>) => {
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
 };
 
