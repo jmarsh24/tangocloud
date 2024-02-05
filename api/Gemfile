@@ -6,8 +6,9 @@ gem "puma"
 gem "rails", "7.1.3"
 
 # Database
-gem "pg"
-gem "good_job"
+gem "litestack"
+gem "sqlite3"
+gem "activerecord-enhancedsqlite3-adapter"
 
 # Performance
 gem "bootsnap", require: false
@@ -39,7 +40,6 @@ gem "rails-i18n"
 gem "shimmer"
 gem "slim-rails"
 gem "socialization"
-gem "solid_cache"
 gem "translate_client"
 gem "yael"
 gem "streamio-ffmpeg"

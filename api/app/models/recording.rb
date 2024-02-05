@@ -20,7 +20,7 @@ class Recording < ApplicationRecord
   validates :title, presence: true
   validates :recorded_date, presence: true
 
-  enum recording_type: {studio: "studio", live: "live"}
+  enum recording_type: { studio: 0, live: 1 }
 
   def self.search_recordings(query, page: 1, per_page: 10)
     Recording.search(query,

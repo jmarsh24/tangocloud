@@ -1,6 +1,6 @@
 class CreateDancers < ActiveRecord::Migration[7.1]
   def change
-    create_table :dancers, id: :uuid do |t|
+    create_table :dancers do |t|
       t.string :name, null: false
       t.string :nickname
       t.string :nationality

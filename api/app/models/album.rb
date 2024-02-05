@@ -4,7 +4,7 @@ class Album < ApplicationRecord
 
   has_many :audio_transfers, dependent: :destroy
 
-  enum album_type: {compilation: "compilation", original: "original"}
+  enum album_type: { compilation: 0, original: 1 }
 
   validates :title, presence: true
   validates :audio_transfers_count, presence: true, numericality: {greater_than_or_equal_to: 0}

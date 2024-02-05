@@ -1,6 +1,6 @@
 class CreatePlaylists < ActiveRecord::Migration[7.1]
   def change
-    create_table :playlists, id: :uuid do |t|
+    create_table :playlists do |t|
       t.string :title, null: false
       t.string :description
       t.boolean :public, null: false, default: true
@@ -9,7 +9,7 @@ class CreatePlaylists < ActiveRecord::Migration[7.1]
       t.integer :listens_count, null: false, default: 0
       t.integer :shares_count, null: false, default: 0
       t.integer :followers_count, null: false, default: 0
-      t.belongs_to :user, null: false, type: :uuid
+      t.belongs_to :user, null: false
       t.timestamps
     end
   end

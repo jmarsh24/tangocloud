@@ -1,7 +1,6 @@
 class Import::ElRecodo::SyncSongJob < ApplicationJob
   include GoodJob::ActiveJobExtensions::Concurrency
   queue_as :background_sync
-  good_job_control_concurrency_with(perform_limit: 1)
 
   def perform(music_id:, interval: 0)
     sleep(interval)

@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   end
 
   constraints(Constraints::AdminConstraint.new) do
-    mount GoodJob::Engine => "good_job"
+    # mount GoodJob::Engine => "good_job"
     mount Avo::Engine => "admin"
   end
 

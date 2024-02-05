@@ -1,6 +1,6 @@
 class CreateSingers < ActiveRecord::Migration[7.1]
   def change
-    create_table :singers, id: :uuid do |t|
+    create_table :singers do |t|
       t.string :name, null: false
       t.string :slug, index: {unique: true}, null: false
       t.integer :rank, null: false, default: 0

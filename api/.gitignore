@@ -52,3 +52,7 @@ node_modules
 .yarn/cache
 *.dmp
 *.dump
+
+# Ignore default Litestack SQLite databases.
+/db/**/*.sqlite3
+/db/**/*.sqlite3-*

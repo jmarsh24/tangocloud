@@ -1,6 +1,6 @@
 class CreateAudios < ActiveRecord::Migration[7.1]
   def change
-    create_table :audios, id: :uuid do |t|
+    create_table :audios do |t|
       t.integer :duration, null: false, default: 0
       t.string :format, null: false
       t.string :codec, null: false
@@ -8,8 +8,8 @@ class CreateAudios < ActiveRecord::Migration[7.1]
       t.integer :sample_rate
       t.integer :channels
       t.integer :length, null: false, default: 0
-      t.jsonb :metadata, default: {}, null: false
-      t.belongs_to :audio_transfer, null: false, foreign_key: true, type: :uuid
+      t.json :metadata, default: {}, null: false
+      t.belongs_to :audio_transfer, null: false, foreign_key: true
       t.timestamps
     end
   end
