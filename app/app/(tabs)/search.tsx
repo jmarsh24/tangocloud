@@ -14,16 +14,22 @@ import { gql, useQuery } from '@apollo/client';
 import Colors from '@/constants/Colors';
 
 const query = gql`
-  query MyQuery($q: String!) {
-    searchElRecodoSongs(query: $q) {
-              id
+  query MyQuery($query: String!) {
+    searchRecordings(query: $query) {
               title
-              orchestra
-              singer
-              composer
-              author
-              date
-              style
+              orchestra {
+                name
+              }
+              singers {
+                name
+              }
+              audios {
+                url
+              }
+              # recorded_date
+              genre {
+                name
+              }
             }
   }
 `;
@@ -33,13 +39,13 @@ export default function SearchScreen() {
   const [page, setPage] = useState(1);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
 
+
   const { data, loading, error, fetchMore } = useQuery(query, {
-    variables: { q: search, page: 1, per_page: 10 },
+    variables: { query: search, page: 1, per_page: 50 },
     fetchPolicy: 'cache-and-network',
   });
 
-  const tracks = data?.searchElRecodoSongs || [];
-
+  const tracks = data?.searchRecordings || [];
   const loadMoreTracks = useCallback(() => {
     if (isFetchingMore) return;
 
@@ -52,9 +58,9 @@ export default function SearchScreen() {
         setIsFetchingMore(false);
         if (!fetchMoreResult) return prev;
         return Object.assign({}, prev, {
-          searchElRecodoSongs: [
-            ...prev.searchElRecodoSongs,
-            ...fetchMoreResult.searchElRecodoSongs,
+          searchRecordings: [
+            ...prev.searchRecordings,
+            ...fetchMoreResult.searchRecordings,
           ],
         });
       },
