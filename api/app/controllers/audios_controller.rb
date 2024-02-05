@@ -1,9 +1,10 @@
 class AudiosController < ApplicationController
+  include ActiveStorage::SetCurrent
   before_action :set_audio, only: [:show]
 
   def show
     if @audio.file.attached?
-      redirect_to @audio.file_url
+      redirect_to(@audio.file.url, allow_other_host: true)
     else
       render json: {error: "File not found"}, status: :not_found
     end

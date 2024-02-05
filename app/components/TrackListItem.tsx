@@ -16,10 +16,10 @@ export default function TrackListItem({ track }: TrackListItemProps) {
       <View style={styles.songTextContainer}>
         <Text style={styles.songTitle}>{track.title}</Text>
         <Text style={styles.songDetails}>
-          {track.orchestra} - {track.singer}
+          {track.orchestra.name} - {track.singers[0]?.name}
         </Text>
         <Text style={styles.songSubDetails}>
-          {track.style} - {track.date}
+          {track.genre.name}
         </Text>
       </View>
     </Pressable>

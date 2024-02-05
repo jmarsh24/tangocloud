@@ -32,9 +32,7 @@ module AudioProcessing
       Tempfile.create([@filename || File.basename(file, ".*"), ".#{format}"], output_directory) do |tempfile|
         output = tempfile.path
 
-        if Config.ci?
-          codec = "aac"
-        end
+        codec = Config.ci? ? "aac" : @codec
 
         custom_options = [
           "-i", file,                          # Input audio file

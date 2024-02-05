@@ -5,13 +5,13 @@ type Audio {
   codec: String!
   createdAt: ISO8601DateTime!
   duration: Int!
-  fileUrl: String!
   format: String!
   id: ID!
   length: Int!
   metadata: JSON!
   sampleRate: Int
   updatedAt: ISO8601DateTime!
+  url: String!
 }
 
 type AudioTransfer {

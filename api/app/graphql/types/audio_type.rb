@@ -12,7 +12,7 @@ module Types
     field :length, Integer, null: false
     field :metadata, GraphQL::Types::JSON, null: false
     field :audio_transfer_id, Types::UuidType, null: false
-    field :file_url, String, null: false
+    field :url, String, null: false, method: :signed_url
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
   end

@@ -70,7 +70,6 @@ module Import
             record_label:,
             genre:
           )
-
           recording.singers << singer if singer.present?
 
           transfer_agent = TransferAgent.find_or_create_by(name: @metadata.encoded_by || "Unknown")
