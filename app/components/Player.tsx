@@ -42,7 +42,7 @@ useEffect(() => {
     if (track && track.audios && track.audios.length > 0) {
         const audioUrl = track.audios[0].url;
         const headers = {
-            Authorization: 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZDkyNmJjM2ItYWQ0ZC00MWUwLTkxYzUtZDRiMjhkMDk3NDkzIn0.tX71xEVTt_notixhRZIYpQU8MOYPM_IX-SYQC-neXMo',
+            Authorization: process.env.EXPO_PUBLIC_ADMIN_AUTH_TOKEN,
         };
 
         const source = {
