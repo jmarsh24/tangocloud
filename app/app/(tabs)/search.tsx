@@ -7,7 +7,6 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import TrackListItem from '@/components/TrackListItem';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState, useCallback } from 'react';
 import { gql, useQuery } from '@apollo/client';

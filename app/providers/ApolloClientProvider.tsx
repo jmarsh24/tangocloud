@@ -2,9 +2,9 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { PropsWithChildren } from 'react';
 
 const client = new ApolloClient({
-  uri: 'http://localhost:3000/graphql',
+  uri: process.env.EXPO_PUBLIC_GRAPHQL_ENDPOINT,
   cache: new InMemoryCache(),
-  headers: { 'authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZDkyNmJjM2ItYWQ0ZC00MWUwLTkxYzUtZDRiMjhkMDk3NDkzIn0.tX71xEVTt_notixhRZIYpQU8MOYPM_IX-SYQC-neXMo' },
+  headers: { 'authorization': process.env.EXPO_PUBLIC_ADMIN_AUTH_TOKEN || 'default_token_or_empty_string' },
 });
 
 const ApolloClientProvider = ({ children }: PropsWithChildren) => {
