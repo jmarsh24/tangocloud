@@ -2,7 +2,7 @@
   "expo": {
     "name": "app",
     "slug": "app",
-    "version": "1.0.9",
+    "version": "1.0.10",
     "owner": "jmarsh24",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
