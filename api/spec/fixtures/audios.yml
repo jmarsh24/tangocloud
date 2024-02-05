@@ -6,7 +6,6 @@ volver_a_sonar_tango_tunes_1940:
   channels: 1
   codec: "flac"
   bit_rate: 123
-
 # == Schema Information
 #
 # Table name: audios
