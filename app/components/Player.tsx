@@ -27,17 +27,33 @@ const Player = () => {
 
   const playTrack = async () => {
     if (sound) {
-      await sound.unloadAsync();
+        await sound.unloadAsync();
     }
+    if (track && track.audios && track.audios.length > 0) {
+        const audioUrl = track.audios[0].url;
+        const headers = {
+            Authorization: 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZDkyNmJjM2ItYWQ0ZC00MWUwLTkxYzUtZDRiMjhkMDk3NDkzIn0.tX71xEVTt_notixhRZIYpQU8MOYPM_IX-SYQC-neXMo',
+        };
 
-    const { sound: newSound } = await Audio.Sound.createAsync({
-      uri: "https://pub-10ab067adc844f51b24c57dee2e3e3ce.r2.dev/sample_audio_mp3_amarras.mp3",
-    });
+        const source = {
+            uri: audioUrl,
+            headers: headers
+        };
 
-    setSound(newSound);
-    newSound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
-    await newSound.playAsync();
-  };
+        try {
+            const { sound: newSound } = await Audio.Sound.createAsync(
+                source,
+                // Add any initial status options here, if needed
+            );
+
+            setSound(newSound);
+            newSound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
+            await newSound.playAsync();
+        } catch (error) {
+            console.error('Error creating audio:', error);
+        }
+    }
+};
 
   const onPlaybackStatusUpdate = (status: AVPlaybackStatus) => {
     if (!status.isLoaded) {
@@ -68,8 +84,8 @@ const Player = () => {
         <View style={styles.player}>
           <Image source={require('@/assets/images/album_art.jpg')} style={styles.image} />
           <View style={styles.info}>
-            <Text style={styles.title}>{track?.title}</Text>
-            <Text style={styles.subtitle}>{track?.orchestra}</Text>
+            <Text style={styles.title}>{track.title}</Text>
+            <Text style={styles.subtitle}>{track?.orchestra.name}</Text>
           </View>
 
           <Ionicons
@@ -88,17 +104,19 @@ const Player = () => {
 const styles = StyleSheet.create({
    container: {
     position: 'absolute',
-    top: -90,
+    width: '100%',
+    bottom: 50,
     padding: 10,
+    
   },
   player: {
+    width: '100%',
     backgroundColor: "#1B137D",
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 5,
     paddingHorizontal: 15,
     paddingVertical: 10,
-    width: '100%',
   },
   title: {
     color: Colors.light.text,

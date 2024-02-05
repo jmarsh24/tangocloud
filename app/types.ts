@@ -1,26 +1,36 @@
 export type Track = {
   id: string;
   title: string;
-  orchestra: string;
-  singer: string;
-  composer: string;
-  author: string;
-  date: string;
-  style: string;
+  recorded_date: string;
+  orchestra: Orchestra;
+  lyricist: Lyricist;
+  genre: Genre;
+  audios: Audio[];
+  singers: Singer[];
 };
-// export type Album = {
-//   id: string;
-//   name: string;
-//   images: Image[];
-// };
-// export type Artist = {
-//   id: string;
-//   name: string;
-//   images?: Image[];
-// };
 
-// export type Image = {
-//   url: string;
-//   height?: number;
-//   width?: number;
-// };
+export type Audio = {
+  id: string;
+  title: string;
+  url: string;
+};
+
+export type Orchestra = {
+  name: string;
+};
+
+export type Singer = {
+  name: string;
+};
+
+export type Composer = {
+  name: string;
+};
+
+export type Lyricist = {
+  name: string;
+};
+
+export type Genre = {
+  name: string;
+};
