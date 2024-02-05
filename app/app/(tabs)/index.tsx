@@ -1,6 +1,5 @@
 import { TouchableOpacity, Image } from 'react-native';
 import { Text, View, StyleSheet } from 'react-native';
-import { useNavigation } from 'expo-router';
 
 const orchestras = [
   'Carlos Di Sarli',
@@ -19,13 +18,6 @@ const images = {
 };
 
 export default function HomeScreen() {
-  const navigation = useNavigation();
-
-  const handlePress = (orchestra) => {
-    // Navigate to the search screen with the orchestra query
-    navigation.navigate('searchScreen', { query: orchestra });
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.centeredView}>
