@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 )
 
 type App struct {
@@ -15,8 +14,4 @@ func NewApp() *App {
 
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
-}
-
-func (a *App) PrintLog(message string) {
-	fmt.Println(message)
 }
