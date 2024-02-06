@@ -1,7 +1,7 @@
 import { Text, View, StyleSheet, Image, Pressable } from 'react-native';
 import { Track } from '@/types';
 import { usePlayerContext } from '@/providers/PlayerProvider';
-import Colors from '@/constants/Colors';
+import { useTheme } from '@react-navigation/native';
 
 type TrackListItemProps = {
   track: Track;
@@ -9,6 +9,9 @@ type TrackListItemProps = {
 
 export default function TrackListItem({ track }: TrackListItemProps) {
   const { setTrack } = usePlayerContext();
+  const { colors } = useTheme();
+
+  const styles = getStyles(colors);
 
   return (
     <Pressable onPress={() => setTrack(track)} style={styles.songCard}>
@@ -26,43 +29,42 @@ export default function TrackListItem({ track }: TrackListItemProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  songCard: {
-    flex: 1,
-    backgroundColor: Colors.light.tint,
-    display: "flex",
-    flexDirection: "row",
-    gap: 5,
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 10,
-    paddingRight: 10,
-    borderRadius: 8,
-  },
-  songAlbumArt: {
-    width: 56,
-    height: 56,
-    aspectRatio: 1,
-    borderRadius: 5,
-  }, 
-  songTitle: {
-    fontWeight: "bold",
-    fontSize: 16,
-    color: Colors.light.text,
-    marginLeft: 10,
-  },
-  songDetails: {
-    fontSize: 14,
-    color: Colors.light.text,
-    marginLeft: 10,
-  },
-  songSubDetails: {
-    fontSize: 12,
-    color: Colors.light.text,
-    marginLeft: 10,
-  },
-  songTextContainer: {
-    display: "flex",
-    flexDirection: "column",
-  },
-});
+function getStyles(colors) {
+  return StyleSheet.create({
+    songCard: {
+      flex: 1,
+      backgroundColor: colors.card, 
+      flexDirection: "row",
+      paddingTop: 10,
+      paddingBottom: 10,
+      paddingLeft: 10,
+      paddingRight: 10,
+      borderRadius: 8,
+    },
+    songAlbumArt: {
+      width: 56,
+      height: 56,
+      aspectRatio: 1,
+      borderRadius: 5,
+    },
+    songTitle: {
+      fontWeight: "bold",
+      fontSize: 16,
+      color: colors.text, 
+      marginLeft: 10,
+    },
+    songDetails: {
+      fontSize: 14,
+      color: colors.text, 
+      marginLeft: 10,
+    },
+    songSubDetails: {
+      fontSize: 12,
+      color: colors.text, 
+      marginLeft: 10,
+    },
+    songTextContainer: {
+      flexDirection: "column",
+    },
+  });
+}

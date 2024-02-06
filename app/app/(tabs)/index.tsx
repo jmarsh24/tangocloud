@@ -1,5 +1,6 @@
 import { TouchableOpacity, Image } from 'react-native';
 import { Text, View, StyleSheet } from 'react-native';
+import { useTheme } from '@react-navigation/native';
 
 const orchestras = [
   'Carlos Di Sarli',
@@ -18,21 +19,19 @@ const images = {
 };
 
 export default function HomeScreen() {
+  const { colors } = useTheme(); // Extract colors from the theme
+
   return (
-    <View style={styles.container}>
-      <View style={styles.centeredView}>
-        <Text style={styles.headerText}>
-          The people who are crazy enough to think they can change the world are the ones who do.
-        </Text>
-      </View>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <Text style={[styles.headerText, { color: colors.text }]}>
+        The people who are crazy enough to think they can change the world are the ones who do.
+      </Text>
       {orchestras.map((orchestra, index) => (
-        <TouchableOpacity 
-          key={index} 
-          style={styles.buttonStyle}
-          // onPress={() => handlePress(orchestra)} 
-        >
+        <TouchableOpacity key={index} style={[styles.buttonStyle, { backgroundColor: colors.card }]}>
           <Image source={images[orchestra]} style={styles.songAlbumArt} />
-          <Text style={styles.buttonText}>{orchestra}</Text>
+          <Text style={[styles.buttonText, { color: colors.text }]}> 
+            {orchestra}
+          </Text>
         </TouchableOpacity>
       ))}
     </View>

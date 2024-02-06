@@ -4,48 +4,51 @@ import TrackListItem from '@/components/TrackListItem';
 import { gql, useQuery } from '@apollo/client';
 import Colors from '@/constants/Colors';
 
-const query = gql`
-  query MyQuery($q: String!) {
-    searchElRecodoSongs(query: $q) {
-      id
-      title
-      orchestra
-      singer
-      composer
-      author
-      date
-      style
-    }
-  }
-`;
+// const query = gql`
+//   query MyQuery($q: String!) {
+//     searchElRecodoSongs(query: $q) {
+//       id
+//       title
+//       orchestra
+//       singer
+//       composer
+//       author
+//       date
+//       style
+//     }
+//   }
+// `;
 
 export default function LibraryScreen() {
-  const { data, loading, error } = useQuery(query, {
-    variables: { q: "*" },
-  });
+  <View>
+    <Text style={styles.header}>Library</Text>
+  </View>
+  // const { data, loading, error } = useQuery(query, {
+  //   variables: { q: "*" },
+  // });
 
-  if (loading) {
-    return <ActivityIndicator size="large" color={Colors.light.tint} />;
-  }
+  // if (loading) {
+  //   return <ActivityIndicator size="large" color={Colors.light.tint} />;
+  // }
 
-  if (error) {
-    console.error(error);
-    return <Text style={styles.errorText}>Error loading tracks</Text>;
-  }
+  // if (error) {
+  //   console.error(error);
+  //   return <Text style={styles.errorText}>Error loading tracks</Text>;
+  // }
 
-  const tracks = data?.searchElRecodoSongs || [];
+  // const tracks = data?.searchElRecodoSongs || [];
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Library</Text>
-      <FlatList
-        data={tracks}
-        renderItem={({ item }) => <TrackListItem track={item} />}
-        keyExtractor={item => item.id.toString()}
-        showsVerticalScrollIndicator={false}
-      />
-    </View>
-  );
+  // return (
+  //   <View style={styles.container}>
+  //     <Text style={styles.header}>Library</Text>
+  //     <FlatList
+  //       data={tracks}
+  //       renderItem={({ item }) => <TrackListItem track={item} />}
+  //       keyExtractor={item => item.id.toString()}
+  //       showsVerticalScrollIndicator={false}
+  //     />
+  //   </View>
+  // );
 }
 
 const styles = StyleSheet.create({
@@ -57,7 +60,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: 'black',
+    color: Colors.light.text,
     paddingHorizontal: 15,
     marginBottom: 10,
   },

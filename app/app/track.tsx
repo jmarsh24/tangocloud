@@ -1,9 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Dimensions } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-
+import { useTheme } from '@react-navigation/native';
 
 export default function trackScreen() {
+  const { colors } = useTheme();
+  const styles = getStyles(colors); 
   const track = {
     title: "Amarras",
     artist: "Juan D'Arienzo - Alberto Echagüe"
@@ -77,47 +79,50 @@ return (
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-between', // Distribute space evenly
-    alignItems: 'center', // Center horizontally
-    paddingVertical: 100, // Add some top padding
-  },
+function getStyles(colors) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingVertical: 100,
+      backgroundColor: 'red', // Use theme color for background
+    },
     vinyl: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#0e0e0e',
-  },
-  centralHole: {
-    position: 'absolute',
-    width: 20,
-    height: 20,
-    backgroundColor: '#0e0e0e',
-    zIndex: 10,
-  },
-  albumArt: {
-    borderWidth: 5,
-    borderColor: 'black'
-  },
-  trackInfo: {
-    alignItems: 'center', // Center the track information
-    
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  artist: {
-    fontSize: 18,
-    color: 'gray',
-  },
-  controls: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
-    paddingHorizontal: 50,
-    paddingBottom: 20, // Add some bottom padding
-  },
-});
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#0e0e0e', // You might want to adapt this color for the theme
+    },
+    centralHole: {
+      position: 'absolute',
+      width: 20,
+      height: 20,
+      backgroundColor: '#0e0e0e', // Same as above
+      zIndex: 10,
+    },
+    albumArt: {
+      borderWidth: 5,
+      borderColor: 'black' // Same as above
+    },
+    trackInfo: {
+      alignItems: 'center',
+    },
+    title: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 4,
+      color: colors.text, // Use theme color for text
+    },
+    artist: {
+      fontSize: 18,
+      color: colors.text, // Use theme color for text
+    },
+    controls: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      width: '100%',
+      paddingHorizontal: 50,
+      paddingBottom: 20,
+    },
+  });
+}
