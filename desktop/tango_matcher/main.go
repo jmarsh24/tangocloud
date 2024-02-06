@@ -2,8 +2,12 @@ package main
 
 import (
 	"embed"
+	"fmt"
 	"log"
+	"os"
+	"os/signal"
 	"strings"
+	"syscall"
 	"unicode"
 
 	"github.com/wailsapp/wails/v2"
@@ -29,6 +33,26 @@ func connectToSQLite() (*gorm.DB, error) {
 	return db, nil
 }
 
+func autoMigrate() {
+	db, err := connectToSQLite()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = db.AutoMigrate(&Recording{})
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func handleInterrupt() {
+	sig := make(chan os.Signal, 1)
+	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
+	<-sig
+	fmt.Println("Exiting...")
+	os.Exit(0)
+}
+
 func main() {
 	// Create an instance of the app structure
 	app := NewApp()
@@ -36,8 +60,8 @@ func main() {
 	// Create application with options
 	err := wails.Run(&options.App{
 		Title:  "TangoMatcher",
-		Width:  1024,
-		Height: 768,
+		Width:  1400,
+		Height: 1000,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
@@ -52,15 +76,7 @@ func main() {
 		println("Error:", err.Error())
 	}
 
-	db, err := connectToSQLite()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	err = db.AutoMigrate(&Recording{})
-	if err != nil {
-		log.Fatal(err)
-	}
+	autoMigrate()
 }
 
 func longestWord(s string) string {
@@ -81,15 +97,3 @@ func removeAccents(s string) string {
 	}
 	return output
 }
-
-// func removeDuplicates(slice []Mapping) []Mapping {
-// 	allKeys := make(map[Mapping]bool)
-// 	list := []Mapping{}
-// 	for _, item := range slice {
-// 		if _, value := allKeys[item]; !value {
-// 			allKeys[item] = true
-// 			list = append(list, item)
-// 		}
-// 	}
-// 	return list
-// }

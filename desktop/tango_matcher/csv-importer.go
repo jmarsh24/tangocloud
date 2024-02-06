@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/csv"
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -13,6 +14,23 @@ import (
 
 func first(n int, _ error) int {
 	return n
+}
+
+func (a *App) CheckById() {
+	db, err := connectToSQLite()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	rec, err := getRecordingByID(db, uint(6647))
+
+	if err != nil {
+		log.Panicln(err)
+	}
+
+	if rec != nil {
+		fmt.Println("ALREADY DONE => ", rec.MusicId, rec.Orchestra, rec.Soloist, rec.Title)
+	}
 }
 
 func (a *App) ImportCsvFile() {
@@ -43,10 +61,6 @@ func FillDatabaseFromCsvFile(csvFilePath string) {
 		if err == io.EOF {
 			break
 		}
-
-		//recordingLine := scanner.Text()
-		//fmt.Println(lineItems)
-		//lineItems := strings.Split(recordingLine, ",")
 
 		recording.Id = uuid.MustParse(lineItems[0])
 
@@ -80,16 +94,8 @@ func FillDatabaseFromCsvFile(csvFilePath string) {
 
 		recording.SearchData = lineItems[17]
 
-		// recording.synced_at = lineItems[18]
-		// recording.page_updated_at = lineItems[19]
-		// recording.created_at = lineItems[20]
-		// recording.updated_at = lineItems[21]
-
-		//log.Println(recording.MusicId)
-
 		err = createRecording(db, &recording)
 		if err != nil {
-			log.Println(err)
 			log.Fatal(err)
 		}
 	}
