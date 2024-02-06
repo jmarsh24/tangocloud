@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
+	"gorm.io/gorm"
 	"io/fs"
 	"log"
 	"os"
@@ -66,29 +66,33 @@ func (a *App) GetMatchingRecords(folderPath string, orchestra string, singer str
 		}
 	}
 
-	return mappings //removeDuplicates
+	return mappings
 }
 
 func (a *App) MapAllRecordings(mappings []Mapping) {
 	go func() {
+		db, err := connectToSQLite()
+		if err != nil {
+			log.Fatal(err)
+		}
+
 		for i := 0; i < len(mappings); i++ {
-			a.MapSong(mappings[i].MusicId, mappings[i].FilePath)
+			a.MapSong(db, mappings[i].MusicId, mappings[i].FilePath)
 			runtime.EventsEmit(a.ctx, "mapping_done", int(mappings[i].MusicId))
 		}
 
 		runtime.EventsEmit(a.ctx, "mappings_all_done", true)
+
+		defer func() {
+			dbInstance, _ := db.DB()
+			_ = dbInstance.Close()
+		}()
 	}()
 }
 
 // update recordings set is_mapped = 0, map_date = null, relative_file_path = null, audio_source = null where is_mapped = 1;
-func (a *App) MapSong(musicId uint, audioFilePath string) {
-
-	fmt.Println("MapSong: ", musicId, audioFilePath)
-
-	db, err := connectToSQLite()
-	if err != nil {
-		log.Fatal(err)
-	}
+func (a *App) MapSong(db *gorm.DB, musicId uint, audioFilePath string) {
+	//fmt.Println("MapSong: ", musicId, audioFilePath)
 
 	recording, err := getRecordingByID(db, musicId)
 	if err != nil {
@@ -164,7 +168,7 @@ func constructCommand(audioFilePath string, recording *Recording) ([]string, str
 	cmdArguments = append(cmdArguments, "-map", "0")
 	cmdArguments = append(cmdArguments, "-write_id3v2", "1")
 
-	commentTag := removeAccents(strings.ToLower("Id: ERT-" + strconv.Itoa(int(recording.MusicId)) + " | SOURCE: " + getSourceInfo(audioFilePath) + " | LABEL: " + recording.Label + " | DATE: " + recording.Date.Format("2006-01-02") + " | ORIGINAL_ALBUM: " + oldAlbumTag))
+	commentTag := "Id: ert-" + strconv.Itoa(int(recording.MusicId)) + " | source: " + getSourceInfo(audioFilePath) + " | label: " + recording.Label + " | date: " + recording.Date.Format("2006-01-02") + " | original_album: " + oldAlbumTag
 
 	cmdArguments = append(cmdArguments,
 		"-c", "copy",
@@ -172,15 +176,15 @@ func constructCommand(audioFilePath string, recording *Recording) ([]string, str
 		"-hide_banner",
 		"-loglevel", "error",
 
-		"-metadata", "title="+strings.ToLower(removeAccents(recording.Title)),
-		"-metadata", "album="+strings.ToLower(album), // is it good really as album data ??
+		"-metadata", "title="+recording.Title,
+		"-metadata", "album="+album, // is it good really as album data ??
 
-		"-metadata", "artist="+removeAccents(strings.ToLower(strings.Replace(recording.Singers, " y ", " / ", -1))),
+		"-metadata", "artist="+strings.Replace(recording.Singers, " y ", " / ", -1),
 		"-metadata", "date="+recording.Date.Format("2006-01-02"),
 
-		"-metadata", "genre="+strings.ToLower(recording.Style),
-		"-metadata", "album_artist="+removeAccents(strings.ToLower(strings.Replace(recording.Orchestra, " y ", " / ", -1))),
-		"-metadata", "composer="+removeAccents(strings.ToLower("LYRICIST: "+strings.Replace(recording.Author, " y ", " / ", -1)+" | COMPOSER: "+strings.Replace(recording.Composer, " y ", " / ", -1))),
+		"-metadata", "genre="+recording.Style,
+		"-metadata", "album_artist="+strings.Replace(recording.Orchestra, " y ", " / ", -1),
+		"-metadata", "composer="+"lyricist: "+strings.Replace(recording.Author, " y ", " / ", -1)+" | composer: "+strings.Replace(recording.Composer, " y ", " / ", -1),
 
 		"-metadata", "publisher=",
 		"-metadata", "color=",

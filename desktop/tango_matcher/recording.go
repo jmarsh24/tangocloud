@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"strings"
 	"time"
@@ -71,13 +70,13 @@ func getRecordings(db *gorm.DB, orchestra string, singer string, title string, o
 	filteredResults := db
 
 	if orchestra != "" {
-		filteredResults = filteredResults.Where("n_orchestra LIKE ?", "%"+strings.ToLower(orchestra)+"%")
+		filteredResults = filteredResults.Where("orchestra LIKE ?", "%"+strings.ToLower(orchestra)+"%")
 	}
 	if singer != "" {
-		filteredResults = filteredResults.Where("n_singer LIKE ?", "%"+strings.ToLower(singer)+"%")
+		filteredResults = filteredResults.Where("singers LIKE ?", "%"+strings.ToLower(singer)+"%")
 	}
 	if title != "" {
-		filteredResults = filteredResults.Where("n_title LIKE ?", "%"+strings.ToLower(title)+"%")
+		filteredResults = filteredResults.Where("title LIKE ?", "%"+strings.ToLower(title)+"%")
 	}
 
 	filteredResults = filteredResults.Where("is_mapped = ?", ismapped)
@@ -95,9 +94,6 @@ func getRecordings(db *gorm.DB, orchestra string, singer string, title string, o
 	if tx.Error != nil {
 		return recordings, tx.Error
 	}
-
-	fmt.Println("Recording Count", len(recordings))
-
 	return recordings, nil
 }
 

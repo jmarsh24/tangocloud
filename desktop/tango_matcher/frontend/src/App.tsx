@@ -1,7 +1,8 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useCallback} from 'react';
 import './App.css';
-import {EventsOn} from "../wailsjs/runtime/runtime"
-import {ImportCsvFile, GetFoldersInFolder, GetAudioFilesInFolder, GetRecordingsWithFilter, PrintLog, MapSong, GetMatchingRecords, MapAllRecordings} from "../wailsjs/go/main/App";
+import {EventsOn, LogPrint} from "../wailsjs/runtime/runtime"
+import {CheckById, ImportCsvFile, GetFoldersInFolder, GetAudioFilesInFolder, GetRecordingsWithFilter, MapSong, GetMatchingRecords, MapAllRecordings} from "../wailsjs/go/main/App";
+import useState from 'react-usestateref';
 
 interface Mapping {
 	MatchingWordOne : string;
@@ -58,12 +59,65 @@ function App() {
     const [matchingRecords, setMatchingRecords] = useState<Mapping[]>([]);
     const [loading, setLoading] = useState<boolean>();
 
+
+    const [keyboardSelectMode, setKeyboardSelectMode] = useState<number>(0);
+    const [commandMode, setCommandMode] = useState<boolean>(false);
+    const [selectedNumber, setSelectedNumber] = useState<string>('');
+
     useEffect(() => {
         getFilesInFolder();
     }, []);
 
+    const handleUserKeyPress = useCallback((event:any) => {
+        const { key, keyCode } = event;
+
+        if(keyCode === 27) {
+            setCommandMode(true);
+        }
+
+        if(commandMode && (keyCode >= 96 && keyCode <= 105)) {
+            LogPrint("New Selected Number: " + selectedNumber + key);
+            setSelectedNumber(selectedNumber + key);
+
+            switch(keyboardSelectMode) {
+                case 0:
+                    selectFileByKeyboard(selectedNumber + key); break;
+                case 1:
+                    selectRecordingByKeyboard(selectedNumber + key);break;
+            }
+        }
+
+        if(commandMode && (keyCode == 70 || keyCode == 77 || keyCode == 82)) {
+            switch(key) {
+                case 'm':
+                    addMappingToMatchingRecords(); break;
+                case 'f':
+                    setKeyboardSelectMode(0); break;
+                case 'r':
+                    setKeyboardSelectMode(1); break;
+            }
+            setSelectedNumber('');
+        }
+    }, [commandMode, keyboardSelectMode, selectedNumber, selectedFilePath, selectedRecording]);
+
+    useEffect(() => {
+        window.addEventListener("keydown", handleUserKeyPress);
+        return () => {
+            window.removeEventListener("keydown", handleUserKeyPress);
+        };
+    }, [handleUserKeyPress]);
+
+    function selectFileByKeyboard(key: string) {
+        setSelectedFilePath(fileList[Number(key)].Path);
+    }
+
+    function selectRecordingByKeyboard(key: string) {
+        setSelectedRecording(recordingList[Number(key)].MusicId);
+    }
+
     function importCsv(){
-        ImportCsvFile();
+        //ImportCsvFile();
+        CheckById();
     }
 
     function constructPath() : string {
@@ -80,44 +134,43 @@ function App() {
         setFolderList(folders)
     }
 
-    // const callRecordingsWithFilter = debounce(async () => {
-    //     setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', 'title', startDate ?? '', endDate ?? '').then(c => c))
-    // }, 300);
-
     async function onOrchestraFilterChange(orchestra : string) {
+        setCommandMode(false);
         setOrchestra(orchestra);
+        setStartDate('');
+        setEndDate('');
         setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', orderBy, startDate ?? '', endDate ?? '').then(c => c));
     }
 
     async function onSingerFilterChange(singer : string) {
+        setCommandMode(false);
         setSinger(singer);
         setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', orderBy, startDate ?? '', endDate ?? '').then(c => c));
     }
 
     async function onTitleFilterChange(title : string) {
+        setCommandMode(false);
         setTitle(title);
         setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', orderBy, startDate ?? '', endDate ?? '').then(c => c));
     }
 
     async function onStartDateFilterChange(startDate : string) {
+        setCommandMode(false);
         setStartDate(startDate);
         setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', orderBy, startDate ?? '', endDate ?? '').then(c => c));
     }
 
     async function onEndDateFilterChange(endDate : string) {
+        setCommandMode(false);
         setEndDate(endDate);
         setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', orderBy, startDate ?? '', endDate ?? '').then(c => c));
     }
 
     async function getMatchingRecords() {
+        setCommandMode(true);
 
-        if (fileList.length == 0) {
-            return;
-        }
-
-        if (recordingList.length == 0) {
-            return;
-        }
+        if (fileList.length == 0) return;
+        if (recordingList.length == 0) return;
 
         setMatchingRecords(removeDuplicates(await GetMatchingRecords(folderPath, orchestra ?? '', singer ?? '', title ?? '', orderBy, startDate ?? '', endDate ?? '')))
     }
@@ -125,13 +178,6 @@ function App() {
     function removeDuplicates(mappings : Mapping[]) : Mapping[] {
         return [...new Map(mappings.map(v => [v.RecordingTitle, v] || [v.FileName, v])).values()]
     }
-
-    function findDuplicates(arr: Mapping[]): Mapping[] {
-        return [];
-        // return arr.filter((obj, index, array) => 
-        //   array.slice(index + 1).some((otherObj) => obj.RecordingTitle == otherObj.RecordingTitle || obj.FileName == otherObj.FileName)
-        // );
-      }
 
     function onSelectRecordingRow(musicId : number) {
         setSelectedRecording(musicId);
@@ -156,8 +202,6 @@ function App() {
     }
 
     function addMappingToMatchingRecords() {
-        setMatchingRecords([]);
-
         const mapping: Mapping = {
             MusicId  : selectedRecording,
             FilePath : selectedFilePath,
@@ -168,8 +212,8 @@ function App() {
             Finished : false
         }
 
+        setMatchingRecords([]);
         setMatchingRecords(removeDuplicates([...matchingRecords, mapping]));
-
         setSelectedFilePath("");
         setSelectedRecording(0);
     }
@@ -187,11 +231,8 @@ function App() {
         setMatchingRecords([...matchingRecords]);
 
         if(!matchingRecords.filter(f=>!f.Finished)[0]) {
-            PrintLog("ALL FINISHED")
             setFileList(await GetAudioFilesInFolder(constructPath()).then(c => c))
-
             setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', orderBy, startDate ?? '', endDate ?? '').then(c => c))
-
             setMatchingRecords([]);
             setLoading(false);
         }
@@ -260,7 +301,6 @@ function App() {
                                         (selectedFilePath === item.Path ? "selected-row " : "") +
                                         (isFileSelectedAsAMatch(item.Name) ? "to-be-matched-row " : "")
                                     }>
-                                    {/* (findDuplicates(matchingRecords).filter(m => m.FileName == item.Name) ? "duplicate":"") */}
                                     <td>{index}</td>
                                     <td>{item.Name}</td>
                                 </tr>
@@ -278,7 +318,8 @@ function App() {
                             <button onClick={mapAllMatchingRecordings} className='green-background'>Map All
                                 Now</button> : ""}
                         {matchingRecords.length != 0 ?
-                            <button onClick={cleanMatchingRecordings} className='red-background'>Clear All</button> : ""}
+                            <button onClick={cleanMatchingRecordings} className='red-background'>Clear
+                                All</button> : ""}
                         <button onClick={addMappingToMatchingRecords}>Add Map</button>
                     </div>
 
@@ -286,8 +327,8 @@ function App() {
                         <div key={index} className='matching-data'>
                             <div>{index}</div>
                             <div className='mapping'>
-                                <p className='p-slim'>{item.FileName.substring(0, 45) + '...'}</p>
-                                <p className='p-slim'>{item.RecordingTitle.substring(0, 40) + '...'} [{item.MusicId}]</p>
+                                <p className='p-slim'>{item.FileName.length > 45 ? item.FileName.substring(0, 50) + '...' : item.FileName}</p>
+                                <p className='p-slim'>{item.RecordingTitle.length > 45 ? item.RecordingTitle.substring(0, 45) + '...' : item.RecordingTitle} [{item.MusicId}]</p>
                             </div>
                             {item.Finished && <span className='green-background'>FINISHED</span>}
                             {!item.Finished &&
