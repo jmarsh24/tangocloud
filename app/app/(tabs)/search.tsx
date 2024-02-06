@@ -1,16 +1,9 @@
-import {
-  FlatList,
-  TextInput,
-  View,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-} from 'react-native';
+import { FlatList, TextInput, View, Text, StyleSheet, ActivityIndicator,} from 'react-native';
 import TrackListItem from '@/components/TrackListItem';
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState, useCallback } from 'react';
 import { gql, useQuery } from '@apollo/client';
-import Colors from '@/constants/Colors';
+import { useTheme } from '@react-navigation/native';
 
 const query = gql`
   query MyQuery($query: String!) {
@@ -34,6 +27,9 @@ const query = gql`
 `;
 
 export default function SearchScreen() {
+  const { colors } = useTheme();
+  const styles = getStyles(colors);
+
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
@@ -110,56 +106,57 @@ export default function SearchScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  header: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingBottom: 10,
-    paddingHorizontal: 10,
-    gap: 12,
-    padding: 10,
-  },
-  searchContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.light.tint,
-    padding: 8,
-    borderRadius: 5,
-    position: 'relative'
-  },
-  input: {
-    flex: 1,
-    color: Colors.light.text,
-    backgroundColor: Colors.light.tint,
-    paddingVertical: 4,
-    paddingLeft: 30,
-    paddingRight: 4,
-  },
-  searchIcon: {
-    position: 'absolute',
-    color: Colors.light.searchIcon,
-    left: 10,
-    zIndex: 1,
-  },
-  clearIcon: {
-    position: 'absolute',
-    color: Colors.light.searchIcon,
-    right: 10,
-  },
-  cancelText: {
-    color: Colors.light.searchIcon,
-    fontSize: 12,
-  },
-  list: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 5,
-    paddingHorizontal: 10,
-  },
-  itemSeperator: {
-    height: 10,
-  },
-}); 
+function getStyles(colors) {
+  return StyleSheet.create({
+    header: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingBottom: 10,
+      paddingHorizontal: 10,
+      gap: 12,
+      padding: 10,
+      backgroundColor: colors.background,
+    },
+    searchContainer: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: colors.card,
+      padding: 8,
+      borderRadius: 5,
+      position: 'relative'
+    },
+    input: {
+      flex: 1,
+      color: colors.text,
+      backgroundColor: colors.card,
+      paddingVertical: 4,
+      paddingLeft: 30,
+      paddingRight: 4,
+    },
+    searchIcon: {
+      position: 'absolute',
+      color: colors.text,
+      left: 10,
+      zIndex: 1,
+    },
+    clearIcon: {
+      position: 'absolute',
+      color: colors.text,
+      right: 10,
+    },
+    cancelText: {
+      color: colors.text,
+      fontSize: 12,
+    },
+    list: {
+      flexDirection: 'column',
+      gap: 5,
+      paddingHorizontal: 10,
+    },
+    itemSeperator: {
+      height: 10,
+    },
+  });
+}

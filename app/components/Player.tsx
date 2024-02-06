@@ -13,13 +13,19 @@ const Player = () => {
   const { track } = usePlayerContext();
 
   useEffect(() => {
-    if (!track) {
-      return;
-    }
     playTrack();
   }, [track]);
 
-useEffect(() => {
+  useEffect(() => {
+    return sound
+      ? () => {
+          console.log('Unloading Sound');
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
+
+  useEffect(() => {
     const setAudioMode = async () => {
       try {
         await Audio.setAudioModeAsync({
@@ -39,10 +45,13 @@ useEffect(() => {
     if (sound) {
         await sound.unloadAsync();
     }
+    
     if (track && track.audios && track.audios.length > 0) {
         const audioUrl = track.audios[0].url;
+        const adminAuthToken = process.env.EXPO_PUBLIC_ADMIN_AUTH_TOKEN || ''; 
+
         const headers = {
-            Authorization: process.env.EXPO_PUBLIC_ADMIN_AUTH_TOKEN,
+            Authorization: adminAuthToken,
         };
 
         const source = {
@@ -51,10 +60,7 @@ useEffect(() => {
         };
 
         try {
-            const { sound: newSound } = await Audio.Sound.createAsync(
-                source,
-                // Add any initial status options here, if needed
-            );
+            const { sound: newSound } = await Audio.Sound.createAsync(source);
 
             setSound(newSound);
             newSound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
@@ -84,8 +90,8 @@ useEffect(() => {
     }
   };
 
-  if (!track || !track.title) {
-    return null; // Don't render the player if there is no track or track title
+  if (!track) {
+    return null;
   }
 
   return (
@@ -115,13 +121,12 @@ const styles = StyleSheet.create({
    container: {
     position: 'absolute',
     width: '100%',
-    bottom: 50,
+    bottom: 80,
     padding: 10,
-    
   },
   player: {
     width: '100%',
-    backgroundColor: "#1B137D",
+    backgroundColor: 'red',
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 5,
