@@ -50,8 +50,7 @@ class Recording < ApplicationRecord
       orchestra_name: orchestra&.name,
       singer_names: singers.map(&:name).join(" "),
       genre: genre&.name,
-      period: period&.name,
-      recorded_date:
+      period: period&.name
     }
   end
 end

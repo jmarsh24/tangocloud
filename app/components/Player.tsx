@@ -98,7 +98,7 @@ const Player = () => {
     <View style={styles.container}>
       <Link href="/track">
         <View style={styles.player}>
-          <Image source={require('@/assets/images/album_art.jpg')} style={styles.image} />
+          <Image source={{ uri: track.album_art_url }} style={styles.image} />
           <View style={styles.info}>
             <Text style={styles.title}>{track.title}</Text>
             <Text style={styles.subtitle}>{track?.orchestra.name}</Text>
