@@ -38,7 +38,7 @@ module Import
           next if existing_filenames.include?(File.basename(file))
 
           begin
-            SongImporter.new(file:).sync
+            SongImporter.new(file:).import
           rescue => e
             Rails.logger.error "Failed to sync #{file}: #{e.message}"
           end
