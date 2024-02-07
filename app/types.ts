@@ -2,6 +2,7 @@ export type Track = {
   id: string;
   title: string;
   recorded_date: string;
+  album_art_url: string;
   orchestra: Orchestra;
   lyricist: Lyricist;
   genre: Genre;

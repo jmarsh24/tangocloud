@@ -15,8 +15,13 @@ module Types
     field :period, Types::PeriodType, null: true
     field :lyricist, Types::LyricistType, null: true
     field :composer, Types::ComposerType, null: true
+    field :album_art_url, String, null: true
     field :audio_transfer, Types::AudioTransferType, null: false
     field :singers, [Types::SingerType], null: true
     field :audios, [Types::AudioType], null: true
+  end
+
+  def album_art_url
+    object.audio_transfer.album&.album_art&.url
   end
 end
