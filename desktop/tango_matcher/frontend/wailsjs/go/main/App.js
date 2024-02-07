@@ -6,6 +6,10 @@ export function CheckById() {
   return window['go']['main']['App']['CheckById']();
 }
 
+export function CreateDirectoryTree(arg1) {
+  return window['go']['main']['App']['CreateDirectoryTree'](arg1);
+}
+
 export function GetAudioFilesInFolder(arg1) {
   return window['go']['main']['App']['GetAudioFilesInFolder'](arg1);
 }

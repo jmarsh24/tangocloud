@@ -1,7 +1,7 @@
 import {useEffect, useCallback} from 'react';
 import './App.css';
 import {EventsOn, LogPrint} from "../wailsjs/runtime/runtime"
-import {CheckById, ImportCsvFile, GetFoldersInFolder, GetAudioFilesInFolder, GetRecordingsWithFilter, MapSong, GetMatchingRecords, MapAllRecordings} from "../wailsjs/go/main/App";
+import {CheckById, ImportCsvFile, GetFoldersInFolder, GetAudioFilesInFolder, GetRecordingsWithFilter, MapSong, GetMatchingRecords, MapAllRecordings, CreateDirectoryTree} from "../wailsjs/go/main/App";
 import useState from 'react-usestateref';
 
 interface Mapping {
@@ -269,6 +269,10 @@ function App() {
         setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', e.target.value, startDate ?? '', endDate ?? '').then(c => c));
     }
 
+    function createDirectoryTree() {
+        CreateDirectoryTree(folderPath)
+    }
+
     return (
         <div id="app">
 
@@ -312,6 +316,7 @@ function App() {
 
                 <div id='matches' className='panel'>
                     <div className='commands'>
+                        <button onClick={createDirectoryTree}>Create Directory Tree</button>
                         {loading && <span className='red-background'>LOADING</span>}
                         {matchingRecords.length == 0 ? <button onClick={getMatchingRecords}>Match Records</button> : ""}
                         {matchingRecords.length != 0 ?
