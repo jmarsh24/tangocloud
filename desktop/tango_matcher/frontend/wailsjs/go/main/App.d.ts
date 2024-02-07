@@ -5,6 +5,8 @@ import {gorm} from '../models';
 
 export function CheckById():Promise<void>;
 
+export function CreateDirectoryTree(arg1:string):Promise<void>;
+
 export function GetAudioFilesInFolder(arg1:string):Promise<Array<main.AudioFile>>;
 
 export function GetFoldersInFolder(arg1:string):Promise<Array<string>>;

@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"gorm.io/gorm"
 	"io/fs"
 	"log"
 	"os"
@@ -11,6 +13,37 @@ import (
 type AudioFile struct {
 	Name string
 	Path string
+}
+
+type MusicPath struct {
+	PathId              uint `gorm:"primary_key"`
+	Path                string
+	ParentPath          string
+	NotEmptyFolderCount string
+	AudioFileCount      string
+}
+
+func createMusicPath(db *gorm.DB, musicPath *MusicPath) error {
+	result := db.Create(musicPath)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (a *App) CreateDirectoryTree(basePath string) {
+	baseFileSystem := os.DirFS(basePath)
+
+	fs.WalkDir(baseFileSystem, ".", func(p string, d fs.DirEntry, err error) error {
+
+		dir := filepath.Dir(p)
+		base := filepath.Base(p)
+		if !strings.Contains(base, "_DONE_") {
+			fmt.Println(dir, base)
+		}
+
+		return nil
+	})
 }
 
 func (a *App) GetAudioFilesInFolder(folderPath string) []AudioFile {
