@@ -20,8 +20,4 @@ module Types
     field :singers, [Types::SingerType], null: true
     field :audios, [Types::AudioType], null: true
   end
-
-  def album_art_url
-    object.audio_transfer.album&.album_art&.url
-  end
 end

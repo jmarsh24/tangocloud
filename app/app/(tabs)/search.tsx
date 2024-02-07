@@ -18,7 +18,8 @@ const query = gql`
               audios {
                 url
               }
-              # recorded_date
+              albumArtUrl
+              recordedDate
               genre {
                 name
               }

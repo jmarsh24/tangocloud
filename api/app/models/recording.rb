@@ -53,6 +53,10 @@ class Recording < ApplicationRecord
       period: period&.name
     }
   end
+
+  def album_art_url
+    audio_transfers.first.album&.album_art&.url
+  end
 end
 
 # == Schema Information
