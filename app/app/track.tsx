@@ -76,7 +76,7 @@ function getStyles(colors) {
       justifyContent: 'space-between',
       alignItems: 'center',
       paddingVertical: 100,
-      backgroundColor: 'red', // Use theme color for background
+      backgroundColor: colors.background, // Use theme color for background
     },
     subtitle: {
       color: colors.text, // Use theme color for text
