@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Dimensions } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
+import { StyleSheet, View, Text, Image, Animated, Dimensions, Platform  } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { usePlayerContext } from '@/providers/PlayerProvider';
+import { StatusBar } from 'expo-status-bar';
 
 export default function trackScreen() {
   const { colors } = useTheme();
@@ -65,6 +65,7 @@ return (
 
       <View style={styles.controls}>
       </View>
+      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
     </View>
   );
 }
