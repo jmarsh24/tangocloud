@@ -8,6 +8,7 @@ export type Track = {
   genre: Genre;
   audios: Audio[];
   singers: Singer[];
+  composer: Composer;
 };
 
 export type Audio = {
