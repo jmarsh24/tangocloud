@@ -100,7 +100,7 @@ module Import
             sample_rate: audio_converter.sample_rate,
             channels: audio_converter.channels,
             codec: audio_converter.codec,
-            length: audio_converter.movie.duration.to_i,
+            duration: audio_converter.movie.duration.to_i,
             format: audio_converter.format,
             metadata: @metadata
           )
