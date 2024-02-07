@@ -12,7 +12,7 @@ RSpec.describe Audio, type: :model do
   end
 end
 
-# == Schema Information  validates :duration, presence: true
+# == Schema Information
 #
 # Table name: audios
 #
@@ -23,7 +23,6 @@ end
 #  bit_rate          :integer
 #  sample_rate       :integer
 #  channels          :integer
-#  length            :integer          default(0), not null
 #  metadata          :jsonb            not null
 #  audio_transfer_id :uuid             not null
 #  created_at        :datetime         not null
