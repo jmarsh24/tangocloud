@@ -26,7 +26,7 @@ module Import
         return unless Dir.exist?(@directory)
 
         # Fetch all filenames from the database
-        existing_filenames = Audio.all.with_attached_file.map { |audio| audio.file.filename.to_s }
+        existing_filenames = Audio.all.with_attached_file.map { _1.file.filename.to_s }
 
         Dir.glob(File.join(@directory, "**", "*")).each do |file|
           next if File.directory?(file) # Skip directories
@@ -36,7 +36,6 @@ module Import
 
           # Skip if the filename already exists in the database
           next if existing_filenames.include?(File.basename(file))
-
           begin
             SongImporter.new(file:).import
           rescue => e

@@ -4,7 +4,7 @@ module Import
       include TextNormalizable
       attr_reader :file
 
-      SUPPORTED_MIME_TYPES = ["audio/x-aiff", "audio/flac", "audio/mp4", "audio/mpeg"].freeze
+      SUPPORTED_MIME_TYPES = ["audio/x-aiff", "audio/x-flac", "audio/mp4", "audio/mpeg"].freeze
 
       def initialize(file:)
         @file = file.to_s

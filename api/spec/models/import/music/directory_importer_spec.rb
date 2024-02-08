@@ -9,15 +9,24 @@ RSpec.describe Import::Music::DirectoryImporter do
       allow(Import::Music::SongImporter).to receive(:new).and_return(song_importer_double)
     end
 
-    it "calls SongImporter#import the correct number of times for supported files" do
-      importer.import
-      expect(Import::Music::SongImporter).to have_received(:new).exactly(4).times
+    describe "#import" do
+      it "calls SongImporter#import the correct number of times for supported files" do
+        importer.import
+        expect(Import::Music::SongImporter).to have_received(:new).exactly(5).times
+      end
+
+      it "does not import unsupported files" do
+        importer = Import::Music::DirectoryImporter.new("spec/fixtures/images")
+        importer.import
+        expect(Import::Music::SongImporter).not_to have_received(:new)
+      end
     end
 
-    it "does not import unsupported files" do
-      importer = Import::Music::DirectoryImporter.new("spec/fixtures/images")
-      importer.import
-      expect(Import::Music::SongImporter).not_to have_received(:new)
+    describe "#sync" do
+      it "only calls import on a file once" do
+        importer.sync
+        expect(Import::Music::SongImporter).to have_received(:new).exactly(4).times
+      end
     end
   end
 end
