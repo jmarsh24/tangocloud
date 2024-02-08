@@ -74,9 +74,8 @@ function RootLayoutNav() {
               </Drawer>
             </GestureHandlerRootView>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
             <Stack.Screen name="(drawer)/user" options={{ headerShown: false }} />
-            <Stack.Screen name="track" options={{ presentation: 'modal' }} />
+            <Stack.Screen name="track" options={{ presentation: 'modal', headerShown: false }} />
           </Stack>
         </PlayerProvider>
       </ApolloClientProvider>

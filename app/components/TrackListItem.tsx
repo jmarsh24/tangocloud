@@ -22,7 +22,7 @@ export default function TrackListItem({ track }: TrackListItemProps) {
           {track.orchestra.name} - {track.singers[0]?.name}
         </Text>
         <Text style={styles.songSubDetails}>
-          {track.genre.name}
+          {track.genre.name} - {track.recordedDate}
         </Text>
       </View>
     </Pressable>

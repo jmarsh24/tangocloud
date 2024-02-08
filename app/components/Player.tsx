@@ -102,6 +102,8 @@ const Player = () => {
           <View style={styles.info}>
             <Text style={styles.title}>{track.title}</Text>
             <Text style={styles.subtitle}>{track?.orchestra.name}</Text>
+            <Text style={styles.subtitle}>{track?.genre.name}</Text>
+            <Text style={styles.subtitle}>{track?.recordedDate}</Text>
           </View>
 
           <Ionicons
@@ -135,6 +137,8 @@ const styles = StyleSheet.create({
   },
   title: {
     color: Colors.light.text,
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   subtitle: {
     color: Colors.light.text,
