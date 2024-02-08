@@ -1,6 +1,6 @@
 class AudioTransfer < ApplicationRecord
-  belongs_to :transfer_agent, dependent: :destroy
-  belongs_to :recording, dependent: :destroy
+  belongs_to :transfer_agent
+  belongs_to :recording
   belongs_to :album
   has_many :audios, dependent: :destroy
 end
