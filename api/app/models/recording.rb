@@ -9,6 +9,7 @@ class Recording < ApplicationRecord
   belongs_to :record_label, optional: true
   belongs_to :genre
   belongs_to :period, optional: true
+  belongs_to :el_recodo_song, optional: true
   has_many :audio_transfers, dependent: :destroy
   has_many :audios, through: :audio_transfers, dependent: :destroy
   has_many :recording_singers, dependent: :destroy

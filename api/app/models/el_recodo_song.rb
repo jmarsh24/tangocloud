@@ -1,6 +1,8 @@
 class ElRecodoSong < ApplicationRecord
   searchkick word_middle: [:title, :composer, :author, :lyrics, :orchestra, :singer], callbacks: :async
 
+  has_one :recording, dependent: :nullify
+
   validates :date, presence: true
   validates :ert_number, presence: true
   validates :music_id, presence: true, uniqueness: true
