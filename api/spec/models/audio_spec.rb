@@ -10,6 +10,8 @@ RSpec.describe Audio, type: :model do
       expect(audio.signed_url).to eq(expected_url)
     end
   end
+
+  describe
 end
 
 # == Schema Information
@@ -27,4 +29,5 @@ end
 #  audio_transfer_id :uuid             not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  filename          :string
 #
