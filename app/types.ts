@@ -1,12 +1,14 @@
 export type Track = {
   id: string;
   title: string;
-  recorded_date: string;
+  recordedDate: string;
+  albumArtUrl: string;
   orchestra: Orchestra;
   lyricist: Lyricist;
   genre: Genre;
   audios: Audio[];
   singers: Singer[];
+  composer: Composer;
 };
 
 export type Audio = {

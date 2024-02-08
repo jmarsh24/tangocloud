@@ -45,7 +45,6 @@ module Import
           end
 
           el_recodo_song = ElRecodoSong.find_by!(ert_number: @metadata.ert_number)
-
           if @metadata.singer.present? && @metadata.singer.downcase != "instrumental"
             singer = Singer.find_or_create_by!(name: @metadata.artist)
           end
@@ -96,17 +95,18 @@ module Import
 
           audio_converter = AudioProcessing::AudioConverter.new(file:)
 
-          audio = audio_transfer.audios.create!(
-            bit_rate: audio_converter.bitrate.to_i,
-            sample_rate: audio_converter.sample_rate,
-            channels: audio_converter.channels,
-            codec: audio_converter.codec,
-            length: audio_converter.movie.duration.to_i,
-            format: audio_converter.format,
-            metadata: @metadata
-          )
-
           audio_converter.convert do |file|
+            audio = audio_transfer.audios.create!(
+              bit_rate: audio_converter.bitrate.to_i,
+              sample_rate: audio_converter.sample_rate,
+              channels: audio_converter.channels,
+              codec: audio_converter.codec,
+              duration: audio_converter.movie.duration.to_i,
+              format: audio_converter.format,
+              filename: File.basename(file),
+              metadata: @metadata
+            )
+
             audio.file.attach(io: File.open(file), filename: File.basename(file))
           end
           audio_transfer

@@ -15,6 +15,14 @@ RSpec.describe AudioProcessing::AlbumArtExtractor do
         end
         expect(File.exist?(saved_file)).to be_falsy
       end
+
+      it "returns the path to the extracted album art and is persisted" do
+        file = Rails.root.join("spec", "fixtures", "audio", "19401008_volver_a_sonar_roberto_rufino_tango_2476.flac")
+        album_art_path = described_class.new(file:).extract
+        expect(album_art_path).to match("/tmp/19401008_volver_a_sonar_roberto_rufino_tango_2476.jpg")
+        expect(File.exist?(album_art_path)).to be true
+        expect(File.size(album_art_path)).to be > 0
+      end
     end
 
     context "when the audio file does not have album art" do

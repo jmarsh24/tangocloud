@@ -201,6 +201,7 @@ type RecordLabel {
 }
 
 type Recording {
+  albumArtUrl: String
   audioTransfer: AudioTransfer!
   audios: [Audio!]
   bpm: Int

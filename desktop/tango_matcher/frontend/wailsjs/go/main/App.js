@@ -6,6 +6,10 @@ export function CheckById() {
   return window['go']['main']['App']['CheckById']();
 }
 
+export function CreateDirectoryTree(arg1) {
+  return window['go']['main']['App']['CreateDirectoryTree'](arg1);
+}
+
 export function GetAudioFilesInFolder(arg1) {
   return window['go']['main']['App']['GetAudioFilesInFolder'](arg1);
 }
@@ -24,6 +28,10 @@ export function GetRecordingsWithFilter(arg1, arg2, arg3, arg4, arg5, arg6) {
 
 export function ImportCsvFile() {
   return window['go']['main']['App']['ImportCsvFile']();
+}
+
+export function LatestBatchId() {
+  return window['go']['main']['App']['LatestBatchId']();
 }
 
 export function MapAllRecordings(arg1) {

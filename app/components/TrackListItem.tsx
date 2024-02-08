@@ -15,14 +15,14 @@ export default function TrackListItem({ track }: TrackListItemProps) {
 
   return (
     <Pressable onPress={() => setTrack(track)} style={styles.songCard}>
-      <Image source={require('@/assets/images/album_art.jpg')} style={styles.songAlbumArt} />
+      <Image source={{ uri: track.albumArtUrl }} style={styles.songAlbumArt} />
       <View style={styles.songTextContainer}>
         <Text style={styles.songTitle}>{track.title}</Text>
         <Text style={styles.songDetails}>
           {track.orchestra.name} - {track.singers[0]?.name}
         </Text>
         <Text style={styles.songSubDetails}>
-          {track.genre.name}
+          {track.genre.name} - {track.recordedDate}
         </Text>
       </View>
     </Pressable>

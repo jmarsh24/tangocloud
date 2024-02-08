@@ -48,6 +48,9 @@ module AudioProcessing
       tags = format.dig(:tags)&.transform_keys(&:downcase) || {}
       audio_stream = streams.find { |stream| stream.dig(:codec_type) == "audio" }
       comments = comments || tags.dig(:description) || tags.dig(:tit3)
+      parsed_comments = parse_into_hash(comments)
+      parsed_lyricist_and_composer = parse_into_hash(tags.dig(:composer))
+
       Metadata.new(
         duration: format.dig(:duration).to_f,
         bit_rate: format.dig(:bit_rate).to_i,
@@ -72,54 +75,39 @@ module AudioProcessing
         media_type: tags.dig(:tmed),
         lyrics: tags.dig(:"lyrics-eng") || tags.dig(:lyrics) || tags.dig(:unsyncedlyrics),
         comments:,
-        record_label: record_label(comments),
+        record_label: parsed_comments.dig("label"),
         singer: tags.dig(:artist),
         bpm: tags.dig(:bpm),
-        ert_number: ert_number(comments),
-        source: source(comments),
-        lyricist: extract_roles(tags.dig(:composer))&.lyricist,
-        composer: extract_roles(tags.dig(:composer))&.composer,
-        original_album: original_album(comments)
+        ert_number: ert_number(parsed_comments),
+        source: source(parsed_comments),
+        lyricist: parsed_lyricist_and_composer.dig("lyricist"),
+        composer: parsed_lyricist_and_composer.dig("composer"),
+        original_album: parsed_comments.dig("original_album")
       )
     end
 
-    def ert_number(comments)
-      return nil unless comments
+    def parse_into_hash(comments)
+      return {} unless comments
 
-      comments.match(/id: (\w+-\d+)/)&.captures&.first&.split("-")&.last.to_i
+      comments.split("|").each_with_object({}) do |pair, hash|
+        key, value = pair.split(":", 2).map(&:strip)
+        hash[key.downcase] = value
+      end
     end
 
-    def source(comments)
-      return nil unless comments
+    def ert_number(parsed_comments)
+      ert_str = parsed_comments.dig("id")
 
-      source = comments.match(/source: (\w+)/)&.captures&.first
+      return nil unless ert_str
+      ert_str.split("-").last.to_i
+    end
+
+    def source(parsed_comments)
+      source = parsed_comments.dig("source")&.downcase
 
       return "TangoTunes" if source == "tt"
       return "TangoTimeTravel" if source == "ttt"
-
       nil
-    end
-
-    def record_label(comments)
-      return nil unless comments
-
-      comments.match(/label: ([\w\s]+?) \|/)&.captures&.first
-    end
-
-    def original_album(comments)
-      return nil unless comments
-
-      match = comments.match(/original_album: (.*?)(?:\s*\||\r\n|$)/)
-      match&.captures&.first
-    end
-
-    def extract_roles(composer_tag)
-      return nil unless composer_tag
-
-      composer = extract_role(composer_tag, /composer:\s*([^|]+)/i)
-      lyricist = extract_role(composer_tag, /lyricist:\s*([^|]+)/i)
-
-      Data.define(:composer, :lyricist).new(composer:, lyricist:)
     end
 
     def extract_role(tag, regex)

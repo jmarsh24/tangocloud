@@ -2,14 +2,12 @@ import React, { useEffect, useRef } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Dimensions } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
+import { usePlayerContext } from '@/providers/PlayerProvider';
 
 export default function trackScreen() {
   const { colors } = useTheme();
   const styles = getStyles(colors); 
-  const track = {
-    title: "Amarras",
-    artist: "Juan D'Arienzo - Alberto Echagüe"
-  };
+  const { track } = usePlayerContext();
 
   const screenWidth = Dimensions.get('window').width;
   const spinValue = useRef(new Animated.Value(0)).current;
@@ -55,25 +53,17 @@ return (
 
       <View style={styles.trackInfo}>
         <Text style={styles.title}>{track.title}</Text>
-        <Text style={styles.artist}>{track.artist}</Text>
+        {track?.orchestra?.name && <Text style={styles.subtitle}>{track.orchestra.name}</Text>}
+        {track?.singers?.[0]?.name && <Text style={styles.subtitle}>{track.singers[0].name}</Text>}
+        {track?.lyricist?.name && <Text style={styles.subtitle}>{track.lyricist.name}</Text>}
+        {track?.composer?.name && <Text style={styles.subtitle}>{track.composer.name}</Text>}
+        <View style={styles.row}>
+          {track?.genre?.name && <Text style={styles.subtitle}>{track.genre.name}</Text>}
+          {track?.recordedDate && <Text style={styles.subtitle}>{track.recordedDate}</Text>}
+        </View>
       </View>
 
       <View style={styles.controls}>
-        <TouchableOpacity>
-          <AntDesign name="hearto" size={24} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <AntDesign name="playcircleo" size={24} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <AntDesign name="plus" size={24} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <AntDesign name="sharealt" size={24} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <AntDesign name="ellipsis1" size={24} color="black" />
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -86,7 +76,17 @@ function getStyles(colors) {
       justifyContent: 'space-between',
       alignItems: 'center',
       paddingVertical: 100,
-      backgroundColor: 'red', // Use theme color for background
+      backgroundColor: colors.background, // Use theme color for background
+    },
+    subtitle: {
+      color: colors.text, // Use theme color for text
+      fontSize: 12,
+    },
+    row: {
+      display: 'flex',
+      gap: 10,
+      flexDirection: 'row',
+      alignItems: 'center',
     },
     vinyl: {
       justifyContent: 'center',

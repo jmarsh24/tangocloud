@@ -9,10 +9,11 @@ class Recording < ApplicationRecord
   belongs_to :record_label, optional: true
   belongs_to :genre
   belongs_to :period, optional: true
+  belongs_to :el_recodo_song, optional: true
   has_many :audio_transfers, dependent: :destroy
   has_many :audios, through: :audio_transfers, dependent: :destroy
   has_many :recording_singers, dependent: :destroy
-  has_many :singers, through: :recording_singers
+  has_many :singers, through: :recording_singers, dependent: :destroy
   has_many :lyrics, through: :composition
   has_many :tanda_recordings, dependent: :destroy
   has_many :tandas, through: :tanda_recordings
@@ -50,9 +51,12 @@ class Recording < ApplicationRecord
       orchestra_name: orchestra&.name,
       singer_names: singers.map(&:name).join(" "),
       genre: genre&.name,
-      period: period&.name,
-      recorded_date:
+      period: period&.name
     }
+  end
+
+  def album_art_url
+    audio_transfers.first.album&.album_art&.url
   end
 end
 
