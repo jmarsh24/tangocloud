@@ -30,6 +30,10 @@ export function ImportCsvFile() {
   return window['go']['main']['App']['ImportCsvFile']();
 }
 
+export function LatestBatchId() {
+  return window['go']['main']['App']['LatestBatchId']();
+}
+
 export function MapAllRecordings(arg1) {
   return window['go']['main']['App']['MapAllRecordings'](arg1);
 }

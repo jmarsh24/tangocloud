@@ -48,6 +48,20 @@ type Recording struct {
 	AudioSource      string
 }
 
+var latestBatchId int
+
+func (a *App) LatestBatchId() int {
+	db, _ := connectToSQLite()
+	latestBatchId = getLatestBatchId(db) + 1
+	return latestBatchId
+}
+
+func getLatestBatchId(db *gorm.DB) int {
+	var n int
+	db.Table("recordings").Select("max(batch_id) as n").Scan(&n)
+	return n
+}
+
 func createRecording(db *gorm.DB, recording *Recording) error {
 	result := db.Create(recording)
 	if result.Error != nil {
