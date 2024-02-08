@@ -8,11 +8,22 @@ class Audio < ApplicationRecord
   validates :sample_rate, numericality: {only_integer: true}
   validates :channels, numericality: {only_integer: true}
   validates :codec, presence: true
+  validates :filename, presence: true, uniqueness: true
 
   has_one_attached :file, dependent: :purge_later
 
+  before_validation :update_filename_from_attachment
+
   def signed_url
     audio_url(signed_id)
+  end
+
+  private
+
+  def update_filename_from_attachment
+    if file.attached? && filename != file.filename.to_s
+      update_column(:filename, file.filename.to_s)
+    end
   end
 end
 
@@ -31,4 +42,5 @@ end
 #  audio_transfer_id :uuid             not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  filename          :string
 #

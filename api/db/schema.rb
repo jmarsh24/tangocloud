@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_07_190548) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_08_102606) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -91,7 +91,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_07_190548) do
     t.uuid "audio_transfer_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "filename"
     t.index ["audio_transfer_id"], name: "index_audios_on_audio_transfer_id"
+    t.index ["filename"], name: "index_audios_on_filename", unique: true
   end
 
   create_table "composers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

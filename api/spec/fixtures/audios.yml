@@ -21,4 +21,5 @@ volver_a_sonar_tango_tunes_1940:
 #  audio_transfer_id :uuid             not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  filename          :string
 #
