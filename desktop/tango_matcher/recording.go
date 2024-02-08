@@ -42,6 +42,7 @@ type Recording struct {
 	SearchData string
 
 	IsMapped         bool
+	BatchId          uint
 	MapDate          time.Time
 	RelativeFilePath string
 	AudioSource      string

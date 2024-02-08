@@ -315,7 +315,6 @@ function App() {
 
                 <div id='matches' className='panel'>
                     <div className='commands'>
-                        <button onClick={createDirectoryTree}>Create Directory Tree</button>
                         {loading && <span className='red-background'>LOADING</span>}
                         {matchingRecords.length == 0 ? <button onClick={getMatchingRecords}>Match Records</button> : ""}
                         {matchingRecords.length != 0 ?
