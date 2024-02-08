@@ -1,7 +1,7 @@
 import {useEffect, useCallback} from 'react';
 import './App.css';
 import {EventsOn, LogPrint} from "../wailsjs/runtime/runtime"
-import {CheckById, ImportCsvFile, GetFoldersInFolder, GetAudioFilesInFolder, GetRecordingsWithFilter, MapSong, GetMatchingRecords, MapAllRecordings, CreateDirectoryTree} from "../wailsjs/go/main/App";
+import {CheckById, ImportCsvFile, GetFoldersInFolder, GetAudioFilesInFolder, GetRecordingsWithFilter, GetMatchingRecords, MapAllRecordings, CreateDirectoryTree} from "../wailsjs/go/main/App";
 import useState from 'react-usestateref';
 
 interface Mapping {
@@ -38,9 +38,7 @@ function App() {
 
     const classSelectedRow : string = "selected-row";
 
-    const [relativePath, setRelativePath] = useState<string[]>(["C:\\Users\\ext.dozen\\Music\\TT-TTT"]);
-
-    const [folderPath, setFolderPath] = useState<string>("C:\\Users\\ext.dozen\\Music\\TT-TTT\\");
+    const [folderText, setFolderText] = useState<string>('');
     const [fileList, setFileList] = useState<AudioFile[]>([]);
     const [folderList, setFolderList] = useState<string[]>([]);
 
@@ -65,7 +63,7 @@ function App() {
     const [selectedNumber, setSelectedNumber] = useState<string>('');
 
     useEffect(() => {
-        getFilesInFolder();
+        //getFilesInFolder();
     }, []);
 
     const handleUserKeyPress = useCallback((event:any) => {
@@ -120,17 +118,13 @@ function App() {
         CheckById();
     }
 
-    function constructPath() : string {
-        return relativePath.join('\\');
+    async function getFilesInFolder(fp : string) {
+        await getFoldersInFolder(fp)
+        setFileList(await GetAudioFilesInFolder(fp).then(c => c))
     }
 
-    async function getFilesInFolder() {
-        await getFoldersInFolder()
-        setFileList(await GetAudioFilesInFolder(constructPath()).then(c => c))
-    }
-
-    async function getFoldersInFolder() {
-        var folders = await GetFoldersInFolder(constructPath()).then(c => c)
+    async function getFoldersInFolder(fp : string) {
+        var folders = await GetFoldersInFolder(fp).then(c => c)
         setFolderList(folders)
     }
 
@@ -172,7 +166,7 @@ function App() {
         if (fileList.length == 0) return;
         if (recordingList.length == 0) return;
 
-        setMatchingRecords(removeDuplicates(await GetMatchingRecords(folderPath, orchestra ?? '', singer ?? '', title ?? '', orderBy, startDate ?? '', endDate ?? '')))
+        setMatchingRecords(removeDuplicates(await GetMatchingRecords(folderText, orchestra ?? '', singer ?? '', title ?? '', orderBy, startDate ?? '', endDate ?? '')))
     }
 
     function removeDuplicates(mappings : Mapping[]) : Mapping[] {
@@ -187,18 +181,22 @@ function App() {
         setSelectedFilePath(path);
     }
 
+    async function goToFolder(){
+        await getFilesInFolder(folderText)
+    }
+
     async function addDirectory(newPath : string) {
-        relativePath.push(newPath);
-        setRelativePath(relativePath);
-        await getFilesInFolder();
-        setFolderPath(constructPath());
+        setFolderText(folderText+'\\'+newPath);
+        await getFilesInFolder(folderText+'\\'+newPath);
     }
 
     async function goBack() {
-        relativePath.pop();
-        setRelativePath(relativePath);
-        await getFilesInFolder();
-        setFolderPath(constructPath());
+        const parts: string[] = folderText.split('\\');
+        parts.pop();
+        const result: string = parts.join('\\');
+
+        setFolderText(result);
+        await getFilesInFolder(result);
     }
 
     function addMappingToMatchingRecords() {
@@ -219,7 +217,7 @@ function App() {
     }
 
     async function isAllDoneEventCallback(isAllDone : boolean) {
-        setFileList(await GetAudioFilesInFolder(constructPath()).then(c => c))
+        setFileList(await GetAudioFilesInFolder(folderText).then(c => c))
         setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', orderBy, startDate!, endDate!).then(c => c))
 
         setMatchingRecords([]);
@@ -231,7 +229,7 @@ function App() {
         setMatchingRecords([...matchingRecords]);
 
         if(!matchingRecords.filter(f=>!f.Finished)[0]) {
-            setFileList(await GetAudioFilesInFolder(constructPath()).then(c => c))
+            setFileList(await GetAudioFilesInFolder(folderText).then(c => c))
             setRecordingList(await GetRecordingsWithFilter(orchestra ?? '', singer ?? '', title ?? '', orderBy, startDate ?? '', endDate ?? '').then(c => c))
             setMatchingRecords([]);
             setLoading(false);
@@ -270,7 +268,7 @@ function App() {
     }
 
     function createDirectoryTree() {
-        CreateDirectoryTree(folderPath)
+        CreateDirectoryTree(folderText)
     }
 
     return (
@@ -279,14 +277,15 @@ function App() {
                 <div id="left" className='panel'>
                     <div className='commands'>
                         <button onClick={goBack}>BACK</button>
-                        <div className='filter'>
-                            <span className='label'>Folder Path</span>
-                            <input type="text" id="folderPath" value={folderPath || ''} name="folderPath"
-                                   onChange={(e) => setFolderPath(e.target.value)}/>
+                        <div className='folder-filter'>
+                            <span className='folder-label'>Folder Path</span>
+                            <input className='folder-value' type="text" id="folderText" value={folderText} name="folderText"
+                                   onChange={(e) => setFolderText(e.target.value)}/>
                         </div>
+                        <button onClick={goToFolder}>GO</button>
                     </div>
                     <div>
-                        {folderList.map((item, index) => (
+                    {folderList.map((item, index) => (
                             <button key={index} onClick={() => addDirectory(item)}>{item}</button>
                         ))}
                     </div>
