@@ -47,8 +47,16 @@
             width: 100%;
         }
 
-        input {
-            flex-grow: 2;
+        .folder-filter {
+            display: flex;
+            flex-direction: row;
+            .folder-label {
+                padding-right: 2px;
+            }
+
+            .folder-value {
+                flex-grow: 1;
+            }
         }
     }
     
