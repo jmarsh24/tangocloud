@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"gorm.io/gorm"
 	"io/fs"
@@ -119,6 +120,11 @@ func (a *App) MapSong(db *gorm.DB, musicId uint, audioFilePath string) {
 	recording.RelativeFilePath = dir + "_DONE_" + removeAccents(file) + "|" + newFileName
 	recording.MapDate = time.Now()
 	recording.AudioSource = getSourceInfo(audioFilePath)
+
+	fmt.Println("latestBatchId", latestBatchId)
+
+	recording.BatchId = uint(latestBatchId)
+
 	err = updateRecording(db, recording)
 	if e != nil {
 		log.Fatal(e)

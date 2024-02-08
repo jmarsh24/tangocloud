@@ -1,7 +1,7 @@
 import {useEffect, useCallback} from 'react';
 import './App.css';
 import {EventsOn, LogPrint} from "../wailsjs/runtime/runtime"
-import {CheckById, ImportCsvFile, GetFoldersInFolder, GetAudioFilesInFolder, GetRecordingsWithFilter, GetMatchingRecords, MapAllRecordings, CreateDirectoryTree} from "../wailsjs/go/main/App";
+import {CheckById, ImportCsvFile, GetFoldersInFolder, GetAudioFilesInFolder, GetRecordingsWithFilter, GetMatchingRecords, MapAllRecordings, CreateDirectoryTree, LatestBatchId} from "../wailsjs/go/main/App";
 import useState from 'react-usestateref';
 
 interface Mapping {
@@ -37,6 +37,7 @@ interface AudioFile {
 function App() {
 
     const classSelectedRow : string = "selected-row";
+    const [batchId, setBatchId] = useState<number>(0);
 
     const [folderText, setFolderText] = useState<string>('');
     const [fileList, setFileList] = useState<AudioFile[]>([]);
@@ -64,7 +65,12 @@ function App() {
 
     useEffect(() => {
         //getFilesInFolder();
+        getLatestBatchId();
     }, []);
+
+    async function getLatestBatchId(){
+        setBatchId(await LatestBatchId());
+    }
 
     const handleUserKeyPress = useCallback((event:any) => {
         const { key, keyCode } = event;
@@ -315,6 +321,7 @@ function App() {
 
                 <div id='matches' className='panel'>
                     <div className='commands'>
+                        <h3>{batchId}</h3>
                         {loading && <span className='red-background'>LOADING</span>}
                         {matchingRecords.length == 0 ? <button onClick={getMatchingRecords}>Match Records</button> : ""}
                         {matchingRecords.length != 0 ?
