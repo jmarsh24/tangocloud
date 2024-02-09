@@ -26,9 +26,11 @@ Rails.application.routes.draw do
     mount Avo::Engine => "admin"
   end
 
-  post "/graphql", to: "graphql#execute"
+  namespace :api do
+    post "/graphql", to: "graphql#execute"
 
-  resources :audios, only: :show
+    resources :audios, only: :show
+  end
 
   root "pages#home"
   get "up", to: "rails/health#show", as: :rails_health_check
