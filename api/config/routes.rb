@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   post "/auth/:provider/callback", to: "sessions/omniauth#create"
 
   if Rails.env.development?
-    mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
+    mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "api/graphql"
   end
 
   constraints(Constraints::AdminConstraint.new) do
