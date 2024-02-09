@@ -3,25 +3,14 @@ module Api
     include Pundit::Authorization
     after_action :verify_authorized
     rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-    before_action :authenticate
 
     private
 
-    def authenticate
-      token = request.headers["Authorization"]&.split(" ")&.last
-      if token
-        begin
-          Current.user = AuthToken.verify(token)
-        rescue ActiveRecord::RecordNotFound, JWT::DecodeError
-          head :unauthorized
-        end
-      else
-        head :unauthorized
-      end
-    end
-
     def current_user
-      Current.user
+      return nil if request.headers["Authorization"].blank?
+      token = request.headers["Authorization"].split(" ").last
+      return nil if token.blank?
+      Current.user = AuthToken.verify(token)
     end
 
     def user_not_authorized(exception)
