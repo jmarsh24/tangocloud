@@ -1,10 +1,15 @@
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import * as SecureStore from 'expo-secure-store';
 import { PropsWithChildren } from 'react';
+
+const token = SecureStore.getItemAsync('token');
 
 const client = new ApolloClient({
   uri: process.env.EXPO_PUBLIC_GRAPHQL_ENDPOINT,
   cache: new InMemoryCache(),
-  headers: { 'authorization': process.env.EXPO_PUBLIC_ADMIN_AUTH_TOKEN || 'default_token_or_empty_string' },
+  headers: {
+    Authorization: token ? `Bearer ${token}` : '',
+  },
 });
 
 const ApolloClientProvider = ({ children }: PropsWithChildren<{}>) => {
