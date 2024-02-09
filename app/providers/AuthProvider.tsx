@@ -1,86 +1,99 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useApolloClient } from '@apollo/client';
-import { LOGIN_MUTATION, WHO_AM_I } from '@/graphql';
+import React, { createContext, useContext, useEffect, useState, PropsWithChildren } from 'react';
+import { useApolloClient, ApolloError } from '@apollo/client';
+import { REGISTER_MUTATION, LOGIN_MUTATION } from '@/graphql';
+import * as SecureStore from 'expo-secure-store';
 
-type Session = {
-  token: string;
-  user: any;
-};
+interface AuthState {
+  token: string | null;
+  authenticated: boolean | null;
+}
 
-type AuthData = {
-  user: any;
-  session: Session;
-  loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
-  isAdmin: boolean;
-};
+interface AuthContextType {
+  authState: AuthState;
+  onRegister: (username: string, email: string, password: string) => Promise<any>;
+  onLogin: (login: string, password: string) => Promise<any>;
+  onLogout: () => Promise<void>;
+}
 
-const AuthContext = createContext<AuthData | undefined>(undefined);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+export const AuthProvider = ({ children }: PropsWithChildren) => {
   const apolloClient = useApolloClient();
-
-  const login = async (loginInput: string, password: string) => { 
-  setLoading(true);
-  try {
-    const { data } = await apolloClient.mutate({
-      mutation: LOGIN_MUTATION,
-      variables: { login: loginInput, password: password },
-    });
-    const { token, user } = data.signIn;
-    debugger;
-
-    localStorage.setItem('authToken', token);
-    // await fetchUserProfile();
-
-    setUser(user);
-  } catch (error) {
-    console.error('Login error:', error);
-    throw new Error(error.message); // Improved error handling
-  } finally {
-    setLoading(false);
-  }
-};
-
-  // const fetchUserProfile = async () => {
-  //   const { data } = await apolloClient.query({
-  //     query: WHO_AM_I,
-  //     // You may need to set headers or context here to include the token
-  //   });
-  //   setUser(data.profile);
-  // };
-
-  const logout = () => {
-    // Clear user session and token
-    setUser(null);
-    localStorage.removeItem('authToken');
-    // Reset Apollo store or perform other cleanup
-    apolloClient.resetStore();
-  };
+  const [authState, setAuthState] = useState<AuthState>({
+    token: null,
+    authenticated: null,
+  });
 
   useEffect(() => {
-    // Implement a mechanism to check if the user is already logged in on initial load
-    // For example, check for a stored token and validate it or fetch user profile
-    const initAuth = async () => {
-      const token = localStorage.getItem('authToken');
+    const loadToken = async () => {
+      const token = await SecureStore.getItemAsync('token');
       if (token) {
-        await fetchUserProfile(); // Ensure this uses the token to fetch the profile
+        setAuthState({
+          token: token,
+          authenticated: true,
+        });
       }
-      setLoading(false);
     };
-
-    initAuth();
+    loadToken();
   }, []);
 
-  return (
-    <AuthContext.Provider value={{ user, loading, login, logout, isAdmin: user?.group === 'ADMIN' }}>
-      {children}
-    </AuthContext.Provider>
-  );
-}
+  const register = async (username: string, email: string, password: string) => {
+    try {
+      const { data } = await apolloClient.mutate({
+        mutation: REGISTER_MUTATION,
+        variables: { username, email, password },
+      });
+
+      setAuthState({
+        token: data.register.token, // Adjust according to your actual mutation response
+        authenticated: true,
+      });
+
+      await SecureStore.setItemAsync('token', data.register.token);
+      return data.register;
+    } catch (error) {
+      const apolloError = error as ApolloError;
+      throw new Error(apolloError.message);
+    }
+  };
+
+  const login = async (login: string, password: string) => {
+    try {
+      const { data } = await apolloClient.mutate({
+        mutation: LOGIN_MUTATION,
+        variables: { login, password },
+      });
+
+      setAuthState({
+        token: data.login.token, // Adjust according to your actual mutation response
+        authenticated: true,
+      });
+
+      await SecureStore.setItemAsync('token', data.login.token);
+      return data.login;
+    } catch (error) {
+      const apolloError = error as ApolloError;
+      throw new Error(apolloError.message);
+    }
+  };
+
+  const logout = async () => {
+    await SecureStore.deleteItemAsync('token');
+    setAuthState({
+      token: null,
+      authenticated: false,
+    });
+  };
+
+  const value = {
+    authState,
+    onRegister: register,
+    onLogin: login,
+    onLogout: logout,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
 
 export const useAuth = () => {
   const context = useContext(AuthContext);

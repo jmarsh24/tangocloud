@@ -54,9 +54,15 @@ function RootLayoutNav() {
         <AuthProvider>
           <PlayerProvider>
             <Stack>
+              <Stack.Screen
+                name="(auth)"
+                options={{ headerShown: false }}
+              />
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen name="(drawer)/user" options={{ headerShown: false }} />
-              <Stack.Screen name="track" options={{ presentation: 'modal', headerShown: false }} />
+              <Stack.Screen name="track" 
+                options={{ presentation: 'modal', 
+                headerShown: false }} 
+              />
             </Stack>
           </PlayerProvider>
         </AuthProvider>

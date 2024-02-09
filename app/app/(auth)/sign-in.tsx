@@ -6,30 +6,27 @@ import { Link, Stack } from 'expo-router';
 import { useAuth } from '@/providers/AuthProvider';
 
 const SignInScreen = () => {
-  const [loginInput, setLogin] = useState('');
+  const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login, loading: authLoading } = useAuth(); // Destructuring to get the login function
+  const { onLogin } = useAuth();
 
-  async function signInWithLogin() {
-  setLoading(true);
-  try {
-    await login(loginInput, password); // Using login function from useAuth
-    // Navigate to your app's main screen or dashboard here if needed
-  } catch (error) {
-    // Assuming error handling within login function, or you might need to adjust based on your error handling strategy
-    Alert.alert("Sign In Error", error.message);
-  }
-  setLoading(false);
+  async function signIn() {
+    setLoading(true);
+    const error = await onLogin(login, password);
+
+    if (error) Alert.alert(error.message);
+    setLoading(false);
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Email/Username</Text>
+      <Stack.Screen options={{ title: 'Sign in' }} />
+
+      <Text style={styles.label}>Email or Username</Text>
       <TextInput
-        value={loginInput}
+        value={login}
         onChangeText={setLogin}
-        placeholder="Email or Username"
         style={styles.input}
       />
 
@@ -37,22 +34,21 @@ const SignInScreen = () => {
       <TextInput
         value={password}
         onChangeText={setPassword}
-        placeholder="Password"
+        placeholder=""
         style={styles.input}
         secureTextEntry
       />
 
       <Button
-        onPress={signInWithLogin}
-        disabled={loading || authLoading}
+        onPress={signIn}
+        disabled={loading}
         text={loading ? 'Signing in...' : 'Sign in'}
       />
       <Link href="/sign-up" style={styles.textButton}>
-        Don't have an account? Create one.
+        Create an account
       </Link>
     </View>
   );
-
 };
 
 const styles = StyleSheet.create({
