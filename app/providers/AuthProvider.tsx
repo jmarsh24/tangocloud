@@ -45,12 +45,12 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       });
 
       setAuthState({
-        token: data.register.token, // Adjust according to your actual mutation response
+        token: data.signUp.token,
         authenticated: true,
       });
 
-      await SecureStore.setItemAsync('token', data.register.token);
-      return data.register;
+      await SecureStore.setItemAsync('token', data.signUp.token);
+      return data.signUp;
     } catch (error) {
       const apolloError = error as ApolloError;
       throw new Error(apolloError.message);
@@ -65,12 +65,12 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       });
 
       setAuthState({
-        token: data.login.token, // Adjust according to your actual mutation response
+        token: data.signIn.token,
         authenticated: true,
       });
 
-      await SecureStore.setItemAsync('token', data.login.token);
-      return data.login;
+      await SecureStore.setItemAsync('token', data.signIn.token);
+      return data.signIn;
     } catch (error) {
       const apolloError = error as ApolloError;
       throw new Error(apolloError.message);
