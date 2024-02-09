@@ -19,13 +19,6 @@ class GraphQLController < ApplicationController
     handle_error_in_development(e)
   end
 
-  def current_user
-    return nil if request.headers["Authorization"].blank?
-    token = request.headers["Authorization"].split(" ").last
-    return nil if token.blank?
-    AuthToken.verify(token)
-  end
-
   private
 
   # Handle variables in form data, JSON body, or a blank value

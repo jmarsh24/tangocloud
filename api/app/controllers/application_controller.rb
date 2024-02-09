@@ -8,16 +8,21 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def current_user
-    @current_user ||= Current.user || AuthToken.verify(request.headers["Authorization"])
+  def authenticate
+    if (session_record = Session.find_by(id: cookies.signed[:session_token]))
+      Current.session = session_record
+      Current.user = session_record.user
+    elsif request.headers["Authorization"].present?
+      authenticate_with_jwt
+    else
+      redirect_to sign_in_path
+    end
   end
 
-  def authenticate
-    if (session_record = Session.find_by_id(cookies.signed[:session_token]))
-      Current.session = session_record
-    else
-      # redirect_to sign_in_path
-    end
+  def authenticate_with_jwt
+    token = request.headers["Authorization"].to_s.split(" ").last
+    user = AuthToken.verify(token)
+    Current.user = user if user
   end
 
   def set_current_request_details
@@ -27,5 +32,9 @@ class ApplicationController < ActionController::Base
 
   def user_not_authorized(exception)
     head :unauthorized
+  end
+
+  def current_user
+    Current.user
   end
 end
