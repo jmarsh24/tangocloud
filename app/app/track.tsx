@@ -1,12 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { StyleSheet, View, Text, Image, Animated, Dimensions } from 'react-native';
 import { useTheme } from '@react-navigation/native';
-import { usePlayerContext } from '@/providers/PlayerProvider';
 
 export default function trackScreen() {
   const { colors } = useTheme();
   const styles = getStyles(colors); 
-  const { track } = usePlayerContext();
 
   const screenWidth = Dimensions.get('window').width;
   const spinValue = useRef(new Animated.Value(0)).current;
