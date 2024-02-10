@@ -5,12 +5,19 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_GRAPHQL_ENDPOINT": "http://localhost:3000/api/graphql"
+      }
     },
     "preview": {
       "distribution": "internal"
     },
-    "production": {}
+    "production": {
+      "env": {
+        "EXPO_PUBLIC_GRAPHQL_ENDPOINT": "https://tangocloud.app/api/graphql"
+      }
+    }
   },
   "submit": {
     "production": {
