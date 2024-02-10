@@ -13,10 +13,13 @@ const SignInScreen = () => {
 
   async function signIn() {
     setLoading(true);
-    const error = await onLogin(login, password);
-
-    if (error) Alert.alert(error.message);
-    setLoading(false);
+    try {
+      await onLogin(login, password);
+    } catch (error) {
+      Alert.alert("Login Failed", error.message);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (

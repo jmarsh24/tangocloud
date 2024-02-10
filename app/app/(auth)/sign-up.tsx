@@ -10,12 +10,19 @@ const SignUpScreen = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   async function signUp() {
-    const { error } = await onRegister(email, password, username);
-
-    if (error) Alert.alert(error.message);
+    setLoading(true);
+    try {
+      await onRegister(email, password, username);
+    } catch (error) {
+      Alert.alert("Sign Up Failed", error.message);
+    } finally {
+      setLoading(false);
+    }
   }
+
 
   return (
     <View style={styles.container}>
