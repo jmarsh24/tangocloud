@@ -11,6 +11,7 @@ export const CURRENT_USER_PROFILE = gql`
       lastName
       verified
       admin
+      avatarUrl
       createdAt
       updatedAt
     }

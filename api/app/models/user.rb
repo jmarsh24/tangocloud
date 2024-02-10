@@ -67,6 +67,14 @@ class User < ApplicationRecord
       Gravatar.new(email).url(width:)
     end
   end
+
+  def avatar_url
+    if avatar.attached?
+      Rails.application.routes.url_helpers.rails_representation_url(avatar.variant(:large).processed, only_path: true)
+    else
+      Gravatar.new(email).url(width: 500)
+    end
+  end
 end
 
 # == Schema Information
