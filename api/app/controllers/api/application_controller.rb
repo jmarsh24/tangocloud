@@ -1,9 +1,9 @@
 module Api
   class ApplicationController < ActionController::Base
-    # include Pundit::Authorization
+    include Pundit::Authorization
     skip_before_action :verify_authenticity_token
-    # after_action :verify_authorized
-    # rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+    after_action :verify_authorized
+    rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
     private
 
