@@ -44,12 +44,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         variables: { username, email, password },
       });
 
-      setAuthState({
-        token: data.signUp.token,
-        authenticated: true,
-      });
-
-      await SecureStore.setItemAsync('token', data.signUp.token);
       return data.signUp;
     } catch (error) {
       const apolloError = error as ApolloError;

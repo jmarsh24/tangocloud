@@ -9,6 +9,7 @@ export const REGISTER_MUTATION = gql`
         email
         name
       }
+      success
     }
   }
 `;
