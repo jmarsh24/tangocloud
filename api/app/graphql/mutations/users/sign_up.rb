@@ -13,7 +13,7 @@ module Mutations::Users
       user = User.new(args)
 
       if user.save
-        UserMailer.with(user: @user).email_verification.deliver_later
+        UserMailer.with(user:).email_verification.deliver_later
 
         {user:, success: true}
       else
