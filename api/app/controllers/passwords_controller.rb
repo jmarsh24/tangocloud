@@ -1,5 +1,6 @@
 class PasswordsController < ApplicationController
   before_action :set_user
+  skip_after_action :verify_authorized
 
   def edit
   end
@@ -15,7 +16,7 @@ class PasswordsController < ApplicationController
   private
 
   def set_user
-    @user = authorize Current.user
+    @user = Current.user
   end
 
   def user_params
