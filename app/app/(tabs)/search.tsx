@@ -52,6 +52,9 @@ export default function SearchScreen() {
             value={search}
             onChangeText={setSearch}
             placeholder="What do you want to listen to?"
+            autoCorrect={false}
+            autoComplete='off'
+            autoCapitalize='none'
             style={styles.input}
           />
           {search.length > 0 && (

@@ -30,6 +30,9 @@ const SignInScreen = () => {
       <TextInput
         value={login}
         onChangeText={setLogin}
+        autoCorrect={false}
+        autoComplete='off'
+        autoCapitalize='none'
         style={styles.input}
       />
 
