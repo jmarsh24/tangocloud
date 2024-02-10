@@ -26,7 +26,7 @@ const Player = () => {
     return sound
       ? () => {
           console.log('Unloading Sound');
-          sound.unloadAsync();
+          sound?.unloadAsync();
         }
       : undefined;
   }, [sound]);
