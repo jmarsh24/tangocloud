@@ -3,7 +3,7 @@
     "name": "app",
     "slug": "app",
     "version": "1.0.19",
-    "owner": "jmarsh24",
+    "owner": "tangocloud",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
