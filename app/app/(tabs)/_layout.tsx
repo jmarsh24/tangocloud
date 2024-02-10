@@ -1,14 +1,13 @@
+import React from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { Link, Tabs } from 'expo-router';
+import { Tabs } from 'expo-router';
 import { useColorScheme, View, StyleSheet, Image } from 'react-native';
 import { BottomTabBar } from '@react-navigation/bottom-tabs';
+import { useAuth } from '@/providers/AuthProvider';
 
 import Colors from '@/constants/Colors';
 import Player from '@/components/Player';
 
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof AntDesign>['name'];
   color: string;
@@ -18,6 +17,15 @@ function TabBarIcon(props: {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const { authState } = useAuth();
+
+  const youIcon = (color) => {
+    if (authState?.authenticated) {
+      return <Image source={require('@/assets/images/avatar.jpg')} style={styles.image} />;
+    } else {
+      return <AntDesign name="user" size={22} style={{ marginBottom: -3, color }} />;
+    }
+  };
 
   return (
     <Tabs
@@ -35,37 +43,21 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-          headerLeft: () => (
-            <Link href="/user" asChild>
-              <Image source={require('@/assets/images/avatar.jpg')} style={styles.image} />
-            </Link>
-          ),
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />
         }}
       />
       <Tabs.Screen
         name="search"
         options={{
           title: 'Search',
-          tabBarIcon: ({ color }) => <TabBarIcon name="search1" color={color} />,
-          headerLeft: () => (
-            <Link href="/user" asChild>
-              <Image source={require('@/assets/images/avatar.jpg')} style={styles.image} />
-            </Link>
-          ),
+          tabBarIcon: ({ color }) => <TabBarIcon name="search1" color={color} />
         }}
       />
-
       <Tabs.Screen
-        name="library"
+        name="you"
         options={{
-          title: 'My Library',
-          tabBarIcon: ({ color }) => <TabBarIcon name="book" color={color} />,
-          headerLeft: () => (
-            <Link href="/modal" asChild>
-              <Image source={require('@/assets/images/avatar.jpg')} style={styles.image} />
-            </Link>
-          ),
+          title: 'Your Profile',
+          tabBarIcon: ({ color }) => youIcon(color)
         }}
       />
     </Tabs>
@@ -74,9 +66,8 @@ export default function TabLayout() {
 
 const styles = StyleSheet.create({
   image: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    marginLeft: 10,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
   },
 });

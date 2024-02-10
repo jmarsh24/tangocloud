@@ -15,7 +15,7 @@ class Audio < ApplicationRecord
   before_validation :update_filename_from_attachment
 
   def signed_url
-    audio_url(signed_id)
+    api_audio_url(signed_id)
   end
 
   private
