@@ -2,8 +2,9 @@ import React from 'react';
 import { View, StyleSheet, Button, Text, ActivityIndicator, useColorScheme } from 'react-native';
 import { useAuth } from '@/providers/AuthProvider';
 import { useQuery } from '@apollo/client';
+import { Link } from 'expo-router';
 import { CURRENT_USER_PROFILE } from '@/graphql';
-import Colors from '@/constants/Colors'; // Ensure this contains both light and dark mode colors
+import Colors from '@/constants/Colors';
 
 export default function LibraryScreen() {
   const { authState, onLogout } = useAuth();
@@ -20,6 +21,11 @@ export default function LibraryScreen() {
       padding: 10,
       backgroundColor: scheme === 'dark' ? Colors.dark.background : Colors.light.background,
     },
+    linkText: {
+      color: scheme === 'dark' ? Colors.dark.tint : Colors.light.tint,
+      margin: 8,
+      fontSize: 16,
+    },
     header: {
       fontSize: 20,
       fontWeight: 'bold',
@@ -32,7 +38,16 @@ export default function LibraryScreen() {
   });
 
   if (!authState.authenticated) {
-    return null;
+    return (
+      <View style={dynamicStyles.container}>
+        <Link href='/sign-in'> 
+          <Text style={dynamicStyles.linkText}>Sign In</Text>
+        </Link>
+        <Link href='/sign-up'>
+          <Text style={dynamicStyles.linkText}>Sign Up</Text>
+        </Link>
+      </View>
+    );
   }
 
   if (loading) {
