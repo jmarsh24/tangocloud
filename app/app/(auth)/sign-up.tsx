@@ -2,7 +2,7 @@ import { View, Text, TextInput, StyleSheet, Alert } from 'react-native';
 import React, { useState } from 'react';
 import Button from '@/components/Button';
 import Colors from '@/constants/Colors';
-import { Link, Stack } from 'expo-router';
+import { Link, Redirect, Stack, router } from 'expo-router';
 import { useAuth } from '@/providers/AuthProvider';
 
 const SignUpScreen = () => {
@@ -15,7 +15,12 @@ const SignUpScreen = () => {
   async function signUp() {
     setLoading(true);
     try {
-      await onRegister(username, email, password);
+      const result = await onRegister(username, email, password);
+      if (result.success) {
+         Alert.alert("Verification Required", "Please check your email to verify your account before signing in.", [
+          { text: "OK", onPress: () => router.replace('/sign-in') }
+        ]);
+      }
     } catch (error) {
       Alert.alert("Sign Up Failed", error.message);
     } finally {
