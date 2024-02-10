@@ -6,6 +6,14 @@ import { useEffect, useState } from 'react';
 import { AVPlaybackStatus, Audio } from 'expo-av';
 import { Sound } from 'expo-av/build/Audio';
 import Colors from '@/constants/Colors';
+import * as SecureStore from 'expo-secure-store';
+
+// Function to retrieve the auth token
+async function getAuthToken(): Promise<string | null> {
+  const token = await SecureStore.getItemAsync('token');
+  return token;
+}
+
 
 const Player = () => {
   const [sound, setSound] = useState<Sound>();
@@ -48,11 +56,11 @@ const Player = () => {
     
     if (track && track.audios && track.audios.length > 0) {
         const audioUrl = track.audios[0].url;
-        const adminAuthToken = process.env.EXPO_PUBLIC_ADMIN_AUTH_TOKEN || ''; 
+        const authToken = await getAuthToken();
 
-        const headers = {
-            Authorization: adminAuthToken,
-        };
+      const headers = {
+        Authorization: authToken ? `Bearer ${authToken}` : '',
+      };
 
         const source = {
             uri: audioUrl,
