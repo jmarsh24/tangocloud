@@ -1,11 +1,11 @@
 class SessionsController < ApplicationController
   skip_before_action :authenticate, only: [:new, :create]
-  skip_after_action :verify_authorized, only: [:new, :create]
+  skip_after_action :verify_authorized
 
   before_action :set_session, only: :destroy
 
   def index
-    @sessions = authorize Current&.user&.sessions&.order(created_at: :desc)
+    @sessions = Current&.user&.sessions&.order(created_at: :desc)
   end
 
   def new
@@ -30,6 +30,6 @@ class SessionsController < ApplicationController
   private
 
   def set_session
-    @session = authorize Current.user.sessions.find(params[:id])
+    @session = Current.user.sessions.find(params[:id])
   end
 end
