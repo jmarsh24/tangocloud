@@ -15,7 +15,7 @@ const SignUpScreen = () => {
   async function signUp() {
     setLoading(true);
     try {
-      await onRegister(email, password, username);
+      await onRegister(username, email, password);
     } catch (error) {
       Alert.alert("Sign Up Failed", error.message);
     } finally {
