@@ -23,7 +23,7 @@ registry:
 env:
   clear:
     KAMAL_CONTAINER_NAME: tangocloud
-    HOST: api.tangocloud.app
+    HOST: tangocloud.app
     RAILS_ENV: production
     RAILS_LOG_LEVEL: debug
     RAILS_LOG_TO_STDOUT: true
