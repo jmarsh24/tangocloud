@@ -1,91 +1,22 @@
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { usePlayerContext } from '@/providers/PlayerProvider';
-import { useEffect, useState } from 'react';
-import { AVPlaybackStatus, Audio } from 'expo-av';
-import { Sound } from 'expo-av/build/Audio';
 import Colors from '@/constants/Colors';
-import * as SecureStore from 'expo-secure-store';
-
-async function getAuthToken(): Promise<string | null> {
-  const token = await SecureStore.getItemAsync('token');
-  return token;
-}
 
 const Player = () => {
-  const [sound, setSound] = useState<Sound>();
-  const [isPlaying, setIsPlaying] = useState(false);
-  const { track } = usePlayerContext();
+  const { track, playTrack, pauseTrack, isPlaying } = usePlayerContext();
 
   useEffect(() => {
     playTrack();
   }, [track]);
 
-  useEffect(() => {
-    return sound
-      ? () => {
-          console.log('Unloading Sound');
-          sound?.unloadAsync();
-        }
-      : undefined;
-  }, [sound]);
-
-  useEffect(() => {
-    const setAudioMode = async () => {
-      await Audio.setAudioModeAsync({
-        playsInSilentModeIOS: true,
-        shouldDuckAndroid: true,
-        staysActiveInBackground: true,
-      });
-    };
-
-    setAudioMode();
-  }, []);
-
-  const playTrack = async () => {
-    const audioUrl = track?.audios[0].url;
-
-    if (sound) {
-      await sound.unloadAsync();
-    }
-
-    if (!audioUrl) {
-      return;
-    }
-    
-    const authToken = await getAuthToken();
-
-    const source = {
-      uri: audioUrl,
-      headers: {
-        Authorization: authToken ? `Bearer ${authToken}` : '',
-      },
-    };
-
-    const { sound: newSound } = await Audio.Sound.createAsync(source);
-
-    setSound(newSound);
-    newSound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
-    await newSound.playAsync();
-  };
-
-  const onPlaybackStatusUpdate = (status: AVPlaybackStatus) => {
-    if (!status.isLoaded) {
-      return;
-    }
-
-    setIsPlaying(status.isPlaying);
-  };
-
   const onPlayPause = async () => {
-    if (!sound) {
-      return;
-    }
     if (isPlaying) {
-      await sound.pauseAsync();
+      await pauseTrack();
     } else {
-      await sound.playAsync();
+      await playTrack();
     }
   };
 
