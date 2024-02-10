@@ -14,7 +14,6 @@ async function getAuthToken(): Promise<string | null> {
   return token;
 }
 
-
 const Player = () => {
   const [sound, setSound] = useState<Sound>();
   const [isPlaying, setIsPlaying] = useState(false);
@@ -50,34 +49,31 @@ const Player = () => {
   }, []);
 
   const playTrack = async () => {
+    const audioUrl = track?.audios[0].url;
+
     if (sound) {
-        await sound.unloadAsync();
+      await sound.unloadAsync();
+    }
+
+    if (!audioUrl) {
+      return;
     }
     
-    if (track && track.audios && track.audios.length > 0) {
-        const audioUrl = track.audios[0].url;
-        const authToken = await getAuthToken();
+    const authToken = await getAuthToken();
 
-      const headers = {
+    const source = {
+      uri: audioUrl,
+      headers: {
         Authorization: authToken ? `Bearer ${authToken}` : '',
-      };
+      },
+    };
 
-        const source = {
-            uri: audioUrl,
-            headers: headers
-        };
+    const { sound: newSound } = await Audio.Sound.createAsync(source);
 
-        try {
-            const { sound: newSound } = await Audio.Sound.createAsync(source);
-
-            setSound(newSound);
-            newSound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
-            await newSound.playAsync();
-        } catch (error) {
-            console.error('Error creating audio:', error);
-        }
-    }
-};
+    setSound(newSound);
+    newSound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
+    await newSound.playAsync();
+  };
 
   const onPlaybackStatusUpdate = (status: AVPlaybackStatus) => {
     if (!status.isLoaded) {
