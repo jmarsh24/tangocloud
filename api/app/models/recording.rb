@@ -38,6 +38,17 @@ class Recording < ApplicationRecord
       ],
       match: :word_middle,
       misspellings: {below: 5},
+      includes: [
+        :orchestra,
+        :singers,
+        :composition,
+        :genre,
+        :period,
+        :lyrics,
+        :audio_transfers,
+        :audios,
+        audio_transfers: [album: {album_art_attachment: :blob}]
+      ],
       page:,
       per_page:)
   end
