@@ -1,6 +1,5 @@
 module Api
   class GraphQLController < ApplicationController
-
     # protect_from_forgery with: :null_session
 
     def execute
