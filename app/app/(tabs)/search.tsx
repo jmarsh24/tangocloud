@@ -2,10 +2,9 @@ import { FlatList, TextInput, View, Text, StyleSheet, ActivityIndicator,} from '
 import TrackListItem from '@/components/TrackListItem';
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState, useCallback } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useTheme } from '@react-navigation/native';
 import { SEARCH_RECORDINGS } from '@/graphql';
-
 
 export default function SearchScreen() {
   const { colors } = useTheme();
@@ -14,7 +13,6 @@ export default function SearchScreen() {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
-
 
   const { data, loading, error, fetchMore } = useQuery(SEARCH_RECORDINGS, {
     variables: { query: search, page: 1, per_page: 50 },
