@@ -33,6 +33,9 @@ const SignUpScreen = () => {
         value={username}
         onChangeText={setUsername}
         placeholder="Jon"
+        autoCorrect={false}
+        autoComplete='off'
+        autoCapitalize='none'
         style={styles.input}
       />
 
@@ -41,6 +44,9 @@ const SignUpScreen = () => {
         value={email}
         onChangeText={setEmail}
         placeholder="jon@gmail.com"
+        autoCorrect={false}
+        autoComplete='off'
+        autoCapitalize='none'
         style={styles.input}
       />
 
