@@ -55,5 +55,13 @@ module Types
 
       Audio.find(id)
     end
+
+    field :current_user_profile, Types::UserType, null: false, description: "Get the profile of the currently authenticated user."
+
+    def current_user_profile
+      raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
+
+      context[:current_user]
+    end
   end
 end

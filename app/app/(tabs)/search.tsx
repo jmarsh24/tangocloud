@@ -2,30 +2,9 @@ import { FlatList, TextInput, View, Text, StyleSheet, ActivityIndicator,} from '
 import TrackListItem from '@/components/TrackListItem';
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState, useCallback } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useTheme } from '@react-navigation/native';
-
-const query = gql`
-  query MyQuery($query: String!) {
-    searchRecordings(query: $query) {
-              title
-              orchestra {
-                name
-              }
-              singers {
-                name
-              }
-              audios {
-                url
-              }
-              albumArtUrl
-              recordedDate
-              genre {
-                name
-              }
-            }
-  }
-`;
+import { SEARCH_RECORDINGS } from '@/graphql';
 
 export default function SearchScreen() {
   const { colors } = useTheme();
@@ -35,8 +14,7 @@ export default function SearchScreen() {
   const [page, setPage] = useState(1);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
 
-
-  const { data, loading, error, fetchMore } = useQuery(query, {
+  const { data, loading, error, fetchMore } = useQuery(SEARCH_RECORDINGS, {
     variables: { query: search, page: 1, per_page: 50 },
     fetchPolicy: 'cache-and-network',
   });

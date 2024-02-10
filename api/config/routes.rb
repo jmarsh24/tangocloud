@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   post "/auth/:provider/callback", to: "sessions/omniauth#create"
 
   if Rails.env.development?
-    mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
+    mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "api/graphql"
   end
 
   constraints(Constraints::AdminConstraint.new) do
@@ -26,9 +26,11 @@ Rails.application.routes.draw do
     mount Avo::Engine => "admin"
   end
 
-  post "/graphql", to: "graphql#execute"
+  namespace :api do
+    post "/graphql", to: "graphql#execute"
 
-  resources :audios, only: :show
+    resources :audios, only: :show
+  end
 
   root "pages#home"
   get "up", to: "rails/health#show", as: :rails_health_check

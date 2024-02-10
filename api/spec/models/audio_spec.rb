@@ -5,13 +5,11 @@ RSpec.describe Audio, type: :model do
     it "returns the URL of the audio" do
       freeze_time
       audio = audios(:volver_a_sonar_tango_tunes_1940)
-      expected_url = "http://localhost:3000/audios/#{audio.signed_id}"
+      expected_url = "http://localhost:3000/api/audios/#{audio.signed_id}"
 
       expect(audio.signed_url).to eq(expected_url)
     end
   end
-
-  describe
 end
 
 # == Schema Information
