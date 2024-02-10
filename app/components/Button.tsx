@@ -18,7 +18,7 @@ const Button = forwardRef<View | null, ButtonProps>(
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.light.tint,
+    backgroundColor: Colors.light.buttonPrimary,
     padding: 15,
     alignItems: 'center',
     borderRadius: 100,
