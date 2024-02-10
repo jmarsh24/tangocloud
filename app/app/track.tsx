@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Dimensions } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
+import { StyleSheet, View, Text, Image, Animated, Dimensions } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { usePlayerContext } from '@/providers/PlayerProvider';
 
@@ -42,7 +41,7 @@ return (
       }]}>
         <View style={[styles.centralHole, { borderRadius: vinylSize * 0.02 }]} />
         <Image 
-          source={require('@/assets/images/album_art.jpg')} 
+          source={{ uri: track?.albumArtUrl }}
           style={[styles.albumArt, { 
             width: albumArtSize, 
             height: albumArtSize, 
