@@ -8,7 +8,6 @@ import { Sound } from 'expo-av/build/Audio';
 import Colors from '@/constants/Colors';
 import * as SecureStore from 'expo-secure-store';
 
-// Function to retrieve the auth token
 async function getAuthToken(): Promise<string | null> {
   const token = await SecureStore.getItemAsync('token');
   return token;
@@ -34,15 +33,11 @@ const Player = () => {
 
   useEffect(() => {
     const setAudioMode = async () => {
-      try {
-        await Audio.setAudioModeAsync({
-          playsInSilentModeIOS: true,
-          shouldDuckAndroid: true,
-          staysActiveInBackground: true,
-        });
-      } catch (e) {
-        console.log(e);
-      }
+      await Audio.setAudioModeAsync({
+        playsInSilentModeIOS: true,
+        shouldDuckAndroid: true,
+        staysActiveInBackground: true,
+      });
     };
 
     setAudioMode();
