@@ -1,9 +1,11 @@
 import React from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { Tabs } from 'expo-router';
 import { useColorScheme, View, StyleSheet, Image } from 'react-native';
-import { BottomTabBar } from '@react-navigation/bottom-tabs';
 import { useAuth } from '@/providers/AuthProvider';
+import { useQuery } from '@apollo/client';
+import { CURRENT_USER_PROFILE } from '@/graphql';
+import { BottomTabBar } from '@react-navigation/bottom-tabs';
+import { Tabs } from 'expo-router';
 
 import Colors from '@/constants/Colors';
 import Player from '@/components/Player';
@@ -19,13 +21,20 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { authState } = useAuth();
 
+  const { data, loading, error } = useQuery(CURRENT_USER_PROFILE, {
+    skip: !authState.authenticated,
+  });
+
+  const avatarUrl = data?.currentUserProfile?.avatarUrl;
+
   const youIcon = (color) => {
-    if (authState?.authenticated) {
-      return <Image source={require('@/assets/images/avatar.jpg')} style={styles.image} />;
+    if (authState?.authenticated && avatarUrl) {
+      return <Image source={{ uri: avatarUrl }} style={styles.image} />;
     } else {
-      return <AntDesign name="user" size={22} style={{ marginBottom: -3, color }} />;
+      return <AntDesign name="user" size={22} color={color} style={{ marginBottom: -3 }} />;
     }
   };
+
 
   return (
     <Tabs
