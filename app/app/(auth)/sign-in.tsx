@@ -86,7 +86,7 @@ const SignInScreen = () => {
             disabled={loading}
             text={loading ? 'Signing in...' : 'Sign in'}
           />
-          <Link href="/sign-up" style={dynamicStyles.textButton}>
+        <Link replace href="/sign-up" style={dynamicStyles.textButton}>
             Create an account
           </Link>
         </View>
