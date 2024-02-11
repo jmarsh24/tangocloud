@@ -32,8 +32,10 @@ const Player = () => {
           <View style={styles.info}>
             <Text style={styles.title}>{track.title}</Text>
             <Text style={styles.subtitle}>{track?.orchestra.name}</Text>
-            <Text style={styles.subtitle}>{track?.genre.name}</Text>
-            <Text style={styles.subtitle}>{track?.recordedDate}</Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.subtitle}>{track?.recordedDate}</Text>
+              <Text style={styles.subtitle}>{track?.genre.name}</Text>
+            </View>
           </View>
 
           <Ionicons
@@ -58,20 +60,24 @@ const styles = StyleSheet.create({
   },
   player: {
     width: '100%',
-    backgroundColor: 'red',
+    backgroundColor: '#1C1C1E',
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 5,
+    borderRadius: 10,
     paddingHorizontal: 15,
     paddingVertical: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
   },
   title: {
-    color: Colors.light.text,
+    color: Colors.dark.text,
     fontSize: 16,
     fontWeight: 'bold',
   },
   subtitle: {
-    color: Colors.light.text,
+    color: Colors.dark.text,
     fontSize: 12,
   },
   image: {
