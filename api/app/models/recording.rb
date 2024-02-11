@@ -67,7 +67,7 @@ class Recording < ApplicationRecord
   end
 
   def album_art_url
-    audio_transfers.first.album&.album_art&.url
+    Rails.application.routes.url_helpers.rails_blob_url(audio_transfers.first.album&.album_art)
   end
 end
 

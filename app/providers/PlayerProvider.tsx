@@ -44,8 +44,15 @@ export default function PlayerProvider({ children }: PropsWithChildren) {
   const playTrack = async () => {
     if (!track) return;
 
+    if (sound && track.id === sound._trackId) {
+      // If so, resume playback.
+      await sound.playAsync();
+      return;
+    }
+
     const audioUrl = track.audios[0].url;
     if (sound) {
+
       await sound.unloadAsync();
     }
     if (!audioUrl) return;
@@ -58,9 +65,9 @@ export default function PlayerProvider({ children }: PropsWithChildren) {
       },
     };
 
-    const { sound: newSound } = await Audio.Sound.createAsync(source);
+    const { sound: newSound } = await Audio.Sound.createAsync(source, {}, (status) => setIsPlaying(status.isPlaying));
+    newSound._trackId = track.id;
     setSound(newSound);
-    newSound.setOnPlaybackStatusUpdate((status) => setIsPlaying(status.isPlaying));
     await newSound.playAsync();
   };
 

@@ -1,11 +1,12 @@
-import { View, Text, TextInput, StyleSheet, Alert } from 'react-native';
 import React, { useState } from 'react';
+import { View, Text, TextInput, StyleSheet, Alert, KeyboardAvoidingView, ScrollView, Platform, useColorScheme } from 'react-native';
 import Button from '@/components/Button';
 import Colors from '@/constants/Colors';
-import { Link, Redirect, Stack, router } from 'expo-router';
+import { Link } from 'expo-router';
 import { useAuth } from '@/providers/AuthProvider';
 
 const SignUpScreen = () => {
+  const colorScheme = useColorScheme();
   const { onRegister } = useAuth();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -17,7 +18,7 @@ const SignUpScreen = () => {
     try {
       const result = await onRegister(username, email, password);
       if (result.success) {
-         Alert.alert("Verification Required", "Please check your email to verify your account before signing in.", [
+        Alert.alert("Verification Required", "Please check your email to verify your account before signing in.", [
           { text: "OK", onPress: () => router.replace('/sign-in') }
         ]);
       }
@@ -28,77 +29,88 @@ const SignUpScreen = () => {
     }
   }
 
+  // Dynamic styles based on color scheme
+  const dynamicStyles = StyleSheet.create({
+    container: {
+      padding: 20,
+      justifyContent: 'center',
+      flex: 1,
+      backgroundColor: colorScheme === 'dark' ? Colors.dark.background : Colors.light.background,
+    },
+    label: {
+      color: colorScheme === 'dark' ? Colors.dark.text : Colors.light.text,
+    },
+    input: {
+      borderWidth: 1,
+      borderColor: colorScheme === 'dark' ? Colors.dark.inputBorder : Colors.light.inputBorder,
+      padding: 10,
+      marginTop: 5,
+      marginBottom: 20,
+      backgroundColor: colorScheme === 'dark' ? Colors.dark.inputBackground : Colors.light.inputBackground,
+      borderRadius: 5,
+      fontSize: 18,
+      color: colorScheme === 'dark' ? Colors.dark.text : Colors.light.text, // Ensure text color is also adjusted
+    },
+    textButton: {
+      alignSelf: 'center',
+      fontWeight: 'bold',
+      color: colorScheme === 'dark' ? Colors.dark.textSecondary : Colors.light.textSecondary,
+      marginVertical: 10,
+    },
+  });
 
   return (
-    <View style={styles.container}>
-      <Stack.Screen options={{ title: 'Sign up' }} />
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+    >
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={dynamicStyles.container}>
+          <Text style={dynamicStyles.label}>Username</Text>
+          <TextInput
+            value={username}
+            onChangeText={setUsername}
+            placeholder="ElSeniorDeTango"
+            autoCorrect={false}
+            autoComplete='off'
+            autoCapitalize='none'
+            textContentType='username'
+            style={dynamicStyles.input}
+          />
 
-      <Text style={styles.label}>Username</Text>
-      <TextInput
-        value={username}
-        onChangeText={setUsername}
-        placeholder="Jon"
-        autoCorrect={false}
-        autoComplete='off'
-        autoCapitalize='none'
-        style={styles.input}
-      />
+          <Text style={dynamicStyles.label}>Email</Text>
+          <TextInput
+            value={email}
+            onChangeText={setEmail}
+            placeholder="carlosdisarli@hotmail.com"
+            autoCorrect={false}
+            autoComplete='off'
+            autoCapitalize='none'
+            style={dynamicStyles.input}
+          />
 
-      <Text style={styles.label}>Email</Text>
-      <TextInput
-        value={email}
-        onChangeText={setEmail}
-        placeholder="jon@gmail.com"
-        autoCorrect={false}
-        autoComplete='off'
-        autoCapitalize='none'
-        style={styles.input}
-      />
+          <Text style={dynamicStyles.label}>Password</Text>
+          <TextInput
+            value={password}
+            onChangeText={setPassword}
+            placeholder=""
+            style={dynamicStyles.input}
+            secureTextEntry
+          />
 
-      <Text style={styles.label}>Password</Text>
-      <TextInput
-        value={password}
-        onChangeText={setPassword}
-        placeholder=""
-        style={styles.input}
-        secureTextEntry
-      />
-
-      <Button
-        onPress={signUp}
-        text={'Create account'}
-      />
-      <Link href="/sign-in" style={styles.textButton}>
-        Sign in
-      </Link>
-    </View>
+          <Button
+            onPress={signUp}
+            disabled={loading}
+            text={loading ? 'Creating account...' : 'Create account'}
+          />
+          <Link href="/sign-in" style={dynamicStyles.textButton}>
+            Sign in
+          </Link>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    justifyContent: 'center',
-    flex: 1,
-  },
-  label: {
-    color: 'gray',
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: 'gray',
-    padding: 10,
-    marginTop: 5,
-    marginBottom: 20,
-    backgroundColor: 'white',
-    borderRadius: 5,
-  },
-  textButton: {
-    alignSelf: 'center',
-    fontWeight: 'bold',
-    color: Colors.light.tint,
-    marginVertical: 10,
-  },
-});
 
 export default SignUpScreen;
