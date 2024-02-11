@@ -43,7 +43,7 @@ const Player = () => {
             disabled={false}
             name={isPlaying ? 'pause' : 'play'}
             size={22}
-            color={track ? Colors.light.text : Colors.light.tint }
+            color={track ? Colors.dark.text : Colors.dark.tint }
           />
         </View>
       </Link>

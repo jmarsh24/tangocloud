@@ -20,6 +20,8 @@ export default {
     success: "hsl(123, 35%, 51%)",
     warning: "hsl(48, 100%, 67%)",
     info: "hsl(207, 90%, 54%)",
+    inputBackground: "#FFFFFF",
+    inputBorder: "hsl(0, 0%, 80%)",
   },
   dark: {
     text: "hsl(0, 0%, 100%)",
@@ -42,5 +44,7 @@ export default {
     success: "hsl(145, 60%, 42%)",
     warning: "hsl(45, 100%, 51%)",
     info: "hsl(207, 90%, 54%)",
+    inputBackground: "#111111",
+    inputBorder: "hsl(0, 0%, 40%)",
   },
 };

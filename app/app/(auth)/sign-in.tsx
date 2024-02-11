@@ -1,11 +1,12 @@
-import { View, Text, TextInput, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert, SafeAreaView, KeyboardAvoidingView, Platform, useColorScheme } from 'react-native';
 import React, { useState } from 'react';
 import Button from '@/components/Button';
-import Colors from '@/constants/Colors';
-import { Link, Stack } from 'expo-router';
+import Colors from '@/constants/Colors'; // Consider adding dark theme colors here
+import { Link } from 'expo-router';
 import { useAuth } from '@/providers/AuthProvider';
 
 const SignInScreen = () => {
+  const colorScheme = useColorScheme();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -22,65 +23,76 @@ const SignInScreen = () => {
     }
   }
 
+  // Adjusted styles based on color scheme
+  const dynamicStyles = StyleSheet.create({
+    container: {
+      padding: 20,
+      justifyContent: 'center',
+      flex: 1,
+      backgroundColor: colorScheme === 'dark' ? Colors.dark.background : Colors.light.background, // Assuming Colors has a dark theme defined
+    },
+    label: {
+      color: colorScheme === 'dark' ? Colors.dark.text : Colors.light.text,
+    },
+    input: {
+      borderWidth: 1,
+      borderColor: colorScheme === 'dark' ? Colors.dark.inputBorder : Colors.light.inputBorder,
+      padding: 10,
+      marginTop: 5,
+      marginBottom: 20,
+      backgroundColor: colorScheme === 'dark' ? Colors.dark.inputBackground : Colors.light.inputBackground,
+      borderRadius: 5,
+      fontSize: 18,
+      color: colorScheme === 'dark' ? Colors.dark.text : Colors.light.text,
+    },
+    textButton: {
+      alignSelf: 'center',
+      fontWeight: 'bold',
+      color: colorScheme === 'dark' ? Colors.dark.textSecondary : Colors.light.textSecondary,
+      marginVertical: 10,
+    },
+  });
+
   return (
-    <View style={styles.container}>
-      <Stack.Screen options={{ title: 'Sign in' }} />
+    <SafeAreaView style={{ flex: 1 }}> 
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <View style={dynamicStyles.container}>
+          <Text style={dynamicStyles.label}>Email or Username</Text>
+          <TextInput
+            value={login}
+            onChangeText={setLogin}
+            placeholder='ElSeniorDeTango'
+            autoCorrect={false}
+            autoComplete='off'
+            autoCapitalize='none'
+            textContentType='oneTimeCode'
+            style={dynamicStyles.input}
+          />
 
-      <Text style={styles.label}>Email or Username</Text>
-      <TextInput
-        value={login}
-        onChangeText={setLogin}
-        autoCorrect={false}
-        autoComplete='off'
-        autoCapitalize='none'
-        style={styles.input}
-      />
+          <Text style={dynamicStyles.label}>Password</Text>
+          <TextInput
+            value={password}
+            onChangeText={setPassword}
+            placeholder=""
+            style={dynamicStyles.input}
+            secureTextEntry
+          />
 
-      <Text style={styles.label}>Password</Text>
-      <TextInput
-        value={password}
-        onChangeText={setPassword}
-        placeholder=""
-        style={styles.input}
-        secureTextEntry
-      />
-
-      <Button
-        onPress={signIn}
-        disabled={loading}
-        text={loading ? 'Signing in...' : 'Sign in'}
-      />
-      <Link href="/sign-up" style={styles.textButton}>
-        Create an account
-      </Link>
-    </View>
+          <Button
+            onPress={signIn}
+            disabled={loading}
+            text={loading ? 'Signing in...' : 'Sign in'}
+          />
+          <Link href="/sign-up" style={dynamicStyles.textButton}>
+            Create an account
+          </Link>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    justifyContent: 'center',
-    flex: 1,
-  },
-  label: {
-    color: 'gray',
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: 'gray',
-    padding: 10,
-    marginTop: 5,
-    marginBottom: 20,
-    backgroundColor: 'white',
-    borderRadius: 5,
-  },
-  textButton: {
-    alignSelf: 'center',
-    fontWeight: 'bold',
-    color: Colors.light.tint,
-    marginVertical: 10,
-  },
-});
 
 export default SignInScreen;
