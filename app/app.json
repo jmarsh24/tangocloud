@@ -2,7 +2,7 @@
   "expo": {
     "name": "app",
     "slug": "app",
-    "version": "1.0.20",
+    "version": "1.0.21",
     "owner": "tangocloud",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
