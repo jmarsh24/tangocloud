@@ -21,6 +21,7 @@ export default function LibraryScreen() {
       justifyContent: 'center',
       alignItems: 'center',
       padding: 10,
+      gap: 20,
       backgroundColor: scheme === 'dark' ? Colors.dark.background : Colors.light.background,
     },
     linkText: {
@@ -85,9 +86,9 @@ export default function LibraryScreen() {
 
   const styles = StyleSheet.create({
     image: {
-      width: 100,
-      height: 100,
-      borderRadius: 50,
+      width: 156,
+      height: 156,
+      borderRadius: 25,
     },
     link: {
       backgroundColor: Colors.light.buttonPrimary,
