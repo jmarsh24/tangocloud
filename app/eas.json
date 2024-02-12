@@ -3,35 +3,53 @@
     "version": "7.2.0"
   },
   "build": {
-    "development": {
-      "developmentClient": true,
-      "distribution": "store",
-      "env": {
-        "EXPO_PUBLIC_GRAPHQL_ENDPOINT": "http://localhost:3000/api/graphql"
+    "base": {
+        "android": {
+          "image": "latest"
+        },
+        "ios": {
+          "image": "latest",
+          "node": "20.11.0",
+          "yarn": "1.22.21"
+        }
+      },
+      "development": {
+        "extends": "base",
+        "env": {
+          "ENVIRONMENT": "development",
+          "EXPO_PUBLIC_GRAPHQL_ENDPOINT": "http://localhost:3000/api/graphql"
+        },
+        "android": {
+          "distribution": "internal",
+          "withoutCredentials": true,
+          "gradleCommand": ":app:assembleDebug"
+        },
+        "ios": {
+          "simulator": true,
+          "buildConfiguration": "Debug",
+          "ios": {
+            "resourceClass": "m-medium"
+          },
+        }
+      },
+      "production": {
+        "extends": "base",
+        "env": {
+          "ENVIRONMENT": "production",
+          "EXPO_PUBLIC_GRAPHQL_ENDPOINT": "https://tangocloud.app/api/graphql"
+        },
+        "ios": {
+          "resourceClass": "m-medium"
+        }
       }
     },
-    "development-simulator": {
-      "developmentClient": true,
-      "distribution": "store",
-      "ios": {
-        "simulator": true
-      }
-    },
-    "preview": {
-      "distribution": "store"
-    },
-    "production": {
-      "env": {
-        "EXPO_PUBLIC_GRAPHQL_ENDPOINT": "https://tangocloud.app/api/graphql"
-      }
-    }
-  },
-  "submit": {
-    "production": {
-      "ios": {
-        "appleId": "jmarsh24@gmail.com",
-        "ascAppId": "6476820703",
-        "appleTeamId": "8DN6UL88PX"
+    "submit": {
+      "production": {
+        "ios": {
+          "appleId": "jmarsh24@gmail.com",
+          "ascAppId": "6476820703",
+          "appleTeamId": "8DN6UL88PX"
+        }
       }
     }
   }
