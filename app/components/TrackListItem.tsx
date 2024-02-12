@@ -2,6 +2,7 @@ import { Text, View, StyleSheet, Image, Pressable } from 'react-native';
 import { Track } from '@/types';
 import { useTheme } from '@react-navigation/native';
 import TrackPlayer from 'react-native-track-player';
+import * as SecureStore from 'expo-secure-store';
 
 type TrackListItemProps = {
   track: Track;
@@ -12,19 +13,32 @@ export default function TrackListItem({ track }: TrackListItemProps) {
 
   const styles = getStyles(colors);
 
+  const fetchAuthToken = async () => {
+    return await SecureStore.getItemAsync('token');
+  };
+
+  
   const onTrackPress = async () => {
-    console.log('clicked')
+    console.log('Clicked');
+    const token = await fetchAuthToken(); // Fetch the token
     const trackForPlayer = {
       id: track.id,
-      url: track.audios[0].url,
+      url: track.audios[0].url, // Your track URL
       title: track.title,
       artist: track.orchestra.name,
-      artwork: track.albumArtUrl
+      artwork: track.albumArtUrl,
+      // Assuming headers could be passed directly, which they can't in the current API.
+      // This is illustrative only:
+      headers: {
+        Authorization: token ? `Bearer ${token}` : '',
+      },
     };
-    console.log('trackForPlayer', trackForPlayer)
+    console.log('trackForPlayer', trackForPlayer);
     try {
       await TrackPlayer.reset(); // Clear any existing tracks
-      console.log("track:", trackForPlayer)
+      console.log("Track:", trackForPlayer);
+      // Since react-native-track-player does not support headers, you might need to ensure the URL is accessible without them,
+      // or implement a mechanism to fetch the track to local storage here before adding it to the player.
       await TrackPlayer.add([trackForPlayer]);
       await TrackPlayer.play(); // Start playback
     } catch (error) {
