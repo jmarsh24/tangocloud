@@ -3,7 +3,7 @@
   "version": "1.0.6",
   "main": "expo-router/entry",
   "scripts": {
-    "start": "expo start",
+    "start": "expo start --dev-client",
     "lint": "yarn lint:types && yarn lint:format",
     "lint:types": "tsc --noEmit",
     "lint:format": "prettier --list-different \"src/**/*.{tsx,ts,css,scss,json,yml}\" \"*.yml\"",
