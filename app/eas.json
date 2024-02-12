@@ -4,52 +4,48 @@
   },
   "build": {
     "base": {
-        "android": {
-          "image": "latest"
-        },
-        "ios": {
-          "image": "latest",
-          "node": "20.11.0",
-          "yarn": "1.22.21"
-        }
+      "android": {
+        "image": "latest",
+        "ndk": "21.4.7075529"
       },
-      "development": {
-        "extends": "base",
-        "env": {
-          "ENVIRONMENT": "development",
-          "EXPO_PUBLIC_GRAPHQL_ENDPOINT": "http://localhost:3000/api/graphql"
-        },
-        "android": {
-          "distribution": "internal",
-          "withoutCredentials": true,
-          "gradleCommand": ":app:assembleDebug"
-        },
-        "ios": {
-          "simulator": true,
-          "buildConfiguration": "Debug",
-          "ios": {
-            "resourceClass": "m-medium"
-          },
-        }
-      },
-      "production": {
-        "extends": "base",
-        "env": {
-          "ENVIRONMENT": "production",
-          "EXPO_PUBLIC_GRAPHQL_ENDPOINT": "https://tangocloud.app/api/graphql"
-        },
-        "ios": {
-          "resourceClass": "m-medium"
-        }
+      "ios": {
+        "image": "latest",
+        "node": "20.11.0",
+        "yarn": "1.22.21"
       }
     },
-    "submit": {
-      "production": {
-        "ios": {
-          "appleId": "jmarsh24@gmail.com",
-          "ascAppId": "6476820703",
-          "appleTeamId": "8DN6UL88PX"
-        }
+    "development": {
+      "extends": "base",
+      "env": {
+        "ENVIRONMENT": "development",
+        "EXPO_PUBLIC_GRAPHQL_ENDPOINT": "http://localhost:3000/api/graphql"
+      },
+      "android": {
+        "distribution": "internal",
+        "withoutCredentials": true,
+        "gradleCommand": ":app:assembleDebug"
+      },
+      "ios": {
+        "simulator": true,
+        "buildConfiguration": "Debug",
+        "resourceClass": "m-medium"
+      }
+    },
+    "production": {
+      "env": {
+        "EXPO_PUBLIC_GRAPHQL_ENDPOINT": "https://tangocloud.app/api/graphql"
+      },
+      "ios": {
+        "resourceClass": "m-medium"
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "appleId": "jmarsh24@gmail.com",
+        "ascAppId": "6476820703",
+        "appleTeamId": "8DN6UL88PX"
       }
     }
   }
