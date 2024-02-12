@@ -1,8 +1,8 @@
   import React, { useEffect, useRef } from 'react';
   import { StyleSheet, View, Text, Image, Animated, Dimensions, Pressable } from 'react-native';
   import { useTheme } from '@react-navigation/native';
-  import { Ionicons } from '@expo/vector-icons';
   import { usePlayerContext } from '@/providers/PlayerProvider';
+  import { PlayerControls } from '@/components/PlayerControls';
 
   export default function trackScreen() {
     const vinylRecordImg = require('@/assets/images/vinyl_3x.png');
@@ -96,17 +96,7 @@
         </View>
 
         <View style={styles.controls}>
-            <Pressable
-              onPress={onPlayPause}
-              style={styles.playButtonContainer}
-              disabled={!track}
-            >
-              <Ionicons
-                name={isPlaying ? 'pause' : 'play'}
-                size={36}
-                color={track ? colors.text : 'grey'} // Changed to grey if no track, for visual feedback
-              />
-            </Pressable>
+          <PlayerControls />
         </View>
       </View>
     );

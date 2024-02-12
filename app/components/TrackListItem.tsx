@@ -1,20 +1,39 @@
 import { Text, View, StyleSheet, Image, Pressable } from 'react-native';
 import { Track } from '@/types';
-import { usePlayerContext } from '@/providers/PlayerProvider';
 import { useTheme } from '@react-navigation/native';
+import TrackPlayer from 'react-native-track-player';
 
 type TrackListItemProps = {
   track: Track;
 };
 
 export default function TrackListItem({ track }: TrackListItemProps) {
-  const { setTrack } = usePlayerContext();
   const { colors } = useTheme();
 
   const styles = getStyles(colors);
 
+  const onTrackPress = async () => {
+    console.log('clicked')
+    const trackForPlayer = {
+      id: track.id,
+      url: track.audios[0].url,
+      title: track.title,
+      artist: track.orchestra.name,
+      artwork: track.albumArtUrl
+    };
+    console.log('trackForPlayer', trackForPlayer)
+    try {
+      await TrackPlayer.reset(); // Clear any existing tracks
+      console.log("track:", trackForPlayer)
+      await TrackPlayer.add([trackForPlayer]);
+      await TrackPlayer.play(); // Start playback
+    } catch (error) {
+      console.error('Error playing track:', error);
+    }
+  };
+
   return (
-    <Pressable onPress={() => setTrack(track)} style={styles.songCard}>
+    <Pressable onPress={onTrackPress} style={styles.songCard}>
       <Image source={{ uri: track.albumArtUrl }} style={styles.songAlbumArt} />
       <View style={styles.songTextContainer}>
         <Text style={styles.songTitle}>{track.title}</Text>

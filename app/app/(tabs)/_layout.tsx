@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useColorScheme, View, StyleSheet, Image } from 'react-native';
 import { useAuth } from '@/providers/AuthProvider';
@@ -6,9 +6,12 @@ import { useQuery } from '@apollo/client';
 import { CURRENT_USER_PROFILE } from '@/graphql';
 import { BottomTabBar } from '@react-navigation/bottom-tabs';
 import { Tabs } from 'expo-router';
+import TrackPlayer from 'react-native-track-player';
 
 import Colors from '@/constants/Colors';
 import Player from '@/components/Player';
+
+TrackPlayer.registerPlaybackService(() => require('@/services/SetupService'));
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof AntDesign>['name'];
