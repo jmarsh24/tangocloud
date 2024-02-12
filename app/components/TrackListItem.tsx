@@ -18,7 +18,6 @@ export default function TrackListItem({ track }: TrackListItemProps) {
   };
   
   const onTrackPress = async () => {
-    console.log('Clicked');
     const token = await fetchAuthToken(); // Fetch the token
     const trackForPlayer = {
       id: track.id,
@@ -32,10 +31,9 @@ export default function TrackListItem({ track }: TrackListItemProps) {
         Authorization: token ? `Bearer ${token}` : '',
       },
     };
-    console.log('trackForPlayer', trackForPlayer);
+
     try {
       await TrackPlayer.reset(); // Clear any existing tracks
-      console.log("Track:", trackForPlayer);
       // Since react-native-track-player does not support headers, you might need to ensure the URL is accessible without them,
       // or implement a mechanism to fetch the track to local storage here before adding it to the player.
       await TrackPlayer.add([trackForPlayer]);
