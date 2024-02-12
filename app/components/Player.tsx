@@ -1,24 +1,43 @@
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
 import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { usePlayerContext } from '@/providers/PlayerProvider';
+import TrackPlayer, { usePlaybackState, useTrackPlayerEvents, Event, State } from 'react-native-track-player';
 import Colors from '@/constants/Colors';
 
 const Player = () => {
-  const { track, playTrack, pauseTrack, isPlaying } = usePlayerContext();
+  const [track, setTrack] = useState<Track | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const playbackState = usePlaybackState();
 
   useEffect(() => {
-    playTrack();
-  }, [track]);
+    const fetchCurrentTrack = async () => {
+      const currentTrackId = await TrackPlayer.getCurrentTrack();
+      if (currentTrackId !== null) {
+        const currentTrack = await TrackPlayer.getTrack(currentTrackId);
+        setTrack(currentTrack);
+      }
+    };
+
+    fetchCurrentTrack();
+  }, [playbackState]);
+
+  useTrackPlayerEvents([Event.PlaybackTrackChanged], async (event) => {
+    if (event.type === Event.PlaybackTrackChanged && event.nextTrack !== null) {
+      const track = await TrackPlayer.getTrack(event.nextTrack);
+      setTrack(track);
+    }
+  });
 
   const onPlayPause = async () => {
-    if (isPlaying) {
-      await pauseTrack();
+    const state = await TrackPlayer.getState();
+    if (state == State.Playing) {
+      await TrackPlayer.pause();
     } else {
-      await playTrack();
+      await TrackPlayer.play();
     }
   };
+
 
   if (!track) {
     return null;
@@ -28,23 +47,20 @@ const Player = () => {
     <View style={styles.container}>
       <Link href="/track">
         <View style={styles.player}>
-          <Image source={{ uri: track.albumArtUrl }} style={styles.image} />
+          <Image source={{ uri: track.artwork }} style={styles.image} />
           <View style={styles.info}>
             <Text style={styles.title}>{track.title}</Text>
-            <Text style={styles.subtitle}>{track?.orchestra.name}</Text>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.subtitle}>{track?.recordedDate}</Text>
-              <Text style={styles.subtitle}>{track?.genre.name}</Text>
-            </View>
+            <Text style={styles.subtitle}>{track.artist}</Text>
+            {/* Additional track info here */}
           </View>
 
-          <Ionicons
-            onPress={onPlayPause}
-            disabled={false}
-            name={isPlaying ? 'pause' : 'play'}
-            size={22}
-            color={track ? Colors.dark.text : Colors.dark.tint }
-          />
+          <Pressable onPress={onPlayPause}>
+            <Ionicons
+              name={isPlaying ? 'pause' : 'play'}
+              size={22}
+              color={Colors.dark.text}
+            />
+          </Pressable>
         </View>
       </Link>
     </View>

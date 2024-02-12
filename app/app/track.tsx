@@ -1,63 +1,75 @@
-  import React, { useEffect, useRef } from 'react';
-  import { StyleSheet, View, Text, Image, Animated, Dimensions, Pressable } from 'react-native';
-  import { useTheme } from '@react-navigation/native';
-  import { usePlayerContext } from '@/providers/PlayerProvider';
-  import { PlayerControls } from '@/components/PlayerControls';
+import React, { useState, useEffect, useRef } from 'react';
+import { StyleSheet, View, Text, Image, Animated, Dimensions, Pressable } from 'react-native';
+import { useTheme } from '@react-navigation/native';
+import TrackPlayer, { usePlaybackState, useTrackPlayerEvents, Event, State } from 'react-native-track-player';
+import { PlayerControls } from '@/components/PlayerControls';
 
-  export default function trackScreen() {
-    const vinylRecordImg = require('@/assets/images/vinyl_3x.png');
-    const vinylArmImg = require('@/assets/images/vinyl-arm.png');
-    const { track, playTrack, pauseTrack, isPlaying } = usePlayerContext();
-    const { colors } = useTheme();
-    const styles = getStyles(colors); 
+export default function TrackScreen() {
+  const vinylRecordImg = require('@/assets/images/vinyl_3x.png');
+  const vinylArmImg = require('@/assets/images/vinyl-arm.png');
+  const { colors } = useTheme();
+  const styles = getStyles(colors); 
 
-    const onPlayPause = async () => {
-      if (isPlaying) {
-        await pauseTrack();
-      } else {
-        await playTrack();
+  const playbackState = usePlaybackState();
+  const [track, setTrack] = useState<Track | null>(null);
+  const isPlaying = playbackState === State.Playing;
+
+  // Animation refs
+  const spinValue = useRef(new Animated.Value(0)).current;
+  const armRotation = useRef(new Animated.Value(0)).current;
+
+  // Fetch current track details
+  useEffect(() => {
+    const fetchCurrentTrack = async () => {
+      const currentTrackId = await TrackPlayer.getCurrentTrack();
+      if (currentTrackId !== null) {
+        const currentTrack = await TrackPlayer.getTrack(currentTrackId);
+        setTrack(currentTrack);
       }
     };
 
-    const screenWidth = Dimensions.get('window').width;
-    const spinValue = useRef(new Animated.Value(0)).current;
-    const armRotation = useRef(new Animated.Value(0)).current;
+    fetchCurrentTrack();
+  }, []);
 
-    useEffect(() => {
-      let animation = Animated.loop(
-        Animated.timing(spinValue, {
-          toValue: 1,
-          duration: 33000,
-          useNativeDriver: true,
-        })
-      );
-      if (isPlaying) {
-        animation.start();
-      } else {
-        animation.stop();
-      }
+  // Animation for vinyl spin
+  useEffect(() => {
+    Animated.loop(
+      Animated.timing(spinValue, {
+        toValue: 1,
+        duration: 33000,
+        useNativeDriver: true,
+      })
+    ).start();
+  }, [spinValue]);
 
-      return () => animation.stop();
-    }, [isPlaying, spinValue]);
+  // Animation for arm rotation based on playback state
+  useEffect(() => {
+    Animated.timing(armRotation, {
+      toValue: isPlaying ? 1 : 0,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  }, [isPlaying, armRotation]);
 
-    const spin = spinValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: ['0deg', '360deg'],
-    });
+  const spin = spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg'],
+  });
 
-    const armRotate = armRotation.interpolate({
-      inputRange: [0, 1],
-      outputRange: ['0deg', '25deg'], // Adjust based on how much you want the arm to rotate
-    });
+  const armRotate = armRotation.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['-30deg', '0deg'], // Adjust based on your vinyl arm's starting position
+  });
 
-    const vinylSize = screenWidth * 0.8;
-    const albumArtSize = vinylSize * 0.36;
+  const screenWidth = Dimensions.get('window').width;
+  const vinylSize = screenWidth * 0.8;
+  const albumArtSize = vinylSize * 0.36;
 
   return (
-      <View style={styles.container}>
-        <Animated.Image 
+    <View style={styles.container}>
+      <Animated.Image 
         source={vinylArmImg}
-        style={styles.arm}
+        style={[styles.arm, { transform: [{ rotate: armRotate }] }]}
       />
       <Animated.View style={[styles.vinyl, { 
         width: vinylSize, 
@@ -71,8 +83,8 @@
             height: vinylSize
           }]} 
         />
-        <Image 
-          source={{ uri: track?.albumArtUrl }}
+        {track && <Image 
+          source={{ uri: track.artwork || '' }} // Fallback URL or local image if artwork is null
           style={[styles.albumArt, { 
             width: albumArtSize, 
             height: albumArtSize, 
@@ -80,27 +92,21 @@
             top: (vinylSize - albumArtSize) / 2,
             left: (vinylSize - albumArtSize) / 2,
           }]} 
-        />
+        />}
       </Animated.View>
 
-        <View style={styles.trackInfo}>
-          <Text style={styles.title}>{track.title}</Text>
-          {track?.orchestra?.name && <Text style={styles.subtitle}>{track.orchestra.name}</Text>}
-          {track?.singers?.[0]?.name && <Text style={styles.subtitle}>{track.singers[0].name}</Text>}
-          {track?.lyricist?.name && <Text style={styles.subtitle}>{track.lyricist.name}</Text>}
-          {track?.composer?.name && <Text style={styles.subtitle}>{track.composer.name}</Text>}
-          <View style={styles.row}>
-            {track?.genre?.name && <Text style={styles.subtitle}>{track.genre.name}</Text>}
-            {track?.recordedDate && <Text style={styles.subtitle}>{track.recordedDate}</Text>}
-          </View>
-        </View>
-
-        <View style={styles.controls}>
-          <PlayerControls />
-        </View>
+      <View style={styles.trackInfo}>
+        <Text style={styles.title}>{track?.title || 'Unknown Track'}</Text>
+        <Text style={styles.subtitle}>{track?.artist || 'Unknown Artist'}</Text>
+        {/* Additional track info here */}
       </View>
-    );
-  }
+
+      <View style={styles.controls}>
+        <PlayerControls />
+      </View>
+    </View>
+  );
+}
 
   function getStyles(colors) {
     return StyleSheet.create({

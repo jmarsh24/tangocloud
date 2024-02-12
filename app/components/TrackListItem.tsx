@@ -16,7 +16,6 @@ export default function TrackListItem({ track }: TrackListItemProps) {
   const fetchAuthToken = async () => {
     return await SecureStore.getItemAsync('token');
   };
-
   
   const onTrackPress = async () => {
     console.log('Clicked');
