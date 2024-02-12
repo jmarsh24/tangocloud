@@ -5,13 +5,20 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal",
+      "distribution": "store",
       "env": {
         "EXPO_PUBLIC_GRAPHQL_ENDPOINT": "http://localhost:3000/api/graphql"
       }
     },
+    "development-simulator": {
+      "developmentClient": true,
+      "distribution": "store",
+      "ios": {
+        "simulator": true
+      }
+    },
     "preview": {
-      "distribution": "internal"
+      "distribution": "store"
     },
     "production": {
       "env": {
