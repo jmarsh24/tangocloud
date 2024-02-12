@@ -18,12 +18,17 @@ const SignUpScreen = () => {
     try {
       const result = await onRegister(username, email, password);
       if (result.success) {
-        Alert.alert("Verification Required", "Please check your email to verify your account before signing in.", [
-          { text: "OK", onPress: () => router.replace('/sign-in') }
-        ]);
+        Alert.alert(
+          "Verification Required",
+          "Please check your email to verify your account before signing in.",
+          [{ text: "OK", onPress: () => router.replace('/sign-in') }]
+        );
+      } else {
+        const errorsMessage = result.errors.fullMessages.join('\n');
+        Alert.alert("Sign Up Failed", errorsMessage || "An unknown error occurred.");
       }
     } catch (error) {
-      Alert.alert("Sign Up Failed", error.message);
+      Alert.alert("Sign Up Failed", error.message || "An error occurred during sign up.");
     } finally {
       setLoading(false);
     }

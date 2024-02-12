@@ -9,6 +9,9 @@ export const REGISTER_MUTATION = gql`
         email
         name
       }
+      errors {
+        fullMessages
+      }
       success
     }
   }
