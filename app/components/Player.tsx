@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { Link } from 'expo-router';
 import Colors from '@/constants/Colors';
-import TrackPlayer from 'react-native-track-player';
+import TrackPlayer, { Event } from 'react-native-track-player';
 import { PlayPauseButton } from '@/components/PlayPauseButton';
 import { TrackInfo } from '@/components/TrackInfo';
 
@@ -11,24 +11,32 @@ const Player = () => {
 
   useEffect(() => {
     const fetchCurrentTrack = async () => {
-    let trackIndex = await TrackPlayer.getActiveTrackIndex();
-    // Check if trackIndex is a valid, non-negative integer
-    if (trackIndex !== undefined) {
-      let trackObject = await TrackPlayer.getTrack(trackIndex);
-      setTrack(trackObject);
-    } else {
-      // Handle the case where there is no active track
-      setTrack(null);
-    }
-  };
+      let trackIndex = await TrackPlayer.getActiveTrackIndex();
+      if (trackIndex !== undefined) {
+        let trackObject = await TrackPlayer.getTrack(trackIndex);
+        setTrack(trackObject);
+      } else {
+        setTrack(null);
+      }
+    };
 
     fetchCurrentTrack();
+
+    const onTrackChange = TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async () => {
+        let trackIndex = await TrackPlayer.getActiveTrackIndex();
+        let trackObject = await TrackPlayer.getTrack(trackIndex);
+        setTrack(trackObject);
+      }
+    );
+
+    return () => {
+      onTrackChange.remove();
+    };
   }, []);
 
   if (!track) {
     return null;
   }
-  
   return (
     <View style={styles.container}>
       <Link href="/track">
