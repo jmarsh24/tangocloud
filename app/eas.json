@@ -3,47 +3,30 @@
     "version": "7.2.0"
   },
   "build": {
-    "base": {
-      "android": {
-        "image": "latest",
-        "ndk": "21.4.7075529"
-      },
+    "simulator": {
+      "extends": "development",
+      "developmentClient": true,
+      "distribution": "internal",
       "ios": {
-        "image": "latest",
-        "node": "20.11.0",
-        "yarn": "1.22.21"
+        "simulator": true
       }
     },
     "development": {
-      "extends": "base",
       "developmentClient": true,
       "distribution": "store",
       "env": {
         "ENVIRONMENT": "development",
         "EXPO_PUBLIC_GRAPHQL_ENDPOINT": "http://localhost:3000/api/graphql"
-      },
-      "android": {
-        "distribution": "internal",
-        "withoutCredentials": true,
-        "gradleCommand": ":app:assembleDebug"
-      },
-      "ios": {
-        "buildConfiguration": "Debug",
-        "resourceClass": "m-medium"
-      }
-    },
-    "development-simulator": {
-      "extends": "development",
-      "ios": {
-        "simulator": true
       }
     },
     "production": {
+      "autoIncrement": true,
+      "ios": {
+        "image": "latest"
+      },
+      "channel": "production",
       "env": {
         "EXPO_PUBLIC_GRAPHQL_ENDPOINT": "https://tangocloud.app/api/graphql"
-      },
-      "ios": {
-        "resourceClass": "m-medium"
       }
     }
   },
