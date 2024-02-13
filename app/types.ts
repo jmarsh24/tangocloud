@@ -9,6 +9,7 @@ export type Track = {
   audios: Audio[];
   singers: Singer[];
   composer: Composer;
+  url: string;
 };
 
 export type Audio = {

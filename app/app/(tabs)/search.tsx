@@ -1,7 +1,8 @@
-import { FlatList, TextInput, View, Text, StyleSheet, ActivityIndicator,} from 'react-native';
+import { TextInput, View, Text, StyleSheet, ActivityIndicator} from 'react-native';
+import { FlashList } from "@shopify/flash-list";
 import TrackListItem from '@/components/TrackListItem';
 import { AntDesign } from '@expo/vector-icons';
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { useTheme } from '@react-navigation/native';
 import { SEARCH_RECORDINGS } from '@/graphql';
@@ -11,40 +12,18 @@ export default function SearchScreen() {
   const styles = getStyles(colors);
 
   const [search, setSearch] = useState('');
-  const [page, setPage] = useState(1);
-  const [isFetchingMore, setIsFetchingMore] = useState(false);
 
-  const { data, loading, error, fetchMore } = useQuery(SEARCH_RECORDINGS, {
+  const { data, loading, error } = useQuery(SEARCH_RECORDINGS, {
     variables: { query: search, page: 1, per_page: 50 },
     fetchPolicy: 'cache-and-network',
   });
 
   const tracks = data?.searchRecordings || [];
-  const loadMoreTracks = useCallback(() => {
-    if (isFetchingMore) return;
-
-    setIsFetchingMore(true);
-    setPage(prevPage => prevPage + 1);
-
-    fetchMore({
-      variables: { q: search, page: page + 1, per_page: 10 },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        setIsFetchingMore(false);
-        if (!fetchMoreResult) return prev;
-        return Object.assign({}, prev, {
-          searchRecordings: [
-            ...prev.searchRecordings,
-            ...fetchMoreResult.searchRecordings,
-          ],
-        });
-      },
-    });
-  }, [isFetchingMore, search, page, fetchMore]);
 
   const ItemSeparator = () => <View style={styles.itemSeperator} />;
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <View style={styles.header}>
         <View style={styles.searchContainer}>
           <AntDesign name="search1" size={20} style={styles.searchIcon} />
@@ -74,15 +53,13 @@ export default function SearchScreen() {
       {loading && <ActivityIndicator />}
       {error && <Text>Failed to fetch tracks</Text>}
 
-      <FlatList
+      <FlashList
         data={tracks}
         renderItem={({ item }) => <TrackListItem track={item} />}
-        keyExtractor={item => item.id + Math.random().toString()} // Example of creating a more unique key
         ItemSeparatorComponent={ItemSeparator}
         showsVerticalScrollIndicator={false}
         style={styles.list}
-        onEndReached={loadMoreTracks}
-        onEndReachedThreshold={0.5} // Trigger the load more function when halfway through the last item
+        estimatedItemSize={50}
       />
     </View>
   );

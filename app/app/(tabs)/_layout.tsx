@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useColorScheme, View, StyleSheet, Image } from 'react-native';
 import { useAuth } from '@/providers/AuthProvider';
@@ -6,9 +6,13 @@ import { useQuery } from '@apollo/client';
 import { CURRENT_USER_PROFILE } from '@/graphql';
 import { BottomTabBar } from '@react-navigation/bottom-tabs';
 import { Tabs } from 'expo-router';
-
 import Colors from '@/constants/Colors';
 import Player from '@/components/Player';
+import { SetupService } from '@/services/SetupService';
+import TrackPlayer from 'react-native-track-player';
+import { PlaybackService } from '@/services/PlaybackService';
+
+TrackPlayer.registerPlaybackService(() => PlaybackService);
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof AntDesign>['name'];
@@ -20,6 +24,10 @@ function TabBarIcon(props: {
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { authState } = useAuth();
+
+  useEffect(() => {
+    SetupService().catch(console.error);
+  }, []);
 
   const { data, loading, error } = useQuery(CURRENT_USER_PROFILE, {
     skip: !authState.authenticated,

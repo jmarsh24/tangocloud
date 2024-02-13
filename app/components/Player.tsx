@@ -1,50 +1,51 @@
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Image } from 'react-native';
 import { Link } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import { usePlayerContext } from '@/providers/PlayerProvider';
 import Colors from '@/constants/Colors';
+import TrackPlayer, { Event } from 'react-native-track-player';
+import { PlayPauseButton } from '@/components/PlayPauseButton';
+import { TrackInfo } from '@/components/TrackInfo';
 
 const Player = () => {
-  const { track, playTrack, pauseTrack, isPlaying } = usePlayerContext();
+  const [track, setTrack] = useState(null);
 
   useEffect(() => {
-    playTrack();
-  }, [track]);
+    const fetchCurrentTrack = async () => {
+      let trackIndex = await TrackPlayer.getActiveTrackIndex();
+      if (trackIndex !== undefined) {
+        let trackObject = await TrackPlayer.getTrack(trackIndex);
+        setTrack(trackObject);
+      } else {
+        setTrack(null);
+      }
+    };
 
-  const onPlayPause = async () => {
-    if (isPlaying) {
-      await pauseTrack();
-    } else {
-      await playTrack();
-    }
-  };
+    fetchCurrentTrack();
+
+    const onTrackChange = TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async () => {
+        let trackIndex = await TrackPlayer.getActiveTrackIndex();
+        let trackObject = await TrackPlayer.getTrack(trackIndex);
+        setTrack(trackObject);
+      }
+    );
+
+    return () => {
+      onTrackChange.remove();
+    };
+  }, []);
 
   if (!track) {
     return null;
   }
-
   return (
     <View style={styles.container}>
       <Link href="/track">
         <View style={styles.player}>
-          <Image source={{ uri: track.albumArtUrl }} style={styles.image} />
+          <Image source={{ uri: track?.artwork }} style={styles.image} />
           <View style={styles.info}>
-            <Text style={styles.title}>{track.title}</Text>
-            <Text style={styles.subtitle}>{track?.orchestra.name}</Text>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.subtitle}>{track?.recordedDate}</Text>
-              <Text style={styles.subtitle}>{track?.genre.name}</Text>
-            </View>
+            <TrackInfo track={track} />
           </View>
-
-          <Ionicons
-            onPress={onPlayPause}
-            disabled={false}
-            name={isPlaying ? 'pause' : 'play'}
-            size={22}
-            color={track ? Colors.dark.text : Colors.dark.tint }
-          />
+          <PlayPauseButton />
         </View>
       </Link>
     </View>

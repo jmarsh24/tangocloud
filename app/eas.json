@@ -16,6 +16,8 @@
     },
     "development": {
       "extends": "base",
+      "developmentClient": true,
+      "distribution": "internal",
       "env": {
         "ENVIRONMENT": "development",
         "EXPO_PUBLIC_GRAPHQL_ENDPOINT": "http://localhost:3000/api/graphql"
@@ -26,9 +28,14 @@
         "gradleCommand": ":app:assembleDebug"
       },
       "ios": {
-        "simulator": true,
         "buildConfiguration": "Debug",
         "resourceClass": "m-medium"
+      }
+    },
+    "development-simulator": {
+      "extends": "development",
+      "ios": {
+        "simulator": true
       }
     },
     "production": {
