@@ -26,9 +26,14 @@
         "gradleCommand": ":app:assembleDebug"
       },
       "ios": {
-        "simulator": true,
         "buildConfiguration": "Debug",
         "resourceClass": "m-medium"
+      }
+    },
+    "development-simulator": {
+      "extends": "development",
+      "ios": {
+        "simulator": true
       }
     },
     "production": {

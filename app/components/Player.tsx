@@ -1,48 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import { Link } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import TrackPlayer, { usePlaybackState, useTrackPlayerEvents, Event, State } from 'react-native-track-player';
 import Colors from '@/constants/Colors';
+import TrackPlayer from 'react-native-track-player';
 import { PlayPauseButton } from '@/components/PlayPauseButton';
+import { TrackInfo } from '@/components/TrackInfo';
 
 const Player = () => {
-  const [track, setTrack] = useState<Track | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const playbackState = usePlaybackState();
+  const [track, setTrack] = useState(null);
 
   useEffect(() => {
     const fetchCurrentTrack = async () => {
-      const currentTrackId = await TrackPlayer.getCurrentTrack();
-      if (currentTrackId !== null) {
-        const currentTrack = await TrackPlayer.getTrack(currentTrackId);
-        setTrack(currentTrack);
-      }
+      let trackIndex = await TrackPlayer.getActiveTrackIndex();
+      let trackObject = await TrackPlayer.getTrack(trackIndex);
+      setTrack(trackObject);
     };
 
     fetchCurrentTrack();
-  }, [playbackState]);
-
-  useTrackPlayerEvents([Event.PlaybackTrackChanged], async (event) => {
-    if (event.type === Event.PlaybackTrackChanged && event.nextTrack !== null) {
-      const track = await TrackPlayer.getTrack(event.nextTrack);
-      setTrack(track);
-    }
-  });
-
-  const onPlayPause = async () => {
-    const state = await TrackPlayer.getState();
-    if (state == State.Playing) {
-      await TrackPlayer.pause();
-    } else {
-      await TrackPlayer.play();
-    }
-  };
-
-
-  if (!track) {
-    return null;
-  }
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -50,11 +25,8 @@ const Player = () => {
         <View style={styles.player}>
           <Image source={{ uri: track.artwork }} style={styles.image} />
           <View style={styles.info}>
-            <Text style={styles.title}>{track.title}</Text>
-            <Text style={styles.subtitle}>{track.artist}</Text>
-            {/* Additional track info here */}
+            <TrackInfo track={track} />
           </View>
-
           <PlayPauseButton />
         </View>
       </Link>
