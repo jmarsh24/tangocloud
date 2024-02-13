@@ -22,6 +22,7 @@
     "@expo/vector-icons": "^14.0.0",
     "@nerdgeschoss/react-use-form-library": "^0.0.68",
     "@nerdgeschoss/shimmer": "^0.0.34",
+    "@react-native-community/slider": "4.4.2",
     "@react-navigation/drawer": "^6.6.6",
     "@react-navigation/native": "^6.0.2",
     "classnames": "^2.5.1",

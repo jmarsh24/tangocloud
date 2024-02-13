@@ -3,6 +3,9 @@ import { StyleSheet, View, Text, Image, Animated, Dimensions } from 'react-nativ
 import { useTheme } from '@react-navigation/native';
 import TrackPlayer from 'react-native-track-player';
 import { PlayerControls } from '@/components/PlayerControls';
+import { Progress } from '@/components/Progress';
+import { Spacer } from '@/components/Spacer';
+import { TrackInfo } from '@/components/TrackInfo';
 
 export default function TrackScreen() {
   const vinylRecordImg = require('@/assets/images/vinyl_3x.png');
@@ -50,13 +53,10 @@ export default function TrackScreen() {
           ]}
         />
       </Animated.View>
-
-      <View style={styles.trackInfo}>
-        <Text style={styles.title}>{track?.title || 'Unknown Track'}</Text>
-        <Text style={styles.subtitle}>{track?.artist || 'Unknown Artist'}</Text>
-      </View>
-
       <View style={styles.controls}>
+        <TrackInfo track={track} />
+        <Progress />
+        <Spacer />
         <PlayerControls />
       </View>
     </View>
@@ -108,9 +108,8 @@ export default function TrackScreen() {
         color: colors.text,
       },
       controls: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
         paddingHorizontal: 50,
         paddingBottom: 20,
       },
