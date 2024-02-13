@@ -4,6 +4,7 @@ import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import TrackPlayer, { usePlaybackState, useTrackPlayerEvents, Event, State } from 'react-native-track-player';
 import Colors from '@/constants/Colors';
+import { PlayPauseButton } from '@/components/PlayPauseButton';
 
 const Player = () => {
   const [track, setTrack] = useState<Track | null>(null);
@@ -54,13 +55,7 @@ const Player = () => {
             {/* Additional track info here */}
           </View>
 
-          <Pressable onPress={onPlayPause}>
-            <Ionicons
-              name={isPlaying ? 'pause' : 'play'}
-              size={22}
-              color={Colors.dark.text}
-            />
-          </Pressable>
+          <PlayPauseButton />
         </View>
       </Link>
     </View>
