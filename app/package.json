@@ -9,8 +9,6 @@
     "lint:format": "prettier --list-different \"src/**/*.{tsx,ts,css,scss,json,yml}\" \"*.yml\"",
     "format": "prettier --write \"src/**/*.{tsx,ts,css,scss,json,yml}\" \"*.yml\"",
     "test": "playwright test",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build -o public/storybook --test",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
