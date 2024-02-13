@@ -142,6 +142,11 @@ type Period {
 
 type Query {
   """
+  Get the profile of the currently authenticated user.
+  """
+  currentUserProfile: User!
+
+  """
   Get audio by ID.
   """
   getAudio(
@@ -235,6 +240,7 @@ type Singer {
 
 type User {
   admin: Boolean!
+  avatarUrl: String
   createdAt: ISO8601DateTime!
   email: String!
   firstName: String
