@@ -13,23 +13,32 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "config": {
         "usesNonExemptEncryption": false
       },
       "infoPlist": {
-        "UIBackgroundModes": ["audio"],
+        "UIBackgroundModes": [
+          "audio"
+        ],
         "NSMicrophoneUsageDescription": "This app needs access to the speaker for streaming music.",
         "ITSAppUsesNonExemptEncryption": false
       },
       "supportsTablet": true,
-      "bundleIdentifier": "tangocloud"
+      "bundleIdentifier": "tangocloud",
+      "runtimeVersion": "1.0.0",
+      "buildNumber": "2"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "runtimeVersion": {
+        "policy": "appVersion"
       }
     },
     "web": {
@@ -53,6 +62,9 @@
       "eas": {
         "projectId": "40b28cff-7ae4-44c3-b2b4-da1eb1d5081b"
       }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/40b28cff-7ae4-44c3-b2b4-da1eb1d5081b"
     }
   }
 }

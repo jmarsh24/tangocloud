@@ -36,6 +36,7 @@
     "expo-splash-screen": "~0.26.4",
     "expo-status-bar": "~1.11.1",
     "expo-system-ui": "~2.9.3",
+    "expo-updates": "~0.24.10",
     "expo-web-browser": "~12.8.2",
     "i18n-js": "^4.3.2",
     "luxon": "^3.4.4",

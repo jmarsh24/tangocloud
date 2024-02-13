@@ -9,9 +9,6 @@ export const LOGIN_MUTATION = gql`
         email
         name
       }
-      errors {
-        fullMessages
-      }
       token
     }
   }
