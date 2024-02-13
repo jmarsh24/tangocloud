@@ -23,6 +23,7 @@
     "@react-native-community/slider": "4.4.2",
     "@react-navigation/drawer": "^6.6.6",
     "@react-navigation/native": "^6.0.2",
+    "@shopify/flash-list": "1.6.3",
     "classnames": "^2.5.1",
     "date-fns": "^3.0.6",
     "expo": "~50.0.6",

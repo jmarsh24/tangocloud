@@ -11,19 +11,29 @@ const Player = () => {
 
   useEffect(() => {
     const fetchCurrentTrack = async () => {
-      let trackIndex = await TrackPlayer.getActiveTrackIndex();
+    let trackIndex = await TrackPlayer.getActiveTrackIndex();
+    // Check if trackIndex is a valid, non-negative integer
+    if (trackIndex !== undefined) {
       let trackObject = await TrackPlayer.getTrack(trackIndex);
       setTrack(trackObject);
-    };
+    } else {
+      // Handle the case where there is no active track
+      setTrack(null);
+    }
+  };
 
     fetchCurrentTrack();
   }, []);
 
+  if (!track) {
+    return null;
+  }
+  
   return (
     <View style={styles.container}>
       <Link href="/track">
         <View style={styles.player}>
-          <Image source={{ uri: track.artwork }} style={styles.image} />
+          <Image source={{ uri: track?.artwork }} style={styles.image} />
           <View style={styles.info}>
             <TrackInfo track={track} />
           </View>
