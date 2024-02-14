@@ -1,24 +1,65 @@
-import { TextInput, View, Text, StyleSheet, ActivityIndicator} from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { TextInput, View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
 import TrackListItem from '@/components/TrackListItem';
 import { AntDesign } from '@expo/vector-icons';
-import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { useTheme } from '@react-navigation/native';
 import { SEARCH_RECORDINGS } from '@/graphql';
+import _ from 'lodash'; 
 
 export default function SearchScreen() {
   const { colors } = useTheme();
   const styles = getStyles(colors);
-
+  const ITEMS_PER_PAGE = 10;
   const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
 
-  const { data, loading, error } = useQuery(SEARCH_RECORDINGS, {
-    variables: { query: search, page: 1, per_page: 50 },
+  const { data, loading, fetchMore } = useQuery(SEARCH_RECORDINGS, {
+    variables: { query: debouncedSearch || "*", first: ITEMS_PER_PAGE },
     fetchPolicy: 'cache-and-network',
+    skip: !debouncedSearch,
   });
 
-  const tracks = data?.searchRecordings || [];
+  const debouncedSetSearch = useCallback(_.debounce(setDebouncedSearch, 500), []);
+
+  useEffect(() => {
+    debouncedSetSearch(search);
+    return () => {
+      debouncedSetSearch.cancel();
+    };
+  }, [search, debouncedSetSearch]);
+
+  const loadMoreItems = useCallback(() => {
+    if (data?.searchRecordings.pageInfo.hasNextPage) {
+      fetchMore({
+        variables: {
+          after: data.searchRecordings.pageInfo.endCursor,
+        },
+        updateQuery: (prevResult, { fetchMoreResult }) => {
+          const newEdges = fetchMoreResult.searchRecordings.edges;
+          const pageInfo = fetchMoreResult.searchRecordings.pageInfo;
+
+          return newEdges.length
+            ? {
+                searchRecordings: {
+                  __typename: prevResult.searchRecordings.__typename,
+                  edges: [...prevResult.searchRecordings.edges, ...newEdges],
+                  pageInfo,
+                },
+              }
+            : prevResult;
+        },
+      });
+    }
+  }, [data?.searchRecordings.pageInfo, fetchMore]);
+
+  const tracks = data?.searchRecordings.edges.map(edge => edge.node) || [];
+
+  const renderItem = useCallback(
+    ({ item }) => <TrackListItem track={item} />,
+    []
+  );
 
   const ItemSeparator = () => <View style={styles.itemSeperator} />;
 
@@ -50,16 +91,16 @@ export default function SearchScreen() {
         </Text>
       </View>
 
-      {loading && <ActivityIndicator />}
-      {error && <Text>Failed to fetch tracks</Text>}
-
       <FlashList
         data={tracks}
-        renderItem={({ item }) => <TrackListItem track={item} />}
+        renderItem={renderItem}
         ItemSeparatorComponent={ItemSeparator}
+        ListFooterComponent={loading ? ActivityIndicator : null}
+        onEndReached={loadMoreItems}
+        onEndReachedThreshold={0.5}
         showsVerticalScrollIndicator={false}
-        style={styles.list}
         estimatedItemSize={50}
+        keyExtractor={item => item.id}
       />
     </View>
   );
@@ -109,11 +150,11 @@ function getStyles(colors) {
       color: colors.text,
       fontSize: 12,
     },
-    list: {
-      flexDirection: 'column',
-      gap: 5,
-      paddingHorizontal: 10,
-    },
+    // list: {
+    //   flexDirection: 'column',
+    //   gap: 5,
+    //   paddingHorizontal: 10,
+    // },
     itemSeperator: {
       height: 10,
     },

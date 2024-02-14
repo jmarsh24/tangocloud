@@ -1,22 +1,34 @@
 import { gql } from "@apollo/client";
 
 export const SEARCH_RECORDINGS = gql`
-  query MyQuery($query: String!) {
-    searchRecordings(query: $query) {
-      title
-      orchestra {
-        name
+  query SearchRecordings($query: String!, $first: Int, $after: String) {
+    searchRecordings(query: $query, first: $first, after: $after) {
+      edges {
+        node {
+          id
+          title
+          audios {
+            id
+            duration
+            url
+          }
+          orchestra {
+            name
+          }
+          singers {
+            name
+          }
+          genre {
+            name
+          }
+          recordedDate
+        }
       }
-      singers {
-        name
-      }
-      audios {
-        url
-      }
-      albumArtUrl
-      recordedDate
-      genre {
-        name
+      pageInfo {
+        endCursor
+        startCursor
+        hasNextPage
+        hasPreviousPage
       }
     }
   }
