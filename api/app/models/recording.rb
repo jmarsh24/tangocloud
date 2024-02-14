@@ -23,7 +23,7 @@ class Recording < ApplicationRecord
 
   enum recording_type: {studio: "studio", live: "live"}
 
-  def self.search_recordings(query, page: 1, per_page: 10)
+  def self.search_recordings(query)
     Recording.search(query,
       fields: [
         "title",
@@ -48,9 +48,7 @@ class Recording < ApplicationRecord
         :audio_transfers,
         :audios,
         audio_transfers: [album: {album_art_attachment: :blob}]
-      ],
-      page:,
-      per_page:)
+      ])
   end
 
   def search_data
