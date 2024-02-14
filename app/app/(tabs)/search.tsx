@@ -14,7 +14,7 @@ export default function SearchScreen() {
   const [search, setSearch] = useState('');
 
   const { data, loading, error } = useQuery(SEARCH_RECORDINGS, {
-    variables: { query: search, page: 1, per_page: 50 },
+    variables: { query: search || "*", page: 1, per_page: 50 },
     fetchPolicy: 'cache-and-network',
   });
 
@@ -58,7 +58,6 @@ export default function SearchScreen() {
         renderItem={({ item }) => <TrackListItem track={item} />}
         ItemSeparatorComponent={ItemSeparator}
         showsVerticalScrollIndicator={false}
-        style={styles.list}
         estimatedItemSize={50}
       />
     </View>
@@ -109,11 +108,11 @@ function getStyles(colors) {
       color: colors.text,
       fontSize: 12,
     },
-    list: {
-      flexDirection: 'column',
-      gap: 5,
-      paddingHorizontal: 10,
-    },
+    // list: {
+    //   flexDirection: 'column',
+    //   gap: 5,
+    //   paddingHorizontal: 10,
+    // },
     itemSeperator: {
       height: 10,
     },
