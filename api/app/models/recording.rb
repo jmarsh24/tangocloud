@@ -26,7 +26,7 @@ class Recording < ApplicationRecord
   def self.search_recordings(query, page: 1, per_page: 10)
     Recording.search(query,
       fields: [
-        "title^5",
+        "title",
         "composer_names",
         "lyricist_names",
         "lyrics",

@@ -1,26 +1,60 @@
-import { TextInput, View, Text, StyleSheet, ActivityIndicator} from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { TextInput, View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
 import TrackListItem from '@/components/TrackListItem';
 import { AntDesign } from '@expo/vector-icons';
-import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { useTheme } from '@react-navigation/native';
 import { SEARCH_RECORDINGS } from '@/graphql';
+import { debounce } from 'lodash';
 
 export default function SearchScreen() {
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
   const [search, setSearch] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const { data, loading, error } = useQuery(SEARCH_RECORDINGS, {
-    variables: { query: search || "*", page: 1, per_page: 50 },
+  // Debounced setSearch function to optimize performance
+  const debouncedSetSearch = useCallback(debounce(setSearch, 300), []);
+
+  const { data, loading, error, fetchMore } = useQuery(SEARCH_RECORDINGS, {
+    variables: { query: search || "*", page: currentPage, per_page: 50 },
     fetchPolicy: 'cache-and-network',
   });
 
   const tracks = data?.searchRecordings || [];
 
+  const fetchPage = (page) => {
+    if (!loading) {
+      fetchMore({
+        variables: {
+          page: page,
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return prev;
+          return Object.assign({}, prev, {
+            searchRecordings: [...prev.searchRecordings, ...fetchMoreResult.searchRecordings]
+          });
+        },
+      });
+      setCurrentPage(page);
+    }
+  };
+
+  const handleEndReached = () => {
+    // Here you need to implement logic to determine if there are more pages to fetch
+    // For simplicity, we'll just increment the currentPage. You might need to adjust this based on your API's response structure.
+    const nextPage = currentPage + 1;
+    fetchPage(nextPage);
+  };
+
   const ItemSeparator = () => <View style={styles.itemSeperator} />;
+
+  const renderItem = useCallback(
+    ({ item }) => <TrackListItem track={item} />,
+    []
+  );
 
   return (
     <View style={{flex: 1}}>
@@ -29,7 +63,7 @@ export default function SearchScreen() {
           <AntDesign name="search1" size={20} style={styles.searchIcon} />
           <TextInput
             value={search}
-            onChangeText={setSearch}
+            onChangeText={(text) => debouncedSetSearch(text)}
             placeholder="What do you want to listen to?"
             autoCorrect={false}
             autoComplete='off'
@@ -50,15 +84,17 @@ export default function SearchScreen() {
         </Text>
       </View>
 
-      {loading && <ActivityIndicator />}
-      {error && <Text>Failed to fetch tracks</Text>}
-
       <FlashList
         data={tracks}
-        renderItem={({ item }) => <TrackListItem track={item} />}
+        renderItem={renderItem}
         ItemSeparatorComponent={ItemSeparator}
+        ListFooterComponent={ () => loading && <ActivityIndicator />}
+        contentContainerStyle={{ gap: 10 }}
+        onEndReached={handleEndReached}
+        onEndReachedThreshold={0.5}
         showsVerticalScrollIndicator={false}
         estimatedItemSize={50}
+        debug
       />
     </View>
   );
