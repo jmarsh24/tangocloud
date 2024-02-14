@@ -23,10 +23,10 @@ class Recording < ApplicationRecord
 
   enum recording_type: {studio: "studio", live: "live"}
 
-  def self.search_recordings(query, page: 1, per_page: 10)
+  def self.search_recordings(query)
     Recording.search(query,
       fields: [
-        "title^5",
+        "title",
         "composer_names",
         "lyricist_names",
         "lyrics",
@@ -48,9 +48,7 @@ class Recording < ApplicationRecord
         :audio_transfers,
         :audios,
         audio_transfers: [album: {album_art_attachment: :blob}]
-      ],
-      page:,
-      per_page:)
+      ])
   end
 
   def search_data
@@ -67,6 +65,9 @@ class Recording < ApplicationRecord
   end
 
   def album_art_url
+    album_art = audio_transfers.first&.album&.album_art
+    return nil unless album_art.present?
+
     Rails.application.routes.url_helpers.rails_blob_url(audio_transfers.first.album&.album_art)
   end
 end
