@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { TextInput, View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
 import TrackListItem from '@/components/TrackListItem';
@@ -6,55 +6,62 @@ import { AntDesign } from '@expo/vector-icons';
 import { useQuery } from '@apollo/client';
 import { useTheme } from '@react-navigation/native';
 import { SEARCH_RECORDINGS } from '@/graphql';
-import { debounce } from 'lodash';
+import _ from 'lodash'; 
 
 export default function SearchScreen() {
   const { colors } = useTheme();
   const styles = getStyles(colors);
-
+  const ITEMS_PER_PAGE = 10;
   const [search, setSearch] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
 
-  // Debounced setSearch function to optimize performance
-  const debouncedSetSearch = useCallback(debounce(setSearch, 300), []);
-
-  const { data, loading, error, fetchMore } = useQuery(SEARCH_RECORDINGS, {
-    variables: { query: search || "*", page: currentPage, per_page: 50 },
+  const { data, loading, fetchMore } = useQuery(SEARCH_RECORDINGS, {
+    variables: { query: debouncedSearch || "*", first: ITEMS_PER_PAGE },
     fetchPolicy: 'cache-and-network',
+    skip: !debouncedSearch,
   });
 
-  const tracks = data?.searchRecordings || [];
+  const debouncedSetSearch = useCallback(_.debounce(setDebouncedSearch, 500), []);
 
-  const fetchPage = (page) => {
-    if (!loading) {
+  useEffect(() => {
+    debouncedSetSearch(search);
+    return () => {
+      debouncedSetSearch.cancel();
+    };
+  }, [search, debouncedSetSearch]);
+
+  const loadMoreItems = useCallback(() => {
+    if (data?.searchRecordings.pageInfo.hasNextPage) {
       fetchMore({
         variables: {
-          page: page,
+          after: data.searchRecordings.pageInfo.endCursor,
         },
-        updateQuery: (prev, { fetchMoreResult }) => {
-          if (!fetchMoreResult) return prev;
-          return Object.assign({}, prev, {
-            searchRecordings: [...prev.searchRecordings, ...fetchMoreResult.searchRecordings]
-          });
+        updateQuery: (prevResult, { fetchMoreResult }) => {
+          const newEdges = fetchMoreResult.searchRecordings.edges;
+          const pageInfo = fetchMoreResult.searchRecordings.pageInfo;
+
+          return newEdges.length
+            ? {
+                searchRecordings: {
+                  __typename: prevResult.searchRecordings.__typename,
+                  edges: [...prevResult.searchRecordings.edges, ...newEdges],
+                  pageInfo,
+                },
+              }
+            : prevResult;
         },
       });
-      setCurrentPage(page);
     }
-  };
+  }, [data?.searchRecordings.pageInfo, fetchMore]);
 
-  const handleEndReached = () => {
-    // Here you need to implement logic to determine if there are more pages to fetch
-    // For simplicity, we'll just increment the currentPage. You might need to adjust this based on your API's response structure.
-    const nextPage = currentPage + 1;
-    fetchPage(nextPage);
-  };
-
-  const ItemSeparator = () => <View style={styles.itemSeperator} />;
+  const tracks = data?.searchRecordings.edges.map(edge => edge.node) || [];
 
   const renderItem = useCallback(
     ({ item }) => <TrackListItem track={item} />,
     []
   );
+
+  const ItemSeparator = () => <View style={styles.itemSeperator} />;
 
   return (
     <View style={{flex: 1}}>
@@ -63,7 +70,7 @@ export default function SearchScreen() {
           <AntDesign name="search1" size={20} style={styles.searchIcon} />
           <TextInput
             value={search}
-            onChangeText={(text) => debouncedSetSearch(text)}
+            onChangeText={setSearch}
             placeholder="What do you want to listen to?"
             autoCorrect={false}
             autoComplete='off'
@@ -88,13 +95,12 @@ export default function SearchScreen() {
         data={tracks}
         renderItem={renderItem}
         ItemSeparatorComponent={ItemSeparator}
-        ListFooterComponent={ () => loading && <ActivityIndicator />}
-        contentContainerStyle={{ gap: 10 }}
-        onEndReached={handleEndReached}
+        ListFooterComponent={loading ? ActivityIndicator : null}
+        onEndReached={loadMoreItems}
         onEndReachedThreshold={0.5}
         showsVerticalScrollIndicator={false}
         estimatedItemSize={50}
-        debug
+        keyExtractor={item => item.id}
       />
     </View>
   );
