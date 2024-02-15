@@ -12,18 +12,8 @@ class AudioVariant < ApplicationRecord
 
   has_one_attached :audio, dependent: :purge_later
 
-  before_validation :update_filename_from_attachment
-
   def signed_url
     api_audio_variant_url(signed_id)
-  end
-
-  private
-
-  def update_filename_from_attachment
-    if audio.attached? && filename != audio.filename.to_s
-      update_column(:filename, audio.filename.to_s)
-    end
   end
 end
 
