@@ -29,6 +29,8 @@ module AudioProcessing
 
     def convert
       Dir.mkdir(output_directory) unless Dir.exist?(output_directory)
+      permanent_file_path = nil
+
       Tempfile.create([@filename || File.basename(file, ".*"), ".#{format}"], output_directory) do |tempfile|
         output = tempfile.path
 
@@ -53,7 +55,10 @@ module AudioProcessing
 
         yield output if block_given?
 
-        output
+        permanent_filename = @filename || "#{File.basename(file, File.extname(file))}_converted.#{format}"
+        permanent_file_path = File.join(output_directory, permanent_filename)
+        FileUtils.copy_file(output, permanent_file_path)
+        permanent_file_path
       end
     rescue FFMPEG::Error => e
       puts "Failed to convert file: #{e.message}"
