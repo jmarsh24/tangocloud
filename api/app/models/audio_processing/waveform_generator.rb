@@ -1,72 +1,66 @@
 module AudioProcessing
   class WaveformGenerator
+    Waveform = Data.define(:version, :channels, :sample_rate, :samples_per_pixel, :bits, :length, :data).freeze
     def initialize(audio_file)
       @audio_file = audio_file
-      @set_filepath = File.join(Rails.root, "tmp/audios/#{@audio.id}/#{@audio_file.filename}")
-    end
-
-    def generate
-      generate_json
-      generate_image
-      generate_audioforms
-    end
-
-    def generate_audioform(zoom:, scale:, width:, height:)
-      generate_bar_command = <<-SH
-          audiowaveform -i "#{@set_filepath}" \
-            -o "#{@set_filepath}.#{zoom}.#{scale}.bars.#{width}.#{height}.png" \
-            -z #{zoom} --amplitude-scale #{scale} -w #{width} -h #{height} --no-axis-labels --background-color FFFFFF00 \
-            --waveform-color 000000FF --waveform-style bars --bar-width 8 --bar-gap 2
-      SH
-      generate_wave_command = <<-SH
-          audiowaveform -i "#{@set_filepath}" \
-            -o "#{@set_filepath}.#{zoom}.#{scale}.waves.#{width}.#{height}.png" \
-            -z #{zoom} --amplitude-scale #{scale} -w #{width} -h #{height}  \
-            --no-axis-labels --background-color FFFFFF00 --waveform-color 000000FF
-      SH
-      `#{generate_bar_command}`
-      `#{generate_wave_command}`
-
-      ["#{@set_filepath}.#{zoom}.#{scale}.bars.#{width}.#{height}.png",
-        "#{@set_filepath}.#{zoom}.#{scale}.waves.#{width}.#{height}.png"]
-    end
-
-    def generate_json
-      filename = "#{@set_filepath}.json"
-      return filename if File.exist?(filename)
-
-      generate_json_command = <<-SH
-        audiowaveform -i "#{@set_filepath}" \
-          -o "#{filename}" \
-          -z 1024 --amplitude-scale 3.5
-      SH
-
-      `#{generate_json_command}`
-      binding.irb
-    filename
     end
 
     def json
-      return @json if @json
+      audio_path = @audio_file.path
 
-      generate_json
-      @json = JSON.parse(File.read("#{@set_filepath}.json"))
+      if FFMPEG::Movie.new(audio_path).audio_codec != "mp3"
+        convert_to_mp3(audio_path) do |converted_file|
+          audio_path = converted_file.path
+          data = generate_waveform_json(audio_path)
+          return Waveform.new(
+            data["version"],
+            data["channels"],
+            data["sample_rate"],
+            data["samples_per_pixel"],
+            data["bits"],
+            data["length"],
+            data["data"]
+          )
+        end
+      else
+
+      data = generate_waveform_json(audio_path)
+      Waveform.new(
+        data["version"],
+        data["channels"],
+        data["sample_rate"],
+        data["samples_per_pixel"],
+        data["bits"],
+        data["length"],
+        data["data"]
+      )
+      end
     end
 
-    def generate_image(width: 1000, height: 200)
-      image = ChunkyPNG::Image.new(width, height, ChunkyPNG::Color::TRANSPARENT)
+    private
 
-      json["data"].each_with_index do |point, index|
-        x = (index * width / json["length"]).to_i
-        y1 = ((1 - point.to_f / 32768) * height / 2).to_i
-        y2 = ((1 + point.to_f / 32768) * height / 2).to_i
-        image.line(x, y1, x, y2, ChunkyPNG::Color::BLACK)
+    def convert_to_mp3(original_path)
+      movie = FFMPEG::Movie.new(original_path)
+      converted_path = "#{original_path}.mp3"
+      movie.transcode(converted_path, {audio_codec: "mp3"})
+
+      File.open(converted_path) do |file|
+        yield file
       end
+    end
 
-      filename = "#{@set_filepath}.#{width}.#{height}.waveform.png"
-      image.save("#{@set_filepath}.#{width}.#{height}.waveform.png")
-
-      filename
+    def generate_waveform_json(audio_path)
+      Tempfile.create(["audios", ".json"]) do |json_tempfile|
+        command = "audiowaveform -i '#{audio_path}' -o '#{json_tempfile.path}' -z 1024 --amplitude-scale 3.5"
+        _stdout, stderr, status = Open3.capture3(command)
+        if status.success?
+          data = JSON.parse(File.read(json_tempfile.path))
+          data["data"].map! { |value| value.to_f / 32768 }
+          return data
+        else
+          raise "Command failed with error: #{stderr}"
+        end
+      end
     end
   end
 end
