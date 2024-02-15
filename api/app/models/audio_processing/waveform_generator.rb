@@ -24,16 +24,16 @@ module AudioProcessing
         end
       else
 
-      data = generate_waveform_json(audio_path)
-      Waveform.new(
-        data["version"],
-        data["channels"],
-        data["sample_rate"],
-        data["samples_per_pixel"],
-        data["bits"],
-        data["length"],
-        data["data"]
-      )
+        data = generate_waveform_json(audio_path)
+        Waveform.new(
+          data["version"],
+          data["channels"],
+          data["sample_rate"],
+          data["samples_per_pixel"],
+          data["bits"],
+          data["length"],
+          data["data"]
+        )
       end
     end
 
