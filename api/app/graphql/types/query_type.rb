@@ -28,7 +28,7 @@ module Types
       "You've authenticated as #{context[:current_user].presence || "guest"}."
     end
 
-    field :get_audio, Types::AudioType, null: false, description: "Get audio by ID." do
+    field :get_audio_variant, Types::AudioVariantType, null: false, description: "Get audio by ID." do
       argument :id, ID, required: true, description: "ID of the audio."
     end
 

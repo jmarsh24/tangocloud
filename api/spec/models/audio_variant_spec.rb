@@ -1,15 +1,20 @@
-volver_a_sonar_tango_tunes_1940:
-  duration: 180
-  audio_transfer: volver_a_sonar_tango_tunes
-  format: "flac"
-  sample_rate: 44100
-  channels: 1
-  codec: "flac"
-  bit_rate: 123
-  filename: "19401008_volver_a_sonar_roberto_rufino_tango_2476.flac"
+require "rails_helper"
+
+RSpec.describe AudioVariant, type: :model do
+  describe "#signed_url" do
+    it "returns the URL of the audio" do
+      freeze_time
+      audio_variant = audio_variants(:volver_a_sonar_tango_tunes_1940)
+      expected_url = "http://localhost:3000/api/audio_variants/#{audio_variant.signed_id}"
+
+      expect(audio_variant.signed_url).to eq(expected_url)
+    end
+  end
+end
+
 # == Schema Information
 #
-# Table name: audios
+# Table name: audio_variants
 #
 #  id                :uuid             not null, primary key
 #  duration          :integer          default(0), not null

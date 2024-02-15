@@ -8,7 +8,7 @@ export const SEARCH_RECORDINGS = gql`
           id
           title
           albumArtUrl
-          audios {
+          audioVariants {
             id
             duration
             url

@@ -21,7 +21,7 @@ export default function TrackListItem({ track }: TrackListItemProps) {
     const token = await fetchAuthToken(); // Fetch the token
     const trackForPlayer = {
       id: track.id,
-      url: track.audios[0].url, // Your track URL
+      url: track.audioVariants[0].url, // Your track URL
       title: track.title,
       artist: track.orchestra.name,
       artwork: track.albumArtUrl,

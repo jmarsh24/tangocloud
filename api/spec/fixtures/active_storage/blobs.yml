@@ -1,1 +1,2 @@
-volver_a_sonar_tango_tunes_1940: <%= ActiveStorage::FixtureSet.blob filename: "19401008_volver_a_sonar_roberto_rufino_tango_2476.flac" %>
+volver_a_sonar_tango_tunes_1940_compressed: <%= ActiveStorage::FixtureSet.blob filename: "19401008_volver_a_sonar_roberto_rufino_tango_2476_converted.aac" %>
+volver_a_sonar_tango_tunes_1940_source_audio: <%= ActiveStorage::FixtureSet.blob filename: "19401008_volver_a_sonar_roberto_rufino_tango_2476.flac" %>

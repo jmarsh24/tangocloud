@@ -1,4 +1,4 @@
-class Audio < ApplicationRecord
+class AudioVariant < ApplicationRecord
   include Rails.application.routes.url_helpers
   belongs_to :audio_transfer
 
@@ -10,26 +10,26 @@ class Audio < ApplicationRecord
   validates :codec, presence: true
   validates :filename, presence: true, uniqueness: true
 
-  has_one_attached :file, dependent: :purge_later
+  has_one_attached :audio, dependent: :purge_later
 
   before_validation :update_filename_from_attachment
 
   def signed_url
-    api_audio_url(signed_id)
+    api_audio_variant_url(signed_id)
   end
 
   private
 
   def update_filename_from_attachment
-    if file.attached? && filename != file.filename.to_s
-      update_column(:filename, file.filename.to_s)
+    if audio.attached? && filename != audio.filename.to_s
+      update_column(:filename, audio.filename.to_s)
     end
   end
 end
 
 # == Schema Information
 #
-# Table name: audios
+# Table name: audio_variants
 #
 #  id                :uuid             not null, primary key
 #  duration          :integer          default(0), not null

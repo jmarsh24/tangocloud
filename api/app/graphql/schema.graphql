@@ -1,4 +1,15 @@
-type Audio {
+type AudioTransfer {
+  albumId: ID
+  createdAt: ISO8601Date
+  externalId: String
+  id: ID
+  position: Int
+  recordingId: ID
+  transferAgentId: ID
+  updatedAt: ISO8601Date
+}
+
+type AudioVariant {
   audioTransferId: Uuid!
   bitRate: Int
   channels: Int
@@ -12,17 +23,6 @@ type Audio {
   sampleRate: Int
   updatedAt: ISO8601DateTime!
   url: String!
-}
-
-type AudioTransfer {
-  albumId: ID
-  createdAt: ISO8601Date
-  externalId: String
-  id: ID
-  position: Int
-  recordingId: ID
-  transferAgentId: ID
-  updatedAt: ISO8601Date
 }
 
 type Composer {
@@ -130,6 +130,31 @@ type Orchestra {
   sortName: String
 }
 
+"""
+Information about pagination in a connection.
+"""
+type PageInfo {
+  """
+  When paginating forwards, the cursor to continue.
+  """
+  endCursor: String
+
+  """
+  When paginating forwards, are there more items?
+  """
+  hasNextPage: Boolean!
+
+  """
+  When paginating backwards, are there more items?
+  """
+  hasPreviousPage: Boolean!
+
+  """
+  When paginating backwards, the cursor to continue.
+  """
+  startCursor: String
+}
+
 type Period {
   description: String
   endYear: Int
@@ -149,12 +174,12 @@ type Query {
   """
   Get audio by ID.
   """
-  getAudio(
+  getAudioVariant(
     """
     ID of the audio.
     """
     id: ID!
-  ): Audio!
+  ): AudioVariant!
   searchElRecodoSongs(
     """
     Page number.
@@ -177,20 +202,30 @@ type Query {
   """
   searchRecordings(
     """
-    Page number.
+    Returns the elements in the list that come after the specified cursor.
     """
-    page: Int
+    after: String
 
     """
-    Number of results per page.
+    Returns the elements in the list that come before the specified cursor.
     """
-    perPage: Int
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
 
     """
     Query to search for.
     """
     query: String!
-  ): [Recording!]!
+  ): RecordingConnection!
 
   """
   Who am I
@@ -208,7 +243,7 @@ type RecordLabel {
 type Recording {
   albumArtUrl: String
   audioTransfer: AudioTransfer!
-  audios: [Audio!]
+  audioVariants: [AudioVariant!]
   bpm: Int
   composer: Composer
   composition: Composition
@@ -225,6 +260,41 @@ type Recording {
   singers: [Singer!]
   slug: String!
   title: String!
+}
+
+"""
+The connection type for Recording.
+"""
+type RecordingConnection {
+  """
+  A list of edges.
+  """
+  edges: [RecordingEdge]
+
+  """
+  A list of nodes.
+  """
+  nodes: [Recording]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+}
+
+"""
+An edge in a connection.
+"""
+type RecordingEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge.
+  """
+  node: Recording
 }
 
 type Singer {

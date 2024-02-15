@@ -18,6 +18,6 @@ module Types
     field :album_art_url, String, null: true
     field :audio_transfer, Types::AudioTransferType, null: false
     field :singers, [Types::SingerType], null: true
-    field :audios, [Types::AudioType], null: true
+    field :audio_variants, [Types::AudioVariantType], null: true
   end
 end
