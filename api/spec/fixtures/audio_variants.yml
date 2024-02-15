@@ -1,0 +1,26 @@
+volver_a_sonar_tango_tunes_1940:
+  duration: 180
+  audio_transfer: volver_a_sonar_tango_tunes_1940
+  format: "aac"
+  sample_rate: 44100
+  channels: 1
+  codec: "aac"
+  bit_rate: 123
+  filename: "19401008_volver_a_sonar_roberto_rufino_tango_2476_converted.aac"
+# == Schema Information
+#
+# Table name: audio_variants
+#
+#  id                :uuid             not null, primary key
+#  duration          :integer          default(0), not null
+#  format            :string           not null
+#  codec             :string           not null
+#  bit_rate          :integer
+#  sample_rate       :integer
+#  channels          :integer
+#  metadata          :jsonb            not null
+#  audio_transfer_id :uuid             not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  filename          :string
+#

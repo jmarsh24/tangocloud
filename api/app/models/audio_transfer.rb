@@ -2,7 +2,11 @@ class AudioTransfer < ApplicationRecord
   belongs_to :transfer_agent
   belongs_to :recording
   belongs_to :album
-  has_many :audios, dependent: :destroy
+  has_many :audio_variants, dependent: :destroy
+
+  validates :filename, presence: true, uniqueness: true
+
+  has_one_attached :source_audio, dependent: :purge_later
 end
 
 # == Schema Information
@@ -17,4 +21,5 @@ end
 #  recording_id      :uuid
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  filename          :string           not null
 #
