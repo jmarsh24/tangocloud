@@ -11,7 +11,7 @@ import _ from 'lodash';
 export default function SearchScreen() {
   const { colors } = useTheme();
   const styles = getStyles(colors);
-  const ITEMS_PER_PAGE = 10;
+  const ITEMS_PER_PAGE = 30;
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState(search);
 
@@ -95,9 +95,9 @@ export default function SearchScreen() {
         data={tracks}
         renderItem={renderItem}
         ItemSeparatorComponent={ItemSeparator}
-        ListFooterComponent={loading ? ActivityIndicator : null}
+        ListFooterComponent={() => loading && <ActivityIndicator />}
         onEndReached={loadMoreItems}
-        onEndReachedThreshold={0.5}
+        onEndReachedThreshold={5}
         showsVerticalScrollIndicator={false}
         estimatedItemSize={50}
         keyExtractor={item => item.id}
