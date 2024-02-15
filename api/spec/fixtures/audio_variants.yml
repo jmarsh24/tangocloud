@@ -1,6 +1,6 @@
-volver_a_sonar_tango_tunes_1940:
+volver_a_sonar_tango_tunes_1940_audio_variant:
   duration: 180
-  audio_transfer: volver_a_sonar_tango_tunes_1940
+  audio_transfer: volver_a_sonar_tango_tunes_1940_audio_transfer
   format: "aac"
   sample_rate: 44100
   channels: 1
