@@ -72,6 +72,9 @@ RSpec.describe Import::Music::SongImporter do
         recording = audio_transfer.recording
         # attaches source audio to audio_transfer
         expect(audio_transfer.source_audio).to be_attached
+        # creates a waveform for the audio_transfer
+        expect(audio_transfer.waveform).to be_present
+        expect(audio_transfer.waveform.data).to be_present
 
         expect(recording.title).to eq("volver a sonar")
         expect(recording.bpm).to eq(130)
@@ -138,10 +141,13 @@ RSpec.describe Import::Music::SongImporter do
         expect(audio_transfer.recording.composition.lyricist.name).to eq("gabriel clausi")
         #  creates a new composer
         expect(audio_transfer.recording.composition.composer.name).to eq("eduardo arolas")
+        # creates a waveform for the audio_transfer
+        expect(audio_transfer.waveform).to be_present
+        expect(audio_transfer.waveform.data).to be_present
+        expect(audio_transfer.source_audio).to be_attached
         #  creates a new recording
         expect(audio_transfer.recording.title).to eq("comme il faut")
         # attaches source audio to audio_transfer
-        expect(audio_transfer.source_audio).to be_attached
         expect {
           described_class.new(file: aif_file).import
         }.to raise_error(Import::Music::SongImporter::DuplicateFileError)

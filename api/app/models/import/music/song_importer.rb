@@ -85,7 +85,7 @@ module Import
             end
           end
 
-          raise if album.audio_transfers.find_by(filename: File.basename(@file))
+          raise DuplicateFileError if album.audio_transfers.find_by(filename: File.basename(@file))
 
           audio_transfer = album.audio_transfers.create!(
             external_id: @metadata.catalog_number,
@@ -96,6 +96,18 @@ module Import
           )
 
           audio_transfer.source_audio.attach(io: File.open(@file), filename: File.basename(@file))
+
+          waveform = AudioProcessing::WaveformGenerator.new(File.open(@file)).json
+
+          audio_transfer.create_waveform!(
+            version: waveform.version,
+            channels: waveform.channels,
+            sample_rate: waveform.sample_rate,
+            samples_per_pixel: waveform.samples_per_pixel,
+            bits: waveform.bits,
+            length: waveform.length,
+            data: waveform.data
+          )
 
           transfer_agent.audio_transfers << audio_transfer
 

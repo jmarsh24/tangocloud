@@ -3,6 +3,7 @@ class AudioTransfer < ApplicationRecord
   belongs_to :recording
   belongs_to :album
   has_many :audio_variants, dependent: :destroy
+  has_one :waveform, dependent: :destroy
 
   validates :filename, presence: true, uniqueness: true
 

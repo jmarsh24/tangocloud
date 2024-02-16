@@ -527,7 +527,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_16_000907) do
   create_table "waveforms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "audio_transfer_id", null: false
     t.integer "version", null: false
-    t.integer "channel", null: false
+    t.integer "channels", null: false
     t.integer "sample_rate", null: false
     t.integer "samples_per_pixel", null: false
     t.integer "bits", null: false

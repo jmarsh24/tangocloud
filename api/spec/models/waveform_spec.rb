@@ -11,7 +11,7 @@ end
 #  id                :uuid             not null, primary key
 #  audio_transfer_id :uuid             not null
 #  version           :integer          not null
-#  channel           :integer          not null
+#  channels          :integer          not null
 #  sample_rate       :integer          not null
 #  samples_per_pixel :integer          not null
 #  bits              :integer          not null

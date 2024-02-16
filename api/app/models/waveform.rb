@@ -1,7 +1,7 @@
 class Waveform < ApplicationRecord
   belongs_to :audio_transfer
-  validates :version, :channels, :sample_rate, :samples_per_pixel, :bits, :length, :data, presence: true
-  validates :version, :channel, :sample_rate, :samples_per_pixel, :bits, :length, numericality: { only_integer: true }
+  # validates :version, :channels, :sample_rate, :samples_per_pixel, :bits, :length, :data, presence: true
+  # validates :version, :channels, :sample_rate, :samples_per_pixel, :bits, :length, numericality: { only_integer: true }
 end
 
 # == Schema Information
@@ -11,7 +11,7 @@ end
 #  id                :uuid             not null, primary key
 #  audio_transfer_id :uuid             not null
 #  version           :integer          not null
-#  channel           :integer          not null
+#  channels          :integer          not null
 #  sample_rate       :integer          not null
 #  samples_per_pixel :integer          not null
 #  bits              :integer          not null
