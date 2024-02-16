@@ -10,7 +10,7 @@ module Types
     field :samples_per_pixel, Integer, null: false
     field :bits, Integer, null: false
     field :length, Integer, null: false
-    field :data, Float
+    field :data, [Float], null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
   end

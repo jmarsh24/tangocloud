@@ -260,6 +260,7 @@ type Recording {
   singers: [Singer!]
   slug: String!
   title: String!
+  waveform: Waveform
 }
 
 """
@@ -330,6 +331,20 @@ type Uuid
 type ValidationErrors {
   details: String!
   fullMessages: [String!]!
+}
+
+type Waveform {
+  audioTransferId: Uuid!
+  bits: Int!
+  channels: Int!
+  createdAt: ISO8601DateTime!
+  data: Float
+  id: ID!
+  length: Int!
+  sampleRate: Int!
+  samplesPerPixel: Int!
+  updatedAt: ISO8601DateTime!
+  version: Int!
 }
 
 """
