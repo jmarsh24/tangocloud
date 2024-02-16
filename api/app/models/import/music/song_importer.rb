@@ -85,7 +85,7 @@ module Import
             end
           end
 
-          raise DuplicateFileError if album.audio_transfers.find_by(filename: File.basename(@file))
+          raise if album.audio_transfers.find_by(filename: File.basename(@file))
 
           audio_transfer = album.audio_transfers.create!(
             external_id: @metadata.catalog_number,

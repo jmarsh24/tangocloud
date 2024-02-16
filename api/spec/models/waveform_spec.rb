@@ -1,0 +1,22 @@
+require "rails_helper"
+
+RSpec.describe Waveform, type: :model do
+  pending "add some examples to (or delete) #{__FILE__}"
+end
+
+# == Schema Information
+#
+# Table name: waveforms
+#
+#  id                :uuid             not null, primary key
+#  audio_transfer_id :uuid             not null
+#  version           :integer          not null
+#  channel           :integer          not null
+#  sample_rate       :integer          not null
+#  samples_per_pixel :integer          not null
+#  bits              :integer          not null
+#  length            :integer          not null
+#  data              :float            default([]), is an Array
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#

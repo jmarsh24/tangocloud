@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_15_225046) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_16_000907) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -524,6 +524,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_15_225046) do
     t.index ["recording_id"], name: "index_videos_on_recording_id"
   end
 
+  create_table "waveforms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "audio_transfer_id", null: false
+    t.integer "version", null: false
+    t.integer "channel", null: false
+    t.integer "sample_rate", null: false
+    t.integer "samples_per_pixel", null: false
+    t.integer "bits", null: false
+    t.integer "length", null: false
+    t.float "data", default: [], array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["audio_transfer_id"], name: "index_waveforms_on_audio_transfer_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "audio_transfers", "albums"
@@ -562,4 +576,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_15_225046) do
   add_foreign_key "tanda_recordings", "tandas"
   add_foreign_key "tandas", "audio_transfers"
   add_foreign_key "videos", "recordings"
+  add_foreign_key "waveforms", "audio_transfers"
 end
