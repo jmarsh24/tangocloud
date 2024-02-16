@@ -1,10 +1,10 @@
 require "rails_helper"
 
-RSpec.describe Import::Music::SongImporter do
+RSpec.describe Import::Music::AudioTransferImporter do
   let(:flac_file) { Rails.root.join("spec", "fixtures", "audio", "19401008_volver_a_sonar_roberto_rufino_tango_2476.flac") }
   let(:aif_file) { Rails.root.join("spec", "fixtures", "audio", "19380307_comme_il_faut_instrumental_tango_2758.aif") }
 
-  describe "#import" do
+  describe "#import_frome_file" do
     context "when song is from flac" do
       before do
         ElRecodoSong.create!(
@@ -23,7 +23,7 @@ RSpec.describe Import::Music::SongImporter do
       end
 
       it "sucessfully creates an audio_transfer with the correct attributes" do
-        audio_transfer = described_class.new(file: flac_file).import
+        audio_transfer = described_class.new.import_from_file(flac_file)
         expect(audio_transfer).to be_present
         expect(audio_transfer.external_id).to be_nil
         # creates a reference to the el recodo song
@@ -81,8 +81,8 @@ RSpec.describe Import::Music::SongImporter do
         expect(recording.recorded_date).to eq(Date.new(1940, 10, 8))
         expect(recording.release_date).to eq(Date.new(1940, 10, 8))
         expect {
-          described_class.new(file: flac_file).import
-        }.to raise_error(Import::Music::SongImporter::DuplicateFileError)
+          described_class.new.import_from_file(flac_file)
+        }.to raise_error(Import::Music::AudioTransferImporter::DuplicateFileError)
       end
     end
 
@@ -104,7 +104,7 @@ RSpec.describe Import::Music::SongImporter do
       end
 
       it "creates a new audio with correct attributes" do
-        audio_transfer = described_class.new(file: aif_file).import
+        audio_transfer = described_class.new.import_from_file(aif_file)
         audio_variant = audio_transfer.audio_variants.first
         expect(audio_variant).to be_present
         expect(audio_variant.format).to eq("aac")
@@ -149,8 +149,8 @@ RSpec.describe Import::Music::SongImporter do
         expect(audio_transfer.recording.title).to eq("comme il faut")
         # attaches source audio to audio_transfer
         expect {
-          described_class.new(file: aif_file).import
-        }.to raise_error(Import::Music::SongImporter::DuplicateFileError)
+          described_class.new.import_from_file(aif_file)
+        }.to raise_error(Import::Music::AudioTransferImporter::DuplicateFileError)
       end
     end
   end

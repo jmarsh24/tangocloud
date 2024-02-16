@@ -3,20 +3,21 @@ module Import
     class AudioTransferImporter
       class DuplicateFileError < StandardError; end
       include TextNormalizable
-      attr_reader :audio_transfer
 
       SUPPORTED_MIME_TYPES = ["audio/x-aiff", "audio/flac", "audio/mp4", "audio/mpeg"].freeze
 
-      def initialize(audio_transfer)
-        @audio_transfer = audio_transfer
-        @audio_transfer.audio_file.blob.open do |file|
-          import(file.path)
+      def import_from_file(file)
+        import(file:)
+      end
+
+      def import_from_audio_transfer(audio_transfer)
+        audio_transfer.audio_file.blob.open do |file|
+          import(file:, audio_transfer:)
         end
       end
 
-      def import(file)
+      def import(file:, audio_transfer: nil)
         metadata = AudioProcessing::MetadataExtractor.new(file:).extract_metadata
-
         mime_type = Marcel::MimeType.for(Pathname.new(file))
         return unless SUPPORTED_MIME_TYPES.include?(mime_type)
 
@@ -91,12 +92,18 @@ module Import
 
           raise DuplicateFileError if album.audio_transfers.find_by(filename: File.basename(file))
 
-          audio_transfer.update!(
+          audio_transfer = @audio_transfer || album.audio_transfers.new(
+            filename: File.basename(file)
+          )
+
+          audio_transfer.assign_attributes(
             external_id: metadata.catalog_number,
             transfer_agent:,
             recording:,
             position: metadata.track || album.audio_transfers.count + 1
           )
+
+          audio_transfer.save!
 
           audio_transfer.audio_file.attach(io: File.open(file), filename: File.basename(file))
 
