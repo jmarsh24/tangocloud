@@ -8,8 +8,11 @@ const application = Application.start();
 application.debug = false;
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-const controllers = import.meta.glob("../controllers/**/*_controller.{ts,js}", {
-  eager: true,
-});
+const controllers = import.meta.glob(
+  ["../controllers/**/*_controller.ts", "../controllers/**/*_controller.js"],
+  {
+    eager: true,
+  }
+);
 registerControllers(application, controllers);
 start({ application });
