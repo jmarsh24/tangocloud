@@ -17,6 +17,10 @@ Rails.application.routes.draw do
   get "/auth/:provider/callback", to: "sessions/omniauth#create"
   post "/auth/:provider/callback", to: "sessions/omniauth#create"
 
+  constraints(Constraints::AdminConstraint.new) do
+    resources :audio_transfers, only: [:new, :create]
+  end
+
   if Rails.env.development?
     mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "api/graphql"
   end
@@ -29,7 +33,7 @@ Rails.application.routes.draw do
   namespace :api do
     post "/graphql", to: "graphql#execute"
 
-    resources :audio_variants, only: :show
+    resources :audio_transfers, only: [:show]
   end
 
   root "pages#home"
