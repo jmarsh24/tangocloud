@@ -43,7 +43,7 @@ module AudioProcessing
       movie = FFMPEG::Movie.new(original_path)
 
       Tempfile.create(["converted", ".mp3"]) do |tempfile|
-        movie.transcode(tempfile.path, { audio_codec: "mp3" })
+        movie.transcode(tempfile.path, {audio_codec: "mp3"})
         tempfile.rewind
         yield tempfile
       end
