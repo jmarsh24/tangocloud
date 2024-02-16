@@ -1,0 +1,30 @@
+.audio-upload-container {
+  margin-bottom: 10px;
+}
+
+.progress-wrapper {
+  height: 4px;
+  background-color: #ddd;
+  overflow: hidden;
+  position: relative;
+  border-radius: 2px;
+}
+
+.progress-wrapper-expanded {
+  height: 14px;
+}
+
+.upload-progress-bar {
+  background-color: #4caf50;
+  height: 100%;
+  width: 0%;
+  transition: width 0.2s ease;
+}
+
+.audio-player {
+  margin-top: 10px;
+}
+
+.audio {
+  display: none;
+}
