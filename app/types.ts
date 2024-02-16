@@ -6,13 +6,13 @@ export type Track = {
   orchestra: Orchestra;
   lyricist: Lyricist;
   genre: Genre;
-  audios: Audio[];
+  audioVariants: AudioVariant[];
   singers: Singer[];
   composer: Composer;
   url: string;
 };
 
-export type Audio = {
+export type AudioVariant = {
   id: string;
   title: string;
   url: string;

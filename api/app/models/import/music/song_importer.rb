@@ -1,6 +1,7 @@
 module Import
   module Music
     class SongImporter
+      class DuplicateFileError < StandardError; end
       include TextNormalizable
       attr_reader :file
 
@@ -84,19 +85,24 @@ module Import
             end
           end
 
+          raise DuplicateFileError if album.audio_transfers.find_by(filename: File.basename(@file))
+
           audio_transfer = album.audio_transfers.create!(
             external_id: @metadata.catalog_number,
             transfer_agent:,
             recording:,
-            position: @metadata.track || album.audio_transfers.count + 1
+            position: @metadata.track || album.audio_transfers.count + 1,
+            filename: File.basename(@file)
           )
+
+          audio_transfer.source_audio.attach(io: File.open(@file), filename: File.basename(@file))
 
           transfer_agent.audio_transfers << audio_transfer
 
           audio_converter = AudioProcessing::AudioConverter.new(file:)
 
           audio_converter.convert do |file|
-            audio = audio_transfer.audios.create!(
+            audio_variant = audio_transfer.audio_variants.create!(
               bit_rate: audio_converter.bitrate.to_i,
               sample_rate: audio_converter.sample_rate,
               channels: audio_converter.channels,
@@ -107,7 +113,7 @@ module Import
               metadata: @metadata
             )
 
-            audio.file.attach(io: File.open(file), filename: File.basename(file))
+            audio_variant.audio.attach(io: File.open(file), filename: File.basename(file))
           end
           audio_transfer
         end

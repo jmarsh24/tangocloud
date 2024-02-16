@@ -19,6 +19,7 @@ RSpec.describe Import::Music::SongImporter do
           label: "RCA Victor",
           page_updated_at: Date.new(2013, 7, 10)
         )
+        AudioTransfer.find_by(filename: File.basename(flac_file)).destroy!
       end
 
       it "sucessfully creates an audio_transfer with the correct attributes" do
@@ -29,7 +30,7 @@ RSpec.describe Import::Music::SongImporter do
         expect(audio_transfer.recording.el_recodo_song).to be_present
         expect(audio_transfer.recording.el_recodo_song.title).to eq("Volver a soñar")
         # creates a new audio with correct attributes
-        audio = audio_transfer.audios.first
+        audio = audio_transfer.audio_variants.first
         expect(audio).to be_present
         expect(audio.format).to eq("aac")
         expect(audio.bit_rate).to eq(320)
@@ -69,10 +70,16 @@ RSpec.describe Import::Music::SongImporter do
         expect(composer.name).to eq("andres fraga")
         # creates a new recording
         recording = audio_transfer.recording
+        # attaches source audio to audio_transfer
+        expect(audio_transfer.source_audio).to be_attached
+
         expect(recording.title).to eq("volver a sonar")
         expect(recording.bpm).to eq(130)
         expect(recording.recorded_date).to eq(Date.new(1940, 10, 8))
         expect(recording.release_date).to eq(Date.new(1940, 10, 8))
+        expect {
+          described_class.new(file: flac_file).import
+        }.to raise_error(Import::Music::SongImporter::DuplicateFileError)
       end
     end
 
@@ -95,15 +102,15 @@ RSpec.describe Import::Music::SongImporter do
 
       it "creates a new audio with correct attributes" do
         audio_transfer = described_class.new(file: aif_file).import
-        audio = audio_transfer.audios.first
-        expect(audio).to be_present
-        expect(audio.format).to eq("aac")
-        expect(audio.bit_rate).to eq(320)
-        expect(audio.sample_rate).to eq(48000)
-        expect(audio.channels).to eq(1)
-        expect(audio.codec).to eq("aac_at")
-        expect(audio.duration).to eq(163)
-        expect(audio.metadata).to be_present
+        audio_variant = audio_transfer.audio_variants.first
+        expect(audio_variant).to be_present
+        expect(audio_variant.format).to eq("aac")
+        expect(audio_variant.bit_rate).to eq(320)
+        expect(audio_variant.sample_rate).to eq(48000)
+        expect(audio_variant.channels).to eq(1)
+        expect(audio_variant.codec).to eq("aac_at")
+        expect(audio_variant.duration).to eq(163)
+        expect(audio_variant.metadata).to be_present
         #  creates a new audio transfer
         expect(audio_transfer).to be_present
         expect(audio_transfer.external_id).to be_nil
@@ -133,6 +140,11 @@ RSpec.describe Import::Music::SongImporter do
         expect(audio_transfer.recording.composition.composer.name).to eq("eduardo arolas")
         #  creates a new recording
         expect(audio_transfer.recording.title).to eq("comme il faut")
+        # attaches source audio to audio_transfer
+        expect(audio_transfer.source_audio).to be_attached
+        expect {
+          described_class.new(file: aif_file).import
+        }.to raise_error(Import::Music::SongImporter::DuplicateFileError)
       end
     end
   end

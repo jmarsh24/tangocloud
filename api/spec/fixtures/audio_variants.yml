@@ -1,6 +1,6 @@
-volver_a_sonar_tango_tunes_1940:
+volver_a_sonar_tango_tunes_1940_audio_variant:
   duration: 180
-  audio_transfer: volver_a_sonar_tango_tunes
+  audio_transfer: volver_a_sonar_tango_tunes_1940_audio_transfer
   format: "aac"
   sample_rate: 44100
   channels: 1
@@ -9,7 +9,7 @@ volver_a_sonar_tango_tunes_1940:
   filename: "19401008_volver_a_sonar_roberto_rufino_tango_2476_converted.aac"
 # == Schema Information
 #
-# Table name: audios
+# Table name: audio_variants
 #
 #  id                :uuid             not null, primary key
 #  duration          :integer          default(0), not null

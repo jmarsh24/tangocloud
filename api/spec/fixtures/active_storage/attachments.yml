@@ -1,5 +1,10 @@
-volver_a_sonar_tango_tunes_attachment:
-  name: "file"
-  record_type: "Audio"
-  record: volver_a_sonar_tango_tunes_1940
-  blob: volver_a_sonar_tango_tunes_1940
+volver_a_sonar_tango_tunes_compressed_attachment:
+  name: audio
+  record_type: "AudioVariant"
+  record: volver_a_sonar_tango_tunes_1940_audio_variant
+  blob: volver_a_sonar_tango_tunes_1940_compressed
+volver_a_sonar_tango_tunes_source_audio_attachment:
+  name: source_audio
+  record_type: "AudioTransfer"
+  record: volver_a_sonar_tango_tunes_1940_audio_transfer
+  blob: volver_a_sonar_tango_tunes_1940_source_audio

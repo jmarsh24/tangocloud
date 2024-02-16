@@ -1,8 +1,8 @@
-volver_a_sonar_tango_tunes:
+volver_a_sonar_tango_tunes_1940_audio_transfer:
   transfer_agent: tango_tunes
   recording: volver_a_sonar
+  filename: "19401008_volver_a_sonar_roberto_rufino_tango_2476.flac"
   position: 1
-
 # == Schema Information
 #
 # Table name: audio_transfers
@@ -15,4 +15,5 @@ volver_a_sonar_tango_tunes:
 #  recording_id      :uuid
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  filename          :string           not null
 #

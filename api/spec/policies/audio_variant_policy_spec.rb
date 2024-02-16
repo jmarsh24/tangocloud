@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe AudioPolicy, type: :policy do
+RSpec.describe AudioVariantPolicy, type: :policy do
   let(:user) { User.new }
 
   subject { described_class }
