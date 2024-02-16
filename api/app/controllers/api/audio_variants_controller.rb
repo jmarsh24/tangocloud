@@ -4,8 +4,8 @@ module Api
     before_action :set_audio_variant, only: [:show]
 
     def show
-      if @audio_variant.audio.attached?
-        redirect_to(@audio_variant.audio.url, allow_other_host: true)
+      if @audio_variant.audio_file.attached?
+        redirect_to(@audio_variant.audio_file.url, allow_other_host: true)
       else
         render json: {error: "File not found"}, status: :not_found
       end

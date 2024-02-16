@@ -6,7 +6,7 @@ RSpec.describe AudioProcessing::WaveformGenerator do
   describe "#json" do
     it "creates a waveform" do
       audio_transfer = audio_transfers(:volver_a_sonar_tango_tunes_1940_audio_transfer)
-      audio_transfer.source_audio.open do |audio_file|
+      audio_transfer.audio_file.open do |audio_file|
         waveform = described_class.new(audio_file).json
         expect(waveform.version).to eq(2)
         expect(waveform.channels).to eq(1)

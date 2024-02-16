@@ -7,7 +7,7 @@ class AudioTransfer < ApplicationRecord
 
   validates :filename, presence: true, uniqueness: true
 
-  has_one_attached :source_audio, dependent: :purge_later
+  has_one_attached :audio_file, dependent: :purge_later
 end
 
 # == Schema Information

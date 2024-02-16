@@ -71,7 +71,7 @@ RSpec.describe Import::Music::SongImporter do
         # creates a new recording
         recording = audio_transfer.recording
         # attaches source audio to audio_transfer
-        expect(audio_transfer.source_audio).to be_attached
+        expect(audio_transfer.audio_file).to be_attached
         # creates a waveform for the audio_transfer
         expect(audio_transfer.waveform).to be_present
         expect(audio_transfer.waveform.data).to be_present
@@ -144,7 +144,7 @@ RSpec.describe Import::Music::SongImporter do
         # creates a waveform for the audio_transfer
         expect(audio_transfer.waveform).to be_present
         expect(audio_transfer.waveform.data).to be_present
-        expect(audio_transfer.source_audio).to be_attached
+        expect(audio_transfer.audio_file).to be_attached
         #  creates a new recording
         expect(audio_transfer.recording.title).to eq("comme il faut")
         # attaches source audio to audio_transfer

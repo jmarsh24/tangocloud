@@ -17,8 +17,8 @@ RSpec.describe "AudioVariants", type: :request do
 
           expect(response).to have_http_status 200
           expect(response.content_type).to eq("audio/aac")
-          expect(response.body).to eq(audio_variant.audio.download)
-          expect(response.headers["Content-Length"]).to eq(audio_variant.audio.byte_size.to_s)
+          expect(response.body).to eq(audio_variant.audio_file.download)
+          expect(response.headers["Content-Length"]).to eq(audio_variant.audio_file.byte_size.to_s)
           expect(response.headers["Content-Disposition"]).to eq("inline; filename=\"19401008_volver_a_sonar_roberto_rufino_tango_2476_converted.aac\"; filename*=UTF-8''19401008_volver_a_sonar_roberto_rufino_tango_2476_converted.aac")
         end
       end

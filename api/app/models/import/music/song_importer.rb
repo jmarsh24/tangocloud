@@ -95,7 +95,7 @@ module Import
             filename: File.basename(@file)
           )
 
-          audio_transfer.source_audio.attach(io: File.open(@file), filename: File.basename(@file))
+          audio_transfer.audio_file.attach(io: File.open(@file), filename: File.basename(@file))
 
           waveform = AudioProcessing::WaveformGenerator.new(File.open(@file)).json
 
@@ -125,7 +125,7 @@ module Import
               metadata: @metadata
             )
 
-            audio_variant.audio.attach(io: File.open(file), filename: File.basename(file))
+            audio_variant.audio_file.attach(io: File.open(file), filename: File.basename(file))
           end
           audio_transfer
         end
