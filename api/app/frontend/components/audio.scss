@@ -1,30 +1,30 @@
 .audio-upload-container {
-  margin-bottom: 10px;
-}
-
-.progress-wrapper {
-  height: 4px;
-  background-color: #ddd;
-  overflow: hidden;
   position: relative;
-  border-radius: 2px;
-}
-
-.progress-wrapper-expanded {
-  height: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding-top: 6px;
+  overflow: hidden;
 }
 
 .upload-progress-bar {
+  position: absolute;
+  top: 0;
+  height: 4px;
   background-color: #4caf50;
-  height: 100%;
   width: 0%;
   transition: width 0.2s ease;
 }
 
-.audio-player {
-  margin-top: 10px;
+.upload-progress-bar--error {
+  background-color: #f44336;
 }
 
-.audio {
-  display: none;
+.upload-error-message {
+  color: #666;
+  font-size: 12px;
+  margin-top: 4px;
 }

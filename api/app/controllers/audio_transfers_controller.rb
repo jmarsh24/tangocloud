@@ -10,11 +10,12 @@ class AudioTransfersController < ApplicationController
     @audio_transfer.audio_file.attach(params[:signed_blob_id])
 
     if @audio_transfer.save
-
       render json: {
         audio_transfer: @audio_transfer,
         audio_url: url_for(@audio_transfer.audio_file)
       }, status: :created
+    else
+      render json: {errors: @audio_transfer.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
