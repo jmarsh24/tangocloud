@@ -12,7 +12,7 @@ module Import
 
       def import_from_audio_transfer(audio_transfer)
         audio_transfer.audio_file.blob.open do |file|
-          import(file:, audio_transfer:)
+          import(file: file.path, audio_transfer:)
         end
       end
 
