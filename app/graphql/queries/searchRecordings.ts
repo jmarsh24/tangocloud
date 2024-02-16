@@ -22,6 +22,10 @@ export const SEARCH_RECORDINGS = gql`
           genre {
             name
           }
+          waveform {
+            length
+            data
+          }
           recordedDate
         }
       }

@@ -16,6 +16,7 @@ module Types
     field :lyricist, Types::LyricistType, null: true
     field :composer, Types::ComposerType, null: true
     field :album_art_url, String, null: true
+    field :waveform, Types::WaveformType, null: true
     field :audio_transfer, Types::AudioTransferType, null: false
     field :singers, [Types::SingerType], null: true
     field :audio_variants, [Types::AudioVariantType], null: true
