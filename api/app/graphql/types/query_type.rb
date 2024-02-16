@@ -45,5 +45,15 @@ module Types
 
       context[:current_user]
     end
+
+    field :get_recording_details, Types::RecordingType, null: false, description: "Get recording details by ID." do
+      argument :id, ID, required: true, description: "ID of the recording."
+    end
+
+    def get_recording_details(id:)
+      raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
+
+      Recording.find(id)
+    end
   end
 end
