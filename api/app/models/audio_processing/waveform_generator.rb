@@ -51,7 +51,7 @@ module AudioProcessing
 
     def generate_waveform_json(audio_path)
       Tempfile.create(["audios", ".json"]) do |json_tempfile|
-        command = ["audiowaveform", "-i", audio_path, "-o", json_tempfile.path, "-z", "1024", "--amplitude-scale", "3.5"]
+        command = ["audiowaveform", "-i", audio_path, "-o", json_tempfile.path, "-z", "1024", "--amplitude-scale", "3.5"] #
         _stdout, stderr, status = Open3.capture3(*command)
         if status.success?
           data = JSON.parse(File.read(json_tempfile.path))
