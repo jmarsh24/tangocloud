@@ -11,12 +11,13 @@ class Recording < ApplicationRecord
   belongs_to :period, optional: true
   belongs_to :el_recodo_song, optional: true
   has_many :audio_transfers, dependent: :destroy
-  has_many :audios, through: :audio_transfers, dependent: :destroy
+  has_many :audio_variants, through: :audio_transfers, dependent: :destroy
   has_many :recording_singers, dependent: :destroy
   has_many :singers, through: :recording_singers, dependent: :destroy
   has_many :lyrics, through: :composition
   has_many :tanda_recordings, dependent: :destroy
   has_many :tandas, through: :tanda_recordings
+  has_many :waveforms, through: :audio_transfers
 
   validates :title, presence: true
   validates :recorded_date, presence: true
@@ -46,7 +47,8 @@ class Recording < ApplicationRecord
         :period,
         :lyrics,
         :audio_transfers,
-        :audios,
+        :audio_variants,
+        :waveforms,
         audio_transfers: [album: {album_art_attachment: :blob}]
       ])
   end

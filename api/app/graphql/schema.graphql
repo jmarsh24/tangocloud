@@ -180,6 +180,16 @@ type Query {
     """
     id: ID!
   ): AudioVariant!
+
+  """
+  Get recording details by ID.
+  """
+  getRecordingDetails(
+    """
+    ID of the recording.
+    """
+    id: ID!
+  ): Recording!
   searchElRecodoSongs(
     """
     Page number.
@@ -260,6 +270,7 @@ type Recording {
   singers: [Singer!]
   slug: String!
   title: String!
+  waveforms: [Waveform!]
 }
 
 """
@@ -330,6 +341,20 @@ type Uuid
 type ValidationErrors {
   details: String!
   fullMessages: [String!]!
+}
+
+type Waveform {
+  audioTransferId: Uuid!
+  bits: Int!
+  channels: Int!
+  createdAt: ISO8601DateTime!
+  data: [Float!]!
+  id: ID!
+  length: Int!
+  sampleRate: Int!
+  samplesPerPixel: Int!
+  updatedAt: ISO8601DateTime!
+  version: Int!
 }
 
 """
