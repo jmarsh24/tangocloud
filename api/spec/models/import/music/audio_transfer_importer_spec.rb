@@ -22,7 +22,7 @@ RSpec.describe Import::Music::AudioTransferImporter do
         expect(audio.bit_rate).to eq(320)
         expect(audio.sample_rate).to eq(48000)
         expect(audio.channels).to eq(1)
-        expect(audio.codec).to eq("aac_at")
+        expect(audio.codec).to eq("aac")
         expect(audio.duration).to eq(165)
         expect(audio.metadata).to be_present
         # creates a new composition
@@ -82,7 +82,7 @@ RSpec.describe Import::Music::AudioTransferImporter do
         expect(audio_variant.bit_rate).to eq(320)
         expect(audio_variant.sample_rate).to eq(48000)
         expect(audio_variant.channels).to eq(1)
-        expect(audio_variant.codec).to eq("aac_at")
+        expect(audio_variant.codec).to eq("aac")
         expect(audio_variant.duration).to eq(163)
         expect(audio_variant.metadata).to be_present
         #  creates a new audio transfer
