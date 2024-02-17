@@ -1,13 +1,13 @@
 class AudioTransfer < ApplicationRecord
-  belongs_to :transfer_agent
-  belongs_to :recording
-  belongs_to :album
+  belongs_to :transfer_agent, optional: true
+  belongs_to :recording, optional: true
+  belongs_to :album, optional: true
   has_many :audio_variants, dependent: :destroy
   has_one :waveform, dependent: :destroy
 
   validates :filename, presence: true, uniqueness: true
 
-  has_one_attached :source_audio, dependent: :purge_later
+  has_one_attached :audio_file, dependent: :purge_later
 end
 
 # == Schema Information

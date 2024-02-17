@@ -12,11 +12,11 @@ module Import
           next if File.directory?(file) # Skip directories
 
           mime_type = MIME::Types.type_for(file).first
-          next unless mime_type && SongImporter::SUPPORTED_MIME_TYPES.include?(mime_type.content_type)
+          next unless mime_type && AudioTransferImporter::SUPPORTED_MIME_TYPES.include?(mime_type.content_type)
 
           begin
-            SongImporter.new(file:).import
-          rescue Import::Music::SongImporter::DuplicateFileError
+            AudioTransferImporter.new.import_from_file(file)
+          rescue Import::Music::AudioTransferImporter::DuplicateFileError
             Rails.logger.info "Duplicate file skipped: #{file}"
           end
         end
@@ -31,13 +31,13 @@ module Import
           next if File.directory?(file)
 
           mime_type = MIME::Types.type_for(file).first
-          next unless mime_type && SongImporter::SUPPORTED_MIME_TYPES.include?(mime_type.content_type)
+          next unless mime_type && AudioTransferImporter::SUPPORTED_MIME_TYPES.include?(mime_type.content_type)
 
           next if existing_filenames.include?(File.basename(file))
 
           begin
-            SongImporter.new(file:).import
-          rescue Import::Music::SongImporter::DuplicateFileError
+            AudioTransferImporter.new.import_from_file(file)
+          rescue Import::Music::AudioTransferImporter::DuplicateFileError
             Rails.logger.info "Duplicate file skipped: #{file}"
           end
         end

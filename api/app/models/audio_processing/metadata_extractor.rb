@@ -36,9 +36,9 @@ module AudioProcessing
       :original_album
     ).freeze
 
-    def initialize(file:)
-      @file = file.to_s
-      @movie = FFMPEG::Movie.new(file.to_s)
+    def initialize(file)
+      @file = file
+      @movie = FFMPEG::Movie.new(file.path)
     end
 
     def extract_metadata
