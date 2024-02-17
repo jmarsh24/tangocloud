@@ -10,7 +10,7 @@ class AudioVariant < ApplicationRecord
   validates :codec, presence: true
   validates :filename, presence: true, uniqueness: true
 
-  has_one_attached :audio, dependent: :purge_later
+  has_one_attached :audio_file, dependent: :purge_later
 
   def signed_url
     api_audio_variant_url(signed_id)

@@ -1,0 +1,24 @@
+volver_a_sonar:
+  date: 1940-10-08
+  ert_number: 2476
+  music_id: 2476
+  title: Volver a soñar
+  style: TANGO
+  orchestra: Carlos DI SARLI
+  singer: Roberto Rufino
+  composer: Andrés Fraga
+  label: RCA Victor
+  page_updated_at: 2013-07-10
+
+comme_il_faut:
+  date: 1938-03-07
+  ert_number: 2758
+  music_id: 2758
+  title: Comme il faut
+  style: TANGO
+  orchestra: Aníbal TROILO
+  singer: Instrumental
+  composer: Eduardo Arolas
+  author: Gabriel Clausi
+  label: Odeon
+  page_updated_at: 2013-07-10

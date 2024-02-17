@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  include Pundit::Authorization
   before_action :set_current_request_details
   before_action :authenticate
   after_action :verify_authorized

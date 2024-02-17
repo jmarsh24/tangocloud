@@ -3,7 +3,7 @@ module Import
     class SongSynchronizer
       def sync_songs(interval: 30)
         GoodJob::Bulk.enqueue do
-          ElRecodoSong.all.map(&:music_id).shuffle.map do |music_id|
+          ElRecodoSong.all.pluck(:music_id).map do |music_id|
             ::Import::ElRecodo::SyncSongJob.perform_later(music_id:, interval:)
           end
         end

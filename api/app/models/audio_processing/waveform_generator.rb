@@ -11,6 +11,7 @@ module AudioProcessing
       if FFMPEG::Movie.new(audio_path).audio_codec != "mp3"
         convert_to_mp3(audio_path) do |converted_file|
           audio_path = converted_file.path
+
           data = generate_waveform_json(audio_path)
           return Waveform.new(
             data["version"],
@@ -41,11 +42,10 @@ module AudioProcessing
 
     def convert_to_mp3(original_path)
       movie = FFMPEG::Movie.new(original_path)
-      converted_path = "#{original_path}.mp3"
-      movie.transcode(converted_path, {audio_codec: "mp3"})
 
-      File.open(converted_path) do |file|
-        yield file
+      Tempfile.create(["converted", ".mp3"]) do |tempfile|
+        movie.transcode(tempfile.path, {audio_codec: "mp3"})
+        yield tempfile
       end
     end
 
