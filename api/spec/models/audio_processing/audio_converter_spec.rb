@@ -12,7 +12,7 @@ RSpec.describe AudioProcessing::AudioConverter do
         output_path = output.path
       end
 
-      expect(File.exist?(output_path)).to be_falsey unless Config.ci?
+      expect(File.exist?(output_path)).to be_falsey
     end
 
     it "removes all metadata from a flac file" do
