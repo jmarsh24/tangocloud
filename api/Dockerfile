@@ -13,13 +13,29 @@ ENV RAILS_ENV="production" \
   BUNDLE_PATH="/usr/local/bundle" \
   BUNDLE_WITHOUT="development"
 
+# Install packages needed for deployment
+RUN apt-get update -qq && \
+  apt-get install --no-install-recommends -y curl postgresql-client libvips ffmpeg software-properties-common && \
+  rm -rf /var/lib/apt/lists/* /var/cache/apt/archives
+
+# Install packages needed for audiowaveform
+RUN apt-get update -qq && \
+  apt-get install -y make cmake gcc g++ libmad0-dev \
+  libid3tag0-dev libsndfile1-dev libgd-dev libboost-filesystem-dev \
+  libboost-program-options-dev libboost-regex-dev && \
+  rm -rf /var/lib/apt/lists/* /var/cache/apt/archives
+
+# install audiowaveform
+RUN curl -LO https://github.com/bbc/audiowaveform/releases/download/1.10.1/audiowaveform_1.10.1-1-12_arm64.deb && \
+  dpkg -i audiowaveform_1.10.1-1-12_arm64.deb && \
+  rm audiowaveform_1.10.1-1-12_arm64.deb
 
 # Throw-away build stage to reduce size of final image
 FROM base as build
 
 # Install packages needed to build gems and node modules
 RUN apt-get update -qq && \
-  apt-get install --no-install-recommends -y build-essential curl git libpq-dev libvips node-gyp pkg-config python-is-python3
+  apt-get install --no-install-recommends -y build-essential git libpq-dev node-gyp pkg-config python-is-python3
 
 # Install JavaScript dependencies
 ARG NODE_VERSION=20.10.0
@@ -52,11 +68,6 @@ RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
 # Final stage for app image
 FROM base
-
-# Install packages needed for deployment
-RUN apt-get update -qq && \
-  apt-get install --no-install-recommends -y curl postgresql-client libvips ffmpeg && \
-  rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Copy built artifacts: gems, application
 COPY --from=build /usr/local/bundle /usr/local/bundle
