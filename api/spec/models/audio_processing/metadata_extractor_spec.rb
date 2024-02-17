@@ -2,8 +2,8 @@ require "rails_helper"
 
 RSpec.describe AudioProcessing::MetadataExtractor do
   describe "#extract_metadata" do
-    it "returns a hash of metadata for aif" do
-      file = Rails.root.join("spec/fixtures/audio/19380307_comme_il_faut_instrumental_tango_2758.aif")
+    fit "returns a hash of metadata for aif" do
+      file = File.open(Rails.root.join("spec/fixtures/audio/19380307_comme_il_faut_instrumental_tango_2758.aif"))
       metadata = AudioProcessing::MetadataExtractor.new(file:).extract_metadata
 
       expect(metadata.title).to eq("comme il faut")
@@ -48,7 +48,7 @@ RSpec.describe AudioProcessing::MetadataExtractor do
     end
 
     it "returns a hash of metadata for flac" do
-      file = Rails.root.join("spec/fixtures/audio/19401008_volver_a_sonar_roberto_rufino_tango_2476.flac")
+      file = File.open(Rails.root.join("spec/fixtures/audio/19401008_volver_a_sonar_roberto_rufino_tango_2476.flac"))
       metadata = AudioProcessing::MetadataExtractor.new(file:).extract_metadata
 
       expect(metadata.title).to eq("volver a sonar")
