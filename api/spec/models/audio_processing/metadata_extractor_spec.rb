@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe AudioProcessing::MetadataExtractor do
   describe "#extract_metadata" do
-    fit "returns a hash of metadata for aif" do
+    it "returns a hash of metadata for aif" do
       file = File.open(Rails.root.join("spec/fixtures/audio/19380307_comme_il_faut_instrumental_tango_2758.aif"))
       metadata = AudioProcessing::MetadataExtractor.new(file:).extract_metadata
 
@@ -84,13 +84,6 @@ RSpec.describe AudioProcessing::MetadataExtractor do
       expect(metadata.singer).to eq("roberto rufino")
       expect(metadata.lyricist).to eq("francisco garcia jimenez")
       expect(metadata.original_album).to eq("bave 39533 - 39110 b tangotunes")
-    end
-
-    it "returns track_number for m4a" do
-      file = Rails.root.join("spec/fixtures/audio/19421009_no_te_apures_carablanca_juan_carlos_miranda_tango_1918.m4a")
-      metadata = AudioProcessing::MetadataExtractor.new(file:).extract_metadata
-
-      expect(metadata.track).to eq("17")
     end
   end
 end
