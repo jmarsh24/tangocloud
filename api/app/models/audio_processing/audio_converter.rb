@@ -25,7 +25,6 @@ module AudioProcessing
 
     def convert
       Tempfile.create([File.basename(file, File.extname(file)), ".#{format}"]) do |tempfile|
-
         custom_options = [
           "-i", file.path,                          # Input audio file
           "-map", "0:a:0",                     # Map the first (audio) stream from the first input (audio file)
