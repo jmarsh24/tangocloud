@@ -111,20 +111,19 @@ module Import
 
           audio_transfer.audio_file.attach(io: File.open(file), filename: File.basename(file))
 
-          # cannot install audiowaveform on the dockerimage so removing this for now.
-          # unless audio_transfer.waveform
-          #   waveform = AudioProcessing::WaveformGenerator.new(File.open(file)).json
+          unless audio_transfer.waveform
+            waveform = AudioProcessing::WaveformGenerator.new(File.open(file)).json
 
-          #   audio_transfer.create_waveform!(
-          #     version: waveform.version,
-          #     channels: waveform.channels,
-          #     sample_rate: waveform.sample_rate,
-          #     samples_per_pixel: waveform.samples_per_pixel,
-          #     bits: waveform.bits,
-          #     length: waveform.length,
-          #     data: waveform.data
-          #   )
-          # end
+            audio_transfer.create_waveform!(
+              version: waveform.version,
+              channels: waveform.channels,
+              sample_rate: waveform.sample_rate,
+              samples_per_pixel: waveform.samples_per_pixel,
+              bits: waveform.bits,
+              length: waveform.length,
+              data: waveform.data
+            )
+          end
 
           transfer_agent.audio_transfers << audio_transfer
 
