@@ -7,7 +7,7 @@ module AudioProcessing
       bitrate: "320k",
       sample_rate: 48000,
       channels: 1,
-      codec: "aac_at",
+      codec: "aac",
       strip_metadata: true
     }.freeze
 
@@ -25,7 +25,6 @@ module AudioProcessing
 
     def convert
       Tempfile.create([File.basename(file, File.extname(file)), ".#{format}"]) do |tempfile|
-        codec = Config.ci? ? "aac" : @codec
 
         custom_options = [
           "-i", file.path,                          # Input audio file
@@ -46,9 +45,6 @@ module AudioProcessing
 
         yield tempfile if block_given?
       end
-    rescue FFMPEG::Error => e
-      puts "Failed to convert file: #{e.message}"
-      nil
     end
   end
 end
