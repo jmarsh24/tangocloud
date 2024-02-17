@@ -25,7 +25,6 @@ module AudioProcessing
 
     def convert
       Tempfile.create([File.basename(file, File.extname(file)), ".#{format}"]) do |tempfile|
-
         codec = Config.ci? ? "aac" : @codec
 
         custom_options = [
