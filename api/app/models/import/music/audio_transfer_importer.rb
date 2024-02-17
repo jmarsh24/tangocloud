@@ -2,6 +2,9 @@ module Import
   module Music
     class AudioTransferImporter
       class DuplicateFileError < StandardError; end
+
+      class UnsupportedMimeTypeError < StandardError; end
+
       include TextNormalizable
 
       SUPPORTED_MIME_TYPES = ["audio/x-aiff", "audio/x-flac", "audio/flac", "audio/mp4", "audio/mpeg", "audio/x-m4a", "audio/mp3"].freeze
@@ -12,14 +15,15 @@ module Import
 
       def import_from_audio_transfer(audio_transfer)
         audio_transfer.audio_file.blob.open do |file|
-          import(file: file.path, audio_transfer:)
+          import(file:, audio_transfer:)
         end
       end
 
       def import(file:, audio_transfer: nil)
-        metadata = AudioProcessing::MetadataExtractor.new(file:).extract_metadata
+        metadata = AudioProcessing::MetadataExtractor.new(file).extract_metadata
+
         mime_type = Marcel::MimeType.for(Pathname.new(file))
-        return unless SUPPORTED_MIME_TYPES.include?(mime_type)
+        raise UnsupportedMimeTypeError unless SUPPORTED_MIME_TYPES.include?(mime_type)
 
         ActiveRecord::Base.transaction do
           Rails.logger.info("Importing song from #{file.inspect}")
@@ -64,7 +68,7 @@ module Import
               Date.new(year, 1, 1) if year > 0
             end
 
-          recording = Recording.create!(
+          recording = Recording.find_or_create_by!(
             title: metadata.title,
             bpm: metadata.bpm,
             recorded_date: parsed_date,
@@ -84,8 +88,8 @@ module Import
             release_date: parsed_date
           )
 
-          if !album.album_art.attached?
-            AudioProcessing::AlbumArtExtractor.new(file:).extract do |file|
+          unless album.album_art.attached?
+            AudioProcessing::AlbumArtExtractor.new(file).extract do |file|
               album.album_art.attach(io: File.open(file), filename: File.basename(file))
             end
           end
@@ -107,24 +111,26 @@ module Import
 
           audio_transfer.audio_file.attach(io: File.open(file), filename: File.basename(file))
 
-          waveform = AudioProcessing::WaveformGenerator.new(File.open(file)).json
+          unless audio_transfer.waveform
+            waveform = AudioProcessing::WaveformGenerator.new(File.open(file)).json
 
-          audio_transfer.create_waveform!(
-            version: waveform.version,
-            channels: waveform.channels,
-            sample_rate: waveform.sample_rate,
-            samples_per_pixel: waveform.samples_per_pixel,
-            bits: waveform.bits,
-            length: waveform.length,
-            data: waveform.data
-          )
+            audio_transfer.create_waveform!(
+              version: waveform.version,
+              channels: waveform.channels,
+              sample_rate: waveform.sample_rate,
+              samples_per_pixel: waveform.samples_per_pixel,
+              bits: waveform.bits,
+              length: waveform.length,
+              data: waveform.data
+            )
+          end
 
           transfer_agent.audio_transfers << audio_transfer
 
-          audio_converter = AudioProcessing::AudioConverter.new(file:)
+          audio_converter = AudioProcessing::AudioConverter.new(file)
 
           audio_converter.convert do |file|
-            audio_variant = audio_transfer.audio_variants.create!(
+            audio_variant = audio_transfer.audio_variants.find_or_create_by!(
               bit_rate: audio_converter.bitrate.to_i,
               sample_rate: audio_converter.sample_rate,
               channels: audio_converter.channels,

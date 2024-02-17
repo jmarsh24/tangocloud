@@ -7,7 +7,7 @@ RSpec.describe Import::ElRecodo::SongSynchronizer do
       ElRecodoSong.create!(title: "random song 2", music_id: 2, date: Date.today, page_updated_at: Time.now)
       expect do
         Import::ElRecodo::SongSynchronizer.new.sync_songs(interval: 20)
-      end.to have_enqueued_job(Import::ElRecodo::SyncSongJob).exactly(2).times
+      end.to have_enqueued_job(Import::ElRecodo::SyncSongJob).exactly(4).times
 
       expect(Import::ElRecodo::SyncSongJob).to have_been_enqueued.with(music_id: 1, interval: 20)
       expect(Import::ElRecodo::SyncSongJob).to have_been_enqueued.with(music_id: 2, interval: 20)

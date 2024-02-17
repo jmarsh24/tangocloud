@@ -36,7 +36,7 @@ module AudioProcessing
       :original_album
     ).freeze
 
-    def initialize(file:)
+    def initialize(file)
       @file = file
       @movie = FFMPEG::Movie.new(file.path)
     end

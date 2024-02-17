@@ -18,8 +18,8 @@ RSpec.describe AudioProcessing::AudioConverter do
     it "removes all metadata from a flac file" do
       file = File.open("spec/fixtures/audio/19401008_volver_a_sonar_roberto_rufino_tango_2476.flac")
 
-      AudioProcessing::AudioConverter.new(file).convert do |output|
-        extracted_metadata = AudioProcessing::MetadataExtractor.new(file: output).extract_metadata
+      AudioProcessing::AudioConverter.new(file).convert do |file|
+        extracted_metadata = AudioProcessing::MetadataExtractor.new(file).extract_metadata
 
         non_nil_keys = [:duration, :bit_rate, :sample_rate, :channels, :format, :bit_depth, :codec_name, :codec_long_name]
 
