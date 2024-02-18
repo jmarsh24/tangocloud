@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, Text } from 'react-native';
 import { Link } from 'expo-router';
 import TrackPlayer, { Event } from 'react-native-track-player';
 import { PlayPauseButton } from '@/components/PlayPauseButton';
-import { TrackInfo } from '@/components/TrackInfo';
 import { useTheme } from '@react-navigation/native';
 
 const Player = () => {
@@ -52,6 +51,7 @@ const Player = () => {
       backgroundColor: colors.background,
       flexDirection: 'row',
       alignItems: 'center',
+      justifyContent: 'space-between',
       borderRadius: 10,
       paddingHorizontal: 15,
       paddingVertical: 10,
@@ -69,6 +69,14 @@ const Player = () => {
     info: {
       flex: 1,
     },
+    title: {
+      color: colors.text,
+      fontSize: 16,
+    },
+    subtitle: {
+      color: colors.text,
+      fontSize: 12,
+    },
   });
 
   return (
@@ -77,9 +85,10 @@ const Player = () => {
         <View style={dynamicStyles.player}>
           <Image source={{ uri: track?.artwork }} style={dynamicStyles.image} />
           <View style={dynamicStyles.info}>
-            <TrackInfo track={track} />
+            <Text style={dynamicStyles.title}>{track?.title}</Text>
+            <Text style={dynamicStyles.subtitle}>{track?.artist}</Text>
           </View>
-          <PlayPauseButton />
+          <PlayPauseButton size={24} />
         </View>
       </Link>
     </View>
