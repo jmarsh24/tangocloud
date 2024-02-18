@@ -29,7 +29,7 @@ class Avo::Resources::Recording < Avo::BaseResource
     field :audio_variants, as: :has_many, through: :audio_transfers
     field :recording_singers, as: :has_many
     field :singers, as: :has_many, through: :recording_singers
-    field :lyrics, as: :belongs_to
+    field :lyrics, as: :has_many, through: :compositions
     field :tanda_recordings, as: :has_many
     field :tandas, as: :has_many, through: :tanda_recordings
     field :waveforms, as: :has_many, through: :audio_transfers
