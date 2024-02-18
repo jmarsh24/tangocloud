@@ -11,5 +11,8 @@ class Avo::Resources::TransferAgent < Avo::BaseResource
     field :url, as: :text
     field :image, as: :file
     field :logo, as: :file
+    field :audio_transfers, as: :has_many
+    field :audio_variants, as: :has_many, through: :audio_transfers
+    field :recordings, as: :has_many, through: :audio_transfers
   end
 end

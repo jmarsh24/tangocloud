@@ -9,6 +9,7 @@ class Avo::Resources::Composer < Avo::BaseResource
     field :name, as: :text
     field :birth_date, as: :date
     field :death_date, as: :date
+    field :slug, as: :text
     field :compositions, as: :has_many
   end
 end
