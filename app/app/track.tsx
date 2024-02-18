@@ -9,13 +9,12 @@ import { TrackInfo } from '@/components/TrackInfo';
 import { GET_RECORDING_DETAILS } from '@/graphql';
 import { useQuery } from '@apollo/client';
 import Waveform from '@/components/Waveform';
-import { debounce } from 'lodash';
 
 export default function TrackScreen() {
  const vinylRecordImg = require('@/assets/images/vinyl_3x.png');
   const { colors } = useTheme();
   const styles = getStyles(colors);
-  const [track, setTrack] = useState<any>(null); // Adjust type according to your Track object
+  const [track, setTrack] = useState<any>(null);
   const { position, duration } = useProgress(1);
   const positionRef = useRef(position);
   const durationRef = useRef(duration);
@@ -46,7 +45,7 @@ export default function TrackScreen() {
   useEffect(() => {
     const animateProgress = () => {
       const newProgress = durationRef.current > 0 ? positionRef.current / durationRef.current : 0;
-      progressRef.current = newProgress; // Update the ref, not state, to avoid re-renders
+      progressRef.current = newProgress;
       animationFrameRef.current = requestAnimationFrame(animateProgress);
     };
 
@@ -96,7 +95,7 @@ export default function TrackScreen() {
           strokeWidth={5}
           strokeColor={"#ff7700"}
           remainderStrokeColor={"#ffffff"}
-          progress={progressRef.current} // Here you might need to pass this value in a way that it updates properly, e.g., via context
+          progress={progressRef.current}
           gap={5}
         />
         <Progress />
@@ -114,10 +113,10 @@ function getStyles(colors) {
       justifyContent: 'space-between',
       alignItems: 'center',
       paddingVertical: 100,
-      backgroundColor: colors.background, // Use theme color for background
+      backgroundColor: colors.background,
     },
     subtitle: {
-      color: colors.text, // Use theme color for text
+      color: colors.text,
       fontSize: 12,
     },
     row: {
