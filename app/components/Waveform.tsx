@@ -4,11 +4,11 @@ import Svg, { Rect } from 'react-native-svg';
 import MaskedView from '@react-native-masked-view/masked-view';
 
 interface WaveformProps {
-  data: number[]; // Array of amplitude values (-1.0 to 1.0)
-  width: number; // Width of the waveform container
-  height: number; // Height of the waveform container
-  strokeColor?: string; // Color of the waveform line for the played part
-  progress: number; // Playback progress (0.0 to 1.0)
+  data: number[];
+  width: number;
+  height: number;
+  strokeColor?: string;
+  progress: number;
 }
 
 const Waveform: React.FC<WaveformProps> = ({
@@ -21,39 +21,52 @@ const Waveform: React.FC<WaveformProps> = ({
   const barWidth = 2;
   const gap = 1;
 
-    if (data.length === 0) {
+  if (data.length === 0) {
     return null;
   }
 
   const numberOfBars = Math.min(data.length, Math.floor(width / (barWidth + gap)));
   const sampledData = sampleData(data, numberOfBars);
 
+  // Render waveform bars function
+  const renderWaveformBars = (color: string) => (
+    <Svg height="100%" width="100%">
+      {sampledData.map((amplitude, index) => {
+        const x = index * (barWidth + gap);
+        const y = ((1 + amplitude) / 2) * height; // Normalize amplitude to 0-1 and calculate y position
+        return (
+          <Rect
+            key={index}
+            x={x}
+            y={height - y}
+            width={barWidth}
+            height={y}
+            fill={color}
+          />
+        );
+      })}
+    </Svg>
+  );
+
   return (
-    <MaskedView
-      style={{ width, height }}
-      maskElement={
-        <View style={{ backgroundColor: 'transparent', flex: 1 }}>
-          <Svg height="100%" width="100%">
-            {sampledData.map((amplitude, index) => {
-              const x = index * (barWidth + gap);
-              const y = ((1 + amplitude) / 2) * height; // Normalize amplitude to 0-1 and calculate y position
-              return (
-                <Rect
-                  key={index}
-                  x={x}
-                  y={height - y}
-                  width={barWidth}
-                  height={y}
-                  fill={strokeColor}
-                />
-              );
-            })}
-          </Svg>
-        </View>
-      }
-    >
-      <View style={{ width: progress * width, height, backgroundColor: strokeColor }} />
-    </MaskedView>
+    <View style={{ width, height, position: 'relative' }}>
+      {/* Full waveform in white */}
+      <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+        {renderWaveformBars('#FFFFFF')}
+      </View>
+
+      {/* Masked progress waveform */}
+      <MaskedView
+        style={{ width, height }}
+        maskElement={
+          <View style={{ backgroundColor: 'transparent', flex: 1 }}>
+            {renderWaveformBars(strokeColor)}
+          </View>
+        }
+      >
+        <View style={{ width: progress * width, height, backgroundColor: strokeColor }} />
+      </MaskedView>
+    </View>
   );
 };
 
@@ -63,14 +76,9 @@ function sampleData(data: number[], samples: number): number[] {
   const sampledData: number[] = [];
 
   for (let i = 0; i < samples; i++) {
-    // Calculate start and end indexes of the current segment
     const start = i * step;
     const end = start + step;
-
-    // Extract the segment
     const segment = data.slice(start, end);
-
-    // Calculate the peak value (maximum absolute value) in this segment
     const peak = segment.reduce((max, current) => Math.max(max, Math.abs(current)), 0);
 
     sampledData.push(peak);

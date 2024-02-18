@@ -90,8 +90,8 @@ export default function TrackScreen() {
         <TrackInfo track={track} />
         <Waveform
           data={waveformData}
-          width={100}
-          height={100}
+          width={350}
+          height={50}
           progress={progressRef.current}
         />
         <Progress />
