@@ -98,7 +98,6 @@ class Upload {
 export default class extends Controller {
   static targets = ["fileInput"];
   connect() {
-    console.log("UploadZone connected");
     this.element.addEventListener("dragover", this.preventDragDefaults);
     this.element.addEventListener("dragenter", this.preventDragDefaults);
   }
