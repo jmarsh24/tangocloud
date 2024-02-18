@@ -29,19 +29,21 @@ const Waveform: React.FC<WaveformProps> = ({
   const sampledData = sampleData(data, numberOfBars);
 
   // Render waveform bars function
-  const renderWaveformBars = (color: string) => (
+  const renderWaveformBars = (color: string, opacity: number = 1, inverted: boolean = false) => (
     <Svg height="100%" width="100%">
       {sampledData.map((amplitude, index) => {
         const x = index * (barWidth + gap);
-        const y = ((1 + amplitude) / 2) * height; // Normalize amplitude to 0-1 and calculate y position
+        const barHeight = ((1 + amplitude) / 2) * height;
+        const y = inverted ? 1 : height - barHeight; // Invert Y position for the inverted waveform
         return (
           <Rect
-            key={index}
+            key={`${index}${inverted ? 'i' : ''}`} // Unique key for inverted bars
             x={x}
-            y={height - y}
+            y={y}
             width={barWidth}
-            height={y}
+            height={inverted ? barHeight / 2 : barHeight} // Half height for the inverted waveform
             fill={color}
+            fillOpacity={opacity}
           />
         );
       })}
@@ -50,17 +52,17 @@ const Waveform: React.FC<WaveformProps> = ({
 
   return (
     <View style={{ width, height, position: 'relative' }}>
-      {/* Full waveform in white */}
       <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
         {renderWaveformBars('#FFFFFF')}
+        {renderWaveformBars('#FFFFFF', 1, true)}
       </View>
 
-      {/* Masked progress waveform */}
       <MaskedView
         style={{ width, height }}
         maskElement={
           <View style={{ backgroundColor: 'transparent', flex: 1 }}>
             {renderWaveformBars(strokeColor)}
+            {renderWaveformBars(strokeColor, 0.5, true)}
           </View>
         }
       >
