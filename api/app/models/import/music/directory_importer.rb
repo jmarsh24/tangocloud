@@ -26,7 +26,7 @@ module Import
       private
 
       def each_file
-        Dir.glob(File.join(@directory.path, '**', '*')).each do |file_path|
+        Dir.glob(File.join(@directory.path, "**", "*")).each do |file_path|
           next if File.directory?(file_path)
 
           file = File.open(file_path)
