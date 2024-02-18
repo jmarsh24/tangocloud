@@ -15,6 +15,7 @@
     "autoprefixer": "^10.4.16",
     "dropzone": "^6.0.0-beta.2",
     "postcss": "^8.4.33",
+    "react-native-svg": "^14.1.0",
     "sass": "^1.69.5",
     "stimulus-vite-helpers": "^3.0.1",
     "typescript": "^5.2.2",
