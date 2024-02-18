@@ -21,6 +21,7 @@
     "@nerdgeschoss/react-use-form-library": "^0.0.68",
     "@nerdgeschoss/shimmer": "^0.0.34",
     "@react-native-community/slider": "4.4.2",
+    "@react-native-masked-view/masked-view": "0.3.0",
     "@react-navigation/drawer": "^6.6.6",
     "@react-navigation/native": "^6.0.2",
     "@shopify/flash-list": "1.6.3",
