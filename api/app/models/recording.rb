@@ -5,7 +5,7 @@ class Recording < ApplicationRecord
 
   belongs_to :el_recodo_song, optional: true
   belongs_to :orchestra
-  belongs_to :composition
+  belongs_to :composition, optional: true
   belongs_to :record_label, optional: true
   belongs_to :genre
   belongs_to :period, optional: true
