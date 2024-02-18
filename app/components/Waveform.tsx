@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Svg, { Rect } from 'react-native-svg';
 import MaskedView from '@react-native-masked-view/masked-view';
+import { useTheme } from '@react-navigation/native';
 
 interface WaveformProps {
   data: number[];
@@ -18,8 +19,10 @@ const Waveform: React.FC<WaveformProps> = ({
   strokeColor = '#ff7700',
   progress,
 }) => {
+  const { colors } = useTheme();
   const barWidth = 2;
   const gap = 1;
+  const waveformBaseColor = colors.text;
 
   if (data.length === 0) {
     return null;
@@ -53,8 +56,8 @@ const Waveform: React.FC<WaveformProps> = ({
   return (
     <View style={{ width, height, position: 'relative' }}>
       <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
-        {renderWaveformBars('#FFFFFF', 0.7)}
-        {renderWaveformBars('#FFFFFF', 0.7, true)}
+        {renderWaveformBars(waveformBaseColor, 0.7)}
+        {renderWaveformBars(waveformBaseColor, 0.7, true)}
       </View>
 
       <MaskedView
@@ -73,7 +76,7 @@ const Waveform: React.FC<WaveformProps> = ({
 };
 
 // Helper function to sample the data array to a manageable number of points
-function sampleData(data: number[], samples: number): number[] {
+function sampleData(data: number[], samples: number, exaggerationFactor: number = 2): number[] {
   const step = Math.floor(data.length / samples);
   const sampledData: number[] = [];
 
@@ -81,7 +84,9 @@ function sampleData(data: number[], samples: number): number[] {
     const start = i * step;
     const end = start + step;
     const segment = data.slice(start, end);
-    const peak = segment.reduce((max, current) => Math.max(max, Math.abs(current)), 0);
+    let peak = segment.reduce((max, current) => Math.max(max, Math.abs(current)), 0);
+
+    peak = Math.pow(peak, exaggerationFactor);
 
     sampledData.push(peak);
   }
