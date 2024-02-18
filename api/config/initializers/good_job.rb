@@ -12,8 +12,8 @@ Rails.application.configure do
   config.good_job.enable_cron = Rails.env.production?
   config.good_job.cron = {
     channel_video_sync: {
-    cron: "0 0 1 * *", # every 1st day of the month at midnight
-    class: "Import::ElRecodo::SyncSongsJob"
+      cron: "0 0 1 * *", # every 1st day of the month at midnight
+      class: "Import::ElRecodo::SyncSongsJob"
     }
-}
+  }
 end
