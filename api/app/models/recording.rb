@@ -48,7 +48,6 @@ class Recording < ApplicationRecord
         :lyrics,
         :audio_transfers,
         :audio_variants,
-        :waveforms,
         audio_transfers: [album: {album_art_attachment: :blob}]
       ])
   end

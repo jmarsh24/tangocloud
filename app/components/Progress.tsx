@@ -1,41 +1,45 @@
 import Slider from '@react-native-community/slider';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import TrackPlayer, { useProgress } from 'react-native-track-player';
-import { Spacer } from './Spacer';
 import { useTheme } from '@react-navigation/native';
 
-export const Progress: React.FC<{ live?: boolean }> = ({ live }) => {
-  const { position, duration } = useProgress();
+export const Progress: React.FC = () => {
+  const { position} = useProgress();
   const { colors } = useTheme();
+  const [duration, setDuration] = useState(0); // State to store the accurate duration
+
+  useEffect(() => {
+    const fetchCurrentTrack = async () => {
+      const trackIndex = await TrackPlayer.getActiveTrackIndex();
+      const track = await TrackPlayer.getTrack(trackIndex);
+      setDuration(track.duration);
+    };
+
+    fetchCurrentTrack();
+  }, []);
+
 
   const progressBarWidth = Dimensions.get('window').width * 0.92;
 
   return (
     <View style={styles.container}>
-      {live ? (
-        <Text style={[styles.liveText, { color: colors.text }]}>Live Stream</Text>
-      ) : (
-        <>
-          <Slider
-            style={{ ...styles.slider, width: progressBarWidth }}
-            value={position}
-            minimumValue={0}
-            maximumValue={duration}
-            thumbTintColor={"#ff7700"}
-            minimumTrackTintColor={"#ff7700"}
-            maximumTrackTintColor={"#ffffff"}
-            onSlidingComplete={TrackPlayer.seekTo}
-          />
-          <View style={styles.labelContainer}>
-            <Text style={[styles.labelText, { color: colors.text }]}>{formatSeconds(position)}</Text>
-            <Spacer mode={'expand'} />
-            <Text style={[styles.labelText, { color: colors.text }]}>
-              {formatSeconds(Math.max(0, duration - position))}
-            </Text>
-          </View>
-        </>
-      )}
+      <Slider
+        style={{ ...styles.slider, width: progressBarWidth }}
+        value={position}
+        minimumValue={0}
+        maximumValue={duration}
+        thumbTintColor={"#ff7700"}
+        minimumTrackTintColor={"#ff7700"}
+        maximumTrackTintColor={"#ffffff"}
+        onSlidingComplete={TrackPlayer.seekTo}
+      />
+      <View style={styles.labelContainer}>
+        <Text style={[styles.labelText, { color: colors.text }]}>{formatSeconds(position)}</Text>
+        <Text style={[styles.labelText, { color: colors.text }]}>
+          {formatSeconds(Math.max(0, duration - position))}
+        </Text>
+      </View>
     </View>
   );
 };
@@ -56,11 +60,13 @@ const styles = StyleSheet.create({
   },
   slider: {
     height: 40,
-    marginTop: 25,
     flexDirection: 'row',
   },
   labelContainer: {
+    width: '100%',
+    display: 'flex',
     flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   labelText: {
     fontVariant: ['tabular-nums'],

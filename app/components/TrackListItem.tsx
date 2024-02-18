@@ -18,15 +18,14 @@ export default function TrackListItem({ track }: TrackListItemProps) {
   };
   
   const onTrackPress = async () => {
-    const token = await fetchAuthToken(); // Fetch the token
+    const token = await fetchAuthToken();
     const trackForPlayer = {
       id: track.id,
       url: track.audioVariants[0].url, // Your track URL
       title: track.title,
       artist: track.orchestra.name,
       artwork: track.albumArtUrl,
-      // Assuming headers could be passed directly, which they can't in the current API.
-      // This is illustrative only:
+      duration: track.audioVariants[0].duration,
       headers: {
         Authorization: token ? `Bearer ${token}` : '',
       },

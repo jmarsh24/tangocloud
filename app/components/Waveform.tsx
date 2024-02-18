@@ -29,7 +29,7 @@ const Waveform: React.FC<WaveformProps> = ({
   }
 
   const numberOfBars = Math.min(data.length, Math.floor(width / (barWidth + gap)));
-  const sampledData = sampleData(data, numberOfBars);
+  const sampledData = React.useMemo(() => sampleData(data, numberOfBars), [data, numberOfBars]);
 
   // Render waveform bars function
   const renderWaveformBars = (color: string, opacity: number = 1, inverted: boolean = false) => (
@@ -93,9 +93,5 @@ function sampleData(data: number[], samples: number, exaggerationFactor: number 
 
   return sampledData;
 }
-
-const styles = StyleSheet.create({
-  // Your styles if needed
-});
 
 export default Waveform;

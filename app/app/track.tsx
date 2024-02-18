@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, View, Text, Image, Animated, Dimensions } from 'react-native';
+import { StyleSheet, View, Image, Dimensions } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import TrackPlayer, { useProgress } from 'react-native-track-player';
 import { PlayerControls } from '@/components/PlayerControls';
 import { Progress } from '@/components/Progress';
-import { Spacer } from '@/components/Spacer';
 import { TrackInfo } from '@/components/TrackInfo';
 import { GET_RECORDING_DETAILS } from '@/graphql';
 import { useQuery } from '@apollo/client';
@@ -20,6 +19,7 @@ export default function TrackScreen() {
   const durationRef = useRef(duration);
   const progressRef = useRef(0);
   const animationFrameRef = useRef<number>();
+  const deviceWidth = Dimensions.get('window').width;
 
   useEffect(() => {
     const fetchCurrentTrack = async () => {
@@ -90,12 +90,11 @@ export default function TrackScreen() {
         <TrackInfo track={track} />
         <Waveform
           data={waveformData}
-          width={350}
+          width={deviceWidth * 0.92}
           height={50}
           progress={progressRef.current}
         />
         <Progress />
-        <Spacer />
         <PlayerControls />
       </View>
     </View>
@@ -148,8 +147,7 @@ function getStyles(colors) {
     controls: {
       display: 'flex',
       alignItems: 'center',
-      paddingHorizontal: 50,
-      paddingBottom: 20,
+      gap: 20,
     },
     playButtonContainer: {
       backgroundColor: colors.buttonSecondary,

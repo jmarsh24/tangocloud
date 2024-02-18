@@ -6,7 +6,6 @@ import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 import { AuthProvider } from '@/providers/AuthProvider';
 import ApolloClientProvider from '@/providers/ApolloClientProvider';
-import PlayerProvider from '@/providers/PlayerProvider';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -52,13 +51,11 @@ function RootLayoutNav() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <ApolloClientProvider>
         <AuthProvider>
-          <PlayerProvider>
-            <Stack>
-              <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen name="track" options={{ presentation: 'modal', headerShown: false }} />
-            </Stack>
-          </PlayerProvider>
+          <Stack>
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="track" options={{ presentation: 'modal', headerShown: false }} />
+          </Stack>
         </AuthProvider>
       </ApolloClientProvider>
     </ThemeProvider>

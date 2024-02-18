@@ -16,6 +16,7 @@ export type AudioVariant = {
   id: string;
   title: string;
   url: string;
+  duration: number;
 };
 
 export type Orchestra = {
