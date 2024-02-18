@@ -30,14 +30,12 @@ module Import
           lyricist = Lyricist.find_or_create_by!(name: metadata.lyricist) if metadata.lyricist.present?
           composer = Composer.find_or_create_by!(name: metadata.composer) if metadata.composer.present?
 
-          if composer.present? && lyricist.present?
-            composition = Composition.find_or_create_by!(
+          composition = if composer.present? && lyricist.present?
+            Composition.find_or_create_by!(
               title: metadata.title,
-              lyricist: lyricist,
-              composer: composer
+              lyricist:,
+              composer:
             )
-          else
-            composition = nil
           end
 
           if metadata.lyrics.present?
