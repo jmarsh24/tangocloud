@@ -14,7 +14,7 @@ module Import
       end
 
       def sync
-        existing_filenames = Audiotransfer.all.with_attached_file.map { _1.audio_file.filename.to_s }
+        existing_filenames = AudioTransfer.all.with_attached_audio_file.map { _1.audio_file.filename.to_s }
 
         each_file do |file, mime_type|
           next unless supported_mime_type?(mime_type) && !existing_filenames.include?(File.basename(file))
