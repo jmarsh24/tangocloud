@@ -45,5 +45,9 @@ module Tangocloud
     # Don't generate system test files.
     config.generators.system_tests = nil
     config.active_job.queue_adapter = :good_job
+
+    host = Config.host(default: "localhost")
+    config.action_mailer.default_url_options = {host:, port: 3000}
+    Rails.application.routes.default_url_options = {host:, port: 3000}
   end
 end
