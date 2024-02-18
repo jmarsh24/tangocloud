@@ -12,57 +12,50 @@ import Waveform from '@/components/Waveform';
 import { debounce } from 'lodash';
 
 export default function TrackScreen() {
-  const vinylRecordImg = require('@/assets/images/vinyl_3x.png');
+ const vinylRecordImg = require('@/assets/images/vinyl_3x.png');
   const { colors } = useTheme();
   const styles = getStyles(colors);
-  const [track, setTrack] = useState(null);
+  const [track, setTrack] = useState<any>(null); // Adjust type according to your Track object
   const { position, duration } = useProgress(1);
-  const progressFraction = duration > 0 ? position / duration : 0;
-  const [progress, setProgress] = useState(0);
-  const animationFrameRef = useRef();
+  const positionRef = useRef(position);
+  const durationRef = useRef(duration);
+  const progressRef = useRef(0);
+  const animationFrameRef = useRef<number>();
 
   useEffect(() => {
     const fetchCurrentTrack = async () => {
-      let trackIndex = await TrackPlayer.getActiveTrackIndex();
-      let trackObject = await TrackPlayer.getTrack(trackIndex);
+      const trackIndex = await TrackPlayer.getActiveTrackIndex();
+      const trackObject = await TrackPlayer.getTrack(trackIndex);
       setTrack(trackObject);
     };
 
     fetchCurrentTrack();
   }, []);
 
-  const { data, loading, error } = useQuery(GET_RECORDING_DETAILS, {
+  const { data } = useQuery<WaveformData>(GET_RECORDING_DETAILS, {
     variables: { recordingId: track?.id },
     skip: !track?.id,
   });
   const waveformData = data?.getRecordingDetails.waveforms[0].data || [];
-  console.log('waveformData', waveformData);
-  
-  const updateProgress = () => {
-  const newProgress = duration > 0 ? position / duration : 0;
-    setProgress(newProgress);
-  };
-
-  const debouncedUpdateProgress = debounce(updateProgress, 100);
 
   useEffect(() => {
-    debouncedUpdateProgress();
-
-    // Cancel the debounce on cleanup to prevent memory leaks
-    return () => debouncedUpdateProgress.cancel();
+    positionRef.current = position;
+    durationRef.current = duration;
   }, [position, duration]);
 
   useEffect(() => {
     const animateProgress = () => {
-      debouncedUpdateProgress();
+      const newProgress = durationRef.current > 0 ? positionRef.current / durationRef.current : 0;
+      progressRef.current = newProgress; // Update the ref, not state, to avoid re-renders
       animationFrameRef.current = requestAnimationFrame(animateProgress);
     };
 
     animateProgress();
 
-    return () => cancelAnimationFrame(animationFrameRef.current);
+    return () => {
+      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+    };
   }, []);
-
 
   const screenWidth = Dimensions.get('window').width;
   const vinylSize = screenWidth * 0.8;
@@ -70,10 +63,10 @@ export default function TrackScreen() {
 
   return (
     <View style={styles.container}>
-      <Animated.View
+      <View
         style={[
           styles.vinyl,
-          { width: vinylSize, height: vinylSize }
+          { width: vinylSize, height: vinylSize },
         ]}
       >
         <Image
@@ -93,26 +86,26 @@ export default function TrackScreen() {
             },
           ]}
         />
-      </Animated.View>
+      </View>
       <View style={styles.controls}>
         <TrackInfo track={track} />
-        <Waveform 
-          data={waveformData} 
-          width={screenWidth} 
-          height={100} 
-          strokeWidth={5} 
-          strokeColor={"#ff7700"} 
+        <Waveform
+          data={waveformData}
+          width={screenWidth}
+          height={100}
+          strokeWidth={5}
+          strokeColor={"#ff7700"}
           remainderStrokeColor={"#ffffff"}
-          progress={progressFraction}
-          gap={5}/>
+          progress={progressRef.current} // Here you might need to pass this value in a way that it updates properly, e.g., via context
+          gap={5}
+        />
         <Progress />
         <Spacer />
         <PlayerControls />
       </View>
     </View>
   );
-}
-
+};
 
 function getStyles(colors) {
   return StyleSheet.create({

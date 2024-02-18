@@ -19,7 +19,6 @@ const Waveform: React.FC<WaveformProps> = ({
   height,
   strokeColor = '#ff7700',
   remainderStrokeColor = 'white',
-  strokeWidth = 1,
   progress = 0,
   gap = 2, // Adjust the gap size if needed
 }) => {
@@ -56,6 +55,8 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
+    paddingLeft: 20,
+    paddingRight: 20,
   },
 });
 
