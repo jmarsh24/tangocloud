@@ -53,16 +53,16 @@ const Waveform: React.FC<WaveformProps> = ({
   return (
     <View style={{ width, height, position: 'relative' }}>
       <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
-        {renderWaveformBars('#FFFFFF')}
-        {renderWaveformBars('#FFFFFF', 1, true)}
+        {renderWaveformBars('#FFFFFF', 0.7)}
+        {renderWaveformBars('#FFFFFF', 0.7, true)}
       </View>
 
       <MaskedView
         style={{ width, height }}
         maskElement={
           <View style={{ backgroundColor: 'transparent', flex: 1 }}>
-            {renderWaveformBars(strokeColor)}
-            {renderWaveformBars(strokeColor, 0.5, true)}
+            {renderWaveformBars(strokeColor, 0.7)}
+            {renderWaveformBars(strokeColor, 0.7, true)}
           </View>
         }
       >
