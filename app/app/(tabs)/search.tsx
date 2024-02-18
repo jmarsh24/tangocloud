@@ -13,18 +13,20 @@ export default function SearchScreen() {
   const styles = getStyles(colors);
   const ITEMS_PER_PAGE = 30;
   const [search, setSearch] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState(search);
+  const [debouncedSearch, setDebouncedSearch] = useState("*");
 
   const { data, loading, fetchMore } = useQuery(SEARCH_RECORDINGS, {
-    variables: { query: debouncedSearch || "*", first: ITEMS_PER_PAGE },
+    variables: { query: debouncedSearch, first: ITEMS_PER_PAGE },
     fetchPolicy: 'cache-and-network',
     skip: !debouncedSearch,
   });
 
   const debouncedSetSearch = useCallback(_.debounce(setDebouncedSearch, 500), []);
 
-  useEffect(() => {
-    debouncedSetSearch(search);
+    useEffect(() => {
+    if(search.trim()) {
+      debouncedSetSearch(search);
+    }
     return () => {
       debouncedSetSearch.cancel();
     };
