@@ -7,14 +7,28 @@ import {
 } from 'react-native';
 import TrackPlayer, { useIsPlaying } from 'react-native-track-player';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import { useTheme } from '@react-navigation/native';
 
 export const PlayPauseButton: React.FC = () => {
   const { playing, bufferingDuringPlay } = useIsPlaying();
+  const { colors } = useTheme();
+
+  const styles = StyleSheet.create({
+    container: {
+      height: 50,
+      width: 120,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    icon: {
+      color: colors.text,
+    },
+  });
 
   return (
     <View style={styles.container}>
       {bufferingDuringPlay ? (
-        <ActivityIndicator />
+        <ActivityIndicator color={colors.text} />
       ) : (
         <TouchableWithoutFeedback
           onPress={playing ? TrackPlayer.pause : TrackPlayer.play}
@@ -22,19 +36,10 @@ export const PlayPauseButton: React.FC = () => {
           <FontAwesome6
             name={playing ? 'pause' : 'play'}
             size={48}
-            color={'white'}
+            style={styles.icon}
           />
         </TouchableWithoutFeedback>
       )}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    height: 50,
-    width: 120,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

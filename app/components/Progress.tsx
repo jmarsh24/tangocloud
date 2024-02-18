@@ -3,18 +3,18 @@ import React from 'react';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import TrackPlayer, { useProgress } from 'react-native-track-player';
 import { Spacer } from './Spacer';
-
+import { useTheme } from '@react-navigation/native';
 
 export const Progress: React.FC<{ live?: boolean }> = ({ live }) => {
   const { position, duration } = useProgress();
+  const { colors } = useTheme();
 
-  // This is a workaround since the slider component only takes absolute widths
   const progressBarWidth = Dimensions.get('window').width * 0.92;
 
   return (
     <View style={styles.container}>
       {live ? (
-        <Text style={styles.liveText}>Live Stream</Text>
+        <Text style={[styles.liveText, { color: colors.text }]}>Live Stream</Text>
       ) : (
         <>
           <Slider
@@ -22,15 +22,15 @@ export const Progress: React.FC<{ live?: boolean }> = ({ live }) => {
             value={position}
             minimumValue={0}
             maximumValue={duration}
-            thumbTintColor="#FFD479"
-            minimumTrackTintColor="#FFD479"
-            maximumTrackTintColor="#FFFFFF"
+            thumbTintColor={"#ff7700"}
+            minimumTrackTintColor={"#ff7700"}
+            maximumTrackTintColor={"#ffffff"}
             onSlidingComplete={TrackPlayer.seekTo}
           />
           <View style={styles.labelContainer}>
-            <Text style={styles.labelText}>{formatSeconds(position)}</Text>
+            <Text style={[styles.labelText, { color: colors.text }]}>{formatSeconds(position)}</Text>
             <Spacer mode={'expand'} />
-            <Text style={styles.labelText}>
+            <Text style={[styles.labelText, { color: colors.text }]}>
               {formatSeconds(Math.max(0, duration - position))}
             </Text>
           </View>
@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
   },
   liveText: {
     fontSize: 18,
-    color: 'white',
     alignSelf: 'center',
   },
   slider: {
@@ -64,7 +63,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   labelText: {
-    color: 'white',
     fontVariant: ['tabular-nums'],
   },
 });

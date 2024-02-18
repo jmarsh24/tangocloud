@@ -22,6 +22,8 @@ export default {
     info: "hsl(207, 90%, 54%)",
     inputBackground: "#FFFFFF",
     inputBorder: "hsl(0, 0%, 80%)",
+    icon: "hsl(0, 0%, 0%)",
+    primaryOrange: "#ff7700",
   },
   dark: {
     text: "hsl(0, 0%, 100%)",
@@ -46,5 +48,7 @@ export default {
     info: "hsl(207, 90%, 54%)",
     inputBackground: "#111111",
     inputBorder: "hsl(0, 0%, 40%)",
+    icon: "hsl(0, 0%, 100%)",
+    primaryOrange: "#ff7700",
   },
 };

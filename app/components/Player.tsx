@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { Link } from 'expo-router';
-import Colors from '@/constants/Colors';
 import TrackPlayer, { Event } from 'react-native-track-player';
 import { PlayPauseButton } from '@/components/PlayPauseButton';
 import { TrackInfo } from '@/components/TrackInfo';
+import { useTheme } from '@react-navigation/native';
 
 const Player = () => {
   const [track, setTrack] = useState(null);
+  const { colors } = useTheme();
 
   useEffect(() => {
     const fetchCurrentTrack = async () => {
@@ -37,12 +38,45 @@ const Player = () => {
   if (!track) {
     return null;
   }
+
+  // Dynamically adjust styles based on theme
+  const dynamicStyles = StyleSheet.create({
+    container: {
+      position: 'absolute',
+      width: '100%',
+      bottom: 80,
+      padding: 10,
+    },
+    player: {
+      width: '100%',
+      backgroundColor: colors.background,
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderRadius: 10,
+      paddingHorizontal: 15,
+      paddingVertical: 10,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.22,
+      shadowRadius: 2.22,
+    },
+    image: {
+      width: 50,
+      height: 50,
+      marginRight: 10,
+      borderRadius: 5,
+    },
+    info: {
+      flex: 1,
+    },
+  });
+
   return (
-    <View style={styles.container}>
+    <View style={dynamicStyles.container}>
       <Link href="/track">
-        <View style={styles.player}>
-          <Image source={{ uri: track?.artwork }} style={styles.image} />
-          <View style={styles.info}>
+        <View style={dynamicStyles.player}>
+          <Image source={{ uri: track?.artwork }} style={dynamicStyles.image} />
+          <View style={dynamicStyles.info}>
             <TrackInfo track={track} />
           </View>
           <PlayPauseButton />
@@ -51,45 +85,5 @@ const Player = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-   container: {
-    position: 'absolute',
-    width: '100%',
-    bottom: 80,
-    padding: 10,
-  },
-  player: {
-    width: '100%',
-    backgroundColor: '#1C1C1E',
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: 10,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-  },
-  title: {
-    color: Colors.dark.text,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  subtitle: {
-    color: Colors.dark.text,
-    fontSize: 12,
-  },
-  image: {
-    width: 50,
-    height: 50,
-    marginRight: 10,
-    borderRadius: 5,
-  },
-  info: {
-    flex: 1, // Take up all available space after the image
-  },
-});
 
 export default Player;
