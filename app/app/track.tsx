@@ -90,13 +90,9 @@ export default function TrackScreen() {
         <TrackInfo track={track} />
         <Waveform
           data={waveformData}
-          width={screenWidth}
+          width={100}
           height={100}
-          strokeWidth={5}
-          strokeColor={"#ff7700"}
-          remainderStrokeColor={"#ffffff"}
           progress={progressRef.current}
-          gap={5}
         />
         <Progress />
         <Spacer />

@@ -101,7 +101,7 @@ export default function SearchScreen() {
         onEndReached={loadMoreItems}
         onEndReachedThreshold={5}
         showsVerticalScrollIndicator={false}
-        estimatedItemSize={50}
+        estimatedItemSize={30}
         keyExtractor={item => item.id}
       />
     </View>
