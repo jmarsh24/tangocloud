@@ -36,6 +36,7 @@ export default function TrackScreen() {
     skip: !track?.id,
   });
   const waveformData = data?.getRecordingDetails.waveforms[0].data || [];
+  console.log('waveformData', waveformData);
   
   const updateProgress = () => {
   const newProgress = duration > 0 ? position / duration : 0;
@@ -113,66 +114,66 @@ export default function TrackScreen() {
 }
 
 
-  function getStyles(colors) {
-    return StyleSheet.create({
-      container: {
-        flex: 1,
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingVertical: 100,
-        backgroundColor: colors.background, // Use theme color for background
-      },
-      subtitle: {
-        color: colors.text, // Use theme color for text
-        fontSize: 12,
-      },
-      row: {
-        display: 'flex',
-        gap: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-      },
-      vinylImg: {
-        position: 'absolute', 
-        justifyContent: 'center',
-        alignItems: 'center'
-      },
-      albumArt: {
-        position: 'absolute',
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 2,
-      },
-      trackInfo: {
-        alignItems: 'center',
-      },
-      title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 4,
-        color: colors.text,
-      },
-      artist: {
-        fontSize: 18,
-        color: colors.text,
-      },
-      controls: {
-        display: 'flex',
-        alignItems: 'center',
-        paddingHorizontal: 50,
-        paddingBottom: 20,
-      },
-      playButtonContainer: {
-        backgroundColor: colors.buttonSecondary,
-        borderRadius: 35,
-        width: 70,
-        height: 70,
-        justifyContent: 'center',
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84
-      },
-    });
-  }
+function getStyles(colors) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingVertical: 100,
+      backgroundColor: colors.background, // Use theme color for background
+    },
+    subtitle: {
+      color: colors.text, // Use theme color for text
+      fontSize: 12,
+    },
+    row: {
+      display: 'flex',
+      gap: 10,
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    vinylImg: {
+      position: 'absolute', 
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    albumArt: {
+      position: 'absolute',
+      justifyContent: 'center',
+      alignItems: 'center',
+      zIndex: 2,
+    },
+    trackInfo: {
+      alignItems: 'center',
+    },
+    title: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 4,
+      color: colors.text,
+    },
+    artist: {
+      fontSize: 18,
+      color: colors.text,
+    },
+    controls: {
+      display: 'flex',
+      alignItems: 'center',
+      paddingHorizontal: 50,
+      paddingBottom: 20,
+    },
+    playButtonContainer: {
+      backgroundColor: colors.buttonSecondary,
+      borderRadius: 35,
+      width: 70,
+      height: 70,
+      justifyContent: 'center',
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84
+    },
+  });
+}
