@@ -30,7 +30,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "tangocloud",
       "runtimeVersion": "1.0.0",
-      "buildNumber": "13"
+      "buildNumber": "14"
     },
     "android": {
       "adaptiveIcon": {
