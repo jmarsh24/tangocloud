@@ -10,13 +10,14 @@ import { useQuery } from '@apollo/client';
 import Waveform from '@/components/Waveform';
 
 export default function TrackScreen() {
- const vinylRecordImg = require('@/assets/images/vinyl_3x.png');
+  const vinylRecordImg = require('@/assets/images/vinyl_3x.png');
   const { colors } = useTheme();
   const styles = getStyles(colors);
   const [track, setTrack] = useState<any>(null);
-  const { position, duration } = useProgress(1);
+  const { position } = useProgress(1);
   const positionRef = useRef(position);
-  const durationRef = useRef(duration);
+  // Removed duration from useProgress and use a state for track's duration
+  const [trackDuration, setTrackDuration] = useState<number>(0); 
   const progressRef = useRef(0);
   const animationFrameRef = useRef<number>();
   const deviceWidth = Dimensions.get('window').width;
@@ -25,13 +26,17 @@ export default function TrackScreen() {
     const fetchCurrentTrack = async () => {
       const trackIndex = await TrackPlayer.getActiveTrackIndex();
       const trackObject = await TrackPlayer.getTrack(trackIndex);
-      setTrack(trackObject);
+      if (trackObject) {
+        setTrack(trackObject);
+        // Set track's duration from the track object
+        setTrackDuration(trackObject.duration);
+      }
     };
 
     fetchCurrentTrack();
   }, []);
 
-  const { data } = useQuery<WaveformData>(GET_RECORDING_DETAILS, {
+  const { data } = useQuery(GET_RECORDING_DETAILS, {
     variables: { recordingId: track?.id },
     skip: !track?.id,
   });
@@ -39,12 +44,11 @@ export default function TrackScreen() {
 
   useEffect(() => {
     positionRef.current = position;
-    durationRef.current = duration;
-  }, [position, duration]);
+  }, [position]);
 
   useEffect(() => {
     const animateProgress = () => {
-      const newProgress = durationRef.current > 0 ? positionRef.current / durationRef.current : 0;
+      const newProgress = trackDuration > 0 ? positionRef.current / trackDuration : 0;
       progressRef.current = newProgress;
       animationFrameRef.current = requestAnimationFrame(animateProgress);
     };
@@ -54,7 +58,7 @@ export default function TrackScreen() {
     return () => {
       if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
     };
-  }, []);
+  }, [trackDuration]); // Depend on trackDuration for updates
 
   const screenWidth = Dimensions.get('window').width;
   const vinylSize = screenWidth * 0.8;
@@ -100,6 +104,7 @@ export default function TrackScreen() {
     </View>
   );
 };
+
 
 function getStyles(colors) {
   return StyleSheet.create({

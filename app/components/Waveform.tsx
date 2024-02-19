@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import Svg, { Rect } from 'react-native-svg';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { useTheme } from '@react-navigation/native';
