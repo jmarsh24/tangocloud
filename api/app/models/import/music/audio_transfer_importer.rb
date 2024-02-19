@@ -20,6 +20,8 @@ module Import
       end
 
       def import(file:, audio_transfer: nil)
+        raise DuplicateFileError if AudioTransfer.find_by(filename: File.basename(file))
+
         metadata = AudioProcessing::MetadataExtractor.new(file).extract_metadata
 
         mime_type = Marcel::MimeType.for(Pathname.new(file))
@@ -96,7 +98,6 @@ module Import
             end
           end
 
-          raise DuplicateFileError if album.audio_transfers.find_by(filename: File.basename(file))
 
           audio_transfer = @audio_transfer || album.audio_transfers.new(
             filename: File.basename(file)

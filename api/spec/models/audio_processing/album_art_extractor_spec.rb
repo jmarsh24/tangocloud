@@ -18,7 +18,7 @@ RSpec.describe AudioProcessing::AlbumArtExtractor do
     context "when the audio file does not have album art" do
       it "returns nil if the file does not have album art" do
         file = File.open("spec/fixtures/audio/19380307_tinta verde_instrumental_tango_no_thumbnail_2760.aif")
-        expect { described_class.new(file).extract }.to raise_error(described_class::MissingAlbumArtError)
+        expect(described_class.new(file).extract).to be_nil
       end
     end
   end

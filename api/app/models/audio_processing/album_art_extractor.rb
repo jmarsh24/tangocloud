@@ -25,7 +25,7 @@ module AudioProcessing
         end
       end
     rescue FFMPEG::Error
-      raise MissingAlbumArtError
+      nil
     end
   end
 end
