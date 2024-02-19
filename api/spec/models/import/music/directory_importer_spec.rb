@@ -1,20 +1,27 @@
 require "rails_helper"
 
 RSpec.describe Import::Music::DirectoryImporter do
+  let(:directory_path) { "spec/fixtures/audio" }
+  let(:importer) { described_class.new(directory_path) }
   describe "#import" do
-    let(:directory_path) { "spec/fixtures/audio" }
-    let(:importer) { Import::Music::DirectoryImporter.new(directory_path) }
-    let(:audio_transfer_importer_double) { instance_double("Import::Music::AudioTransferImporter") }
 
-    before do
-      allow(Import::Music::AudioTransferImporter).to receive(:new).and_return(audio_transfer_importer_double)
-      allow(audio_transfer_importer_double).to receive(:import_from_file).and_return(true)
-    end
-
-    it "calls AudioTransferImporter#import_from_file the correct number of times for supported files" do
-      expected_file_count = Dir.glob(File.join(directory_path, "*.{mp3,aif,flac,mp4,mpeg,m4a}")).count
+    it "creates 6 AudioTransfers and enqueues AudioTransferImportJob 6 times for supported files" do
+      AudioTransfer.destroy_all
       importer.import
-      expect(audio_transfer_importer_double).to have_received(:import_from_file).exactly(expected_file_count).times
+
+      expect(AudioTransfer.count).to eq(6)
+
+      expect(AudioTransferImportJob).to have_been_enqueued.exactly(6).times
+    end
+  end
+
+  describe "#sync" do
+    it "creates 6 AudioTransfers and enqueues AudioTransferImportJob 6 times for supported files" do
+      importer.sync
+
+      expect(AudioTransfer.count).to eq(6)
+
+      expect(AudioTransferImportJob).to have_been_enqueued.exactly(5).times
     end
   end
 end

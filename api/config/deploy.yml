@@ -27,6 +27,7 @@ env:
     RAILS_ENV: production
     RAILS_LOG_LEVEL: info
     RAILS_LOG_TO_STDOUT: true
+    DB_POOL: 40
     DB_HOST: 10.1.0.3
     CLOUDFLARE_BUCKET: tangocloud
     ELASTICSEARCH_URL: 10.1.0.5:9200
