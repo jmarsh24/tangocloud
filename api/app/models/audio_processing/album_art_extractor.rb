@@ -1,6 +1,5 @@
 module AudioProcessing
   class AlbumArtExtractor
-    class MissingAlbumArtError < StandardError; end
     attr_reader :file
 
     def initialize(file)
