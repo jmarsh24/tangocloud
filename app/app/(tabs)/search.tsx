@@ -65,6 +65,13 @@ export default function SearchScreen() {
 
   const ItemSeparator = () => <View style={styles.itemSeperator} />;
 
+  const ListFooter = () => {
+    return (
+      <View style={styles.footerStyle}>
+      </View>
+    );
+  };
+
   return (
     <View style={{flex: 1}}>
       <View style={styles.header}>
@@ -97,9 +104,9 @@ export default function SearchScreen() {
         data={tracks}
         renderItem={renderItem}
         ItemSeparatorComponent={ItemSeparator}
-        ListFooterComponent={() => loading && <ActivityIndicator />}
+        ListFooterComponent={ListFooter}
         onEndReached={loadMoreItems}
-        onEndReachedThreshold={5}
+        onEndReachedThreshold={0.5}
         showsVerticalScrollIndicator={false}
         estimatedItemSize={30}
         keyExtractor={item => item.id}
@@ -152,11 +159,9 @@ function getStyles(colors) {
       color: colors.text,
       fontSize: 12,
     },
-    // list: {
-    //   flexDirection: 'column',
-    //   gap: 5,
-    //   paddingHorizontal: 10,
-    // },
+    footerStyle: {
+      height: 100,
+    },
     itemSeperator: {
       height: 10,
     },
