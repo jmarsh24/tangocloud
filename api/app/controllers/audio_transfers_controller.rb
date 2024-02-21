@@ -1,11 +1,13 @@
 class AudioTransfersController < ApplicationController
   include Rails.application.routes.url_helpers
-  skip_after_action :verify_authorized, only: [:new, :create]
 
   def new
+    authorize AudioTransfer
   end
 
   def create
+    authorize AudioTransfer
+
     audio_transfer = AudioTransfer.new(audio_transfer_params)
     audio_transfer.audio_file.attach(params[:signed_blob_id])
 

@@ -2,7 +2,6 @@
   #uploadzone data-controller="uploadzone" data-action="click->uploadzone#trigger drop->uploadzone#acceptFiles"
     .upload-box
       .upload-icon
-      span
-        | Drag Songs to Upload or Click Here
+      span = "Drag Songs to Upload or Click Here"
       input.hidden.file-input type="file" multiple="multiple" data-uploadzone-target="fileInput" data-action="change->uploadzone#acceptFiles"
   #uploads.uploads-container
