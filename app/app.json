@@ -39,7 +39,8 @@
       },
       "runtimeVersion": {
         "policy": "appVersion"
-      }
+      },
+      "package": "com.tangocloud.app"
     },
     "web": {
       "bundler": "metro",
