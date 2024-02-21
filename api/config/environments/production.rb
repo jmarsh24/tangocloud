@@ -104,9 +104,5 @@ Rails.application.configure do
   # ]
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
-
-  config.action_mailer.default_url_options = {host: Config.host}
-  Rails.application.routes.default_url_options[:host] = Config.host
-
   config.active_storage.resolve_model_to_route = :rails_storage_proxy
 end
