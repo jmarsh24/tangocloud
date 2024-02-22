@@ -5,8 +5,8 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     # reindex models
-    ElRecodoSong.reindex
-    Recording.reindex
+    # ElRecodoSong.reindex
+    # Recording.reindex
 
     # and disable callbacks
     Searchkick.disable_callbacks

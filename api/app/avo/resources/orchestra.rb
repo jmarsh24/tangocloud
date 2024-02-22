@@ -5,7 +5,7 @@ class Avo::Resources::Orchestra < Avo::BaseResource
   # }
 
   def fields
-    field :id, as: :id
+    field :id, as: :id, readonly: true, only_on: :show
     field :name, as: :text
     field :rank, as: :number
     field :sort_name, as: :text

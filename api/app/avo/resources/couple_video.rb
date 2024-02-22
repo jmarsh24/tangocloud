@@ -5,7 +5,7 @@ class Avo::Resources::CoupleVideo < Avo::BaseResource
   # }
 
   def fields
-    field :id, as: :id
+    field :id, as: :id, readonly: true, only_on: :show
     field :couple_id, as: :text
     field :video_id, as: :text
     field :couple, as: :belongs_to

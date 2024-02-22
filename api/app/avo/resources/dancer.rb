@@ -5,7 +5,7 @@ class Avo::Resources::Dancer < Avo::BaseResource
   # }
 
   def fields
-    field :id, as: :id
+    field :id, as: :id, readonly: true, only_on: :show
     field :name, as: :text
     field :nickname, as: :text
     field :nationality, as: :text

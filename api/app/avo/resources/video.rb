@@ -5,7 +5,7 @@ class Avo::Resources::Video < Avo::BaseResource
   # }
 
   def fields
-    field :id, as: :id
+    field :id, as: :id, readonly: true, only_on: :show
     field :youtube_slug, as: :text
     field :title, as: :text
     field :description, as: :textarea

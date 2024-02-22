@@ -5,7 +5,7 @@ class Avo::Resources::TandaRecording < Avo::BaseResource
   # }
 
   def fields
-    field :id, as: :id
+    field :id, as: :id, readonly: true, only_on: :show
     field :position, as: :number
     field :tanda_id, as: :text
     field :recording_id, as: :text

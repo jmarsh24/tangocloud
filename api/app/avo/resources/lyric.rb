@@ -5,7 +5,7 @@ class Avo::Resources::Lyric < Avo::BaseResource
   # }
 
   def fields
-    field :id, as: :id
+    field :id, as: :id, readonly: true, only_on: :show
     field :locale, as: :text
     field :content, as: :textarea
     field :composition_id, as: :text

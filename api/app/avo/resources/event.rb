@@ -5,7 +5,7 @@ class Avo::Resources::Event < Avo::BaseResource
   # }
 
   def fields
-    field :id, as: :id
+    field :id, as: :id, readonly: true, only_on: :show
     field :user_id, as: :text
     field :action, as: :text
     field :user_agent, as: :text

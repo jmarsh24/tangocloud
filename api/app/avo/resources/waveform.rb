@@ -5,7 +5,7 @@ class Avo::Resources::Waveform < Avo::BaseResource
   # }
 
   def fields
-    field :id, as: :id
+    field :id, as: :id, readonly: true, only_on: :show
     field :audio_transfer_id, as: :text
     field :version, as: :number
     field :channels, as: :number

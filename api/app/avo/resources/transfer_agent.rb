@@ -5,7 +5,7 @@ class Avo::Resources::TransferAgent < Avo::BaseResource
   # }
 
   def fields
-    field :id, as: :id
+    field :id, as: :id, readonly: true, only_on: :show
     field :name, as: :text
     field :description, as: :textarea
     field :url, as: :text

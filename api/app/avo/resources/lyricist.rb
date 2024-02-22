@@ -5,7 +5,7 @@ class Avo::Resources::Lyricist < Avo::BaseResource
   # }
 
   def fields
-    field :id, as: :id
+    field :id, as: :id, readonly: true, only_on: :show
     field :name, as: :text
     field :slug, as: :text
     field :sort_name, as: :text

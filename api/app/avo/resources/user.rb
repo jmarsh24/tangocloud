@@ -5,7 +5,7 @@ class Avo::Resources::User < Avo::BaseResource
   # }
 
   def fields
-    field :id, as: :id
+    field :id, as: :id, readonly: true, only_on: :show
     field :email, as: :text
     field :verified, as: :boolean
     field :provider, as: :text

@@ -5,7 +5,7 @@ class Avo::Resources::Album < Avo::BaseResource
   # }
 
   def fields
-    field :id, as: :id
+    field :id, as: :id, readonly: true, only_on: :show
     field :title, as: :text
     field :description, as: :textarea
     field :release_date, as: :date

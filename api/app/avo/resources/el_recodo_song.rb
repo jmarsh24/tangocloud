@@ -14,7 +14,7 @@ class Avo::Resources::ElRecodoSong < Avo::BaseResource
   }
 
   def fields
-    field :id, as: :id, readonly: true, only_on: :show
+    field :id, as: :id, readonly: true, only_on: :show, readonly: true, only_on: :show
     field :ert_number, as: :number, readonly: true, sortable: true, only_on: :show
     field :music_id, as: :number, readonly: true, sortable: true
     field :external, as: :text do

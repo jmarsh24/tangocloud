@@ -5,7 +5,7 @@ class Avo::Resources::Genre < Avo::BaseResource
   # }
 
   def fields
-    field :id, as: :id
+    field :id, as: :id, readonly: true, only_on: :show
     field :name, as: :text
     field :description, as: :textarea
     field :videos, as: :has_many

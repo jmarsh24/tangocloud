@@ -5,7 +5,7 @@ class Avo::Resources::Couple < Avo::BaseResource
   # }
 
   def fields
-    field :id, as: :id
+    field :id, as: :id, readonly: true, only_on: :show
     field :dancer_id, as: :text
     field :partner_id, as: :text
     field :dancer, as: :belongs_to

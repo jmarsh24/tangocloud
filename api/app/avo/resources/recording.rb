@@ -5,7 +5,7 @@ class Avo::Resources::Recording < Avo::BaseResource
   # }
 
   def fields
-    field :id, as: :id
+    field :id, as: :id, readonly: true, only_on: :show
     field :title, as: :text
     field :bpm, as: :number
     field :release_date, as: :date

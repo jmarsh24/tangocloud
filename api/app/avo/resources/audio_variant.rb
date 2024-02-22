@@ -5,7 +5,7 @@ class Avo::Resources::AudioVariant < Avo::BaseResource
   # }
 
   def fields
-    field :id, as: :id
+    field :id, as: :id, readonly: true, only_on: :show
     field :duration, as: :number
     field :format, as: :text
     field :codec, as: :text

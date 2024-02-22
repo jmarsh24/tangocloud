@@ -5,7 +5,7 @@ class Avo::Resources::AudioTransfer < Avo::BaseResource
   # }
 
   def fields
-    field :id, as: :id
+    field :id, as: :id, readonly: true, only_on: :show
     field :external_id, as: :text
     field :position, as: :number
     field :album_id, as: :text

@@ -5,7 +5,7 @@ class Avo::Resources::Composer < Avo::BaseResource
   # }
 
   def fields
-    field :id, as: :id
+    field :id, as: :id, readonly: true, only_on: :show
     field :name, as: :text
     field :birth_date, as: :date
     field :death_date, as: :date

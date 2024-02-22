@@ -19,7 +19,6 @@ Rails.application.routes.draw do
 
   constraints(Constraints::AdminConstraint.new) do
     resources :audio_transfers, only: [:new, :create]
-    resources :playlists, only: [:new, :create]
   end
 
   if Rails.env.development?

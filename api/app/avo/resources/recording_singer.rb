@@ -5,7 +5,7 @@ class Avo::Resources::RecordingSinger < Avo::BaseResource
   # }
 
   def fields
-    field :id, as: :id
+    field :id, as: :id, readonly: true, only_on: :show
     field :recording_id, as: :text
     field :singer_id, as: :text
     field :recording, as: :belongs_to

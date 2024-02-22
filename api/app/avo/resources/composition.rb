@@ -5,7 +5,7 @@ class Avo::Resources::Composition < Avo::BaseResource
   # }
 
   def fields
-    field :id, as: :id
+    field :id, as: :id, readonly: true, only_on: :show
     field :title, as: :text
     field :tangotube_slug, as: :text
     field :lyricist_id, as: :text
