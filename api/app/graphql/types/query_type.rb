@@ -55,5 +55,12 @@ module Types
 
       Recording.find(id)
     end
+
+    field :get_home_playlists, PlaylistType.connection_type, null: false, description: "Get all playlists."
+    def get_home_playlists
+      raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
+
+      Playlist.all
+    end
   end
 end

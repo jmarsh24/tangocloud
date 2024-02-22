@@ -4,3 +4,4 @@ export * from "./queries/searchRecordings";
 export * from "./queries/whoAmI";
 export * from "./queries/currentUserProfile";
 export * from "./queries/getRecordingDetails";
+export * from "./queries/getHomePlaylists";
