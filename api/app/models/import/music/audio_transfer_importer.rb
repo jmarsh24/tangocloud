@@ -20,8 +20,12 @@ module Import
       end
 
       def import(file:, audio_transfer: nil)
-        filename = audio_transfer.present? ? audio_transfer.filename : File.basename(file)
-        raise DuplicateFileError if AudioTransfer.find_by(filename:)
+        if audio_transfer.present?
+          filename = audio_transfer.filename
+        else
+          filename = File.basename(file)
+          raise DuplicateFileError if AudioTransfer.find_by(filename:)
+        end
 
         metadata = AudioProcessing::MetadataExtractor.new(file).extract_metadata
 
