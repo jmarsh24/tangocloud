@@ -19,6 +19,16 @@ export const GET_HOME_PLAYLISTS = gql`
             username
             avatarUrl
           }
+          playlistAudioTransfers {
+            id
+            audioTransfer {
+              id
+              recording {
+                title
+                albumArtUrl
+              }
+            }
+          }
           createdAt
           updatedAt
         }

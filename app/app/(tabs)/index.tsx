@@ -20,9 +20,6 @@ export default function Page() {
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.headerText, { color: colors.text }]}>
-        The people who are crazy enough to think they can change the world are the ones who do.
-      </Text>
       <FlatList
         data={playlists}
         keyExtractor={(item) => item.id}
@@ -33,6 +30,9 @@ export default function Page() {
           </View>
         )}
       />
+      <Text style={[styles.headerText, { color: colors.text }]}>
+        The people who are crazy enough to think they can change the world are the ones who do.
+      </Text>
     </View>
   );
 }

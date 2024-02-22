@@ -1,10 +1,27 @@
+type Album {
+  albumArt: String
+  albumType: String
+  audioTransfersCount: Int
+  description: String
+  externalId: String
+  id: ID
+  releaseDate: ISO8601Date
+  slug: String
+  title: String
+}
+
 type AudioTransfer {
+  album: Album
   albumId: ID
   createdAt: ISO8601Date
   externalId: String
+  filename: String
   id: ID
+  playlistAudioTransfers: [PlaylistAudioTransfer!]
   position: Int
+  recording: Recording
   recordingId: ID
+  transferAgent: TransferAgent
   transferAgentId: ID
   updatedAt: ISO8601Date
 }
@@ -176,6 +193,7 @@ type Playlist {
   listensCount: Int!
   playlistAudioTransfers: [PlaylistAudioTransfer!]!
   public: Boolean!
+  recordings: [Recording!]!
   sharesCount: Int!
   songsCount: Int!
   title: String!
@@ -406,6 +424,15 @@ type Singer {
   rank: Int
   slug: String
   sortName: String
+}
+
+type TransferAgent {
+  createdAt: ISO8601DateTime!
+  description: String
+  id: ID!
+  name: String!
+  updatedAt: ISO8601DateTime!
+  url: String
 }
 
 type User {
