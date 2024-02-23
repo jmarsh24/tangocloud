@@ -10,6 +10,16 @@ export type Track = {
   composer: Composer;
   audioFileUrl: string;
   album: Album;
+  audioTransfers: AudioTransfer[];
+};
+
+export type AudioTransfer = {
+  id: string;
+  title: string;
+  url: string;
+  duration: number;
+  album: Album;
+  audioFileUrl: string;
 };
 
 export type Album = {
@@ -32,6 +42,8 @@ export type AudioVariant = {
   title: string;
   url: string;
   duration: number;
+  album: Album;
+  audioFileUrl: string;
 };
 
 export type Orchestra = {

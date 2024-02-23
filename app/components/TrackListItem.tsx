@@ -21,10 +21,10 @@ export default function TrackListItem({ track }: TrackListItemProps) {
     const token = await fetchAuthToken();
     const trackForPlayer = {
       id: track.id,
-      url: track.audioVariants[0].audioFileUrl, // Your track URL
+      url: track.audioVariants[0].audioFileUrl,
       title: track.title,
       artist: track.orchestra.name,
-      artwork: track.albumArtUrl,
+      artwork: track.audioTransfers[0].album.albumArtUrl,
       duration: track.audioVariants[0].duration,
       headers: {
         Authorization: token ? `Bearer ${token}` : '',
