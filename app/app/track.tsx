@@ -54,7 +54,7 @@ export default function TrackScreen() {
     variables: { recordingId: track?.id },
     skip: !track?.id,
   });
-  const waveformData = data?.getRecordingDetails.waveforms[0].data || [];
+  const waveformData = data?.getRecordingDetails.audioTransfers[0].waveform.data || [];
 
   useEffect(() => {
     positionRef.current = position;
@@ -123,10 +123,9 @@ export default function TrackScreen() {
 function getStyles(colors) {
   return StyleSheet.create({
     container: {
-      flex: 1,
+      paddingTop: 20,
       justifyContent: 'space-between',
       alignItems: 'center',
-      paddingVertical: 100,
       backgroundColor: colors.background,
     },
     subtitle: {
@@ -156,7 +155,6 @@ function getStyles(colors) {
     title: {
       fontSize: 24,
       fontWeight: 'bold',
-      marginBottom: 4,
       color: colors.text,
     },
     artist: {

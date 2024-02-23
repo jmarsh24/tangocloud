@@ -14,22 +14,23 @@ export const GET_RECORDING_DETAILS = gql`
       genre {
         name
       }
-      album {
-        albumArtUrl
+      audioTransfers {
+        album {
+          albumArtUrl
+        }
+        waveform {
+          data
+        }
       }
       audioVariants {
         id
-        url
+        audioFileUrl
         bitRate
         codec
         duration
         format
       }
       recordedDate
-      waveforms {
-        length
-        data
-      }
     }
   }
 `;
