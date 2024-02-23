@@ -9,6 +9,7 @@ export const GET_HOME_PLAYLISTS = gql`
           title
           description
           public
+          imageUrl
           songsCount
           likesCount
           listensCount
@@ -26,8 +27,15 @@ export const GET_HOME_PLAYLISTS = gql`
               album {
                 albumArtUrl
               }
+              audioVariants {
+                audioFileUrl
+                duration
+              }
               recording {
                 title
+                orchestra {
+                  name
+                }
               }
             }
           }

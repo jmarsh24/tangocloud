@@ -15,7 +15,14 @@ module Types
     field :audio_transfers, [Types::AudioTransferType], null: false
     field :audio_variants, [Types::AudioVariantType], null: false
     field :recordings, [Types::RecordingType], null: false
+    field :image_url, String, null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
+
+    def image_url
+      if object.image.attached?
+        Rails.application.routes.url_helpers.rails_blob_url(object.image)
+      end
+    end
   end
 end
