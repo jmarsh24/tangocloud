@@ -105,7 +105,7 @@ module Import
 
 
           audio_transfer = @audio_transfer || album.audio_transfers.new(
-            filename:
+            filename: File.basename(file)
           )
 
           audio_transfer.assign_attributes(
@@ -117,7 +117,7 @@ module Import
 
           audio_transfer.save!
 
-          audio_transfer.audio_file.attach(io: File.open(file), filename:)
+          audio_transfer.audio_file.attach(io: File.open(file), filename: File.basename(file))
 
           unless audio_transfer.waveform
             waveform = AudioProcessing::WaveformGenerator.new(File.open(file)).json
@@ -145,11 +145,11 @@ module Import
               codec: audio_converter.codec,
               duration: audio_converter.movie.duration.to_i,
               format: audio_converter.format,
-              filename:,
+              filename: File.basename(file),
               metadata:
             )
 
-            audio_variant.audio_file.attach(io: File.open(file), filename:)
+            audio_variant.audio_file.attach(io: File.open(file), filename: File.basename(file))
           end
           audio_transfer
         end
