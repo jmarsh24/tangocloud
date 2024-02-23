@@ -5,8 +5,11 @@ class Playlist < ApplicationRecord
   has_many :playlist_audio_transfers, -> { order(position: :asc) }, dependent: :destroy, inverse_of: :playlist
   has_many :audio_transfers, through: :playlist_audio_transfers
 
-  has_one_attached :image, dependent: :purge_later
+  has_one_attached :image, dependent: :purge_late
   has_one_attached :playlist_file, dependent: :purge_later
+
+  validates :image, presence: true
+  validates :playlist_file, presence: true
 end
 
 # == Schema Information
