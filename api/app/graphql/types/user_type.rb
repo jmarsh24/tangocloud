@@ -14,5 +14,13 @@ module Types
     field :avatar_url, String
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
+
+    def avatar_url
+      if object.avatar.attached?
+        Rails.application.routes.url_helpers.rails_blob_url(object.avatar, only_path: true)
+      else
+        "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(object.email)}?d=identicon"
+      end
+    end
   end
 end

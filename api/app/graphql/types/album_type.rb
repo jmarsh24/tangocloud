@@ -8,6 +8,12 @@ module Types
     field :slug, String, null: true
     field :external_id, String, null: true
     field :album_type, String, null: true
-    field :album_art, String, null: true
+    field :album_art_url, String, null: true
+
+    def album_art_url
+      if object.album_art.attached?
+        Rails.application.routes.url_helpers.rails_blob_url(object.album_art, only_path: true)
+      end
+    end
   end
 end
