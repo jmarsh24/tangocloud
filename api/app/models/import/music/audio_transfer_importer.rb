@@ -21,7 +21,7 @@ module Import
 
       def import(file:, audio_transfer: nil)
         if audio_transfer.present?
-          filename = audio_transfer.filename
+          audio_transfer.filename
         else
           filename = File.basename(file)
           raise DuplicateFileError if AudioTransfer.find_by(filename:)
@@ -102,7 +102,6 @@ module Import
               album.album_art.attach(io: File.open(file), filename: File.basename(file))
             end
           end
-
 
           audio_transfer = @audio_transfer || album.audio_transfers.new(
             filename: File.basename(file)
