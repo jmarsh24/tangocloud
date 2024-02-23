@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useColorScheme, View, StyleSheet, Image } from 'react-native';
 import { useAuth } from '@/providers/AuthProvider';
@@ -8,7 +8,6 @@ import { BottomTabBar } from '@react-navigation/bottom-tabs';
 import { Tabs } from 'expo-router';
 import Colors from '@/constants/Colors';
 import Player from '@/components/Player';
-import TrackPlayer from 'react-native-track-player';
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof AntDesign>['name'];
@@ -48,7 +47,7 @@ export default function TabLayout() {
       )}
     >
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
           title: 'Home',
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />
