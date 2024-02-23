@@ -5,8 +5,6 @@ module Import
 
       class UnsupportedMimeTypeError < StandardError; end
 
-      include TextNormalizable
-
       SUPPORTED_MIME_TYPES = ["audio/x-aiff", "audio/x-flac", "audio/flac", "audio/mp4", "audio/mpeg", "audio/x-m4a", "audio/mp3"].freeze
 
       def import_from_file(file)
