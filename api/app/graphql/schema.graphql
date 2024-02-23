@@ -1,5 +1,5 @@
 type Album {
-  albumArt: String
+  albumArtUrl: String
   albumType: String
   audioTransfersCount: Int
   description: String

@@ -8,6 +8,17 @@ module Types
     field :slug, String, null: true
     field :external_id, String, null: true
     field :album_type, String, null: true
-    field :album_art_url, String, null: true, extensions: [ImageUrlField]
+    field :album_art_url, String, null: true
+
+    def album_art_url
+      AssociationLoader.for(
+        object.class,
+        album_art_attachment: :blob
+      ).load(object).then do |album_art|
+        next if album_art.nil?
+
+        Rails.application.routes.url_helpers.rails_blob_url(album_art)
+      end
+    end
   end
 end
