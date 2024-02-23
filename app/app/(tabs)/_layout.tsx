@@ -8,11 +8,7 @@ import { BottomTabBar } from '@react-navigation/bottom-tabs';
 import { Tabs } from 'expo-router';
 import Colors from '@/constants/Colors';
 import Player from '@/components/Player';
-import { SetupService } from '@/services/SetupService';
 import TrackPlayer from 'react-native-track-player';
-import { PlaybackService } from '@/services/PlaybackService';
-
-TrackPlayer.registerPlaybackService(() => PlaybackService);
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof AntDesign>['name'];
@@ -24,10 +20,6 @@ function TabBarIcon(props: {
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { authState } = useAuth();
-
-  useEffect(() => {
-    SetupService().catch(console.error);
-  }, []);
 
   const { data, loading, error } = useQuery(CURRENT_USER_PROFILE, {
     skip: !authState.authenticated,
@@ -42,7 +34,6 @@ export default function TabLayout() {
       return <AntDesign name="user" size={22} color={color} style={{ marginBottom: -3 }} />;
     }
   };
-
 
   return (
     <Tabs
