@@ -9,8 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function Page() {
   const { colors } = useTheme();
   const { data, loading, error } = useQuery(GET_HOME_PLAYLISTS, {
-    variables: { first: 20 },
-    fetchPolicy: 'cache-and-network',
+    variables: { first: 20 }
   });
 
   // Check for loading and error states first
