@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  ActivityIndicator,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import TrackPlayer, { useIsPlaying } from 'react-native-track-player';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { useTheme } from '@react-navigation/native';
@@ -27,19 +22,9 @@ export const PlayPauseButton = ({ size = 48 }) => {
 
   return (
     <View style={styles.container}>
-      {bufferingDuringPlay ? (
-        <ActivityIndicator color={colors.text} />
-      ) : (
-        <TouchableWithoutFeedback
-          onPress={playing ? TrackPlayer.pause : TrackPlayer.play}
-        >
-          <FontAwesome6
-            name={playing ? 'pause' : 'play'}
-            size={size}
-            style={styles.icon}
-          />
+        <TouchableWithoutFeedback onPress={playing ? TrackPlayer.pause : TrackPlayer.play}>
+          < FontAwesome6 name={playing ? 'pause' : 'play'} size={size} style={styles.icon} />
         </TouchableWithoutFeedback>
-      )}
     </View>
   );
 };
