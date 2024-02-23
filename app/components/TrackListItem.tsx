@@ -2,7 +2,6 @@ import { Text, View, StyleSheet, Image, Pressable } from 'react-native';
 import { Track } from '@/types';
 import { useTheme } from '@react-navigation/native';
 import TrackPlayer from 'react-native-track-player';
-import * as SecureStore from 'expo-secure-store';
 
 type TrackListItemProps = {
   track: Track;
@@ -12,13 +11,8 @@ export default function TrackListItem({ track }: TrackListItemProps) {
   const { colors } = useTheme();
 
   const styles = getStyles(colors);
-
-  const fetchAuthToken = async () => {
-    return await SecureStore.getItemAsync('token');
-  };
   
   const onTrackPress = async () => {
-    const token = await fetchAuthToken();
     const trackForPlayer = {
       id: track.id,
       url: track.audioVariants[0].audioFileUrl,
@@ -26,9 +20,6 @@ export default function TrackListItem({ track }: TrackListItemProps) {
       artist: track.orchestra.name,
       artwork: track.audioTransfers[0].album.albumArtUrl,
       duration: track.audioVariants[0].duration,
-      headers: {
-        Authorization: token ? `Bearer ${token}` : '',
-      },
     };
 
     try {
@@ -44,7 +35,7 @@ export default function TrackListItem({ track }: TrackListItemProps) {
 
   return (
     <Pressable onPress={onTrackPress} style={styles.songCard}>
-      <Image source={{ uri: track.album?.albumArtUrl }} style={styles.songAlbumArt} />
+      <Image source={{ uri: track.audioTransfers[0].album.albumArtUrl }} style={styles.songAlbumArt} />
       <View style={styles.songTextContainer}>
         <Text style={styles.songTitle}>{track.title}</Text>
         <Text style={styles.songDetails}>
