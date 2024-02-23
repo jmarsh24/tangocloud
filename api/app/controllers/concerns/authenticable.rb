@@ -2,8 +2,8 @@ module Authenticable
   extend ActiveSupport::Concern
 
   included do
-    before_action :set_current_request_details
-    before_action :authenticate
+    prepend_before_action :set_current_request_details
+    prepend_before_action :authenticate
     helper_method :current_user
   end
 

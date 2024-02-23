@@ -14,7 +14,7 @@ class Avo::Resources::Playlist < Avo::BaseResource
     field :listens_count, as: :number, only_on: :show
     field :shares_count, as: :number, only_on: :show
     field :followers_count, as: :number, only_on: :show
-    field :user_id, as: :hidden, default: -> { binding.irb }
+    field :user_id, as: :hidden, default: -> { Current.user.id }
     field :playlist_audio_transfers, as: :has_many
     field :image, as: :file, is_image: true, accept: "image/*", direct_upload: true, display_filename: false
     field :playlist_file, as: :file, accept: "m3u8"

@@ -4,7 +4,7 @@ end
 
 Avo.configure do |config|
   config.current_user_method do
-    binding.irb
+    Current.user
   end
   config.per_page_steps = [48, 96, 256]
   config.resource_controls_placement = :left
