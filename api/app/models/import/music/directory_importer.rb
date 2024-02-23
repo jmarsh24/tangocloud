@@ -17,7 +17,6 @@ module Import
         process_files(existing_filenames)
       end
 
-
       private
 
       def process_files(existing_filenames = [])
@@ -56,7 +55,7 @@ module Import
 
       def import_file(file)
         audio_transfer = AudioTransfer.create!(
-          filename: File.basename(file),
+          filename: File.basename(file)
         )
         audio_transfer.audio_file.attach(io: file, filename: File.basename(file))
         AudioTransferImportJob.perform_later(audio_transfer)

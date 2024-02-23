@@ -3,8 +3,8 @@ require "rails_helper"
 RSpec.describe Import::Music::DirectoryImporter do
   let(:directory_path) { "spec/fixtures/audio" }
   let(:importer) { described_class.new(directory_path) }
-  describe "#import" do
 
+  describe "#import" do
     it "creates 6 AudioTransfers and enqueues AudioTransferImportJob 6 times for supported files" do
       AudioTransfer.destroy_all
       importer.import
