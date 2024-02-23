@@ -106,6 +106,8 @@ module Import
 
           audio_transfer ||= album.audio_transfers.new(filename:)
 
+          audio_transfer.album = album unless audio_transfer.album.present?
+
           audio_transfer.assign_attributes(
             external_id: metadata.catalog_number,
             transfer_agent:,
