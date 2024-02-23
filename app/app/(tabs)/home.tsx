@@ -4,6 +4,7 @@ import { useTheme } from '@react-navigation/native';
 import { GET_HOME_PLAYLISTS } from '@/graphql';
 import { useQuery } from '@apollo/client';
 import TrackPlayer from 'react-native-track-player';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Page() {
   const { colors } = useTheme();
@@ -62,7 +63,10 @@ export default function Page() {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <Text style={[styles.headerText, { color: colors.text }]}>
+        The people who are crazy enough to think they can change the world are the ones who do.
+      </Text>
       <FlatList
         data={playlists}
         keyExtractor={(item) => item.id}
@@ -78,10 +82,7 @@ export default function Page() {
           </Pressable>
         )}
       />
-      <Text style={[styles.headerText, { color: colors.text }]}>
-        The people who are crazy enough to think they can change the world are the ones who do.
-      </Text>
-    </View>
+    </SafeAreaView>
   );
 }
 

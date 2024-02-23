@@ -7,6 +7,7 @@ import { useQuery } from '@apollo/client';
 import { useTheme } from '@react-navigation/native';
 import { SEARCH_RECORDINGS } from '@/graphql';
 import _ from 'lodash'; 
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SearchScreen() {
   const { colors } = useTheme();
@@ -73,7 +74,7 @@ export default function SearchScreen() {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <View style={styles.header}>
         <View style={styles.searchContainer}>
           <AntDesign name="search1" size={20} style={styles.searchIcon} />
@@ -111,7 +112,7 @@ export default function SearchScreen() {
         estimatedItemSize={30}
         keyExtractor={item => item.id}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

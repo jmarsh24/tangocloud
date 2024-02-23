@@ -6,6 +6,7 @@ import { Link } from 'expo-router';
 import { CURRENT_USER_PROFILE } from '@/graphql';
 import Button from '@/components/Button'
 import Colors from '@/constants/Colors';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function LibraryScreen() {
   const { authState, onLogout } = useAuth();
@@ -75,12 +76,12 @@ export default function LibraryScreen() {
   const email = currentUserProfile?.email;
   const avatar_url = currentUserProfile?.avatarUrl;
   return (
-    <View style={dynamicStyles.container}>
+    <SafeAreaView style={dynamicStyles.container}>
       <Image source={{ uri: avatar_url }} style={styles.image} />
       {username && <Text style={dynamicStyles.header}>{username}</Text>}
       {email && <Text style={dynamicStyles.header}>{email}</Text>}
       <Button onPress={onLogout} text="Sign out" />
-    </View>
+    </SafeAreaView>
   );
 }
 

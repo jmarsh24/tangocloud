@@ -9,6 +9,7 @@ import ApolloClientProvider from '@/providers/ApolloClientProvider';
 import { SetupService } from '@/services/SetupService';
 import { PlaybackService } from '@/services/PlaybackService';
 import TrackPlayer from 'react-native-track-player';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 export {
   ErrorBoundary,

@@ -50,6 +50,7 @@ export default function TabLayout() {
         name="home"
         options={{
           title: 'Home',
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />
         }}
       />
@@ -57,6 +58,7 @@ export default function TabLayout() {
         name="search"
         options={{
           title: 'Search',
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="search1" color={color} />
         }}
       />
@@ -64,6 +66,7 @@ export default function TabLayout() {
         name="you"
         options={{
           title: 'Your Profile',
+          headerShown: false,
           tabBarIcon: ({ color }) => youIcon(color)
         }}
       />
