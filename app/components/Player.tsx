@@ -48,7 +48,7 @@ const Player = () => {
     },
     player: {
       width: '100%',
-      backgroundColor: colors.background,
+      backgroundColor: colors.card,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
