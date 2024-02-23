@@ -12,7 +12,7 @@ module Types
 
     def album_art_url
       if object.album_art.attached?
-        Rails.application.routes.url_helpers.rails_blob_url(object.album_art, only_path: true)
+        Rails.application.routes.url_helpers.rails_blob_url(object.album_art)
       end
     end
   end

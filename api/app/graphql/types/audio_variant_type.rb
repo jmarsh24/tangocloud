@@ -10,8 +10,15 @@ module Types
     field :length, Integer, null: false
     field :metadata, GraphQL::Types::JSON, null: false
     field :audio_transfer_id, Types::UuidType, null: false
-    field :url, String, null: false, method: :signed_url
+    field :audio_file_url, String, null: false
+    field :audio_variant_url, String, null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
+
+    def audio_file_url
+      if object.audio_file.attached?
+        Rails.application.routes.url_helpers.rails_blob_url(object.audio_file)
+      end
+    end
   end
 end

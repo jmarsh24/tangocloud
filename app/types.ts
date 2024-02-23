@@ -8,7 +8,7 @@ export type Track = {
   audioVariants: AudioVariant[];
   singers: Singer[];
   composer: Composer;
-  url: string;
+  audioFileUrl: string;
   album: Album;
 };
 

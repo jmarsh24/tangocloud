@@ -15,7 +15,7 @@ export const SEARCH_RECORDINGS = gql`
           audioVariants {
             id
             duration
-            url
+            audioFileUrl
           }
           orchestra {
             name

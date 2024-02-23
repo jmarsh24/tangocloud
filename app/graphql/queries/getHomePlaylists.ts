@@ -23,9 +23,11 @@ export const GET_HOME_PLAYLISTS = gql`
             id
             audioTransfer {
               id
+              album {
+                albumArtUrl
+              }
               recording {
                 title
-                albumArtUrl
               }
             }
           }
