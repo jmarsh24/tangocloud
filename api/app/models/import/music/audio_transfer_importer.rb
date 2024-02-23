@@ -18,10 +18,13 @@ module Import
       end
 
       def import(file:, audio_transfer: nil)
-        if audio_transfer.present?
+        filename = if audio_transfer.present?
           audio_transfer.filename
         else
-          filename = File.basename(file)
+          File.basename(file)
+        end
+
+        unless audio_transfer.present?
           raise DuplicateFileError if AudioTransfer.find_by(filename:)
         end
 
@@ -101,9 +104,7 @@ module Import
             end
           end
 
-          audio_transfer = @audio_transfer || album.audio_transfers.new(
-            filename: File.basename(file)
-          )
+          audio_transfer ||= album.audio_transfers.new(filename:)
 
           audio_transfer.assign_attributes(
             external_id: metadata.catalog_number,
@@ -114,7 +115,9 @@ module Import
 
           audio_transfer.save!
 
-          audio_transfer.audio_file.attach(io: File.open(file), filename: File.basename(file))
+          unless audio_transfer.audio_file.attached?
+            audio_transfer.audio_file.attach(io: File.open(file), filename:)
+          end
 
           unless audio_transfer.waveform
             waveform = AudioProcessing::WaveformGenerator.new(File.open(file)).json
@@ -142,11 +145,11 @@ module Import
               codec: audio_converter.codec,
               duration: audio_converter.movie.duration.to_i,
               format: audio_converter.format,
-              filename: File.basename(file),
+              filename:,
               metadata:
             )
 
-            audio_variant.audio_file.attach(io: File.open(file), filename: File.basename(file))
+            audio_variant.audio_file.attach(io: File.open(file), filename:)
           end
           audio_transfer
         end
