@@ -1,8 +1,7 @@
 class Orchestra < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :slugged
-  has_many :orchestra_recordings, dependent: :destroy
-  has_many :recordings, through: :orchestra_recordings
+  has_many :recordings
   has_many :singers, through: :recordings
   has_many :compositions, through: :recordings
   has_many :composers, through: :compositions
