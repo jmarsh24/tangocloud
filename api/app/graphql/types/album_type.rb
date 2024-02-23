@@ -8,6 +8,6 @@ module Types
     field :slug, String, null: true
     field :external_id, String, null: true
     field :album_type, String, null: true
-    field :album_art, String, null: true
+    field :album_art_url, String, null: true, extensions: [ImageUrlField]
   end
 end

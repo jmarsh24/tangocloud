@@ -38,10 +38,7 @@ class User < ApplicationRecord
     events.create! action: "email_verified"
   end
 
-  has_one_attached :avatar do |blob|
-    blob.variant :small, resize_to_limit: [160, 160], saver: {strip: true, quality: 75, lossless: false, alpha_q: 85, reduction_effort: 6, smart_subsample: true}, format: "webp"
-    blob.variant :large, resize_to_limit: [500, 500], saver: {strip: true, quality: 75, lossless: false, alpha_q: 85, reduction_effort: 6, smart_subsample: true}, format: "webp"
-  end
+  has_one_attached :avatar
   class << self
     def find_by_email_or_username(email_or_username)
       find_by(email: email_or_username) || find_by(username: email_or_username)
