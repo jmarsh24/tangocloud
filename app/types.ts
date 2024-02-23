@@ -2,7 +2,6 @@ export type Track = {
   id: string;
   title: string;
   recordedDate: string;
-  albumArtUrl: string;
   orchestra: Orchestra;
   lyricist: Lyricist;
   genre: Genre;
@@ -10,6 +9,22 @@ export type Track = {
   singers: Singer[];
   composer: Composer;
   url: string;
+  album: Album;
+};
+
+export type Album = {
+  albumArtUrl: string;
+  title: string;
+  recordedDate: string;
+  orchestra: Orchestra;
+  lyricist: Lyricist;
+  genre: Genre;
+  audioVariants: AudioVariant[];
+  singers: Singer[];
+  composer: Composer;
+  url: string;
+  id: string;
+  tracks: Track[];
 };
 
 export type AudioVariant = {

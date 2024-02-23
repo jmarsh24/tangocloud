@@ -7,7 +7,11 @@ export const SEARCH_RECORDINGS = gql`
         node {
           id
           title
-          albumArtUrl
+          audioTransfers {
+            album {
+              albumArtUrl
+            }
+          }
           audioVariants {
             id
             duration

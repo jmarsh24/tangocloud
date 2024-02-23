@@ -44,7 +44,7 @@ export default function TrackListItem({ track }: TrackListItemProps) {
 
   return (
     <Pressable onPress={onTrackPress} style={styles.songCard}>
-      <Image source={{ uri: track.albumArtUrl }} style={styles.songAlbumArt} />
+      <Image source={{ uri: track.album?.albumArtUrl }} style={styles.songAlbumArt} />
       <View style={styles.songTextContainer}>
         <Text style={styles.songTitle}>{track.title}</Text>
         <Text style={styles.songDetails}>

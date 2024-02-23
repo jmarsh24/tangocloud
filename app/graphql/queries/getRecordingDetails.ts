@@ -5,7 +5,6 @@ export const GET_RECORDING_DETAILS = gql`
     getRecordingDetails(id: $recordingId) {
       id
       title
-      albumArtUrl
       singers {
         name
       }
@@ -14,6 +13,9 @@ export const GET_RECORDING_DETAILS = gql`
       }
       genre {
         name
+      }
+      album {
+        albumArtUrl
       }
       audioVariants {
         id
