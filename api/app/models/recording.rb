@@ -4,11 +4,11 @@ class Recording < ApplicationRecord
   searchkick word_middle: [:title, :composer_name, :author, :lyrics, :orchestra_name, :singer_name]
 
   belongs_to :el_recodo_song, optional: true
-  belongs_to :orchestra
-  belongs_to :composition, optional: true
+  belongs_to :orchestra, counter_cache: true
+  belongs_to :composition, optional: true, counter_cache: true
   belongs_to :record_label, optional: true
-  belongs_to :genre
-  belongs_to :period, optional: true
+  belongs_to :genre, counter_cache: true
+  belongs_to :period, optional: true, counter_cache: true
   belongs_to :el_recodo_song, optional: true
   has_many :audio_transfers, dependent: :destroy
   has_many :audio_variants, through: :audio_transfers, dependent: :destroy

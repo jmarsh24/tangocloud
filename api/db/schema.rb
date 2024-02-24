@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_16_000907) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_24_124651) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -136,6 +136,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_16_000907) do
     t.uuid "composer_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "recordings_count", default: 0
     t.index ["composer_id"], name: "index_compositions_on_composer_id"
     t.index ["lyricist_id"], name: "index_compositions_on_lyricist_id"
   end
@@ -229,6 +230,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_16_000907) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "recordings_count", default: 0
   end
 
   create_table "good_job_batches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -346,6 +348,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_16_000907) do
     t.date "birth_date"
     t.date "death_date"
     t.string "slug", null: false
+    t.integer "recordings_count", default: 0
     t.index ["slug"], name: "index_orchestras_on_slug", unique: true
   end
 

@@ -16,11 +16,12 @@ end
 #
 # Table name: orchestras
 #
-#  id         :uuid             not null, primary key
-#  name       :string           not null
-#  rank       :integer          default(0), not null
-#  sort_name  :string
-#  birth_date :date
-#  death_date :date
-#  slug       :string           not null
+#  id               :uuid             not null, primary key
+#  name             :string           not null
+#  rank             :integer          default(0), not null
+#  sort_name        :string
+#  birth_date       :date
+#  death_date       :date
+#  slug             :string           not null
+#  recordings_count :integer          default(0)
 #
