@@ -5,13 +5,15 @@ RSpec.describe AudioProcessing::AudioConverter do
     it "converts the file to the specified format and deletes it afterward" do
       file = File.open("spec/fixtures/audio/tone.mp3")
       output_path = nil
+      audio_converter = AudioProcessing::AudioConverter.new(file)
 
-      AudioProcessing::AudioConverter.new(file).convert do |output|
+      audio_converter.convert do |output|
         converted_movie = FFMPEG::Movie.new(output.path)
         expect(converted_movie.audio_codec).to eq("aac")
         output_path = output.path
       end
 
+      expect(audio_converter.filename).to eq("tone.aac")
       expect(File.exist?(output_path)).to be_falsey
     end
 
