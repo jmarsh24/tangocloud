@@ -150,7 +150,7 @@ module Import
               codec: audio_converter.codec,
               duration: audio_converter.movie.duration.to_i,
               format: audio_converter.format,
-              filename:,
+              filename: audio_converter.filename,
               metadata:
             )
 

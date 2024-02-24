@@ -25,6 +25,7 @@ RSpec.describe Import::Music::AudioTransferImporter do
         expect(audio.codec).to eq("aac")
         expect(audio.duration).to eq(165)
         expect(audio.metadata).to be_present
+        expect(audio.filename).to eq("19401008_volver_a_sonar_roberto_rufino_tango_2476.aac")
         # creates a new composition
         composition = audio_transfer.recording.composition
         expect(composition.title).to eq("volver a sonar")
@@ -84,6 +85,7 @@ RSpec.describe Import::Music::AudioTransferImporter do
         expect(audio_variant.codec).to eq("aac")
         expect(audio_variant.duration).to eq(163)
         expect(audio_variant.metadata).to be_present
+        expect(audio_variant.filename).to eq("19380307_comme_il_faut_instrumental_tango_2758.aac")
         #  creates a new audio transfer
         expect(audio_transfer).to be_present
         expect(audio_transfer.external_id).to be_nil
