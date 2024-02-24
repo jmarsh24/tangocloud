@@ -11,5 +11,7 @@ module Types
     field :data, [Float], null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
+
+    belongs_to :audio_transfer
   end
 end

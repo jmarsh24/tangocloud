@@ -1,8 +1,9 @@
 class Lyricist < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :slugged
-  has_many :compositions, dependent: :destroy, inverse_of: :lyricist
+  has_many :compositions, inverse_of: :lyricist
   has_many :lyrics, through: :compositions, dependent: :destroy
+  has_many :recordings, through: :compositions
 
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true

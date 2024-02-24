@@ -6,5 +6,7 @@ module Types
     field :composition, Types::CompositionType, null: true
     field :created_at, GraphQL::Types::ISO8601Date, null: true
     field :updated_at, GraphQL::Types::ISO8601Date, null: true
+
+    belongs_to :composition
   end
 end

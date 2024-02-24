@@ -7,5 +7,7 @@ module Types
     field :ip_address, String
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
+
+    belongs_to :user
   end
 end

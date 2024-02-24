@@ -22,5 +22,8 @@ module Types
         "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(object.email)}?d=identicon"
       end
     end
+
+    has_many :sessions
+    has_many :events
   end
 end

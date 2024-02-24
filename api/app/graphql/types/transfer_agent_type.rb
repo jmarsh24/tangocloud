@@ -6,5 +6,9 @@ module Types
     field :url, String
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
+
+    has_many :recordings
+    has_many :audio_variants
+    has_many :audio_transfers
   end
 end

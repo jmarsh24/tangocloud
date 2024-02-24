@@ -14,5 +14,7 @@ module Types
     field :composer, String, null: true
     field :author, String, null: true
     field :label, String, null: true
+
+    belongs_to :recording
   end
 end

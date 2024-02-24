@@ -20,5 +20,7 @@ module Types
         Rails.application.routes.url_helpers.rails_blob_url(object.audio_file)
       end
     end
+
+    belongs_to :audio_transfer
   end
 end

@@ -3,6 +3,7 @@ class Composer < ApplicationRecord
   friendly_id :name, use: :slugged
 
   has_many :compositions, dependent: :destroy
+  has_many :recordings, through: :compositions
 
   validates :name, presence: true
 end

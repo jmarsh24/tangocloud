@@ -7,5 +7,7 @@ module Types
     field :end_year, Integer, null: true
     field :recordings_count, Integer, null: true
     field :slug, String, null: true
+
+    has_many :recordings
   end
 end

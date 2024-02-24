@@ -7,17 +7,18 @@ module Types
     field :recorded_date, GraphQL::Types::ISO8601Date, null: true
     field :slug, String, null: false
     field :recording_type, String, null: false
-    field :el_recodo_song, Types::ElRecodoSongType, null: true
-    field :orchestra, Types::OrchestraType, null: true
-    field :composition, Types::CompositionType, null: true
-    field :record_label, Types::RecordLabelType, null: true
-    field :genre, Types::GenreType, null: true
-    field :period, Types::PeriodType, null: true
-    field :lyricist, Types::LyricistType, null: true
-    field :composer, Types::ComposerType, null: true
-    field :waveforms, [Types::WaveformType], null: true
-    field :audio_transfers, [Types::AudioTransferType], null: false
-    field :singers, [Types::SingerType], null: true
-    field :audio_variants, [Types::AudioVariantType], null: true
   end
+
+  has_many :audio_transfers
+  has_many :singers
+  has_many :audio_variants
+  belongs_to :el_recodo_song
+  belongs_to :orchestra
+  belongs_to :composition
+  belongs_to :record_label
+  belongs_to :genre
+  belongs_to :period
+  belongs_to :lyricist
+  belongs_to :composer
+  has_many :waveforms
 end
