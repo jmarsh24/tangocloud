@@ -7,7 +7,6 @@ gem "rails", "7.1.3"
 
 # Database
 gem "pg"
-gem "good_job"
 
 # Performance
 gem "bootsnap", require: false
@@ -42,6 +41,8 @@ gem "socialization"
 gem "solid_cache"
 gem "translate_client"
 gem "yael"
+gem "solid_queue"
+gem "mission_control-jobs"
 gem "streamio-ffmpeg"
 gem "elasticsearch"
 gem "searchkick"

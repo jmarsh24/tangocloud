@@ -9,11 +9,11 @@ servers:
   worker-1:
     hosts:
       - 195.201.147.15
-    cmd: bundle exec good_job --queues='background_sync:1;-background_sync:2'
+    cmd: bundle exec rake solid_queue:start
   worker-2:
     hosts:
       - 195.201.147.15
-    cmd: bundle exec good_job --queues='-background_sync:3'
+    cmd: bundle exec rake solid_queue:start
 registry:
   server: ghcr.io
   username:

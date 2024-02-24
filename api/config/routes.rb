@@ -26,7 +26,7 @@ Rails.application.routes.draw do
   end
 
   constraints(Constraints::AdminConstraint.new) do
-    mount GoodJob::Engine => "good_job"
+    mount MissionControl::Jobs::Engine, at: "/jobs"
     mount Avo::Engine => "admin"
   end
 
