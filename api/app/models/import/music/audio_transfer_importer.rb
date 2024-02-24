@@ -122,17 +122,20 @@ module Import
           end
 
           unless audio_transfer.waveform
-            waveform = AudioProcessing::WaveformGenerator.new(File.open(file)).json
+            waveform_json = AudioProcessing::WaveformGenerator.new(File.open(file)).json
 
-            audio_transfer.create_waveform!(
-              version: waveform.version,
-              channels: waveform.channels,
-              sample_rate: waveform.sample_rate,
-              samples_per_pixel: waveform.samples_per_pixel,
-              bits: waveform.bits,
-              length: waveform.length,
-              data: waveform.data
+            waveform = audio_transfer.create_waveform!(
+              version: waveform_json.version,
+              channels: waveform_json.channels,
+              sample_rate: waveform_json.sample_rate,
+              samples_per_pixel: waveform_json.samples_per_pixel,
+              bits: waveform_json.bits,
+              length: waveform_json.length,
+              data: waveform_json.data
             )
+            AudioProcessing::WaveformGenerator.new(File.open(file)).image do |image|
+              waveform.image.attach(io: File.open(image), filename: File.basename(file, ".*") + ".png")
+            end
           end
 
           transfer_agent.audio_transfers << audio_transfer

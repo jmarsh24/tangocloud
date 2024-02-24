@@ -43,4 +43,17 @@ RSpec.describe AudioProcessing::WaveformGenerator do
       expect(waveform.data.first).to be_between(-1, 1)
     end
   end
+
+  describe "#image" do
+    it "creates a waveform image" do
+      audio_file = File.open("spec/fixtures/audio/19401008_volver_a_sonar_roberto_rufino_tango_2476.mp3")
+      described_class.new(audio_file).image do |image|
+        expect(Marcel::MimeType.for(File.open(image))).to eq("image/png")
+        expect(ChunkyPNG::Image.from_file(image).width).to eq(800)
+        expect(ChunkyPNG::Image.from_file(image).height).to eq(150)
+        expect(ChunkyPNG::Image.from_file(image).pixels).to include(ChunkyPNG::Color::BLACK)
+        expect(ChunkyPNG::Image.from_file(image).pixels).to include(ChunkyPNG::Color::TRANSPARENT)
+      end
+    end
+  end
 end

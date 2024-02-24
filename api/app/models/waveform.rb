@@ -1,5 +1,7 @@
 class Waveform < ApplicationRecord
   belongs_to :audio_transfer
+
+  has_one_attached :image
 end
 
 # == Schema Information

@@ -2,7 +2,7 @@ module AudioProcessing
   class WaveformGenerator
     Waveform = Data.define(:version, :channels, :sample_rate, :samples_per_pixel, :bits, :length, :data).freeze
     def initialize(audio_file)
-      @audio_file = audio_file
+      @audio_file = audio_file.is_a?(String) ? File.open(audio_file) : audio_file
     end
 
     def json
@@ -35,6 +35,23 @@ module AudioProcessing
           data["length"],
           data["data"]
         )
+      end
+    end
+
+    def image(width: 800, height: 150)
+      waveform_data = json.data
+      image = ChunkyPNG::Image.new(width, height, ChunkyPNG::Color::TRANSPARENT)
+
+      Tempfile.create(["#{File.basename(@audio_file, ".*")}_waveform", ".png"]) do |tempfile|
+        waveform_data.each_with_index do |point, index|
+          x = (index.to_f * width / waveform_data.length).to_i
+          y1 = ((1 - point.to_f) * height / 2).to_i
+          y2 = ((1 + point.to_f) * height / 2).to_i
+          image.line(x, y1, x, y2, ChunkyPNG::Color::BLACK)
+        end
+        image.save(tempfile.path, interlace: true)
+
+        yield tempfile if block_given?
       end
     end
 
