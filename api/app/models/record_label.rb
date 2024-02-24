@@ -1,5 +1,10 @@
 class RecordLabel < ApplicationRecord
-  has_many :videos, dependent: :destroy
+  has_many :recordings
+  has_many :orchestras, through: :recordings
+  has_many :singers, through: :recordings
+  has_many :compositions, through: :recordings
+  has_many :composers, through: :compositions
+  has_many :lyricists, through: :compositions
 
   validates :name, presence: true
 end

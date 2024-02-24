@@ -1,5 +1,5 @@
 class Genre < ApplicationRecord
-  has_many :videos, dependent: :destroy
+  has_many :recordings
 
   validates :name, presence: true
 end

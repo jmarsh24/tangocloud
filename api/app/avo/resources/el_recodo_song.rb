@@ -1,6 +1,6 @@
 class Avo::Resources::ElRecodoSong < Avo::BaseResource
   self.title = "El Recodo Songs"
-  self.includes = []
+  self.includes = [:recording]
   self.index_query = -> {
     query.order(music_id: :asc)
   }
@@ -21,6 +21,7 @@ class Avo::Resources::ElRecodoSong < Avo::BaseResource
       link_to "Link", "https://www.el-recodo.com/music?id=#{record.music_id}", target: "_blank", rel: "noopener"
     end
     field :title, as: :text, readonly: true, format_using: -> { value&.truncate 28 }
+    field :recording, as: :belongs_to, only_on: :show
     field :orchestra, as: :text, readonly: true, format_using: -> { value&.titleize_name }
     field :date, as: :date, readonly: true, sortable: true
     field :style, as: :text, readonly: true, format_using: -> { value&.titleize&.truncate 8 }
@@ -30,7 +31,7 @@ class Avo::Resources::ElRecodoSong < Avo::BaseResource
     field :soloist, as: :text, readonly: true, format_using: -> { value&.titleize_name }
     field :director, as: :text, readonly: true, format_using: -> { value&.titleize_name }
     field :record_label, as: :text, readonly: true, only_on: :show
-    field :lyrics, as: :textarea, readonly: true, only_on: :show
+    field :lyrics, as: :textarea, readonly: true, only_on: :show, format_using: -> { simple_format value }
     field :synced_at, as: :date_time, readonly: true, only_on: :show
     field :page_updated_at, as: :date_time, readonly: true, only_on: :show
   end

@@ -105,6 +105,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_24_124651) do
     t.string "slug", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "compositions_count", default: 0
     t.index ["slug"], name: "index_composers_on_slug", unique: true
   end
 
@@ -328,6 +329,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_24_124651) do
     t.text "bio"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "compositions_count", default: 0
     t.index ["slug"], name: "index_lyricists_on_slug", unique: true
   end
 

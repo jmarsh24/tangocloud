@@ -1,5 +1,18 @@
 class Avo::Resources::Recording < Avo::BaseResource
-  self.includes = []
+  self.includes = [:orchestra,
+    :composition,
+    :record_label,
+    :genre,
+    :period,
+    :el_recodo_song,
+    :audio_transfers,
+    :audio_variants,
+    :recording_singers,
+    :singers,
+    :lyrics,
+    :tanda_recordings,
+    :tandas,
+    :waveforms]
   # self.search = {
   #   query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
   # }
@@ -7,18 +20,11 @@ class Avo::Resources::Recording < Avo::BaseResource
   def fields
     field :id, as: :id, readonly: true, only_on: :show
     field :title, as: :text
-    field :bpm, as: :number
-    field :release_date, as: :date
-    field :recorded_date, as: :date
-    field :slug, as: :text
-    field :recording_type, as: :select, enum: ::Recording.recording_types
-    field :el_recodo_song_id, as: :text
-    field :orchestra_id, as: :text
-    field :singer_id, as: :text
-    field :composition_id, as: :text
-    field :record_label_id, as: :text
-    field :genre_id, as: :text
-    field :period_id, as: :text
+    field :bpm, as: :number, only_on: :show
+    field :release_date, as: :date, only_on: :show
+    field :recorded_date, as: :date, only_on: :show
+    field :slug, as: :text, only_on: :show
+    field :recording_type, as: :select, enum: ::Recording.recording_types, only_on: :show
     field :orchestra, as: :belongs_to
     field :composition, as: :belongs_to
     field :record_label, as: :belongs_to

@@ -61,7 +61,7 @@ module Import
           end
 
           genre = if metadata.genre.present?
-            Genre.find_or_create_by!(name: metadata.genre)
+            Genre.find_or_create_by!(name: metadata.genre.downcase)
           end
 
           el_recodo_song = ElRecodoSong.find_by!(ert_number: metadata.ert_number)
