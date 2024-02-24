@@ -20,46 +20,54 @@ export default function Page() {
   const playlists = data?.getHomePlaylists?.edges.map(edge => edge.node) || [];
 
   async function loadTracks(playlists) {
-    const tracks = playlists.flatMap(playlist => 
-        playlist.playlistAudioTransfers.map(transfer => ({
-            id: transfer.audioTransfer.id, // Unique ID for the track
-            url: transfer.audioTransfer.audioVariants[0].audioFileUrl, // URL to the audio file
-            title: playlist.title, // Title of the track
-            artist: playlist.user.username, // Artist name
-            artwork: transfer.audioTransfer.album.albumArtUrl // URL to the album art
-        }))
-    );
+  const tracks = playlists.flatMap(playlist =>
+    playlist.playlistAudioTransfers.flatMap(transfer => {
+      if (!transfer.audioTransfer.audioVariants.length) return []; // Skip if no audio variants
+      return {
+        id: transfer.audioTransfer.id,
+        url: transfer.audioTransfer.audioVariants[0]?.audioFileUrl,
+        title: playlist.title,
+        artist: playlist.user.username,
+        artwork: transfer.audioTransfer.album?.albumArtUrl, // Check if album exists
+        duration: transfer.audioTransfer.audioVariants[0]?.duration,
+      };
+    })
+  ).filter(Boolean); // Remove any undefined or null entries
 
-    try {
-        await TrackPlayer.reset(); // Clear the current track list
-        await TrackPlayer.add(tracks); // Add new tracks
-    } catch (e) {
-        console.error('Error loading tracks: ', e);
-    }
+  try {
+    await TrackPlayer.reset();
+    await TrackPlayer.add(tracks);
+  } catch (e) {
+    console.error('Error loading tracks: ', e);
   }
+}
 
   async function handlePlaylistPress(playlist) {
-    console.log('Playlist pressed: ', playlist.title);
-    console.log('Playlist tracks: ', playlist.playlistAudioTransfers)
+  console.log('Playlist pressed: ', playlist.title);
+  console.log('Playlist tracks: ', playlist.playlistAudioTransfers);
 
-    const tracks = playlist.playlistAudioTransfers.map(transfer => ({
+  const tracks = playlist.playlistAudioTransfers.flatMap(transfer => {
+    if (!transfer.audioTransfer.audioVariants.length) return []; // Skip if audioVariants is empty or null
+    return {
       id: transfer.audioTransfer.id,
-      url: transfer.audioTransfer.audioVariants[0].audioFileUrl,
-      title: transfer.audioTransfer.recording.title,
-      artist: transfer.audioTransfer.recording.orchestra.name,
-      artwork: transfer.audioTransfer.album.albumArtUrl,
-      duration: transfer.audioTransfer.audioVariants[0].duration,
-    }));
-    console.log('Tracks: ', tracks)
-    try {
-      console.log('Adding tracks to queue')
-      await TrackPlayer.reset(); // Clears the current queue
-      await TrackPlayer.add(tracks); // Adds tracks to the queue
-      await TrackPlayer.play(); // Starts playback
-    } catch (e) {
-      console.error('Error enqueuing tracks: ', e);
-    }
+      url: transfer.audioTransfer.audioVariants[0]?.audioFileUrl, // Use optional chaining
+      title: transfer.audioTransfer.recording?.title,
+      artist: transfer.audioTransfer.recording?.orchestra?.name, // Use optional chaining in case `orchestra` is null
+      artwork: transfer.audioTransfer.album?.albumArtUrl, // Use optional chaining
+      duration: transfer.audioTransfer.audioVariants[0]?.duration, // Use optional chaining
+    };
+  }).filter(Boolean); // Remove any undefined entries resulting from the map
+
+  console.log('Tracks: ', tracks);
+  try {
+    console.log('Adding tracks to queue');
+    await TrackPlayer.reset(); // Clears the current queue
+    await TrackPlayer.add(tracks); // Adds tracks to the queue
+    await TrackPlayer.play(); // Starts playback
+  } catch (e) {
+    console.error('Error enqueuing tracks: ', e);
   }
+}
 
   return (
     <SafeAreaView style={styles.container}>

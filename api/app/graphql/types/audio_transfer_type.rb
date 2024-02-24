@@ -11,7 +11,7 @@ module Types
     field :album, Types::AlbumType, null: true
     field :playlist_audio_transfers, [Types::PlaylistAudioTransferType], null: true
     field :recording, Types::RecordingType, null: true
-    field :audio_variants, [Types::AudioVariantType], null: true
+    field :audio_variants, [Types::AudioVariantType], null: false
     field :waveform, Types::WaveformType, null: true
     field :created_at, GraphQL::Types::ISO8601Date, null: true
     field :updated_at, GraphQL::Types::ISO8601Date, null: true

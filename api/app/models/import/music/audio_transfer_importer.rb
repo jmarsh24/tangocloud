@@ -154,7 +154,7 @@ module Import
               metadata:
             )
 
-            audio_variant.audio_file.attach(io: File.open(file), filename:)
+            audio_variant.audio_file.attach(io: File.open(file), filename: audio_converter.filename)
           end
           audio_transfer
         end
