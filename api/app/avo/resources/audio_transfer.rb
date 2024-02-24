@@ -1,22 +1,20 @@
 class Avo::Resources::AudioTransfer < Avo::BaseResource
-  self.includes = []
+  self.includes = [:waveform, :audio_variants, :album, :recording, :transfer_agent]
   # self.search = {
   #   query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
   # }
 
   def fields
-    field :id, as: :id, readonly: true, only_on: :show
-    field :external_id, as: :text
-    field :position, as: :number
-    field :album_id, as: :text
-    field :transfer_agent_id, as: :text
-    field :recording_id, as: :text
-    field :filename, as: :text
-    field :audio_file, as: :file
-    field :transfer_agent, as: :belongs_to
-    field :recording, as: :belongs_to
-    field :album, as: :belongs_to
-    field :audio_variants, as: :has_many
-    field :waveform, as: :has_one
+    field :id, as: :id, only_on: :show
+    field :audio_file, as: :file, readonly: true, display_filename: false
+    field :album, as: :belongs_to, readonly: true
+    field :recording, as: :belongs_to, readonly: true
+    field :transfer_agent, as: :belongs_to, readonly: true
+    field :audio_variants, as: :has_many, readonly: true
+    field :waveform, as: :has_one, readonly: true
+    field :external_id, as: :text, only_on: [:show, :edit, :new], readonly: true
+    field :position, as: :number, only_on: [:show, :edit, :new], readonly: true
+    field :album_id, as: :text, only_on: [:show, :edit, :new], readonly: true
+    field :transfer_agent_id, as: :text, only_on: [:show, :edit, :new], readonly: true
   end
 end

@@ -25,6 +25,7 @@ type AudioTransfer {
   transferAgent: TransferAgent
   transferAgentId: ID
   updatedAt: ISO8601Date
+  waveform: Waveform
 }
 
 type AudioVariant {
@@ -191,6 +192,7 @@ type Playlist {
   description: String
   followersCount: Int!
   id: ID!
+  imageUrl: String!
   likesCount: Int!
   listensCount: Int!
   playlistAudioTransfers: [PlaylistAudioTransfer!]!

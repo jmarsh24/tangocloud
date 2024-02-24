@@ -5,10 +5,13 @@ RSpec.describe Import::Playlist::PlaylistImporter, type: :model do
 
   describe "import" do
     it "creates a playlist with audio transfers in correct order" do
-      playlist = Playlist.create!(
+      playlist = Playlist.new(
         title: "Awesome Playlist",
         user: users(:admin)
       )
+      playlist.image.attach(io: File.open("spec/fixtures/images/avatar.jpg"), filename: "avatar.jpg")
+      playlist.playlist_file.attach(io: File.open("spec/fixtures/files/awesome_playlist.m3u8"), filename: "awesome_playlist.m3u8")
+      playlist.save!
 
       file = File.open("spec/fixtures/files/awesome_playlist.m3u8")
       playlist.playlist_file.attach(io: file, filename: "awesome_playlist.m3u8")
