@@ -6,16 +6,18 @@ class Avo::Resources::AudioVariant < Avo::BaseResource
 
   def fields
     field :id, as: :id, readonly: true, only_on: :show
-    field :duration, as: :number
-    field :format, as: :text
-    field :codec, as: :text
-    field :bit_rate, as: :number
-    field :sample_rate, as: :number
-    field :channels, as: :number
-    field :metadata, as: :text
-    field :audio_transfer_id, as: :text
-    field :filename, as: :text
-    field :audio_file, as: :file
-    field :audio_transfer, as: :belongs_to
+    field :audio_file, as: :file, readonly: true, display_filename: false
+    field :duration, as: :number, readonly: true, only_on: :show
+    field :format, as: :text, readonly: true, only_on: :show
+    field :codec, as: :text, readonly: true, only_on: :show
+    field :bit_rate, as: :number, readonly: true, only_on: :show
+    field :sample_rate, as: :number, readonly: true, only_on: :show
+    field :channels, as: :number, readonly: true, only_on: :show
+    field :audio_transfer, as: :belongs_to, readonly: true
+    field :metadata, as: :code, readonly: true, only_on: :show do
+      if record.metadata.present?
+        JSON.pretty_generate(record.metadata.as_json)
+      end
+    end
   end
 end

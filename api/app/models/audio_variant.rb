@@ -1,5 +1,4 @@
 class AudioVariant < ApplicationRecord
-  include Rails.application.routes.url_helpers
   belongs_to :audio_transfer
 
   validates :duration, presence: true
