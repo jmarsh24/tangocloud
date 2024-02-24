@@ -2,7 +2,8 @@ class Composition < ApplicationRecord
   belongs_to :lyricist, optional: true, counter_cache: true
   belongs_to :composer, optional: true, counter_cache: true
   has_many :recordings, dependent: :destroy
-  has_many :lyrics, dependent: :destroy
+  has_many :composition_lyrics, dependent: :destroy
+  has_many :lyrics, through: :composition_lyrics
 
   validates :title, presence: true
 end

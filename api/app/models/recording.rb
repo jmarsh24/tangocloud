@@ -14,7 +14,7 @@ class Recording < ApplicationRecord
   has_many :audio_variants, through: :audio_transfers, dependent: :destroy
   has_many :recording_singers, dependent: :destroy
   has_many :singers, through: :recording_singers, dependent: :destroy
-  has_many :lyrics, through: :composition, dependent: :destroy
+  has_many :lyrics, through: :composition
   has_many :tanda_recordings, dependent: :destroy
   has_many :tandas, through: :tanda_recordings
   has_many :waveforms, through: :audio_transfers, dependent: :destroy

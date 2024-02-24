@@ -1,6 +1,5 @@
 class CompositionLyric < ApplicationRecord
   belongs_to :composition
-  belongs_to :composer
   belongs_to :lyricist
 end
 
