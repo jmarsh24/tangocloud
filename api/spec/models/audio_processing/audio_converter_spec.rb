@@ -13,7 +13,6 @@ RSpec.describe AudioProcessing::AudioConverter do
         output_path = output.path
       end
 
-      expect(audio_converter.filename).to eq("tone.aac")
       expect(File.exist?(output_path)).to be_falsey
     end
 

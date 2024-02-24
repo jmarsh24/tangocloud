@@ -1,6 +1,6 @@
 module AudioProcessing
   class AudioConverter
-    attr_reader :file, :format, :bitrate, :sample_rate, :channels, :codec, :movie, :filename
+    attr_reader :file, :format, :bitrate, :sample_rate, :channels, :codec, :movie
 
     DEFAULT_OPTIONS = {
       format: "aac",
@@ -21,7 +21,6 @@ module AudioProcessing
       @codec = options[:codec]
       @movie = FFMPEG::Movie.new(file.path)
       @strip_metadata = options[:strip_metadata]
-      @filename = [File.basename(file, File.extname(file)), ".#{format}"].join
     end
 
     def convert

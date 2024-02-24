@@ -12,7 +12,15 @@ module Import
       end
 
       def import_from_audio_transfer(audio_transfer)
-        audio_transfer.audio_file.blob.open do |file|
+        original_filename = audio_transfer.audio_file.filename.to_s
+
+        Tempfile.create([File.basename(original_filename, File.extname(original_filename)), File.extname(original_filename)]) do |file|
+          file.binmode
+
+          audio_transfer.audio_file.open do |blob|
+            file.write(blob.read)
+            file.rewind
+          end
           import(file:, audio_transfer:)
         end
       end
@@ -150,11 +158,11 @@ module Import
               codec: audio_converter.codec,
               duration: audio_converter.movie.duration.to_i,
               format: audio_converter.format,
-              filename: audio_converter.filename,
+              filename: File.basename(file),
               metadata:
             )
 
-            audio_variant.audio_file.attach(io: File.open(file), filename: audio_converter.filename)
+            audio_variant.audio_file.attach(io: File.open(file), filename: File.basename(file))
           end
           audio_transfer
         end
