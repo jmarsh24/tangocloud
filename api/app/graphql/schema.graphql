@@ -13,7 +13,7 @@ type Album {
 type AudioTransfer {
   album: Album
   albumId: ID
-  audioVariants: [AudioVariant!]
+  audioVariants: [AudioVariant!]!
   createdAt: ISO8601Date
   externalId: String
   filename: String
@@ -31,7 +31,6 @@ type AudioTransfer {
 type AudioVariant {
   audioFileUrl: String!
   audioTransferId: Uuid!
-  audioVariantUrl: String!
   bitRate: Int
   channels: Int
   codec: String!

@@ -46,20 +46,13 @@ module Import
           lyricist = Lyricist.find_or_create_by!(name: metadata.lyricist) if metadata.lyricist.present?
           composer = Composer.find_or_create_by!(name: metadata.composer) if metadata.composer.present?
 
-          composition = if composer.present? || lyricist.present?
-            Composition.find_or_create_by!(
-              title: metadata.title,
-              lyricist:,
-              composer:
-            )
+          composition = Composition.find_or_create_by!(title: metadata.title) do |comp|
+            comp.lyricist = lyricist if lyricist.present?
+            comp.composer = composer if composer.present?
           end
 
           if metadata.lyrics.present?
-            composition.lyrics.find_or_create_by!(
-              content: metadata.lyrics,
-              locale: "es",
-              composition:
-            )
+            composition.lyrics.find_or_create_by!(content: metadata.lyrics, locale: "es", composition:)
           end
 
           orchestra = Orchestra.find_or_create_by!(name: metadata.album_artist)
@@ -158,7 +151,7 @@ module Import
               codec: audio_converter.codec,
               duration: audio_converter.movie.duration.to_i,
               format: audio_converter.format,
-              filename: File.basename(file),
+              filename: audio_converter.filename,
               metadata:
             )
 

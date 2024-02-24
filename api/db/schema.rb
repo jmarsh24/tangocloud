@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_24_124651) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_24_193238) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -119,15 +119,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_24_124651) do
   end
 
   create_table "composition_lyrics", force: :cascade do |t|
-    t.string "locale", null: false
     t.uuid "composition_id", null: false
-    t.uuid "lyricist_id", null: false
-    t.uuid "lyrics_id", null: false
+    t.uuid "lyric_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["composition_id"], name: "index_composition_lyrics_on_composition_id"
-    t.index ["lyricist_id"], name: "index_composition_lyrics_on_lyricist_id"
-    t.index ["lyrics_id"], name: "index_composition_lyrics_on_lyrics_id"
+    t.index ["lyric_id"], name: "index_composition_lyrics_on_lyric_id"
   end
 
   create_table "compositions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -552,8 +549,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_24_124651) do
   add_foreign_key "composition_composers", "composers"
   add_foreign_key "composition_composers", "compositions"
   add_foreign_key "composition_lyrics", "compositions"
-  add_foreign_key "composition_lyrics", "lyricists"
-  add_foreign_key "composition_lyrics", "lyrics", column: "lyrics_id"
+  add_foreign_key "composition_lyrics", "lyrics"
   add_foreign_key "compositions", "composers"
   add_foreign_key "compositions", "lyricists"
   add_foreign_key "couple_videos", "couples"

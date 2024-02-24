@@ -8,7 +8,7 @@ class Composition < ApplicationRecord
   validates :title, presence: true
 end
 
-# == Schema Information
+# == Schema Informationy
 #
 # Table name: compositions
 #

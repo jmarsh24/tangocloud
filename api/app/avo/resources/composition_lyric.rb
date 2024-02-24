@@ -7,9 +7,6 @@ class Avo::Resources::CompositionLyric < Avo::BaseResource
   def fields
     field :id, as: :id, readonly: true, only_on: :show
     field :locale, as: :text
-    field :composition_id, as: :text
-    field :lyricist_id, as: :text
-    field :lyrics_id, as: :text
     field :composition, as: :belongs_to
     field :composer, as: :belongs_to
     field :lyricist, as: :belongs_to
