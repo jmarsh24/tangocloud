@@ -71,10 +71,9 @@ export default function YouScreen() {
     );
   }
 
-  const user = data?.user;
-  const username = user?.username;
-  const email = user?.email;
-  const avatar_url = user?.avatarUrl;
+  const username = data.userProfile?.username;
+  const email = data.userProfile?.email;
+  const avatar_url = data.userProfile?.avatarUrl;
   
   return (
     <SafeAreaView style={dynamicStyles.container}>
