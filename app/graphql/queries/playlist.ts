@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const PLAYLIST = gql`
-  query Playlist($Id: String) {
+  query Playlist($Id: ID!) {
     playlist(id: $Id) {
       id
       title
