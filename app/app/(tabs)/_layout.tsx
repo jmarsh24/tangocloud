@@ -3,7 +3,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { useColorScheme, View, StyleSheet, Image } from 'react-native';
 import { useAuth } from '@/providers/AuthProvider';
 import { useQuery } from '@apollo/client';
-import { CURRENT_USER_PROFILE } from '@/graphql';
+import { USER } from '@/graphql';
 import { BottomTabBar } from '@react-navigation/bottom-tabs';
 import { Tabs } from 'expo-router';
 import Colors from '@/constants/Colors';
@@ -20,11 +20,11 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { authState } = useAuth();
 
-  const { data, loading, error } = useQuery(CURRENT_USER_PROFILE, {
+  const { data, loading, error } = useQuery(USER, {
     skip: !authState.authenticated,
   });
 
-  const avatarUrl = data?.currentUserProfile?.avatarUrl;
+  const avatarUrl = data?.user?.avatarUrl;
 
   const youIcon = (color) => {
     if (authState?.authenticated && avatarUrl) {

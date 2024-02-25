@@ -3,14 +3,14 @@ import { View, StyleSheet, Text, Image, ActivityIndicator, useColorScheme } from
 import { useAuth } from '@/providers/AuthProvider';
 import { useQuery } from '@apollo/client';
 import { Link } from 'expo-router';
-import { CURRENT_USER_PROFILE } from '@/graphql';
+import { USER } from '@/graphql';
 import Button from '@/components/Button'
 import Colors from '@/constants/Colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function LibraryScreen() {
   const { authState, onLogout } = useAuth();
-  const { data, loading, error } = useQuery(CURRENT_USER_PROFILE, {
+  const { data, loading, error } = useQuery(USER, {
     skip: !authState.authenticated,
   });
   const scheme = useColorScheme();
@@ -71,10 +71,10 @@ export default function LibraryScreen() {
     );
   }
 
-  const currentUserProfile = data?.currentUserProfile;
-  const username = currentUserProfile?.username;
-  const email = currentUserProfile?.email;
-  const avatar_url = currentUserProfile?.avatarUrl;
+  const user = data?.user;
+  const username = user?.username;
+  const email = user?.email;
+  const avatar_url = user?.avatarUrl;
   return (
     <SafeAreaView style={dynamicStyles.container}>
       <Image source={{ uri: avatar_url }} style={styles.image} />

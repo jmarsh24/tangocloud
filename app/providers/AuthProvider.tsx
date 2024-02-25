@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, PropsWithChildren } from 'react';
 import { useApolloClient, ApolloError } from '@apollo/client';
-import { REGISTER_MUTATION, LOGIN_MUTATION } from '@/graphql';
+import { REGISTER, LOGIN } from '@/graphql';
 import * as SecureStore from 'expo-secure-store';
 
 interface AuthState {
@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const register = async (username: string, email: string, password: string) => {
     try {
       const { data } = await apolloClient.mutate({
-        mutation: REGISTER_MUTATION,
+        mutation: REGISTER,
         variables: { username, email, password },
       });
 
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const login = async (login: string, password: string) => {
     try {
       const { data } = await apolloClient.mutate({
-        mutation: LOGIN_MUTATION,
+        mutation: LOGIN,
         variables: { login, password },
       });
 

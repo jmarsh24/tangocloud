@@ -14,7 +14,7 @@ module Types
       argument :query, String, required: false, description: "Query to search for."
     end
 
-    def recordings(query: nil)
+    def recordings(query: "*")
       raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
 
       Recording.search_recordings(query).results
@@ -24,7 +24,7 @@ module Types
       argument :query, String, required: false, description: "Query to search for."
     end
 
-    def el_recodo_songs(query: nil)
+    def el_recodo_songs(query: "*")
       raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
 
       ElRecodoSong.search_songs(query).results
@@ -50,7 +50,7 @@ module Types
       argument :query, String, required: false, description: "Query to search for."
     end
 
-    def playlists(query: nil)
+    def playlists(query: "*")
       raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
 
       Playlist.search_playlists(query).results
@@ -80,7 +80,7 @@ module Types
       argument :query, String, required: false, description: "Query to search for."
     end
 
-    def composers(query: nil)
+    def composers(query: "*")
       raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
 
       Composer.search_composers(query).results
@@ -90,7 +90,7 @@ module Types
       argument :query, String, required: false, description: "Query to search for."
     end
 
-    def genres(query: nil)
+    def genres(query: "*")
       raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
 
       Genre.search_genres(query).results
@@ -110,7 +110,7 @@ module Types
       argument :query, String, required: false, description: "Query to search for."
     end
 
-    def lyricists(query: nil)
+    def lyricists(query: "*")
       raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
 
       Lyricist.search_lyricists(query).results
@@ -140,7 +140,7 @@ module Types
       argument :query, String, required: false, description: "Query to search for."
     end
 
-    def orchestras(query: nil)
+    def orchestras(query: "*")
       raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
 
       Orchestra.search_orchestras(query).results
@@ -160,7 +160,7 @@ module Types
       argument :query, String, required: false, description: "Query to search for."
     end
 
-    def singers(query: nil)
+    def singers(query: "*")
       raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
 
       Singer.search_singers(query).results
@@ -180,7 +180,7 @@ module Types
       argument :query, String, required: false, description: "Query to search for."
     end
 
-    def periods(query: nil)
+    def periods(query: "*")
       raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
 
       Period.search_periods(query).results
@@ -199,7 +199,7 @@ module Types
       argument :query, String, required: false, description: "Query to search for."
     end
 
-    def users(query: nil)
+    def users(query: "*")
       raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
 
       User.search_users(query).results

@@ -5,7 +5,7 @@ import TrackPlayer, { useProgress } from 'react-native-track-player';
 import { PlayerControls } from '@/components/PlayerControls';
 import { Progress } from '@/components/Progress';
 import { TrackInfo } from '@/components/TrackInfo';
-import { GET_RECORDING_DETAILS } from '@/graphql';
+import { RECORDING } from '@/graphql';
 import { useQuery } from '@apollo/client';
 import Waveform from '@/components/Waveform';
 
@@ -50,11 +50,11 @@ export default function TrackScreen() {
     };
   }, []);
 
-  const { data } = useQuery(GET_RECORDING_DETAILS, {
+  const { data } = useQuery(RECORDING, {
     variables: { recordingId: track?.id },
     skip: !track?.id,
   });
-  const waveformData = data?.getRecordingDetails.audioTransfers[0].waveform.data || [];
+  const waveformData = data?.recording.audioTransfers[0].waveform.data || [];
 
   useEffect(() => {
     positionRef.current = position;

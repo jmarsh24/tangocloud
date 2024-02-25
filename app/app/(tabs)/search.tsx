@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { TextInput, View, Text, StyleSheet } from 'react-native';
+import { TextInput, View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
 import TrackListItem from '@/components/TrackListItem';
 import { AntDesign } from '@expo/vector-icons';
@@ -14,10 +14,10 @@ export default function SearchScreen() {
   const styles = getStyles(colors);
   const ITEMS_PER_PAGE = 30;
   const [search, setSearch] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState("*");
+  const [debouncedSearch, setDebouncedSearch] = useState('');
 
   const { data, loading, fetchMore } = useQuery(RECORDINGS, {
-    variables: { query: "*", first: ITEMS_PER_PAGE },
+    variables: { query: debouncedSearch, first: ITEMS_PER_PAGE },
     fetchPolicy: 'cache-and-network',
     skip: !debouncedSearch,
   });
@@ -37,7 +37,6 @@ export default function SearchScreen() {
     if (data?.recordings.pageInfo.hasNextPage) {
       fetchMore({
         variables: {
-          query: "*",
           after: data.recordings.pageInfo.endCursor,
         },
         updateQuery: (prevResult, { fetchMoreResult }) => {
@@ -46,7 +45,7 @@ export default function SearchScreen() {
 
           return newEdges.length
             ? {
-              recordings: {
+                recordings: {
                   __typename: prevResult.recordings.__typename,
                   edges: [...prevResult.recordings.edges, ...newEdges],
                   pageInfo,

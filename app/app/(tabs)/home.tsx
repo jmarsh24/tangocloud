@@ -1,38 +1,36 @@
 import React from 'react';
-import { Text, View, StyleSheet, FlatList, Pressable, Image} from 'react-native'; 
+import { Text, View, StyleSheet, FlatList, Pressable, Image} from 'react-native'; // Corrected 'FlatList'
 import { useTheme } from '@react-navigation/native';
 import { PLAYLISTS } from '@/graphql';
 import { useQuery } from '@apollo/client';
 import TrackPlayer from 'react-native-track-player';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function Page() {
+export default function PageScreen() {
   const { colors } = useTheme();
   const { data, loading, error } = useQuery(PLAYLISTS, {
     variables: { first: 20 }
   });
 
-  // Check for loading and error states first
   if (loading) return <View style={styles.container}><Text>Loading playlists...</Text></View>;
   if (error) return <View style={styles.container}><Text>Error loading playlists.</Text></View>;
 
-  // Safely access getHomePlaylists, ensuring it's not null
   const playlists = data?.playlists?.edges.map(edge => edge.node) || [];
 
   async function loadTracks(playlists) {
   const tracks = playlists.flatMap(playlist =>
     playlist.playlistAudioTransfers.flatMap(transfer => {
-      if (!transfer.audioTransfer.audioVariants.length) return []; // Skip if no audio variants
+      if (!transfer.audioTransfer.audioVariants.length) return [];
       return {
         id: transfer.audioTransfer.id,
         url: transfer.audioTransfer.audioVariants[0]?.audioFileUrl,
         title: playlist.title,
         artist: playlist.user.username,
-        artwork: transfer.audioTransfer.album?.albumArtUrl, // Check if album exists
+        artwork: transfer.audioTransfer.album?.albumArtUrl,
         duration: transfer.audioTransfer.audioVariants[0]?.duration,
       };
     })
-  ).filter(Boolean); // Remove any undefined or null entries
+  ).filter(Boolean);
 
   try {
     await TrackPlayer.reset();
@@ -83,6 +81,7 @@ export default function Page() {
               <Image source={{ uri: item.imageUrl }} style={styles.playlistImage} />
               <View style={{ flex: 1 }}>
                 <Text style={[styles.playlistTitle, { color: colors.text }]}>{item.title}</Text>
+                <Text style={[styles.playlistDescription, { color: colors.text }]}>{item.description}</Text>
               </View>
             </View>
           </Pressable>
