@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Alert, KeyboardAvoidingView, ScrollView, Platform, useColorScheme } from 'react-native';
 import Button from '@/components/Button';
 import Colors from '@/constants/Colors';
-import { Link } from 'expo-router';
+import { router, Link } from 'expo-router';
 import { useAuth } from '@/providers/AuthProvider';
 
 const SignUpScreen = () => {
@@ -13,7 +13,7 @@ const SignUpScreen = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  async function signUp() {
+  async function register() {
     setLoading(true);
     try {
       const result = await onRegister(username, email, password);
@@ -24,11 +24,10 @@ const SignUpScreen = () => {
           [{ text: "OK", onPress: () => router.replace('/login') }]
         );
       } else {
-        const errorsMessage = result.errors.fullMessages.join('\n');
-        Alert.alert("Sign Up Failed", errorsMessage || "An unknown error occurred.");
+        // Handle error...
       }
     } catch (error) {
-      Alert.alert("Sign Up Failed", error.message || "An error occurred during sign up.");
+      // Handle error...
     } finally {
       setLoading(false);
     }
@@ -105,7 +104,7 @@ const SignUpScreen = () => {
           />
 
           <Button
-            onPress={signUp}
+            onPress={register}
             disabled={loading}
             text={loading ? 'Creating account...' : 'Create account'}
           />
