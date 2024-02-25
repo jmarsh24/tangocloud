@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Image, Text } from 'react-native';
+import { View, StyleSheet, Image, Text, Pressable } from 'react-native';
 import { Link } from 'expo-router';
 import TrackPlayer, { Event } from 'react-native-track-player';
 import { PlayPauseButton } from '@/components/PlayPauseButton';
 import { useTheme } from '@react-navigation/native';
+import { FontAwesome6 } from '@expo/vector-icons';
+
+const performSkipToNext = () => TrackPlayer.skipToNext();
 
 const Player = () => {
   const [track, setTrack] = useState(null);
@@ -44,7 +47,6 @@ const Player = () => {
       position: 'absolute',
       width: '100%',
       bottom: 80,
-      padding: 10,
     },
     player: {
       width: '100%',
@@ -53,11 +55,11 @@ const Player = () => {
       alignItems: 'center',
       justifyContent: 'space-between',
       borderRadius: 10,
-      padding: 5,
       shadowColor: '#000',
       shadowOffset: { width: 0, height: 1 },
       shadowOpacity: 0.22,
       shadowRadius: 2.22,
+      padding: 10
     },
     image: {
       width: 64,
@@ -88,6 +90,9 @@ const Player = () => {
             <Text style={dynamicStyles.subtitle}>{track?.artist}</Text>
           </View>
           <PlayPauseButton size={24} />
+          <Pressable onPress={performSkipToNext}>
+            <FontAwesome6 name={'forward'} size={24} style={{ color: colors.text }} />
+          </Pressable>
         </View>
       </Link>
     </View>

@@ -17,6 +17,8 @@ module Types
     def recordings(query: "*")
       raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
 
+      query = "*" if query.blank?
+
       Recording.search_recordings(query).results
     end
 

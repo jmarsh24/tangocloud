@@ -14,44 +14,32 @@ export default function SearchScreen() {
   const styles = getStyles(colors);
   const ITEMS_PER_PAGE = 30;
   const [search, setSearch] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
 
   const { data, loading, fetchMore } = useQuery(RECORDINGS, {
-    variables: { query: debouncedSearch, first: ITEMS_PER_PAGE },
+    variables: { query: search, first: ITEMS_PER_PAGE },
     fetchPolicy: 'cache-and-network',
-    skip: !debouncedSearch,
   });
 
-  const debouncedSetSearch = useCallback(_.debounce(setDebouncedSearch, 500), []);
+  // Debounce search input to delay execution while typing
+  const debouncedSearch = useCallback(_.debounce((query) => {
+    fetchMore({
+      variables: { query: query || "", first: ITEMS_PER_PAGE },
+      updateQuery: (prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prev;
+        return fetchMoreResult;
+      },
+    });
+  }, 500), []);
 
-    useEffect(() => {
-    if(search.trim()) {
-      debouncedSetSearch(search);
-    }
-    return () => {
-      debouncedSetSearch.cancel();
-    };
-  }, [search, debouncedSetSearch]);
+  useEffect(() => {
+    debouncedSearch(search);
+  }, [search, debouncedSearch]);
 
   const loadMoreItems = useCallback(() => {
     if (data?.recordings.pageInfo.hasNextPage) {
       fetchMore({
         variables: {
           after: data.recordings.pageInfo.endCursor,
-        },
-        updateQuery: (prevResult, { fetchMoreResult }) => {
-          const newEdges = fetchMoreResult.recordings.edges;
-          const pageInfo = fetchMoreResult.recordings.pageInfo;
-
-          return newEdges.length
-            ? {
-                recordings: {
-                  __typename: prevResult.recordings.__typename,
-                  edges: [...prevResult.recordings.edges, ...newEdges],
-                  pageInfo,
-                },
-              }
-            : prevResult;
         },
       });
     }
@@ -66,15 +54,10 @@ export default function SearchScreen() {
 
   const ItemSeparator = () => <View style={styles.itemSeperator} />;
 
-  const ListFooter = () => {
-    return (
-      <View style={styles.footerStyle}>
-      </View>
-    );
-  };
+  const ListFooter = () => loading ? <ActivityIndicator size="medium" /> : <View style={styles.footerStyle}></View>;
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.header}>
         <View style={styles.searchContainer}>
           <AntDesign name="search1" size={20} style={styles.searchIcon} />
@@ -109,7 +92,7 @@ export default function SearchScreen() {
         onEndReached={loadMoreItems}
         onEndReachedThreshold={0.5}
         showsVerticalScrollIndicator={false}
-        estimatedItemSize={30}
+        estimatedItemSize={75} // Adjusted for potentially varying item sizes
         keyExtractor={item => item.id}
       />
     </SafeAreaView>
