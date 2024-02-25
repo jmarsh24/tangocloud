@@ -30,7 +30,7 @@ type AudioTransfer {
 
 type AudioVariant {
   audioFileUrl: String!
-  audioTransferId: Uuid!
+  audioTransferId: ID!
   bitRate: Int
   channels: Int
   codec: String!
@@ -412,15 +412,15 @@ type Playlist {
   title: String!
   updatedAt: ISO8601DateTime!
   user: User!
-  userId: Uuid!
+  userId: ID!
 }
 
 type PlaylistAudioTransfer {
   audioTransfer: AudioTransfer!
-  audioTransferId: Uuid!
+  audioTransferId: ID!
   createdAt: ISO8601DateTime!
   id: ID!
-  playlistId: Uuid!
+  playlistId: ID!
   position: Int!
   updatedAt: ISO8601DateTime!
 }
@@ -1033,15 +1033,13 @@ type UserEdge {
   node: User
 }
 
-type Uuid
-
 type ValidationErrors {
   details: String!
   fullMessages: [String!]!
 }
 
 type Waveform {
-  audioTransferId: Uuid!
+  audioTransferId: ID!
   bits: Int!
   channels: Int!
   createdAt: ISO8601DateTime!

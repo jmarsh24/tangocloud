@@ -1,7 +1,7 @@
 module Types
   class EventType < Types::BaseObject
     field :id, ID, null: false
-    field :user_id, Types::UuidType, null: false
+    field :user_id, ID, null: false
     field :action, String, null: false
     field :user_agent, String
     field :ip_address, String

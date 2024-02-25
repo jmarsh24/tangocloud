@@ -9,7 +9,7 @@ module Types
     field :channels, Integer
     field :length, Integer, null: false
     field :metadata, GraphQL::Types::JSON, null: false
-    field :audio_transfer_id, Types::UuidType, null: false
+    field :audio_transfer_id, ID, null: false
     field :audio_file_url, String, null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
