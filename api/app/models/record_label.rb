@@ -1,5 +1,5 @@
 class RecordLabel < ApplicationRecord
-  has_many :recordings
+  has_many :recordings, dependent: :destroy
   has_many :orchestras, through: :recordings
   has_many :singers, through: :recordings
   has_many :compositions, through: :recordings
