@@ -59,7 +59,8 @@ const Player = () => {
       shadowOffset: { width: 0, height: 1 },
       shadowOpacity: 0.22,
       shadowRadius: 2.22,
-      padding: 10
+      padding: 10,
+      paddingRight: 20,
     },
     image: {
       width: 64,

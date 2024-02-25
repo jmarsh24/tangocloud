@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     paddingHorizontal: 20,
-    marginBottom: 20,
+    paddingVertical: 20,
   },
   playlistContainer: {
     display: 'flex',
