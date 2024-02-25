@@ -83,7 +83,7 @@ const Player = () => {
 
   return (
     <View style={dynamicStyles.container}>
-      <Link href="/track">
+      <Link href={`/recording/${track.id}`} headersShown={false}>
         <View style={dynamicStyles.player}>
           <Image source={{ uri: track?.artwork }} style={dynamicStyles.image} />
           <View style={dynamicStyles.info}>

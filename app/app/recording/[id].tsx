@@ -7,16 +7,17 @@ import { Progress } from '@/components/Progress';
 import { TrackInfo } from '@/components/TrackInfo';
 import { RECORDING } from '@/graphql';
 import { useQuery } from '@apollo/client';
+import { useLocalSearchParams } from 'expo-router';
 import Waveform from '@/components/Waveform';
 
-export default function TrackScreen() {
+export default function RecordingScreen() {
+  const { slug } = useLocalSearchParams();
   const vinylRecordImg = require('@/assets/images/vinyl_3x.png');
   const { colors } = useTheme();
   const styles = getStyles(colors);
   const [track, setTrack] = useState<any>(null);
   const { position } = useProgress(1);
   const positionRef = useRef(position);
-  // Removed duration from useProgress and use a state for track's duration
   const [trackDuration, setTrackDuration] = useState<number>(0); 
   const progressRef = useRef(0);
   const animationFrameRef = useRef<number>();
@@ -49,8 +50,7 @@ export default function TrackScreen() {
   }, []);
 
   const { data } = useQuery(RECORDING, {
-    variables: { recordingId: track?.id },
-    skip: !track?.id,
+    variables: { Id: slug }
   });
   const waveformData = data?.recording.audioTransfers[0].waveform.data || [];
 
@@ -70,7 +70,7 @@ export default function TrackScreen() {
     return () => {
       if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
     };
-  }, [trackDuration]); // Depend on trackDuration for updates
+  }, [trackDuration]);
 
   const screenWidth = Dimensions.get('window').width;
   const vinylSize = screenWidth * 0.8;
