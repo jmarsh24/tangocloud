@@ -1,5 +1,9 @@
 class User < ApplicationRecord
   has_secure_password
+  searchkick word_start: [:username, :email, :first_name, :last_name]
+
+  has_one :user_preference, dependent: :destroy
+  has_one :user_setting, dependent: :destroy
 
   generates_token_for :email_verification, expires_in: 2.days do
     email
@@ -38,22 +42,28 @@ class User < ApplicationRecord
     events.create! action: "email_verified"
   end
 
-  has_one_attached :avatar do |blob|
-    blob.variant :small, resize_to_limit: [160, 160], saver: {strip: true, quality: 75, lossless: false, alpha_q: 85, reduction_effort: 6, smart_subsample: true}, format: "webp"
-    blob.variant :large, resize_to_limit: [500, 500], saver: {strip: true, quality: 75, lossless: false, alpha_q: 85, reduction_effort: 6, smart_subsample: true}, format: "webp"
-  end
+  after_create_commit { build_user_preference.save }
+
+  delegate :avatar, to: :user_preference, allow_nil: true
+  delegate :first_name, :last_name, :name, to: :user_preference, allow_nil: true
+
   class << self
     def find_by_email_or_username(email_or_username)
       find_by(email: email_or_username) || find_by(username: email_or_username)
     end
+
+    def search_users(query)
+      search(query, fields: [:username, :email, :first_name, :last_name], match: :word_start)
+    end
   end
 
-  def name=(full_name)
-    self.first_name, self.last_name = full_name.to_s.squish.split(/\s/, 2)
-  end
-
-  def name
-    [first_name, last_name].join(" ")
+  def search_data
+    {
+      username:,
+      email:,
+      first_name:,
+      last_name:
+    }
   end
 
   def to_s
@@ -80,8 +90,6 @@ end
 #  provider        :string
 #  uid             :string
 #  username        :string           not null
-#  first_name      :string
-#  last_name       :string
 #  admin           :boolean          default(FALSE), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null

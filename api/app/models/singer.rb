@@ -1,12 +1,27 @@
 class Singer < ApplicationRecord
   extend FriendlyId
+  friendly_id :name, use: :slugged
+  searchkick word_middle: [:name], callbacks: :async
+
   has_many :recording_singers, dependent: :destroy
   has_many :recordings, through: :recording_singers
-  friendly_id :name, use: :slugged
 
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true
   validates :rank, presence: true, numericality: {only_integer: true}
+
+  def self.search_singers(query)
+    search(query,
+      fields: ["name^5"],
+      match: :word_middle,
+      misspellings: {below: 5})
+  end
+
+  def search_data
+    {
+      name:
+    }
+  end
 end
 
 # == Schema Information

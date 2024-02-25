@@ -3,6 +3,7 @@ AllCops:
   DisplayStyleGuide: true
   NewCops: disable
   SuggestExtensions: false
+  AutoCorrect: true
   Exclude:
     - "vendor/**/*"
     - "bin/**/*"

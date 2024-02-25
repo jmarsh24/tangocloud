@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_24_195259) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_25_165302) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -307,6 +307,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_24_195259) do
     t.uuid "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "slug"
+    t.index ["slug"], name: "index_playlists_on_slug", unique: true
     t.index ["user_id"], name: "index_playlists_on_user_id"
   end
 
@@ -516,6 +518,24 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_24_195259) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "user_preferences", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_preferences_on_user_id"
+  end
+
+  create_table "user_proferences", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_proferences_on_user_id"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", null: false
     t.string "password_digest", null: false
@@ -523,8 +543,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_24_195259) do
     t.string "provider"
     t.string "uid"
     t.string "username", null: false
-    t.string "first_name"
-    t.string "last_name"
     t.boolean "admin", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -597,6 +615,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_24_195259) do
   add_foreign_key "tanda_recordings", "recordings"
   add_foreign_key "tanda_recordings", "tandas"
   add_foreign_key "tandas", "audio_transfers"
+  add_foreign_key "user_preferences", "users"
+  add_foreign_key "user_proferences", "users"
   add_foreign_key "videos", "recordings"
   add_foreign_key "waveforms", "audio_transfers"
 end

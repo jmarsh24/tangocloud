@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, FlatList, Pressable, Image} from 'react-native'; // Corrected 'FlatList'
+import { Text, View, StyleSheet, FlatList, Pressable, Image} from 'react-native'; 
 import { useTheme } from '@react-navigation/native';
 import { GET_HOME_PLAYLISTS } from '@/graphql';
 import { useQuery } from '@apollo/client';
@@ -83,7 +83,6 @@ export default function Page() {
               <Image source={{ uri: item.imageUrl }} style={styles.playlistImage} />
               <View style={{ flex: 1 }}>
                 <Text style={[styles.playlistTitle, { color: colors.text }]}>{item.title}</Text>
-                <Text style={[styles.playlistDescription, { color: colors.text }]}>{item.description}</Text>
               </View>
             </View>
           </Pressable>

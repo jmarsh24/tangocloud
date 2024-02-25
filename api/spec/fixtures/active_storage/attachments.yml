@@ -8,3 +8,23 @@ volver_a_sonar_tango_tunes_audio_file_attachment:
   record_type: "AudioTransfer"
   record: volver_a_sonar_tango_tunes_1940_audio_transfer
   blob: volver_a_sonar_tango_tunes_1940_audio_file
+awesome_playlist_image_attachment:
+  name: image
+  record_type: "Playlist"
+  record: awesome_playlist
+  blob: di_sarli_image
+playlist_di_sarli_playlist_file_attachment:
+  name: playlist_file
+  record_type: "Playlist"
+  record: awesome_playlist
+  blob: awesome_playlist_file
+admin_avatar_attachment:
+  name: avatar
+  record_type: "User"
+  record: admin
+  blob: avatar
+normal_avatar_attachment:
+  name: avatar
+  record_type: "User"
+  record: normal
+  blob: avatar

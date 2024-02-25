@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
-export const GET_RECORDING_DETAILS = gql`
-  query getRecordingDetails($recordingId: ID!) {
-    getRecordingDetails(id: $recordingId) {
+export const RECORDING = gql`
+  query recording($recordingId: ID!) {
+    recording(id: $recordingId) {
       id
       title
       singers {

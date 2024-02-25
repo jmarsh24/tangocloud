@@ -1,6 +1,6 @@
 module Mutations::Users
-  class SignUp < Mutations::BaseMutation
-    graphql_name "signUp"
+  class Register < Mutations::BaseMutation
+    graphql_name "register"
 
     argument :username, String, required: true
     argument :email, String, required: true
