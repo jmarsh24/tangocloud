@@ -6,6 +6,7 @@ module Types
 
     def recording(id:)
       raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
+
       Recording.find(id)
     end
 
@@ -15,6 +16,7 @@ module Types
 
     def recordings(query: nil)
       raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
+
       Recording.search_recordings(query).results
     end
 
@@ -43,16 +45,10 @@ module Types
       AudioVariant.find(id)
     end
 
-    field :user, UserType, null: false, description: "Get the profile of the currently authenticated user." do
-      argument :id, ID, required: true, description: "ID of the user."
-    end
 
-    def user(id:)
-      raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
-      context[:current_user]
+    field :playlists, PlaylistType.connection_type, null: false, description: "Get all playlists." do
+      argument :query, String, required: false, description: "Query to search for."
     end
-
-    field :playlists, PlaylistType.connection_type, null: false, description: "Get all playlists."
 
     def playlists(query: nil)
       raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
@@ -188,6 +184,15 @@ module Types
       raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
 
       Period.search_periods(query).results
+    end
+
+    field :user, UserType, null: false, description: "Get the profile of the currently authenticated user." do
+      argument :id, ID, required: true, description: "ID of the user."
+    end
+
+    def user(id:)
+      raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
+      context[:current_user]
     end
 
     field :users, UserType.connection_type, null: false, description: "Get all users." do

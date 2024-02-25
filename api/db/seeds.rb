@@ -1,11 +1,16 @@
 if !User.exists?(email: "admin@tangocloud.app")
-  User.create!(
+  user = User.new(
     email: "admin@tangocloud.app",
     password: "tangocloud123",
     username: "admin",
-    first_name: "Admin",
-    last_name: "User",
     verified: true,
     admin: true
   )
+
+  user.build_user_preference(
+    first_name: "Admin",
+    last_name: "User"
+  )
+
+  user.save!
 end

@@ -9,7 +9,7 @@ class Lyricist < ApplicationRecord
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true
 
-  def self.search_lyricists(query)
+  def self.search_lyricists(query = "*")
     search(query,
       fields: ["name^5"],
       match: :word_middle,

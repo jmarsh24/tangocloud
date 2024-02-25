@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
-export const GET_HOME_PLAYLISTS = gql`
-  query GetHomePlaylists($first: Int, $after: String) {
-    getHomePlaylists(first: $first, after: $after) {
+export const PLAYLISTS = gql`
+  query Playlists(query, String, $first: Int, $after: String) {
+    playlists(query: $query, first: $first, after: $after) {
       edges {
         node {
           id

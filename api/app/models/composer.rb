@@ -9,7 +9,7 @@ class Composer < ApplicationRecord
 
   has_one_attached :photo
 
-  def self.search_composers(query)
+  def self.search_composers(query = "*")
     Composer.search(query,
       match: :word_middle,
       misspellings: {below: 5})

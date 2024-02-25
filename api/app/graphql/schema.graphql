@@ -734,6 +734,11 @@ type Query {
     Returns the last _n_ elements from the list.
     """
     last: Int
+
+    """
+    Query to search for.
+    """
+    query: String
   ): PlaylistConnection!
 
   """

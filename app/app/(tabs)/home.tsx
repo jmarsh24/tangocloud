@@ -1,14 +1,14 @@
 import React from 'react';
 import { Text, View, StyleSheet, FlatList, Pressable, Image} from 'react-native'; 
 import { useTheme } from '@react-navigation/native';
-import { GET_HOME_PLAYLISTS } from '@/graphql';
+import { PLAYLISTS } from '@/graphql';
 import { useQuery } from '@apollo/client';
 import TrackPlayer from 'react-native-track-player';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Page() {
   const { colors } = useTheme();
-  const { data, loading, error } = useQuery(GET_HOME_PLAYLISTS, {
+  const { data, loading, error } = useQuery(PLAYLISTS, {
     variables: { first: 20 }
   });
 
@@ -17,7 +17,7 @@ export default function Page() {
   if (error) return <View style={styles.container}><Text>Error loading playlists.</Text></View>;
 
   // Safely access getHomePlaylists, ensuring it's not null
-  const playlists = data?.getHomePlaylists?.edges.map(edge => edge.node) || [];
+  const playlists = data?.playlists?.edges.map(edge => edge.node) || [];
 
   async function loadTracks(playlists) {
   const tracks = playlists.flatMap(playlist =>

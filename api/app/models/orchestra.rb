@@ -13,7 +13,7 @@ class Orchestra < ApplicationRecord
   validates :rank, presence: true, numericality: {only_integer: true}
   validates :slug, presence: true, uniqueness: true
 
-  def self.search_orchestras(query)
+  def self.search_orchestras(query = "*")
     search(query,
       fields: ["name^5"],
       match: :word_middle,

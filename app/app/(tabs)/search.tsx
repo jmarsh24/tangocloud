@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { TextInput, View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { TextInput, View, Text, StyleSheet } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
 import TrackListItem from '@/components/TrackListItem';
 import { AntDesign } from '@expo/vector-icons';
 import { useQuery } from '@apollo/client';
 import { useTheme } from '@react-navigation/native';
-import { SEARCH_RECORDINGS } from '@/graphql';
+import { RECORDINGS } from '@/graphql';
 import _ from 'lodash'; 
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -16,8 +16,8 @@ export default function SearchScreen() {
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState("*");
 
-  const { data, loading, fetchMore } = useQuery(SEARCH_RECORDINGS, {
-    variables: { query: debouncedSearch, first: ITEMS_PER_PAGE },
+  const { data, loading, fetchMore } = useQuery(RECORDINGS, {
+    variables: { query: "*", first: ITEMS_PER_PAGE },
     fetchPolicy: 'cache-and-network',
     skip: !debouncedSearch,
   });
@@ -34,20 +34,21 @@ export default function SearchScreen() {
   }, [search, debouncedSetSearch]);
 
   const loadMoreItems = useCallback(() => {
-    if (data?.searchRecordings.pageInfo.hasNextPage) {
+    if (data?.recordings.pageInfo.hasNextPage) {
       fetchMore({
         variables: {
-          after: data.searchRecordings.pageInfo.endCursor,
+          query: "*",
+          after: data.recordings.pageInfo.endCursor,
         },
         updateQuery: (prevResult, { fetchMoreResult }) => {
-          const newEdges = fetchMoreResult.searchRecordings.edges;
-          const pageInfo = fetchMoreResult.searchRecordings.pageInfo;
+          const newEdges = fetchMoreResult.recordings.edges;
+          const pageInfo = fetchMoreResult.recordings.pageInfo;
 
           return newEdges.length
             ? {
-                searchRecordings: {
-                  __typename: prevResult.searchRecordings.__typename,
-                  edges: [...prevResult.searchRecordings.edges, ...newEdges],
+              recordings: {
+                  __typename: prevResult.recordings.__typename,
+                  edges: [...prevResult.recordings.edges, ...newEdges],
                   pageInfo,
                 },
               }
@@ -55,9 +56,9 @@ export default function SearchScreen() {
         },
       });
     }
-  }, [data?.searchRecordings.pageInfo, fetchMore]);
+  }, [data?.recordings.pageInfo, fetchMore]);
 
-  const tracks = data?.searchRecordings.edges.map(edge => edge.node) || [];
+  const tracks = data?.recordings.edges.map(edge => edge.node) || [];
 
   const renderItem = useCallback(
     ({ item }) => <TrackListItem track={item} />,

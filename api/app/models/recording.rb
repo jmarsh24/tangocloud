@@ -24,7 +24,7 @@ class Recording < ApplicationRecord
 
   enum recording_type: {studio: "studio", live: "live"}
 
-  def self.search_recordings(query)
+  def self.search_recordings(query = "*")
     Recording.search(query,
       fields: [
         "title",

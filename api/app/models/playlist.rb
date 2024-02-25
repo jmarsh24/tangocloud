@@ -15,7 +15,7 @@ class Playlist < ApplicationRecord
 
   validates :image, presence: true
 
-  def self.search_recordings(query)
+  def self.search_playlists(query = "*")
     search(
       query,
       fields: [:title],

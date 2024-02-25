@@ -11,7 +11,7 @@ class Period < ApplicationRecord
   validates :slug, presence: true, uniqueness: true
   validates :recordings_count, presence: true, numericality: {greater_than_or_equal_to: 0}
 
-  def self.search_periods(query)
+  def self.search_periods(query = "*")
     search(query,
       fields: ["name^5"],
       match: :word_middle,
