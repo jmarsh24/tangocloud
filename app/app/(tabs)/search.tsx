@@ -21,23 +21,21 @@ export default function SearchScreen() {
     fetchPolicy: 'cache-and-network',
   });
 
-  // Refetch the query with the initial parameters when the search term changes
   useEffect(() => {
-    refetch({ query: search || "", first: ITEMS_PER_PAGE });
+    refetch({ query: search, first: ITEMS_PER_PAGE });
   }, [search, refetch]);
 
-  const loadMoreItems = useCallback(() => {
-    if (!loadingMore && data?.recordings.pageInfo.hasNextPage) {
+  const loadMoreItems = useCallback(async () => {
+    if (data?.recordings.pageInfo.hasNextPage && !loadingMore) {
       setLoadingMore(true);
-      fetchMore({
+      await fetchMore({
         variables: {
           after: data.recordings.pageInfo.endCursor,
           query: search,
           first: ITEMS_PER_PAGE,
         },
-      }).then(() => {
-        setLoadingMore(false);
       });
+      setLoadingMore(false);
     }
   }, [data?.recordings.pageInfo, fetchMore, loadingMore, search]);
 
