@@ -204,5 +204,13 @@ module Types
 
       User.search_users(query).results
     end
+
+    field :user_profile, UserType, null: false, description: "Get the profile of the currently authenticated user."
+
+    def user_profile
+      raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
+
+      context[:current_user]
+    end
   end
 end

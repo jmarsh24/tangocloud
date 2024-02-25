@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         variables: { username, email, password },
       });
 
-      return data.signUp;
+      return data.register;
     } catch (error) {
       const apolloError = error as ApolloError;
       throw new Error(apolloError.message);
@@ -57,14 +57,14 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         mutation: LOGIN,
         variables: { login, password },
       });
-
+    
       setAuthState({
-        token: data.signIn.token,
+        token: data.login.token,
         authenticated: true,
       });
 
-      await SecureStore.setItemAsync('token', data.signIn.token);
-      return data.signIn;
+      await SecureStore.setItemAsync('token', data.login.token);
+      return data.login;
     } catch (error) {
       const apolloError = error as ApolloError;
       throw new Error(apolloError.message);

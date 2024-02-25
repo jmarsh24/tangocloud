@@ -1,7 +1,7 @@
 import { View, Text, TextInput, StyleSheet, Alert, SafeAreaView, KeyboardAvoidingView, Platform, useColorScheme } from 'react-native';
 import React, { useState } from 'react';
 import Button from '@/components/Button';
-import Colors from '@/constants/Colors'; // Consider adding dark theme colors here
+import Colors from '@/constants/Colors';
 import { Link } from 'expo-router';
 import { useAuth } from '@/providers/AuthProvider';
 
@@ -23,7 +23,6 @@ const SignInScreen = () => {
     }
   }
 
-  // Adjusted styles based on color scheme
   const dynamicStyles = StyleSheet.create({
     container: {
       padding: 20,

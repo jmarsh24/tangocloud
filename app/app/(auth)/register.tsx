@@ -21,7 +21,7 @@ const SignUpScreen = () => {
         Alert.alert(
           "Verification Required",
           "Please check your email to verify your account before signing in.",
-          [{ text: "OK", onPress: () => router.replace('/sign-in') }]
+          [{ text: "OK", onPress: () => router.replace('/login') }]
         );
       } else {
         const errorsMessage = result.errors.fullMessages.join('\n');
@@ -109,7 +109,7 @@ const SignUpScreen = () => {
             disabled={loading}
             text={loading ? 'Creating account...' : 'Create account'}
           />
-          <Link replace href="/sign-in" style={dynamicStyles.textButton}>
+          <Link replace href="/login" style={dynamicStyles.textButton}>
             Sign in
           </Link>
         </View>

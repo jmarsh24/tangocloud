@@ -6,7 +6,7 @@ const index = () => {
   const { authState } = useAuth();
 
   if (authState?.authenticated === false) {
-    return <Redirect href={'/sign-in'} />;
+    return <Redirect href={'/login'} />;
   }
 
   return <Redirect href={'/home'} />;

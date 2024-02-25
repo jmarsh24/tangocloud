@@ -832,6 +832,11 @@ type Query {
   ): User!
 
   """
+  Get the profile of the currently authenticated user.
+  """
+  userProfile: User!
+
+  """
   Get all users.
   """
   users(
