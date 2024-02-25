@@ -6,7 +6,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useQuery } from '@apollo/client';
 import { useTheme } from '@react-navigation/native';
 import { RECORDINGS } from '@/graphql';
-import _ from 'lodash'; 
+import _ from 'lodash';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SearchScreen() {
@@ -14,47 +14,34 @@ export default function SearchScreen() {
   const styles = getStyles(colors);
   const ITEMS_PER_PAGE = 30;
   const [search, setSearch] = useState('');
+  const [loadingMore, setLoadingMore] = useState(false);
 
-  const { data, loading, fetchMore } = useQuery(RECORDINGS, {
+  const { data, loading, fetchMore, refetch } = useQuery(RECORDINGS, {
     variables: { query: search, first: ITEMS_PER_PAGE },
     fetchPolicy: 'cache-and-network',
   });
 
-  // Debounce search input to delay execution while typing
-  const debouncedSearch = useCallback(_.debounce((query) => {
-    fetchMore({
-      variables: { query: query || "", first: ITEMS_PER_PAGE },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult) return prev;
-        return fetchMoreResult;
-      },
-    });
-  }, 500), []);
-
+  // Refetch the query with the initial parameters when the search term changes
   useEffect(() => {
-    debouncedSearch(search);
-  }, [search, debouncedSearch]);
+    refetch({ query: search || "", first: ITEMS_PER_PAGE });
+  }, [search, refetch]);
 
   const loadMoreItems = useCallback(() => {
-    if (data?.recordings.pageInfo.hasNextPage) {
+    if (!loadingMore && data?.recordings.pageInfo.hasNextPage) {
+      setLoadingMore(true);
       fetchMore({
         variables: {
           after: data.recordings.pageInfo.endCursor,
+          query: search,
+          first: ITEMS_PER_PAGE,
         },
+      }).then(() => {
+        setLoadingMore(false);
       });
     }
-  }, [data?.recordings.pageInfo, fetchMore]);
+  }, [data?.recordings.pageInfo, fetchMore, loadingMore, search]);
 
   const tracks = data?.recordings.edges.map(edge => edge.node) || [];
-
-  const renderItem = useCallback(
-    ({ item }) => <TrackListItem track={item} />,
-    []
-  );
-
-  const ItemSeparator = () => <View style={styles.itemSeperator} />;
-
-  const ListFooter = () => loading ? <ActivityIndicator size="medium" /> : <View style={styles.footerStyle}></View>;
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -71,28 +58,20 @@ export default function SearchScreen() {
             style={styles.input}
           />
           {search.length > 0 && (
-            <AntDesign
-              name="close"
-              size={20}
-              style={styles.clearIcon}
-              onPress={() => setSearch('')}
-            />
+            <AntDesign name="close" size={20} style={styles.clearIcon} onPress={() => setSearch('')} />
           )}
         </View>
-        <Text onPress={() => setSearch('')} style={styles.cancelText}>
-          Cancel
-        </Text>
       </View>
 
       <FlashList
         data={tracks}
-        renderItem={renderItem}
-        ItemSeparatorComponent={ItemSeparator}
-        ListFooterComponent={ListFooter}
+        renderItem={({ item }) => <TrackListItem track={item} />}
+        ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
+        ListFooterComponent={() => loading || loadingMore ? <ActivityIndicator size="large" /> : null}
         onEndReached={loadMoreItems}
         onEndReachedThreshold={0.5}
         showsVerticalScrollIndicator={false}
-        estimatedItemSize={75} // Adjusted for potentially varying item sizes
+        estimatedItemSize={75}
         keyExtractor={item => item.id}
       />
     </SafeAreaView>

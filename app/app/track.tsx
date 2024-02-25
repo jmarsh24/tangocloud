@@ -22,31 +22,29 @@ export default function TrackScreen() {
   const animationFrameRef = useRef<number>();
   const deviceWidth = Dimensions.get('window').width;
 
-   useEffect(() => {
+  useEffect(() => {
     // Function to fetch and update the current track info
     const fetchAndUpdateCurrentTrack = async () => {
       const trackIndex = await TrackPlayer.getCurrentTrack();
       const trackObject = await TrackPlayer.getTrack(trackIndex);
       if (trackObject) {
         setTrack(trackObject);
-        setTrackDuration(trackObject.duration); // Assuming duration is a property of your track object
+        // Assuming duration is a property of your track object
+        setTrackDuration(trackObject.duration);
       }
     };
 
-    // Event listener callback for track changes
-    const onTrackChange = async () => {
-      await fetchAndUpdateCurrentTrack();
-    };
-
     // Adding the event listener for track changes
-    TrackPlayer.addEventListener('playback-track-changed', onTrackChange);
+    const subscription = TrackPlayer.addEventListener('playback-track-changed', async (data) => {
+      await fetchAndUpdateCurrentTrack();
+    });
 
     // Initial fetch for the current track
     fetchAndUpdateCurrentTrack();
 
     // Cleanup function to remove the event listener
     return () => {
-      TrackPlayer.removeEventListener('playback-track-changed', onTrackChange);
+      subscription.remove();
     };
   }, []);
 
