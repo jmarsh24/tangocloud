@@ -11,7 +11,7 @@ import { useLocalSearchParams } from 'expo-router';
 import Waveform from '@/components/Waveform';
 
 export default function RecordingScreen() {
-  const { slug } = useLocalSearchParams();
+  const { id } = useLocalSearchParams<{ id: string }>();
   const vinylRecordImg = require('@/assets/images/vinyl_3x.png');
   const { colors } = useTheme();
   const styles = getStyles(colors);
@@ -50,7 +50,7 @@ export default function RecordingScreen() {
   }, []);
 
   const { data } = useQuery(RECORDING, {
-    variables: { Id: slug }
+    variables: { Id: id }
   });
   const waveformData = data?.recording.audioTransfers[0].waveform.data || [];
 
