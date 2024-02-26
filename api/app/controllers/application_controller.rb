@@ -5,8 +5,6 @@ class ApplicationController < ActionController::Base
   after_action :verify_authorized
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  skip_after_action :verify_authorized, if: :mission_control_controller?
-
   private
 
   def user_not_authorized(exception)

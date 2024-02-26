@@ -17,10 +17,6 @@ Rails.application.routes.draw do
   get "/auth/:provider/callback", to: "sessions/omniauth#create"
   post "/auth/:provider/callback", to: "sessions/omniauth#create"
 
-  constraints(Constraints::AdminConstraint.new) do
-    resources :audio_transfers, only: [:new, :create]
-  end
-
   if Rails.env.development?
     mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "api/graphql"
   end
@@ -28,6 +24,7 @@ Rails.application.routes.draw do
   constraints(Constraints::AdminConstraint.new) do
     mount MissionControl::Jobs::Engine, at: "/jobs"
     mount Avo::Engine => "admin"
+    resources :audio_transfers, only: [:new, :create]
   end
 
   namespace :api do
