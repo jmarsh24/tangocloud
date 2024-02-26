@@ -54,6 +54,9 @@ export const PlayerControls: React.FC = () => {
 
   const styles = StyleSheet.create({
     container: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 30,
       width: '100%',
     },
     row: {

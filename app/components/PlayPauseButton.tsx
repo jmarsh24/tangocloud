@@ -11,7 +11,6 @@ export const PlayPauseButton = ({ size = 48 }) => {
   const styles = StyleSheet.create({
     container: {
       width: size * 3,
-      height: size * 3,
       alignItems: 'center',
       justifyContent: 'center',
     },

@@ -121,8 +121,7 @@ export default function RecordingScreen() {
 function getStyles(colors) {
   return StyleSheet.create({
     container: {
-      paddingTop: 20,
-      justifyContent: 'space-between',
+      padding: 20,
       alignItems: 'center',
       backgroundColor: colors.background,
     },
