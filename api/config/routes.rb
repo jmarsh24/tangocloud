@@ -17,6 +17,9 @@ Rails.application.routes.draw do
   get "/auth/:provider/callback", to: "sessions/omniauth#create"
   post "/auth/:provider/callback", to: "sessions/omniauth#create"
 
+  get "/apple-app-site-association", to: "apple_app_site_association#show", as: :apple_app_site_association
+  get "/.well-known/apple-app-site-association", to: "apple_app_site_association#show"
+
   if Rails.env.development?
     mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "api/graphql"
   end
