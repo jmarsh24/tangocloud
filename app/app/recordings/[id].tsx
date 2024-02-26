@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, View, Image, Dimensions } from 'react-native';
+import { StyleSheet, View, Image, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import TrackPlayer, { useProgress } from 'react-native-track-player';
 import { PlayerControls } from '@/components/PlayerControls';
@@ -9,6 +9,8 @@ import { RECORDING } from '@/graphql';
 import { useQuery } from '@apollo/client';
 import { useLocalSearchParams } from 'expo-router';
 import Waveform from '@/components/Waveform';
+import * as Sharing from 'expo-sharing';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 
 export default function RecordingScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -76,6 +78,28 @@ export default function RecordingScreen() {
   const vinylSize = screenWidth * 0.8;
   const albumArtSize = vinylSize * 0.36;
 
+  const shareRecording = async () => {
+    const url = `tangocloudapp:recordings/${id}`;
+
+    // Check if sharing is available on the device
+    if (!(await Sharing.isAvailableAsync())) {
+      alert('Sharing is not available on your device');
+      return;
+    }
+
+    try {
+      console.log('sharing', url);
+      // Using shareAsync to open the device's share menu
+      await Sharing.shareAsync(url, {
+        dialogTitle: 'Share your recording',
+        mimeType: 'text/plain', // Optional, for sharing files you would use the file's MIME type
+        UTI: 'public.url' // Optional, for iOS to hint the type of content being shared
+      });
+    } catch (error) {
+      alert(`Error sharing the recording: ${error.message}`);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View
@@ -111,6 +135,9 @@ export default function RecordingScreen() {
           progress={progressRef.current}
         />
         <Progress />
+        <TouchableWithoutFeedback onPress={shareRecording}>
+          <FontAwesome6 name={'share'} size={30} style={styles.icon} />
+        </TouchableWithoutFeedback>
         <PlayerControls />
       </View>
     </View>
