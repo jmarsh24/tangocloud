@@ -3,7 +3,6 @@ class User < ApplicationRecord
   searchkick word_start: [:username, :email, :first_name, :last_name]
 
   has_one :user_preference, dependent: :destroy
-  has_one :user_setting, dependent: :destroy
 
   generates_token_for :email_verification, expires_in: 2.days do
     email
