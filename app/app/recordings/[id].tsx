@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, View, Image, Dimensions, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Image, Dimensions, TouchableWithoutFeedback, Alert } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import TrackPlayer, { useProgress } from 'react-native-track-player';
 import { PlayerControls } from '@/components/PlayerControls';
@@ -79,26 +79,20 @@ export default function RecordingScreen() {
   const albumArtSize = vinylSize * 0.36;
 
   const shareRecording = async () => {
-    const url = `tangocloudapp:recordings/${id}`;
-
-    // Check if sharing is available on the device
-    if (!(await Sharing.isAvailableAsync())) {
-      alert('Sharing is not available on your device');
-      return;
-    }
-
-    try {
-      console.log('sharing', url);
-      // Using shareAsync to open the device's share menu
-      await Sharing.shareAsync(url, {
-        dialogTitle: 'Share your recording',
-        mimeType: 'text/plain', // Optional, for sharing files you would use the file's MIME type
-        UTI: 'public.url' // Optional, for iOS to hint the type of content being shared
-      });
-    } catch (error) {
-      alert(`Error sharing the recording: ${error.message}`);
+    const url = `https://tangocloud.app/recordings/${id}`;
+    const isAvailable = await Sharing.isAvailableAsync();
+    if (isAvailable) {
+      try {
+        await Sharing.shareAsync(url);
+      } catch (error) {
+        console.log(error);
+        Alert.alert("Error", "Failed to share the recording.");
+      }
+    } else {
+      Alert.alert("Unavailable", "Sharing is not available on this device.");
     }
   };
+
 
   return (
     <View style={styles.container}>
