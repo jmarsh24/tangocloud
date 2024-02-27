@@ -5,7 +5,7 @@ import Colors from '@/constants/Colors';
 import { Link } from 'expo-router';
 import { useAuth } from '@/providers/AuthProvider';
 
-const SignInScreen = () => {
+const LoginScreen = () => {
   const colorScheme = useColorScheme();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
@@ -24,11 +24,11 @@ const SignInScreen = () => {
   }
 
   const dynamicStyles = StyleSheet.create({
-    container: {
+    container: { 
       padding: 20,
       justifyContent: 'center',
       flex: 1,
-      backgroundColor: colorScheme === 'dark' ? Colors.dark.background : Colors.light.background, // Assuming Colors has a dark theme defined
+      backgroundColor: colorScheme === 'dark' ? Colors.dark.background : Colors.light.background,
     },
     label: {
       color: colorScheme === 'dark' ? Colors.dark.text : Colors.light.text,
@@ -85,7 +85,7 @@ const SignInScreen = () => {
             disabled={loading}
             text={loading ? 'Signing in...' : 'Sign in'}
           />
-        <Link replace href="/register" style={dynamicStyles.textButton}>
+          <Link replace href="/register" style={dynamicStyles.textButton}>
             Create an account
           </Link>
         </View>
@@ -94,4 +94,4 @@ const SignInScreen = () => {
   );
 };
 
-export default SignInScreen;
+export default LoginScreen;

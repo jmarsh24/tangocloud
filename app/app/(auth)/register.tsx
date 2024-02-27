@@ -5,7 +5,7 @@ import Colors from '@/constants/Colors';
 import { router, Link } from 'expo-router';
 import { useAuth } from '@/providers/AuthProvider';
 
-const SignUpScreen = () => {
+const RegisterScreen = () => {
   const colorScheme = useColorScheme();
   const { onRegister } = useAuth();
   const [username, setUsername] = useState('');
@@ -24,10 +24,11 @@ const SignUpScreen = () => {
           [{ text: "OK", onPress: () => router.replace('/login') }]
         );
       } else {
-        // Handle error...
+        const errorMessages = result.errors?.fullMessages?.join('\n') || "Please try again later.";
+        Alert.alert("Registration Failed", errorMessages);
       }
     } catch (error) {
-      // Handle error...
+      Alert.alert("Registration Failed", error.message || "An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -117,4 +118,4 @@ const SignUpScreen = () => {
   );
 };
 
-export default SignUpScreen;
+export default RegisterScreen;

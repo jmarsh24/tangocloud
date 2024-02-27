@@ -19,6 +19,7 @@ Rails.application.routes.draw do
 
   get "/apple-app-site-association", to: "apple_app_site_association#show", as: :apple_app_site_association
   get "/.well-known/apple-app-site-association", to: "apple_app_site_association#show"
+  get "/.well-known/change-password", to: "passwords#edit", as: :change_password
 
   if Rails.env.development?
     mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "api/graphql"
