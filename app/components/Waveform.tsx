@@ -24,27 +24,29 @@ const Waveform: React.FC<WaveformProps> = ({
   const gap = 1;
   const waveformBaseColor = colors.text;
 
+  const numberOfBars = Math.floor(width / (barWidth + gap));
+  const sampledData = React.useMemo(
+    () => sampleData(data, Math.min(data.length, numberOfBars)),
+    [data, numberOfBars]
+  );
+
   if (data.length === 0) {
     return null;
   }
 
-  const numberOfBars = Math.min(data.length, Math.floor(width / (barWidth + gap)));
-  const sampledData = React.useMemo(() => sampleData(data, numberOfBars), [data, numberOfBars]);
-
-  // Render waveform bars function
   const renderWaveformBars = (color: string, opacity: number = 1, inverted: boolean = false) => (
     <Svg height="100%" width="100%">
       {sampledData.map((amplitude, index) => {
         const x = index * (barWidth + gap);
         const barHeight = ((1 + amplitude) / 2) * height;
-        const y = inverted ? 1 : height - barHeight; // Invert Y position for the inverted waveform
+        const y = inverted ? 1 : height - barHeight;
         return (
           <Rect
-            key={`${index}${inverted ? 'i' : ''}`} // Unique key for inverted bars
+            key={`${index}${inverted ? 'i' : ''}`}
             x={x}
             y={y}
             width={barWidth}
-            height={inverted ? barHeight / 2 : barHeight} // Half height for the inverted waveform
+            height={inverted ? barHeight / 2 : barHeight}
             fill={color}
             fillOpacity={opacity}
           />
@@ -75,7 +77,6 @@ const Waveform: React.FC<WaveformProps> = ({
   );
 };
 
-// Helper function to sample the data array to a manageable number of points
 function sampleData(data: number[], samples: number, exaggerationFactor: number = 2): number[] {
   const step = Math.floor(data.length / samples);
   const sampledData: number[] = [];
