@@ -12,14 +12,12 @@ module Types
     field :audio_transfer_id, Types::UuidType, null: false
     field :audio_file_url, String, null: false
     field :audio_variant_url, String, null: false
+    field :audio_file, Types::FileType, null: false
+    def audio_file
+      object.audio_file.presence
+    end
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
-
-    def audio_file_url
-      if object.audio_file.attached?
-        Rails.application.routes.url_helpers.rails_blob_url(object.audio_file)
-      end
-    end
 
     belongs_to :audio_transfer
   end
