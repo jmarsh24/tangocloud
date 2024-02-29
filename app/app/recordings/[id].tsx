@@ -1,3 +1,4 @@
+import 'react-native-url-polyfill/auto'
 import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Image, Dimensions, TouchableWithoutFeedback, Alert } from 'react-native';
 import { useTheme } from '@react-navigation/native';
@@ -7,10 +8,10 @@ import { Progress } from '@/components/Progress';
 import { TrackInfo } from '@/components/TrackInfo';
 import { RECORDING } from '@/graphql';
 import { useQuery } from '@apollo/client';
-import { useLocalSearchParams } from 'expo-router';
 import Waveform from '@/components/Waveform';
 import * as Sharing from 'expo-sharing';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import { useLocalSearchParams } from 'expo-router';
 
 export default function RecordingScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -24,37 +25,49 @@ export default function RecordingScreen() {
   const progressRef = useRef(0);
   const animationFrameRef = useRef<number>();
   const deviceWidth = Dimensions.get('window').width;
+  const { data, loading, error } = useQuery(RECORDING, { variables: { Id: {id} } });
+  const waveformData = data?.recording?.audioTransfers[0]?.waveform?.data || [];
 
   useEffect(() => {
-    // Function to fetch and update the current track info
     const fetchAndUpdateCurrentTrack = async () => {
-      const trackIndex = await TrackPlayer.getCurrentTrack();
-      const trackObject = await TrackPlayer.getTrack(trackIndex);
-      if (trackObject) {
-        setTrack(trackObject);
-        // Assuming duration is a property of your track object
-        setTrackDuration(trackObject.duration);
-      }
-    };
+      if (loading || error) return;
 
-    // Adding the event listener for track changes
-    const subscription = TrackPlayer.addEventListener('playback-track-changed', async (data) => {
-      await fetchAndUpdateCurrentTrack();
+      const currentTrackId = await TrackPlayer.getActiveTrackIndex();
+      if (currentTrackId !== null) {
+        const trackObject = await TrackPlayer.getTrack(currentTrackId);
+        if (trackObject && data.recording?.id !== trackObject.id) {
+          await updateTrack(data.recording);
+        }
+      } else {
+        await updateTrack(data.recording);
+      };
+    };
+    
+    if (data) {
+      fetchAndUpdateCurrentTrack();
+    }
+  }, [data, loading, error, id]);
+
+  const updateTrack = async (recording) => {
+    await TrackPlayer.reset();
+    await TrackPlayer.add({
+      id: recording.id,
+      url: recording.audioVariants[0].url,
+      title: recording.title,
+      artist: recording.artist,
+      artwork: recording.artwork,
     });
-
-    // Initial fetch for the current track
-    fetchAndUpdateCurrentTrack();
-
-    // Cleanup function to remove the event listener
-    return () => {
-      subscription.remove();
-    };
-  }, []);
-
-  const { data } = useQuery(RECORDING, {
-    variables: { Id: id }
-  });
-  const waveformData = data?.recording.audioTransfers[0].waveform.data || [];
+    setTrack({
+      id: recording.id,
+      url: recording.audioVariants[0].url,
+      title: recording.title,
+      artist: recording.artist,
+      artwork: recording.artwork,
+      duration: recording.audioVariants[0].duration,
+    });
+    setTrackDuration(recording.audioVariants[0].duration);
+    await TrackPlayer.play();
+  };
 
   useEffect(() => {
     positionRef.current = position;
