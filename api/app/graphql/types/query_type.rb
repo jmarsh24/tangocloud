@@ -47,7 +47,6 @@ module Types
       AudioVariant.find(id)
     end
 
-
     field :playlists, PlaylistType.connection_type, null: false, description: "Get all playlists." do
       argument :query, String, required: false, description: "Query to search for."
     end
