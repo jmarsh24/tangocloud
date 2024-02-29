@@ -1,4 +1,3 @@
-import 'react-native-url-polyfill/auto'
 import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Image, Dimensions, TouchableWithoutFeedback, Alert } from 'react-native';
 import { useTheme } from '@react-navigation/native';
