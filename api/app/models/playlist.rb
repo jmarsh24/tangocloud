@@ -1,4 +1,9 @@
 class Playlist < ApplicationRecord
+  extend FriendlyId
+  friendly_id :title, use: :slugged
+
+  searchkick word_middle: [:title]
+
   validates :title, presence: true
 
   belongs_to :user
@@ -9,7 +14,21 @@ class Playlist < ApplicationRecord
   has_one_attached :playlist_file, dependent: :purge_later
 
   validates :image, presence: true
-  validates :playlist_file, presence: true
+
+  def self.search_playlists(query = "*")
+    search(
+      query,
+      fields: [:title],
+      match: :word_middle,
+      misspellings: {below: 5}
+    )
+  end
+
+  def search_data
+    {
+      title:
+    }
+  end
 end
 
 # == Schema Information
@@ -28,4 +47,5 @@ end
 #  user_id         :uuid             not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  slug            :string
 #

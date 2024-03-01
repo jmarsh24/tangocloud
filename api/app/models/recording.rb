@@ -17,14 +17,14 @@ class Recording < ApplicationRecord
   has_many :lyrics, through: :composition
   has_many :tanda_recordings, dependent: :destroy
   has_many :tandas, through: :tanda_recordings
-  has_many :waveforms, through: :audio_transfers
+  has_many :waveforms, through: :audio_transfers, dependent: :destroy
 
   validates :title, presence: true
   validates :recorded_date, presence: true
 
   enum recording_type: {studio: "studio", live: "live"}
 
-  def self.search_recordings(query)
+  def self.search_recordings(query = "*")
     Recording.search(query,
       fields: [
         "title",

@@ -1,7 +1,21 @@
 class Genre < ApplicationRecord
-  has_many :recordings
+  searchkick word_middle: [:name]
+  has_many :recordings, dependent: :destroy
 
   validates :name, presence: true
+
+  def self.search_genres(query = "*")
+    search(query,
+      fields: ["name^5"],
+      match: :word_middle,
+      misspellings: {below: 5})
+  end
+
+  def search_data
+    {
+      name:
+    }
+  end
 end
 
 # == Schema Information

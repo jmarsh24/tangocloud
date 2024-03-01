@@ -5,8 +5,8 @@ import TrackListItem from '@/components/TrackListItem';
 import { AntDesign } from '@expo/vector-icons';
 import { useQuery } from '@apollo/client';
 import { useTheme } from '@react-navigation/native';
-import { SEARCH_RECORDINGS } from '@/graphql';
-import _ from 'lodash'; 
+import { RECORDINGS } from '@/graphql';
+import _ from 'lodash';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SearchScreen() {
@@ -14,67 +14,35 @@ export default function SearchScreen() {
   const styles = getStyles(colors);
   const ITEMS_PER_PAGE = 30;
   const [search, setSearch] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState("*");
+  const [loadingMore, setLoadingMore] = useState(false);
 
-  const { data, loading, fetchMore } = useQuery(SEARCH_RECORDINGS, {
-    variables: { query: debouncedSearch, first: ITEMS_PER_PAGE },
+  const { data, loading, fetchMore, refetch } = useQuery(RECORDINGS, {
+    variables: { query: search, first: ITEMS_PER_PAGE },
     fetchPolicy: 'cache-and-network',
-    skip: !debouncedSearch,
   });
 
-  const debouncedSetSearch = useCallback(_.debounce(setDebouncedSearch, 500), []);
+  useEffect(() => {
+    refetch({ query: search, first: ITEMS_PER_PAGE });
+  }, [search, refetch]);
 
-    useEffect(() => {
-    if(search.trim()) {
-      debouncedSetSearch(search);
-    }
-    return () => {
-      debouncedSetSearch.cancel();
-    };
-  }, [search, debouncedSetSearch]);
-
-  const loadMoreItems = useCallback(() => {
-    if (data?.searchRecordings.pageInfo.hasNextPage) {
-      fetchMore({
+  const loadMoreItems = useCallback(async () => {
+    if (data?.recordings.pageInfo.hasNextPage && !loadingMore) {
+      setLoadingMore(true);
+      await fetchMore({
         variables: {
-          after: data.searchRecordings.pageInfo.endCursor,
-        },
-        updateQuery: (prevResult, { fetchMoreResult }) => {
-          const newEdges = fetchMoreResult.searchRecordings.edges;
-          const pageInfo = fetchMoreResult.searchRecordings.pageInfo;
-
-          return newEdges.length
-            ? {
-                searchRecordings: {
-                  __typename: prevResult.searchRecordings.__typename,
-                  edges: [...prevResult.searchRecordings.edges, ...newEdges],
-                  pageInfo,
-                },
-              }
-            : prevResult;
+          after: data.recordings.pageInfo.endCursor,
+          query: search,
+          first: ITEMS_PER_PAGE,
         },
       });
+      setLoadingMore(false);
     }
-  }, [data?.searchRecordings.pageInfo, fetchMore]);
+  }, [data?.recordings.pageInfo, fetchMore, loadingMore, search]);
 
-  const tracks = data?.searchRecordings.edges.map(edge => edge.node) || [];
-
-  const renderItem = useCallback(
-    ({ item }) => <TrackListItem track={item} />,
-    []
-  );
-
-  const ItemSeparator = () => <View style={styles.itemSeperator} />;
-
-  const ListFooter = () => {
-    return (
-      <View style={styles.footerStyle}>
-      </View>
-    );
-  };
+  const tracks = data?.recordings.edges.map(edge => edge.node) || [];
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.header}>
         <View style={styles.searchContainer}>
           <AntDesign name="search1" size={20} style={styles.searchIcon} />
@@ -88,28 +56,20 @@ export default function SearchScreen() {
             style={styles.input}
           />
           {search.length > 0 && (
-            <AntDesign
-              name="close"
-              size={20}
-              style={styles.clearIcon}
-              onPress={() => setSearch('')}
-            />
+            <AntDesign name="close" size={20} style={styles.clearIcon} onPress={() => setSearch('')} />
           )}
         </View>
-        <Text onPress={() => setSearch('')} style={styles.cancelText}>
-          Cancel
-        </Text>
       </View>
 
       <FlashList
         data={tracks}
-        renderItem={renderItem}
-        ItemSeparatorComponent={ItemSeparator}
-        ListFooterComponent={ListFooter}
+        renderItem={({ item }) => <TrackListItem track={item} />}
+        ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
+        ListFooterComponent={() => loading || loadingMore ? <ActivityIndicator size="large" /> : null}
         onEndReached={loadMoreItems}
         onEndReachedThreshold={0.5}
         showsVerticalScrollIndicator={false}
-        estimatedItemSize={30}
+        estimatedItemSize={75}
         keyExtractor={item => item.id}
       />
     </SafeAreaView>

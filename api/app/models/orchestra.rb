@@ -1,7 +1,9 @@
 class Orchestra < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :slugged
-  has_many :recordings
+  searchkick word_middle: [:name], callbacks: :async
+
+  has_many :recordings, dependent: :destroy
   has_many :singers, through: :recordings
   has_many :compositions, through: :recordings
   has_many :composers, through: :compositions
@@ -10,6 +12,19 @@ class Orchestra < ApplicationRecord
   validates :name, presence: true
   validates :rank, presence: true, numericality: {only_integer: true}
   validates :slug, presence: true, uniqueness: true
+
+  def self.search_orchestras(query = "*")
+    search(query,
+      fields: ["name^5"],
+      match: :word_middle,
+      misspellings: {below: 5})
+  end
+
+  def search_data
+    {
+      name:
+    }
+  end
 end
 
 # == Schema Information

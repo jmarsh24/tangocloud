@@ -1,9 +1,6 @@
 class RecordingSinger < ApplicationRecord
   belongs_to :recording
   belongs_to :singer
-
-  validates :recording_id, presence: true
-  validates :singer_id, presence: true
 end
 
 # == Schema Information

@@ -4,6 +4,8 @@ class AudioTransfer < ApplicationRecord
   belongs_to :album, optional: true, counter_cache: true
   has_many :audio_variants, dependent: :destroy
   has_one :waveform, dependent: :destroy
+  has_many :playlist_audio_transfers, dependent: :destroy
+  has_many :playlists, through: :audio_transfer_playlists
 
   validates :filename, presence: true, uniqueness: true
 

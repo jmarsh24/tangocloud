@@ -5,7 +5,7 @@
       = image_tag Current.user.avatar_thumbnail, class: "avatar"
       - if Current.user.admin?
         = link_to "Admin", avo_path, class: "button button--primary"
-        = link_to "Background Jobs", good_job_path, class: "button button--primary"
+        = link_to "Background Jobs", mission_control_jobs_path, class: "button button--primary"
         = link_to "Upload Audio Transfers", new_audio_transfer_path, class: "button button--primary"
         = link_to "Upload Playlists", avo.new_resources_playlist_path, class: "button button--primary"
       = link_to "Devices & Sessions", sessions_path, class: "button button--secondary"

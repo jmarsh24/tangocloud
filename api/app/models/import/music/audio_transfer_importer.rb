@@ -12,7 +12,15 @@ module Import
       end
 
       def import_from_audio_transfer(audio_transfer)
-        audio_transfer.audio_file.blob.open do |file|
+        original_filename = audio_transfer.audio_file.filename.to_s
+
+        Tempfile.create([File.basename(original_filename, File.extname(original_filename)), File.extname(original_filename)]) do |file|
+          file.binmode
+
+          audio_transfer.audio_file.open do |blob|
+            file.write(blob.read)
+            file.rewind
+          end
           import(file:, audio_transfer:)
         end
       end
@@ -38,20 +46,13 @@ module Import
           lyricist = Lyricist.find_or_create_by!(name: metadata.lyricist) if metadata.lyricist.present?
           composer = Composer.find_or_create_by!(name: metadata.composer) if metadata.composer.present?
 
-          composition = if composer.present? || lyricist.present?
-            Composition.find_or_create_by!(
-              title: metadata.title,
-              lyricist:,
-              composer:
-            )
+          composition = Composition.find_or_create_by!(title: metadata.title) do |comp|
+            comp.lyricist = lyricist if lyricist.present?
+            comp.composer = composer if composer.present?
           end
 
           if metadata.lyrics.present?
-            composition.lyrics.find_or_create_by!(
-              content: metadata.lyrics,
-              locale: "es",
-              composition:
-            )
+            composition.lyrics.find_or_create_by!(content: metadata.lyrics, locale: "es", composition:)
           end
 
           orchestra = Orchestra.find_or_create_by!(name: metadata.album_artist)
@@ -154,7 +155,7 @@ module Import
               metadata:
             )
 
-            audio_variant.audio_file.attach(io: File.open(file), filename:)
+            audio_variant.audio_file.attach(io: File.open(file), filename: File.basename(file))
           end
           audio_transfer
         end

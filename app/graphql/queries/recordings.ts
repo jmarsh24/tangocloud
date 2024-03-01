@@ -1,0 +1,40 @@
+import { gql } from "@apollo/client";
+
+export const RECORDINGS = gql`
+  query Recordings($query: String, $first: Int, $after: String) {
+    recordings(query: $query, first: $first, after: $after) {
+      edges {
+        node {
+          id
+          title
+          audioTransfers {
+            album {
+              albumArtUrl
+            }
+          }
+          audioVariants {
+            id
+            duration
+            audioFileUrl
+          }
+          orchestra {
+            name
+          }
+          singers {
+            name
+          }
+          genre {
+            name
+          }
+          recordedDate
+        }
+      }
+      pageInfo {
+        endCursor
+        startCursor
+        hasNextPage
+        hasPreviousPage
+      }
+    }
+  }
+`;

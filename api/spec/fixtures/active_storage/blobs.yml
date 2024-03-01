@@ -1,2 +1,5 @@
-volver_a_sonar_tango_tunes_1940_compressed: <%= ActiveStorage::FixtureSet.blob filename: "19401008_volver_a_sonar_roberto_rufino_tango_2476_converted.aac" %>
+volver_a_sonar_tango_tunes_1940_compressed: <%= ActiveStorage::FixtureSet.blob filename: "19401008_volver_a_sonar_roberto_rufino_tango_2476.aac" %>
 volver_a_sonar_tango_tunes_1940_audio_file: <%= ActiveStorage::FixtureSet.blob filename: "19401008_volver_a_sonar_roberto_rufino_tango_2476.flac" %>
+di_sarli_image: <%= ActiveStorage::FixtureSet.blob filename: "di_sarli.jpg" %>
+awesome_playlist_file: <%= ActiveStorage::FixtureSet.blob filename: "awesome_playlist.m3u8" %>
+avatar: <%= ActiveStorage::FixtureSet.blob filename: "avatar.jpg" %>

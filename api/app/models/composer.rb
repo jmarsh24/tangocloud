@@ -1,11 +1,26 @@
 class Composer < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :slugged
+  searchkick word_middle: [:name]
 
   has_many :compositions, dependent: :destroy
   has_many :recordings, through: :compositions
 
   validates :name, presence: true
+
+  has_one_attached :photo
+
+  def self.search_composers(query = "*")
+    Composer.search(query,
+      match: :word_middle,
+      misspellings: {below: 5})
+  end
+
+  def search_data
+    {
+      name:
+    }
+  end
 end
 
 # == Schema Information

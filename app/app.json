@@ -29,7 +29,10 @@
       },
       "supportsTablet": true,
       "runtimeVersion": "1.0.0",
-      "buildNumber": "19"
+      "buildNumber": "36",
+      "associatedDomains": [
+        "applinks:tangocloud.app"
+      ]
     },
     "android": {
       "adaptiveIcon": {
@@ -53,7 +56,8 @@
         {
           "faceIDPermission": "Allow $(PRODUCT_NAME) to access your Face ID biometric data."
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true

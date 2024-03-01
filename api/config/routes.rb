@@ -17,22 +17,25 @@ Rails.application.routes.draw do
   get "/auth/:provider/callback", to: "sessions/omniauth#create"
   post "/auth/:provider/callback", to: "sessions/omniauth#create"
 
-  constraints(Constraints::AdminConstraint.new) do
-    resources :audio_transfers, only: [:new, :create]
-  end
+  get "/apple-app-site-association", to: "apple_app_site_association#show", as: :apple_app_site_association
+  get "/.well-known/apple-app-site-association", to: "apple_app_site_association#show"
+  get "/.well-known/change-password", to: "passwords#edit", as: :change_password
 
   if Rails.env.development?
     mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "api/graphql"
   end
 
   constraints(Constraints::AdminConstraint.new) do
-    mount GoodJob::Engine => "good_job"
+    mount MissionControl::Jobs::Engine, at: "/jobs"
     mount Avo::Engine => "admin"
+    resources :audio_transfers, only: [:new, :create]
   end
 
   namespace :api do
     post "/graphql", to: "graphql#execute"
   end
+
+  resources :recordings, only: [:show]
 
   root "pages#home"
   get "up", to: "rails/health#show", as: :rails_health_check

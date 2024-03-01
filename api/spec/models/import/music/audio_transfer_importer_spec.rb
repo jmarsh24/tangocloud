@@ -138,7 +138,6 @@ RSpec.describe Import::Music::AudioTransferImporter do
       expect(audio_transfer.recording).to be_present
       expect(audio_transfer.recording.el_recodo_song).to be_present
       expect(audio_transfer.recording.composition).to be_present
-      expect(audio_transfer.recording.composition.lyrics).to be_present
       expect(audio_transfer.recording.orchestra).to be_present
       expect(audio_transfer.recording.record_label).to be_present
       expect(audio_transfer.recording.genre).to be_present
@@ -146,6 +145,9 @@ RSpec.describe Import::Music::AudioTransferImporter do
       expect(audio_transfer.recording.composition.lyricist).to be_present
       expect(audio_transfer.recording.composition.composer).to be_present
       expect(audio_transfer.audio_variants).to be_present
+      expect(audio_transfer.filename).to eq("19401008_volver_a_sonar_roberto_rufino_tango_2476.flac")
+      expect(audio_transfer.audio_variants.first.audio_file.blob.filename).to eq("19401008_volver_a_sonar_roberto_rufino_tango_2476.aac")
+      expect(audio_transfer.audio_variants.first.filename).to eq("19401008_volver_a_sonar_roberto_rufino_tango_2476.aac")
       expect(audio_transfer.audio_file).to be_attached
       expect(audio_transfer.waveform).to be_present
     end

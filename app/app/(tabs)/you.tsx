@@ -3,14 +3,14 @@ import { View, StyleSheet, Text, Image, ActivityIndicator, useColorScheme } from
 import { useAuth } from '@/providers/AuthProvider';
 import { useQuery } from '@apollo/client';
 import { Link } from 'expo-router';
-import { CURRENT_USER_PROFILE } from '@/graphql';
+import { USER_PROFILE } from '@/graphql';
 import Button from '@/components/Button'
 import Colors from '@/constants/Colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function LibraryScreen() {
+export default function YouScreen() {
   const { authState, onLogout } = useAuth();
-  const { data, loading, error } = useQuery(CURRENT_USER_PROFILE, {
+  const { data, loading, error } = useQuery(USER_PROFILE, {
     skip: !authState.authenticated,
   });
   const scheme = useColorScheme();
@@ -44,11 +44,11 @@ export default function LibraryScreen() {
   if (!authState.authenticated) {
     return (
       <View style={dynamicStyles.container}>
-        <Link href='/sign-in' asChild> 
-          <Button onPress={onLogout} text="Sign In" />
+        <Link href='/login' asChild> 
+          <Button onPress={onLogout} text="Login" />
         </Link>
-        <Link href='/sign-up' asChild> 
-          <Button onPress={onLogout} text="Sign Up" />
+        <Link href='/register' asChild> 
+          <Button onPress={onLogout} text="Register" />
         </Link>
       </View>
     );
@@ -71,10 +71,10 @@ export default function LibraryScreen() {
     );
   }
 
-  const currentUserProfile = data?.currentUserProfile;
-  const username = currentUserProfile?.username;
-  const email = currentUserProfile?.email;
-  const avatar_url = currentUserProfile?.avatarUrl;
+  const username = data.userProfile?.username;
+  const email = data.userProfile?.email;
+  const avatar_url = data.userProfile?.avatarUrl;
+  
   return (
     <SafeAreaView style={dynamicStyles.container}>
       <Image source={{ uri: avatar_url }} style={styles.image} />

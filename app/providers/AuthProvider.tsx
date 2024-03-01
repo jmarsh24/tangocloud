@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, PropsWithChildren } from 'react';
 import { useApolloClient, ApolloError } from '@apollo/client';
-import { REGISTER_MUTATION, LOGIN_MUTATION } from '@/graphql';
+import { REGISTER, LOGIN } from '@/graphql';
 import * as SecureStore from 'expo-secure-store';
 
 interface AuthState {
@@ -40,11 +40,11 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const register = async (username: string, email: string, password: string) => {
     try {
       const { data } = await apolloClient.mutate({
-        mutation: REGISTER_MUTATION,
+        mutation: REGISTER,
         variables: { username, email, password },
       });
 
-      return data.signUp;
+      return data.register;
     } catch (error) {
       const apolloError = error as ApolloError;
       throw new Error(apolloError.message);
@@ -54,17 +54,17 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const login = async (login: string, password: string) => {
     try {
       const { data } = await apolloClient.mutate({
-        mutation: LOGIN_MUTATION,
+        mutation: LOGIN,
         variables: { login, password },
       });
-
+    
       setAuthState({
-        token: data.signIn.token,
+        token: data.login.token,
         authenticated: true,
       });
 
-      await SecureStore.setItemAsync('token', data.signIn.token);
-      return data.signIn;
+      await SecureStore.setItemAsync('token', data.login.token);
+      return data.login;
     } catch (error) {
       const apolloError = error as ApolloError;
       throw new Error(apolloError.message);

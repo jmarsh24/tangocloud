@@ -1,64 +1,76 @@
-import React from 'react';
-import { Text, View, StyleSheet, FlatList, Pressable, Image} from 'react-native'; // Corrected 'FlatList'
+import React, { useState, useEffect } from 'react';
+import { Text, View, StyleSheet, FlatList, Pressable, Image } from 'react-native';
 import { useTheme } from '@react-navigation/native';
-import { GET_HOME_PLAYLISTS } from '@/graphql';
+import { PLAYLISTS, PLAYLIST } from '@/graphql';
 import { useQuery } from '@apollo/client';
 import TrackPlayer from 'react-native-track-player';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function Page() {
+export default function HomeScreen() {
   const { colors } = useTheme();
-  const { data, loading, error } = useQuery(GET_HOME_PLAYLISTS, {
-    variables: { first: 20 }
+  const [selectedPlaylistId, setSelectedPlaylistId] = useState(null);
+
+  const {
+    data: playlistsData,
+    loading: playlistsLoading,
+    error: playlistsError,
+  } = useQuery(PLAYLISTS, { variables: { first: 20 } });
+
+  const {
+    data: playlistData,
+    loading: playlistLoading,
+    error: playlistError,
+  } = useQuery(PLAYLIST, {
+    variables: { Id: selectedPlaylistId },
+    skip: !selectedPlaylistId,
   });
 
-  // Check for loading and error states first
-  if (loading) return <View style={styles.container}><Text>Loading playlists...</Text></View>;
-  if (error) return <View style={styles.container}><Text>Error loading playlists.</Text></View>;
+  useEffect(() => {
+  const loadTracksToPlayer = async () => {
+    console.log('Playlist data loading:', playlistLoading);
+    console.log('Playlist data error:', playlistError);
+    console.log('Playlist data:', playlistData);
+    if (playlistData && playlistData.playlist) {
+      const tracks = playlistData.playlist.playlistAudioTransfers.map(transfer => {
+        // Ensure every required field is present and valid
+        if (!transfer.audioTransfer.audioVariants.length) return null;
+        const variant = transfer.audioTransfer.audioVariants[0];
+        if (!variant.audioFileUrl || !variant.duration) return null;
+        return {
+          id: transfer.audioTransfer.id.toString(), // Ensure 'id' is a string
+          url: variant.audioFileUrl,
+          title: transfer.audioTransfer.recording?.title || 'Unknown Title', // Provide default values
+          artist: transfer.audioTransfer.recording?.orchestra?.name || 'Unknown Artist',
+          artwork: transfer.audioTransfer.album?.albumArtUrl || '', // Provide a default or empty string
+          duration: variant.duration,
+        };
+      }).filter(track => track !== null); // Remove any null entries
 
-  // Safely access getHomePlaylists, ensuring it's not null
-  const playlists = data?.getHomePlaylists?.edges.map(edge => edge.node) || [];
-
-  async function loadTracks(playlists) {
-    const tracks = playlists.flatMap(playlist => 
-        playlist.playlistAudioTransfers.map(transfer => ({
-            id: transfer.audioTransfer.id, // Unique ID for the track
-            url: transfer.audioTransfer.audioVariants[0].audioFileUrl, // URL to the audio file
-            title: playlist.title, // Title of the track
-            artist: playlist.user.username, // Artist name
-            artwork: transfer.audioTransfer.album.albumArtUrl // URL to the album art
-        }))
-    );
-
-    try {
-        await TrackPlayer.reset(); // Clear the current track list
-        await TrackPlayer.add(tracks); // Add new tracks
-    } catch (e) {
-        console.error('Error loading tracks: ', e);
+      console.log('Tracks to load:', tracks);
+      if (tracks.length > 0) {
+        try {
+          await TrackPlayer.reset();
+          await TrackPlayer.add(tracks);
+          await TrackPlayer.play();
+        } catch (e) {
+          console.error('Error loading tracks into TrackPlayer:', e);
+        }
+      } else {
+        console.log('No valid tracks to load');
+      }
     }
-  }
+  };
 
-  async function handlePlaylistPress(playlist) {
-    console.log('Playlist pressed: ', playlist.title);
-    console.log('Playlist tracks: ', playlist.playlistAudioTransfers)
+  loadTracksToPlayer();
+}, [playlistData, playlistLoading, playlistError]);
 
-    const tracks = playlist.playlistAudioTransfers.map(transfer => ({
-      id: transfer.audioTransfer.id,
-      url: transfer.audioTransfer.audioVariants[0].audioFileUrl,
-      title: transfer.audioTransfer.recording.title,
-      artist: transfer.audioTransfer.recording.orchestra.name,
-      artwork: transfer.audioTransfer.album.albumArtUrl,
-      duration: transfer.audioTransfer.audioVariants[0].duration,
-    }));
-    console.log('Tracks: ', tracks)
-    try {
-      console.log('Adding tracks to queue')
-      await TrackPlayer.reset(); // Clears the current queue
-      await TrackPlayer.add(tracks); // Adds tracks to the queue
-      await TrackPlayer.play(); // Starts playback
-    } catch (e) {
-      console.error('Error enqueuing tracks: ', e);
-    }
+  if (playlistsLoading) return <View style={styles.container}><Text>Loading playlists...</Text></View>;
+  if (playlistsError) return <View style={styles.container}><Text>Error loading playlists.</Text></View>;
+
+  const playlists = playlistsData?.playlists?.edges.map(edge => edge.node) || [];
+
+  async function handlePlaylistPress(playlistId) {
+    setSelectedPlaylistId(playlistId);
   }
 
   return (
@@ -70,10 +82,10 @@ export default function Page() {
         data={playlists}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <Pressable onPress={() => handlePlaylistPress(item)}>
+          <Pressable onPress={() => handlePlaylistPress(item.id)}>
             <View style={styles.playlistContainer}>
               <Image source={{ uri: item.imageUrl }} style={styles.playlistImage} />
-              <View style={{ flex: 1 }}>
+              <View style={styles.playlistInfo}>
                 <Text style={[styles.playlistTitle, { color: colors.text }]}>{item.title}</Text>
                 <Text style={[styles.playlistDescription, { color: colors.text }]}>{item.description}</Text>
               </View>
@@ -85,6 +97,7 @@ export default function Page() {
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -95,7 +108,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     paddingHorizontal: 20,
-    marginBottom: 20,
+    paddingVertical: 20,
   },
   playlistContainer: {
     display: 'flex',
