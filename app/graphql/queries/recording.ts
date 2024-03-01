@@ -16,7 +16,9 @@ export const RECORDING = gql`
       }
       audioTransfers {
         album {
-          albumArtUrl
+          albumArt {
+            url
+          }
         }
         waveform {
           data
@@ -24,11 +26,13 @@ export const RECORDING = gql`
       }
       audioVariants {
         id
-        audioFileUrl
         bitRate
         codec
         duration
         format
+        audioFile {
+          url
+        }
       }
       recordedDate
     }

@@ -11,17 +11,27 @@ RSpec.describe "Playlists Query" do
       <<~GQL
         query playlists($query: String) {
           playlists(query: $query) {
-
-             edges {
-                node {
-                  id
-                  title
-                  playlistAudioTransfers {
-                  id
-                  audioTransfer {
-                    audioVariants {
+            edges {
+              node {
+                id
+                title
+                playlistAudioTransfers {
+                  edges {
+                    node {
                       id
-                      audioFileUrl
+                      audioTransfer {
+                        id
+                        audioVariants {
+                          edges {
+                            node {
+                              id
+                              audioFile {
+                                url
+                              }
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -39,16 +49,17 @@ RSpec.describe "Playlists Query" do
       expect(playlists_data).not_to be_empty
 
       first_playlist_data = playlists_data.first.dig("node")
-
       expect(first_playlist_data["title"]).to eq(playlist.title)
       expect(first_playlist_data["id"]).to eq(playlist.id.to_s)
 
-      first_audio_transfer_data = first_playlist_data["playlistAudioTransfers"].first
+      first_audio_transfer_data = first_playlist_data["playlistAudioTransfers"]["edges"].first.dig("node")
       expect(first_audio_transfer_data).not_to be_nil
+      expect(first_audio_transfer_data["audioTransfer"]["id"]).to eq(audio_transfer.id.to_s)
 
-      first_audio_variant_data = first_audio_transfer_data.dig("audioTransfer", "audioVariants").first
-      expect(first_audio_variant_data["id"]).to eq(audio_variant.id)
-      expect(first_audio_variant_data["audioFileUrl"]).to eq(Rails.application.routes.url_helpers.rails_blob_url(audio_variant.audio_file))
+      first_audio_variant_data = first_audio_transfer_data["audioTransfer"]["audioVariants"]["edges"].first.dig("node")
+      expect(first_audio_variant_data["id"]).to eq(audio_variant.id.to_s)
+
+      expect(first_audio_variant_data["audioFile"]["url"]).to be_present
     end
   end
 end

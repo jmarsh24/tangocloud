@@ -11,7 +11,7 @@ export default function TrackListItem({ track }: TrackListItemProps) {
   const { colors } = useTheme();
 
   const styles = getStyles(colors);
-  
+
   const onTrackPress = async () => {
     const trackForPlayer = {
       id: track.id,
