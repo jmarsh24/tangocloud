@@ -89,6 +89,7 @@ type AudioTransfer {
   transferAgent: TransferAgent
   transferAgentId: String
   updatedAt: ISO8601Date
+  waveform: Waveform
 }
 
 """

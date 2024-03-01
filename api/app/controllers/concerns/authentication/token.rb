@@ -4,7 +4,6 @@ module Authentication
 
     included do
       prepend_before_action :authenticate
-      helper_method :current_user
     end
 
     private
@@ -15,7 +14,6 @@ module Authentication
       return nil if token.blank?
       Current.user = AuthToken.verify(token)
     end
-
 
     def current_user
       Current.user

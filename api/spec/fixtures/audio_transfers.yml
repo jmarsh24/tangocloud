@@ -3,6 +3,7 @@ volver_a_sonar_tango_tunes_1940_audio_transfer:
   recording: volver_a_sonar
   filename: "19401008_volver_a_sonar_roberto_rufino_tango_2476.flac"
   position: 1
+  album: todos_de_carlos_1939_1941_flac
 # == Schema Information
 #
 # Table name: audio_transfers

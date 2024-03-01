@@ -8,7 +8,9 @@ module Import
       SUPPORTED_MIME_TYPES = ["audio/x-aiff", "audio/x-flac", "audio/flac", "audio/mp4", "audio/mpeg", "audio/x-m4a", "audio/mp3"].freeze
 
       def import_from_file(file)
-        import(file:)
+        File.open(file) do |file|
+          import(file:)
+        end
       end
 
       def import_from_audio_transfer(audio_transfer)

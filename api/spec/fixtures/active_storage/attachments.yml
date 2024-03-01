@@ -8,6 +8,16 @@ volver_a_sonar_tango_tunes_audio_file_attachment:
   record_type: "AudioTransfer"
   record: volver_a_sonar_tango_tunes_1940_audio_transfer
   blob: volver_a_sonar_tango_tunes_1940_audio_file
+volver_a_sonar_tango_tunes_album_art_attachment:
+  name: album_art
+  record_type: "Album"
+  record: todos_de_carlos_1939_1941_flac
+  blob: volver_a_sonar_tango_tunes_1940_album_art
+volver_a_sonar_tango_tunes_waveform_attachment:
+  name: image
+  record_type: "Waveform"
+  record: volver_a_sonar_waveform
+  blob: volver_a_sonar_tango_tunes_1940_waveform
 awesome_playlist_image_attachment:
   name: image
   record_type: "Playlist"

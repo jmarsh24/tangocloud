@@ -7,6 +7,7 @@ module Types
     def audio_file
       object.audio_file.presence
     end
+    field :waveform, WaveformType, null: true
     field :created_at, GraphQL::Types::ISO8601Date, null: true
     field :updated_at, GraphQL::Types::ISO8601Date, null: true
 
