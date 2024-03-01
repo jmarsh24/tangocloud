@@ -11,7 +11,7 @@ module Types
 
     def audio_file_url
       dataloader.with(Sources::Preload, audio_file_attachment: :blob).load(object)
-      object.audio_file&.blob
+      object.audio_file&.url
     end
 
     field :audio_variants, [AudioVariantType], null: false
