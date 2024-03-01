@@ -22,6 +22,11 @@ export const RECORDING = gql`
           imageUrl
           data
         }
+        audioVariants {
+          id
+          duration
+          audioFileUrl
+        }
       }
     }
   }

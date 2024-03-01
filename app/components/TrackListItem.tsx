@@ -13,7 +13,6 @@ export default function TrackListItem({ track }: TrackListItemProps) {
     return null;
   }
   const styles = getStyles(colors);
-  console.log('track', track);
   
   const onTrackPress = async () => {
     const trackForPlayer = {
@@ -26,11 +25,9 @@ export default function TrackListItem({ track }: TrackListItemProps) {
     };
 
     try {
-      await TrackPlayer.reset(); // Clear any existing tracks
-      // Since react-native-track-player does not support headers, you might need to ensure the URL is accessible without them,
-      // or implement a mechanism to fetch the track to local storage here before adding it to the player.
+      await TrackPlayer.reset();
       await TrackPlayer.add([trackForPlayer]);
-      await TrackPlayer.play(); // Start playback
+      await TrackPlayer.play();
     } catch (error) {
       console.error('Error playing track:', error);
     }

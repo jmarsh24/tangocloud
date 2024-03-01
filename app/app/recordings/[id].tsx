@@ -24,49 +24,36 @@ export default function RecordingScreen() {
   const progressRef = useRef(0);
   const animationFrameRef = useRef<number>();
   const deviceWidth = Dimensions.get('window').width;
-  const { data, loading, error } = useQuery(RECORDING, { variables: { Id: {id} } });
+  const { data, loading, error } = useQuery(RECORDING, { variables: { id } });
   const waveformData = data?.recording?.audioTransfers[0]?.waveform?.data || [];
 
   useEffect(() => {
-    const fetchAndUpdateCurrentTrack = async () => {
-      if (loading || error) return;
+    const loadTrack = async () => {
+      if (data && data.recording) {
+        const recordingData = data.recording;
 
-      const currentTrackId = await TrackPlayer.getActiveTrackIndex();
-      if (currentTrackId !== null) {
-        const trackObject = await TrackPlayer.getTrack(currentTrackId);
-        if (trackObject && data.recording?.id !== trackObject.id) {
-          await updateTrack(data.recording);
+        const trackForPlayer = {
+          id: recordingData.id,
+          url: recordingData.audioTransfers[0]?.audioVariants[0]?.audioFileUrl,
+          title: recordingData.title,
+          artist: recordingData.orchestra.name,
+          artwork: recordingData.audioTransfers[0]?.album?.albumArtUrl,
+          duration: recordingData.audioTransfers[0]?.audioVariants[0]?.duration,
+        };
+
+        try {
+          await TrackPlayer.reset();
+          await TrackPlayer.add(trackForPlayer);
+          setTrack(trackForPlayer); 
+          await TrackPlayer.play();
+        } catch (error) {
+          console.error('Error playing track:', error);
         }
-      } else {
-        await updateTrack(data.recording);
-      };
+      }
     };
-    
-    if (data) {
-      fetchAndUpdateCurrentTrack();
-    }
-  }, [data, loading, error, id]);
 
-  const updateTrack = async (recording) => {
-    await TrackPlayer.reset();
-    await TrackPlayer.add({
-      id: recording.id,
-      url: recording.audioVariants[0].url,
-      title: recording.title,
-      artist: recording.artist,
-      artwork: recording.artwork,
-    });
-    setTrack({
-      id: recording.id,
-      url: recording.audioVariants[0].url,
-      title: recording.title,
-      artist: recording.artist,
-      artwork: recording.artwork,
-      duration: recording.audioVariants[0].duration,
-    });
-    setTrackDuration(recording.audioVariants[0].duration);
-    await TrackPlayer.play();
-  };
+    loadTrack();
+  }, [data]);
 
   useEffect(() => {
     positionRef.current = position;
@@ -105,7 +92,6 @@ export default function RecordingScreen() {
     }
   };
 
-
   return (
     <View style={styles.container}>
       <View
@@ -119,7 +105,7 @@ export default function RecordingScreen() {
           style={[styles.vinylImg, { width: vinylSize, height: vinylSize }]}
         />
         <Image
-          source={{ uri: track?.artwork }}
+          source={{ uri: data?.recording?.audioTransfers[0]?.album?.albumArtUrl }}
           style={[
             styles.albumArt,
             {

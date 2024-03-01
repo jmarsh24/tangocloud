@@ -6,9 +6,8 @@ import type { Track } from 'react-native-track-player';
 export const TrackInfo: React.FC<{
   track?: Track;
 }> = ({ track }) => {
-  const { colors } = useTheme(); // Use the current theme colors
+  const { colors } = useTheme(); 
 
-  // Update styles to use theme colors
   const styles = StyleSheet.create({
     container: {
       alignItems: 'center',
@@ -16,13 +15,13 @@ export const TrackInfo: React.FC<{
     titleText: {
       fontSize: 18,
       fontWeight: '600',
-      color: colors.text, // Use theme color
+      color: colors.text,
       marginTop: 30,
     },
     artistText: {
       fontSize: 16,
       fontWeight: '200',
-      color: colors.text, // Use theme color
+      color: colors.text,
     },
   });
 
