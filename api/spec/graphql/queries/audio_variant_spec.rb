@@ -20,7 +20,7 @@ RSpec.describe "AudioVariant" do
       GQL
     end
 
-    fit "returns the correct audio variant details" do
+    it "returns the correct audio variant details" do
       result = TangocloudSchema.execute(query, variables: {id: audio_variant.id}, context: {current_user: user})
 
       audio_variant_data = result.dig("data", "audioVariant")
