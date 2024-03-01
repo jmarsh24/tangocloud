@@ -21,5 +21,4 @@ module Types
     has_many :singers
     has_many :waveforms
   end
-
 end
