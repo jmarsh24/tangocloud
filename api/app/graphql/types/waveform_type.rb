@@ -10,6 +10,10 @@ module Types
     field :data, [Float], null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
+    field :image, Types::ImageType, null: true
+    def image
+      object.image.presence
+    end
 
     belongs_to :audio_transfer
   end

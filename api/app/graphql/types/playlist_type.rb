@@ -15,6 +15,9 @@ module Types
     field :audio_variants, [Types::AudioVariantType], null: false
     field :recordings, [Types::RecordingType], null: false
     field :image, Types::ImageType, null: true
+    def image
+      object.image.presence
+    end
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
