@@ -9,16 +9,10 @@ module Types
     field :listens_count, Integer, null: false
     field :shares_count, Integer, null: false
     field :followers_count, Integer, null: false
-    field :user_id, Types::UuidType, null: false
     field :image_url, String, null: false
+    field :image, Types::ImageType, null: true
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
-
-    def image_url
-      if object.image.attached?
-        Rails.application.routes.url_helpers.rails_blob_url(object.image)
-      end
-    end
 
     belongs_to :user
     has_many :playlist_audio_transfers
