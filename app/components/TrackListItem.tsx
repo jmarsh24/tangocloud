@@ -12,7 +12,6 @@ export default function TrackListItem({ track }: TrackListItemProps) {
 
   const styles = getStyles(colors);
 
-  debugger
   const onTrackPress = async () => {
     const trackForPlayer = {
       id: track.id,

@@ -6,11 +6,7 @@ export const RECORDING = gql`
       id
       title
       singers {
-        edges {
-          node {
-            name
-          }
-        }
+        name
       }
       orchestra {
         name
@@ -19,20 +15,12 @@ export const RECORDING = gql`
         name
       }
       audioTransfers {
-        edges {
-          node {
-            album {
-              albumArt {
-                url
-              }
-            }
-            waveform {
-              image {
-                url
-              }
-              data
-            }
-          }
+        album {
+          albumArtUrl
+        }
+        waveform {
+          imageUrl
+          data
         }
       }
     }

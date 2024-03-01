@@ -8,19 +8,6 @@ export const RECORDINGS = gql`
           id
           title
           recordedDate
-          audioTransfers {
-            album {
-              albumArt {
-                url
-              }
-            }
-            audioVariants {
-              id
-            duration
-            audioFile {
-              url
-            }
-          }
           orchestra {
             name
           }
@@ -30,7 +17,18 @@ export const RECORDINGS = gql`
           genre {
             name
           }
+          audioTransfers {
+            album {
+              albumArtUrl
+            }
+            audioVariants {
+              id
+              duration
+              audioFileUrl
+            }
+          }
         }
+      }
       pageInfo {
         endCursor
         startCursor
@@ -38,6 +36,5 @@ export const RECORDINGS = gql`
         hasPreviousPage
       }
     }
-  }
   }
 `;

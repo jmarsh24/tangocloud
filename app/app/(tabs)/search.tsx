@@ -16,7 +16,7 @@ export default function SearchScreen() {
   const [search, setSearch] = useState('');
   const [loadingMore, setLoadingMore] = useState(false);
 
-  const { data, loading, fetchMore, refetch } = useQuery(RECORDINGS, {
+  const { data, loading, fetchMore, refetch, error } = useQuery(RECORDINGS, {
     variables: { query: search, first: ITEMS_PER_PAGE },
     fetchPolicy: 'cache-and-network',
   });
@@ -38,7 +38,6 @@ export default function SearchScreen() {
       setLoadingMore(false);
     }
   }, [data?.recordings.pageInfo, fetchMore, loadingMore, search]);
-
   const tracks = data?.recordings.edges.map(edge => edge.node) || [];
 
   return (

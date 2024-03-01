@@ -8,22 +8,12 @@ export const PLAYLISTS = gql`
           id
           title
           playlistAudioTransfers {
-            edges {
-              node {
+            id
+            audioTransfer {
+              id
+              audioVariants {
                 id
-                audioTransfer {
-                  id
-                  audioVariants {
-                    edges {
-                      node {
-                        id
-                        audioFile {
-                          url
-                        }
-                      }
-                    }
-                  }
-                }
+                audioFileUrl
               }
             }
           }
