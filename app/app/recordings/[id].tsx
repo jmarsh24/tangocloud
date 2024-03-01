@@ -194,5 +194,8 @@ function getStyles(colors) {
       shadowOpacity: 0.25,
       shadowRadius: 3.84
     },
+    icon: {
+      color: colors.text
+    }
   });
 }
