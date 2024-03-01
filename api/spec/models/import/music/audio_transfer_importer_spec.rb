@@ -129,7 +129,7 @@ RSpec.describe Import::Music::AudioTransferImporter do
   end
 
   describe "#import_from_audio_transfer" do
-    fit "creates a new audio_transfer with correct attributes" do
+    it "creates a new audio_transfer with correct attributes" do
       audio_transfer = audio_transfers(:volver_a_sonar_tango_tunes_1940_audio_transfer)
       described_class.new.import_from_audio_transfer(audio_transfer)
 
