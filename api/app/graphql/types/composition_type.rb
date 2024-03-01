@@ -3,9 +3,20 @@ module Types
     field :id, ID, null: true
     field :title, String, null: true
     field :tangotube_slug, String, null: true
-    field :lyricist, Types::LyricistType, null: true
-    field :composer, Types::ComposerType, null: true
-    field :recordings, [Types::RecordingType], null: true
-    field :lyrics, [Types::LyricType], null: true
+
+    field :recordings, [RecordingType], null: false
+
+    def recordings
+      dataloader.with(Sources::Preload, :recordings).load(object)
+    end
+
+    field :lyrics, [LyricType], null: false
+
+    def lyrics
+      dataloader.with(Sources::Preload, :lyrics).load(object)
+    end
+
+    belongs_to :lyricist
+    belongs_to :composer
   end
 end

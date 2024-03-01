@@ -22,5 +22,17 @@ module Types
         "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(object.email)}?d=identicon"
       end
     end
+
+    field :sessions, [SessionType], null: false
+
+    def sessions
+      dataloader.with(Sources::Preload, :sessions).load(object)
+    end
+
+    field :events, [EventType], null: false
+
+    def events
+      dataloader.with(Sources::Preload, :events).load(object)
+    end
   end
 end

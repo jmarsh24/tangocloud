@@ -4,7 +4,7 @@ volver_a_sonar:
   genre: tango
   composition: volver_a_sonar
   slug: "volver-a-sonar-carlos-di-sarli-1940"
-
+  orchestra: carlos_di_sarli
 # == Schema Information
 #
 # Table name: recordings

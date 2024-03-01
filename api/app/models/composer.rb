@@ -4,6 +4,7 @@ class Composer < ApplicationRecord
   searchkick word_middle: [:name]
 
   has_many :compositions, dependent: :destroy
+  has_many :recordings, through: :compositions
 
   validates :name, presence: true
 

@@ -1,0 +1,13 @@
+# == Schema Information
+#
+# Table name: recording_singers
+#
+#  id           :uuid             not null, primary key
+#  recording_id :uuid             not null
+#  singer_id    :uuid             not null
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#
+volver_a_sonar_roberto_rufino:
+  recording: volver_a_sonar
+  singer: roberto_rufino

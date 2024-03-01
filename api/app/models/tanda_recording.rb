@@ -1,11 +1,6 @@
 class TandaRecording < ApplicationRecord
   belongs_to :tanda
   belongs_to :recording
-
-  validates :position, presence: true
-  validates :position, numericality: {only_integer: true}
-  validates :tanda_id, presence: true
-  validates :tanda_id, uniqueness: {scope: :audio_transfer_id}
 end
 
 # == Schema Information

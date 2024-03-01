@@ -16,29 +16,52 @@ export default function SearchScreen() {
   const [search, setSearch] = useState('');
   const [loadingMore, setLoadingMore] = useState(false);
 
-  const { data, loading, fetchMore, refetch } = useQuery(RECORDINGS, {
+  const { data, loading, fetchMore, refetch, error } = useQuery(RECORDINGS, {
     variables: { query: search, first: ITEMS_PER_PAGE },
     fetchPolicy: 'cache-and-network',
   });
 
   useEffect(() => {
-    refetch({ query: search, first: ITEMS_PER_PAGE });
+    const debouncedSearch = _.debounce(() => {
+      refetch({ query: search, first: ITEMS_PER_PAGE });
+    }, 500);
+
+    if (search.trim() !== '') {
+      debouncedSearch();
+    }
+    
+
+    // Cleanup the debounce function on component unmount
+    return () => debouncedSearch.cancel();
   }, [search, refetch]);
 
   const loadMoreItems = useCallback(async () => {
-    if (data?.recordings.pageInfo.hasNextPage && !loadingMore) {
-      setLoadingMore(true);
-      await fetchMore({
-        variables: {
-          after: data.recordings.pageInfo.endCursor,
-          query: search,
-          first: ITEMS_PER_PAGE,
-        },
-      });
-      setLoadingMore(false);
-    }
-  }, [data?.recordings.pageInfo, fetchMore, loadingMore, search]);
+  if (data?.recordings.pageInfo.hasNextPage && !loadingMore) {
+    setLoadingMore(true);
+    await fetchMore({
+      variables: {
+        after: data.recordings.pageInfo.endCursor,
+        query: search,
+        first: ITEMS_PER_PAGE,
+      },
+      updateQuery: (prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prev;
 
+        const newEdges = fetchMoreResult.recordings.edges;
+        const pageInfo = fetchMoreResult.recordings.pageInfo;
+
+        return {
+          recordings: {
+            __typename: prev.recordings.__typename,
+            edges: [...prev.recordings.edges, ...newEdges],
+            pageInfo,
+          },
+        };
+      },
+    });
+    setLoadingMore(false);
+  }
+}, [data?.recordings.pageInfo, fetchMore, loadingMore, search]);
   const tracks = data?.recordings.edges.map(edge => edge.node) || [];
 
   return (

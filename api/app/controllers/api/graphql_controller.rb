@@ -1,7 +1,7 @@
 module Api
-  class GraphQLController < ApplicationController
-    # protect_from_forgery with: :null_session
-    skip_after_action :verify_authorized
+  class GraphQLController < ActionController::API
+    include ActiveStorage::SetCurrent
+    include Authentication::Token
 
     def execute
       variables = prepare_variables(params[:variables])

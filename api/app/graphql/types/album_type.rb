@@ -8,12 +8,18 @@ module Types
     field :slug, String, null: true
     field :external_id, String, null: true
     field :album_type, String, null: true
+
     field :album_art_url, String, null: true
 
     def album_art_url
-      if object.album_art.attached?
-        Rails.application.routes.url_helpers.rails_blob_url(object.album_art)
-      end
+      dataloader.with(Sources::Preload, album_art_attachment: :blob).load(object)
+      object.album_art&.url
+    end
+
+    field :audio_transfers, [AudioTransferType], null: false
+
+    def audio_transfers
+      dataloader.with(Sources::Preload, :audio_transfers).load(object)
     end
   end
 end

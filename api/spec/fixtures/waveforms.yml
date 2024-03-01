@@ -1,0 +1,9 @@
+volver_a_sonar_waveform:
+  audio_transfer: volver_a_sonar_tango_tunes_1940_audio_transfer
+  version: 2
+  channels: 1
+  sample_rate: 48000
+  samples_per_pixel: 1024
+  bits: 16
+  length: 7743
+  data: <%= File.binread(Rails.root.join("spec", "fixtures", "files","waveform_data_volver_a_sonar.json")) %>

@@ -7,16 +7,7 @@ export const RECORDINGS = gql`
         node {
           id
           title
-          audioTransfers {
-            album {
-              albumArtUrl
-            }
-          }
-          audioVariants {
-            id
-            duration
-            audioFileUrl
-          }
+          recordedDate
           orchestra {
             name
           }
@@ -26,7 +17,16 @@ export const RECORDINGS = gql`
           genre {
             name
           }
-          recordedDate
+          audioTransfers {
+            album {
+              albumArtUrl
+            }
+            audioVariants {
+              id
+              duration
+              audioFileUrl
+            }
+          }
         }
       }
       pageInfo {

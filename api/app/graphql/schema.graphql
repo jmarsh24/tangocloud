@@ -1,6 +1,7 @@
 type Album {
   albumArtUrl: String
   albumType: String
+  audioTransfers: [AudioTransfer!]!
   audioTransfersCount: Int
   description: String
   externalId: String
@@ -12,25 +13,26 @@ type Album {
 
 type AudioTransfer {
   album: Album
-  albumId: ID
+  albumId: String
+  audioFileUrl: String
   audioVariants: [AudioVariant!]!
   createdAt: ISO8601Date
-  externalId: String
   filename: String
   id: ID
-  playlistAudioTransfers: [PlaylistAudioTransfer!]
+  playlistAudioTransfers: PlaylistAudioTransfer!
   position: Int
   recording: Recording
-  recordingId: ID
+  recordingId: String
   transferAgent: TransferAgent
-  transferAgentId: ID
+  transferAgentId: String
   updatedAt: ISO8601Date
   waveform: Waveform
 }
 
 type AudioVariant {
-  audioFileUrl: String!
-  audioTransferId: ID!
+  audioFileUrl: String
+  audioTransfer: AudioTransfer!
+  audioTransferId: String!
   bitRate: Int
   channels: Int
   codec: String!
@@ -46,10 +48,13 @@ type AudioVariant {
 
 type Composer {
   birthDate: ISO8601Date
+  compositions: [Composition!]!
+  compositionsCount: Int
   deathDate: ISO8601Date
   id: ID
   name: String!
   rank: Int
+  recordings: [Recording!]!
   slug: String
   sortName: String
 }
@@ -61,12 +66,12 @@ type ComposerConnection {
   """
   A list of edges.
   """
-  edges: [ComposerEdge]
+  edges: [ComposerEdge!]!
 
   """
   A list of nodes.
   """
-  nodes: [Composer]
+  nodes: [Composer!]!
 
   """
   Information to aid in pagination.
@@ -90,11 +95,13 @@ type ComposerEdge {
 }
 
 type Composition {
-  composer: Composer
+  composer: Composer!
+  composerId: String!
   id: ID
-  lyricist: Lyricist
-  lyrics: [Lyric!]
-  recordings: [Recording!]
+  lyricist: Lyricist!
+  lyricistId: String!
+  lyrics: [Lyric!]!
+  recordings: [Recording!]!
   tangotubeSlug: String
   title: String
 }
@@ -111,6 +118,8 @@ type ElRecodoSong {
   lyrics: String
   musicId: Int
   orchestra: String
+  recording: Recording!
+  recordingId: String!
   singer: String
   style: String
   title: String
@@ -123,12 +132,12 @@ type ElRecodoSongConnection {
   """
   A list of edges.
   """
-  edges: [ElRecodoSongEdge]
+  edges: [ElRecodoSongEdge!]!
 
   """
   A list of nodes.
   """
-  nodes: [ElRecodoSong]
+  nodes: [ElRecodoSong!]!
 
   """
   Information to aid in pagination.
@@ -151,11 +160,23 @@ type ElRecodoSongEdge {
   node: ElRecodoSong
 }
 
+type Event {
+  action: String!
+  createdAt: ISO8601DateTime!
+  id: ID!
+  ipAddress: String
+  updatedAt: ISO8601DateTime!
+  user: User!
+  userAgent: String
+  userId: String!
+}
+
 type Genre {
   createdAt: ISO8601DateTime!
   description: String
   id: ID!
   name: String!
+  recordings: [Recording!]!
   updatedAt: ISO8601DateTime!
 }
 
@@ -166,12 +187,12 @@ type GenreConnection {
   """
   A list of edges.
   """
-  edges: [GenreEdge]
+  edges: [GenreEdge!]!
 
   """
   A list of nodes.
   """
-  nodes: [Genre]
+  nodes: [Genre!]!
 
   """
   Information to aid in pagination.
@@ -210,7 +231,8 @@ Represents untyped JSON
 scalar JSON
 
 type Lyric {
-  composition: Composition
+  composition: Composition!
+  compositionId: String!
   content: String
   createdAt: ISO8601Date
   id: ID
@@ -221,8 +243,10 @@ type Lyric {
 type Lyricist {
   bio: String
   birthDate: ISO8601Date
+  compositions: [Composition!]!
   deathDate: ISO8601Date
   id: ID
+  lyrics: [Lyric!]!
   name: String
   rank: Int
   slug: String
@@ -236,12 +260,12 @@ type LyricistConnection {
   """
   A list of edges.
   """
-  edges: [LyricistEdge]
+  edges: [LyricistEdge!]!
 
   """
   A list of nodes.
   """
-  nodes: [Lyricist]
+  nodes: [Lyricist!]!
 
   """
   Information to aid in pagination.
@@ -281,10 +305,15 @@ type Mutation {
 
 type Orchestra {
   birthDate: ISO8601Date
+  compositions: [Composition!]!
   deathDate: ISO8601Date
   id: ID
+  lyricists: [Lyricist!]!
   name: String
   rank: Int
+  recordings: [Recording!]!
+  recordingsCount: Int
+  singers: [Singer!]!
   slug: String
   sortName: String
 }
@@ -296,12 +325,12 @@ type OrchestraConnection {
   """
   A list of edges.
   """
-  edges: [OrchestraEdge]
+  edges: [OrchestraEdge!]!
 
   """
   A list of nodes.
   """
-  nodes: [Orchestra]
+  nodes: [Orchestra!]!
 
   """
   Information to aid in pagination.
@@ -354,6 +383,7 @@ type Period {
   endYear: Int
   id: ID
   name: String
+  recordings: [Recording!]!
   recordingsCount: Int
   slug: String
   startYear: Int
@@ -366,12 +396,12 @@ type PeriodConnection {
   """
   A list of edges.
   """
-  edges: [PeriodEdge]
+  edges: [PeriodEdge!]!
 
   """
   A list of nodes.
   """
-  nodes: [Period]
+  nodes: [Period!]!
 
   """
   Information to aid in pagination.
@@ -401,10 +431,10 @@ type Playlist {
   description: String
   followersCount: Int!
   id: ID!
-  imageUrl: String!
+  imageUrl: String
   likesCount: Int!
   listensCount: Int!
-  playlistAudioTransfers: [PlaylistAudioTransfer!]!
+  playlistAudioTransfers: [PlaylistAudioTransfer!]
   public: Boolean!
   recordings: [Recording!]!
   sharesCount: Int!
@@ -412,15 +442,16 @@ type Playlist {
   title: String!
   updatedAt: ISO8601DateTime!
   user: User!
-  userId: ID!
+  userId: String!
 }
 
 type PlaylistAudioTransfer {
   audioTransfer: AudioTransfer!
-  audioTransferId: ID!
+  audioTransferId: String!
   createdAt: ISO8601DateTime!
   id: ID!
-  playlistId: ID!
+  playlist: Playlist!
+  playlistId: String!
   position: Int!
   updatedAt: ISO8601DateTime!
 }
@@ -432,12 +463,12 @@ type PlaylistConnection {
   """
   A list of edges.
   """
-  edges: [PlaylistEdge]
+  edges: [PlaylistEdge!]!
 
   """
   A list of nodes.
   """
-  nodes: [Playlist]
+  nodes: [Playlist!]!
 
   """
   Information to aid in pagination.
@@ -881,24 +912,31 @@ type RecordLabel {
 
 type Recording {
   audioTransfers: [AudioTransfer!]!
-  audioVariants: [AudioVariant!]
+  audioVariants: [AudioVariant!]!
   bpm: Int
-  composer: Composer
-  composition: Composition
-  elRecodoSong: ElRecodoSong
-  genre: Genre
+  composer: Composer!
+  composerId: String!
+  composition: Composition!
+  compositionId: String!
+  elRecodoSong: ElRecodoSong!
+  elRecodoSongId: String!
+  genre: Genre!
+  genreId: String!
   id: ID!
-  lyricist: Lyricist
-  orchestra: Orchestra
-  period: Period
-  recordLabel: RecordLabel
+  lyricist: Lyricist!
+  lyricistId: String!
+  orchestra: Orchestra!
+  orchestraId: String!
+  period: Period!
+  periodId: String!
+  recordLabel: RecordLabel!
+  recordLabelId: String!
   recordedDate: ISO8601Date
   recordingType: String!
   releaseDate: ISO8601Date
-  singers: [Singer!]
+  singers: [Singer!]!
   slug: String!
   title: String!
-  waveforms: [Waveform!]
 }
 
 """
@@ -908,12 +946,12 @@ type RecordingConnection {
   """
   A list of edges.
   """
-  edges: [RecordingEdge]
+  edges: [RecordingEdge!]!
 
   """
   A list of nodes.
   """
-  nodes: [Recording]
+  nodes: [Recording!]!
 
   """
   Information to aid in pagination.
@@ -936,6 +974,26 @@ type RecordingEdge {
   node: Recording
 }
 
+type RecordingSinger {
+  createdAt: ISO8601DateTime!
+  id: ID!
+  recording: Recording!
+  recordingId: String!
+  singer: Singer!
+  singerId: String!
+  updatedAt: ISO8601DateTime!
+}
+
+type Session {
+  createdAt: ISO8601DateTime!
+  id: ID!
+  ipAddress: String
+  updatedAt: ISO8601DateTime!
+  user: User!
+  userAgent: String
+  userId: String!
+}
+
 type Singer {
   bio: String
   birthDate: ISO8601Date
@@ -943,6 +1001,8 @@ type Singer {
   id: ID
   name: String
   rank: Int
+  recordingSingers: [RecordingSinger!]!
+  recordings: [Recording!]!
   slug: String
   sortName: String
 }
@@ -954,12 +1014,12 @@ type SingerConnection {
   """
   A list of edges.
   """
-  edges: [SingerEdge]
+  edges: [SingerEdge!]!
 
   """
   A list of nodes.
   """
-  nodes: [Singer]
+  nodes: [Singer!]!
 
   """
   Information to aid in pagination.
@@ -983,10 +1043,13 @@ type SingerEdge {
 }
 
 type TransferAgent {
+  audioTransfers: [AudioTransfer!]!
+  audioVariants: [AudioVariant!]!
   createdAt: ISO8601DateTime!
   description: String
   id: ID!
   name: String!
+  recordings: [Recording!]!
   updatedAt: ISO8601DateTime!
   url: String
 }
@@ -996,12 +1059,14 @@ type User {
   avatarUrl: String
   createdAt: ISO8601DateTime!
   email: String!
+  events: [Event!]!
   firstName: String
   id: ID!
   lastName: String
   name: String!
   passwordDigest: String!
   provider: String
+  sessions: [Session!]!
   uid: String
   updatedAt: ISO8601DateTime!
   username: String!
@@ -1015,12 +1080,12 @@ type UserConnection {
   """
   A list of edges.
   """
-  edges: [UserEdge]
+  edges: [UserEdge!]!
 
   """
   A list of nodes.
   """
-  nodes: [User]
+  nodes: [User!]!
 
   """
   Information to aid in pagination.
@@ -1049,12 +1114,14 @@ type ValidationErrors {
 }
 
 type Waveform {
-  audioTransferId: ID!
+  audioTransfer: AudioTransfer!
+  audioTransferId: String!
   bits: Int!
   channels: Int!
   createdAt: ISO8601DateTime!
   data: [Float!]!
   id: ID!
+  imageUrl: String
   length: Int!
   sampleRate: Int!
   samplesPerPixel: Int!

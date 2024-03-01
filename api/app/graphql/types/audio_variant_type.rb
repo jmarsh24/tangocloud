@@ -9,15 +9,16 @@ module Types
     field :channels, Integer
     field :length, Integer, null: false
     field :metadata, GraphQL::Types::JSON, null: false
-    field :audio_transfer_id, ID, null: false
-    field :audio_file_url, String, null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
+    field :audio_file_url, String, null: true
+
     def audio_file_url
-      if object.audio_file.attached?
-        Rails.application.routes.url_helpers.rails_blob_url(object.audio_file)
-      end
+      dataloader.with(Sources::Preload, audio_file_attachment: :blob).load(object)
+      object.audio_file&.url
     end
+
+    belongs_to :audio_transfer
   end
 end

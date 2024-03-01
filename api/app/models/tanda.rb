@@ -1,5 +1,5 @@
 class Tanda < ApplicationRecord
-  belongs_to :audio_transfer
+  has_many :audio_transfers, dependent: :destroy
 
   validates :name, presence: true
   validates :public, inclusion: {in: [true, false]}
