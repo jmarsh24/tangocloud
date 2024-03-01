@@ -11,10 +11,10 @@ module Types
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
-    field :image, String, null: true
+    field :image_url, String, null: true
 
-    def image
-      dataloader.with(Sources::Preload, :image).load(object)
+    def image_url
+      dataloader.with(Sources::Preload, image_attachment: :blob).load(object)
     end
 
     belongs_to :audio_transfer

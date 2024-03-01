@@ -10,11 +10,7 @@ RSpec.describe "AudioVariant" do
         query audioVariant($id: ID!) {
           audioVariant(id: $id) {
             id
-            audioFile {
-              id
-              filename
-              url
-            }
+            audioFileUrl
           }
         }
       GQL
@@ -24,11 +20,9 @@ RSpec.describe "AudioVariant" do
       result = TangocloudSchema.execute(query, variables: {id: audio_variant.id}, context: {current_user: user})
 
       audio_variant_data = result.dig("data", "audioVariant")
-      expect(audio_variant_data).not_to be_nil, "Expected to find the audio variant"
-      expect(audio_variant_data["id"]).to eq(audio_variant.id), "Expected audio variant ID to match"
-      expect(audio_variant_data.dig("audioFile", "id")).to eq(audio_variant.audio_file.id), "Expected audio file ID to match"
-      expect(audio_variant_data.dig("audioFile", "filename")).to eq(audio_variant.audio_file.filename.to_s), "Expected audio file filename to match"
-      expect(audio_variant_data.dig("audioFile", "url")).to be_present, "Expected audio file URL to be present"
+      expect(audio_variant_data).not_to be_nil
+      expect(audio_variant_data["id"]).to eq(audio_variant.id)
+      expect(audio_variant_data.dig("audioFileUrl")).to be_present
     end
   end
 end

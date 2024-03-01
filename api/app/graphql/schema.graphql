@@ -434,7 +434,7 @@ type Playlist {
   imageUrl: String
   likesCount: Int!
   listensCount: Int!
-  playlistAudioTransfers: [PlaylistAudioTransfer!]!
+  playlistAudioTransfers: [PlaylistAudioTransfer!]
   public: Boolean!
   recordings: [Recording!]!
   sharesCount: Int!
@@ -934,7 +934,7 @@ type Recording {
   recordedDate: ISO8601Date
   recordingType: String!
   releaseDate: ISO8601Date
-  singers: Singer!
+  singers: [Singer!]!
   slug: String!
   title: String!
 }
@@ -1121,7 +1121,7 @@ type Waveform {
   createdAt: ISO8601DateTime!
   data: [Float!]!
   id: ID!
-  image: String
+  imageUrl: String
   length: Int!
   sampleRate: Int!
   samplesPerPixel: Int!

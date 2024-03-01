@@ -13,7 +13,7 @@ module Types
 
     def album_art_url
       dataloader.with(Sources::Preload, album_art_attachment: :blob).load(object)
-      object.album_art.presence
+      object.album_art&.url
     end
 
     field :audio_transfers, [AudioTransferType], null: false

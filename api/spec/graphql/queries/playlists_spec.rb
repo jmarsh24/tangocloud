@@ -16,22 +16,12 @@ RSpec.describe "Playlists Query" do
                 id
                 title
                 playlistAudioTransfers {
-                  edges {
-                    node {
+                  id
+                  audioTransfer {
+                    id
+                    audioVariants {
                       id
-                      audioTransfer {
-                        id
-                        audioVariants {
-                          edges {
-                            node {
-                              id
-                              audioFile {
-                                url
-                              }
-                            }
-                          }
-                        }
-                      }
+                      audioFileUrl
                     }
                   }
                 }
@@ -49,17 +39,18 @@ RSpec.describe "Playlists Query" do
       expect(playlists_data).not_to be_empty
 
       first_playlist_data = playlists_data.first.dig("node")
+
       expect(first_playlist_data["title"]).to eq(playlist.title)
       expect(first_playlist_data["id"]).to eq(playlist.id.to_s)
 
-      first_audio_transfer_data = first_playlist_data["playlistAudioTransfers"]["edges"].first.dig("node")
+      first_audio_transfer_data = first_playlist_data["playlistAudioTransfers"].first
       expect(first_audio_transfer_data).not_to be_nil
       expect(first_audio_transfer_data["audioTransfer"]["id"]).to eq(audio_transfer.id.to_s)
 
-      first_audio_variant_data = first_audio_transfer_data["audioTransfer"]["audioVariants"]["edges"].first.dig("node")
+      first_audio_variant_data = first_audio_transfer_data["audioTransfer"]["audioVariants"].first
       expect(first_audio_variant_data["id"]).to eq(audio_variant.id.to_s)
 
-      expect(first_audio_variant_data["audioFile"]["url"]).to be_present
+      expect(first_audio_variant_data["audioFileUrl"]).to be_present
     end
   end
 end

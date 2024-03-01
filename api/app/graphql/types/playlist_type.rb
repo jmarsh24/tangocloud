@@ -16,31 +16,35 @@ module Types
 
     def image_url
       dataloader.with(Sources::Preload, image_attachment: :blob).load(object)
-      object.image.presence
+      object.image&.url
     end
 
-    field :playlist_audio_transfers, [PlaylistAudioTransferType], null: false
+    field :playlist_audio_transfers, [PlaylistAudioTransferType], null: true
 
     def playlist_audio_transfers
       dataloader.with(Sources::Preload, :playlist_audio_transfers).load(object)
+      object.playlist_audio_transfers
     end
 
     field :audio_transfers, [AudioTransferType], null: false
 
     def audio_transfers
-      dataloader.with(Sources::Preload, :audio_transfers).load(object)
+      dataloader.with(Sources::Preload, playlist_audio_transfers: :audio_transfers).load(object)
+      object.audio_transfers
     end
 
     field :audio_variants, [AudioVariantType], null: false
 
     def audio_variants
-      dataloader.with(Sources::Preload, audio_transfers: :audio_variants).load(object)
+      dataloader.with(Sources::Preload, playlist_audio_transfers: {audio_transfers: :audio_variants}).load(object)
+      object.audio_variants
     end
 
     field :recordings, [RecordingType], null: false
 
     def recordings
-      dataloader.with(Sources::Preload, :recordings).load(object)
+      dataloader.with(Sources::Preload, playlist_audio_transfers: {audio_transfers: :recordings}).load(object)
+      object.recordings
     end
 
     belongs_to :user

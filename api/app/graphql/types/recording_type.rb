@@ -22,7 +22,7 @@ module Types
       object.audio_variants
     end
 
-    field :singers, SingerType, null: false
+    field :singers, [SingerType], null: false
 
     def singers
       dataloader.with(Sources::Preload, :singers).load(object)

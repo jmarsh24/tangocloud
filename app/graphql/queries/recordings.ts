@@ -9,42 +9,28 @@ export const RECORDINGS = gql`
           title
           recordedDate
           audioTransfers {
-            edges {
-              node {
-                album {
-                  albumArt {
-                    url
-                  }
-                }
-                audioVariants {
-                  edges {
-                    node {
-                      id
-                      duration
-                      audioFile {
-                        url
-                      }
-                    }
-                  }
-                }
+            album {
+              albumArt {
+                url
               }
+            }
+            audioVariants {
+              id
+            duration
+            audioFile {
+              url
             }
           }
           orchestra {
             name
           }
           singers {
-            edges {
-              node {
-                name
-              }
-            }
+            name
           }
           genre {
             name
           }
         }
-      }
       pageInfo {
         endCursor
         startCursor
@@ -52,5 +38,6 @@ export const RECORDINGS = gql`
         hasPreviousPage
       }
     }
+  }
   }
 `;
