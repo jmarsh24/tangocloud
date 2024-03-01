@@ -20,6 +20,7 @@ export type AudioTransfer = {
   duration: number;
   album: Album;
   audioFileUrl: string;
+  audioVariants: AudioVariant[];
 };
 
 export type Album = {

@@ -22,17 +22,7 @@ export default function SearchScreen() {
   });
 
   useEffect(() => {
-    const debouncedSearch = _.debounce(() => {
-      refetch({ query: search, first: ITEMS_PER_PAGE });
-    }, 500);
-
-    if (search.trim() !== '') {
-      debouncedSearch();
-    }
-    
-
-    // Cleanup the debounce function on component unmount
-    return () => debouncedSearch.cancel();
+    refetch({ query: search, first: ITEMS_PER_PAGE });
   }, [search, refetch]);
 
   const loadMoreItems = useCallback(async () => {

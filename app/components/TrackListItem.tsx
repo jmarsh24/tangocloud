@@ -9,17 +9,20 @@ type TrackListItemProps = {
 
 export default function TrackListItem({ track }: TrackListItemProps) {
   const { colors } = useTheme();
-
+  if (!track) {
+    return null;
+  }
   const styles = getStyles(colors);
-
+  console.log('track', track);
+  
   const onTrackPress = async () => {
     const trackForPlayer = {
       id: track.id,
-      url: track.audioVariants[0].audioFileUrl,
+      url: track.audioTransfers[0].audioVariants[0].audioFileUrl,
       title: track.title,
       artist: track.orchestra.name,
       artwork: track.audioTransfers[0].album.albumArtUrl,
-      duration: track.audioVariants[0].duration,
+      duration: track.audioTransfers[0].audioVariants[0].duration,
     };
 
     try {
