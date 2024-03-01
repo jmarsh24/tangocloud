@@ -1,5 +1,5 @@
 Rails.configuration.to_prepare do
-  Avo::ApplicationController.include Authenticable
+  Avo::ApplicationController.include Authentication::Cookies
 end
 
 Avo.configure do |config|
