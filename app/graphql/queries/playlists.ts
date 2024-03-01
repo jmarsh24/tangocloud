@@ -7,6 +7,7 @@ export const PLAYLISTS = gql`
         node {
           id
           title
+          imageUrl
           playlistAudioTransfers {
             id
             audioTransfer {
