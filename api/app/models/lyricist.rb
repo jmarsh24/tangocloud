@@ -1,14 +1,10 @@
 class Lyricist < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :slugged
-<<<<<<< HEAD
-  has_many :compositions, inverse_of: :lyricist
-=======
   searchkick word_middle: [:name], callbacks: :async
 
   has_many :compositions, dependent: :destroy, inverse_of: :lyricist
->>>>>>> main
-  has_many :lyrics, through: :compositions, dependent: :destroy
+  has_many :lyrics, through: :compositions
   has_many :recordings, through: :compositions
 
   validates :name, presence: true

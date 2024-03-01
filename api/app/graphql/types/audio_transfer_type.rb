@@ -8,10 +8,7 @@ module Types
     field :recording_id, ID, null: true
     field :filename, String, null: true
     field :recording, Types::RecordingType, null: true
-<<<<<<< HEAD
-=======
     field :audio_variants, [Types::AudioVariantType], null: false
->>>>>>> main
     field :waveform, Types::WaveformType, null: true
     field :audio_file, Types::FileType, null: true
     def audio_file

@@ -9,22 +9,16 @@ module Types
     field :listens_count, Integer, null: false
     field :shares_count, Integer, null: false
     field :followers_count, Integer, null: false
-<<<<<<< HEAD
-=======
-    field :user_id, ID, null: false
     field :user, Types::UserType, null: false
     field :playlist_audio_transfers, [Types::PlaylistAudioTransferType], null: false
     field :audio_transfers, [Types::AudioTransferType], null: false
     field :audio_variants, [Types::AudioVariantType], null: false
     field :recordings, [Types::RecordingType], null: false
->>>>>>> main
-    field :image_url, String, null: false
     field :image, Types::ImageType, null: true
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
     belongs_to :user
     has_many :playlist_audio_transfers
-    has_many :audio_transfers
   end
 end
