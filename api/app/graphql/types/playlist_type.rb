@@ -9,11 +9,6 @@ module Types
     field :listens_count, Integer, null: false
     field :shares_count, Integer, null: false
     field :followers_count, Integer, null: false
-    field :user, Types::UserType, null: false
-    field :playlist_audio_transfers, [Types::PlaylistAudioTransferType], null: false
-    field :audio_transfers, [Types::AudioTransferType], null: false
-    field :audio_variants, [Types::AudioVariantType], null: false
-    field :recordings, [Types::RecordingType], null: false
     field :image, Types::ImageType, null: true
     def image
       object.image.presence
@@ -23,5 +18,8 @@ module Types
 
     belongs_to :user
     has_many :playlist_audio_transfers
+    has_many :audio_transfers
+    has_many :audio_variants
+    has_many :recordings
   end
 end
