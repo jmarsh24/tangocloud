@@ -9,17 +9,40 @@ module Types
     field :listens_count, Integer, null: false
     field :shares_count, Integer, null: false
     field :followers_count, Integer, null: false
-    field :image, Types::ImageType, null: true
-    def image
-      object.image.presence
-    end
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
+    field :image_url, String, null: true
+
+    def image_url
+      dataloader.with(Sources::Preload, image_attachment: :blob).load(object)
+      object.image.presence
+    end
+
+    field :playlist_audio_transfers, [PlaylistAudioTransferType], null: false
+
+    def playlist_audio_transfers
+      dataloader.with(Sources::Preload, :playlist_audio_transfers).load(object)
+    end
+
+    field :audio_transfers, [AudioTransferType], null: false
+
+    def audio_transfers
+      dataloader.with(Sources::Preload, :audio_transfers).load(object)
+    end
+
+    field :audio_variants, [AudioVariantType], null: false
+
+    def audio_variants
+      dataloader.with(Sources::Preload, audio_transfers: :audio_variants).load(object)
+    end
+
+    field :recordings, [RecordingType], null: false
+
+    def recordings
+      dataloader.with(Sources::Preload, :recordings).load(object)
+    end
+
     belongs_to :user
-    has_many :playlist_audio_transfers
-    has_many :audio_transfers
-    has_many :audio_variants
-    has_many :recordings
   end
 end

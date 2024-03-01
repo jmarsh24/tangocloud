@@ -8,6 +8,9 @@ module Types
     field :recordings_count, Integer, null: true
     field :slug, String, null: true
 
-    has_many :recordings
+    field :recordings, [RecordingType], null: false
+    def recordings
+      dataloader.with(Sources::Preload, :recordings).load(object)
+    end
   end
 end

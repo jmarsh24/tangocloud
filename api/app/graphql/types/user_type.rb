@@ -23,7 +23,16 @@ module Types
       end
     end
 
-    has_many :sessions
-    has_many :events
+    field :sessions, [SessionType], null: false
+
+    def sessions
+      dataloader.with(Sources::Preload, :sessions).load(object)
+    end
+
+    field :events, [EventType], null: false
+
+    def events
+      dataloader.with(Sources::Preload, :events).load(object)
+    end
   end
 end

@@ -1,14 +1,32 @@
 import { gql } from "@apollo/client";
 
 export const PLAYLISTS = gql`
-  query Playlists($query: String, $first: Int, $after: String) {
-    playlists(query: $query, first: $first, after: $after) {
+  query playlists($query: String) {
+    playlists(query: $query) {
       edges {
         node {
           id
           title
-          public
-          imageUrl
+          playlistAudioTransfers {
+            edges {
+              node {
+                id
+                audioTransfer {
+                  id
+                  audioVariants {
+                    edges {
+                      node {
+                        id
+                        audioFile {
+                          url
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
       pageInfo {

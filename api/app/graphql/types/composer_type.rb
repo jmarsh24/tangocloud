@@ -9,7 +9,16 @@ module Types
     field :slug, String, null: true
     field :compositions_count, Integer, null: true
 
-    has_many :compositions
-    has_many :recordings
+    field :compositions, [CompositionType], null: false
+
+    def compositions
+      dataloader.with(Sources::Preload, :compositions).load(object)
+    end
+
+    field :recordings, [RecordingType], null: false
+
+    def recordings
+      dataloader.with(Sources::Preload, :recordings).load(object)
+    end
   end
 end

@@ -20,7 +20,7 @@ export default function SearchScreen() {
     variables: { query: search, first: ITEMS_PER_PAGE },
     fetchPolicy: 'cache-and-network',
   });
-  debugger
+
   useEffect(() => {
     refetch({ query: search, first: ITEMS_PER_PAGE });
   }, [search, refetch]);

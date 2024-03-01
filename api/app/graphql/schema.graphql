@@ -1,28 +1,7 @@
 type Album {
-  albumArt: Image
+  albumArtUrl: String
   albumType: String
-  audioTransfer(id: ID!): AudioTransfer!
-  audioTransfers(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): AudioTransferConnection!
+  audioTransfers: [AudioTransfer!]!
   audioTransfersCount: Int
   description: String
   externalId: String
@@ -35,54 +14,12 @@ type Album {
 type AudioTransfer {
   album: Album
   albumId: String
-  audioFile: File
-  audioVariant(id: ID!): AudioVariant!
-  audioVariants(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): AudioVariantConnection!
+  audioFileUrl: String
+  audioVariants: [AudioVariant!]!
   createdAt: ISO8601Date
   filename: String
   id: ID
-  playlistAudioTransfer(id: ID!): PlaylistAudioTransfer!
-  playlistAudioTransfers(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): PlaylistAudioTransferConnection!
+  playlistAudioTransfers: PlaylistAudioTransfer!
   position: Int
   recording: Recording
   recordingId: String
@@ -92,43 +29,8 @@ type AudioTransfer {
   waveform: Waveform
 }
 
-"""
-The connection type for AudioTransfer.
-"""
-type AudioTransferConnection {
-  """
-  A list of edges.
-  """
-  edges: [AudioTransferEdge!]!
-
-  """
-  A list of nodes.
-  """
-  nodes: [AudioTransfer!]!
-
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-}
-
-"""
-An edge in a connection.
-"""
-type AudioTransferEdge {
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-
-  """
-  The item at the end of the edge.
-  """
-  node: AudioTransfer
-}
-
 type AudioVariant {
-  audioFile: File!
+  audioFileUrl: String
   audioTransfer: AudioTransfer!
   audioTransferId: String!
   bitRate: Int
@@ -144,92 +46,15 @@ type AudioVariant {
   updatedAt: ISO8601DateTime!
 }
 
-"""
-The connection type for AudioVariant.
-"""
-type AudioVariantConnection {
-  """
-  A list of edges.
-  """
-  edges: [AudioVariantEdge!]!
-
-  """
-  A list of nodes.
-  """
-  nodes: [AudioVariant!]!
-
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-}
-
-"""
-An edge in a connection.
-"""
-type AudioVariantEdge {
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-
-  """
-  The item at the end of the edge.
-  """
-  node: AudioVariant
-}
-
 type Composer {
   birthDate: ISO8601Date
-  composition(id: ID!): Composition!
-  compositions(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): CompositionConnection!
+  compositions: [Composition!]!
   compositionsCount: Int
   deathDate: ISO8601Date
   id: ID
   name: String!
   rank: Int
-  recording(id: ID!): Recording!
-  recordings(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): RecordingConnection!
+  recordings: [Recording!]!
   slug: String
   sortName: String
 }
@@ -273,89 +98,12 @@ type Composition {
   composer: Composer!
   composerId: String!
   id: ID
-  lyric(id: ID!): Lyric!
   lyricist: Lyricist!
   lyricistId: String!
-  lyrics(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): LyricConnection!
-  recording(id: ID!): Recording!
-  recordings(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): RecordingConnection!
+  lyrics: [Lyric!]!
+  recordings: [Recording!]!
   tangotubeSlug: String
   title: String
-}
-
-"""
-The connection type for Composition.
-"""
-type CompositionConnection {
-  """
-  A list of edges.
-  """
-  edges: [CompositionEdge!]!
-
-  """
-  A list of nodes.
-  """
-  nodes: [Composition!]!
-
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-}
-
-"""
-An edge in a connection.
-"""
-type CompositionEdge {
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-
-  """
-  The item at the end of the edge.
-  """
-  node: Composition
 }
 
 type ElRecodoSong {
@@ -423,74 +171,12 @@ type Event {
   userId: String!
 }
 
-"""
-The connection type for Event.
-"""
-type EventConnection {
-  """
-  A list of edges.
-  """
-  edges: [EventEdge!]!
-
-  """
-  A list of nodes.
-  """
-  nodes: [Event!]!
-
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-}
-
-"""
-An edge in a connection.
-"""
-type EventEdge {
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-
-  """
-  The item at the end of the edge.
-  """
-  node: Event
-}
-
-type File {
-  filename: String!
-  id: ID!
-  url: String!
-}
-
 type Genre {
   createdAt: ISO8601DateTime!
   description: String
   id: ID!
   name: String!
-  recording(id: ID!): Recording!
-  recordings(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): RecordingConnection!
+  recordings: [Recording!]!
   updatedAt: ISO8601DateTime!
 }
 
@@ -539,11 +225,6 @@ An ISO 8601-encoded datetime
 """
 scalar ISO8601DateTime @specifiedBy(url: "https://tools.ietf.org/html/rfc3339")
 
-type Image {
-  id: ID!
-  url: String!
-}
-
 """
 Represents untyped JSON
 """
@@ -559,90 +240,13 @@ type Lyric {
   updatedAt: ISO8601Date
 }
 
-"""
-The connection type for Lyric.
-"""
-type LyricConnection {
-  """
-  A list of edges.
-  """
-  edges: [LyricEdge!]!
-
-  """
-  A list of nodes.
-  """
-  nodes: [Lyric!]!
-
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-}
-
-"""
-An edge in a connection.
-"""
-type LyricEdge {
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-
-  """
-  The item at the end of the edge.
-  """
-  node: Lyric
-}
-
 type Lyricist {
   bio: String
   birthDate: ISO8601Date
-  composition(id: ID!): Composition!
-  compositions(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): CompositionConnection!
+  compositions: [Composition!]!
   deathDate: ISO8601Date
   id: ID
-  lyric(id: ID!): Lyric!
-  lyrics(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): LyricConnection!
+  lyrics: [Lyric!]!
   name: String
   rank: Int
   slug: String
@@ -701,99 +305,15 @@ type Mutation {
 
 type Orchestra {
   birthDate: ISO8601Date
-  composition(id: ID!): Composition!
-  compositions(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): CompositionConnection!
+  compositions: [Composition!]!
   deathDate: ISO8601Date
   id: ID
-  lyricist(id: ID!): Lyricist!
-  lyricists(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): LyricistConnection!
+  lyricists: [Lyricist!]!
   name: String
   rank: Int
-  recording(id: ID!): Recording!
-  recordings(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): RecordingConnection!
+  recordings: [Recording!]!
   recordingsCount: Int
-  singer(id: ID!): Singer!
-  singers(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): SingerConnection!
+  singers: [Singer!]!
   slug: String
   sortName: String
 }
@@ -863,28 +383,7 @@ type Period {
   endYear: Int
   id: ID
   name: String
-  recording(id: ID!): Recording!
-  recordings(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): RecordingConnection!
+  recordings: [Recording!]!
   recordingsCount: Int
   slug: String
   startYear: Int
@@ -926,102 +425,18 @@ type PeriodEdge {
 }
 
 type Playlist {
-  audioTransfer(id: ID!): AudioTransfer!
-  audioTransfers(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): AudioTransferConnection!
-  audioVariant(id: ID!): AudioVariant!
-  audioVariants(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): AudioVariantConnection!
+  audioTransfers: [AudioTransfer!]!
+  audioVariants: [AudioVariant!]!
   createdAt: ISO8601DateTime!
   description: String
   followersCount: Int!
   id: ID!
-  image: Image
+  imageUrl: String
   likesCount: Int!
   listensCount: Int!
-  playlistAudioTransfer(id: ID!): PlaylistAudioTransfer!
-  playlistAudioTransfers(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): PlaylistAudioTransferConnection!
+  playlistAudioTransfers: [PlaylistAudioTransfer!]!
   public: Boolean!
-  recording(id: ID!): Recording!
-  recordings(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): RecordingConnection!
+  recordings: [Recording!]!
   sharesCount: Int!
   songsCount: Int!
   title: String!
@@ -1039,41 +454,6 @@ type PlaylistAudioTransfer {
   playlistId: String!
   position: Int!
   updatedAt: ISO8601DateTime!
-}
-
-"""
-The connection type for PlaylistAudioTransfer.
-"""
-type PlaylistAudioTransferConnection {
-  """
-  A list of edges.
-  """
-  edges: [PlaylistAudioTransferEdge!]!
-
-  """
-  A list of nodes.
-  """
-  nodes: [PlaylistAudioTransfer!]!
-
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-}
-
-"""
-An edge in a connection.
-"""
-type PlaylistAudioTransferEdge {
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-
-  """
-  The item at the end of the edge.
-  """
-  node: PlaylistAudioTransfer
 }
 
 """
@@ -1531,50 +911,8 @@ type RecordLabel {
 }
 
 type Recording {
-  audioTransfer(id: ID!): AudioTransfer!
-  audioTransfers(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): AudioTransferConnection!
-  audioVariant(id: ID!): AudioVariant!
-  audioVariants(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): AudioVariantConnection!
+  audioTransfers: [AudioTransfer!]!
+  audioVariants: [AudioVariant!]!
   bpm: Int
   composer: Composer!
   composerId: String!
@@ -1596,52 +934,9 @@ type Recording {
   recordedDate: ISO8601Date
   recordingType: String!
   releaseDate: ISO8601Date
-  singer(id: ID!): Singer!
-  singers(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): SingerConnection!
+  singers: Singer!
   slug: String!
   title: String!
-  waveform(id: ID!): Waveform!
-  waveforms(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): WaveformConnection!
 }
 
 """
@@ -1689,41 +984,6 @@ type RecordingSinger {
   updatedAt: ISO8601DateTime!
 }
 
-"""
-The connection type for RecordingSinger.
-"""
-type RecordingSingerConnection {
-  """
-  A list of edges.
-  """
-  edges: [RecordingSingerEdge!]!
-
-  """
-  A list of nodes.
-  """
-  nodes: [RecordingSinger!]!
-
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-}
-
-"""
-An edge in a connection.
-"""
-type RecordingSingerEdge {
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-
-  """
-  The item at the end of the edge.
-  """
-  node: RecordingSinger
-}
-
 type Session {
   createdAt: ISO8601DateTime!
   id: ID!
@@ -1734,41 +994,6 @@ type Session {
   userId: String!
 }
 
-"""
-The connection type for Session.
-"""
-type SessionConnection {
-  """
-  A list of edges.
-  """
-  edges: [SessionEdge!]!
-
-  """
-  A list of nodes.
-  """
-  nodes: [Session!]!
-
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-}
-
-"""
-An edge in a connection.
-"""
-type SessionEdge {
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-
-  """
-  The item at the end of the edge.
-  """
-  node: Session
-}
-
 type Singer {
   bio: String
   birthDate: ISO8601Date
@@ -1776,50 +1001,8 @@ type Singer {
   id: ID
   name: String
   rank: Int
-  recording(id: ID!): Recording!
-  recordingSinger(id: ID!): RecordingSinger!
-  recordingSingers(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): RecordingSingerConnection!
-  recordings(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): RecordingConnection!
+  recordingSingers: [RecordingSinger!]!
+  recordings: [Recording!]!
   slug: String
   sortName: String
 }
@@ -1860,76 +1043,13 @@ type SingerEdge {
 }
 
 type TransferAgent {
-  audioTransfer(id: ID!): AudioTransfer!
-  audioTransfers(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): AudioTransferConnection!
-  audioVariant(id: ID!): AudioVariant!
-  audioVariants(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): AudioVariantConnection!
+  audioTransfers: [AudioTransfer!]!
+  audioVariants: [AudioVariant!]!
   createdAt: ISO8601DateTime!
   description: String
   id: ID!
   name: String!
-  recording(id: ID!): Recording!
-  recordings(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): RecordingConnection!
+  recordings: [Recording!]!
   updatedAt: ISO8601DateTime!
   url: String
 }
@@ -1939,56 +1059,14 @@ type User {
   avatarUrl: String
   createdAt: ISO8601DateTime!
   email: String!
-  event(id: ID!): Event!
-  events(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): EventConnection!
+  events: [Event!]!
   firstName: String
   id: ID!
   lastName: String
   name: String!
   passwordDigest: String!
   provider: String
-  session(id: ID!): Session!
-  sessions(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): SessionConnection!
+  sessions: [Session!]!
   uid: String
   updatedAt: ISO8601DateTime!
   username: String!
@@ -2043,47 +1121,12 @@ type Waveform {
   createdAt: ISO8601DateTime!
   data: [Float!]!
   id: ID!
-  image: Image
+  image: String
   length: Int!
   sampleRate: Int!
   samplesPerPixel: Int!
   updatedAt: ISO8601DateTime!
   version: Int!
-}
-
-"""
-The connection type for Waveform.
-"""
-type WaveformConnection {
-  """
-  A list of edges.
-  """
-  edges: [WaveformEdge!]!
-
-  """
-  A list of nodes.
-  """
-  nodes: [Waveform!]!
-
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-}
-
-"""
-An edge in a connection.
-"""
-type WaveformEdge {
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-
-  """
-  The item at the end of the edge.
-  """
-  node: Waveform
 }
 
 """

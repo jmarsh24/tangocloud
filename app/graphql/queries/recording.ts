@@ -1,12 +1,16 @@
 import { gql } from "@apollo/client";
 
 export const RECORDING = gql`
-  query recording($Id: ID!) {
-    recording(id: $Id) {
+  query recording($id: ID!) {
+    recording(id: $id) {
       id
       title
       singers {
-        name
+        edges {
+          node {
+            name
+          }
+        }
       }
       orchestra {
         name
@@ -15,26 +19,22 @@ export const RECORDING = gql`
         name
       }
       audioTransfers {
-        album {
-          albumArt {
-            url
+        edges {
+          node {
+            album {
+              albumArt {
+                url
+              }
+            }
+            waveform {
+              image {
+                url
+              }
+              data
+            }
           }
         }
-        waveform {
-          data
-        }
       }
-      audioVariants {
-        id
-        bitRate
-        codec
-        duration
-        format
-        audioFile {
-          url
-        }
-      }
-      recordedDate
     }
   }
 `;

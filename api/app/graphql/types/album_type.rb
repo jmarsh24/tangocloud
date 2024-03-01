@@ -8,10 +8,18 @@ module Types
     field :slug, String, null: true
     field :external_id, String, null: true
     field :album_type, String, null: true
-    field :album_art, Types::ImageType, null: true
-    def album_art
+
+    field :album_art_url, String, null: true
+
+    def album_art_url
+      dataloader.with(Sources::Preload, album_art_attachment: :blob).load(object)
       object.album_art.presence
     end
-    has_many :audio_transfers
+
+    field :audio_transfers, [AudioTransferType], null: false
+
+    def audio_transfers
+      dataloader.with(Sources::Preload, :audio_transfers).load(object)
+    end
   end
 end

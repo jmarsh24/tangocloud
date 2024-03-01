@@ -9,9 +9,24 @@ module Types
     field :slug, String, null: true
     field :recordings_count, Integer, null: true
 
-    has_many :compositions
-    has_many :recordings
-    has_many :singers
-    has_many :lyricists
+    field :compositions, [CompositionType], null: false
+    def compositions
+      dataloader.with(Sources::Preload, :compositions).load(object)
+    end
+
+    field :recordings, [RecordingType], null: false
+    def recordings
+      dataloader.with(Sources::Preload, :recordings).load(object)
+    end
+
+    field :singers, [SingerType], null: false
+    def singers
+      dataloader.with(Sources::Preload, :singers).load(object)
+    end
+
+    field :lyricists, [LyricistType], null: false
+    def lyricists
+      dataloader.with(Sources::Preload, :lyricists).load(object)
+    end
   end
 end

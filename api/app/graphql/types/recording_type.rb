@@ -8,6 +8,27 @@ module Types
     field :slug, String, null: false
     field :recording_type, String, null: false
 
+    field :audio_transfers, [AudioTransferType], null: false
+
+    def audio_transfers
+      dataloader.with(Sources::Preload, :audio_transfers).load(object)
+      object.audio_transfers
+    end
+
+    field :audio_variants, [AudioVariantType], null: false
+
+    def audio_variants
+      dataloader.with(Sources::Preload, audio_transfers: :audio_variants).load(object)
+      object.audio_variants
+    end
+
+    field :singers, SingerType, null: false
+
+    def singers
+      dataloader.with(Sources::Preload, :singers).load(object)
+      object.singers
+    end
+
     belongs_to :el_recodo_song
     belongs_to :orchestra
     belongs_to :composition
@@ -16,9 +37,5 @@ module Types
     belongs_to :period
     belongs_to :lyricist
     belongs_to :composer
-    has_many :audio_transfers
-    has_many :audio_variants
-    has_many :singers
-    has_many :waveforms
   end
 end

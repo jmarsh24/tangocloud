@@ -7,8 +7,22 @@ module Types
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
-    has_many :recordings
-    has_many :audio_variants
-    has_many :audio_transfers
+    field :recordings, [RecordingType], null: false
+
+    def recordings
+      dataloader.with(Sources::Preload, :recordings).load(object)
+    end
+
+    field :audio_variants, [AudioVariantType], null: false
+
+    def audio_variants
+      dataloader.with(Sources::Preload, :audio_variants).load(object)
+    end
+
+    field :audio_transfers, [AudioTransferType], null: false
+
+    def audio_transfers
+      dataloader.with(Sources::Preload, :audio_transfers).load(object)
+    end
   end
 end
