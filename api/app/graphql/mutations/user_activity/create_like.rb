@@ -1,6 +1,7 @@
 module Mutations::UserActivity
   class CreateLike < Mutations::BaseMutation
     field :like, Types::LikeType, null: true
+    field :errors, Types::ValidationErrorsType, null: true
 
     argument :likeable_type, String, required: true
     argument :likeable_id, ID, required: true
