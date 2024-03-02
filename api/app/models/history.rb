@@ -1,10 +1,8 @@
-module UserActivity
-  class History < ApplicationRecord
-    self.table_name = "histories"
-    belongs_to :user
-    has_many :listens, class_name: "UserActivity::Listen", dependent: :destroy
-  end
+class History < ApplicationRecord
+  belongs_to :user
+  has_many :listens, class_name: "UserActivity::Listen", dependent: :destroy
 end
+
 # == Schema Information
 #
 # Table name: histories
