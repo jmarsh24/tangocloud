@@ -7,13 +7,16 @@ module Mutations::UserActivity
     argument :likeable_id, ID, required: true
 
     def resolve(likeable_type:, likeable_id:)
-      Like.create!(
+      like = Like.create!(
         likeable_type:,
         likeable_id:,
         user: context[:current_user]
       )
-    rescue ActiveRecord::RecordInvalid => e
-      GraphQL::ExecutionError.new("Invalid input: #{e.record.errors.full_messages.join(", ")}")
+
+    if like.save
+      {like:, success: true}
+    else
+      {errors: like.errors, success: false}
     end
   end
 end
