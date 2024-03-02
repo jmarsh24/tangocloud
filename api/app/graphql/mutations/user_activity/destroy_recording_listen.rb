@@ -5,9 +5,13 @@ module Mutations::UserActivity
     field :message, String, null: false
 
     def resolve(id:)
-      listen = Listen.find(id)
-      listen.destroy
-      {message: "Listen successfully deleted"}
+      recording_listen = RecordingListen.find(id)
+
+      if recording_listen.destroy
+        {message: "Listen successfully deleted", success: true}
+      else
+        {errors: recording_listen.errors, success: false}
+      end
     rescue ActiveRecord::RecordNotFound => e
       GraphQL::ExecutionError.new("Error: #{e.message}")
     end
