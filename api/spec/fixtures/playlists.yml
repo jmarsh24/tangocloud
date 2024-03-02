@@ -21,4 +21,5 @@ awesome_playlist:
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  slug            :string
+#  system          :boolean          default(FALSE), not null
 #

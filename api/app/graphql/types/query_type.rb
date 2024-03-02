@@ -225,5 +225,13 @@ module Types
       likeable = likeable_type.constantize.find(likeable_id)
       likeable.likes.exists?(user: context[:current_user])
     end
+
+    field :user_history, UserHistoryType.connection_type, null: false, description: "Get the user's history."
+
+    def user_history
+      raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
+
+      context[:current_user].user_history
+    end
   end
 end

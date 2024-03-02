@@ -6,6 +6,7 @@ class User < ApplicationRecord
   has_one :user_history, dependent: :destroy
   has_many :listens, through: :user_history
   has_many :likes, dependent: :destroy
+  has_many :playlists, dependent: :destroy
 
   generates_token_for :email_verification, expires_in: 2.days do
     email
@@ -46,6 +47,7 @@ class User < ApplicationRecord
 
   after_create_commit { build_user_preference.save }
   after_create_commit { build_user_history.save }
+  after_create_commit { playlists.create!(title: "liked", system: true) }
 
   delegate :avatar, to: :user_preference, allow_nil: true
   delegate :first_name, :last_name, :name, to: :user_preference, allow_nil: true
@@ -79,6 +81,10 @@ class User < ApplicationRecord
     else
       Gravatar.new(email).url(width:)
     end
+  end
+
+  def liked_playlist
+    playlists.find_by(title: "liked", system: true)
   end
 end
 

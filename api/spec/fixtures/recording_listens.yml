@@ -4,3 +4,14 @@ volver_a_sonar_admin_listen:
 volver_a_sonar_normal_listen:
   user_history: normal_user_history
   recording: volver_a_sonar
+
+# == Schema Information
+#
+# Table name: recording_listens
+#
+#  id           :uuid             not null, primary key
+#  history_id   :uuid
+#  recording_id :uuid
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#

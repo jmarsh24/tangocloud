@@ -13,8 +13,6 @@ class Playlist < ApplicationRecord
   has_one_attached :image, dependent: :purge_late
   has_one_attached :playlist_file, dependent: :purge_later
 
-  validates :image, presence: true
-
   def self.search_playlists(query = "*")
     search(
       query,
@@ -48,4 +46,5 @@ end
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  slug            :string
+#  system          :boolean          default(FALSE), not null
 #
