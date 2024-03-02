@@ -3,10 +3,10 @@ module Mutations::UserActivity
     field :success, Boolean, null: false
     field :errors, Types::ValidationErrorsType, null: true
 
-    argument :id, ID, required: false
+    argument :id, ID, required: true
 
-    def resolve(id: nil)
-      like = Like.find_by(id:, user: context[:current_user])
+    def resolve(id:)
+      like = Like.find_by(likeable_id: id, user: context[:current_user])
 
       unless like
         raise GraphQL::ExecutionError, "Like not found"

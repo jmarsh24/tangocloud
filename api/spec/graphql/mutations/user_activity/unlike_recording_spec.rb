@@ -1,12 +1,12 @@
 require "rails_helper"
 
-RSpec.describe "UnlikeRecording", type: :request do
+RSpec.describe "UnlikeRecordingRecording", type: :request do
   let(:user) { users(:normal) }
   let(:recording) { recordings(:volver_a_sonar) }
   let(:mutation) do
     <<~GQL
-      mutation unLike($id: ID!) {
-        unLike(input: { id: $id}) {
+      mutation unlikeRecording($id: ID!) {
+        unlikeRecording(input: { id: $id}) {
           success
           errors {
             details
@@ -23,8 +23,8 @@ RSpec.describe "UnlikeRecording", type: :request do
     post api_graphql_path, params: {query: mutation, variables: {id: recording.id}}, headers: {"Authorization" => "Bearer #{token}"}
     json = JSON.parse(response.body)
 
-    expect(json.dig("data", "destroyLike", "success")).to be_truthy
-    expect(json.dig("data", "destroyLike", "errors")).to be_nil
+    expect(json.dig("data", "unlikeRecording", "success")).to be_truthy
+    expect(json.dig("data", "unlikeRecording", "errors")).to be_nil
   end
 
   it "returns an error if the like does not exist" do
@@ -32,24 +32,15 @@ RSpec.describe "UnlikeRecording", type: :request do
     post api_graphql_path, params: {query: mutation, variables: {id: recording.id}}, headers: {"Authorization" => "Bearer #{token}"}
     json = JSON.parse(response.body)
 
-    expect(json.dig("data", "destroyLike", "success")).to be_falsey
+    expect(json.dig("data", "unlikeRecording", "success")).to be_falsey
     expect(json.dig("errors", 0, "message")).to eq("Like not found")
   end
 
-  it "returns an error if the likeable type is invalid" do
-    token = AuthToken.token(user)
-    post api_graphql_path, params: {query: mutation, variables: {likeableType: "Invalid", likeableId: recording.id}}, headers: {"Authorization" => "Bearer #{token}"}
-    json = JSON.parse(response.body)
-
-    expect(json.dig("data", "destroyLike", "success")).to be_falsey
-    expect(json.dig("errors", 0, "message")).to eq("Like not found")
-  end
-
-  fit "returns an error if the user is not authenticated" do
+  it "returns an error if the user is not authenticated" do
     post api_graphql_path, params: {query: mutation, variables: {id: recording.id}}
     json = JSON.parse(response.body)
 
-    expect(json.dig("data", "destroyLike")).to be_nil
+    expect(json.dig("data", "unlikeRecording")).to be_nil
     expect(json.dig("errors")[0]).to eq("You must be signed in to access this resource.")
   end
 end
