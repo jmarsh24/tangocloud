@@ -4,7 +4,7 @@ class User < ApplicationRecord
 
   has_one :user_preference, dependent: :destroy
   has_one :user_history, dependent: :destroy
-  has_many :listens, through: :history, dependent: :destroy
+  has_many :listens, through: :user_history
   has_many :likes, dependent: :destroy
 
   generates_token_for :email_verification, expires_in: 2.days do

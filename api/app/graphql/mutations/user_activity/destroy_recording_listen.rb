@@ -1,5 +1,5 @@
 module Mutations::UserActivity
-  class DestroyListen < Mutations::BaseMutation
+  class DestroyRecordingListen < Mutations::BaseMutation
     argument :id, ID, required: true
 
     field :message, String, null: false
