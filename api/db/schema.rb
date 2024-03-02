@@ -338,6 +338,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_02_111116) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "recording_listens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "history_id"
+    t.uuid "recording_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["history_id"], name: "index_recording_listens_on_history_id"
+    t.index ["recording_id"], name: "index_recording_listens_on_recording_id"
+  end
+
   create_table "recording_singers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "recording_id", null: false
     t.uuid "singer_id", null: false
@@ -616,6 +625,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_02_111116) do
   add_foreign_key "lyrics", "compositions"
   add_foreign_key "playlist_audio_transfers", "audio_transfers"
   add_foreign_key "playlist_audio_transfers", "playlists"
+  add_foreign_key "recording_listens", "histories"
+  add_foreign_key "recording_listens", "recordings"
   add_foreign_key "recording_singers", "recordings"
   add_foreign_key "recording_singers", "singers"
   add_foreign_key "recordings", "compositions"

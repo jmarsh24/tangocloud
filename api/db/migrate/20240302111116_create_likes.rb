@@ -1,4 +1,4 @@
-class CreateUserActivityLikes < ActiveRecord::Migration[7.1]
+class CreateLikes < ActiveRecord::Migration[7.1]
   def change
     create_table :likes, id: :uuid do |t|
       t.string :likeable_type, null: false

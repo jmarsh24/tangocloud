@@ -3,9 +3,9 @@ class User < ApplicationRecord
   searchkick word_start: [:username, :email, :first_name, :last_name]
 
   has_one :user_preference, dependent: :destroy
-  has_one :histories, class_name: "UserActivity::History"
-  has_many :listens, through: :histories, class_name: "UserActivity::Listen"
-  has_many :likes, class_name: "UserActivity::Like"
+  has_one :histories, dependent: :destroy
+  has_many :listens, through: :histories, dependent: :destroy
+  has_many :likes, dependent: :destroy
 
   generates_token_for :email_verification, expires_in: 2.days do
     email
