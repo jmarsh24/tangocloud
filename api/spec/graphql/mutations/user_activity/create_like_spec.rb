@@ -7,15 +7,12 @@ RSpec.describe "CreateLike", type: :request do
     <<~GQL
       mutation createLike($likeableType: String!, $likeableId: ID!) {
         createLike(input: {
-          likeableType: $likeable_type
-          likeableId: $id
+          likeableType: $likeableType
+          likeableId: $likeableId
         }) {
             like {
               id
               user {
-                id
-              }
-              recording {
                 id
               }
             }
@@ -29,8 +26,8 @@ RSpec.describe "CreateLike", type: :request do
   it "creates a listen" do
     token = AuthToken.token(user)
     post api_graphql_path, params: {query: mutation, variables: {likeableType: "Recording", likeableId: recording.id}}, headers: {"Authorization" => "Bearer #{token}"}
-    json = JSON.parse(response.body)
-    debugger
+    json = JSON.parse(response.bbiody)
+
     expect(json.dig("data", "CreateLike", "listen", "user", "id")).to eq(user.id.to_s)
     expect(json.dig("data", "CreateLike", "listen", "recording", "id")).to eq(recording.id.to_s)
     expect(json.dig("data", "CreateLike", "errors")).to be_empty

@@ -6,10 +6,10 @@ module Mutations::UserActivity
 
     def resolve(recording_id:)
       Listen.create!(
-        recording_id:,
+        recording_id:
       )
     rescue ActiveRecord::RecordInvalid => e
-      GraphQL::ExecutionError.new("Invalid input: #{e.record.errors.full_messages.join(', ')}")
+      GraphQL::ExecutionError.new("Invalid input: #{e.record.errors.full_messages.join(", ")}")
     end
   end
 end

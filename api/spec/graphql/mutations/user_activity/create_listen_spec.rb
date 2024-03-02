@@ -2,12 +2,6 @@ require "rails_helper"
 
 RSpec.describe "CreateListen", type: :request do
   let(:user) { users(:normal) }
-  let(:recording) { recordings(:volver_a_sonar) }
-
-  before do
-    # Sign in or simulate the current_user somehow
-  end
-
   let(:mutation) do
     <<~GQL
       mutation createListen($recordingId: ID!) {
@@ -28,9 +22,10 @@ RSpec.describe "CreateListen", type: :request do
       }
     GQL
   end
+  let(:recording) { recordings(:volver_a_sonar) }
 
   it "creates a listen" do
-    post graphql_path, params: { query: mutation, variables: {recordingId: recording.id}}, headers: {"Authorization" => "Bearer #{user.auth_token}"}
+    post graphql_path, params: {query: mutation, variables: {recordingId: recording.id}}, headers: {"Authorization" => "Bearer #{user.auth_token}"}
     json = JSON.parse(response.body)
     expect(json.dig("data", "createListen", "listen", "user", "id")).to eq(user.id.to_s)
     expect(json.dig("data", "createListen", "listen", "recording", "id")).to eq(recording.id.to_s)

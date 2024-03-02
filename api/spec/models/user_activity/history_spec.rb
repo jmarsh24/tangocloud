@@ -1,9 +1,5 @@
 require "rails_helper"
 
-RSpec.describe UserActivity::History, type: :model do
-
-end
-
 # == Schema Information
 #
 # Table name: histories

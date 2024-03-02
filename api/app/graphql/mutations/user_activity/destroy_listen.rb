@@ -7,7 +7,7 @@ module Mutations::UserActivity
     def resolve(id:)
       listen = Listen.find(id)
       listen.destroy
-      { message: "Listen successfully deleted" }
+      {message: "Listen successfully deleted"}
     rescue ActiveRecord::RecordNotFound => e
       GraphQL::ExecutionError.new("Error: #{e.message}")
     end

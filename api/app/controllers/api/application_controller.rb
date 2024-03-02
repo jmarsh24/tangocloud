@@ -13,7 +13,6 @@ module Api
       return nil if token.blank?
       Current.user = AuthToken.verify(token)
     end
-
     def user_not_authorized(exception)
       head :unauthorized
     end

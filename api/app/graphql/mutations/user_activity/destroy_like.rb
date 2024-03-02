@@ -7,7 +7,7 @@ module Mutations::UserActivity
     def resolve(id:)
       like = Like.find(id)
       like.destroy
-      { message: "Like successfully deleted" }
+      {message: "Like successfully deleted"}
     rescue ActiveRecord::RecordNotFound => e
       GraphQL::ExecutionError.new("Error: #{e.message}")
     end
