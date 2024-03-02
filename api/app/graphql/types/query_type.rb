@@ -213,5 +213,17 @@ module Types
 
       context[:current_user]
     end
+
+    field :liked, Boolean, null: false, description: "Check if the user has liked the likeable." do
+      argument :likeable_type, String, required: true, description: "Type of the likeable."
+      argument :likeable_id, ID, required: true, description: "ID of the likeable."
+    end
+
+    def liked(likeable_type:, likeable_id:)
+      raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
+
+      likeable = likeable_type.constantize.find(likeable_id)
+      likeable.likes.exists?(user: context[:current_user])
+    end
   end
 end

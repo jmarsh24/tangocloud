@@ -25,7 +25,7 @@ RSpec.describe "CreateListen", type: :request do
   let(:recording) { recordings(:volver_a_sonar) }
 
   it "creates a listen" do
-    post graphql_path, params: {query: mutation, variables: {recordingId: recording.id}}, headers: {"Authorization" => "Bearer #{user.auth_token}"}
+    post api_graphql_path, params: {query: mutation, variables: {recordingId: recording.id}}, headers: {"Authorization" => "Bearer #{user.auth_token}"}
     json = JSON.parse(response.body)
     expect(json.dig("data", "createListen", "listen", "user", "id")).to eq(user.id.to_s)
     expect(json.dig("data", "createListen", "listen", "recording", "id")).to eq(recording.id.to_s)

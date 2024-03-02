@@ -554,15 +554,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_02_111116) do
     t.index ["user_id"], name: "index_user_preferences_on_user_id"
   end
 
-  create_table "user_proferences", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "user_id", null: false
-    t.string "first_name"
-    t.string "last_name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_user_proferences_on_user_id"
-  end
-
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", null: false
     t.string "password_digest", null: false
@@ -647,7 +638,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_02_111116) do
   add_foreign_key "tanda_recordings", "tandas"
   add_foreign_key "tandas", "audio_transfers"
   add_foreign_key "user_preferences", "users"
-  add_foreign_key "user_proferences", "users"
   add_foreign_key "videos", "recordings"
   add_foreign_key "waveforms", "audio_transfers"
 end

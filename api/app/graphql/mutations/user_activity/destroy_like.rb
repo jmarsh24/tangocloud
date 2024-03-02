@@ -15,7 +15,9 @@ module Mutations::UserActivity
         Like.find_by(likeable_type:, likeable_id:, user:)
       end
 
-      return {success: false, errors: {fullMessages: ["Like not found"]}} unless like
+      unless like
+        raise GraphQL::ExecutionError, "Like not found"
+      end
 
       if like.destroy
         {success: true, errors: nil}
