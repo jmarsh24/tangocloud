@@ -1,8 +1,8 @@
 class Avo::Resources::Orchestra < Avo::BaseResource
   self.includes = [:recordings, :singers, :compositions, :composers, :lyricists]
-  # self.search = {
-  #   query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
-  # }
+  self.search = {
+    query: -> { query.search_orchestras(params[:q]).results }
+  }
   self.find_record_method = -> {
     if id.is_a?(Array)
       query.where(slug: id)

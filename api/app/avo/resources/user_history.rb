@@ -1,4 +1,4 @@
-class Avo::Resources::History < Avo::BaseResource
+class Avo::Resources::UserHistory < Avo::BaseResource
   self.includes = []
 
   def fields

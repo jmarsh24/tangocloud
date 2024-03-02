@@ -1,8 +1,8 @@
 class Avo::Resources::Playlist < Avo::BaseResource
   self.includes = [:playlist_audio_transfers, :user]
-  # self.search = {
-  #   query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
-  # }
+  self.search = {
+    query: -> { query.search_playlists(params[:q]).result(distinct: false) }
+  }
 
   def fields
     field :id, as: :id, readonly: true, only_on: :show
@@ -11,6 +11,7 @@ class Avo::Resources::Playlist < Avo::BaseResource
     field :description, as: :textarea
     field :public, as: :boolean
     field :playlist_file, as: :file, accept: "m3u8", required: true
+    field :system, as: :boolean, only_on: :show
     field :songs_count, as: :number, only_on: :show
     field :likes_count, as: :number, only_on: :show
     field :listens_count, as: :number, only_on: :show

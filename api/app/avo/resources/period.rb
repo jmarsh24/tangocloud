@@ -1,8 +1,8 @@
 class Avo::Resources::Period < Avo::BaseResource
   self.includes = []
-  # self.search = {
-  #   query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
-  # }
+  self.search = {
+    query: -> { query.search_periods(params[:q]).results }
+  }
 
   def fields
     field :id, as: :id, readonly: true, only_on: :show
