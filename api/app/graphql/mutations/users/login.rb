@@ -1,6 +1,6 @@
 module Mutations::Users
   class Login < Mutations::BaseMutation
-    graphql_name "signIn"
+    graphql_name "login"
 
     argument :login, String, required: true
     argument :password, String, required: true
