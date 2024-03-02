@@ -2,10 +2,10 @@ module Mutations::UserActivity
   class CreateListen < Mutations::BaseMutation
     argument :recording_id, ID, required: true
 
-    type Types::ListenType
+    field :listen, Types::ListenType, null: false
 
     def resolve(recording_id:)
-      Listen.create!(
+      RecordingListen.create!(
         recording_id:
       )
     rescue ActiveRecord::RecordInvalid => e

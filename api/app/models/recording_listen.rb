@@ -1,5 +1,5 @@
 class RecordingListen < ApplicationRecord
-  belongs_to :history
+  belongs_to :user_history
   belongs_to :recording
 end
 

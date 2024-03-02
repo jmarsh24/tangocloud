@@ -3,8 +3,8 @@ class User < ApplicationRecord
   searchkick word_start: [:username, :email, :first_name, :last_name]
 
   has_one :user_preference, dependent: :destroy
-  has_one :histories, dependent: :destroy
-  has_many :listens, through: :histories, dependent: :destroy
+  has_one :user_history, dependent: :destroy
+  has_many :listens, through: :history, dependent: :destroy
   has_many :likes, dependent: :destroy
 
   generates_token_for :email_verification, expires_in: 2.days do
@@ -45,6 +45,7 @@ class User < ApplicationRecord
   end
 
   after_create_commit { build_user_preference.save }
+  after_create_commit { build_user_history.save }
 
   delegate :avatar, to: :user_preference, allow_nil: true
   delegate :first_name, :last_name, :name, to: :user_preference, allow_nil: true

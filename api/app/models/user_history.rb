@@ -1,4 +1,4 @@
-class History < ApplicationRecord
+class UserHistory < ApplicationRecord
   belongs_to :user
   has_many :listens, class_name: "RecordingListen", dependent: :destroy
 end
