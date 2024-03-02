@@ -1,12 +1,12 @@
 require "rails_helper"
 
-RSpec.describe "destroyLike", type: :request do
+RSpec.describe "UnlikeRecording", type: :request do
   let(:user) { users(:normal) }
   let(:recording) { recordings(:volver_a_sonar) }
   let(:mutation) do
     <<~GQL
-      mutation destroyLike($likeableType: String!, $likeableId: ID!) {
-        destroyLike(input: { likeableType: $likeableType likeableId: $likeableId}) {
+      mutation unLike($id: ID!) {
+        unLike(input: { id: $id}) {
           success
           errors {
             details
@@ -20,7 +20,7 @@ RSpec.describe "destroyLike", type: :request do
   it "destroys a like" do
     recording.likes.create!(user:)
     token = AuthToken.token(user)
-    post api_graphql_path, params: {query: mutation, variables: {likeableType: "Recording", likeableId: recording.id}}, headers: {"Authorization" => "Bearer #{token}"}
+    post api_graphql_path, params: {query: mutation, variables: {id: recording.id}}, headers: {"Authorization" => "Bearer #{token}"}
     json = JSON.parse(response.body)
 
     expect(json.dig("data", "destroyLike", "success")).to be_truthy
@@ -29,7 +29,7 @@ RSpec.describe "destroyLike", type: :request do
 
   it "returns an error if the like does not exist" do
     token = AuthToken.token(user)
-    post api_graphql_path, params: {query: mutation, variables: {likeableType: "Recording", likeableId: recording.id}}, headers: {"Authorization" => "Bearer #{token}"}
+    post api_graphql_path, params: {query: mutation, variables: {id: recording.id}}, headers: {"Authorization" => "Bearer #{token}"}
     json = JSON.parse(response.body)
 
     expect(json.dig("data", "destroyLike", "success")).to be_falsey
@@ -46,7 +46,7 @@ RSpec.describe "destroyLike", type: :request do
   end
 
   fit "returns an error if the user is not authenticated" do
-    post api_graphql_path, params: {query: mutation, variables: {likeableType: "Recording", likeableId: recording.id}}
+    post api_graphql_path, params: {query: mutation, variables: {id: recording.id}}
     json = JSON.parse(response.body)
 
     expect(json.dig("data", "destroyLike")).to be_nil

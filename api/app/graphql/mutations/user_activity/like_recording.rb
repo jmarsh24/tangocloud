@@ -1,18 +1,13 @@
 module Mutations::UserActivity
-  class CreateLike < Mutations::BaseMutation
+  class LikeRecording < Mutations::BaseMutation
     field :like, Types::LikeType, null: true
     field :success, Boolean, null: false
     field :errors, Types::ValidationErrorsType, null: true
 
-    argument :likeable_type, String, required: true
-    argument :likeable_id, ID, required: true
+    argument :id, ID, required: true
 
-    def resolve(likeable_type:, likeable_id:)
-      like = Like.new(
-        likeable_type:,
-        likeable_id:,
-        user: context[:current_user]
-      )
+    def resolve(id:)
+      like = Like.new(likeable_type: "Recording", likeable_id: id, user: context[:current_user])
 
       if like.save
         {like:, success: true, errors: nil}
