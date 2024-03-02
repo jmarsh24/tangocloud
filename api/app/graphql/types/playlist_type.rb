@@ -9,6 +9,7 @@ module Types
     field :listens_count, Integer, null: false
     field :shares_count, Integer, null: false
     field :followers_count, Integer, null: false
+    field :system, Boolean, null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
