@@ -4,6 +4,16 @@ class Avo::Resources::Playlist < Avo::BaseResource
     query: -> { query.search_playlists(params[:q]).result(distinct: false) }
   }
 
+  self.ordering = {
+    visible_on: :index,
+    actions: {
+      higher: -> { record.move_higher },
+      lower: -> { record.move_lower },
+      to_top: -> { record.move_to_top },
+      to_bottom: -> { record.move_to_bottom },
+    }
+  }
+
   def fields
     field :id, as: :id, readonly: true, only_on: :show
     field :image, as: :file, is_image: true, accept: "image/*", direct_upload: true, display_filename: false, required: true
