@@ -1,7 +1,9 @@
-class UserActivity::Like < ApplicationRecord
-  self.table_name = "likes"
-  belongs_to :user
-  belongs_to :likeable, polymorphic: true
+module UserActivity
+  class Like < ApplicationRecord
+    self.table_name = "likes"
+    belongs_to :user
+    belongs_to :likeable, polymorphic: true
+  end
 end
 
 # == Schema Information
