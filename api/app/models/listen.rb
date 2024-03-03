@@ -1,6 +1,10 @@
 class Listen < ApplicationRecord
   belongs_to :listen_history
   belongs_to :recording
+
+  delegate :user, to: :listen_history
+
+  scope :most_recent, -> { order(created_at: :desc) }
 end
 
 # == Schema Information
