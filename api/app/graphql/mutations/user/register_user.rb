@@ -1,5 +1,5 @@
-module Mutations::Users
-  class Register < Mutations::BaseMutation
+module Mutations::User
+  class RegisterUser < Mutations::BaseMutation
     graphql_name "register"
 
     argument :username, String, required: true

@@ -652,7 +652,6 @@ DEPENDENCIES
   kamal
   kaminari
   letter_opener
-  listen
   mission_control-jobs
   newrelic_rpm
   oj

@@ -250,6 +250,22 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_02_182918) do
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
+  create_table "listen_histories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_listen_histories_on_user_id"
+  end
+
+  create_table "listens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "listen_history_id"
+    t.uuid "recording_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["listen_history_id"], name: "index_listens_on_listen_history_id"
+    t.index ["recording_id"], name: "index_listens_on_recording_id"
+  end
+
   create_table "lyricists", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "slug", null: false
@@ -330,15 +346,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_02_182918) do
     t.date "founded_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "recording_listens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "user_history_id"
-    t.uuid "recording_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["recording_id"], name: "index_recording_listens_on_recording_id"
-    t.index ["user_history_id"], name: "index_recording_listens_on_user_history_id"
   end
 
   create_table "recording_singers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -539,13 +546,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_02_182918) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "user_histories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_user_histories_on_user_id"
-  end
-
   create_table "user_preferences", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id", null: false
     t.string "first_name"
@@ -613,11 +613,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_02_182918) do
   add_foreign_key "dancer_videos", "videos"
   add_foreign_key "events", "users"
   add_foreign_key "likes", "users"
+  add_foreign_key "listen_histories", "users"
+  add_foreign_key "listens", "listen_histories"
+  add_foreign_key "listens", "recordings"
   add_foreign_key "lyrics", "compositions"
   add_foreign_key "playlist_audio_transfers", "audio_transfers"
   add_foreign_key "playlist_audio_transfers", "playlists"
-  add_foreign_key "recording_listens", "recordings"
-  add_foreign_key "recording_listens", "user_histories"
   add_foreign_key "recording_singers", "recordings"
   add_foreign_key "recording_singers", "singers"
   add_foreign_key "recordings", "compositions"
@@ -637,7 +638,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_02_182918) do
   add_foreign_key "tanda_recordings", "recordings"
   add_foreign_key "tanda_recordings", "tandas"
   add_foreign_key "tandas", "audio_transfers"
-  add_foreign_key "user_histories", "users"
   add_foreign_key "user_preferences", "users"
   add_foreign_key "videos", "recordings"
   add_foreign_key "waveforms", "audio_transfers"

@@ -1,8 +1,9 @@
-class RecordingListen < ApplicationRecord
-  belongs_to :user_history
-  belongs_to :recording
-end
-
+volver_a_sonar_admin_listen:
+  listen_history: admin_listen_history
+  recording: volver_a_sonar
+volver_a_sonar_normal_listen:
+  listen_history: normal_listen_history
+  recording: volver_a_sonar
 # == Schema Information
 #
 # Table name: recording_listens

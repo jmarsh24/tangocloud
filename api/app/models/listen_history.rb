@@ -1,11 +1,11 @@
-class UserHistory < ApplicationRecord
+class ListenHistory < ApplicationRecord
   belongs_to :user
-  has_many :listens, class_name: "RecordingListen", dependent: :destroy
+  has_many :listens
 end
 
 # == Schema Information
 #
-# Table name: histories
+# Table name: listen_histories
 #
 #  id         :uuid             not null, primary key
 #  user_id    :uuid

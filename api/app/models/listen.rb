@@ -1,9 +1,7 @@
-volver_a_sonar_admin_listen:
-  user_history: admin_user_history
-  recording: volver_a_sonar
-volver_a_sonar_normal_listen:
-  user_history: normal_user_history
-  recording: volver_a_sonar
+class Listen < ApplicationRecord
+  belongs_to :listen_history
+  belongs_to :recording
+end
 
 # == Schema Information
 #

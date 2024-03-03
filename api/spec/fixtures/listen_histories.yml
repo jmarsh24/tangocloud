@@ -1,0 +1,15 @@
+admin_listen_history:
+  user: admin
+
+normal_listen_history:
+  user: normal
+
+# == Schema Information
+#
+# Table name: listen_histories
+#
+#  id         :uuid             not null, primary key
+#  user_id    :uuid
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#

@@ -226,12 +226,12 @@ module Types
       likeable.likes.exists?(user: context[:current_user])
     end
 
-    field :user_history, UserHistoryType.connection_type, null: false, description: "Get the user's history."
+    field :listen_history, ListenHistoryType.connection_type, null: false, description: "Get the user's history."
 
-    def user_history
+    def listen_history
       raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
 
-      context[:current_user].user_history
+      context[:current_user].listen_history
     end
   end
 end

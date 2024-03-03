@@ -1,5 +1,5 @@
-module Mutations::UserActivity
-  class UnlikeRecording < Mutations::BaseMutation
+module Mutations::Recording
+  class RemoveLikeFromRecording < Mutations::BaseMutation
     field :success, Boolean, null: false
     field :errors, Types::ValidationErrorsType, null: true
 

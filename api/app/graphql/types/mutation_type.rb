@@ -1,11 +1,11 @@
 module Types
   class MutationType < Types::BaseObject
-    field :login, mutation: Mutations::Users::Login
-    field :register, mutation: Mutations::Users::Register
+    field :login, mutation: Mutations::User::LoginUser
+    field :register, mutation: Mutations::User::RegisterUser
 
-    field :like_recording, mutation: Mutations::UserActivity::LikeRecording
-    field :unlike_recording, mutation: Mutations::UserActivity::UnlikeRecording
-    field :create_recording_listen, mutation: Mutations::UserActivity::CreateRecordingListen
-    field :destroy_recording_listen, mutation: Mutations::UserActivity::DestroyRecordingListen
+    field :add_like_to_recording, mutation: Mutations::Recording::AddLikeToRecording
+    field :remove_like_from_recording, mutation: Mutations::Recording::RemoveLikeFromRecording
+    field :create_listen, mutation: Mutations::Listen::CreateListen
+    field :destroy_listen, mutation: Mutations::Listen::RemoveListen
   end
 end

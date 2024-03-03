@@ -81,7 +81,6 @@ group :development do
   gem "guard"
   gem "guard-rspec"
   gem "letter_opener"
-  gem "listen"
   gem "pry-rails"
   gem "rb-fsevent"
   gem "web-console"
