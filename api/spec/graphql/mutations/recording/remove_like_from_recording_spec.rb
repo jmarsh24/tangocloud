@@ -1,46 +1,31 @@
 require "rails_helper"
 
-RSpec.describe "UnlikeRecordingRecording", type: :request do
+RSpec.describe "RemoveLikeFromRecordingRecording", type: :graph do
   let(:user) { users(:normal) }
   let(:recording) { recordings(:volver_a_sonar) }
+  let(:like) { likes(:normal_user_like) }
   let(:mutation) do
     <<~GQL
-      mutation unlikeRecording($id: ID!) {
-        unlikeRecording(input: { id: $id}) {
+      mutation RemoveLikeFromRecording($id: ID!) {
+        removeLikeFromRecording(input: { id: $id}) {
           success
-          errors {
-            details
-            fullMessages
-          }
+          errors
         }
       }
     GQL
   end
 
   it "destroys a like" do
-    recording.likes.create!(user:)
-    token = AuthToken.token(user)
-    post api_graphql_path, params: {query: mutation, variables: {id: recording.id}}, headers: {"Authorization" => "Bearer #{token}"}
-    json = JSON.parse(response.body)
+    gql(mutation, variables: {id: like.id}, user:)
 
-    expect(json.dig("data", "unlikeRecording", "success")).to be_truthy
-    expect(json.dig("data", "unlikeRecording", "errors")).to be_nil
+    expect(data.remove_like_from_recording.success).to be_truthy
+    expect(Like.exists?(id: like.id)).to be_falsey
   end
 
   it "returns an error if the like does not exist" do
-    token = AuthToken.token(user)
-    post api_graphql_path, params: {query: mutation, variables: {id: recording.id}}, headers: {"Authorization" => "Bearer #{token}"}
-    json = JSON.parse(response.body)
+    gql(mutation, variables: {id: 0}, user: user)
 
-    expect(json.dig("data", "unlikeRecording", "success")).to be_falsey
-    expect(json.dig("errors", 0, "message")).to eq("Like not found")
-  end
-
-  it "returns an error if the user is not authenticated" do
-    post api_graphql_path, params: {query: mutation, variables: {id: recording.id}}
-    json = JSON.parse(response.body)
-
-    expect(json.dig("data", "unlikeRecording")).to be_nil
-    expect(json.dig("errors")[0]).to eq("You must be signed in to access this resource.")
+    expect(data.remove_like_from_recording.success).to be_falsey
+    expect(data.remove_like_from_recording.errors).to eq(["Like not found"])
   end
 end

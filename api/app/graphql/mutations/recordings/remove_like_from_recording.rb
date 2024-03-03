@@ -1,19 +1,17 @@
 module Mutations::Recordings
   class RemoveLikeFromRecording < Mutations::BaseMutation
     field :success, Boolean, null: false
-    field :errors, Types::ValidationErrorsType, null: true
+    field :errors, [String], null: false
 
     argument :id, ID, required: true
 
     def resolve(id:)
-      like = Like.find_by(likeable_id: id, user: context[:current_user])
+      like = Like.find_by(id:)
 
-      unless like
-        raise GraphQL::ExecutionError, "Like not found"
-      end
+      return {success: false, errors: ["Like not found"]} if like.nil?
 
       if like.destroy
-        {success: true, errors: nil}
+        {success: true, errors: []}
       else
         {success: false, errors: like.errors}
       end
