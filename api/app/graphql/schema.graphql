@@ -6,7 +6,7 @@ input AddLikeToRecordingInput {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
-  id: ID!
+  recordingId: ID!
 }
 
 """
@@ -17,7 +17,7 @@ type AddLikeToRecordingPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
-  errors: ValidationErrors
+  errors: [String!]!
   like: Like
   success: Boolean!
 }
