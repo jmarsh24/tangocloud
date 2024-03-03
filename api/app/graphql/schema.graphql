@@ -1129,7 +1129,7 @@ type RemoveLikeFromRecordingPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
-  errors: ValidationErrors
+  errors: [String!]!
   success: Boolean!
 }
 
