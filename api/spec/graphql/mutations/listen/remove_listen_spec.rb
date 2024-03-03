@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "removeListen", type: :request do
+RSpec.describe "removeListen", type: :graph do
   let(:user) { users(:normal) }
   let(:listen) { listens(:volver_a_sonar_normal_listen) }
   let(:recording) { listen.recording }
@@ -17,7 +17,7 @@ RSpec.describe "removeListen", type: :request do
     GQL
   end
 
-  fit "removes a listen" do
+  it "removes a listen" do
     token = AuthToken.token(user)
     post api_graphql_path, params: {query: mutation, variables: {id: listen.id}}, headers: {"Authorization" => "Bearer #{token}"}
 

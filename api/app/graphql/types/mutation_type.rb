@@ -4,8 +4,8 @@ module Types
     field :register, mutation: Mutations::Users::RegisterUser
 
     field :add_like_to_recording, mutation: Mutations::Recordings::AddLikeToRecording
-    field :create_listen, mutation: Mutations::Listens::CreateListen
+    field :create_listen, mutation: Mutations::ListenHistories::CreateListen
     field :remove_like_from_recording, mutation: Mutations::Recordings::RemoveLikeFromRecording
-    field :remove_listen, mutation: Mutations::Listens::RemoveListen
+    field :remove_listen, mutation: Mutations::ListenHistories::RemoveListen
   end
 end

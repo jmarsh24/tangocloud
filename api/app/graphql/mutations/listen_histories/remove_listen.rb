@@ -1,4 +1,4 @@
-module Mutations::Listens
+module Mutations::ListenHistories
   class RemoveListen < Mutations::BaseMutation
     argument :id, ID, required: true
 

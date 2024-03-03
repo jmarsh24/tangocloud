@@ -1,11 +1,11 @@
-module Mutations::Listens
+module Mutations::ListenHistories
   class CreateListen < Mutations::BaseMutation
     argument :recording_id, ID, required: true
 
     field :listen, Types::ListenType, null: false
 
     def resolve(recording_id:)
-      listen = Current.user.listen_history.listens.new(
+      listen = current_user.listen_history.listens.new(
         recording_id:
       )
 
