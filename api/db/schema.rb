@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_03_223711) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_02_182918) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -231,13 +231,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_03_223711) do
     t.integer "recordings_count", default: 0
   end
 
-  create_table "histories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_histories_on_user_id"
-  end
-
   create_table "labels", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
@@ -289,8 +282,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_03_223711) do
   create_table "lyrics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "locale", null: false
     t.text "content", null: false
+    t.uuid "composition_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["composition_id"], name: "index_lyrics_on_composition_id"
+    t.index ["locale", "composition_id"], name: "index_lyrics_on_locale_and_composition_id", unique: true
   end
 
   create_table "orchestras", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -559,15 +555,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_03_223711) do
     t.index ["user_id"], name: "index_user_preferences_on_user_id"
   end
 
-  create_table "user_proferences", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "user_id", null: false
-    t.string "first_name"
-    t.string "last_name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_user_proferences_on_user_id"
-  end
-
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", null: false
     t.string "password_digest", null: false
@@ -625,11 +612,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_03_223711) do
   add_foreign_key "dancer_videos", "dancers"
   add_foreign_key "dancer_videos", "videos"
   add_foreign_key "events", "users"
-  add_foreign_key "histories", "users"
   add_foreign_key "likes", "users"
   add_foreign_key "listen_histories", "users"
   add_foreign_key "listens", "listen_histories"
   add_foreign_key "listens", "recordings"
+  add_foreign_key "lyrics", "compositions"
   add_foreign_key "playlist_audio_transfers", "audio_transfers"
   add_foreign_key "playlist_audio_transfers", "playlists"
   add_foreign_key "recording_singers", "recordings"
@@ -652,7 +639,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_03_223711) do
   add_foreign_key "tanda_recordings", "tandas"
   add_foreign_key "tandas", "audio_transfers"
   add_foreign_key "user_preferences", "users"
-  add_foreign_key "user_proferences", "users"
   add_foreign_key "videos", "recordings"
   add_foreign_key "waveforms", "audio_transfers"
 end
