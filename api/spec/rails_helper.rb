@@ -28,6 +28,8 @@ RSpec.configure do |config|
   config.before(:suite) do
     WebMock.disable_net_connect!(allow_localhost: true)
   end
-end
 
-ActiveStorage::Current.url_options = {host: "example.com"}
+  config.before(:each) do
+    ActiveStorage::Current.url_options = {host: "example.com"}
+  end
+end
