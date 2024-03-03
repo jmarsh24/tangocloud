@@ -6,8 +6,8 @@ RSpec.describe "recordings" do
     let!(:recording) { recordings(:volver_a_sonar) }
     let(:query) do
       <<~GQL
-        query Recordings($query: String) {
-          recordings(query: $query) {
+        query SearchRecordings($query: String) {
+          searchRecordings(query: $query) {
             edges {
               node {
                 id
@@ -42,7 +42,7 @@ RSpec.describe "recordings" do
     it "returns comprehensive details for recordings including orchestra and singers" do
       result = TangocloudSchema.execute(query, variables: {query: "Volver a"}, context: {current_user: user})
 
-      recordings_data = result.dig("data", "recordings", "edges").map { |edge| edge["node"] }
+      recordings_data = result.dig("data", "searchRecordings", "edges").map { |edge| edge["node"] }
       found_recording = recordings_data.first
 
       expect(found_recording).not_to be_nil

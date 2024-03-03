@@ -6,8 +6,8 @@ RSpec.describe "recording" do
     let!(:recording) { recordings(:volver_a_sonar) }
     let(:query) do
       <<~GQL
-        query recording($id: ID!) {
-          recording(id: $id) {
+        query FetchRecording($id: ID!) {
+          fetchRecording(id: $id) {
             id
             title
             singers {
@@ -35,7 +35,7 @@ RSpec.describe "recording" do
 
     it "returns the correct recording details" do
       result = TangocloudSchema.execute(query, variables: {id: recording.id.to_s}, context: {current_user: user})
-      recording_data = result.dig("data", "recording")
+      recording_data = result.dig("data", "fetchRecording")
 
       expect(recording_data["id"]).to eq(recording.id.to_s)
       expect(recording_data["title"]).to eq("Volver a sonar")
