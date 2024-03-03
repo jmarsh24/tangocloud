@@ -3,6 +3,8 @@ module Mutations::ListenHistories
     argument :id, ID, required: true
 
     field :message, String, null: false
+    field :success, Boolean, null: false
+    field :errors, [String], null: true
 
     def resolve(id:)
       listen = Listen.find(id)
@@ -13,7 +15,7 @@ module Mutations::ListenHistories
         {errors: listen.errors, success: false}
       end
     rescue ActiveRecord::RecordNotFound => e
-      GraphQL::ExecutionError.new("Error: #{e.message}")
+      {errors: [e.message], success: false}
     end
   end
 end
