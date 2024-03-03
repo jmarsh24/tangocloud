@@ -1,5 +1,5 @@
-module Resolvers
-  class ListenHistoryResolver < Resolvers::BaseResolver
+module Resolvers::ListenHistories
+  class FetchListenHistory < Resolvers::BaseResolver
     type Types::ListenHistoryType, null: false
 
     def resolve

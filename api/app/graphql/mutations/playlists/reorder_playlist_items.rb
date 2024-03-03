@@ -1,4 +1,4 @@
-module Mutations::Playlist
+module Mutations::Playlists
   class ReorderPlaylistItems < Mutations::BaseMutation
     argument :playlist_id, ID, required: true
     argument :recording_ids, [ID], required: true

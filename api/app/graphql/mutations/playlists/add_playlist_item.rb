@@ -1,4 +1,4 @@
-module Mutations::Playlist
+module Mutations::Playlists
   class AddPlaylistItem < Mutations::BaseMutation
     argument :playlist_id, ID, required: true
     argument :recording_id, ID, required: true

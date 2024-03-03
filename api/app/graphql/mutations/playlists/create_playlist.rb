@@ -1,4 +1,4 @@
-module Mutations::Playlist
+module Mutations::Playlists
   class CreatePlaylist < Mutations::BaseMutation
     argument :title, String, required: true
 

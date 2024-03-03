@@ -1,4 +1,4 @@
-module Mutations::Playlist
+module Mutations::Playlists
   class UpdatePlaylist < Mutations::BaseMutation
     argument :id, ID, required: true
     argument :title, String, required: true

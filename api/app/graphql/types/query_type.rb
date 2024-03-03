@@ -226,6 +226,6 @@ module Types
       likeable.likes.exists?(user: context[:current_user])
     end
 
-    field :listen_history, resolver: Resolvers::ListenHistoryResolver
+    field :fetch_listen_history, resolver: Resolvers::ListenHistories::FetchListenHistory
   end
 end

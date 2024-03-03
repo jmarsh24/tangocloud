@@ -1,4 +1,4 @@
-module Mutations::Listen
+module Mutations::Listens
   class CreateListen < Mutations::BaseMutation
     argument :recording_id, ID, required: true
 

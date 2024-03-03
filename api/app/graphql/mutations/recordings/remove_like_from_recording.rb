@@ -1,4 +1,4 @@
-module Mutations::Recording
+module Mutations::Recordings
   class RemoveLikeFromRecording < Mutations::BaseMutation
     field :success, Boolean, null: false
     field :errors, Types::ValidationErrorsType, null: true

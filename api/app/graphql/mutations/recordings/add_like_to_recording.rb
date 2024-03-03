@@ -1,4 +1,4 @@
-module Mutations::Recording
+module Mutations::Recordings
   class AddLikeToRecording < Mutations::BaseMutation
     field :like, Types::LikeType, null: true
     field :success, Boolean, null: false
