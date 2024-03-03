@@ -637,7 +637,48 @@ type PlaylistAudioTransfer {
   updatedAt: ISO8601DateTime!
 }
 
+"""
+The connection type for Playlist.
+"""
+type PlaylistConnection {
+  """
+  A list of edges.
+  """
+  edges: [PlaylistEdge!]!
+
+  """
+  A list of nodes.
+  """
+  nodes: [Playlist!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+}
+
+"""
+An edge in a connection.
+"""
+type PlaylistEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge.
+  """
+  node: Playlist
+}
+
 type Query {
+  fetchAudioTransfer(
+    """
+    ID of the audio transfer.
+    """
+    id: ID!
+  ): AudioTransfer!
   fetchAudioVariant(
     """
     ID of the audio variant.
@@ -857,10 +898,30 @@ type Query {
   ): PeriodConnection!
   searchPlaylists(
     """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
     Search query.
     """
     query: String!
-  ): [Playlist!]!
+  ): PlaylistConnection!
   searchRecordings(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -889,17 +950,57 @@ type Query {
   ): RecordingConnection!
   searchSingers(
     """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
     Name of the singer.
     """
-    name: String!
-  ): [Singer!]!
+    query: String!
+  ): SingerConnection!
   searchUsers(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
     """
     Search query.
     """
     query: String!
-  ): [User!]!
-  whoAmI: User!
+  ): UserConnection!
+  userProfile: User!
 }
 
 type RecordLabel {
@@ -1079,6 +1180,41 @@ type Singer {
   sortName: String
 }
 
+"""
+The connection type for Singer.
+"""
+type SingerConnection {
+  """
+  A list of edges.
+  """
+  edges: [SingerEdge!]!
+
+  """
+  A list of nodes.
+  """
+  nodes: [Singer!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+}
+
+"""
+An edge in a connection.
+"""
+type SingerEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge.
+  """
+  node: Singer
+}
+
 type TransferAgent {
   audioTransfers: [AudioTransfer!]!
   audioVariants: [AudioVariant!]!
@@ -1108,6 +1244,41 @@ type User {
   updatedAt: ISO8601DateTime!
   username: String!
   verified: Boolean!
+}
+
+"""
+The connection type for User.
+"""
+type UserConnection {
+  """
+  A list of edges.
+  """
+  edges: [UserEdge!]!
+
+  """
+  A list of nodes.
+  """
+  nodes: [User!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+}
+
+"""
+An edge in a connection.
+"""
+type UserEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge.
+  """
+  node: User
 }
 
 type ValidationErrors {
