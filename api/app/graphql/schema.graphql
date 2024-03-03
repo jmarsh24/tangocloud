@@ -1154,7 +1154,7 @@ type RemoveListenPayload {
   clientMutationId: String
   errors: [String!]
   message: String!
-  success: Boolean
+  success: Boolean!
 }
 
 type Session {
