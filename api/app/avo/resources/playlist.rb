@@ -10,7 +10,7 @@ class Avo::Resources::Playlist < Avo::BaseResource
       higher: -> { record.move_higher },
       lower: -> { record.move_lower },
       to_top: -> { record.move_to_top },
-      to_bottom: -> { record.move_to_bottom },
+      to_bottom: -> { record.move_to_bottom }
     }
   }
 

@@ -4,14 +4,14 @@ RSpec.describe "CreateListen", type: :request do
   let(:user) { users(:normal) }
   let(:mutation) do
     <<~GQL
-      mutation createRecordingListen($recordingId: ID!) {
-        createRecordingListen(input: {
+      mutation createListen($recordingId: ID!) {
+        createListen(input: {
           recordingId: $recordingId
         }) {
-          recordingListen {
+          listen {
             id
             createdAt
-            userHistory {
+            listenHistory {
               user {
                 id
               }
@@ -32,10 +32,10 @@ RSpec.describe "CreateListen", type: :request do
     post api_graphql_path, params: {query: mutation, variables: {recordingId: recording.id}}, headers: {"Authorization" => "Bearer #{token}"}
     json = JSON.parse(response.body)
 
-    expect(json.dig("data", "createRecordingListen", "recordingListen", "userHistory", "user", "id")).to eq(user.id.to_s)
-    expect(json.dig("data", "createRecordingListen", "recordingListen", "recording", "id")).to eq(recording.id.to_s)
-    expect(json.dig("data", "createRecordingListen", "recordingListen", "createdAt")).to be_present
-    expect(json.dig("data", "createRecordingListen", "recordingListen", "errors")).to be_nil
+    expect(json.dig("data", "createListen", "listen", "listenHistory", "user", "id")).to eq(user.id.to_s)
+    expect(json.dig("data", "createListen", "listen", "recording", "id")).to eq(recording.id.to_s)
+    expect(json.dig("data", "createListen", "listen", "createdAt")).to be_present
+    expect(json.dig("data", "createListen", "listen", "errors")).to be_nil
   end
 
   it "requires authentication" do

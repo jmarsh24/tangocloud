@@ -10,10 +10,10 @@ module Mutations::Playlist
       playlist = Playlist.find(playlist_id)
       recording = Recording.find(recording_id)
 
-      playlist_item = PlaylistItem.new(playlist: playlist, recording: recording)
+      playlist_item = PlaylistItem.new(playlist:, recording:)
 
       if playlist_item.save
-        {playlist: playlist}
+        {playlist:}
       else
         {errors: playlist_item.errors.full_messages}
       end

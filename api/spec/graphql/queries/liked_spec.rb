@@ -5,7 +5,7 @@ RSpec.describe "liked", type: :request do
     it "returns true if the user has liked the likeable" do
       user = users(:normal)
       recording = recordings(:volver_a_sonar)
-      recording.likes.create(user: user)
+      recording.likes.create(user:)
       token = AuthToken.token(user)
 
       query = <<~GQL
@@ -18,7 +18,7 @@ RSpec.describe "liked", type: :request do
 
       json = JSON.parse(response.body)
       data = json.dig("data", "liked")
-      expect(data).to eq(true)
+      expect(data).to be(true)
     end
 
     it "returns false if the user has not liked the likeable" do
@@ -36,7 +36,7 @@ RSpec.describe "liked", type: :request do
 
       json = JSON.parse(response.body)
       data = json["data"]["liked"]
-      expect(data).to eq(false)
+      expect(data).to be(false)
     end
 
     it "returns an error if the user is not authenticated" do
