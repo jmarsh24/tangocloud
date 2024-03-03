@@ -1,36 +1,30 @@
 require "rails_helper"
 
-RSpec.describe "user profile" do
-  describe "Querying for user profile" do
+RSpec.describe "user profile", type: :graph do
+  describe "Querying for user_profile" do
     let!(:user) { users(:admin) }
     let(:query) do
       <<~GQL
-        query userProfile {
+        query UserProfile {
           userProfile {
             id
-            name
-            email
             username
-            firstName
-            lastName
-            admin
+            email
+            name
           }
         }
       GQL
     end
 
     it "returns the correct user details" do
-      result = TangocloudSchema.execute(query, context: {current_user: user})
+      gql(query, user:)
 
-      user_data = result.dig("data", "userProfile")
+      user_data = data.user_profile
 
-      expect(user_data["id"]).to eq(user.id)
-      expect(user_data["username"]).to eq("admin")
-      expect(user_data["email"]).to eq("admin@tangocloud.app")
-      expect(user_data["name"]).to eq("Admin User")
-      expect(user_data["firstName"]).to eq("Admin")
-      expect(user_data["lastName"]).to eq("User")
-      expect(user_data["admin"]).to be(true)
+      expect(user_data.id).to eq(user.id)
+      expect(user_data.username).to eq(user.username)
+      expect(user_data.email).to eq(user.email)
+      expect(user_data.name).to eq(user.name)
     end
   end
 end

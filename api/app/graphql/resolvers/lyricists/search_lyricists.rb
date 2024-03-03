@@ -4,8 +4,8 @@ module Resolvers::Lyricists
 
     argument :query, String, required: false, description: "Search query."
 
-    def resolve(query: nil)
-      Lyricist.search_lyricists(query)
+    def resolve(query: "*")
+      Lyricist.search_lyricists(query).results
     end
   end
 end

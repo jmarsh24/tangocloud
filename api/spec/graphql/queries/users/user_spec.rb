@@ -1,12 +1,13 @@
 require "rails_helper"
 
-RSpec.describe "user" do
+RSpec.describe "user", type: :graph do
   describe "Querying for user" do
-    let!(:user) { users(:admin) }
+    let!(:admin) { users(:admin) }
+    let!(:normal_user) { users(:normal) }
     let(:query) do
       <<~GQL
-        query user($id: ID!) {
-          user(id: $id) {
+        query fetchUser($id: ID!) {
+          fetchUser(id: $id) {
             id
             name
             email
@@ -20,16 +21,17 @@ RSpec.describe "user" do
     end
 
     it "returns the correct user details" do
-      result = TangocloudSchema.execute(query, variables: {id: user.id}, context: {current_user: user})
+      gql(query, variables: {id: normal_user.id.to_s}, user: admin)
 
-      user_data = result.dig("data", "user")
-      expect(user_data["id"]).to eq(user.id)
-      expect(user_data["username"]).to eq("admin")
-      expect(user_data["email"]).to eq("admin@tangocloud.app")
-      expect(user_data["name"]).to eq("Admin User")
-      expect(user_data["firstName"]).to eq("Admin")
-      expect(user_data["lastName"]).to eq("User")
-      expect(user_data["admin"]).to be(true)
+      user_data = data.fetch_user
+
+      expect(user_data.id).to eq(normal_user.id)
+      expect(user_data.username).to eq("normal_user")
+      expect(user_data.email).to eq("normal_user@example.com")
+      expect(user_data.name).to eq("Normal User")
+      expect(user_data.first_name).to eq("Normal")
+      expect(user_data.last_name).to eq("User")
+      expect(user_data.admin).to be(false)
     end
   end
 end

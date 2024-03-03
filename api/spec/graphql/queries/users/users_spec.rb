@@ -1,12 +1,12 @@
 require "rails_helper"
 
-RSpec.describe "users" do
+RSpec.describe "users", type: :graph do
   describe "Querying for users" do
     let!(:user) { users(:admin) }
     let(:query) do
       <<~GQL
-        query users($query: String) {
-          users(query: $query) {
+        query searchUsers($query: String!) {
+          searchUsers(query: $query) {
             edges {
               node {
                 id
@@ -19,10 +19,9 @@ RSpec.describe "users" do
     end
 
     it "returns the correct el_recodo_song details" do
-      result = TangocloudSchema.execute(query, variables: {query: "admin"}, context: {current_user: user})
+      gql(query, variables: {query: "admin"}, user:)
 
-      user_data = result.dig("data", "users", "edges").map { _1["node"] }
-      found_user = user_data.find { _1["name"].include?("Admin User") }
+      found_user = data.search_users.edges.first.node
 
       expect(found_user).not_to be_nil
       expect(found_user["id"]).to eq(user.id.to_s)

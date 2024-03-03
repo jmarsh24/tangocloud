@@ -1,5 +1,5 @@
 module Resolvers::Users
-  class WhoAmI < Resolvers::BaseResolver
+  class UserProfile < Resolvers::BaseResolver
     type Types::UserType, null: false
 
     def resolve

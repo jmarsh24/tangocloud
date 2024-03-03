@@ -4,8 +4,8 @@ module Resolvers::Orchestras
 
     argument :query, String, required: false, description: "Search query."
 
-    def resolve(query: nil)
-      Orchestra.search_orchestras(query)
+    def resolve(query: "*")
+      Orchestra.search_orchestras(query).results
     end
   end
 end

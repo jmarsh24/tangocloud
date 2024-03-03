@@ -1,13 +1,13 @@
 require "rails_helper"
 
-RSpec.describe "singers" do
+RSpec.describe "singers", type: :graph do
   describe "Querying for singers" do
     let!(:user) { users(:admin) }
     let!(:singer) { singers(:roberto_rufino) }
     let(:query) do
       <<~GQL
-        query singers($query: String) {
-          singers(query: $query) {
+        query SearchSingers($query: String!) {
+          searchSingers(query: $query) {
             edges {
               node {
                 id
@@ -20,12 +20,10 @@ RSpec.describe "singers" do
     end
 
     it "returns the correct el_recodo_song details" do
-      result = TangocloudSchema.execute(query, variables: {query: "rufino"}, context: {current_user: user})
+      gql(query, variables: {query: "Roberto Rufino"}, user:)
 
-      singer_data = result.dig("data", "singers", "edges").map { _1["node"] }
-      found_singer = singer_data.find { _1["name"].include?("Roberto Rufino") }
+      found_singer = data.search_singers.edges.first.node
 
-      expect(found_singer).not_to be_nil
       expect(found_singer["id"]).to eq(singer.id.to_s)
       expect(found_singer["name"]).to eq("Roberto Rufino")
     end

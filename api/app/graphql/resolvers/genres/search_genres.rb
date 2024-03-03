@@ -4,8 +4,8 @@ module Resolvers::Genres
 
     argument :query, String, required: false, description: "Search query."
 
-    def resolve(query: nil)
-      Genre.search_genres(query)
+    def resolve(query: "*")
+      Genre.search_genres(query).results
     end
   end
 end

@@ -4,8 +4,8 @@ module Resolvers::Periods
 
     argument :query, String, required: false, description: "Search query."
 
-    def resolve(query: nil)
-      Period.search_periods(query)
+    def resolve(query: "*")
+      Period.search_periods(query).results
     end
   end
 end

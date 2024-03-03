@@ -4,8 +4,8 @@ module Resolvers::ElRecodoSongs
 
     argument :query, String, required: false, description: "Search query."
 
-    def resolve(query: nil)
-      ElRecodoSong.search_el_recodo_songs(query)
+    def resolve(query: "*")
+      ElRecodoSong.search_songs(query).results
     end
   end
 end

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "fetch listen history" do
+RSpec.describe "fetch listen history", type: :graph do
   describe "Querying for listen_history" do
     let!(:user) { users(:normal) }
     let!(:listen) { listens(:volver_a_sonar_normal_listen) }
@@ -29,16 +29,15 @@ RSpec.describe "fetch listen history" do
     end
 
     it "returns the correct el_recodo_song details" do
-      result = TangocloudSchema.execute(query, context: {current_user: user})
+      gql(query, user:)
 
-      json = JSON.parse(result.to_json)
-
-      expect(json.dig("data", "fetchListenHistory", "listens", "edges").length).to eq(1)
-      expect(json.dig("data", "fetchListenHistory", "listens", "edges", 0, "node", "id")).to eq(listen.id.to_s)
-      expect(json.dig("data", "fetchListenHistory", "listens", "edges", 0, "node", "createdAt")).to eq(listen.created_at.iso8601)
-      expect(json.dig("data", "fetchListenHistory", "listens", "edges", 0, "node", "recording", "id")).to eq(listen.recording.id.to_s)
-      expect(json.dig("data", "fetchListenHistory", "listens", "edges", 0, "node", "recording", "title")).to eq(listen.recording.title)
-      expect(json.dig("data", "fetchListenHistory", "listens", "edges", 0, "node", "user", "id")).to eq(listen.user.id.to_s)
+      listen_edges = data.fetch_listen_history.listens.edges
+      expect(listen_edges.size).to eq(1)
+      expect(listen_edges.first.node.id).to eq(listen.id.to_s)
+      expect(listen_edges.first.node.created_at).to eq(listen.created_at.iso8601)
+      expect(listen_edges.first.node.recording.id).to eq(listen.recording.id.to_s)
+      expect(listen_edges.first.node.recording.title).to eq(listen.recording.title)
+      expect(listen_edges.first.node.user.id).to eq(listen.user.id.to_s)
     end
   end
 end

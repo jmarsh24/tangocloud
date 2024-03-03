@@ -1,5 +1,6 @@
 module Types
   class QueryType < Types::BaseObject
+    field :fetch_audio_transfer, resolver: Resolvers::AudioTransfers::FetchAudioTransfer
     field :fetch_audio_variant, resolver: Resolvers::AudioVariants::FetchAudioVariant
     field :fetch_composer, resolver: Resolvers::Composers::FetchComposer
     field :fetch_genre, resolver: Resolvers::Genres::FetchGenre
@@ -21,6 +22,6 @@ module Types
     field :search_recordings, resolver: Resolvers::Recordings::SearchRecordings
     field :search_singers, resolver: Resolvers::Singers::SearchSingers
     field :search_users, resolver: Resolvers::Users::SearchUsers
-    field :who_am_i, resolver: Resolvers::Users::WhoAmI
+    field :user_profile, resolver: Resolvers::Users::UserProfile
   end
 end

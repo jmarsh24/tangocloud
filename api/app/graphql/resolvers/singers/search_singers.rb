@@ -1,11 +1,11 @@
 module Resolvers::Singers
   class SearchSingers < Resolvers::BaseResolver
-    type [Types::SingerType], null: false
+    type Types::SingerType.connection_type, null: false
 
-    argument :name, String, required: true, description: "Name of the singer."
+    argument :query, String, required: true, description: "Name of the singer."
 
-    def resolve(query: nil)
-      Singer.search_singers(query)
+    def resolve(query: "*")
+      Singer.search_singers(query).results
     end
   end
 end

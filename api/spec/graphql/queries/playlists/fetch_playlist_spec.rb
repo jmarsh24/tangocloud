@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Playlist Query" do
+RSpec.describe "Fetch Playlist", type: :graph do
   describe "Fetching playlist details" do
     let!(:user) { users(:normal) }
     let!(:playlist) { playlists(:awesome_playlist) }
@@ -9,8 +9,8 @@ RSpec.describe "Playlist Query" do
 
     let(:query) do
       <<~GQL
-        query playlist($id: ID!) {
-          playlist(id: $id) {
+        query FetchPlaylist($id: ID!) {
+          fetchPlaylist(id: $id) {
             id
             title
             playlistAudioTransfers {
@@ -29,21 +29,21 @@ RSpec.describe "Playlist Query" do
     end
 
     it "returns the correct playlist details, including audio transfers and variants" do
-      result = TangocloudSchema.execute(query, variables: {id: playlist.id.to_s}, context: {current_user: user})
+      gql(query, variables: {id: playlist.id.to_s}, user:)
 
-      playlist_data = result.dig("data", "playlist")
+      playlist_data = data.fetch_playlist
 
-      expect(playlist_data["title"]).to eq(playlist.title)
-      expect(playlist_data["id"]).to eq(playlist.id.to_s)
-      first_playlist_audio_transfer_data = playlist_data["playlistAudioTransfers"].first
+      expect(playlist_data.title).to eq(playlist.title)
+      expect(playlist_data.id).to eq(playlist.id.to_s)
+      first_playlist_audio_transfer_data = playlist_data.playlist_audio_transfers.first
       expect(first_playlist_audio_transfer_data).not_to be_nil
 
-      first_audio_transfer_data = first_playlist_audio_transfer_data["audioTransfer"]
+      first_audio_transfer_data = first_playlist_audio_transfer_data.audio_transfer
       expect(first_audio_transfer_data).not_to be_nil
 
-      first_audio_variant_data = first_audio_transfer_data["audioVariants"].first
-      expect(first_audio_variant_data["id"]).to eq(audio_variant.id.to_s)
-      expect(first_audio_variant_data["audioFileUrl"]).to be_present
+      first_audio_variant_data = first_audio_transfer_data.audio_variants.first
+      expect(first_audio_variant_data.id).to eq(audio_variant.id.to_s)
+      expect(first_audio_variant_data.audio_file_url).to be_present
     end
   end
 end

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "fetchAudioTransfer" do
+RSpec.describe "fetchAudioTransfer", type: :graph do
   describe "Querying for audio transfer" do
     let!(:user) { users(:admin) }
     let!(:audio_transfer) { audio_transfers(:volver_a_sonar_tango_tunes_1940_audio_transfer) }
@@ -23,13 +23,12 @@ RSpec.describe "fetchAudioTransfer" do
     end
 
     it "returns comprehensive details for audio transfer including album and audio variants" do
-      result = TangocloudSchema.execute(query, variables: {id: audio_transfer.id}, context: {current_user: user})
+      gql(query, variables: {id: audio_transfer.id.to_s}, user:)
 
-      audio_transfer_data = result.dig("data", "fetchAudioTransfer")
-      expect(audio_transfer_data).not_to be_nil
-      expect(audio_transfer_data["id"]).to eq(audio_transfer.id.to_s)
-      expect(audio_transfer_data["album"]["albumArtUrl"]).not_to be_nil
-      expect(audio_transfer_data["audioVariants"].first["audioFileUrl"]).not_to be_empty
+      expect(data.fetch_audio_transfer).not_to be_nil
+      expect(data.fetch_audio_transfer.id).to eq(audio_transfer.id.to_s)
+      expect(data.fetch_audio_transfer.album.album_art_url).not_to be_nil
+      expect(data.fetch_audio_transfer.audio_variants.first.audio_file_url).not_to be_empty
     end
   end
 end
