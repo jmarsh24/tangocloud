@@ -1,11 +1,11 @@
-tango:
-  name: "tango"
-milonga:
-  name: "milonga"
 vals:
-  name: "vals"
-alternative:
-  name: "alternative"
+  name: vals
+
+tango:
+  name: tango
+
+milonga:
+  name: milonga
 # == Schema Information
 #
 # Table name: genres

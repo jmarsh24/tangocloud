@@ -3,7 +3,6 @@ admin_listen_history:
 
 normal_listen_history:
   user: normal
-
 # == Schema Information
 #
 # Table name: listen_histories

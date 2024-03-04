@@ -1,19 +1,15 @@
-tango_tunes:
-  name: TangoTunes
 
-tango_time_travel:
-  name: TangoTimeTravel
 
-unknown:
-  name: Unknown
 # == Schema Information
 #
-# Table name: transfer_agents
+# Table name: dancers
 #
 #  id          :uuid             not null, primary key
 #  name        :string           not null
-#  description :string
-#  url         :string
+#  nickname    :string
+#  nationality :string
+#  birth_date  :date
+#  death_date  :date
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #

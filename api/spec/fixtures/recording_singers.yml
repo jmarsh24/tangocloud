@@ -1,3 +1,14 @@
+milonga_vieja_milonga_roberto_rufino:
+  recording: milonga_vieja_milonga
+  singer: roberto_rufino
+
+volver_a_sonar_roberto_chanel:
+  recording: volver_a_sonar
+  singer: roberto_chanel
+
+farol_francisco_fiorentino:
+  recording: farol
+  singer: francisco_fiorentino
 # == Schema Information
 #
 # Table name: recording_singers
@@ -8,6 +19,3 @@
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #
-volver_a_sonar_roberto_rufino:
-  recording: volver_a_sonar
-  singer: roberto_rufino

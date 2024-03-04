@@ -4,6 +4,7 @@ admin:
   password_digest: <%= BCrypt::Password.create("password") %>
   verified: true
   admin: true
+
 normal:
   username: "normal_user"
   email: "normal_user@example.com"
