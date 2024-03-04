@@ -1,8 +1,8 @@
-lazaro_nixon:
-  username: lazaro_nixon
-  email: lazaronixon@hotmail.com
-  password_digest: <%= BCrypt::Password.create("Secret1*3*5*") %>
-  verified: true
+# lazaro_nixon:
+#   username: lazaro_nixon
+#   email: lazaronixon@hotmail.com
+#   password_digest: <%= BCrypt::Password.create("Secret1*3*5*") %>
+#   verified: true
 # == Schema Information
 #
 # Table name: users
