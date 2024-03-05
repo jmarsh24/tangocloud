@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "fetchAudioTransfer", type: :graph do
   describe "Querying for audio transfer" do
     let!(:user) { users(:admin) }
-    let!(:audio_transfer) { audio_transfers(:volver_a_sonar_tango_tunes_1940_audio_transfer) }
+    let!(:audio_transfer) { audio_transfers(:volver_a_sonar_rufino_19401008_flac) }
     let(:query) do
       <<~GQL
         query FetchAudioTransfer($id: ID!) {

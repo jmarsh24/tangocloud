@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "FetchAudioVariant", type: :graph do # Ensure you specify the type to include the GraphQLHelper
   describe "Querying an audio variant" do
     let!(:user) { users(:normal) } # Assuming users(:normal) is correctly returning a user instance
-    let!(:audio_variant) { audio_variants(:volver_a_sonar_tango_tunes_1940_audio_variant) } # Ensure this method correctly returns an instance
+    let!(:audio_variant) { audio_variants(:volver_a_sonar_rufino_aac) } # Ensure this method correctly returns an instance
 
     let(:query) do
       <<~GQL

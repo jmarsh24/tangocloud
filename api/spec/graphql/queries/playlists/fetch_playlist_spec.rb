@@ -4,8 +4,8 @@ RSpec.describe "Fetch Playlist", type: :graph do
   describe "Fetching playlist details" do
     let!(:user) { users(:normal) }
     let!(:playlist) { playlists(:awesome_playlist) }
-    let!(:audio_transfer) { audio_transfers(:volver_a_sonar_tango_tunes_1940_audio_transfer) }
-    let!(:audio_variant) { audio_variants(:volver_a_sonar_tango_tunes_1940_audio_variant) }
+    let!(:audio_transfer) { audio_transfers(:volver_a_sonar_rufino_19401008_flac) }
+    let!(:audio_variant) { audio_variants(:volver_a_sonar_rufino_aac) }
 
     let(:query) do
       <<~GQL

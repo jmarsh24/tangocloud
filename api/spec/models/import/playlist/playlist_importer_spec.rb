@@ -14,7 +14,7 @@ RSpec.describe Import::Playlist::PlaylistImporter, type: :model do
       file = File.open("spec/fixtures/files/awesome_playlist.m3u8")
       playlist.playlist_file.attach(io: file, filename: "awesome_playlist.m3u8")
 
-      volver_a_sonar = audio_transfers(:volver_a_sonar_tango_tunes_1940_audio_transfer)
+      volver_a_sonar = audio_transfers(:volver_a_sonar_rufino_19401008_flac)
       no_te_apures_carablanca = AudioTransfer.create!(filename: "19421009_no_te_apures_carablanca_juan_carlos_miranda_tango_1918.m4a")
       comme_il_faut = AudioTransfer.create!(filename: "19380307_comme_il_faut_instrumental_tango_2758.aif")
 
