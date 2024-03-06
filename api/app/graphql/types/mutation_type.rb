@@ -12,5 +12,6 @@ module Types
     field :remove_like_from_recording, mutation: Mutations::Recordings::RemoveLikeFromRecording
     field :remove_listen, mutation: Mutations::ListenHistories::RemoveListen
     field :reorder_playlist_items, mutation: Mutations::Playlists::ReorderPlaylistItems
+    field :update_playlist, mutation: Mutations::Playlists::UpdatePlaylist
   end
 end
