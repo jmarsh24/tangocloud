@@ -2,18 +2,28 @@ module Mutations::Playlists
   class DeletePlaylist < Mutations::BaseMutation
     argument :id, ID, required: true
 
-    field :message, String, null: false
+    field :success, Boolean, null: false
+    field :errors, [String], null: false
 
     def resolve(id:)
-      playlist = Playlist.find(id)
+      playlist = Playlist.find_by(id:)
 
-      if playlist.destroy
-        {message: "Playlist successfully deleted"}
+      if playlist.nil?
+        {
+          success: false,
+          errors: ["Playlist not found."]
+        }
+      elsif playlist.destroy
+        {
+          success: true,
+          errors: ["Playlist deleted successfully."]
+        }
       else
-        {errors: playlist.errors}
+        {
+          success: false,
+          errors: playlist.errors.full_messages
+        }
       end
-    rescue ActiveRecord::RecordNotFound => e
-      GraphQL::ExecutionError.new("Error: #{e.message}")
     end
   end
 end
