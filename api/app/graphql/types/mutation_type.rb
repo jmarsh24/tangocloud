@@ -5,6 +5,7 @@ module Types
 
     field :add_like_to_recording, mutation: Mutations::Recordings::AddLikeToRecording
     field :create_listen, mutation: Mutations::ListenHistories::CreateListen
+    field :create_playlist, mutation: Mutations::Playlists::CreatePlaylist
     field :remove_like_from_recording, mutation: Mutations::Recordings::RemoveLikeFromRecording
     field :remove_listen, mutation: Mutations::ListenHistories::RemoveListen
     field :reorder_playlist_items, mutation: Mutations::Playlists::ReorderPlaylistItems
