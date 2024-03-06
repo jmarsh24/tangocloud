@@ -103,6 +103,46 @@ farol_by_pugliese_chanel:
     los sueños de un millón de obreros..\r\nAllí murmura el viento\r\nlos poemas populares
     de Carriego,\r\ny cuando allá a lo lejos dan\r\nlas dos de la mañana,\r\nel arrabal
     parece\r\nque se duerme repitiéndole al farol..."
+
+comme_il_faut_by_troilo:
+  date: 1938-03-07
+  ert_number: 2758
+  music_id: 2758
+  title: Comme il faut
+  style: TANGO
+  orchestra: Aníbal TROILO
+  singer: Instrumental
+  composer: Eduardo Arolas
+  author: Gabriel Clausi
+  label: Odeon
+  lyrics: |
+    Luna, farol y canción,
+    dulce emoción del ayer
+    fue en París,
+    donde viví tu amor.
+    Tango, Champagne, corazón,
+    noche de amor
+    que no está,
+    en mi sueño vivirá...
+
+    Es como debe ser, con ilusión viví
+    las alegrías y las tristezas;
+    en esa noche fue que yo sentí por vos
+    una esperanza en mi corazón.
+    Es como debe ser en la pasión de ley,
+    tus ojos negros y tu belleza.
+    Siempre serás mi amor en bello amanecer
+    para mi vida, dulce ilusión.
+
+    En este tango
+    te cuento mi tristeza,
+    dolor y llanto
+    que dejo en esta pieza.
+    Quiero que oigas mi canción
+    hecha de luna y de farol
+    y que tu amor, mujer,
+    vuelva hacia mí.
+
 # == Schema Information
 #
 # Table name: el_recodo_songs

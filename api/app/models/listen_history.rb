@@ -1,6 +1,6 @@
 class ListenHistory < ApplicationRecord
   belongs_to :user
-  has_many :listens
+  has_many :listens, dependent: :destroy
 end
 
 # == Schema Information
