@@ -38,7 +38,7 @@ volver_a_sonar_rufino:
   length: 7743
   data: <%= File.binread(Rails.root.join("spec", "fixtures", "files","waveform_data_volver_a_sonar.json")) %>
 
-waveform_desde_el_alma:
+desde_el_alma:
   audio_transfer: desde_el_alma_19350702_aif
   version: 2
   channels: 1
@@ -47,6 +47,7 @@ waveform_desde_el_alma:
   bits: 16
   length: 8159
   data: <%= File.binread(Rails.root.join("spec", "fixtures", "files","waveform_data_volver_a_sonar.json")) %>
+
 # == Schema Information
 #
 # Table name: waveforms
