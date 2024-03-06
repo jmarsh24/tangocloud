@@ -20,7 +20,7 @@ RSpec.describe "FetchComposer", type: :graph do
       gql(query, variables: {id: composer.id.to_s}, user:)
 
       expect(data.fetch_composer.id).to eq(composer.id)
-      expect(data.fetch_composer.name).to eq("Andres Fraga")
+      expect(data.fetch_composer.name).to eq("Andrés Fraga")
     end
   end
 end

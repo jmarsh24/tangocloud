@@ -45,9 +45,9 @@ RSpec.describe "recordings", type: :graph do
       found_recording = data.search_recordings.edges.first.node
 
       expect(found_recording.id).to eq(recording.id.to_s)
-      expect(found_recording.title).to eq("Volver a sonar")
+      expect(found_recording.title).to eq("Volver a soñar")
       expect(found_recording.recorded_date).to eq(recording.recorded_date.iso8601)
-      expect(found_recording.orchestra.name).to eq("Carlos Di Sarli")
+      expect(found_recording.orchestra.name).to eq("Carlos DI SARLI")
       expect(found_recording.singers.first.name).to eq("Roberto Rufino")
       expect(found_recording.genre.name).to eq("tango")
       expect(found_recording.audio_transfers.first.album.album_art_url).not_to be_nil

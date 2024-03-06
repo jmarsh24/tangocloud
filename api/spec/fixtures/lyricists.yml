@@ -1,3 +1,18 @@
+francisco_garcia_jimenez:
+  name: Francisco García Jiménez
+  slug: francisco-garcia-jimenez
+
+jorge_curi:
+  name: Jorge Curi
+  slug: jorge-curi
+
+homero_exposito:
+  name: Homero Expósito
+  slug: homero-exposito
+
+homero_manzi:
+  name: Homero Manzi / Víctor Piuma Vélez
+  slug: homero-manzi-victor-piuma-velez
 # == Schema Information
 #
 # Table name: lyricists
@@ -13,6 +28,3 @@
 #  updated_at         :datetime         not null
 #  compositions_count :integer          default(0)
 #
-francisco_garcia_jimenez:
-  name: Francisco García Jiménez
-  slug: francisco-garcia-jimenez

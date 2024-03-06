@@ -1,9 +1,8 @@
 awesome_playlist:
   title: Awesome Playlist
-  user: default
+  user: normal
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
-
 # == Schema Information
 #
 # Table name: playlists

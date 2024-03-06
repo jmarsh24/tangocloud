@@ -20,7 +20,7 @@ RSpec.describe "fetchOrchestras", type: :graph do
       first_orchestra = data.fetch_orchestra
 
       expect(first_orchestra.id).to eq(orchestra.id)
-      expect(first_orchestra.name).to eq("Carlos Di Sarli")
+      expect(first_orchestra.name).to eq("Carlos DI SARLI")
     end
   end
 end

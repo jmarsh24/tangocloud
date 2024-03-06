@@ -1,7 +1,18 @@
-carlos_di_sarli:
-  name: "Carlos Di Sarli"
-  slug: "carlos-di-sarli"
+juan_darienzo:
+  name: Juan D'ARIENZO
+  slug: juan-d-arienzo
 
+anibal_troilo:
+  name: Aníbal TROILO
+  slug: anibal-troilo
+
+carlos_di_sarli:
+  name: Carlos DI SARLI
+  slug: carlos-di-sarli
+
+osvaldo_pugliese:
+  name: Osvaldo PUGLIESE
+  slug: osvaldo-pugliese
 # == Schema Information
 #
 # Table name: orchestras

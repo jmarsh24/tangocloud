@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "el_recodo_songs", type: :graph do
   describe "Querying for el_recodo_songs" do
     let!(:user) { users(:admin) }
-    let!(:volver_a_sonar) { el_recodo_songs(:volver_a_sonar) }
+    let!(:volver_a_sonar) { el_recodo_songs(:volver_a_sonar_by_di_sarli_rufino) }
     let(:query) do
       <<~GQL
         query SearchElRecodoSongs($query: String) {

@@ -1,9 +1,32 @@
-volver_a_sonar_tango_tunes_1940_audio_transfer:
+milonga_vieja_milonga_19370922_aif:
+  album: juan_darienzo_todo_de_juan_3_aiff
+  transfer_agent: tango_tunes
+  recording: milonga_vieja_milonga
+  filename: "19370922_milonga_vieja_milonga_instrumental_milonga_3576.aif"
+
+volver_a_sonar_rufino_19401008_flac:
+  album: carlos_1939_1941_flac
   transfer_agent: tango_tunes
   recording: volver_a_sonar
   filename: "19401008_volver_a_sonar_roberto_rufino_tango_2476.flac"
-  position: 1
-  album: todos_de_carlos_1939_1941_flac
+
+farol_chanel_19430715_flac:
+  album: osvaldo_pugliese_san_pugliese_1_flac
+  transfer_agent: tango_tunes
+  recording: farol
+  filename: "19430715_farol_roberto_chanel_tango_2099.flac"
+
+desde_el_alma_19350702_aif:
+  album: juan_darienzo_todo_de_juan_1_aiff
+  transfer_agent: tango_tunes
+  recording: desde_el_alma
+  filename: "19350702_desde_el_alma_instrumental_vals_3844.aif"
+
+te_aconsejo_que_me_olvides_fiorentino_19410416_aif:
+  album: anibal_1938_1942_aiff
+  transfer_agent: tango_tunes
+  recording: te_aconsejo_que_me_olvides
+  filename: "19410416_te_aconsejo_que_me_olvides_francisco_fiorentino_tango_2925.aif"
 # == Schema Information
 #
 # Table name: audio_transfers

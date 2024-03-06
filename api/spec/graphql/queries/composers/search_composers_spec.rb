@@ -24,7 +24,7 @@ RSpec.describe "SearchComposers", type: :graph do
       gql(query, variables: {query: "Andres Fraga"}, user:)
 
       expect(data.search_composers.edges.first.node.id).to eq(composer.id.to_s)
-      expect(data.search_composers.edges.first.node.name).to eq("Andres Fraga")
+      expect(data.search_composers.edges.first.node.name).to eq("Andrés Fraga")
     end
   end
 end
