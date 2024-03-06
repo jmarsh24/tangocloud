@@ -16,7 +16,7 @@ RSpec.describe Import::Music::DirectoryImporter do
   end
 
   describe "#sync" do
-    fit "creates 6 AudioTransfers and enqueues AudioTransferImportJob 6 times for supported files" do
+    it "creates 6 AudioTransfers and enqueues AudioTransferImportJob 6 times for supported files" do
       importer.sync
 
       expect(AudioTransferImportJob).to have_been_enqueued.exactly(5).times
