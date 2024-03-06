@@ -1,6 +1,7 @@
 awesome_playlist_audio_transfer:
   playlist: awesome_playlist
   audio_transfer: volver_a_sonar_rufino_19401008_flac
+  position: 1
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 # # == Schema Information
