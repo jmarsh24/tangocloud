@@ -13,7 +13,8 @@ module Import
       end
 
       def sync
-        existing_filenames = AudioTransfer.all.with_attached_audio_file.map { |audio_transfer| audio_transfer.audio_file.filename.to_s }
+        existing_filenames = AudioTransfer.all.with_attached_audio_file.map { |audio_transfer| audio_transfer.audio_file.filename.to_s }.compact_blank!
+
         process_files(existing_filenames)
       end
 
@@ -58,6 +59,7 @@ module Import
           filename: File.basename(file)
         )
         audio_transfer.audio_file.attach(io: file, filename: File.basename(file))
+
         AudioTransferImportJob.perform_later(audio_transfer)
       rescue AudioTransferImporter::DuplicateFileError
         Rails.logger.info "Duplicate file skipped: #{file.path}"

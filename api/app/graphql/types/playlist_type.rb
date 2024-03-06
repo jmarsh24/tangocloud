@@ -9,6 +9,7 @@ module Types
     field :listens_count, Integer, null: false
     field :shares_count, Integer, null: false
     field :followers_count, Integer, null: false
+    field :system, Boolean, null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
@@ -29,21 +30,21 @@ module Types
     field :audio_transfers, [AudioTransferType], null: false
 
     def audio_transfers
-      dataloader.with(Sources::Preload, playlist_audio_transfers: :audio_transfers).load(object)
+      dataloader.with(Sources::Preload, playlist_audio_transfers: :audio_transfer).load(object)
       object.audio_transfers
     end
 
     field :audio_variants, [AudioVariantType], null: false
 
     def audio_variants
-      dataloader.with(Sources::Preload, playlist_audio_transfers: {audio_transfers: :audio_variants}).load(object)
+      dataloader.with(Sources::Preload, playlist_audio_transfers: {audio_transfer: :audio_variants}).load(object)
       object.audio_variants
     end
 
     field :recordings, [RecordingType], null: false
 
     def recordings
-      dataloader.with(Sources::Preload, playlist_audio_transfers: {audio_transfers: :recordings}).load(object)
+      dataloader.with(Sources::Preload, playlist_audio_transfers: {audio_transfer: :recordings}).load(object)
       object.recordings
     end
 

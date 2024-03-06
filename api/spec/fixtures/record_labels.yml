@@ -1,6 +1,8 @@
 rca_victor:
-  name: "RCA Victor"
+  name: RCA Victor
 
+odeon:
+  name: Odeon
 # == Schema Information
 #
 # Table name: record_labels

@@ -1,5 +1,18 @@
+te_aconsejo_que_me_olvides:
+  composition: te_aconsejo_que_me_olvides
+  lyric: te_aconsejo_que_me_olvides_es
 
+desde_el_alma:
+  composition: desde_el_alma
+  lyric: desde_el_alma_es
 
+volver_a_sonar:
+  composition: volver_a_sonar
+  lyric: volver_a_sonar_es
+
+farol:
+  composition: farol
+  lyric: farol
 # == Schema Information
 #
 # Table name: composition_lyrics

@@ -3,6 +3,10 @@ class User < ApplicationRecord
   searchkick word_start: [:username, :email, :first_name, :last_name]
 
   has_one :user_preference, dependent: :destroy
+  has_one :listen_history, dependent: :destroy
+  has_many :listens, through: :listen_history
+  has_many :likes, dependent: :destroy
+  has_many :playlists, dependent: :destroy
 
   generates_token_for :email_verification, expires_in: 2.days do
     email
@@ -42,6 +46,8 @@ class User < ApplicationRecord
   end
 
   after_create_commit { build_user_preference.save }
+  after_create_commit { build_listen_history.save }
+  after_create_commit { playlists.create!(title: "liked", system: true) }
 
   delegate :avatar, to: :user_preference, allow_nil: true
   delegate :first_name, :last_name, :name, to: :user_preference, allow_nil: true
@@ -61,7 +67,8 @@ class User < ApplicationRecord
       username:,
       email:,
       first_name:,
-      last_name:
+      last_name:,
+      name:
     }
   end
 
@@ -75,6 +82,10 @@ class User < ApplicationRecord
     else
       Gravatar.new(email).url(width:)
     end
+  end
+
+  def liked_playlist
+    playlists.find_by(title: "liked", system: true)
   end
 end
 

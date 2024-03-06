@@ -1,4 +1,15 @@
-volver_a_sonar:
+milonga_vieja_milonga_by_darienzo:
+  date: 1937-09-22
+  ert_number: 3576
+  music_id: 3576
+  title: Milonga vieja milonga
+  style: MILONGA
+  orchestra: Juan D'ARIENZO
+  singer: Instrumental
+  composer: Francisco Aranaz
+  label: RCA Victor
+
+volver_a_sonar_by_di_sarli_rufino:
   date: 1940-10-08
   ert_number: 2476
   music_id: 2476
@@ -7,10 +18,93 @@ volver_a_sonar:
   orchestra: Carlos DI SARLI
   singer: Roberto Rufino
   composer: Andrés Fraga
+  author: Francisco García Jiménez
   label: RCA Victor
-  page_updated_at: 2013-07-10
+  lyrics:
+    "No sé si fue mi mano\r\nO fue la tuya\r\nQue escribió,\r\nLa carta del
+    adiós\r\nEn nuestro amor.\r\n \r\nNo quiero ni saber\r\nQuién fue culpable\r\nDe
+    los dos,\r\nNi pido desazones\r\nNi rencor.\r\n \r\nMe queda del ayer\r\nEnvuelto
+    en tu querer,\r\nEl rastro de un perfume antiguo.\r\nMe queda de tu amor\r\nEl
+    lánguido sabor\r\nDe un néctar\r\nQue ya nunca beberé.\r\n \r\nPor eso que esta
+    estrofa\r\nAl muerto idilio, no es capaz,\r\nDe hacerlo entre los dos resucitar.\r\nSi
+    acaso algo pretendo\r\nEs por ofrenda al corazón,\r\nSalvarlo del olvido, nada
+    más..."
 
-comme_il_faut:
+desde_el_alma_by_darienzo:
+  date: 1935-07-02
+  ert_number: 3844
+  music_id: 3844
+  title: Desde el alma
+  style: VALS
+  orchestra: Juan D'ARIENZO
+  singer: Instrumental
+  composer: Rosita Melo
+  author: Homero Manzi y Víctor Piuma Vélez
+  label: RCA Victor
+  lyrics:
+    "Alma, si tanto te han herido,\r\n¿por qué te niegas al olvido?\r\n¿Por
+    qué prefieres\r\nllorar lo que has perdido,\r\nbuscar lo que has querido,\r\nllamar
+    lo que murió?\r\n\r\nVives inútilmente triste\r\ny sé que nunca mereciste\r\npagar
+    con penas\r\nla culpa de ser buena,\r\ntan buena como fuiste\r\npor amor.\r\n\r\nFue
+    lo que empezó una vez,\r\nlo que después dejó de ser.\r\nLo que al final\r\npor
+    culpa de un error\r\nfue noche amarga del corazón.\r\n\r\n¡Deja esas cartas!\r\n¡Vuelve
+    a tu antigua ilusión!\r\nJunto al dolor\r\nque abre una herida\r\nllega la vida\r\ntrayendo
+    otro amor.\r\n\r\nAlma, no entornes tu ventana\r\nal sol feliz de la mañana.\r\nNo
+    desesperes,\r\nque el sueño más querido\r\nes el que más nos hiere,\r\nes el que
+    duele más.\r\n\r\nVives inútilmente triste\r\ny sé que nunca mereciste\r\npagar
+    con penas\r\nla culpa de ser buena,\r\ntan buena como fuiste\r\npor amor."
+
+te_aconsejo_que_me_olvides_by_troilo_fiorentino:
+  date: 1941-04-16
+  ert_number: 2925
+  music_id: 2925
+  title: Te aconsejo que me olvides
+  style: TANGO
+  orchestra: Aníbal TROILO
+  singer: Francisco Fiorentino
+  composer: Pedro Maffia
+  author: Jorge Curi
+  label: RCA Victor
+  lyrics:
+    "Recibí tu última carta,\r\nen la cual tú me decías:\r\n'Te aconsejo que
+    me olvides,\r\ntodo ha muerto entre los dos.\r\nSólo pido mi retrato\r\ny todas
+    las cartas mías,\r\nya lo sabes que no es justo\r\nque aún eso conserves vos'.\r\nHoy
+    reconoces la falta,\r\ntenés miedo que yo diga...\r\nque le cuente al que tu sabes\r\nnuestra
+    íntima amistad;\r\n¡Soy muy hombre, no te vendo,\r\nno soy capaz de una intriga!\r\nLo
+    comprendo que, si hablara,\r\nquiebro tu felicidad.\r\n\r\nPero no vas a negar\r\nque
+    cuando vos fuiste mía,\r\ndijiste que me querías,\r\nque no me ibas a olvidar;\r\ny
+    que ciega de cariño\r\nme besabas en la boca,\r\ncomo si estuvieras loca...\r\nSedienta,
+    nena, de amar.\r\n\r\nYo no tengo inconveniente\r\nen enviarte todo eso,\r\nsin
+    embargo, aunque no quieras,\r\nalgo tuyo ha de quedar.\r\nEl vacío que dejaste\r\ny
+    el calor de aquellos besos\r\nbien lo sabes que no puedo\r\ndevolvértelos jamás.\r\nYo
+    lo hago en bien tuyo\r\nevitando un compromiso,\r\nsacrifico mi cariño\r\npor
+    tu apellido y tu honor;\r\nme conformo con mi suerte,\r\nya que así el destino
+    quiso\r\npero acuérdate bien mío,\r\n¡que esto lo hago por tu amor!"
+
+farol_by_pugliese_chanel:
+  date: 1943-07-15
+  ert_number: 2099
+  music_id: 2099
+  title: Farol
+  style: TANGO
+  orchestra: Osvaldo PUGLIESE
+  singer: Roberto Chanel
+  composer: Virgilio Expósito
+  author: Homero Expósito
+  label: Odeon
+  lyrics:
+    "Un arrabal con casas\r\nque reflejan su dolor de lata...\r\nUn arrabal
+    humano\r\ncon leyendas que se cantan como tangos...\r\nY allá un reloj que lejos
+    da\r\nlas dos de la mañana...\r\nUn arrabal obrero,\r\nuna esquina de recuerdos
+    y un farol...\r\n\r\nFarol,\r\nlas cosas que ahora se ven...\r\nFarol ya no es
+    lo mismo que ayer...\r\nLa sombra,\r\nhoy se escapa a tu mirada,\r\ny me deja
+    más tristona\r\nla mitad de mi cortada.\r\nTu luz,\r\ncon el tango en el bolsillo\r\nfue
+    perdiendo luz y brillo\r\ny es una cruz...\r\n\r\nAllí conversa el cielo\r\ncon
+    los sueños de un millón de obreros..\r\nAllí murmura el viento\r\nlos poemas populares
+    de Carriego,\r\ny cuando allá a lo lejos dan\r\nlas dos de la mañana,\r\nel arrabal
+    parece\r\nque se duerme repitiéndole al farol..."
+
+comme_il_faut_by_troilo:
   date: 1938-03-07
   ert_number: 2758
   music_id: 2758
@@ -21,7 +115,34 @@ comme_il_faut:
   composer: Eduardo Arolas
   author: Gabriel Clausi
   label: Odeon
-  page_updated_at: 2013-07-10
+  lyrics: |
+    Luna, farol y canción,
+    dulce emoción del ayer
+    fue en París,
+    donde viví tu amor.
+    Tango, Champagne, corazón,
+    noche de amor
+    que no está,
+    en mi sueño vivirá...
+
+    Es como debe ser, con ilusión viví
+    las alegrías y las tristezas;
+    en esa noche fue que yo sentí por vos
+    una esperanza en mi corazón.
+    Es como debe ser en la pasión de ley,
+    tus ojos negros y tu belleza.
+    Siempre serás mi amor en bello amanecer
+    para mi vida, dulce ilusión.
+
+    En este tango
+    te cuento mi tristeza,
+    dolor y llanto
+    que dejo en esta pieza.
+    Quiero que oigas mi canción
+    hecha de luna y de farol
+    y que tu amor, mujer,
+    vuelva hacia mí.
+
 # == Schema Information
 #
 # Table name: el_recodo_songs

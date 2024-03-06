@@ -2,11 +2,11 @@ admin:
   user: admin
   first_name: "Admin"
   last_name: "User"
+
 normal:
   user: normal
   first_name: "Normal"
   last_name: "User"
-
 # == Schema Information
 #
 # Table name: user_preferences

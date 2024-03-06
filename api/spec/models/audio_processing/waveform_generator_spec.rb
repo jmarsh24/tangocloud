@@ -12,7 +12,7 @@ RSpec.describe AudioProcessing::WaveformGenerator do
     end
 
     it "creates a waveform a flac file" do
-      audio_transfer = audio_transfers(:volver_a_sonar_tango_tunes_1940_audio_transfer)
+      audio_transfer = audio_transfers(:volver_a_sonar_rufino_19401008_flac)
       audio_transfer.audio_file.open do |audio_file|
         waveform = described_class.new(audio_file).json
         expect(waveform.version).to eq(2)

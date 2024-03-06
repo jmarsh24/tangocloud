@@ -1,6 +1,7 @@
 class PlaylistAudioTransfer < ApplicationRecord
   belongs_to :playlist, counter_cache: :songs_count
   belongs_to :audio_transfer
+  acts_as_list scope: :playlist
 
   validates :position, presence: true, numericality: {only_integer: true}
 end
