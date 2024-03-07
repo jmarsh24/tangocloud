@@ -6,7 +6,7 @@ module Mutations::Playlists
     field :errors, [String], null: false
 
     def resolve(id:)
-      playlist = Playlist.find_by(id:)
+      playlist = current_user.playlists.find_by(id:)
 
       if playlist.nil?
         {

@@ -21,11 +21,11 @@ module Types
       object.audio_variants
     end
 
-    field :playlist_audio_transfers, PlaylistAudioTransferType, null: false
+    field :playlist_items, [PlaylistItemType], null: false
 
-    def playlist_audio_transfers
-      dataloader.with(Sources::Preload, playlist_audio_transfers: :audio_transfer).load(object)
-      object.playlist_audio_transfers
+    def playlist_items
+      dataloader.with(Sources::Preload, :playlist_items).load(object)
+      object.playlist_items
     end
 
     belongs_to :album, null: true
