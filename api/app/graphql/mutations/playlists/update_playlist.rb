@@ -3,31 +3,31 @@ module Mutations::Playlists
     argument :id, ID, required: true
     argument :title, String, required: false
     argument :description, String, required: false
+    argument :public, Boolean, required: false
     argument :image, ApolloUploadServer::Upload, required: false
 
     field :playlist, Types::PlaylistType, null: true
     field :errors, [String], null: true
 
-    def resolve(id:, title:, description:, image: nil)
+    def resolve(id:, title: nil, description: nil, public: nil, image: nil)
       playlist = Playlist.find(id)
 
-      playlist.title = title
-      playlist.description = description
+      playlist.title = title if title.present?
+      playlist.description = description if description.present?
+      playlist.public = public unless public.nil?
 
       if image.present?
-        playlist.image.attach(io: File.open(image), filename: image.original_filename, content_type: image.content_type)
+        playlist.image.attach(
+          io: File.open(image),
+          filename: image.original_filename,
+          content_type: image.content_type
+        )
       end
 
       if playlist.save
-        {
-          playlist:,
-          errors: []
-        }
+        {playlist:, errors: []}
       else
-        {
-          playlist: nil,
-          errors: playlist.errors.full_messages
-        }
+        {playlist: nil, errors: playlist.errors.full_messages}
       end
     end
   end

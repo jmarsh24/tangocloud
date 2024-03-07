@@ -2,24 +2,36 @@ module Mutations::Playlists
   class CreatePlaylist < Mutations::BaseMutation
     argument :title, String, required: true
     argument :description, String, required: false
-    argument :item_ids, [ID, null: true], required: false
+    argument :public, Boolean, required: false
+    argument :image, ApolloUploadServer::Upload, required: false
+    argument :item_ids, [ID], required: false
 
     field :playlist, Types::PlaylistType, null: true
-    field :errors, [String], null: true
+    field :errors, [String], null: false
 
-    def resolve(title:, description: nil, item_ids: [])
-      Playlist.transaction do
-        playlist = Playlist.new(title:, description:, user: context[:current_user])
+    def resolve(title:, description: nil, public: true, image: nil, item_ids: [])
+      playlist = Playlist.new(
+        title:,
+        description:,
+        public:,
+        user: context[:current_user]
+      )
 
-        if playlist.save
-          item_ids&.each do |id|
-            playlist.playlist_audio_transfers.create!(audio_transfer_id: id)
-          end
+      if image.present?
+        playlist.image.attach(
+          io: File.open(image),
+          filename: image.original_filename,
+          content_type: image.content_type
+        )
+      end
 
-          {playlist:, errors: []}
-        else
-          {playlist: nil, errors: playlist.errors.full_messages}
+      if playlist.save
+        item_ids.each do |item_id|
+          playlist.playlist_items.create(playable_id: item_id, playable_type: "Recording")
         end
+        {playlist:, errors: []}
+      else
+        {playlist: nil, errors: playlist.errors.full_messages}
       end
     end
   end

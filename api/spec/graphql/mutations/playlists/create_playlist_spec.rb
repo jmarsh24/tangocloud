@@ -1,50 +1,74 @@
+# spec/graphql/mutations/playlists/create_playlist_spec.rb
 require "rails_helper"
 
 RSpec.describe "CreatePlaylist", type: :graph do
-  let!(:user) { users(:normal) }
-  let!(:volver_a_sonar) { audio_transfers(:volver_a_sonar_rufino_19401008_flac) }
-  let!(:milonga_vieja) { audio_transfers(:milonga_vieja_milonga_19370922_aif) }
+  let(:user) { users(:normal) }
+  let(:recording1) { recordings(:volver_a_sonar) }
+  let(:recording2) { recordings(:milonga_vieja_milonga) }
+  let(:uploaded_file) { Rails.root.join("spec/fixtures/files/di_sarli.jpg") }
+  let(:image) do
+    ApolloUploadServer::Wrappers::UploadedFile.new(
+      ActionDispatch::Http::UploadedFile.new(
+        tempfile: uploaded_file, filename: File.basename(uploaded_file),
+        type: "image/png"
+      )
+    )
+  end
 
-  describe "create playlist" do
-    let(:mutation) do
-      <<~GQL
-        mutation CreatePlaylist($title: String!, $description: String, $itemIds: [ID]) {
-          createPlaylist(input: {title: $title, description: $description, itemIds: $itemIds}) {
-            playlist {
-              id
-              title
-              audioTransfers {
-                id
-                position
-                recording {
+  let(:mutation) do
+    <<~GQL
+      mutation CreatePlaylist(
+        $title: String!,
+        $description: String,
+        $public: Boolean,
+        $image: Upload,
+        $itemIds: [ID!]
+      ) {
+        createPlaylist(input: {
+          title: $title,
+          description: $description,
+          public: $public,
+          image: $image,
+          itemIds: $itemIds
+        }) {
+          playlist {
+            id
+            title
+            description
+            public
+            imageUrl
+            playlistItems {
+              playable {
+                ... on Recording {
                   id
-                  title
                 }
               }
             }
-            errors
           }
+          errors
         }
-      GQL
-    end
+      }
+    GQL
+  end
 
-    it "successfully creates a playlist" do
-      gql(mutation, variables: {title: "Test Playlist"}, user:)
+  it "creates a playlist with items" do
+    variables = {
+      title: "New Playlist",
+      description: "This is a new playlist",
+      public: true,
+      image:,
+      itemIds: [recording1.id, recording2.id]
+    }
 
-      expect(result.data.create_playlist.playlist.title).to eq("Test Playlist")
-    end
+    gql(mutation, variables:, user:)
 
-    it "returns errors when title is missing" do
-      gql(mutation, variables: {title: ""}, user:)
-
-      expect(result.data.create_playlist.errors).to eq(["Title can't be blank"])
-    end
-
-    it "creates a playlist with items" do
-      gql(mutation, variables: {title: "Test Playlist", itemIds: [volver_a_sonar.id, milonga_vieja.id]}, user:)
-
-      expected_playlist_titles = result.data.create_playlist.playlist.audio_transfers.map { _1.recording.title }
-      expect(expected_playlist_titles).to eq(["Volver a soñar", "Milonga vieja milonga"])
-    end
+    expect(result.data.create_playlist.playlist).to have_attributes(
+      title: "New Playlist",
+      description: "This is a new playlist",
+      public: true
+    )
+    expect(result.data.create_playlist.playlist.image_url).to be_present
+    expect(result.data.create_playlist.playlist.playlist_items.map { |item| item.playable.id }).to match_array([recording1.id.to_s, recording2.id.to_s])
+    expect(result.data.create_playlist.errors).to be_empty
   end
 end

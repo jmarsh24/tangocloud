@@ -18,12 +18,14 @@ RSpec.describe "UpdatePlaylist", type: :graph do
         $id: ID!,
         $title: String,
         $description: String,
+        $public: Boolean,
         $image: Upload
       ) {
         updatePlaylist(input: {
           id: $id,
           title: $title,
           description: $description,
+          public: $public,
           image: $image
         }) {
           playlist {
@@ -31,6 +33,7 @@ RSpec.describe "UpdatePlaylist", type: :graph do
             title
             description
             imageUrl
+            public
           }
           errors
         }
@@ -45,6 +48,7 @@ RSpec.describe "UpdatePlaylist", type: :graph do
       id: playlist.id,
       title: "Updated Playlist",
       description: "This is an updated playlist",
+      public: false,
       image:
     }
 
@@ -52,7 +56,8 @@ RSpec.describe "UpdatePlaylist", type: :graph do
 
     expect(result.data.update_playlist.playlist).to have_attributes(
       title: "Updated Playlist",
-      description: "This is an updated playlist"
+      description: "This is an updated playlist",
+      public: false
     )
     expect(result.data.update_playlist.playlist.image_url).to be_present
     expect(result.data.update_playlist.errors).to be_empty
