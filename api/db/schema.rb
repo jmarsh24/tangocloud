@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_02_182918) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_07_100409) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -231,14 +231,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_02_182918) do
     t.integer "recordings_count", default: 0
   end
 
-  create_table "labels", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name", null: false
-    t.text "description"
-    t.date "founded_date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "likes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "likeable_type", null: false
     t.uuid "likeable_id", null: false
@@ -312,21 +304,21 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_02_182918) do
     t.index ["slug"], name: "index_periods_on_slug", unique: true
   end
 
-  create_table "playlist_audio_transfers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "playlist_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "playlist_id", null: false
-    t.uuid "audio_transfer_id", null: false
+    t.string "playable_type", null: false
+    t.uuid "playable_id", null: false
     t.integer "position", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["audio_transfer_id"], name: "index_playlist_audio_transfers_on_audio_transfer_id"
-    t.index ["playlist_id"], name: "index_playlist_audio_transfers_on_playlist_id"
+    t.index ["playable_type", "playable_id"], name: "index_playlist_items_on_playable"
+    t.index ["playlist_id"], name: "index_playlist_items_on_playlist_id"
   end
 
   create_table "playlists", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title", null: false
     t.string "description"
     t.boolean "public", default: true, null: false
-    t.integer "songs_count", default: 0, null: false
     t.integer "likes_count", default: 0, null: false
     t.integer "listens_count", default: 0, null: false
     t.integer "shares_count", default: 0, null: false
@@ -336,6 +328,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_02_182918) do
     t.datetime "updated_at", null: false
     t.string "slug"
     t.boolean "system", default: false, null: false
+    t.integer "playlist_items_count", default: 0
     t.index ["slug"], name: "index_playlists_on_slug", unique: true
     t.index ["user_id"], name: "index_playlists_on_user_id"
   end
@@ -617,8 +610,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_02_182918) do
   add_foreign_key "listens", "listen_histories"
   add_foreign_key "listens", "recordings"
   add_foreign_key "lyrics", "compositions"
-  add_foreign_key "playlist_audio_transfers", "audio_transfers"
-  add_foreign_key "playlist_audio_transfers", "playlists"
+  add_foreign_key "playlist_items", "playlists"
   add_foreign_key "recording_singers", "recordings"
   add_foreign_key "recording_singers", "singers"
   add_foreign_key "recordings", "compositions"

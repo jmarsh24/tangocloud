@@ -7,8 +7,8 @@ class Playlist < ApplicationRecord
   validates :title, presence: true
 
   belongs_to :user
-  has_many :playlist_audio_transfers, -> { order(position: :asc) }, dependent: :destroy, inverse_of: :playlist
-  has_many :audio_transfers, through: :playlist_audio_transfers
+  has_many :playlist_items, -> { order(position: :asc) }, dependent: :destroy, inverse_of: :playlist
+  has_many :recordings, through: :playlist_items, source: :playable, source_type: "Recording"
 
   has_one_attached :image, dependent: :purge_late
   has_one_attached :playlist_file, dependent: :purge_later

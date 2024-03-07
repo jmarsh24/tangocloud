@@ -1,27 +1,26 @@
 module Mutations::Playlists
   class AddPlaylistItem < Mutations::BaseMutation
     argument :playlist_id, ID, required: true
-    argument :item_id, ID, required: true
-    argument :position, Integer, required: false
+    argument :playable_id, ID, required: true
+    argument :playable_type, String, required: true
 
-    field :playlist, Types::PlaylistType, null: true
-    field :errors, [String], null: true
+    field :playlist_item, Types::PlaylistItemType, null: true
+    field :errors, [String], null: false
 
-    def resolve(playlist_id:, item_id:, position: nil)
-      playlist = Playlist.find(playlist_id)
-      audio_transfer = AudioTransfer.find(item_id)
-      playlist_audio_transfer = playlist.playlist_audio_transfers.build(audio_transfer:)
-      playlist_audio_transfer.insert_at(position) if position.present?
-      if playlist_audio_transfer.save
-        {
-          playlist:,
-          errors: []
-        }
+    def resolve(playlist_id:, playable_id:, playable_type:)
+      playlist = Playlist.find_by(id: playlist_id)
+      return {playlist_item: nil, errors: ["Playlist not found"]} if playlist.nil?
+
+      playable = playable_type.constantize.find_by(id: playable_id)
+      return {playlist_item: nil, errors: ["Playable item not found"]} if playable.nil?
+
+      playlist_item = playlist.playlist_items.build(playable:)
+      playlist_item.position = playlist.playlist_items.maximum(:position).to_i + 1
+
+      if playlist_item.save
+        {playlist_item:, errors: []}
       else
-        {
-          playlist: nil,
-          errors: playlist_song.errors.full_messages
-        }
+        {playlist_item: nil, errors: playlist_item.errors.full_messages}
       end
     end
   end
