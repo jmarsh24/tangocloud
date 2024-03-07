@@ -18,8 +18,11 @@ module Import
             audio_transfer = AudioTransfer.find_by(filename:)
             next unless audio_transfer
 
-            @playlist.playlist_audio_transfers.create!(
-              audio_transfer:,
+            recording = audio_transfer.recording
+            next unless recording
+
+            @playlist.playlist_items.create!(
+              playable: recording,
               position:
             )
 
