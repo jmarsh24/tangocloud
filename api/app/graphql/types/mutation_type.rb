@@ -4,7 +4,7 @@ module Types
     field :register, mutation: Mutations::Users::RegisterUser
 
     field :add_like_to_recording, mutation: Mutations::Recordings::AddLikeToRecording
-    field :add_playlist_item, mutation: Mutations::Playlists::AddPlaylistItem
+    field :add_playlist_recording, mutation: Mutations::Playlists::AddPlaylistRecording
     field :create_listen, mutation: Mutations::ListenHistories::CreateListen
     field :create_playlist, mutation: Mutations::Playlists::CreatePlaylist
     field :delete_playlist, mutation: Mutations::Playlists::DeletePlaylist

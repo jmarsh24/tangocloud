@@ -1,20 +1,19 @@
 module Mutations::Playlists
-  class AddPlaylistItem < Mutations::BaseMutation
+  class AddPlaylistRecording < Mutations::BaseMutation
     argument :playlist_id, ID, required: true
-    argument :playable_id, ID, required: true
-    argument :playable_type, String, required: true
+    argument :recording_id, ID, required: true
 
     field :playlist_item, Types::PlaylistItemType, null: true
     field :errors, [String], null: false
 
-    def resolve(playlist_id:, playable_id:, playable_type:)
+    def resolve(playlist_id:, recording_id:)
       playlist = Playlist.find_by(id: playlist_id)
       return {playlist_item: nil, errors: ["Playlist not found"]} if playlist.nil?
 
-      playable = playable_type.constantize.find_by(id: playable_id)
-      return {playlist_item: nil, errors: ["Playable item not found"]} if playable.nil?
+      recording = Recording.find_by(id: recording_id)
+      return {playlist_item: nil, errors: ["Recording not found"]} if recording.nil?
 
-      playlist_item = playlist.playlist_items.build(playable:)
+      playlist_item = playlist.playlist_items.build(playable: recording)
       playlist_item.position = playlist.playlist_items.maximum(:position).to_i + 1
 
       if playlist_item.save
