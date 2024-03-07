@@ -7,7 +7,7 @@ module Mutations::Playlists
     field :errors, [String], null: false
 
     def resolve(playlist_id:, recording_id:)
-      playlist = Playlist.find_by(id: playlist_id)
+      playlist = current_user.playlists.find_by(id: playlist_id)
       return {playlist_item: nil, errors: ["Playlist not found"]} if playlist.nil?
 
       recording = Recording.find_by(id: recording_id)

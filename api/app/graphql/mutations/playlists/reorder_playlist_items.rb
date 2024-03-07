@@ -7,7 +7,7 @@ module Mutations::Playlists
     field :errors, [String], null: true
 
     def resolve(playlist_id:, item_ids:)
-      playlist = Playlist.find(playlist_id)
+      playlist = current_user.playlists.find(playlist_id)
 
       playlist.playlist_audio_transfers.each do |playlist_item|
         playlist_item.position = item_ids.index(playlist_item.audio_transfer_id.to_s)

@@ -10,7 +10,7 @@ module Mutations::Playlists
     field :errors, [String], null: true
 
     def resolve(id:, title: nil, description: nil, public: nil, image: nil)
-      playlist = Playlist.find(id)
+      playlist = current_user.playlists.find(id)
 
       playlist.title = title if title.present?
       playlist.description = description if description.present?

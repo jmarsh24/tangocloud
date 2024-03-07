@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :listens, through: :listen_history
   has_many :likes, dependent: :destroy
   has_many :playlists, dependent: :destroy
+  has_many :playlist_items, through: :playlists
 
   generates_token_for :email_verification, expires_in: 2.days do
     email
