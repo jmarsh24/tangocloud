@@ -4,7 +4,7 @@ RSpec.describe "Search Playlists", type: :graph do
   describe "Fetching playlists" do
     let!(:user) { users(:normal) }
     let!(:playlist) { playlists(:awesome_playlist) }
-    let!(:audio_transfer) { audio_transfers(:volver_a_sonar_rufino_19401008_flac) }
+    let!(:recording) { recordings(:volver_a_sonar) }
     let!(:audio_variant) { audio_variants(:volver_a_sonar_rufino_aac) }
 
     let(:query) do
@@ -15,13 +15,19 @@ RSpec.describe "Search Playlists", type: :graph do
               node {
                 id
                 title
-                playlistAudioTransfers {
+                playlistItems {
                   id
-                  audioTransfer {
-                    id
-                    audioVariants {
+                  playable {
+                    ... on Recording {
                       id
-                      audioFileUrl
+                      title
+                      audioTransfers {
+                        id
+                        audioVariants {
+                          id
+                          audioFileUrl
+                        }
+                      }
                     }
                   }
                 }
@@ -32,7 +38,7 @@ RSpec.describe "Search Playlists", type: :graph do
       GQL
     end
 
-    it "returns the correct playlist details, including audio transfers and variants" do
+    it "returns the correct playlist details, including recordings and audio variants" do
       gql(query, variables: {query: "Awesome"}, user:)
 
       expect(gql_errors).to be_empty
@@ -44,11 +50,15 @@ RSpec.describe "Search Playlists", type: :graph do
       expect(first_playlist.title).to eq("Awesome Playlist")
       expect(first_playlist.id).to eq(playlist.id.to_s)
 
-      playlist_audio_transfers = first_playlist.playlist_audio_transfers
-      expect(playlist_audio_transfers).not_to be_empty
+      playlist_items = first_playlist.playlist_items
+      expect(playlist_items).not_to be_empty
 
-      first_audio_transfer_data = playlist_audio_transfers.first.audio_transfer
-      expect(first_audio_transfer_data.id).to eq(audio_transfer.id.to_s)
+      first_playable = playlist_items.first.playable
+      expect(first_playable.id).to eq(recording.id.to_s)
+      expect(first_playable.title).to eq(recording.title)
+
+      first_audio_transfer_data = first_playable.audio_transfers.first
+      expect(first_audio_transfer_data.id).to eq(audio_variant.audio_transfer.id.to_s)
 
       audio_variant_data = first_audio_transfer_data.audio_variants.first
       expect(audio_variant_data.id).to eq(audio_variant.id.to_s)
