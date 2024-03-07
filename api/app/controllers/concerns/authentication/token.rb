@@ -2,24 +2,11 @@ module Authentication
   module Token
     extend ActiveSupport::Concern
 
-    included do
-      prepend_before_action :authenticate!
-    end
-
-    private
-
-    def authenticate!
-      token = request.headers["Authorization"].to_s.split(" ").last
-      Current.user = AuthToken.verify(token) if token.present?
-
-      unless Current.user
-        render json: {errors: ["You must be signed in to access this resource."]}, status: :unauthorized
-        false
-      end
-    end
-
     def current_user
-      Current.user
+      return nil if request.headers["Authorization"].blank?
+      token = request.headers["Authorization"].split(" ").last
+      return nil if token.blank?
+      AuthToken.verify(token)
     end
   end
 end

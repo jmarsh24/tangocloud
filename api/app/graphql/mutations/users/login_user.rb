@@ -16,6 +16,7 @@ module Mutations::Users
           token: AuthToken.token(user),
           user:,
           success: true,
+
           errors: []
         }
       else
