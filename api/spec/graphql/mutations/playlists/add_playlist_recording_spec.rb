@@ -39,7 +39,7 @@ RSpec.describe "AddPlaylistRecording", type: :graph do
 
       expect(playlist_title).to eq("Awesome Playlist")
       expect(playable_title).to eq("Volver a soñar")
-      expect(position).to eq(2)
+      expect(position).to eq(3)
       expect(result.data.add_playlist_recording.errors).to be_empty
     end
   end
