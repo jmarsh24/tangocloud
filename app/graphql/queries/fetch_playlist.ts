@@ -5,24 +5,20 @@ export const FETCH_PLAYLIST = gql`
     fetchPlaylist(id: $id) {
       id
       title
-      orchestra {
-        name
-      }
       playlistItems {
         id
         playable {
           ... on Recording {
             id
             title
+            orchestra {
+              name
+            }
             audioTransfers {
               id
               audioVariants {
                 audioFileUrl
                 duration
-                audioVariants {
-                  id
-                  audioFileUrl
-                }
               }
               album {
                 albumArtUrl

@@ -9,6 +9,7 @@ import ApolloClientProvider from '@/providers/ApolloClientProvider';
 import { SetupService } from '@/services/SetupService';
 import { PlaybackService } from '@/services/PlaybackService';
 import TrackPlayer from 'react-native-track-player';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export {
   ErrorBoundary,
@@ -55,7 +56,11 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <SafeAreaProvider>
+      <RootLayoutNav />
+    </SafeAreaProvider>
+  );
 }
 
 function RootLayoutNav() {
@@ -69,6 +74,7 @@ function RootLayoutNav() {
             <Stack.Screen name="(auth)" options={{ headerShown: false }} />
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="recordings/[id]" options={{ presentation: 'modal', headerShown: false }} />
+            <Stack.Screen name="playlists/[id]" options={{ headerShown: false }} />
           </Stack>
         </AuthProvider>
       </ApolloClientProvider>

@@ -5,7 +5,7 @@ import TrackPlayer, { useProgress } from 'react-native-track-player';
 import { PlayerControls } from '@/components/PlayerControls';
 import { Progress } from '@/components/Progress';
 import { TrackInfo } from '@/components/TrackInfo';
-import { RECORDING } from '@/graphql';
+import { FETCH_RECORDING } from '@/graphql';
 import { useQuery } from '@apollo/client';
 import Waveform from '@/components/Waveform';
 import * as Sharing from 'expo-sharing';
@@ -24,7 +24,7 @@ export default function RecordingScreen() {
   const progressRef = useRef(0);
   const animationFrameRef = useRef<number>();
   const deviceWidth = Dimensions.get('window').width;
-  const { data, loading, error } = useQuery(RECORDING, { variables: { id } });
+  const { data, loading, error } = useQuery(FETCH_RECORDING, { variables: { id } });
   const waveformData = data?.recording?.audioTransfers[0]?.waveform?.data || [];
 
   useEffect(() => {
