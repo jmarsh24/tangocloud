@@ -34,13 +34,10 @@ export default function RootLayout() {
   useEffect(() => {
     async function initializeApp() {
       try {
-        // Register the playback service before anything else
         TrackPlayer.registerPlaybackService(() => PlaybackService);
 
-        // Setup the TrackPlayer
         await SetupService();
 
-        // Hide the SplashScreen after everything is initialized
         if (loaded) {
           await SplashScreen.hideAsync();
         }
