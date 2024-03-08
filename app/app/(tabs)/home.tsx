@@ -105,7 +105,7 @@ export default function HomeScreen() {
   };
 
   const renderPlaylistItem = ({ item }) => (
-    <Link href={{ pathname: "/playlists/[id]", params: { id: item.id } }}>
+    <Link push href={{ pathname: "/playlists/[id]", params: { id: item.id } }}>
       <View style={styles.playlistContainer}>
         <Image source={{ uri: item.imageUrl }} style={styles.playlistImage} />
         <View style={styles.playlistInfo}>
