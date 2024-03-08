@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, FlatList, Image, ActivityIndicator } from "react-native";
+import { Text, View, StyleSheet, Image, ActivityIndicator } from "react-native";
 import { useTheme } from "@react-navigation/native";
 import { SEARCH_PLAYLISTS, FETCH_PLAYLIST } from "@/graphql";
 import { useQuery, useLazyQuery } from "@apollo/client";
 import TrackPlayer from "react-native-track-player";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link } from "expo-router"
+import { FlashList } from "@shopify/flash-list";
 
 export default function HomeScreen() {
   const { colors } = useTheme();
@@ -126,10 +127,11 @@ export default function HomeScreen() {
         The people who are crazy enough to think they can change the world are
         the ones who do.
       </Text>
-      <FlatList
+      <FlashList
         data={playlists}
         keyExtractor={(item) => item.id}
         renderItem={renderPlaylistItem}
+        estimatedItemSize={100}
       />
     </SafeAreaView>
   );
@@ -152,9 +154,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 10,
     alignItems: "center",
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#cccccc",
+    padding: 10
   },
   playlistTitle: {
     fontSize: 18,
