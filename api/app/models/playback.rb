@@ -1,4 +1,4 @@
-class Listen < ApplicationRecord
+class Playback < ApplicationRecord
   belongs_to :listen_history
   belongs_to :recording
 

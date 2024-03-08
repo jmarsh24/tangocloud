@@ -1,27 +1,24 @@
 import { Text, View, StyleSheet, Image, Pressable } from 'react-native';
-import { Track } from '@/types';
 import { useTheme } from '@react-navigation/native';
 import TrackPlayer from 'react-native-track-player';
 
-type TrackListItemProps = {
-  track: Track;
-};
-
-export default function TrackListItem({ track }: TrackListItemProps) {
+export default function TrackListItem({ track }) {
   const { colors } = useTheme();
+  const styles = getStyles(colors);
+
   if (!track) {
     return null;
   }
-  const styles = getStyles(colors);
-  
+
   const onTrackPress = async () => {
+
     const trackForPlayer = {
       id: track.id,
-      url: track.audioTransfers[0].audioVariants[0].audioFileUrl,
+      url: track.url,
       title: track.title,
-      artist: track.orchestra.name,
-      artwork: track.audioTransfers[0].album.albumArtUrl,
-      duration: track.audioTransfers[0].audioVariants[0].duration,
+      artist: track.artist,
+      artwork: track.artwork,
+      duration: track.duration,
     };
 
     try {
@@ -35,15 +32,10 @@ export default function TrackListItem({ track }: TrackListItemProps) {
 
   return (
     <Pressable onPress={onTrackPress} style={styles.songCard}>
-      <Image source={{ uri: track.audioTransfers[0].album.albumArtUrl }} style={styles.songAlbumArt} />
+      <Image source={{ uri: track.artwork }} style={styles.songAlbumArt} />
       <View style={styles.songTextContainer}>
         <Text style={styles.songTitle}>{track.title}</Text>
-        <Text style={styles.songDetails}>
-          {track.orchestra.name} - {track.singers[0]?.name}
-        </Text>
-        <Text style={styles.songSubDetails}>
-          {track.genre.name} - {track?.recordedDate}
-        </Text>
+        <Text style={styles.songDetails}>{track.artist}</Text>
       </View>
     </Pressable>
   );
@@ -53,12 +45,10 @@ function getStyles(colors) {
   return StyleSheet.create({
     songCard: {
       flex: 1,
-      backgroundColor: colors.card, 
+      backgroundColor: colors.card,
       flexDirection: "row",
-      paddingTop: 10,
-      paddingBottom: 10,
-      paddingLeft: 10,
-      paddingRight: 10,
+      paddingVertical: 10,
+      paddingHorizontal: 10,
       borderRadius: 8,
     },
     songAlbumArt: {
@@ -70,17 +60,12 @@ function getStyles(colors) {
     songTitle: {
       fontWeight: "bold",
       fontSize: 16,
-      color: colors.text, 
+      color: colors.text,
       marginLeft: 10,
     },
     songDetails: {
       fontSize: 14,
-      color: colors.text, 
-      marginLeft: 10,
-    },
-    songSubDetails: {
-      fontSize: 12,
-      color: colors.text, 
+      color: colors.text,
       marginLeft: 10,
     },
     songTextContainer: {

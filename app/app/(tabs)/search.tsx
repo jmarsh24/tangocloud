@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { TextInput, View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { TextInput, View, StyleSheet, ActivityIndicator } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
 import TrackListItem from '@/components/TrackListItem';
 import { AntDesign } from '@expo/vector-icons';
 import { useQuery } from '@apollo/client';
 import { useTheme } from '@react-navigation/native';
-import { RECORDINGS } from '@/graphql';
-import _ from 'lodash';
+import { SEARCH_RECORDINGS } from '@/graphql';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SearchScreen() {
@@ -16,43 +15,57 @@ export default function SearchScreen() {
   const [search, setSearch] = useState('');
   const [loadingMore, setLoadingMore] = useState(false);
 
-  const { data, loading, fetchMore, refetch, error } = useQuery(RECORDINGS, {
+  const { data, loading, fetchMore, refetch, error } = useQuery(SEARCH_RECORDINGS, {
     variables: { query: search, first: ITEMS_PER_PAGE },
     fetchPolicy: 'cache-and-network',
   });
+
+  useEffect(() => {
+    if (error) {
+      console.log("Apollo Query Error:", error);
+    }
+  }, [error]);
 
   useEffect(() => {
     refetch({ query: search, first: ITEMS_PER_PAGE });
   }, [search, refetch]);
 
   const loadMoreItems = useCallback(async () => {
-  if (data?.recordings.pageInfo.hasNextPage && !loadingMore) {
-    setLoadingMore(true);
-    await fetchMore({
-      variables: {
-        after: data.recordings.pageInfo.endCursor,
-        query: search,
-        first: ITEMS_PER_PAGE,
-      },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult) return prev;
+    if (data?.searchRecordings.pageInfo.hasNextPage && !loadingMore) {
+      setLoadingMore(true);
+      await fetchMore({
+        variables: {
+          after: data.searchRecordings.pageInfo.endCursor,
+          query: search,
+          first: ITEMS_PER_PAGE,
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return prev;
 
-        const newEdges = fetchMoreResult.recordings.edges;
-        const pageInfo = fetchMoreResult.recordings.pageInfo;
+          const newEdges = fetchMoreResult.searchRecordings.edges;
+          const pageInfo = fetchMoreResult.searchRecordings.pageInfo;
 
-        return {
-          recordings: {
-            __typename: prev.recordings.__typename,
-            edges: [...prev.recordings.edges, ...newEdges],
-            pageInfo,
-          },
-        };
-      },
-    });
-    setLoadingMore(false);
-  }
-}, [data?.recordings.pageInfo, fetchMore, loadingMore, search]);
-  const tracks = data?.recordings.edges.map(edge => edge.node) || [];
+          return {
+            searchRecordings: {
+              __typename: prev.searchRecordings.__typename,
+              edges: [...prev.searchRecordings.edges, ...newEdges],
+              pageInfo,
+            },
+          };
+        },
+      });
+      setLoadingMore(false);
+    }
+  }, [data?.searchRecordings.pageInfo, fetchMore, loadingMore, search]);
+
+  const tracks = data?.searchRecordings.edges.map(edge => ({
+    id: edge.node.id,
+    title: edge.node.title,
+    artist: edge.node.orchestra.name,
+    duration: edge.node.audioTransfers[0]?.audioVariants[0]?.duration || 0,
+    artwork: edge.node.audioTransfers[0]?.album?.albumArtUrl || "",
+    url: edge.node.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || "",
+  })) || [];
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -136,7 +149,7 @@ function getStyles(colors) {
     footerStyle: {
       height: 100,
     },
-    itemSeperator: {
+    itemSeparator: {
       height: 10,
     },
   });

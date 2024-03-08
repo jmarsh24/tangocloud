@@ -9,10 +9,8 @@ import ApolloClientProvider from '@/providers/ApolloClientProvider';
 import { SetupService } from '@/services/SetupService';
 import { PlaybackService } from '@/services/PlaybackService';
 import TrackPlayer from 'react-native-track-player';
-
-export {
-  ErrorBoundary,
-} from 'expo-router';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+export { ErrorBoundary } from 'expo-router';
 
 export const unstable_settings = {
   initialRouteName: '(tabs)',
@@ -33,13 +31,10 @@ export default function RootLayout() {
   useEffect(() => {
     async function initializeApp() {
       try {
-        // Register the playback service before anything else
         TrackPlayer.registerPlaybackService(() => PlaybackService);
 
-        // Setup the TrackPlayer
         await SetupService();
 
-        // Hide the SplashScreen after everything is initialized
         if (loaded) {
           await SplashScreen.hideAsync();
         }
@@ -55,7 +50,11 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <SafeAreaProvider>
+      <RootLayoutNav />
+    </SafeAreaProvider>
+  );
 }
 
 function RootLayoutNav() {
@@ -69,6 +68,7 @@ function RootLayoutNav() {
             <Stack.Screen name="(auth)" options={{ headerShown: false }} />
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="recordings/[id]" options={{ presentation: 'modal', headerShown: false }} />
+            <Stack.Screen name="playlists/[id]" options={{headerBackTitleVisible: false, title: 'Playlist'}} />
           </Stack>
         </AuthProvider>
       </ApolloClientProvider>

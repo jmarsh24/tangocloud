@@ -1,7 +1,14 @@
 class Avo::Resources::Playlist < Avo::BaseResource
-  self.includes = [:playlist_audio_transfers, :user]
+  self.includes = [:playlist_items, :user]
   self.search = {
     query: -> { query.search_playlists(params[:q]).result(distinct: false) }
+  }
+  self.find_record_method = -> {
+    if id.is_a?(Array)
+      query.where(slug: id)
+    else
+      query.friendly.find id
+    end
   }
 
   self.ordering = {
@@ -28,6 +35,6 @@ class Avo::Resources::Playlist < Avo::BaseResource
     field :shares_count, as: :number, only_on: :show
     field :followers_count, as: :number, only_on: :show
     field :user_id, as: :hidden, default: -> { Current.user.id }
-    field :playlist_audio_transfers, as: :has_many
+    field :playlist_items, as: :has_many
   end
 end

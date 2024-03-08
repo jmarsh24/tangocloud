@@ -41,12 +41,11 @@ const Player = () => {
     return null;
   }
 
-  // Dynamically adjust styles based on theme
   const dynamicStyles = StyleSheet.create({
     container: {
       position: 'absolute',
       width: '100%',
-      bottom: 80,
+      bottom: 80
     },
     player: {
       width: '100%',
