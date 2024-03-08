@@ -5,7 +5,7 @@ import TrackListItem from '@/components/TrackListItem';
 import { AntDesign } from '@expo/vector-icons';
 import { useQuery } from '@apollo/client';
 import { useTheme } from '@react-navigation/native';
-import { RECORDINGS } from '@/graphql';
+import { SEARCH_RECORDINGS } from '@/graphql';
 import _ from 'lodash';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -16,34 +16,40 @@ export default function SearchScreen() {
   const [search, setSearch] = useState('');
   const [loadingMore, setLoadingMore] = useState(false);
 
-  const { data, loading, fetchMore, refetch, error } = useQuery(RECORDINGS, {
+  const { data, loading, fetchMore, refetch, error } = useQuery(SEARCH_RECORDINGS, {
     variables: { query: search, first: ITEMS_PER_PAGE },
     fetchPolicy: 'cache-and-network',
   });
+
+  useEffect(() => {
+    if (error) {
+      console.log("Apollo Query Error:", error);
+    }
+  }, [error]);
 
   useEffect(() => {
     refetch({ query: search, first: ITEMS_PER_PAGE });
   }, [search, refetch]);
 
   const loadMoreItems = useCallback(async () => {
-  if (data?.recordings.pageInfo.hasNextPage && !loadingMore) {
+  if (data?.searchRecordings.pageInfo.hasNextPage && !loadingMore) {
     setLoadingMore(true);
     await fetchMore({
       variables: {
-        after: data.recordings.pageInfo.endCursor,
+        after: data.searchRecordings.pageInfo.endCursor,
         query: search,
         first: ITEMS_PER_PAGE,
       },
       updateQuery: (prev, { fetchMoreResult }) => {
         if (!fetchMoreResult) return prev;
 
-        const newEdges = fetchMoreResult.recordings.edges;
-        const pageInfo = fetchMoreResult.recordings.pageInfo;
+        const newEdges = fetchMoreResult.searchRecordings.edges;
+        const pageInfo = fetchMoreResult.searchRecordings.pageInfo;
 
         return {
           recordings: {
-            __typename: prev.recordings.__typename,
-            edges: [...prev.recordings.edges, ...newEdges],
+            __typename: prev.searchRecordings.__typename,
+            edges: [...prev.searchRecordings.edges, ...newEdges],
             pageInfo,
           },
         };
@@ -51,8 +57,8 @@ export default function SearchScreen() {
     });
     setLoadingMore(false);
   }
-}, [data?.recordings.pageInfo, fetchMore, loadingMore, search]);
-  const tracks = data?.recordings.edges.map(edge => edge.node) || [];
+}, [data?.searchRecordings.pageInfo, fetchMore, loadingMore, search]);
+  const tracks = data?.searchRecordings.edges.map(edge => edge.node) || [];
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

@@ -9,7 +9,7 @@ RSpec.describe "Search Playlists", type: :graph do
 
     let(:query) do
       <<~GQL
-        query searchPlaylists($query: String!) {
+        query searchPlaylists($query: String) {
           searchPlaylists(query: $query) {
             edges {
               node {

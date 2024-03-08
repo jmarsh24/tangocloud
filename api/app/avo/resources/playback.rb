@@ -1,4 +1,4 @@
-class Avo::Resources::Listen < Avo::BaseResource
+class Avo::Resources::Playback < Avo::BaseResource
   self.includes = []
 
   def fields

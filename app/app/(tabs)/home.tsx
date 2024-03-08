@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, FlatList, Pressable, Image } from 'react-native';
 import { useTheme } from '@react-navigation/native';
-import { PLAYLISTS, PLAYLIST } from '@/graphql';
+import { SEARCH_PLAYLISTS, FETCH_PLAYLIST } from '@/graphql';
 import { useQuery } from '@apollo/client';
 import TrackPlayer from 'react-native-track-player';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -14,22 +14,25 @@ export default function HomeScreen() {
     data: playlistsData,
     loading: playlistsLoading,
     error: playlistsError,
-  } = useQuery(PLAYLISTS, { variables: { first: 20 } });
+  } = useQuery(SEARCH_PLAYLISTS, { variables: {query: "", first: 20 } });
+  
+  useEffect(() => {
+    if (playlistsError) {
+      console.log('Error fetching playlists:', playlistsError);
+    }
+  }, [playlistsError]);
 
   const {
     data: playlistData,
     loading: playlistLoading,
     error: playlistError,
-  } = useQuery(PLAYLIST, {
+  } = useQuery(FETCH_PLAYLIST, {
     variables: { Id: selectedPlaylistId },
     skip: !selectedPlaylistId,
   });
 
   useEffect(() => {
   const loadTracksToPlayer = async () => {
-    console.log('Playlist data loading:', playlistLoading);
-    console.log('Playlist data error:', playlistError);
-    console.log('Playlist data:', playlistData);
     if (playlistData && playlistData.playlist) {
       const tracks = playlistData.playlist.playlistAudioTransfers.map(transfer => {
         // Ensure every required field is present and valid
@@ -46,7 +49,6 @@ export default function HomeScreen() {
         };
       }).filter(track => track !== null); // Remove any null entries
 
-      console.log('Tracks to load:', tracks);
       if (tracks.length > 0) {
         try {
           await TrackPlayer.reset();
@@ -67,12 +69,15 @@ export default function HomeScreen() {
   if (playlistsLoading) return <View style={styles.container}><Text>Loading playlists...</Text></View>;
   if (playlistsError) return <View style={styles.container}><Text>Error loading playlists.</Text></View>;
 
-  const playlists = playlistsData?.playlists?.edges.map(edge => edge.node) || [];
-
+  const playlists = playlistsData?.searchPlaylists?.edges.map(edge => edge.node);
+  
   async function handlePlaylistPress(playlistId) {
-    setSelectedPlaylistId(playlistId);
+    try {
+      setSelectedPlaylistId(playlistId);
+    } catch (error) {
+      console.error('Error in handlePlaylistPress:', error);
+    }
   }
-
   return (
     <SafeAreaView style={styles.container}>
       <Text style={[styles.headerText, { color: colors.text }]}>
