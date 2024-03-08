@@ -18,22 +18,22 @@ function TabBarIcon(props: {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const { authState } = useAuth();
+  // const { authState } = useAuth();
 
-  const { data, loading, error } = useQuery(USER, {
-    skip: !authState.authenticated,
-  });
+  // const { data, loading, error } = useQuery(USER, {
+  //   skip: !authState.authenticated,
+  // });
 
-  const avatarUrl = data?.user?.avatarUrl;
+  // const avatarUrl = data?.user?.avatarUrl;
 
-  const youIcon = (color) => {
-    if (authState?.authenticated && avatarUrl) {
-      return <Image source={{ uri: avatarUrl }} style={styles.image} />;
-    } else {
-      return <AntDesign name="user" size={22} color={color} style={{ marginBottom: -3 }} />;
-    }
-  };
-
+  // const youIcon = (color) => {
+  //   if (authState?.authenticated && avatarUrl) {
+  //     return <Image source={{ uri: avatarUrl }} style={styles.image} />;
+  //   } else {
+  //     return <AntDesign name="user" size={22} color={color} style={{ marginBottom: -3 }} />;
+  //   }
+  // };
+  console.log('tablayout rendered');
   return (
     <Tabs
       screenOptions={{
@@ -41,7 +41,7 @@ export default function TabLayout() {
       }}
       tabBar={(props) => (
         <View>
-          <Player />
+          {/* <Player /> */}
           <BottomTabBar {...props} />
         </View>
       )}
@@ -62,14 +62,14 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <TabBarIcon name="search1" color={color} />
         }}
       />
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="you"
         options={{
           title: 'Your Profile',
           headerShown: false,
           tabBarIcon: ({ color }) => youIcon(color)
         }}
-      />
+      /> */}
     </Tabs>
   );
 }
