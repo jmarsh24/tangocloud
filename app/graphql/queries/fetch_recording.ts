@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const FETCH_RECORDING = gql`
-  query SearchRecording($id: ID!) {
-    searchRecording(id: $id) {
+  query FetchRecording($id: ID!) {
+    fetchRecording(id: $id) {
       id
       title
       singers {
