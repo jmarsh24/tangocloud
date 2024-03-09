@@ -3,7 +3,7 @@ class RecordingsController < ApplicationController
   skip_before_action :authenticate
 
   def show
-    app_url = "tangocloudapp://recordings/#{params[:id]}"
+    app_url = "tangocloudapp://player/#{params[:id]}"
 
     redirect_to app_url, allow_other_host: true
   end
