@@ -82,10 +82,7 @@ const Player = () => {
 
   return (
     <View style={dynamicStyles.container}>
-      <Link href={{
-          pathname: "/recordings/[id]",
-          params: { id: track.id }
-        }}>
+      <Link href={{ pathname: "/player/[id]", params: { id: track.id } }}>
         <View style={dynamicStyles.player}>
           <Image source={{ uri: track?.artwork }} style={dynamicStyles.image} />
           <View style={dynamicStyles.info}>

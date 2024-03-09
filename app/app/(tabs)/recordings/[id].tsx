@@ -31,9 +31,7 @@ export default function RecordingScreen() {
   const progressRef = useRef(0);
   const animationFrameRef = useRef<number>();
   const deviceWidth = Dimensions.get("window").width;
-  const { data, loading, error } = useQuery(FETCH_RECORDING, {
-    variables: { id: id },
-  });
+  const { data, loading, error } = useQuery(FETCH_RECORDING, { variables: { id: id } });
   const waveformData = data?.fetchRecording?.audioTransfers[0]?.waveform?.data || [];
 
   useEffect(() => {

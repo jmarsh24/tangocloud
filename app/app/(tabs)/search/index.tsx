@@ -15,8 +15,8 @@ export default function SearchScreen() {
   const [search, setSearch] = useState('');
   const [loadingMore, setLoadingMore] = useState(false);
 
-  const { data, loading, fetchMore, refetch, error } = useQuery(SEARCH_RECORDINGS, {
-    variables: { query: search, first: ITEMS_PER_PAGE },
+  const { data, loading, fetchMore, error } = useQuery(SEARCH_RECORDINGS, {
+    variables: { query: search ? search : '*', first: ITEMS_PER_PAGE },
     fetchPolicy: 'cache-and-network',
   });
 
@@ -26,17 +26,13 @@ export default function SearchScreen() {
     }
   }, [error]);
 
-  useEffect(() => {
-    refetch({ query: search, first: ITEMS_PER_PAGE });
-  }, [search, refetch]);
-
   const loadMoreItems = useCallback(async () => {
     if (data?.searchRecordings.pageInfo.hasNextPage && !loadingMore) {
       setLoadingMore(true);
       await fetchMore({
         variables: {
           after: data.searchRecordings.pageInfo.endCursor,
-          query: search,
+          query: search ? search : '*',
           first: ITEMS_PER_PAGE,
         },
         updateQuery: (prev, { fetchMoreResult }) => {

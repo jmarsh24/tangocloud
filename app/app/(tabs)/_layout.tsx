@@ -5,7 +5,7 @@ import { useAuth } from '@/providers/AuthProvider';
 import { useQuery } from '@apollo/client';
 import { USER } from '@/graphql';
 import { BottomTabBar } from '@react-navigation/bottom-tabs';
-import { Tabs } from 'expo-router';
+import { Tabs, Stack } from 'expo-router';
 import Colors from '@/constants/Colors';
 import Player from '@/components/Player';
 
@@ -47,7 +47,7 @@ export default function TabLayout() {
       )}
     >
       <Tabs.Screen
-        name="home"
+        name="playlists"
         options={{
           title: 'Home',
           headerShown: false,
@@ -68,6 +68,23 @@ export default function TabLayout() {
           title: 'Your Profile',
           headerShown: false,
           tabBarIcon: ({ color }) => youIcon(color)
+        }}
+      />
+      <Tabs.Screen
+        name="recordings"
+        options={{
+          href: null,
+          headerShown: false,
+          
+        }}
+      />
+      <Tabs.Screen
+        name="home"
+        options={{
+          href: null,
+          title: 'Home',
+          headerShown: false,
+
         }}
       />
     </Tabs>

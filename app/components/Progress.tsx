@@ -7,13 +7,16 @@ import { useTheme } from '@react-navigation/native';
 export const Progress: React.FC = () => {
   const { position} = useProgress();
   const { colors } = useTheme();
-  const [duration, setDuration] = useState(0); // State to store the accurate duration
+  const [duration, setDuration] = useState(0);
 
   useEffect(() => {
     const fetchCurrentTrack = async () => {
       const trackIndex = await TrackPlayer.getActiveTrackIndex();
-      const track = await TrackPlayer.getTrack(trackIndex);
-      setDuration(track.duration);
+
+      if (trackIndex !== null && trackIndex !== undefined) {
+        const track = await TrackPlayer.getTrack(trackIndex);
+        setDuration(track?.duration || 0);
+      }
     };
 
     fetchCurrentTrack();

@@ -67,8 +67,7 @@ function RootLayoutNav() {
           <Stack>
             <Stack.Screen name="(auth)" options={{ headerShown: false }} />
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="recordings/[id]" options={{ presentation: 'modal', headerShown: false }} />
-            <Stack.Screen name="playlists/[id]" options={{headerBackTitleVisible: false, title: 'Playlist'}} />
+            <Stack.Screen name="player/[id]" options={{ presentation: 'modal', headerShown: false }} />
           </Stack>
         </AuthProvider>
       </ApolloClientProvider>

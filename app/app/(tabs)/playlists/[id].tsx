@@ -12,9 +12,7 @@ export default function PlaylistScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { colors } = useTheme();
 
-  const { data, loading, error } = useQuery(FETCH_PLAYLIST, {
-    variables: { id },
-  });
+  const { data, loading, error } = useQuery(FETCH_PLAYLIST, {variables: { id } });
 
   useEffect(() => {
     if (error) {
@@ -53,7 +51,7 @@ export default function PlaylistScreen() {
     });
 
   return (
-    <View style={styles.container}>
+    <View style={{ padding: 10, gap: 20, flex: 1 }}>
       <Text style={[styles.title, { color: colors.text }]}>
         {playlist.title}
       </Text>

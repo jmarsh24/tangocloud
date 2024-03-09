@@ -6,6 +6,7 @@ import { Link } from 'expo-router';
 import { FlashList } from '@shopify/flash-list';
 import { SEARCH_PLAYLISTS } from '@/graphql';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import PlaylistItem from '@/components/PlaylistItem';
 
 export default function HomeScreen() {
   const { colors } = useTheme();
@@ -34,19 +35,6 @@ export default function HomeScreen() {
 
   const playlists = playlistsData?.searchPlaylists?.edges.map(edge => edge.node);
 
-  const renderPlaylistItem = ({ item }) => (
-    <Link push href={{ pathname: "/playlists/[id]", params: { id: item.id } }}>
-      <View style={styles.playlistContainer}>
-        <Image source={{ uri: item.imageUrl }} style={styles.playlistImage} />
-        <View style={styles.playlistInfo}>
-          <Text style={[styles.playlistTitle, { color: colors.text }]}>
-            {item.title}
-          </Text>
-        </View>
-      </View>
-    </Link>
-  );
-
   return (
     <SafeAreaView style={styles.container}>
       <Text style={[styles.headerText, { color: colors.text }]}>
@@ -55,7 +43,7 @@ export default function HomeScreen() {
       <FlashList
         data={playlists}
         keyExtractor={(item) => item.id}
-        renderItem={renderPlaylistItem}
+        renderItem={({ item }) => <PlaylistItem playlist={item} />}
         estimatedItemSize={100}
       />
     </SafeAreaView>
