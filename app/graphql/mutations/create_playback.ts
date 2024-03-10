@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
-const CREATE_PLAYBACK = gql`
-  mutation CreatePlayback($recordingId: String!) {
+export const CREATE_PLAYBACK = gql`
+  mutation CreatePlayback($recordingId: ID!) {
     createPlayback(input: { recordingId: $recordingId }) {
       playback {
         id

@@ -1,21 +1,16 @@
 require "rails_helper"
 
-RSpec.describe "CreateListen", type: :request do
+RSpec.describe "CreatePlayback", type: :request do
   let(:user) { users(:normal) }
   let(:mutation) do
     <<~GQL
-      mutation createListen($recordingId: ID!) {
-        createListen(input: {
+      mutation createPlayback($recordingId: ID!) {
+        createPlayback(input: {
           recordingId: $recordingId
         }) {
-          listen {
+          playback {
             id
             createdAt
-            listenHistory {
-              user {
-                id
-              }
-            }
             recording {
               id
             }
@@ -25,6 +20,7 @@ RSpec.describe "CreateListen", type: :request do
       }
     GQL
   end
+
   let(:recording) { recordings(:volver_a_sonar) }
 
   it "creates a listen" do
