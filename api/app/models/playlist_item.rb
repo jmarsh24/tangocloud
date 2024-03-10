@@ -15,7 +15,7 @@ end
 #  playlist_id   :uuid             not null
 #  playable_type :string           not null
 #  playable_id   :uuid             not null
-#  position      :integer          default(0), not null
+#  position      :integer          not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #

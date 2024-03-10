@@ -301,11 +301,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_10_135850) do
     t.uuid "playlist_id", null: false
     t.string "playable_type", null: false
     t.uuid "playable_id", null: false
-    t.integer "position", default: 0, null: false
+    t.integer "position", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["playable_type", "playable_id"], name: "index_playlist_items_on_playable"
     t.index ["playlist_id"], name: "index_playlist_items_on_playlist_id"
+    t.index ["position"], name: "index_playlist_items_on_position"
   end
 
   create_table "playlists", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
