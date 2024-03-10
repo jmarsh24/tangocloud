@@ -13,3 +13,5 @@ export * from "./queries/search_lyricists";
 export * from "./queries/fetch_lyricist";
 export * from "./queries/search_composers";
 export * from "./queries/fetch_composer";
+export * from "./queries/search_singers";
+export * from "./queries/fetch_singer";

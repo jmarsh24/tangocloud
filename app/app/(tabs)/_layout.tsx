@@ -132,6 +132,14 @@ export default function TabLayout() {
           headerShown: false,
         }}
       />
+      <Tabs.Screen
+        name="singers"
+        options={{
+          href: null,
+          title: 'Singers',
+          headerShown: false,
+        }}
+      />
     </Tabs>
   );
 }
