@@ -6,16 +6,13 @@ import { Link } from 'expo-router';
 import { USER_PROFILE } from '@/graphql';
 import Button from '@/components/Button'
 import Colors from '@/constants/Colors';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
-  const scheme = useColorScheme();
 export default function YouScreen() {
   const { authState, onLogout } = useAuth();
   const { data, loading, error } = useQuery(USER_PROFILE, {
     skip: !authState.authenticated,
   });
-
-  const avatarUrl = data?.user?.avatarUrl;
+  const scheme = useColorScheme();
 
   const dynamicStyles = StyleSheet.create({
     container: {
@@ -78,12 +75,12 @@ export default function YouScreen() {
   const avatar_url = data.userProfile?.avatarUrl;
   
   return (
-    <SafeAreaView style={dynamicStyles.container}>
+    <View style={dynamicStyles.container}>
       <Image source={{ uri: avatar_url }} style={styles.image} />
       {username && <Text style={dynamicStyles.header}>{username}</Text>}
       {email && <Text style={dynamicStyles.header}>{email}</Text>}
       <Button onPress={onLogout} text="Sign out" />
-    </SafeAreaView>
+    </View>
   );
 }
 
