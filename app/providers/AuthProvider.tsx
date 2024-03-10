@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         mutation: LOGIN,
         variables: { login, password },
       });
-    
+
       setAuthState({
         token: data.login.token,
         authenticated: true,
