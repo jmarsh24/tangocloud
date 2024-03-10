@@ -1,13 +1,13 @@
 require "rails_helper"
 
-RSpec.describe "removeListen", type: :graph do
+RSpec.describe "removePlayback", type: :graph do
   let(:user) { users(:normal) }
-  let(:listen) { listens(:volver_a_sonar_normal_listen) }
-  let(:recording) { listen.recording }
+  let(:playback) { playbacks(:volver_a_sonar_normal_playback) }
+  let(:recording) { playback.recording }
   let(:mutation) do
     <<~GQL
-      mutation removeListen($id: ID!) {
-        removeListen(input: {
+      mutation removePlayback($id: ID!) {
+        removePlayback(input: {
           id: $id
         }) {
           success
@@ -17,18 +17,18 @@ RSpec.describe "removeListen", type: :graph do
     GQL
   end
 
-  it "removes a listen" do
-    gql(mutation, variables: {id: listen.id}, user:)
+  it "removes a playback" do
+    gql(mutation, variables: {id: playback.id}, user:)
 
-    expect(data.remove_listen.success).to be true
-    expect(Listen.exists?(listen.id)).to be false
+    expect(data.remove_playback.success).to be true
+    expect(Playback.exists?(playback.id)).to be false
   end
 
   it "returns an error if the listen does not exist" do
     gql(mutation, variables: {id: 0}, user:)
 
-    expect(data.remove_listen.errors.first).to eq("Couldn't find Listen with 'id'=0")
-    expect(data.remove_listen.success).to be false
-    expect(Listen.exists?(listen.id)).to be true
+    expect(data.remove_playback.errors.first).to eq("Couldn't find Playback with 'id'=0")
+    expect(data.remove_playback.success).to be false
+    expect(Playback.exists?(playback.id)).to be true
   end
 end

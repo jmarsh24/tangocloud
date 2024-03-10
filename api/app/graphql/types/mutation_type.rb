@@ -10,7 +10,7 @@ module Types
     field :create_playlist, mutation: Mutations::Playlists::CreatePlaylist
     field :delete_playlist, mutation: Mutations::Playlists::DeletePlaylist
     field :remove_like_from_recording, mutation: Mutations::Recordings::RemoveLikeFromRecording
-    field :remove_listen, mutation: Mutations::Playbacks::RemovePlayback
+    field :remove_playback, mutation: Mutations::Playbacks::RemovePlayback
     field :remove_playlist_item, mutation: Mutations::Playlists::RemovePlaylistItem
     field :update_playlist, mutation: Mutations::Playlists::UpdatePlaylist
     field :update_user, mutation: Mutations::Users::UpdateUser
