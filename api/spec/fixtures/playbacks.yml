@@ -1,8 +1,8 @@
 volver_a_sonar_admin_listen:
-  playback_history: admin_playback_history
+  user: admin
   recording: volver_a_sonar
 volver_a_sonar_normal_playback:
-  playback_history: normal_playback_history
+  user: normal
   recording: volver_a_sonar
 # == Schema Information
 #
