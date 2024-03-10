@@ -19,7 +19,7 @@ const ComposerScreen = () => {
   if (!composers) {
     return <Text>No composers found</Text>;
   }
-  debugger;
+
   return (
     <View style={styles.container}>
       <FlashList 
