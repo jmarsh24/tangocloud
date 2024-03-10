@@ -8,12 +8,14 @@ import Button from '@/components/Button'
 import Colors from '@/constants/Colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+  const scheme = useColorScheme();
 export default function YouScreen() {
   const { authState, onLogout } = useAuth();
   const { data, loading, error } = useQuery(USER_PROFILE, {
     skip: !authState.authenticated,
   });
-  const scheme = useColorScheme();
+
+  const avatarUrl = data?.user?.avatarUrl;
 
   const dynamicStyles = StyleSheet.create({
     container: {

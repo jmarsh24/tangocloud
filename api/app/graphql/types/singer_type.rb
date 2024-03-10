@@ -9,16 +9,7 @@ module Types
     field :birth_date, GraphQL::Types::ISO8601Date, null: true
     field :death_date, GraphQL::Types::ISO8601Date, null: true
 
-    field :recordings, [RecordingType], null: false
-
-    def recordings
-      dataloader.with(Sources::Preload, :recordings).load(object)
-    end
-
-    field :recording_singers, [RecordingSingerType], null: false
-
-    def recording_singers
-      dataloader.with(Sources::Preload, :recording_singers).load(object)
-    end
+    has_many :recording_singers
+    has_many :recordings
   end
 end

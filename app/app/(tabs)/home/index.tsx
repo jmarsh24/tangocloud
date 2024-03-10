@@ -2,10 +2,8 @@ import React from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { useQuery } from '@apollo/client';
-import { Link } from 'expo-router';
 import { FlashList } from '@shopify/flash-list';
 import { SEARCH_PLAYLISTS } from '@/graphql';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import PlaylistItem from '@/components/PlaylistItem';
 
 export default function HomeScreen() {
@@ -36,7 +34,7 @@ export default function HomeScreen() {
   const playlists = playlistsData?.searchPlaylists?.edges.map(edge => edge.node);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <Text style={[styles.headerText, { color: colors.text }]}>
         The people who are crazy enough to think they can change the world are the ones who do.
       </Text>
@@ -46,7 +44,7 @@ export default function HomeScreen() {
         renderItem={({ item }) => <PlaylistItem playlist={item} />}
         estimatedItemSize={100}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 
