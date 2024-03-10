@@ -14,6 +14,29 @@ export const USER_PROFILE = gql`
       avatarUrl
       createdAt
       updatedAt
+      playbacks {
+        edges {
+          node {
+            id
+            recording {
+              id
+              title
+              orchestra {
+                name
+              }
+              audioTransfers {
+                audioVariants {
+                  audioFileUrl
+                  duration
+                }
+                album {
+                  albumArtUrl
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 `;
