@@ -1,7 +1,7 @@
-admin_listen_history:
+admin_playback_history:
   user: admin
 
-normal_listen_history:
+normal_playback_history:
   user: normal
 # == Schema Information
 #

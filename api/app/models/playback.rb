@@ -1,19 +1,17 @@
 class Playback < ApplicationRecord
-  belongs_to :listen_history
+  belongs_to :user
   belongs_to :recording
-
-  delegate :user, to: :listen_history
 
   scope :most_recent, -> { order(created_at: :desc) }
 end
 
 # == Schema Information
 #
-# Table name: recording_listens
+# Table name: playbacks
 #
 #  id           :uuid             not null, primary key
-#  history_id   :uuid
-#  recording_id :uuid
+#  user_id      :uuid             not null
+#  recording_id :uuid             not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #

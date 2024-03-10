@@ -1,9 +1,9 @@
-class Avo::Resources::ListenHistory < Avo::BaseResource
+class Avo::Resources::PlaybackHistory < Avo::BaseResource
   self.includes = []
 
   def fields
     field :id, as: :id
     field :user, as: :belongs_to
-    field :listens, as: :has_many
+    field :playbacks, as: :has_many
   end
 end

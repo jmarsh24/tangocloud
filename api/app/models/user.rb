@@ -3,11 +3,11 @@ class User < ApplicationRecord
   searchkick word_start: [:username, :email, :first_name, :last_name]
 
   has_one :user_preference, dependent: :destroy
-  has_one :listen_history, dependent: :destroy
-  has_many :listens, through: :listen_history
   has_many :likes, dependent: :destroy
   has_many :playlists, dependent: :destroy
   has_many :playlist_items, through: :playlists
+  has_many :playbacks, dependent: :destroy
+  has_many :recordings, through: :playbacks
 
   generates_token_for :email_verification, expires_in: 2.days do
     email
@@ -47,7 +47,6 @@ class User < ApplicationRecord
   end
 
   after_create_commit { build_user_preference.save }
-  after_create_commit { build_listen_history.save }
   after_create_commit { playlists.create!(title: "liked", system: true) }
 
   delegate :avatar, to: :user_preference, allow_nil: true
