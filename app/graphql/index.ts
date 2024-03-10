@@ -7,3 +7,5 @@ export * from "./queries/fetch_recording";
 export * from "./queries/search_playlists";
 export * from "./queries/fetch_playlist";
 export * from "./queries/user_profile";
+export * from "./queries/search_orchestras";
+export * from "./queries/fetch_orchestra";

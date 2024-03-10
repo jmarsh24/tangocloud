@@ -14,11 +14,6 @@ module Types
       dataloader.with(Sources::Preload, :compositions).load(object)
     end
 
-    field :recordings, [RecordingType], null: false
-    def recordings
-      dataloader.with(Sources::Preload, :recordings).load(object)
-    end
-
     field :singers, [SingerType], null: false
     def singers
       dataloader.with(Sources::Preload, :singers).load(object)
@@ -28,5 +23,7 @@ module Types
     def lyricists
       dataloader.with(Sources::Preload, :lyricists).load(object)
     end
+
+    has_many :recordings
   end
 end

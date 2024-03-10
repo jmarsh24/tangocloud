@@ -4,8 +4,9 @@ import { SEARCH_PLAYLISTS } from '@/graphql';
 import { useQuery } from '@apollo/client';
 
 export default function OrdersScreen() {
-  const { data: playlists, loading, error } = useQuery(SEARCH_PLAYLISTS, { variables: { query: "*", first: 20 } })
-
+  const { data, loading, error } = useQuery(SEARCH_PLAYLISTS, { variables: { query: "*", first: 20 } })
+  const playlists = data?.searchPlaylists.edges.map((edge) => edge.node);
+  
   if (loading) {
     return <ActivityIndicator />;
   }
@@ -15,7 +16,7 @@ export default function OrdersScreen() {
   
   return (
     <FlatList
-      data={playlists.searchPlaylists.edges.map((edge) => edge.node)}
+      data={playlists}
       renderItem={({ item }) => <PlaylistItem playlist={item} />}
       contentContainerStyle={{ gap: 10, padding: 10 }}
     />
