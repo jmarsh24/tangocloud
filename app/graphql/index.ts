@@ -11,3 +11,5 @@ export * from "./queries/search_orchestras";
 export * from "./queries/fetch_orchestra";
 export * from "./queries/search_lyricists";
 export * from "./queries/fetch_lyricist";
+export * from "./queries/search_composers";
+export * from "./queries/fetch_composer";

@@ -3,9 +3,9 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { useColorScheme, View, StyleSheet, Image } from 'react-native';
 import { useAuth } from '@/providers/AuthProvider';
 import { useQuery } from '@apollo/client';
-import { USER } from '@/graphql';
+import { USER_PROFILE } from '@/graphql';
 import { BottomTabBar } from '@react-navigation/bottom-tabs';
-import { Tabs, Stack } from 'expo-router';
+import { Tabs, Redirect } from 'expo-router';
 import Colors from '@/constants/Colors';
 import Player from '@/components/Player';
 
@@ -20,11 +20,23 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { authState } = useAuth();
 
-  const { data, loading, error } = useQuery(USER, {
+  const { data, loading, error } = useQuery(USER_PROFILE, {
     skip: !authState.authenticated,
   });
 
-  const avatarUrl = data?.user?.avatarUrl;
+  if (loading) {
+    return null;
+  }
+
+  if (error) {
+    console.error('Error fetching user:', error);
+  }
+
+  if (!authState.authenticated) {
+    return <Redirect href="/login" />;
+  }
+
+  const avatarUrl = data?.userProfile?.avatarUrl;
 
   const youIcon = (color) => {
     if (authState?.authenticated && avatarUrl) {
@@ -110,7 +122,14 @@ export default function TabLayout() {
           href: null,
           title: 'Lyricists',
           headerShown: false,
-
+        }}
+      />
+      <Tabs.Screen
+        name="composers"
+        options={{
+          href: null,
+          title: 'Composers',
+          headerShown: false,
         }}
       />
     </Tabs>

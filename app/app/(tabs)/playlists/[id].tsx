@@ -6,7 +6,6 @@ import { useQuery } from "@apollo/client";
 import { FlashList } from "@shopify/flash-list";
 import { FETCH_PLAYLIST } from "@/graphql";
 import TrackListItem from "@/components/TrackListItem";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function PlaylistScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
