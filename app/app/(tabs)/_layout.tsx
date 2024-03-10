@@ -104,6 +104,15 @@ export default function TabLayout() {
 
         }} 
       />
+      <Tabs.Screen
+        name="lyricists"
+        options={{
+          href: null,
+          title: 'Lyricists',
+          headerShown: false,
+
+        }}
+      />
     </Tabs>
   );
 }

@@ -14,9 +14,6 @@ module Types
       dataloader.with(Sources::Preload, :lyrics).load(object)
     end
 
-    field :compositions, [CompositionType], null: false
-    def compositions
-      dataloader.with(Sources::Preload, :compositions).load(object)
-    end
+    has_many :compositions
   end
 end
