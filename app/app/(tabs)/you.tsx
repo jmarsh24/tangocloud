@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, StyleSheet, Text, Image, ActivityIndicator, useColorScheme } from 'react-native';
 import { useAuth } from '@/providers/AuthProvider';
 import { useQuery } from '@apollo/client';
@@ -9,13 +9,23 @@ import Colors from '@/constants/Colors';
 import { FlashList } from "@shopify/flash-list";
 import TrackListItem from "@/components/TrackListItem";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function YouScreen() {
   const { authState, onLogout } = useAuth();
-  const { data, loading, error } = useQuery(USER_PROFILE, {
+  const scheme = useColorScheme();
+
+  const { data, loading, error, refetch } = useQuery(USER_PROFILE, {
     skip: !authState.authenticated,
   });
-  const scheme = useColorScheme();
+
+  useFocusEffect(
+    useCallback(() => {
+      if (authState.authenticated) {
+        refetch();
+      }
+    }, [authState.authenticated, refetch])
+  );
 
   if (!authState.authenticated) {
     return (
@@ -71,9 +81,9 @@ export default function YouScreen() {
         <Button onPress={onLogout} text="Sign out" />
       </View>
       <View style={styles.listContainer}>
+        <Text style={[styles.header, { color: Colors[scheme].text }]}>History</Text>
         <FlashList
           data={recordings}
-          keyExtractor={(item) => item.id}
           renderItem={({ item }) => <TrackListItem track={item} />}
           estimatedItemSize={80}
         />
