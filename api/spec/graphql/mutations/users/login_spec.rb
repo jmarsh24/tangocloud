@@ -70,7 +70,7 @@ RSpec.describe "login", type: :graph do
     }
     gql(mutation, variables:)
 
-    expect(gql_errors.map(&:message)).to eq["Incorrect Email/Password"]
+    expect(gql_errors.map(&:message)).to eq(["Incorrect Email/Password"])
   end
 
   it "fails with wrong email" do
