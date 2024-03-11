@@ -23,7 +23,7 @@ RSpec.describe "CreatePlayback", type: :graph do
 
   let(:recording) { recordings(:volver_a_sonar) }
 
-  fit "creates a playback" do
+  it "creates a playback" do
     gql(mutation, variables: {recordingId: recording.id}, user:)
 
     expect(result.data.create_playback.playback.recording.id).to eq(recording.id.to_s)
