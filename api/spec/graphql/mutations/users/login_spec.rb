@@ -52,7 +52,7 @@ RSpec.describe "login", type: :graph do
     expect(result.data.login.token).to be_present
   end
 
-  it "fails with wrong username" do
+  fit "fails with wrong username" do
     variables = {
       login: "wrong-username",
       password: "password"
@@ -60,7 +60,7 @@ RSpec.describe "login", type: :graph do
 
     gql(mutation, variables:)
 
-    expect(result(skip_errors: true).errors[0].message).to eq("Incorrect Email/Password")
+    expect(gql_errors.map(&:message)).to eq(["Incorrect Email/Password"])
   end
 
   it "fails with wrong password" do
@@ -70,7 +70,7 @@ RSpec.describe "login", type: :graph do
     }
     gql(mutation, variables:)
 
-    expect(result(skip_errors: true).errors[0].message).to eq("Incorrect Email/Password")
+    expect(gql_errors.map(&:message)).to eq["Incorrect Email/Password"]
   end
 
   it "fails with wrong email" do
@@ -81,6 +81,6 @@ RSpec.describe "login", type: :graph do
 
     gql(mutation, variables:)
 
-    expect(result(skip_errors: true).errors[0].message).to eq("Incorrect Email/Password")
+    expect(gql_errors.map(&:message)).to eq(["Incorrect Email/Password"])
   end
 end
