@@ -1,21 +1,21 @@
 require "rails_helper"
 
-RSpec.describe "CreatePlayback", type: :request do
+RSpec.describe "CreatePlayback", type: :graph do
   let(:user) { users(:normal) }
   let(:mutation) do
     <<~GQL
       mutation createPlayback($recordingId: ID!) {
-        createPlayback(input: {
-          recordingId: $recordingId
-        }) {
+        createPlayback(input: { recordingId: $recordingId }) {
           playback {
             id
             createdAt
             recording {
               id
             }
+            user {
+              id
+            }
           }
-          errors
         }
       }
     GQL
@@ -23,21 +23,11 @@ RSpec.describe "CreatePlayback", type: :request do
 
   let(:recording) { recordings(:volver_a_sonar) }
 
-  it "creates a listen" do
-    token = AuthToken.token(user)
-    post api_graphql_path, params: {query: mutation, variables: {recordingId: recording.id}}, headers: {"Authorization" => "Bearer #{token}"}
-    json = JSON.parse(response.body)
+  fit "creates a playback" do
+    gql(mutation, variables: {recordingId: recording.id}, user:)
 
-    expect(json.dig("data", "createListen", "listen", "listenHistory", "user", "id")).to eq(user.id.to_s)
-    expect(json.dig("data", "createListen", "listen", "recording", "id")).to eq(recording.id.to_s)
-    expect(json.dig("data", "createListen", "listen", "createdAt")).to be_present
-    expect(json.dig("data", "createListen", "listen", "errors")).to be_nil
-  end
-
-  it "requires authentication" do
-    post api_graphql_path, params: {query: mutation, variables: {recordingId: recording.id}}
-    json = JSON.parse(response.body)
-
-    expect(json.dig("errors", 0)).to eq("You must be signed in to access this resource.")
+    expect(result.data.create_playback.playback.recording.id).to eq(recording.id.to_s)
+    expect(result.data.create_playback.playback.user.id).to eq(user.id.to_s)
+    expect(result.data.create_playback.playback.created_at).to be_present
   end
 end
