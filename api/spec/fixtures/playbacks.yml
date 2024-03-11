@@ -1,4 +1,4 @@
-volver_a_sonar_admin_listen:
+volver_a_sonar_admin_playback:
   user: admin
   recording: volver_a_sonar
 volver_a_sonar_normal_playback:
