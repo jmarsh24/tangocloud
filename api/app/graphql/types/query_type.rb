@@ -4,7 +4,6 @@ module Types
     field :fetch_audio_variant, resolver: Resolvers::AudioVariants::FetchAudioVariant
     field :fetch_composer, resolver: Resolvers::Composers::FetchComposer
     field :fetch_genre, resolver: Resolvers::Genres::FetchGenre
-    field :fetch_listen_history, resolver: Resolvers::ListenHistories::FetchListenHistory
     field :fetch_lyricist, resolver: Resolvers::Lyricists::FetchLyricist
     field :fetch_orchestra, resolver: Resolvers::Orchestras::FetchOrchestra
     field :fetch_period, resolver: Resolvers::Periods::FetchPeriod

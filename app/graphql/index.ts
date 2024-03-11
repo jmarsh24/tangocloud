@@ -1,5 +1,6 @@
 export * from "./mutations/login";
 export * from "./mutations/register";
+export * from "./mutations/create_playback";
 export * from "./queries/whoAmI";
 export * from "./queries/user";
 export * from "./queries/search_recordings";

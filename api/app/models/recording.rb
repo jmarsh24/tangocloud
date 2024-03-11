@@ -19,6 +19,8 @@ class Recording < ApplicationRecord
   has_many :tandas, through: :tanda_recordings
   has_many :waveforms, through: :audio_transfers, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :destroy
+  has_many :playbacks, dependent: :destroy
+  has_many :users, through: :playbacks
 
   validates :title, presence: true
   validates :recorded_date, presence: true

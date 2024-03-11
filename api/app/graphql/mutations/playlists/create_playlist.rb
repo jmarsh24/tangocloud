@@ -25,10 +25,13 @@ module Mutations::Playlists
         )
       end
 
-      if playlist.save
-        item_ids.each do |item_id|
-          playlist.playlist_items.create(playable_id: item_id, playable_type: "Recording")
+      if item_ids.present?
+        item_ids.each_with_index do |item_id, position|
+          playlist.playlist_items.build(playable_id: item_id, playable_type: "Recording", position:)
         end
+      end
+
+      if playlist.save
         {playlist:, errors: []}
       else
         {playlist: nil, errors: playlist.errors.full_messages}

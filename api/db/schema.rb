@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_07_100409) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_10_135850) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -242,22 +242,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_07_100409) do
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
-  create_table "listen_histories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_listen_histories_on_user_id"
-  end
-
-  create_table "listens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "listen_history_id"
-    t.uuid "recording_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["listen_history_id"], name: "index_listens_on_listen_history_id"
-    t.index ["recording_id"], name: "index_listens_on_recording_id"
-  end
-
   create_table "lyricists", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "slug", null: false
@@ -304,15 +288,25 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_07_100409) do
     t.index ["slug"], name: "index_periods_on_slug", unique: true
   end
 
+  create_table "playbacks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.uuid "recording_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recording_id"], name: "index_playbacks_on_recording_id"
+    t.index ["user_id"], name: "index_playbacks_on_user_id"
+  end
+
   create_table "playlist_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "playlist_id", null: false
     t.string "playable_type", null: false
     t.uuid "playable_id", null: false
-    t.integer "position", default: 0, null: false
+    t.integer "position", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["playable_type", "playable_id"], name: "index_playlist_items_on_playable"
     t.index ["playlist_id"], name: "index_playlist_items_on_playlist_id"
+    t.index ["position"], name: "index_playlist_items_on_position"
   end
 
   create_table "playlists", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -606,10 +600,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_07_100409) do
   add_foreign_key "dancer_videos", "videos"
   add_foreign_key "events", "users"
   add_foreign_key "likes", "users"
-  add_foreign_key "listen_histories", "users"
-  add_foreign_key "listens", "listen_histories"
-  add_foreign_key "listens", "recordings"
   add_foreign_key "lyrics", "compositions"
+  add_foreign_key "playbacks", "recordings"
+  add_foreign_key "playbacks", "users"
   add_foreign_key "playlist_items", "playlists"
   add_foreign_key "recording_singers", "recordings"
   add_foreign_key "recording_singers", "singers"

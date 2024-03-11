@@ -8,17 +8,17 @@ module GraphQLHelper
   end
 
   def result(skip_errors: false)
-    raise "GraphQL Error: #{gql_errors.map { |e| e["message"] }.join(", ")}" if gql_errors.any? && !skip_errors
-
-    JSON.parse(@result.to_h.deep_transform_keys(&:underscore).to_json, object_class: OpenStruct)
+    result = @result
+    unless skip_errors
+      raise "GraphQL Error: #{result["errors"].to_json}" if result["errors"]
+    end
+    JSON.parse(result.to_h.deep_transform_keys(&:underscore).to_json, object_class: OpenStruct)
   end
 
-  def data
-    result.data
-  end
+  delegate :data, to: :result
 
   def gql_errors
-    @result["errors"] || []
+    result(skip_errors: true).errors || []
   end
 
   def pp_gql

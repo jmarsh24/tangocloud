@@ -1,17 +1,19 @@
 import { Text, View, StyleSheet, Image, Pressable } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import TrackPlayer from 'react-native-track-player';
+import { useMutation } from '@apollo/client';
+import { CREATE_PLAYBACK } from "@/graphql";
 
 export default function TrackListItem({ track }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
+  const [createPlayback, { loading, error }] = useMutation(CREATE_PLAYBACK);
 
   if (!track) {
     return null;
   }
 
   const onTrackPress = async () => {
-
     const trackForPlayer = {
       id: track.id,
       url: track.url,
@@ -22,11 +24,17 @@ export default function TrackListItem({ track }) {
     };
 
     try {
+      await createPlayback({
+        variables: {
+          recordingId: track.id,
+        },
+      });
+
       await TrackPlayer.reset();
       await TrackPlayer.add([trackForPlayer]);
       await TrackPlayer.play();
     } catch (error) {
-      console.error('Error playing track:', error);
+      console.error('Error creating playback or playing track:', error);
     }
   };
 
@@ -70,6 +78,16 @@ function getStyles(colors) {
     },
     songTextContainer: {
       flexDirection: "column",
+    },
+    loadingText: {
+      fontSize: 14,
+      color: colors.text,
+      marginLeft: 10,
+    },
+    errorText: {
+      fontSize: 14,
+      color: 'red',
+      marginLeft: 10,
     },
   });
 }

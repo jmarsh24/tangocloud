@@ -37,5 +37,7 @@ module Types
     belongs_to :period
     belongs_to :lyricist
     belongs_to :composer
+
+    has_many :playbacks
   end
 end

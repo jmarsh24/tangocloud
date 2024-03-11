@@ -46,8 +46,6 @@ export default function ComposerScreen() {
     }))
   );
 
-  const composer = data?.fetchComposer;
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>

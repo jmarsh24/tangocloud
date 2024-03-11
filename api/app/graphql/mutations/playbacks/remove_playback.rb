@@ -1,5 +1,5 @@
-module Mutations::ListenHistories
-  class RemoveListen < Mutations::BaseMutation
+module Mutations::Playbacks
+  class RemovePlayback < Mutations::BaseMutation
     argument :id, ID, required: true
 
     field :message, String, null: false
@@ -7,12 +7,12 @@ module Mutations::ListenHistories
     field :errors, [String], null: true
 
     def resolve(id:)
-      listen = Listen.find(id)
+      playback = Playback.find(id)
 
-      if listen.destroy
-        {message: "Listen successfully deleted", success: true}
+      if playback.destroy
+        {message: "Playback successfully deleted", success: true}
       else
-        {errors: listen.errors, success: false}
+        {errors: playback.errors, success: false}
       end
     rescue ActiveRecord::RecordNotFound => e
       {errors: [e.message], success: false}

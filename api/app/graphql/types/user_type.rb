@@ -34,5 +34,8 @@ module Types
     def events
       dataloader.with(Sources::Preload, :events).load(object)
     end
+
+    has_many :playbacks
+    has_many :playlists
   end
 end
