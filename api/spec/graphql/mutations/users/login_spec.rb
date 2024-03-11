@@ -52,7 +52,7 @@ RSpec.describe "login", type: :graph do
     expect(result.data.login.token).to be_present
   end
 
-  fit "fails with wrong username" do
+  it "fails with wrong username" do
     variables = {
       login: "wrong-username",
       password: "password"
