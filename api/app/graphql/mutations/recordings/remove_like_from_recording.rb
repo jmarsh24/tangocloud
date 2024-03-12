@@ -1,19 +1,29 @@
-module Mutations::Recordings
-  class RemoveLikeFromRecording < Mutations::BaseMutation
-    field :success, Boolean, null: false
-    field :errors, [String], null: false
+module Mutations
+  module Recordings
+    class RemoveLikeFromRecording < Mutations::BaseMutation
+      field :success, Boolean, null: false
+      field :errors, [String], null: false
 
-    argument :id, ID, required: true
+      argument :recording_id, ID, required: true
 
-    def resolve(id:)
-      like = Like.find_by(id:)
+      def resolve(recording_id:)
+        recording = Recording.find(recording_id)
 
-      return {success: false, errors: ["Like not found"]} if like.nil?
+        if recording.nil?
+          return {success: false, errors: ["Recording not found"]}
+        end
 
-      if like.destroy
-        {success: true, errors: []}
-      else
-        {success: false, errors: like.errors}
+        like = current_user.likes.find_by(likeable: recording)
+
+        if like.nil?
+          return {success: false, errors: ["Like not found"]}
+        end
+
+        if like.destroy
+          {success: true, errors: []}
+        else
+          {success: false, errors: like.errors.full_messages}
+        end
       end
     end
   end

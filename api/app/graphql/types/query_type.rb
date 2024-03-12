@@ -4,6 +4,7 @@ module Types
     field :fetch_audio_variant, resolver: Resolvers::AudioVariants::FetchAudioVariant
     field :fetch_composer, resolver: Resolvers::Composers::FetchComposer
     field :fetch_genre, resolver: Resolvers::Genres::FetchGenre
+    field :fetch_liked_recordings, resolver: Resolvers::Recordings::FetchLikedRecordings
     field :fetch_lyricist, resolver: Resolvers::Lyricists::FetchLyricist
     field :fetch_orchestra, resolver: Resolvers::Orchestras::FetchOrchestra
     field :fetch_period, resolver: Resolvers::Periods::FetchPeriod
@@ -22,5 +23,6 @@ module Types
     field :search_singers, resolver: Resolvers::Singers::SearchSingers
     field :search_users, resolver: Resolvers::Users::SearchUsers
     field :user_profile, resolver: Resolvers::Users::UserProfile
+    field :check_like_status_on_recording, resolver: Resolvers::Recordings::CheckLikeStatusOnRecording
   end
 end

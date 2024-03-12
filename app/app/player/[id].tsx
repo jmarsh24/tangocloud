@@ -20,6 +20,9 @@ import Waveform from "@/components/Waveform";
 import * as Sharing from "expo-sharing";
 import FontAwesome6 from "react-native-vector-icons/FontAwesome6";
 import { useLocalSearchParams } from "expo-router";
+import { REMOVE_LIKE_FROM_RECORDING, ADD_LIKE_TO_RECORDING, CHECK_LIKE_STATUS_ON_RECORDING } from "@/graphql";
+import { useMutation } from "@apollo/client";
+import { Ionicons } from '@expo/vector-icons';
 
 interface Track {
   id: string;
@@ -45,7 +48,39 @@ export default function PlayerScreen() {
   const { data, loading, error } = useQuery(FETCH_RECORDING, {
     variables: { id: id },
   });
+  const [removeLikeFromRecording] = useMutation(REMOVE_LIKE_FROM_RECORDING);
+  const [addLikeToRecording] = useMutation(ADD_LIKE_TO_RECORDING);
+  const [isLiked, setIsLiked] = useState(false);
   const { playing, bufferingDuringPlay } = useIsPlaying();
+
+  const { data: likeStatusData, loading: likeStatusLoading, error: likeStatusError } = useQuery(CHECK_LIKE_STATUS_ON_RECORDING, {
+    variables: { recordingId: id },
+    fetchPolicy: "network-only",
+  });
+
+  useEffect(() => {
+    if (!likeStatusLoading && likeStatusData) {
+      setIsLiked(likeStatusData.checkLikeStatusOnRecording);
+    }
+  }, [likeStatusData, likeStatusLoading]);
+
+  const handleLike = async () => {
+    if (isLiked) {
+      await removeLikeFromRecording({
+        variables: {
+          recordingId: id,
+        },
+      });
+      setIsLiked(false);
+    } else {
+      await addLikeToRecording({
+        variables: {
+          recordingId: id,
+        },
+      });
+      setIsLiked(true);
+    }
+  };
 
   const loadTrack = async (recordingData) => {
     const trackForPlayer = {
@@ -62,6 +97,14 @@ export default function PlayerScreen() {
     await TrackPlayer.add(trackForPlayer);
     await TrackPlayer.play();
   };
+
+  useEffect(() => {
+    if (data?.fetchRecording?.like) {
+      setIsLiked(true);
+    } else {
+      setIsLiked(false);
+    }
+  }, [data]);
 
   useEffect(() => {
     const checkAndLoadTrack = async () => {
@@ -187,9 +230,18 @@ export default function PlayerScreen() {
           progress={progressRef.current}
         />
         <Progress />
-        <TouchableWithoutFeedback onPress={shareRecording}>
-          <FontAwesome6 name={"share"} size={30} style={styles.icon} />
-        </TouchableWithoutFeedback>
+        <View style={styles.row}>
+          <TouchableWithoutFeedback onPress={shareRecording}>
+            <FontAwesome6 name={"share"} size={30} style={styles.icon} />
+          </TouchableWithoutFeedback>
+            <Ionicons
+              onPress={handleLike}
+              name={isLiked ? 'heart' : 'heart-outline'}
+              size={36}
+              color={'white'}
+              style={{ marginHorizontal: 10 }}
+            />
+        </View>
         <PlayerControls />
       </View>
     </View>

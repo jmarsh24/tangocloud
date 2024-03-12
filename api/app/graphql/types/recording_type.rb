@@ -39,5 +39,6 @@ module Types
     belongs_to :composer
 
     has_many :playbacks
+    has_many :likes
   end
 end
