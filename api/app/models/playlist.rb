@@ -13,6 +13,9 @@ class Playlist < ApplicationRecord
   has_one_attached :image, dependent: :purge_late
   has_one_attached :playlist_file, dependent: :purge_later
 
+  scope :public_playlists, -> { where(public: true) }
+  scope :system_playlists, -> { where(system: true) }
+
   def self.search_playlists(query = "*")
     search(
       query,

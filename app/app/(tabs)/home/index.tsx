@@ -1,10 +1,11 @@
 import React from 'react';
-import { Text, View, StyleSheet, Image } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { useQuery } from '@apollo/client';
 import { FlashList } from '@shopify/flash-list';
 import { SEARCH_PLAYLISTS } from '@/graphql';
 import PlaylistItem from '@/components/PlaylistItem';
+import LikedLink from '@/components/LikedLink';
 
 export default function HomeScreen() {
   const { colors } = useTheme();
@@ -41,6 +42,7 @@ export default function HomeScreen() {
       <FlashList
         data={playlists}
         keyExtractor={(item) => item.id}
+        ListHeaderComponent={() =>  <LikedLink /> }
         renderItem={({ item }) => <PlaylistItem playlist={item} />}
         estimatedItemSize={100}
       />

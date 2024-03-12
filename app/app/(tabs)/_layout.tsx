@@ -140,6 +140,14 @@ export default function TabLayout() {
           headerShown: false,
         }}
       />
+      <Tabs.Screen
+        name="library"
+        options={{
+          href: null,
+        title: 'Library',
+          headerShown: false,
+        }}
+      />
     </Tabs>
   );
 }

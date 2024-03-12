@@ -2,6 +2,7 @@ import { Text, FlatList, ActivityIndicator } from 'react-native';
 import PlaylistItem from '@/components/PlaylistItem';
 import { SEARCH_PLAYLISTS } from '@/graphql';
 import { useQuery } from '@apollo/client';
+import LikedLink from '@/components/LikedLink';
 
 export default function OrdersScreen() {
   const { data, loading, error } = useQuery(SEARCH_PLAYLISTS, { variables: { query: "*", first: 20 } })
@@ -18,6 +19,7 @@ export default function OrdersScreen() {
     <FlatList
       data={playlists}
       renderItem={({ item }) => <PlaylistItem playlist={item} />}
+      ListHeaderComponent={<LikedLink />}
       contentContainerStyle={{ gap: 10, padding: 10 }}
     />
   );

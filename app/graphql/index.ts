@@ -19,3 +19,4 @@ export * from "./queries/search_composers";
 export * from "./queries/fetch_composer";
 export * from "./queries/search_singers";
 export * from "./queries/fetch_singer";
+export * from "./queries/fetch_liked_recordings";

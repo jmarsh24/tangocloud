@@ -37,5 +37,6 @@ module Types
 
     has_many :playbacks, -> { most_recent }
     has_many :playlists
+    has_many :likes, -> { most_recent }
   end
 end
