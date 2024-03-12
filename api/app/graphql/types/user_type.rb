@@ -35,7 +35,7 @@ module Types
       dataloader.with(Sources::Preload, :events).load(object)
     end
 
-    has_many :playbacks
+    has_many :playbacks, -> { most_recent }
     has_many :playlists
   end
 end
