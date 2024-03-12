@@ -3,6 +3,7 @@ export * from "./mutations/register";
 export * from "./mutations/create_playback";
 export * from "./mutations/add_like_to_recording";
 export * from "./mutations/remove_like_from_recording";
+export * from "./queries/check_like_status_on_recording";
 export * from "./queries/whoAmI";
 export * from "./queries/user";
 export * from "./queries/search_recordings";

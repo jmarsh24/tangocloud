@@ -22,5 +22,6 @@ module Types
     field :search_singers, resolver: Resolvers::Singers::SearchSingers
     field :search_users, resolver: Resolvers::Users::SearchUsers
     field :user_profile, resolver: Resolvers::Users::UserProfile
+    field :check_like_status_on_recording, resolver: Resolvers::Recordings::CheckLikeStatusOnRecording
   end
 end
