@@ -3,14 +3,18 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     }
   },
+  "jsx": "react-native",
+  "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
+  "types": ["nativewind/types"],
+  "exclude": ["node_modules"],
   "include": [
+    "app",
     "**/*.ts",
     "**/*.tsx",
+    "*.js",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
   ]
