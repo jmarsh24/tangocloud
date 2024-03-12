@@ -16,12 +16,12 @@ RSpec.describe "checkLikeStatusOnRecording", type: :graph do
     it "returns true if the user has liked the recording" do
       gql(query, variables: {recordingId: recording.id}, user: normal_user)
 
-      expect(data.check_like_status_on_recording).to eq(true)
+      expect(data.check_like_status_on_recording).to be(true)
     end
 
     it "returns false if the user has not liked the recording" do
       gql(query, variables: {recordingId: recording.id}, user: admin)
-      expect(data.check_like_status_on_recording).to eq(false)
+      expect(data.check_like_status_on_recording).to be(false)
     end
   end
 end
