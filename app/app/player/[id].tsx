@@ -99,14 +99,6 @@ export default function PlayerScreen() {
   };
 
   useEffect(() => {
-    if (data?.fetchRecording?.like) {
-      setIsLiked(true);
-    } else {
-      setIsLiked(false);
-    }
-  }, [data]);
-
-  useEffect(() => {
     const checkAndLoadTrack = async () => {
       try {
         let trackIndex = await TrackPlayer.getActiveTrackIndex();
@@ -234,13 +226,13 @@ export default function PlayerScreen() {
           <TouchableWithoutFeedback onPress={shareRecording}>
             <FontAwesome6 name={"share"} size={30} style={styles.icon} />
           </TouchableWithoutFeedback>
-            <Ionicons
-              onPress={handleLike}
-              name={isLiked ? 'heart' : 'heart-outline'}
-              size={36}
-              color={'white'}
-              style={{ marginHorizontal: 10 }}
-            />
+          <Ionicons
+            onPress={handleLike}
+            name={isLiked ? 'heart' : 'heart-outline'}
+            size={36}
+            color={'white'}
+            style={{ marginHorizontal: 10 }}
+          />
         </View>
         <PlayerControls />
       </View>
