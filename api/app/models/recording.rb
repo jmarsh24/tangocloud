@@ -49,7 +49,6 @@ class Recording < ApplicationRecord
         :genre,
         :period,
         :lyrics,
-        :audio_transfers,
         :audio_variants,
         audio_transfers: [album: {album_art_attachment: :blob}]
       ])
