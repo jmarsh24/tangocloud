@@ -38,11 +38,11 @@ class AudioTransfer < ApplicationRecord
       recording: recording&.title,
       transfer_agent: transfer_agent&.name,
       audio_variants: audio_variants.map(&:filename),
-      orchestra_name: orchestra&.name,
-      singer_names: singers.map(&:name).join(" "),
-      genre: genre&.name,
-      period: period&.name,
-      lyrics: lyrics.map(&:content),
+      orchestra_name: recording.orchestra&.name,
+      singer_names: recording.singers.map(&:name).join(" "),
+      genre: recording.genre&.name,
+      period: recording.period&.name,
+      lyrics: recording.lyrics.map(&:content),
       composer_names: composition&.composer&.name,
       lyricist_names: composition&.lyricist&.name
     }
