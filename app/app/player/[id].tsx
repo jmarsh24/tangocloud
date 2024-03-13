@@ -192,7 +192,7 @@ export default function PlayerScreen() {
 
   const albumArtUrl = data?.fetchRecording?.audioTransfers[0]?.album?.albumArtUrl || "";
   const waveformData = data?.fetchRecording?.audioTransfers[0]?.waveform?.data || [];
-  const lyrics = data?.fetchRecording?.composition?.lyrics[0].content || "";
+  const lyrics = data?.fetchRecording?.composition?.lyrics[0]?.content || "";
   
   return (
     <ScrollView >

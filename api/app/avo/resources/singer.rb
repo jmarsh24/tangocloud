@@ -1,7 +1,7 @@
 class Avo::Resources::Singer < Avo::BaseResource
   self.includes = [:recording_singers, :recordings]
   self.search = {
-    query: -> { query.search_singers(params[:q]).results }
+    query: -> { query.search_singers(params[:q]) }
   }
   self.find_record_method = -> {
     if id.is_a?(Array)

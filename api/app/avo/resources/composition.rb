@@ -1,7 +1,7 @@
 class Avo::Resources::Composition < Avo::BaseResource
   self.includes = [:lyricist, :composer, :recordings, :lyrics]
   self.search = {
-    query: -> { query.search_compositions(params[:q]).results }
+    query: -> { query.search_compositions(params[:q]) }
   }
 
   def fields

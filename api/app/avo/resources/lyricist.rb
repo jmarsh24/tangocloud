@@ -1,7 +1,7 @@
 class Avo::Resources::Lyricist < Avo::BaseResource
   self.includes = [:lyrics, :compositions]
   self.search = {
-    query: -> { query.search_lyricists(params[:q]).results }
+    query: -> { query.search_lyricists(params[:q]) }
   }
   self.find_record_method = -> {
     if id.is_a?(Array)

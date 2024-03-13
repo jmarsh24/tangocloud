@@ -1,7 +1,7 @@
 class Avo::Resources::Period < Avo::BaseResource
   self.includes = []
   self.search = {
-    query: -> { query.search_periods(params[:q]).results }
+    query: -> { query.search_periods(params[:q]) }
   }
 
   def fields
