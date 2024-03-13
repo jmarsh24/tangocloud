@@ -27,12 +27,14 @@ module Types
 
     def sessions
       dataloader.with(Sources::Preload, :sessions).load(object)
+      object.sessions
     end
 
     field :events, [EventType], null: false
 
     def events
       dataloader.with(Sources::Preload, :events).load(object)
+      object.events
     end
 
     has_many :playbacks, -> { most_recent }

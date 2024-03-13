@@ -20,6 +20,7 @@ module Types
 
     def audio_transfers
       dataloader.with(Sources::Preload, :audio_transfers).load(object)
+      object.audio_transfers
     end
   end
 end

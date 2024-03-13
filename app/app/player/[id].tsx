@@ -23,6 +23,7 @@ import { useLocalSearchParams } from "expo-router";
 import { REMOVE_LIKE_FROM_RECORDING, ADD_LIKE_TO_RECORDING, CHECK_LIKE_STATUS_ON_RECORDING } from "@/graphql";
 import { useMutation } from "@apollo/client";
 import { Ionicons } from '@expo/vector-icons';
+import { ScrollView } from "react-native";
 
 interface Track {
   id: string;
@@ -191,52 +192,60 @@ export default function PlayerScreen() {
 
   const albumArtUrl = data?.fetchRecording?.audioTransfers[0]?.album?.albumArtUrl || "";
   const waveformData = data?.fetchRecording?.audioTransfers[0]?.waveform?.data || [];
-
+  const lyrics = data?.fetchRecording?.composition?.lyrics[0].content || "";
+  
   return (
-    <View style={styles.container}>
-      <View style={[styles.vinyl, { width: vinylSize, height: vinylSize }]}>
-        <Image
-          source={vinylRecordImg}
-          style={[styles.vinylImg, { width: vinylSize, height: vinylSize }]}
-        />
-        <Image
-          source={{ uri: albumArtUrl }}
-          style={[
-            styles.albumArt,
-            {
-              width: albumArtSize,
-              height: albumArtSize,
-              borderRadius: albumArtSize / 2,
-              top: (vinylSize - albumArtSize) / 2,
-              left: (vinylSize - albumArtSize) / 2,
-            },
-          ]}
-        />
-      </View>
-      <View style={styles.controls}>
-        {track && <TrackInfo track={track} />}
-        <Waveform
-          data={waveformData}
-          width={deviceWidth * 0.92}
-          height={50}
-          progress={progressRef.current}
-        />
-        <Progress />
-        <View style={styles.row}>
-          <TouchableWithoutFeedback onPress={shareRecording}>
-            <FontAwesome6 name={"share"} size={30} style={styles.icon} />
-          </TouchableWithoutFeedback>
-          <Ionicons
-            onPress={handleLike}
-            name={isLiked ? 'heart' : 'heart-outline'}
-            size={36}
-            color={'white'}
-            style={{ marginHorizontal: 10 }}
+    <ScrollView >
+      <View style={styles.container}>
+        <View style={[styles.vinyl, { width: vinylSize, height: vinylSize }]}>
+          <Image
+            source={vinylRecordImg}
+            style={[styles.vinylImg, { width: vinylSize, height: vinylSize }]}
+          />
+          <Image
+            source={{ uri: albumArtUrl }}
+            style={[
+              styles.albumArt,
+              {
+                width: albumArtSize,
+                height: albumArtSize,
+                borderRadius: albumArtSize / 2,
+                top: (vinylSize - albumArtSize) / 2,
+                left: (vinylSize - albumArtSize) / 2,
+              },
+            ]}
           />
         </View>
-        <PlayerControls />
+        <View style={styles.controls}>
+          {track && <TrackInfo track={track} />}
+          <Waveform
+            data={waveformData}
+            width={deviceWidth * 0.92}
+            height={50}
+            progress={progressRef.current}
+          />
+          <Progress />
+          <View style={styles.row}>
+            <TouchableWithoutFeedback onPress={shareRecording}>
+              <FontAwesome6 name={"share"} size={30} style={styles.icon} />
+            </TouchableWithoutFeedback>
+            <Ionicons
+              onPress={handleLike}
+              name={isLiked ? 'heart' : 'heart-outline'}
+              size={36}
+              color={colors.text}
+              style={{ marginHorizontal: 10 }}
+            />
+          </View>
+          <PlayerControls />
+        </View>
+        <View style={styles.lyricsContainer}>
+          <Text style={styles.lyricsText}>
+            {lyrics}
+          </Text>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -284,6 +293,7 @@ function getStyles(colors) {
       display: "flex",
       alignItems: "center",
       gap: 20,
+
     },
     playButtonContainer: {
       backgroundColor: colors.buttonSecondary,
@@ -292,12 +302,20 @@ function getStyles(colors) {
       height: 70,
       justifyContent: "center",
       alignItems: "center",
-      shadowColor: "#000",
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
     },
     icon: {
+      color: colors.text,
+    },
+    lyricsContainer: {
+      marginTop: 20,
+      paddingHorizontal: 20,
+      paddingBottom: 80
+    },
+    lyricsText: {
+      fontSize: 16,
+      lineHeight: 24,
+      fontWeight: "600",
+      textAlign: 'center',
       color: colors.text,
     },
   });

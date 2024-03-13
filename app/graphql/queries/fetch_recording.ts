@@ -5,28 +5,26 @@ export const FETCH_RECORDING = gql`
     fetchRecording(id: $id) {
       id
       title
-      singers {
-        name
-      }
-      orchestra {
-        name
-      }
-      genre {
-        name
+      composition {
+        lyrics {
+          locale
+          content
+        }
       }
       audioTransfers {
         album {
           albumArtUrl
         }
+        audioVariants {
+          audioFileUrl
+          duration
+        }
         waveform {
-          imageUrl
           data
         }
-        audioVariants {
-          id
-          duration
-          audioFileUrl
-        }
+      }
+      orchestra {
+        name
       }
     }
   }

@@ -7,6 +7,7 @@ module Types
 
     def lyrics
       dataloader.with(Sources::Preload, :lyrics).load(object)
+      object.lyrics
     end
 
     belongs_to :lyricist
