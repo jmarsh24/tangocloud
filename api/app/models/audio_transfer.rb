@@ -42,7 +42,7 @@ class AudioTransfer < ApplicationRecord
       singer_names: recording&.singers&.map(&:name)&.join(" "),
       genre: recording&.genre&.name,
       period: recording&.period&.name,
-      lyrics: recording&.lyrics.map(&:content),
+      lyrics: recording&.lyrics&.map(&:content),
       composer_names: recording&.composition&.composer&.name,
       lyricist_names: recording&.composition&.lyricist&.name
     }
