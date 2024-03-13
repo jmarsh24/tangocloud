@@ -29,7 +29,7 @@
       },
       "supportsTablet": true,
       "runtimeVersion": "1.0.0",
-      "buildNumber": "50",
+      "buildNumber": "51",
       "associatedDomains": [
         "applinks:tangocloud.app"
       ]
@@ -43,7 +43,7 @@
         "policy": "appVersion"
       },
       "package": "com.tangocloud.app",
-      "versionCode": 2
+      "versionCode": 3
     },
     "web": {
       "bundler": "metro",
