@@ -43,8 +43,8 @@ class AudioTransfer < ApplicationRecord
       genre: recording.genre&.name,
       period: recording.period&.name,
       lyrics: recording.lyrics.map(&:content),
-      composer_names: composition&.composer&.name,
-      lyricist_names: composition&.lyricist&.name
+      composer_names: recording.composition&.composer&.name,
+      lyricist_names: recording.composition&.lyricist&.name
     }
   end
 end
