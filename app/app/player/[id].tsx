@@ -195,7 +195,7 @@ export default function PlayerScreen() {
   const lyrics = data?.fetchRecording?.composition?.lyrics[0]?.content || "";
   
   return (
-    <ScrollView >
+    <ScrollView>
       <View style={styles.container}>
         <View style={[styles.vinyl, { width: vinylSize, height: vinylSize }]}>
           <Image

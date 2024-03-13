@@ -6,6 +6,7 @@ import { FlashList } from '@shopify/flash-list';
 import { SEARCH_PLAYLISTS } from '@/graphql';
 import PlaylistItem from '@/components/PlaylistItem';
 import LikedLink from '@/components/LikedLink';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function HomeScreen() {
   const { colors } = useTheme();
@@ -35,7 +36,7 @@ export default function HomeScreen() {
   const playlists = playlistsData?.searchPlaylists?.edges.map(edge => edge.node);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={[styles.headerText, { color: colors.text }]}>
         The people who are crazy enough to think they can change the world are the ones who do.
       </Text>
@@ -46,7 +47,7 @@ export default function HomeScreen() {
         renderItem={({ item }) => <PlaylistItem playlist={item} />}
         estimatedItemSize={100}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

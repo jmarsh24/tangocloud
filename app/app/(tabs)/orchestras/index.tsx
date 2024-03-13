@@ -18,14 +18,17 @@ const BrowseScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <FlashList 
-        data={orchestras}
-        renderItem={({ item }) => <OrchestraItem orchestra={item} />}
-        keyExtractor={item => item.id}
-        estimatedItemSize={100}
-      />
-    </View>
+    <Stack>
+      <Stack.Screen name="index" options={{ title: 'Browse', headerShown: false }} />
+      <View style={styles.container}>
+        <FlashList 
+          data={orchestras}
+          renderItem={({ item }) => <OrchestraItem orchestra={item} />}
+          keyExtractor={item => item.id}
+          estimatedItemSize={100}
+        />
+      </View>
+    </Stack>
   );
 }
 
