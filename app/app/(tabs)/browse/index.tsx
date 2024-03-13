@@ -2,11 +2,12 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
 import { useTheme } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const BrowseScreen = () => {
   const { colors } = useTheme();
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.row}>
         <Link style={styles.link} push href="/orchestras">
           <View style={[styles.button, { borderColor: colors.primary }]}>
@@ -31,7 +32,7 @@ const BrowseScreen = () => {
           </View>
         </Link>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 

@@ -1,8 +1,8 @@
 import React from "react";
 import { Stack } from "expo-router";
 
-const LyicistsLayout = () => {
-  return <Stack />;
+export default function _layout() {
+  return (
+    <Stack screenOptions={{ title: 'Lyricists', headerShown: false }} />
+  )
 };
-
-export default LyicistsLayout;

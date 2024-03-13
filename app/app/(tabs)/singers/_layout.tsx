@@ -1,13 +1,8 @@
 import React from "react";
 import { Stack } from "expo-router";
 
-const SingersLayout = () => {
+export default function _layout() {
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ title: 'Singers' }} />
-      <Stack.Screen name="[id]" options={{ title: 'Singer' }} />
-    </Stack>
+    <Stack screenOptions={{ title: 'Singers', headerShown: false }} />
   )
 };
-
-export default SingersLayout;

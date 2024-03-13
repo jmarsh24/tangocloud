@@ -93,59 +93,43 @@ export default function TabLayout() {
       <Tabs.Screen
         name="recordings"
         options={{
-          href: null,
-          headerShown: false,
-          
+          href: null
         }}
       />
       <Tabs.Screen
         name="home"
         options={{
-          href: null,
-          title: 'Home',
-          headerShown: false,
-
+          href: null
         }}
       />
       <Tabs.Screen
         name="orchestras"
         options={{
-          href: null,
-          title: 'Orchestras',
-          headerShown: false,
-
+          href: null
         }} 
       />
       <Tabs.Screen
         name="lyricists"
         options={{
-          href: null,
-          title: 'Lyricists',
-          headerShown: false,
+          href: null
         }}
       />
       <Tabs.Screen
         name="composers"
         options={{
-          href: null,
-          title: 'Composers',
-          headerShown: false,
+          href: null
         }}
       />
       <Tabs.Screen
         name="singers"
         options={{
-          href: null,
-          title: 'Singers',
-          headerShown: false,
+          href: null
         }}
       />
       <Tabs.Screen
         name="library"
         options={{
-          href: null,
-        title: 'Library',
-          headerShown: false,
+          href: null
         }}
       />
     </Tabs>
