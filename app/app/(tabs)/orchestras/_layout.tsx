@@ -1,7 +1,7 @@
 import React from "react";
 import { Stack } from "expo-router";
 
-export default function _layout() {
+export default function _Layout() {
   return (
     <Stack>
       <Stack.Screen name="index" options={{ title: "Orchestras" }} />

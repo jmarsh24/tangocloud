@@ -67,14 +67,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="browse"
-        options={{
-          title: 'Browse',
-          headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="appstore1" color={color} />
-        }}
-      />
-      <Tabs.Screen
         name="search"
         options={{
           title: 'Search',
