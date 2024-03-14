@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Tango Cloud",
-    "slug": "tangocloud",
+    "slug": "app",
     "version": "1.0.24",
     "owner": "tangocloud",
     "orientation": "portrait",
