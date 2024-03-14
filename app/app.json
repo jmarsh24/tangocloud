@@ -32,7 +32,8 @@
       "buildNumber": "51",
       "associatedDomains": [
         "applinks:tangocloud.app"
-      ]
+      ],
+      "bundleIdentifier": "com.tangocloud.app"
     },
     "android": {
       "adaptiveIcon": {
