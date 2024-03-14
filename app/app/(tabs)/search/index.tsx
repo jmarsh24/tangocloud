@@ -12,7 +12,7 @@ import { Link } from 'expo-router';
 export default function SearchScreen() {
   const { colors } = useTheme();
   const styles = getStyles(colors);
-  const ITEMS_PER_PAGE = 30;
+  const ITEMS_PER_PAGE = 200;
   const [search, setSearch] = useState('');
   const [loadingMore, setLoadingMore] = useState(false);
 
@@ -64,7 +64,7 @@ export default function SearchScreen() {
     url: edge.node.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || "",
   })) || [];
 
-  return (
+    return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.header}>
         <View style={styles.searchContainer}>
@@ -83,30 +83,34 @@ export default function SearchScreen() {
           )}
         </View>
       </View>
-      <View style={styles.row}>
-        <Link style={styles.link} push href="/orchestras">
-          <View style={[styles.button, { borderColor: colors.primary }]}>
-            <Text style={[styles.buttonText, { color: colors.text }]}>Orchestras</Text>
+      {search.length === 0 && (
+        <>
+          <View style={styles.row}>
+            <Link style={styles.link} push href="/orchestras">
+              <View style={[styles.button, { borderColor: colors.primary }]}>
+                <Text style={[styles.buttonText, { color: colors.text }]}>Orchestras</Text>
+              </View>
+            </Link>
+            <Link style={styles.link} push href="/singers">
+              <View style={[styles.button, { borderColor: colors.primary }]}>
+                <Text style={[styles.buttonText, { color: colors.text }]}>Singers</Text>
+              </View>
+            </Link>
           </View>
-        </Link>
-        <Link style={styles.link} push href="/singers">
-          <View style={[styles.button, { borderColor: colors.primary }]}>
-            <Text style={[styles.buttonText, { color: colors.text }]}>Singers</Text>
+          <View style={styles.row}>
+            <Link style={styles.link} push href="/composers">
+              <View style={[styles.button, { borderColor: colors.primary }]}>
+                <Text style={[styles.buttonText, { color: colors.text }]}>Composers</Text>
+              </View>
+            </Link>
+            <Link style={styles.link} push href="/lyricists">
+              <View style={[styles.button, { borderColor: colors.primary }]}>
+                <Text style={[styles.buttonText, { color: colors.text }]}>Lyricists</Text>
+              </View>
+            </Link>
           </View>
-        </Link>
-      </View>
-      <View style={styles.row}>
-        <Link style={styles.link} push href="/composers">
-          <View style={[styles.button, { borderColor: colors.primary }]}>
-            <Text style={[styles.buttonText, { color: colors.text }]}>Composers</Text>
-          </View>
-        </Link>
-        <Link style={styles.link} push href="/lyricists">
-          <View style={[styles.button, { borderColor: colors.primary }]}>
-            <Text style={[styles.buttonText, { color: colors.text }]}>Lyricists</Text>
-          </View>
-        </Link>
-      </View>
+        </>
+      )}
       <FlashList
         data={tracks}
         renderItem={({ item }) => <TrackListItem track={item} />}
