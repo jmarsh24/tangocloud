@@ -110,6 +110,7 @@ jobs:
           RAILS_ENV: test
           CI: true
           RSPEC_RETRY_RETRY_COUNT: 3
-          ELASTICSEARCH_URL: http://localhost:${{ job.services.elasticsearch.ports[9200] }}
+          ELASTICSEARCH_URL: http://localhost:9200
+
         run: bin/rspec --format documentation
         working-directory: ./api
