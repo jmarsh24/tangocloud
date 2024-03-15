@@ -36,7 +36,7 @@ export default function OrchestraScreen() {
   }
 
   const orchestra = data?.fetchOrchestra;
-    // debugger;
+
   const recordings = orchestra.recordings.edges.map(({ node: item }) => ({
     id: item.id,
     title: item.title,

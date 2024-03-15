@@ -6,7 +6,7 @@ import { useQuery } from '@apollo/client';
 import { Text, View, ActivityIndicator, StyleSheet } from 'react-native';
 import OrchestraItem from '@/components/OrchestraItem';
 
-const BrowseScreen = () => {
+const OrchestrasScreen = () => {
   const { data, loading, error } = useQuery(SEARCH_ORCHESTRAS, { variables: { query: '*' } });
   const orchestras = data?.searchOrchestras?.edges.map(edge => edge.node);
 
@@ -18,17 +18,14 @@ const BrowseScreen = () => {
   }
 
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ title: 'Browse', headerShown: false }} />
-      <View style={styles.container}>
-        <FlashList 
-          data={orchestras}
-          renderItem={({ item }) => <OrchestraItem orchestra={item} />}
-          keyExtractor={item => item.id}
-          estimatedItemSize={100}
-        />
-      </View>
-    </Stack>
+    <View style={styles.container}>
+      <FlashList 
+        data={orchestras}
+        renderItem={({ item }) => <OrchestraItem orchestra={item} />}
+        keyExtractor={item => item.id}
+        estimatedItemSize={100}
+      />
+    </View>
   );
 }
 
@@ -38,4 +35,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BrowseScreen;
+export default OrchestrasScreen;
