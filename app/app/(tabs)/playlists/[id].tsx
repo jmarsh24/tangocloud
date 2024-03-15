@@ -6,6 +6,7 @@ import { useQuery } from "@apollo/client";
 import { FlashList } from "@shopify/flash-list";
 import { FETCH_PLAYLIST } from "@/graphql";
 import TrackListItem from "@/components/TrackListItem";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function PlaylistScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -50,7 +51,7 @@ export default function PlaylistScreen() {
     });
 
   return (
-    <View style={{ padding: 10, gap: 20, flex: 1 }}>
+    <SafeAreaView style={{ padding: 10, gap: 20, flex: 1 }}>
       <Text style={[styles.title, { color: colors.text }]}>
         {playlist.title}
       </Text>
@@ -60,7 +61,7 @@ export default function PlaylistScreen() {
         renderItem={({ item }) => <TrackListItem track={item} />}
         estimatedItemSize={80}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

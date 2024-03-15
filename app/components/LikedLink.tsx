@@ -9,7 +9,7 @@ export default function LikedLink() {
   return (
     <Link href="/library" >
       <View style={styles.playlistContainer}>
-        {/* <Image source={{ uri: playlist.imageUrl }} style={styles.playlistImage} /> */}
+        <Image source={require('@/assets/images/playlist_liked.jpeg')} style={styles.playlistImage} />
         <View style={styles.playlistInfo}>
           <Text style={[styles.playlistTitle, { color: colors.text }]}>
             Liked
