@@ -52,7 +52,7 @@
     "react-native-safe-area-context": "4.8.2",
     "react-native-screens": "~3.29.0",
     "react-native-svg": "^14.1.0",
-    "react-native-track-player": "^4.0.1",
+    "react-native-track-player": "doublesymmetry/react-native-track-player#pull/2194/head",
     "react-native-web": "~0.19.6",
     "react-popper": "^2.3.0",
     "react-select": "^5.8.0",
