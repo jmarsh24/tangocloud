@@ -85,30 +85,26 @@ export default function SearchScreen() {
       </View>
       {search.length === 0 && (
         <>
-          <View style={styles.row}>
-            <Link style={styles.link} push href="/orchestras">
-              <View style={[styles.button, { borderColor: colors.primary }]}>
-                <Text style={[styles.buttonText, { color: colors.text }]}>Orchestras</Text>
-              </View>
-            </Link>
-            <Link style={styles.link} push href="/singers">
-              <View style={[styles.button, { borderColor: colors.primary }]}>
-                <Text style={[styles.buttonText, { color: colors.text }]}>Singers</Text>
-              </View>
-            </Link>
-          </View>
-          <View style={styles.row}>
-            <Link style={styles.link} push href="/composers">
-              <View style={[styles.button, { borderColor: colors.primary }]}>
-                <Text style={[styles.buttonText, { color: colors.text }]}>Composers</Text>
-              </View>
-            </Link>
-            <Link style={styles.link} push href="/lyricists">
-              <View style={[styles.button, { borderColor: colors.primary }]}>
-                <Text style={[styles.buttonText, { color: colors.text }]}>Lyricists</Text>
-              </View>
-            </Link>
-          </View>
+          <Link style={styles.link} push href="/orchestras">
+            <View style={[styles.button, { backgroundColor: '#FFDDDD' }]}>
+              <Text style={[styles.buttonText, { color: colors.text }]}>Orchestras</Text>
+            </View>
+          </Link>
+          <Link style={styles.link} push href="/singers">
+            <View style={[styles.button, { backgroundColor: '#DDFFDD' }]}>
+              <Text style={[styles.buttonText, { color: colors.text }]}>Singers</Text>
+            </View>
+          </Link>
+          <Link style={styles.link} push href="/composers">
+            <View style={[styles.button, { backgroundColor: '#DDDFFF' }]}>
+              <Text style={[styles.buttonText, { color: colors.text }]}>Composers</Text>
+            </View>
+          </Link>
+          <Link style={styles.link} push href="/lyricists">
+            <View style={[styles.button, { backgroundColor: '#FFDFFF' }]}>
+              <Text style={[styles.buttonText, { color: colors.text }]}>Lyricists</Text>
+            </View>
+          </Link>
         </>
       )}
       <FlashList
@@ -177,24 +173,20 @@ function getStyles(colors) {
       height: 10,
     },
     link: {
-      flex: 1,
-    },
-    row: {
-      display: "flex",
-      gap: 10,
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: 10,
+      width: "100%",
+      borderColor: "red"
     },
     button: {
+      width: "100%",
       padding: 10,
       borderWidth: 1,
       borderRadius: 5,
+      borderColor: "red"
     },
     buttonText: {
       fontSize: 16,
       fontWeight: 'bold',
+      textAlign: 'center',
     },
   });
 }
