@@ -44,7 +44,7 @@
         "policy": "appVersion"
       },
       "package": "com.tangocloud.app",
-      "versionCode": 7
+      "versionCode": 8
     },
     "web": {
       "bundler": "metro",
