@@ -10,7 +10,10 @@ import {
   Text,
 } from "react-native";
 import { useTheme } from "@react-navigation/native";
-import TrackPlayer, { useProgress, useIsPlaying } from "react-native-track-player";
+import TrackPlayer, {
+  useProgress,
+  useIsPlaying,
+} from "react-native-track-player";
 import { PlayerControls } from "@/components/PlayerControls";
 import { Progress } from "@/components/Progress";
 import { TrackInfo } from "@/components/TrackInfo";
@@ -20,9 +23,13 @@ import Waveform from "@/components/Waveform";
 import * as Sharing from "expo-sharing";
 import FontAwesome6 from "react-native-vector-icons/FontAwesome6";
 import { useLocalSearchParams } from "expo-router";
-import { REMOVE_LIKE_FROM_RECORDING, ADD_LIKE_TO_RECORDING, CHECK_LIKE_STATUS_ON_RECORDING } from "@/graphql";
+import {
+  REMOVE_LIKE_FROM_RECORDING,
+  ADD_LIKE_TO_RECORDING,
+  CHECK_LIKE_STATUS_ON_RECORDING,
+} from "@/graphql";
 import { useMutation } from "@apollo/client";
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
 import { ScrollView } from "react-native";
 
 interface Track {
@@ -54,7 +61,11 @@ export default function PlayerScreen() {
   const [isLiked, setIsLiked] = useState(false);
   const { playing, bufferingDuringPlay } = useIsPlaying();
 
-  const { data: likeStatusData, loading: likeStatusLoading, error: likeStatusError } = useQuery(CHECK_LIKE_STATUS_ON_RECORDING, {
+  const {
+    data: likeStatusData,
+    loading: likeStatusLoading,
+    error: likeStatusError,
+  } = useQuery(CHECK_LIKE_STATUS_ON_RECORDING, {
     variables: { recordingId: id },
     fetchPolicy: "network-only",
   });
@@ -90,7 +101,8 @@ export default function PlayerScreen() {
       title: recordingData.title,
       artist: recordingData.orchestra.name,
       artwork: recordingData.audioTransfers[0]?.album?.albumArtUrl,
-      duration: recordingData.audioTransfers[0]?.audioVariants[0]?.duration || 0,
+      duration:
+        recordingData.audioTransfers[0]?.audioVariants[0]?.duration || 0,
     };
 
     setTrack(trackForPlayer);
@@ -174,7 +186,7 @@ export default function PlayerScreen() {
 
   if (loading) {
     return (
-      <View>
+      <View style={styles.container}>
         <ActivityIndicator size="large" />
       </View>
     );
@@ -183,17 +195,17 @@ export default function PlayerScreen() {
   if (error) {
     return (
       <View style={styles.container}>
-        <Text style={styles.errorText}>
-          Error loading playlist.
-        </Text>
+        <Text style={styles.errorText}>Error loading playlist.</Text>
       </View>
     );
   }
 
-  const albumArtUrl = data?.fetchRecording?.audioTransfers[0]?.album?.albumArtUrl || "";
-  const waveformData = data?.fetchRecording?.audioTransfers[0]?.waveform?.data || [];
+  const albumArtUrl =
+    data?.fetchRecording?.audioTransfers[0]?.album?.albumArtUrl || "";
+  const waveformData =
+    data?.fetchRecording?.audioTransfers[0]?.waveform?.data || [];
   const lyrics = data?.fetchRecording?.composition?.lyrics[0]?.content || "";
-  
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -231,7 +243,7 @@ export default function PlayerScreen() {
             </TouchableWithoutFeedback>
             <Ionicons
               onPress={handleLike}
-              name={isLiked ? 'heart' : 'heart-outline'}
+              name={isLiked ? "heart" : "heart-outline"}
               size={36}
               color={colors.text}
               style={{ marginHorizontal: 10 }}
@@ -240,9 +252,7 @@ export default function PlayerScreen() {
           <PlayerControls />
         </View>
         <View style={styles.lyricsContainer}>
-          <Text style={styles.lyricsText}>
-            {lyrics}
-          </Text>
+          <Text style={styles.lyricsText}>{lyrics}</Text>
         </View>
       </View>
     </ScrollView>
@@ -252,6 +262,9 @@ export default function PlayerScreen() {
 function getStyles(colors) {
   return StyleSheet.create({
     container: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
       padding: 20,
       alignItems: "center",
       backgroundColor: colors.background,
@@ -293,7 +306,6 @@ function getStyles(colors) {
       display: "flex",
       alignItems: "center",
       gap: 20,
-
     },
     playButtonContainer: {
       backgroundColor: colors.buttonSecondary,
@@ -309,13 +321,13 @@ function getStyles(colors) {
     lyricsContainer: {
       marginTop: 20,
       paddingHorizontal: 20,
-      paddingBottom: 80
+      paddingBottom: 80,
     },
     lyricsText: {
       fontSize: 16,
       lineHeight: 24,
       fontWeight: "600",
-      textAlign: 'center',
+      textAlign: "center",
       color: colors.text,
     },
   });
