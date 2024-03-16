@@ -7,9 +7,6 @@ import { SEARCH_PLAYLISTS } from '@/graphql';
 import PlaylistItem from '@/components/PlaylistItem';
 import LikedLink from '@/components/LikedLink';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { styled } from 'nativewind';
-const StyledView = styled(View)
-const StyledText = styled(Text)
 
 export default function HomeScreen() {
   const { colors } = useTheme();
@@ -40,9 +37,6 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View className="flex-1 items-center justify-center">
-        <Text className="text-red-800">Styling just works! 🎉</Text>
-      </View>
       <Text style={[styles.headerText, { color: colors.text }]}>
         The people who are crazy enough to think they can change the world are the ones who do.
       </Text>
