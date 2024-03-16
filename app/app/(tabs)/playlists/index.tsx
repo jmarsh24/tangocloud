@@ -1,4 +1,4 @@
-import { Text, FlatList, ActivityIndicator } from 'react-native';
+import { Text, View, FlatList, ActivityIndicator } from 'react-native';
 import PlaylistItem from '@/components/PlaylistItem';
 import { SEARCH_PLAYLISTS } from '@/graphql';
 import { useQuery } from '@apollo/client';

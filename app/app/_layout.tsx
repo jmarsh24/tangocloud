@@ -14,6 +14,7 @@ import { PlaybackService } from "@/services/PlaybackService";
 import TrackPlayer from "react-native-track-player";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 export { ErrorBoundary } from "expo-router";
+import Slot from "expo-router/Slot";
 import "@/global.css";
 import { useColorScheme } from "nativewind";
 import { StatusBar } from "expo-status-bar";
