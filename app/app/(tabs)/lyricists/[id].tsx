@@ -6,6 +6,7 @@ import { useQuery } from "@apollo/client";
 import { FlashList } from "@shopify/flash-list";
 import TrackListItem from "@/components/TrackListItem";
 import { FETCH_LYRICIST } from "@/graphql";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LyricistScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -47,7 +48,7 @@ export default function LyricistScreen() {
   );
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Stack.Screen options={{ title: data.fetchLyricist.name }} />
       <Text style={styles.title}>
         {data.fetchLyricist.name}
@@ -62,7 +63,7 @@ export default function LyricistScreen() {
       ) : (
         <Text>No recordings found.</Text>
       )}
-    </View>
+    </SafeAreaView>
   );
 }
 

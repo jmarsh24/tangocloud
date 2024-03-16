@@ -18,12 +18,12 @@ import Waveform from "@/components/Waveform";
 import * as Sharing from "expo-sharing";
 import FontAwesome6 from "react-native-vector-icons/FontAwesome6";
 import { useLocalSearchParams } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RecordingScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const vinylRecordImg = require("@/assets/images/vinyl_3x.png");
   const { colors } = useTheme();
-  const styles = getStyles(colors);
   const [track, setTrack] = useState<any>(null);
   const { position } = useProgress(1);
   const positionRef = useRef(position);
@@ -108,7 +108,7 @@ export default function RecordingScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={[styles.vinyl, { width: vinylSize, height: vinylSize }]}>
         <Image
           source={vinylRecordImg}
@@ -145,69 +145,59 @@ export default function RecordingScreen() {
         </TouchableWithoutFeedback>
         <PlayerControls />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
-function getStyles(colors) {
-  return StyleSheet.create({
-    container: {
-      padding: 20,
-      alignItems: "center",
-      backgroundColor: colors.background,
-    },
-    subtitle: {
-      color: colors.text,
-      fontSize: 12,
-    },
-    row: {
-      display: "flex",
-      gap: 10,
-      flexDirection: "row",
-      alignItems: "center",
-    },
-    vinylImg: {
-      position: "absolute",
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    albumArt: {
-      position: "absolute",
-      justifyContent: "center",
-      alignItems: "center",
-      zIndex: 2,
-    },
-    trackInfo: {
-      alignItems: "center",
-    },
-    title: {
-      fontSize: 24,
-      fontWeight: "bold",
-      color: colors.text,
-    },
-    artist: {
-      fontSize: 18,
-      color: colors.text,
-    },
-    controls: {
-      display: "flex",
-      alignItems: "center",
-      gap: 20,
-    },
-    playButtonContainer: {
-      backgroundColor: colors.buttonSecondary,
-      borderRadius: 35,
-      width: 70,
-      height: 70,
-      justifyContent: "center",
-      alignItems: "center",
-      shadowColor: "#000",
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-    },
-    icon: {
-      color: colors.text,
-    },
-  });
-}
+const styles = StyleSheet.create({
+  container: {
+    padding: 20,
+    alignItems: "center",
+  },
+  subtitle: {
+    fontSize: 12,
+  },
+  row: {
+    display: "flex",
+    gap: 10,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  vinylImg: {
+    position: "absolute",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  albumArt: {
+    position: "absolute",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 2,
+  },
+  trackInfo: {
+    alignItems: "center",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+  artist: {
+    fontSize: 18,
+  },
+  controls: {
+    display: "flex",
+    alignItems: "center",
+    gap: 20,
+  },
+  playButtonContainer: {
+    borderRadius: 35,
+    width: 70,
+    height: 70,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+});

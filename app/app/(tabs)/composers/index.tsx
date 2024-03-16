@@ -2,8 +2,9 @@ import React from 'react';
 import { FlashList } from '@shopify/flash-list';
 import { SEARCH_COMPOSERS } from '@/graphql';
 import { useQuery } from '@apollo/client';
-import { Text, View, ActivityIndicator, StyleSheet } from 'react-native';
+import { Text, ActivityIndicator, StyleSheet } from 'react-native';
 import ComposerItem from '@/components/ComposerItem';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ComposerScreen = () => {
   const { data, loading, error } = useQuery(SEARCH_COMPOSERS, { variables: { query: '*' } });
@@ -21,14 +22,14 @@ const ComposerScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <FlashList 
         data={composers}
         renderItem={({ item }) => <ComposerItem composer={item} />}
         keyExtractor={item => item.id}
         estimatedItemSize={100}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

@@ -6,6 +6,7 @@ import { useQuery } from "@apollo/client";
 import { FlashList } from "@shopify/flash-list";
 import TrackListItem from "@/components/TrackListItem";
 import { FETCH_ORCHESTRA } from "@/graphql";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function OrchestraScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -48,7 +49,7 @@ export default function OrchestraScreen() {
   }));
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>
         {orchestra.name}
       </Text>
@@ -57,7 +58,7 @@ export default function OrchestraScreen() {
         renderItem={({ item }) => <TrackListItem track={item} />}
         estimatedItemSize={80}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

@@ -7,7 +7,6 @@ import { FlashList } from "@shopify/flash-list";
 import { useFocusEffect } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native';
-import { debug } from 'console';
 
 export default function LibrarysScreen() {
   const { colors } = useTheme();

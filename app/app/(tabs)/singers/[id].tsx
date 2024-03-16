@@ -6,6 +6,7 @@ import { useQuery } from "@apollo/client";
 import { FlashList } from "@shopify/flash-list";
 import TrackListItem from "@/components/TrackListItem";
 import { FETCH_SINGER } from "@/graphql";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SingerScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -47,7 +48,7 @@ export default function SingerScreen() {
   }));
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>
         {singer.name}
       </Text>
@@ -57,7 +58,7 @@ export default function SingerScreen() {
         renderItem={({ item }) => <TrackListItem track={item} />}
         estimatedItemSize={80}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

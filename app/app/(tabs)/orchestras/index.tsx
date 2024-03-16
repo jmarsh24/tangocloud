@@ -4,6 +4,7 @@ import { SEARCH_ORCHESTRAS } from '@/graphql';
 import { useQuery } from '@apollo/client';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import OrchestraItem from '@/components/OrchestraItem';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const OrchestrasScreen = () => {
   const { data, loading, error } = useQuery(SEARCH_ORCHESTRAS, { variables: { query: '*' } });
@@ -25,13 +26,13 @@ const OrchestrasScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <FlashList 
         data={orchestras}
         renderItem={({ item }) => <OrchestraItem orchestra={item} />}
         estimatedItemSize={100}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

@@ -100,28 +100,28 @@ export default function SearchScreen() {
       {search.length === 0 && (
         <>
           <Link style={styles.link} push href="/orchestras">
-            <View style={[styles.button, { backgroundColor: "#FFDDDD" }]}>
+            <View style={[styles.button, { backgroundColor: colors.card }]}>
               <Text style={[styles.buttonText, { color: colors.text }]}>
                 Orchestras
               </Text>
             </View>
           </Link>
           <Link style={styles.link} push href="/singers">
-            <View style={[styles.button, { backgroundColor: "#DDFFDD" }]}>
+            <View style={[styles.button, { backgroundColor: colors.card }]}>
               <Text style={[styles.buttonText, { color: colors.text }]}>
                 Singers
               </Text>
             </View>
           </Link>
           <Link style={styles.link} push href="/composers">
-            <View style={[styles.button, { backgroundColor: "#DDDFFF" }]}>
+            <View style={[styles.button, { backgroundColor: colors.card }]}>
               <Text style={[styles.buttonText, { color: colors.text }]}>
                 Composers
               </Text>
             </View>
           </Link>
           <Link style={styles.link} push href="/lyricists">
-            <View style={[styles.button, { backgroundColor: "#FFDFFF" }]}>
+            <View style={[styles.button, { backgroundColor: colors.card }]}>
               <Text style={[styles.buttonText, { color: colors.text }]}>
                 Lyricists
               </Text>
@@ -185,10 +185,8 @@ const styles = StyleSheet.create({
     height: 10,
   },
   link: {
-    width: "100%",
   },
   button: {
-    width: "100%",
     padding: 10,
     borderWidth: 1,
     borderRadius: 5,
