@@ -40,7 +40,7 @@ const Player = () => {
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <View style={[styles.container, { backgroundColor: colors.card }]}>
       <Link href={{ pathname: "/player/[id]", params: { id: track.id } }}>
         <View style={styles.player}>
           <Image source={{ uri: track?.artwork }} style={styles.image} />
