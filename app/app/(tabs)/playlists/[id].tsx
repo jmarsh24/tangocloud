@@ -6,6 +6,7 @@ import { useQuery } from "@apollo/client";
 import { FlashList } from "@shopify/flash-list";
 import { FETCH_PLAYLIST } from "@/graphql";
 import TrackListItem from "@/components/TrackListItem";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function PlaylistScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -36,7 +37,9 @@ export default function PlaylistScreen() {
       </View>
     );
   }
+
   const playlist = data?.fetchPlaylist;
+
   const recordings = playlist.playlistItems.map((item) => {
       const recording = item.playable;
       return {
@@ -46,11 +49,13 @@ export default function PlaylistScreen() {
         duration: recording.audioTransfers[0]?.audioVariants[0]?.duration || 0,
         artwork: recording.audioTransfers[0]?.album?.albumArtUrl || "",
         url: recording.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || "",
+        genre: recording.genre.name,
+        year: recording.year,
       };
     });
 
   return (
-    <View style={{ padding: 10, gap: 20, flex: 1 }}>
+    <SafeAreaView style={{ padding: 10, gap: 20, flex: 1 }}>
       <Text style={[styles.title, { color: colors.text }]}>
         {playlist.title}
       </Text>
@@ -60,14 +65,14 @@ export default function PlaylistScreen() {
         renderItem={({ item }) => <TrackListItem track={item} />}
         estimatedItemSize={80}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    paddingHorizontal: 20,
   },
   loadingContainer: {
     flex: 1,

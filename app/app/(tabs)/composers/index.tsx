@@ -2,10 +2,13 @@ import React from 'react';
 import { FlashList } from '@shopify/flash-list';
 import { SEARCH_COMPOSERS } from '@/graphql';
 import { useQuery } from '@apollo/client';
-import { Text, View, ActivityIndicator, StyleSheet } from 'react-native';
+import { Text, ActivityIndicator, StyleSheet } from 'react-native';
 import ComposerItem from '@/components/ComposerItem';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTheme } from '@react-navigation/native'
 
 const ComposerScreen = () => {
+  const { colors } = useTheme();
   const { data, loading, error } = useQuery(SEARCH_COMPOSERS, { variables: { query: '*' } });
   const composers = data?.searchComposers?.edges.map(edge => edge.node);
 
@@ -21,20 +24,27 @@ const ComposerScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <Text style={[styles.title, { color: colors.text }]}>Composers</Text>
       <FlashList 
         data={composers}
         renderItem={({ item }) => <ComposerItem composer={item} />}
         keyExtractor={item => item.id}
         estimatedItemSize={100}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    margin: 20,
   },
 });
 

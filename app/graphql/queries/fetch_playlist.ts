@@ -11,6 +11,10 @@ export const FETCH_PLAYLIST = gql`
           ... on Recording {
             id
             title
+            year
+            genre {
+              name
+            }
             orchestra {
               name
             }

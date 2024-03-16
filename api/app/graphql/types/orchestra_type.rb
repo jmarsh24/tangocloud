@@ -9,6 +9,10 @@ module Types
     field :slug, String, null: true
     field :recordings_count, Integer, null: true
 
+    def name
+      object.formatted_name
+    end
+
     field :compositions, [CompositionType], null: false
     def compositions
       dataloader.with(Sources::Preload, :compositions).load(object)

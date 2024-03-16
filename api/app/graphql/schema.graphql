@@ -1396,6 +1396,7 @@ type Recording {
   singers: [Singer!]!
   slug: String!
   title: String!
+  year: Int
 }
 
 """

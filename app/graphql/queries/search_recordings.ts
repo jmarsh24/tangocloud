@@ -17,6 +17,7 @@ export const SEARCH_RECORDINGS = gql`
           genre {
             name
           }
+          year
           audioTransfers {
             album {
               albumArtUrl

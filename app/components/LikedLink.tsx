@@ -9,7 +9,7 @@ export default function LikedLink() {
   return (
     <Link href="/library" >
       <View style={styles.playlistContainer}>
-        {/* <Image source={{ uri: playlist.imageUrl }} style={styles.playlistImage} /> */}
+        <Image source={require('@/assets/images/playlist_liked.jpeg')} style={styles.playlistImage} />
         <View style={styles.playlistInfo}>
           <Text style={[styles.playlistTitle, { color: colors.text }]}>
             Liked
@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
     alignItems: 'center',
-    padding: 10,
   },
   playlistTitle: {
     fontSize: 18,

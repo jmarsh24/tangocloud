@@ -10,19 +10,25 @@ import {
   Text,
 } from "react-native";
 import { useTheme } from "@react-navigation/native";
-import TrackPlayer, { useProgress, useIsPlaying } from "react-native-track-player";
+import TrackPlayer, {
+  useProgress,
+  useIsPlaying,
+} from "react-native-track-player";
 import { PlayerControls } from "@/components/PlayerControls";
 import { Progress } from "@/components/Progress";
-import { TrackInfo } from "@/components/TrackInfo";
 import { FETCH_RECORDING } from "@/graphql";
 import { useQuery } from "@apollo/client";
 import Waveform from "@/components/Waveform";
 import * as Sharing from "expo-sharing";
 import FontAwesome6 from "react-native-vector-icons/FontAwesome6";
 import { useLocalSearchParams } from "expo-router";
-import { REMOVE_LIKE_FROM_RECORDING, ADD_LIKE_TO_RECORDING, CHECK_LIKE_STATUS_ON_RECORDING } from "@/graphql";
+import {
+  REMOVE_LIKE_FROM_RECORDING,
+  ADD_LIKE_TO_RECORDING,
+  CHECK_LIKE_STATUS_ON_RECORDING,
+} from "@/graphql";
 import { useMutation } from "@apollo/client";
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
 import { ScrollView } from "react-native";
 
 interface Track {
@@ -38,7 +44,6 @@ export default function PlayerScreen() {
   const { id } = useLocalSearchParams();
   const vinylRecordImg = require("@/assets/images/vinyl_3x.png");
   const { colors } = useTheme();
-  const styles = getStyles(colors);
   const [track, setTrack] = useState<Track | null>(null);
   const { position } = useProgress(1);
   const positionRef = useRef(position);
@@ -54,7 +59,11 @@ export default function PlayerScreen() {
   const [isLiked, setIsLiked] = useState(false);
   const { playing, bufferingDuringPlay } = useIsPlaying();
 
-  const { data: likeStatusData, loading: likeStatusLoading, error: likeStatusError } = useQuery(CHECK_LIKE_STATUS_ON_RECORDING, {
+  const {
+    data: likeStatusData,
+    loading: likeStatusLoading,
+    error: likeStatusError,
+  } = useQuery(CHECK_LIKE_STATUS_ON_RECORDING, {
     variables: { recordingId: id },
     fetchPolicy: "network-only",
   });
@@ -90,7 +99,8 @@ export default function PlayerScreen() {
       title: recordingData.title,
       artist: recordingData.orchestra.name,
       artwork: recordingData.audioTransfers[0]?.album?.albumArtUrl,
-      duration: recordingData.audioTransfers[0]?.audioVariants[0]?.duration || 0,
+      duration:
+        recordingData.audioTransfers[0]?.audioVariants[0]?.duration || 0,
     };
 
     setTrack(trackForPlayer);
@@ -174,7 +184,7 @@ export default function PlayerScreen() {
 
   if (loading) {
     return (
-      <View>
+      <View style={styles.container}>
         <ActivityIndicator size="large" />
       </View>
     );
@@ -183,20 +193,20 @@ export default function PlayerScreen() {
   if (error) {
     return (
       <View style={styles.container}>
-        <Text style={styles.errorText}>
-          Error loading playlist.
-        </Text>
+        <Text style={styles.errorText}>Error loading playlist.</Text>
       </View>
     );
   }
 
-  const albumArtUrl = data?.fetchRecording?.audioTransfers[0]?.album?.albumArtUrl || "";
-  const waveformData = data?.fetchRecording?.audioTransfers[0]?.waveform?.data || [];
+  const albumArtUrl =
+    data?.fetchRecording?.audioTransfers[0]?.album?.albumArtUrl || "";
+  const waveformData =
+    data?.fetchRecording?.audioTransfers[0]?.waveform?.data || [];
   const lyrics = data?.fetchRecording?.composition?.lyrics[0]?.content || "";
-  
+  const recording = data?.fetchRecording;
   return (
-    <ScrollView >
-      <View style={styles.container}>
+    <ScrollView>
+      <View style={[styles.container, { backgroundColor: colors.background} ]}>
         <View style={[styles.vinyl, { width: vinylSize, height: vinylSize }]}>
           <Image
             source={vinylRecordImg}
@@ -216,8 +226,25 @@ export default function PlayerScreen() {
             ]}
           />
         </View>
+        <View style={{flex: 1, flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>  
+          <View style={styles.trackInfo}>
+            <Text style={[styles.titleText, { color: colors.text} ]}>{recording?.title}</Text>
+            <Text style={[styles.artistText, { color: colors.text} ]}>{[recording?.orchestra.name, recording?.singers[0]?.name].filter(Boolean).join(' • ')}</Text>
+            <Text style={[styles.artistText, { color: colors.text} ]}>{[recording?.genre.name, recording?.year].filter(Boolean).join(' • ')}</Text>
+          </View>
+          <View style={styles.row}>
+            <Ionicons
+              onPress={handleLike}
+              name={isLiked ? "heart" : "heart-outline"}
+              size={36}
+              color={colors.text}
+            />
+            <TouchableWithoutFeedback onPress={shareRecording}>
+              <FontAwesome6 name={"share"} size={30} style={[styles.icon, {color: colors.text}]} />
+            </TouchableWithoutFeedback>
+          </View>
+        </View>
         <View style={styles.controls}>
-          {track && <TrackInfo track={track} />}
           <Waveform
             data={waveformData}
             width={deviceWidth * 0.92}
@@ -226,97 +253,81 @@ export default function PlayerScreen() {
           />
           <Progress />
           <View style={styles.row}>
-            <TouchableWithoutFeedback onPress={shareRecording}>
-              <FontAwesome6 name={"share"} size={30} style={styles.icon} />
-            </TouchableWithoutFeedback>
-            <Ionicons
-              onPress={handleLike}
-              name={isLiked ? 'heart' : 'heart-outline'}
-              size={36}
-              color={colors.text}
-              style={{ marginHorizontal: 10 }}
-            />
+            <PlayerControls />
           </View>
-          <PlayerControls />
         </View>
         <View style={styles.lyricsContainer}>
-          <Text style={styles.lyricsText}>
-            {lyrics}
-          </Text>
+          <Text style={[styles.lyricsText, {color: colors.text}]}>{lyrics}</Text>
         </View>
       </View>
     </ScrollView>
   );
 }
 
-function getStyles(colors) {
-  return StyleSheet.create({
-    container: {
-      padding: 20,
-      alignItems: "center",
-      backgroundColor: colors.background,
-    },
-    subtitle: {
-      color: colors.text,
-      fontSize: 12,
-    },
-    row: {
-      display: "flex",
-      gap: 10,
-      flexDirection: "row",
-      alignItems: "center",
-    },
-    vinylImg: {
-      position: "absolute",
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    albumArt: {
-      position: "absolute",
-      justifyContent: "center",
-      alignItems: "center",
-      zIndex: 2,
-    },
-    trackInfo: {
-      alignItems: "center",
-    },
-    title: {
-      fontSize: 24,
-      fontWeight: "bold",
-      color: colors.text,
-    },
-    artist: {
-      fontSize: 18,
-      color: colors.text,
-    },
-    controls: {
-      display: "flex",
-      alignItems: "center",
-      gap: 20,
-
-    },
-    playButtonContainer: {
-      backgroundColor: colors.buttonSecondary,
-      borderRadius: 35,
-      width: 70,
-      height: 70,
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    icon: {
-      color: colors.text,
-    },
-    lyricsContainer: {
-      marginTop: 20,
-      paddingHorizontal: 20,
-      paddingBottom: 80
-    },
-    lyricsText: {
-      fontSize: 16,
-      lineHeight: 24,
-      fontWeight: "600",
-      textAlign: 'center',
-      color: colors.text,
-    },
-  });
-}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+    gap: 20,
+  },
+  row: {
+    display: "flex",
+    gap: 10,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  vinylImg: {
+    position: "absolute",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  albumArt: {
+    position: "absolute",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 2,
+  },
+  trackInfo: {
+    flex: 1,
+    alignItems: "flex-start",
+  },
+  titleText: {
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+  artistText: {
+    fontSize: 18,
+  },
+  controls: {
+    display: "flex",
+    alignItems: "center",
+    gap: 20,
+  },
+  playButtonContainer: {
+    borderRadius: 35,
+    width: 70,
+    height: 70,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  lyricsContainer: {
+    marginTop: 20,
+    paddingHorizontal: 20,
+    paddingBottom: 80,
+  },
+  lyricsText: {
+    fontSize: 16,
+    lineHeight: 24,
+    fontWeight: "600",
+    textAlign: "center"
+  },
+  icon: {
+    padding: 10,
+  },
+  errorText: {
+    fontSize: 16,
+    textAlign: "center",
+  },
+});

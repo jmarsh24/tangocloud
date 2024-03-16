@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, Stack } from "expo-router";
 import { useTheme } from "@react-navigation/native";
 import { useQuery } from "@apollo/client";
 import { FlashList } from "@shopify/flash-list";
 import TrackListItem from "@/components/TrackListItem";
 import { FETCH_LYRICIST } from "@/graphql";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LyricistScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -47,8 +48,9 @@ export default function LyricistScreen() {
   );
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>
+    <SafeAreaView style={styles.container}>
+      <Stack.Screen options={{ title: data.fetchLyricist.name }} />
+      <Text style={[styles.title, { color: colors.text }]}>
         {data.fetchLyricist.name}
       </Text>
       {recordings && recordings.length > 0 ? (
@@ -61,7 +63,7 @@ export default function LyricistScreen() {
       ) : (
         <Text>No recordings found.</Text>
       )}
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -73,5 +75,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     marginBottom: 20,
+    fontWeight: "bold",
   },
 });

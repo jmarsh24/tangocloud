@@ -6,8 +6,7 @@ import { CREATE_PLAYBACK } from "@/graphql";
 
 export default function TrackListItem({ track }) {
   const { colors } = useTheme();
-  const styles = getStyles(colors);
-  const [createPlayback, { loading, error }] = useMutation(CREATE_PLAYBACK);
+  const [createPlayback] = useMutation(CREATE_PLAYBACK);
 
   if (!track) {
     return null;
@@ -42,52 +41,46 @@ export default function TrackListItem({ track }) {
     <Pressable onPress={onTrackPress} style={styles.songCard}>
       <Image source={{ uri: track.artwork }} style={styles.songAlbumArt} />
       <View style={styles.songTextContainer}>
-        <Text style={styles.songTitle}>{track.title}</Text>
-        <Text style={styles.songDetails}>{track.artist}</Text>
+        <Text style={[styles.songTitle, { color: colors.text }]}>{track.title}</Text>
+        <Text style={[styles.songDetails, { color: colors.text }]}>{[track.artist, track.singer].filter(Boolean).join(' • ')}</Text>
+        <Text style={[styles.songDetails, { color: colors.text }]}>{[track.genre,track.year].filter(Boolean).join(' • ')}</Text>
       </View>
     </Pressable>
   );
 }
-
-function getStyles(colors) {
-  return StyleSheet.create({
-    songCard: {
-      flex: 1,
-      backgroundColor: colors.card,
-      flexDirection: "row",
-      paddingVertical: 10,
-      paddingHorizontal: 10,
-      borderRadius: 8,
-    },
-    songAlbumArt: {
-      width: 56,
-      height: 56,
-      aspectRatio: 1,
-      borderRadius: 5,
-    },
-    songTitle: {
-      fontWeight: "bold",
-      fontSize: 16,
-      color: colors.text,
-      marginLeft: 10,
-    },
-    songDetails: {
-      fontSize: 14,
-      color: colors.text,
-      marginLeft: 10,
-    },
-    songTextContainer: {
-      flexDirection: "column",
-    },
-    loadingText: {
-      fontSize: 14,
-      color: colors.text,
-      marginLeft: 10,
-    },
-    errorText: {
-      fontSize: 14,
-      color: 'red',
-      marginLeft: 10,
-    },
-  });
-}
+const styles = StyleSheet.create({
+  songCard: {
+    flex: 1,
+    flexDirection: "row",
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+  },
+  songAlbumArt: {
+    width: 56,
+    height: 56,
+    aspectRatio: 1,
+    borderRadius: 5,
+  },
+  songTitle: {
+    fontWeight: "bold",
+    fontSize: 16,
+    marginLeft: 10,
+  },
+  songDetails: {
+    fontSize: 14,
+    marginLeft: 10,
+  },
+  songTextContainer: {
+    flexDirection: "column",
+  },
+  loadingText: {
+    fontSize: 14,
+    marginLeft: 10,
+  },
+  errorText: {
+    fontSize: 14,
+    color: 'red',
+    marginLeft: 10,
+  },
+});

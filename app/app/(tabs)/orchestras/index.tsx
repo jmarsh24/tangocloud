@@ -1,38 +1,55 @@
 import React from 'react';
-import { Stack } from 'expo-router';
 import { FlashList } from '@shopify/flash-list';
 import { SEARCH_ORCHESTRAS } from '@/graphql';
 import { useQuery } from '@apollo/client';
 import { Text, View, ActivityIndicator, StyleSheet } from 'react-native';
 import OrchestraItem from '@/components/OrchestraItem';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTheme } from '@react-navigation/native'
 
-const BrowseScreen = () => {
+const OrchestrasScreen = () => {
+  const { colors } = useTheme();
   const { data, loading, error } = useQuery(SEARCH_ORCHESTRAS, { variables: { query: '*' } });
   const orchestras = data?.searchOrchestras?.edges.map(edge => edge.node);
 
   if (loading) {
-    return <ActivityIndicator />;
-  }
-  if (error) {
-    return <Text>Failed to fetch</Text>;
+    return (
+    <View style={styles.container}>
+      <ActivityIndicator />
+    </View>
+    );
   }
 
+  if (error) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
+  
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <Text style={[styles.title, { color: colors.text }]}>Orchestras</Text>
       <FlashList 
         data={orchestras}
         renderItem={({ item }) => <OrchestraItem orchestra={item} />}
-        keyExtractor={item => item.id}
         estimatedItemSize={100}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    margin: 20,
   },
 });
 
-export default BrowseScreen;
+export default OrchestrasScreen;

@@ -7,12 +7,14 @@ export const FETCH_LIKED_RECORDINGS = gql`
         node {
           id
           title
+          year
           genre {
-            id
+            name
+          }
+          singers {
             name
           }
           orchestra {
-            id
             name
           }
           audioTransfers {

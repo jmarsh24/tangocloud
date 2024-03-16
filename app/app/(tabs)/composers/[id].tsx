@@ -6,6 +6,7 @@ import { useQuery } from "@apollo/client";
 import { FlashList } from "@shopify/flash-list";
 import TrackListItem from "@/components/TrackListItem";
 import { FETCH_COMPOSER } from "@/graphql";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ComposerScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -47,8 +48,8 @@ export default function ComposerScreen() {
   );
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>
+    <SafeAreaView style={styles.container}>
+      <Text style={[styles.title, { color: colors.text }]}>
         {data.fetchComposer.name}
       </Text>
       {recordings && recordings.length > 0 ? (
@@ -61,17 +62,18 @@ export default function ComposerScreen() {
       ) : (
         <Text>No recordings found.</Text>
       )}
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
   },
   title: {
     fontSize: 24,
     marginBottom: 20,
+    fontWeight: "bold",
   },
 });

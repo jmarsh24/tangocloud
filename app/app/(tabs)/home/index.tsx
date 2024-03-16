@@ -1,11 +1,12 @@
-import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import { useTheme } from '@react-navigation/native';
-import { useQuery } from '@apollo/client';
-import { FlashList } from '@shopify/flash-list';
-import { SEARCH_PLAYLISTS } from '@/graphql';
-import PlaylistItem from '@/components/PlaylistItem';
-import LikedLink from '@/components/LikedLink';
+import React from "react";
+import { Text, View, StyleSheet } from "react-native";
+import { useTheme } from "@react-navigation/native";
+import { useQuery } from "@apollo/client";
+import { FlashList } from "@shopify/flash-list";
+import { SEARCH_PLAYLISTS } from "@/graphql";
+import PlaylistItem from "@/components/PlaylistItem";
+import LikedLink from "@/components/LikedLink";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   const { colors } = useTheme();
@@ -32,46 +33,53 @@ export default function HomeScreen() {
     );
   }
 
-  const playlists = playlistsData?.searchPlaylists?.edges.map(edge => edge.node);
+  const playlists = playlistsData?.searchPlaylists?.edges.map(
+    (edge) => edge.node
+  );
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={[styles.headerText, { color: colors.text }]}>
-        The people who are crazy enough to think they can change the world are the ones who do.
+        Home
+      </Text>
+      <Text style={[styles.headerText, { color: colors.text }]}>
+        The people who are crazy enough to think they can change the world are
+        the ones who do.
       </Text>
       <FlashList
         data={playlists}
         keyExtractor={(item) => item.id}
-        ListHeaderComponent={() =>  <LikedLink /> }
+        ListHeaderComponent={() => <LikedLink />}
         renderItem={({ item }) => <PlaylistItem playlist={item} />}
         estimatedItemSize={100}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 10,
+    justifyContent: "center",
+    paddingHorizontal: 20,
   },
   headerText: {
     fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
     paddingHorizontal: 20,
     paddingVertical: 20,
   },
   playlistContainer: {
-    display: 'flex',
-    flexDirection: 'row',
+    display: "flex",
+    flexDirection: "row",
     gap: 10,
-    alignItems: 'center',
+    alignItems: "center",
     padding: 10,
   },
   playlistTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   playlistImage: {
     width: 100,

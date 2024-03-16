@@ -41,53 +41,14 @@ const Player = () => {
     return null;
   }
 
-  const dynamicStyles = StyleSheet.create({
-    container: {
-      position: 'absolute',
-      width: '100%',
-      bottom: 80
-    },
-    player: {
-      width: '100%',
-      backgroundColor: colors.card,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      borderRadius: 10,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 1 },
-      shadowOpacity: 0.22,
-      shadowRadius: 2.22,
-      padding: 10,
-      paddingRight: 20,
-    },
-    image: {
-      width: 64,
-      height: 64,
-      marginRight: 10,
-      borderRadius: 5,
-    },
-    info: {
-      flex: 1,
-    },
-    title: {
-      color: colors.text,
-      fontSize: 16,
-    },
-    subtitle: {
-      color: colors.text,
-      fontSize: 12,
-    },
-  });
-
   return (
-    <View style={dynamicStyles.container}>
+    <View style={[styles.container, { backgroundColor: colors.card }]}>
       <Link href={{ pathname: "/player/[id]", params: { id: track.id } }}>
-        <View style={dynamicStyles.player}>
-          <Image source={{ uri: track?.artwork }} style={dynamicStyles.image} />
-          <View style={dynamicStyles.info}>
-            <Text style={dynamicStyles.title}>{track?.title}</Text>
-            <Text style={dynamicStyles.subtitle}>{track?.artist}</Text>
+        <View style={styles.player}>
+          <Image source={{ uri: track?.artwork }} style={styles.image} />
+          <View style={styles.info}>
+            <Text style={[styles.title, { color: colors.text }]}>{track?.title}</Text>
+            <Text style={[ styles.subtitle, { color: colors.text }]}>{track?.artist}</Text>
           </View>
           <PlayPauseButton size={24} />
           <Pressable onPress={performSkipToNext}>
@@ -100,3 +61,40 @@ const Player = () => {
 };
 
 export default Player;
+
+
+const styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    width: '100%',
+    bottom: 80
+  },
+  player: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    padding: 10,
+    paddingRight: 20,
+  },
+  image: {
+    width: 64,
+    height: 64,
+    marginRight: 10,
+    borderRadius: 5,
+  },
+  info: {
+    flex: 1,
+  },
+  title: {
+    fontSize: 16,
+  },
+  subtitle: {
+    fontSize: 12,
+  },
+});

@@ -79,6 +79,14 @@ jobs:
           sudo apt-get install --no-install-recommends -y postgresql-client
           sudo apt-get install --no-install-recommends -y libpq-dev
 
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "20.x"
+          cache: yarn
+
+      - name: Checkout LFS objects
+        run: git lfs pull
+
       - name: Install ffmpeg
         run: sudo apt-get install --no-install-recommends -y ffmpeg
 

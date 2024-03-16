@@ -5,6 +5,13 @@ export const FETCH_RECORDING = gql`
     fetchRecording(id: $id) {
       id
       title
+      genre {
+        name
+      }
+      year
+      singers {
+        name
+      }
       composition {
         lyrics {
           locale

@@ -67,14 +67,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="browse"
-        options={{
-          title: 'Browse',
-          headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="appstore1" color={color} />
-        }}
-      />
-      <Tabs.Screen
         name="search"
         options={{
           title: 'Search',
@@ -94,58 +86,49 @@ export default function TabLayout() {
         name="recordings"
         options={{
           href: null,
-          headerShown: false,
-          
+          headerShown: false
         }}
       />
       <Tabs.Screen
         name="home"
         options={{
           href: null,
-          title: 'Home',
-          headerShown: false,
-
+          headerShown: false
         }}
       />
       <Tabs.Screen
         name="orchestras"
         options={{
           href: null,
-          title: 'Orchestras',
-          headerShown: false,
-
+          headerShown: false
         }} 
       />
       <Tabs.Screen
         name="lyricists"
         options={{
           href: null,
-          title: 'Lyricists',
-          headerShown: false,
+          headerShown: false
         }}
       />
       <Tabs.Screen
         name="composers"
         options={{
           href: null,
-          title: 'Composers',
-          headerShown: false,
+          headerShown: false
         }}
       />
       <Tabs.Screen
         name="singers"
         options={{
           href: null,
-          title: 'Singers',
-          headerShown: false,
+          headerShown: false
         }}
       />
       <Tabs.Screen
         name="library"
         options={{
           href: null,
-        title: 'Library',
-          headerShown: false,
+          headerShown: false
         }}
       />
     </Tabs>

@@ -24,6 +24,13 @@ export const USER_PROFILE = gql`
               orchestra {
                 name
               }
+              genre {
+                name
+              }
+              year
+              singers {
+                name
+              }
               audioTransfers {
                 audioVariants {
                   audioFileUrl

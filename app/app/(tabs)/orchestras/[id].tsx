@@ -6,6 +6,7 @@ import { useQuery } from "@apollo/client";
 import { FlashList } from "@shopify/flash-list";
 import TrackListItem from "@/components/TrackListItem";
 import { FETCH_ORCHESTRA } from "@/graphql";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function OrchestraScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -34,9 +35,8 @@ export default function OrchestraScreen() {
       </View>
     );
   }
-
   const orchestra = data?.fetchOrchestra;
-    // debugger;
+
   const recordings = orchestra.recordings.edges.map(({ node: item }) => ({
     id: item.id,
     title: item.title,
@@ -44,30 +44,33 @@ export default function OrchestraScreen() {
     duration: item.audioTransfers[0]?.audioVariants[0]?.duration || 0,
     artwork: item.audioTransfers[0]?.album?.albumArtUrl,
     url: item.audioTransfers[0]?.audioVariants[0]?.audioFileUrl,
+    genre: item.genre.name,
+    year: item.year,
   }));
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>
+    <SafeAreaView style={styles.container}>
+      <Text style={[styles.title, { color: colors.text }]}>
         {orchestra.name}
       </Text>
       <FlashList
         data={recordings}
-        keyExtractor={(item) => item.id}
         renderItem={({ item }) => <TrackListItem track={item} />}
         estimatedItemSize={80}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 10,
+    justifyContent: "center",
+    paddingHorizontal: 20,
   },
   title: {
     fontSize: 24,
     marginBottom: 20,
+    fontWeight: "bold",
   },
 });

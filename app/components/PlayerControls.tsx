@@ -52,44 +52,32 @@ export const PlayerControls: React.FC = () => {
     setRepeatMode(newMode);
   };
 
-  const styles = StyleSheet.create({
-    container: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 30,
-      width: '100%',
-    },
-    row: {
-      flexDirection: 'row',
-      justifyContent: 'space-evenly',
-      alignItems: 'center',
-    },
-    icon: {
-      color: colors.text, 
-    },
-    activeIcon: {
-      color: "#ff7700",
-    },
-  });
-
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <TouchableWithoutFeedback onPress={performSkipToPrevious}>
-          <FontAwesome6 name={'backward'} size={30} style={styles.icon} />
-        </TouchableWithoutFeedback>
-        <PlayPauseButton />
-        <TouchableWithoutFeedback onPress={performSkipToNext}>
-          <FontAwesome6 name={'forward'} size={30} style={styles.icon} />
-        </TouchableWithoutFeedback>
-      </View>
-      <View style={styles.row}>
-        <TouchableWithoutFeedback onPress={handleShuffle}>
-          <FontAwesome6 name={'shuffle'} size={30} style={shuffleActive ? styles.activeIcon : styles.icon} />
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={toggleRepeatMode}>
-          <FontAwesome6 name={'repeat'} size={30} style={repeatMode !== RepeatMode.Off ? styles.activeIcon : styles.icon} />
-        </TouchableWithoutFeedback>
+        <View style={styles.control}>
+          <TouchableWithoutFeedback onPress={handleShuffle}>
+            <FontAwesome6 name={'shuffle'} size={30} style={shuffleActive ? styles.activeIcon : {color: colors.text}} />
+          </TouchableWithoutFeedback>
+        </View>
+        <View style={styles.control}>
+          <TouchableWithoutFeedback onPress={performSkipToPrevious}>
+            <FontAwesome6 name={'backward'} size={30} style={{color: colors.text}} />
+          </TouchableWithoutFeedback>
+        </View>
+        <View style={styles.control}>
+          <PlayPauseButton />
+        </View>
+        <View style={styles.control}>
+          <TouchableWithoutFeedback onPress={performSkipToNext}>
+            <FontAwesome6 name={'forward'} size={30} style={{color: colors.text}} />
+          </TouchableWithoutFeedback>
+        </View>
+        <View style={styles.control}>
+          <TouchableWithoutFeedback onPress={toggleRepeatMode}>
+            <FontAwesome6 name={'repeat'} size={30} style={repeatMode !== RepeatMode.Off ? styles.activeIcon : {color: colors.text}} />
+          </TouchableWithoutFeedback>
+        </View>
       </View>
       <PlaybackError
         error={'error' in playback ? playback.error.message : undefined}
@@ -97,3 +85,24 @@ export const PlayerControls: React.FC = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: '100%',
+  },
+  row: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  control: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  activeIcon: {
+    color: "#ff7700",
+  },
+});
