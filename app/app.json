@@ -26,8 +26,7 @@
       "supportsTablet": true,
       "runtimeVersion": "1.0.0",
       "buildNumber": "52",
-      "associatedDomains": ["applinks:tangocloud.app"],
-      "bundleIdentifier": "com.tangocloud.app"
+      "associatedDomains": ["applinks:tangocloud.app"]
     },
     "android": {
       "adaptiveIcon": {
