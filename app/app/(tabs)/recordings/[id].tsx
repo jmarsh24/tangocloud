@@ -151,8 +151,7 @@ export default function RecordingScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
-    alignItems: "center",
+    paddingHorizontal: 20,
   },
   subtitle: {
     fontSize: 12,

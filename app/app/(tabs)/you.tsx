@@ -96,6 +96,7 @@ export default function YouScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: 20,
   },
   profileContainer: {
     alignItems: 'center',

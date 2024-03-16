@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
     alignItems: 'center',
-    padding: 10,
   },
   playlistTitle: {
     fontSize: 18,

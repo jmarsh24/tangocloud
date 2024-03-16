@@ -69,7 +69,7 @@ export default function ComposerScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
   },
   title: {
     fontSize: 24,

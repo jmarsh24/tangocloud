@@ -135,15 +135,12 @@
       justifyContent: "space-between",
       alignItems: "center",
       paddingBottom: 10,
-      paddingHorizontal: 10,
-      gap: 12,
-      padding: 10,
+      gap: 10,
     },
     linksContainer: {
       flexDirection: 'row',
       flexWrap: 'wrap',
       justifyContent: 'space-between',
-      paddingHorizontal: 10,
       gap: 10,
     },
     linkButton: {
