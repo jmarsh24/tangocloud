@@ -6,6 +6,8 @@ import { PlayPauseButton } from '@/components/PlayPauseButton';
 import { useTheme } from '@react-navigation/native';
 import { FontAwesome6 } from '@expo/vector-icons';
 
+const performSkipToNext = () => TrackPlayer.skipToNext();
+
 const Player = () => {
   const [track, setTrack] = useState(null);
   const { colors } = useTheme();
@@ -49,7 +51,7 @@ const Player = () => {
             <Text style={[ styles.subtitle, { color: colors.text }]}>{track?.artist}</Text>
           </View>
           <PlayPauseButton size={24} />
-          <Pressable onPress={TrackPlayer.skipToNext()}>
+          <Pressable onPress={performSkipToNext}>
             <FontAwesome6 name={'forward'} size={24} style={{ color: colors.text }} />
           </Pressable>
         </View>
