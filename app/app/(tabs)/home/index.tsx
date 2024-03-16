@@ -40,6 +40,9 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={[styles.headerText, { color: colors.text }]}>
+        Home
+      </Text>
+      <Text style={[styles.headerText, { color: colors.text }]}>
         The people who are crazy enough to think they can change the world are
         the ones who do.
       </Text>

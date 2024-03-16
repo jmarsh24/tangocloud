@@ -34,7 +34,6 @@ export default function OrchestraScreen() {
       </View>
     );
   }
-
   const orchestra = data?.fetchOrchestra;
 
   const recordings = orchestra.recordings.edges.map(({ node: item }) => ({
@@ -44,6 +43,8 @@ export default function OrchestraScreen() {
     duration: item.audioTransfers[0]?.audioVariants[0]?.duration || 0,
     artwork: item.audioTransfers[0]?.album?.albumArtUrl,
     url: item.audioTransfers[0]?.audioVariants[0]?.audioFileUrl,
+    genre: item.genre.name,
+    year: item.year,
   }));
 
   return (
@@ -53,7 +54,6 @@ export default function OrchestraScreen() {
       </Text>
       <FlashList
         data={recordings}
-        keyExtractor={(item) => item.id}
         renderItem={({ item }) => <TrackListItem track={item} />}
         estimatedItemSize={80}
       />
@@ -64,6 +64,8 @@ export default function OrchestraScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
     paddingHorizontal: 10,
   },
   title: {

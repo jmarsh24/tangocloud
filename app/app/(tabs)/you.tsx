@@ -5,15 +5,14 @@ import { useQuery } from '@apollo/client';
 import { Link } from 'expo-router';
 import { USER_PROFILE } from '@/graphql';
 import Button from '@/components/Button';
-import Colors from '@/constants/Colors';
 import { FlashList } from "@shopify/flash-list";
 import TrackListItem from "@/components/TrackListItem";
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useTheme } from '@react-navigation/native';
 
 export default function YouScreen() {
   const { authState, onLogout } = useAuth();
-  const scheme = useColorScheme();
+  const { colors } = useTheme();
 
   const { data, loading, error, refetch } = useQuery(USER_PROFILE, {
     skip: !authState.authenticated,
@@ -29,7 +28,7 @@ export default function YouScreen() {
 
   if (!authState.authenticated) {
     return (
-      <View style={[styles.container, { backgroundColor: Colors[scheme].background }]}>
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
         <Link href='/login' asChild>
           <Button onPress={onLogout} text="Login" />
         </Link>
@@ -42,16 +41,16 @@ export default function YouScreen() {
 
   if (loading) {
     return (
-      <View style={[styles.container, { backgroundColor: Colors[scheme].background }]}>
-        <ActivityIndicator size="large" color={Colors[scheme].tint} />
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <ActivityIndicator size="large" color={colors.tint} />
       </View>
     );
   }
 
   if (error) {
     return (
-      <View style={[styles.container, { backgroundColor: Colors[scheme].background }]}>
-        <Text style={[styles.text, { color: Colors[scheme].text }]}>Error loading data...</Text>
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <Text style={[styles.text, { color: colors.text }]}>Error loading data...</Text>
         <Button onPress={onLogout} text="Sign out" />
       </View>
     );
@@ -69,19 +68,21 @@ export default function YouScreen() {
       duration: recording.audioTransfers[0]?.audioVariants[0]?.duration || 0,
       artwork: recording.audioTransfers[0]?.album?.albumArtUrl || "",
       url: recording.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || "",
+      genre: recording.genre.name,
+      year: recording.year,
     };
   });
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: Colors[scheme].background }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.profileContainer}>
         <Image source={{ uri: avatarUrl }} style={styles.image} />
-        {username && <Text style={[styles.header, { color: Colors[scheme].text }]}>{username}</Text>}
-        {email && <Text style={[styles.header, { color: Colors[scheme].text }]}>{email}</Text>}
+        {username && <Text style={[styles.header, { color: colors.text }]}>{username}</Text>}
+        {email && <Text style={[styles.header, { color: colors.text }]}>{email}</Text>}
         <Button onPress={onLogout} text="Sign out" />
       </View>
       <View style={styles.listContainer}>
-        <Text style={[styles.header, { color: Colors[scheme].text }]}>History</Text>
+        <Text style={[styles.header, { color: colors.text }]}>History</Text>
         <FlashList
           data={recordings}
           renderItem={({ item }) => <TrackListItem track={item} />}

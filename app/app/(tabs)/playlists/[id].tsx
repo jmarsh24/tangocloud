@@ -37,7 +37,9 @@ export default function PlaylistScreen() {
       </View>
     );
   }
+
   const playlist = data?.fetchPlaylist;
+
   const recordings = playlist.playlistItems.map((item) => {
       const recording = item.playable;
       return {
@@ -47,6 +49,8 @@ export default function PlaylistScreen() {
         duration: recording.audioTransfers[0]?.audioVariants[0]?.duration || 0,
         artwork: recording.audioTransfers[0]?.album?.albumArtUrl || "",
         url: recording.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || "",
+        genre: recording.genre.name,
+        year: recording.year,
       };
     });
 

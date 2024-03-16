@@ -6,6 +6,10 @@ module Types
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
+    def name
+      object.name.titleize
+    end
+
     field :recordings, [RecordingType], null: false
     def recordings
       dataloader.with(Sources::Preload, :recordings).load(object)

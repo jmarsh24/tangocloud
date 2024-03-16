@@ -1,5 +1,6 @@
 class Orchestra < ApplicationRecord
   extend FriendlyId
+  include Titleizable
   friendly_id :name, use: :slugged
   searchkick word_middle: [:name], callbacks: :async
 
@@ -24,6 +25,10 @@ class Orchestra < ApplicationRecord
     {
       name:
     }
+  end
+
+  def formatted_name
+    self.class.custom_titleize(name)
   end
 end
 

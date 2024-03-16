@@ -17,7 +17,6 @@ import { Link } from "expo-router";
 
 export default function SearchScreen() {
   const { colors } = useTheme();
-  const styles = getStyles(colors);
   const ITEMS_PER_PAGE = 200;
   const [search, setSearch] = useState("");
   const [loadingMore, setLoadingMore] = useState(false);
@@ -69,13 +68,16 @@ export default function SearchScreen() {
       duration: edge.node.audioTransfers[0]?.audioVariants[0]?.duration || 0,
       artwork: edge.node.audioTransfers[0]?.album?.albumArtUrl || "",
       url: edge.node.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || "",
+      genre: edge.node.genre.name,
+      year: edge.node.year,
+      singer: edge.node.singers[0]?.name,
     })) || [];
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.header}>
-        <View style={styles.searchContainer}>
-          <AntDesign name="search1" size={20} style={styles.searchIcon} />
+      <View style={[styles.header, { backgroundColor: colors.background }]}>
+        <View style={[styles.searchContainer, { backgroundColor: colors.card }]}>
+          <AntDesign name="search1" size={20} style={[styles.searchIcon, { color: colors.text}]} />
           <TextInput
             value={search}
             onChangeText={setSearch}
@@ -83,13 +85,13 @@ export default function SearchScreen() {
             autoCorrect={false}
             autoComplete="off"
             autoCapitalize="none"
-            style={styles.input}
+            style={[styles.input, { color: colors.text, backgroundColor: colors.card}]}
           />
           {search.length > 0 && (
             <AntDesign
               name="close"
               size={20}
-              style={styles.clearIcon}
+              style={[styles.clearIcon, { color: colors.text }]}
               onPress={() => setSearch("")}
             />
           )}
@@ -143,69 +145,57 @@ export default function SearchScreen() {
   );
 }
 
-function getStyles(colors) {
-  return StyleSheet.create({
-    header: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      paddingBottom: 10,
-      paddingHorizontal: 10,
-      gap: 12,
-      padding: 10,
-      backgroundColor: colors.background,
-    },
-    searchContainer: {
-      flex: 1,
-      flexDirection: "row",
-      alignItems: "center",
-      backgroundColor: colors.card,
-      padding: 8,
-      borderRadius: 5,
-      position: "relative",
-    },
-    input: {
-      flex: 1,
-      color: colors.text,
-      backgroundColor: colors.card,
-      paddingVertical: 4,
-      paddingLeft: 30,
-      paddingRight: 4,
-    },
-    searchIcon: {
-      position: "absolute",
-      color: colors.text,
-      left: 10,
-      zIndex: 1,
-    },
-    clearIcon: {
-      position: "absolute",
-      color: colors.text,
-      right: 10,
-    },
-    cancelText: {
-      color: colors.text,
-      fontSize: 12,
-    },
-    footerStyle: {
-      height: 100,
-    },
-    itemSeparator: {
-      height: 10,
-    },
-    link: {
-      width: "100%",
-    },
-    button: {
-      width: "100%",
-      padding: 10,
-      borderWidth: 1,
-      borderRadius: 5,
-    },
-    buttonText: {
-      fontSize: 16,
-      fontWeight: "bold",
-      textAlign: "center",
-    },
-  });
-}
+const styles = StyleSheet.create({
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingBottom: 10,
+    paddingHorizontal: 10,
+    gap: 12,
+    padding: 10,
+  },
+  searchContainer: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 8,
+    borderRadius: 5,
+    position: "relative",
+  },
+  input: {
+    flex: 1,
+    paddingVertical: 4,
+    paddingLeft: 30,
+    paddingRight: 4,
+  },
+  searchIcon: {
+    position: "absolute",
+    left: 10,
+    zIndex: 1,
+  },
+  clearIcon: {
+    position: "absolute",
+    right: 10,
+  },
+  footerStyle: {
+    height: 100,
+  },
+  itemSeparator: {
+    height: 10,
+  },
+  link: {
+    width: "100%",
+  },
+  button: {
+    width: "100%",
+    padding: 10,
+    borderWidth: 1,
+    borderRadius: 5,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+});
