@@ -49,7 +49,7 @@ const Player = () => {
             <Text style={[ styles.subtitle, { color: colors.text }]}>{track?.artist}</Text>
           </View>
           <PlayPauseButton size={24} />
-          <Pressable onPress={TrackPlayer.skipToNext();}>
+          <Pressable onPress={TrackPlayer.skipToNext()}>
             <FontAwesome6 name={'forward'} size={24} style={{ color: colors.text }} />
           </Pressable>
         </View>
