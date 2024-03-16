@@ -5,8 +5,10 @@ import { useQuery } from '@apollo/client';
 import { Text, ActivityIndicator, StyleSheet } from 'react-native';
 import SingerItem from '@/components/SingerItem';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTheme } from '@react-navigation/native'
 
 const SingersScreen = () => {
+  const { colors } = useTheme();
   const { data, loading, error } = useQuery(SEARCH_SINGERS, { variables: { query: '*' } });
   const singers = data?.searchSingers?.edges.map(edge => edge.node);
 
@@ -21,7 +23,7 @@ const SingersScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Singers</Text>
+      <Text style={[styles.title, { color: colors.text }]}>Singers</Text>
       <FlashList 
         data={singers}
         renderItem={({ item }) => <SingerItem singer={item} />}

@@ -5,8 +5,10 @@ import { useQuery } from '@apollo/client';
 import { Text, ActivityIndicator, StyleSheet } from 'react-native';
 import ComposerItem from '@/components/ComposerItem';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTheme } from '@react-navigation/native'
 
 const ComposerScreen = () => {
+  const { colors } = useTheme();
   const { data, loading, error } = useQuery(SEARCH_COMPOSERS, { variables: { query: '*' } });
   const composers = data?.searchComposers?.edges.map(edge => edge.node);
 
@@ -23,6 +25,7 @@ const ComposerScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Text style={[styles.title, { color: colors.text }]}>Composers</Text>
       <FlashList 
         data={composers}
         renderItem={({ item }) => <ComposerItem composer={item} />}
@@ -36,6 +39,11 @@ const ComposerScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    margin: 20,
   },
 });
 

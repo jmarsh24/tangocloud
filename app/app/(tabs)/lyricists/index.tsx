@@ -2,11 +2,13 @@ import React from 'react';
 import { FlashList } from '@shopify/flash-list';
 import { SEARCH_LYRICISTS } from '@/graphql';
 import { useQuery } from '@apollo/client';
-import { Text, View, ActivityIndicator, StyleSheet } from 'react-native';
+import { Text, ActivityIndicator, StyleSheet } from 'react-native';
 import LyricistItem from '@/components/LyricistItem';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTheme } from '@react-navigation/native'
 
 const BrowseScreen = () => {
+  const { colors } = useTheme();
   const { data, loading, error } = useQuery(SEARCH_LYRICISTS, { variables: { query: '*' } });
   const lyricists = data?.searchLyricists?.edges.map(edge => edge.node);
 
@@ -19,6 +21,7 @@ const BrowseScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Text style={[styles.title, { color: colors.text }]}>Lyricists</Text>
       <FlashList 
         data={lyricists}
         renderItem={({ item }) => <LyricistItem lyricist={item} />}
@@ -32,6 +35,11 @@ const BrowseScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    margin: 20,
   },
 });
 
