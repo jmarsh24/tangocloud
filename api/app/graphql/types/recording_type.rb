@@ -7,6 +7,11 @@ module Types
     field :recorded_date, GraphQL::Types::ISO8601Date, null: true
     field :slug, String, null: false
     field :recording_type, String, null: false
+    field :year, Integer, null: true
+
+    def year
+      object.recorded_date&.year
+    end
 
     field :audio_transfers, [AudioTransferType], null: false
 
