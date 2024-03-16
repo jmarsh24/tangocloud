@@ -50,7 +50,7 @@ export default function LyricistScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Stack.Screen options={{ title: data.fetchLyricist.name }} />
-      <Text style={styles.title}>
+      <Text style={[styles.title, { color: colors.text }]}>
         {data.fetchLyricist.name}
       </Text>
       {recordings && recordings.length > 0 ? (
@@ -75,5 +75,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     marginBottom: 20,
+    fontWeight: "bold",
   },
 });

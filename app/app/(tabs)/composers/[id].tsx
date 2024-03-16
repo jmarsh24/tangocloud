@@ -49,7 +49,7 @@ export default function ComposerScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>
+      <Text style={[styles.title, { color: colors.text }]}>
         {data.fetchComposer.name}
       </Text>
       {recordings && recordings.length > 0 ? (
@@ -74,5 +74,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     marginBottom: 20,
+    fontWeight: "bold",
   },
 });
