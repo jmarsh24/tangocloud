@@ -11,18 +11,21 @@ module Types
 
     def recordings
       dataloader.with(Sources::Preload, :recordings).load(object)
+      object.recordings
     end
 
     field :audio_variants, [AudioVariantType], null: false
 
     def audio_variants
       dataloader.with(Sources::Preload, :audio_variants).load(object)
+      object.audio_variants
     end
 
     field :audio_transfers, [AudioTransferType], null: false
 
     def audio_transfers
       dataloader.with(Sources::Preload, :audio_transfers).load(object)
+      object.audio_transfers
     end
   end
 end

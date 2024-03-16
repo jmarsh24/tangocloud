@@ -67,7 +67,7 @@ module Import
             Genre.find_or_create_by!(name: metadata.genre.downcase)
           end
 
-          el_recodo_song = ElRecodoSong.find_by!(ert_number: metadata.ert_number)
+          el_recodo_song = ElRecodoSong.find_by(ert_number: metadata.ert_number)
           if metadata.singer.present? && metadata.singer.downcase != "instrumental"
             singer = Singer.find_or_create_by!(name: metadata.artist)
           end

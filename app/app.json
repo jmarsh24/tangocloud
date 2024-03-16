@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "app",
+    "name": "Tango Cloud",
     "slug": "app",
     "version": "1.0.24",
     "owner": "tangocloud",
@@ -29,10 +29,11 @@
       },
       "supportsTablet": true,
       "runtimeVersion": "1.0.0",
-      "buildNumber": "49",
+      "buildNumber": "51",
       "associatedDomains": [
         "applinks:tangocloud.app"
-      ]
+      ],
+      "bundleIdentifier": "com.tangocloud.app"
     },
     "android": {
       "adaptiveIcon": {
@@ -42,7 +43,8 @@
       "runtimeVersion": {
         "policy": "appVersion"
       },
-      "package": "com.tangocloud.app"
+      "package": "com.tangocloud.app",
+      "versionCode": 8
     },
     "web": {
       "bundler": "metro",

@@ -9,6 +9,7 @@ module Types
     field :recordings, [RecordingType], null: false
     def recordings
       dataloader.with(Sources::Preload, :recordings).load(object)
+      object.recordings
     end
   end
 end

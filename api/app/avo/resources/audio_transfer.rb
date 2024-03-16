@@ -1,8 +1,8 @@
 class Avo::Resources::AudioTransfer < Avo::BaseResource
   self.includes = [:waveform, :audio_variants, :album, :recording, :transfer_agent]
-  # self.search = {
-  #   query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
-  # }
+  self.search = {
+    query: -> { query.search_audio_transfers(params[:q]) }
+  }
 
   def fields
     field :id, as: :id, only_on: :show

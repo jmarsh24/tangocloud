@@ -12,6 +12,7 @@ module Types
     field :lyrics, [LyricType], null: false
     def lyrics
       dataloader.with(Sources::Preload, :lyrics).load(object)
+      object.lyrics
     end
 
     has_many :compositions

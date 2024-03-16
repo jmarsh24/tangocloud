@@ -13,9 +13,9 @@ class Avo::Resources::Recording < Avo::BaseResource
     :tanda_recordings,
     :tandas,
     :waveforms]
-  # self.search = {
-  #   query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
-  # }
+  self.search = {
+    query: -> { query.search_recordings(params[:q]) }
+  }
 
   def fields
     field :id, as: :id, readonly: true, only_on: :show

@@ -1,8 +1,12 @@
 import React from "react";
 import { Stack } from "expo-router";
 
-const LyicistsLayout = () => {
-  return <Stack />;
-};
+export default function _layout() {
 
-export default LyicistsLayout;
+  return (
+    <Stack>
+      <Stack.Screen name="index" options={{ title: "Lyricists", headerShown: false }} />
+      <Stack.Screen name="[id]" options={{ title: "Lyricist", headerShown: false }} />
+    </Stack>
+  )
+};

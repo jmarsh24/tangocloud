@@ -6,7 +6,7 @@ import { useQuery } from '@apollo/client';
 import { Text, View, ActivityIndicator, StyleSheet } from 'react-native';
 import OrchestraItem from '@/components/OrchestraItem';
 
-const BrowseScreen = () => {
+const OrchestrasScreen = () => {
   const { data, loading, error } = useQuery(SEARCH_ORCHESTRAS, { variables: { query: '*' } });
   const orchestras = data?.searchOrchestras?.edges.map(edge => edge.node);
 
@@ -35,4 +35,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BrowseScreen;
+export default OrchestrasScreen;

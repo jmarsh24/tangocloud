@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { TextInput, View, StyleSheet, ActivityIndicator } from 'react-native';
+import { TextInput, View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
 import TrackListItem from '@/components/TrackListItem';
 import { AntDesign } from '@expo/vector-icons';
@@ -7,16 +7,17 @@ import { useQuery } from '@apollo/client';
 import { useTheme } from '@react-navigation/native';
 import { SEARCH_RECORDINGS } from '@/graphql';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Link } from 'expo-router';
 
 export default function SearchScreen() {
   const { colors } = useTheme();
   const styles = getStyles(colors);
-  const ITEMS_PER_PAGE = 30;
+  const ITEMS_PER_PAGE = 200;
   const [search, setSearch] = useState('');
   const [loadingMore, setLoadingMore] = useState(false);
 
   const { data, loading, fetchMore, error } = useQuery(SEARCH_RECORDINGS, {
-    variables: { query: search ? search : '*', first: ITEMS_PER_PAGE },
+    variables: { query: search, first: ITEMS_PER_PAGE },
     fetchPolicy: 'cache-and-network',
   });
 
@@ -32,7 +33,7 @@ export default function SearchScreen() {
       await fetchMore({
         variables: {
           after: data.searchRecordings.pageInfo.endCursor,
-          query: search ? search : '*',
+          query: search,
           first: ITEMS_PER_PAGE,
         },
         updateQuery: (prev, { fetchMoreResult }) => {
@@ -63,7 +64,7 @@ export default function SearchScreen() {
     url: edge.node.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || "",
   })) || [];
 
-  return (
+    return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.header}>
         <View style={styles.searchContainer}>
@@ -82,7 +83,30 @@ export default function SearchScreen() {
           )}
         </View>
       </View>
-
+      {search.length === 0 && (
+        <>
+          <Link style={styles.link} push href="/orchestras">
+            <View style={[styles.button, { backgroundColor: '#FFDDDD' }]}>
+              <Text style={[styles.buttonText, { color: colors.text }]}>Orchestras</Text>
+            </View>
+          </Link>
+          <Link style={styles.link} push href="/singers">
+            <View style={[styles.button, { backgroundColor: '#DDFFDD' }]}>
+              <Text style={[styles.buttonText, { color: colors.text }]}>Singers</Text>
+            </View>
+          </Link>
+          <Link style={styles.link} push href="/composers">
+            <View style={[styles.button, { backgroundColor: '#DDDFFF' }]}>
+              <Text style={[styles.buttonText, { color: colors.text }]}>Composers</Text>
+            </View>
+          </Link>
+          <Link style={styles.link} push href="/lyricists">
+            <View style={[styles.button, { backgroundColor: '#FFDFFF' }]}>
+              <Text style={[styles.buttonText, { color: colors.text }]}>Lyricists</Text>
+            </View>
+          </Link>
+        </>
+      )}
       <FlashList
         data={tracks}
         renderItem={({ item }) => <TrackListItem track={item} />}
@@ -147,6 +171,22 @@ function getStyles(colors) {
     },
     itemSeparator: {
       height: 10,
+    },
+    link: {
+      width: "100%",
+      borderColor: "red"
+    },
+    button: {
+      width: "100%",
+      padding: 10,
+      borderWidth: 1,
+      borderRadius: 5,
+      borderColor: "red"
+    },
+    buttonText: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      textAlign: 'center',
     },
   });
 }

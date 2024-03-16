@@ -15,6 +15,7 @@ module Types
 
     def image_url
       dataloader.with(Sources::Preload, image_attachment: :blob).load(object)
+      object.image&.url
     end
 
     belongs_to :audio_transfer

@@ -11,6 +11,9 @@ export const FETCH_ORCHESTRA = gql`
             id
             title
             audioTransfers {
+              album {
+                albumArtUrl
+              }
               audioVariants {
                 audioFileUrl
               }

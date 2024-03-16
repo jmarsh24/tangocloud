@@ -13,6 +13,7 @@ module Types
 
     def tanda_recordings
       dataloader.with(Sources::Preload, :tanda_recordings).load(object)
+      object.tanda_recordings
     end
   end
 end

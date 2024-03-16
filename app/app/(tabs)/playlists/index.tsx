@@ -3,8 +3,9 @@ import PlaylistItem from '@/components/PlaylistItem';
 import { SEARCH_PLAYLISTS } from '@/graphql';
 import { useQuery } from '@apollo/client';
 import LikedLink from '@/components/LikedLink';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function OrdersScreen() {
+export default function PlaylistsScreen() {
   const { data, loading, error } = useQuery(SEARCH_PLAYLISTS, { variables: { query: "*", first: 20 } })
   const playlists = data?.searchPlaylists.edges.map((edge) => edge.node);
   
@@ -16,11 +17,13 @@ export default function OrdersScreen() {
   }
   
   return (
-    <FlatList
-      data={playlists}
-      renderItem={({ item }) => <PlaylistItem playlist={item} />}
-      ListHeaderComponent={<LikedLink />}
-      contentContainerStyle={{ gap: 10, padding: 10 }}
-    />
+    <SafeAreaView>
+      <FlatList
+        data={playlists}
+        renderItem={({ item }) => <PlaylistItem playlist={item} />}
+        ListHeaderComponent={<LikedLink />}
+        contentContainerStyle={{ gap: 10, padding: 10 }}
+      />
+    </SafeAreaView>
   );
 }
