@@ -24,6 +24,7 @@
         "ITSAppUsesNonExemptEncryption": false
       },
       "supportsTablet": true,
+      "bundleIdentifier": "tangocloud",
       "runtimeVersion": "1.0.0",
       "buildNumber": "52",
       "associatedDomains": ["applinks:tangocloud.app"]
