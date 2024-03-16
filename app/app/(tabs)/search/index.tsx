@@ -184,8 +184,6 @@ const styles = StyleSheet.create({
   itemSeparator: {
     height: 10,
   },
-  link: {
-  },
   button: {
     padding: 10,
     borderWidth: 1,
@@ -195,5 +193,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  link: {
+    
   },
 });

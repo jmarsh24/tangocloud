@@ -226,10 +226,23 @@ export default function PlayerScreen() {
             ]}
           />
         </View>
-        <View style={styles.trackInfo}>
-          <Text style={[styles.titleText, { color: colors.text} ]}>{recording?.title}</Text>
-          <Text style={[styles.artistText, { color: colors.text} ]}>{[recording?.orchestra.name, recording?.singers[0]?.name].filter(Boolean).join(' • ')}</Text>
-          <Text style={[styles.artistText, { color: colors.text} ]}>{[recording?.genre.name, recording?.year].filter(Boolean).join(' • ')}</Text>
+        <View style={{flex: 1, flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>  
+          <View style={styles.trackInfo}>
+            <Text style={[styles.titleText, { color: colors.text} ]}>{recording?.title}</Text>
+            <Text style={[styles.artistText, { color: colors.text} ]}>{[recording?.orchestra.name, recording?.singers[0]?.name].filter(Boolean).join(' • ')}</Text>
+            <Text style={[styles.artistText, { color: colors.text} ]}>{[recording?.genre.name, recording?.year].filter(Boolean).join(' • ')}</Text>
+          </View>
+          <View style={styles.row}>
+            <Ionicons
+              onPress={handleLike}
+              name={isLiked ? "heart" : "heart-outline"}
+              size={36}
+              color={colors.text}
+            />
+            <TouchableWithoutFeedback onPress={shareRecording}>
+              <FontAwesome6 name={"share"} size={30} style={[styles.icon, {color: colors.text}]} />
+            </TouchableWithoutFeedback>
+          </View>
         </View>
         <View style={styles.controls}>
           <Waveform
@@ -240,18 +253,8 @@ export default function PlayerScreen() {
           />
           <Progress />
           <View style={styles.row}>
-            <TouchableWithoutFeedback onPress={shareRecording}>
-              <FontAwesome6 name={"share"} size={30} style={[styles.icon, {color: colors.text}]} />
-            </TouchableWithoutFeedback>
-            <Ionicons
-              onPress={handleLike}
-              name={isLiked ? "heart" : "heart-outline"}
-              size={36}
-              color={colors.text}
-              style={{ marginHorizontal: 10 }}
-            />
+            <PlayerControls />
           </View>
-          <PlayerControls />
         </View>
         <View style={styles.lyricsContainer}>
           <Text style={[styles.lyricsText, {color: colors.text}]}>{lyrics}</Text>
@@ -287,7 +290,8 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   trackInfo: {
-    alignItems: "center",
+    flex: 1,
+    alignItems: "flex-start",
   },
   titleText: {
     fontSize: 24,
