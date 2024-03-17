@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import { View, Text, Image, StyleSheet, ActivityIndicator } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useTheme } from "@react-navigation/native";
 import { useQuery } from "@apollo/client";
@@ -12,7 +12,7 @@ export default function SingerScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { colors } = useTheme();
 
-  const { data, loading, error } = useQuery(FETCH_SINGER, { variables: { id: id } });
+  const { data, loading, error } = useQuery(FETCH_SINGER, { variables: { id } });
 
   useEffect(() => {
     if (error) {
@@ -22,17 +22,17 @@ export default function SingerScreen() {
 
   if (loading) {
     return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" color={colors.primary} />
-      </View>
+      <SafeAreaView style={styles.container}>
+        <ActivityIndicator size="large" />
+      </SafeAreaView>
     );
   }
 
   if (error) {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <Text>Error loading singer.</Text>
-      </View>
+      </SafeAreaView>
     );
   }
 
@@ -41,7 +41,7 @@ export default function SingerScreen() {
   const recordings = singer.recordings.edges.map(({ node: item }) => ({
     id: item.id,
     title: item.title,
-    artist: item.orchestra.name,
+    artist: item.orchestra ? item.orchestra.name : "Unknown",
     duration: item.audioTransfers[0]?.audioVariants[0]?.duration || 0,
     artwork: item.audioTransfers[0]?.album?.albumArtUrl,
     url: item.audioTransfers[0]?.audioVariants[0]?.audioFileUrl,
@@ -49,13 +49,18 @@ export default function SingerScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={[styles.title, { color: colors.text }]}>
-        {singer.name}
-      </Text>
+      <View style={styles.imageContainer}>
+        {singer.photoUrl && (
+          <Image source={{ uri: singer.photoUrl }} style={styles.image} />
+        )}
+        <Text style={[styles.title, { color: colors.text }]}>
+          {singer.name}
+        </Text>
+      </View>
       <FlashList
         data={recordings}
-        keyExtractor={(item) => item.id}
         renderItem={({ item }) => <TrackListItem track={item} />}
+        keyExtractor={(item) => item.id.toString()}
         estimatedItemSize={80}
       />
     </SafeAreaView>
@@ -65,11 +70,24 @@ export default function SingerScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
+  },
+  imageContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  image: {
+    width: "100%",
+    height: 200,
+    position: "relative",
   },
   title: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
     fontSize: 24,
-    marginBottom: 20,
     fontWeight: "bold",
+    textAlign: "center",
+    paddingLeft: 10,
+    paddingBottom: 10,
   },
 });

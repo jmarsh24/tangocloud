@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import { View, Text, Image, StyleSheet, ActivityIndicator } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useTheme } from "@react-navigation/native";
 import { useQuery } from "@apollo/client";
@@ -22,19 +22,20 @@ export default function OrchestraScreen() {
 
   if (loading) {
     return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" color={colors.primary} />
-      </View>
+      <SafeAreaView style={styles.container}>
+        <ActivityIndicator size="large" />
+      </SafeAreaView>
     );
   }
 
   if (error) {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <Text>Error loading orchestra.</Text>
-      </View>
+      </SafeAreaView>
     );
   }
+  
   const orchestra = data?.fetchOrchestra;
 
   const recordings = orchestra.recordings.edges.map(({ node: item }) => ({
@@ -50,12 +51,16 @@ export default function OrchestraScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={[styles.title, { color: colors.text }]}>
-        {orchestra.name}
-      </Text>
+      <View style={styles.imageContainer}>
+        <Image source={{ uri: orchestra.photoUrl }} style={styles.image} />
+        <Text style={[styles.title, { color: colors.text }]}>
+          {orchestra.name}
+        </Text>
+      </View>
       <FlashList
         data={recordings}
         renderItem={({ item }) => <TrackListItem track={item} />}
+        keyExtractor={(item) => item.id.toString()}
         estimatedItemSize={80}
       />
     </SafeAreaView>
@@ -65,12 +70,34 @@ export default function OrchestraScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  loadingContainer: {
+    flex: 1,
     justifyContent: "center",
-    paddingHorizontal: 20,
+    alignItems: "center",
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  imageContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  image: {
+    width: "100%",
+    height: 200,
+    position: "relative",    
   },
   title: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
     fontSize: 24,
-    marginBottom: 20,
     fontWeight: "bold",
+    textAlign: "center",
+    paddingLeft: 10,
+    paddingBottom: 10,
   },
 });

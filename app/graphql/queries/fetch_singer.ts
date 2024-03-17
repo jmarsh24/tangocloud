@@ -5,12 +5,12 @@ export const FETCH_SINGER = gql`
     fetchSinger(id: $id) {
       id
       name
+      photoUrl
       recordings {
         edges {
           node {
             id
             title
-            photoUrl
             orchestra {
               name
             }
