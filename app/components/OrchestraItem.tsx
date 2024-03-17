@@ -1,4 +1,5 @@
-import { Text } from 'react-native';
+import React from 'react';
+import { Text, Image, StyleSheet, View } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { Link } from 'expo-router';
 
@@ -10,8 +11,31 @@ export default function OrchestraItem({ orchestra }) {
   }
 
   return (
-    <Link href={`/orchestras/${orchestra.id}`} style={ { color: colors.text, padding: 10 } }>
-      <Text>{orchestra.name}</Text>
+    <Link href={`/orchestras/${orchestra.id}`}>
+      <View style={styles.container}>
+        <Image source={{ uri: orchestra.photoUrl }} style={styles.image} />
+        <Text style={[styles.text, { color: colors.text }]}>{orchestra.name}</Text>
+      </View>
     </Link>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 20,
+  },
+  text: {
+    flexShrink: 1,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  image: {
+    width: 50,
+    height: 50,
+  },
+});

@@ -7,6 +7,7 @@ export const SEARCH_SINGERS = gql`
         node {
           id
           name
+          photoUrl
         }
       }
     }

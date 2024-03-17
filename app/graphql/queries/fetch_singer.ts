@@ -10,6 +10,7 @@ export const FETCH_SINGER = gql`
           node {
             id
             title
+            photoUrl
             orchestra {
               name
             }

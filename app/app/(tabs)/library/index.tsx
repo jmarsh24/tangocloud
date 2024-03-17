@@ -19,14 +19,18 @@ export default function LibrarysScreen() {
   );
 
   if (loading) {
-    return <ActivityIndicator />;
+    return (
+    <SafeAreaView style={styles.container}>
+      <ActivityIndicator />
+    </SafeAreaView>
+    );
   }
   if (error) {
-    return <Text>Failed to fetch</Text>;
-  }
-
-  if (!recordings?.fetchLikedRecordings) {
-    return <Text>No liked recordings</Text>;
+    return (
+    <SafeAreaView style={styles.container}>
+      <Text>Failed to fetch</Text>
+    </SafeAreaView>
+    )
   }
 
   const tracks = recordings?.fetchLikedRecordings.edges.map(edge => ({

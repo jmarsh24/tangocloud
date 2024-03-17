@@ -27,7 +27,7 @@ const OrchestrasScreen = () => {
       </View>
     );
   }
-  
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={[styles.title, { color: colors.text }]}>Orchestras</Text>
@@ -44,6 +44,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    paddingVertical: 10,
   },
   title: {
     fontSize: 24,

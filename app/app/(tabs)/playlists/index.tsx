@@ -13,14 +13,18 @@ export default function PlaylistsScreen() {
   
   if (loading) {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <ActivityIndicator />
-      </View>
+      </SafeAreaView>
     );
   }
   
   if (error) {
-    return <Text>Failed to fetch</Text>;
+    return (
+      <SafeAreaView style={styles.container}>
+        <Text>Failed to fetch</Text>
+      </SafeAreaView>
+    );
   }
   
   return (
@@ -41,7 +45,12 @@ export default function PlaylistsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
     paddingHorizontal: 20,
+    paddingVertical: 10,
+
   },
   title: {
     fontSize: 24,

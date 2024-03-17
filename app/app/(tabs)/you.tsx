@@ -28,31 +28,31 @@ export default function YouScreen() {
 
   if (!authState.authenticated) {
     return (
-      <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
         <Link href='/login' asChild>
           <Button onPress={onLogout} text="Login" />
         </Link>
         <Link href='/register' asChild>
           <Button onPress={onLogout} text="Register" />
         </Link>
-      </View>
+      </SafeAreaView>
     );
   }
 
   if (loading) {
     return (
-      <View style={[styles.container, { backgroundColor: colors.background }]}>
-        <ActivityIndicator size="large" color={colors.tint} />
-      </View>
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+        <ActivityIndicator size="large" />
+      </SafeAreaView>
     );
   }
 
   if (error) {
     return (
-      <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
         <Text style={[styles.text, { color: colors.text }]}>Error loading data...</Text>
         <Button onPress={onLogout} text="Sign out" />
-      </View>
+      </SafeAreaView>
     );
   }
 
@@ -97,13 +97,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
+    justifyContent: 'center',
+    alignContent: 'center',
   },
   profileContainer: {
     alignItems: 'center',
     paddingVertical: 20,
   },
   listContainer: {
-    flex: 1,
+  flex: 1,
   },
   image: {
     width: 156,

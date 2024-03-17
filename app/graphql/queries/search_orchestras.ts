@@ -7,6 +7,7 @@ export const SEARCH_ORCHESTRAS = gql`
         node {
           id
           name
+          photoUrl
         }
       }
     }

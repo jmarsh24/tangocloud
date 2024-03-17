@@ -5,12 +5,12 @@ export const FETCH_ORCHESTRA = gql`
     fetchOrchestra(id: $id) {
       id
       name
+      photoUrl
       recordings {
         edges {
           node {
             id
             title
-            photoUrl
             recordedDate
             genre {
               name
