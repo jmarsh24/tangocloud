@@ -47,7 +47,6 @@ class User < ApplicationRecord
   end
 
   after_create_commit { build_user_preference.save }
-  after_create_commit { playlists.create!(title: "liked", system: true) }
 
   delegate :avatar, to: :user_preference, allow_nil: true
   delegate :first_name, :last_name, :name, to: :user_preference, allow_nil: true
@@ -82,10 +81,6 @@ class User < ApplicationRecord
     else
       Gravatar.new(email).url(width:)
     end
-  end
-
-  def liked_playlist
-    playlists.find_by(title: "liked", system: true)
   end
 end
 
