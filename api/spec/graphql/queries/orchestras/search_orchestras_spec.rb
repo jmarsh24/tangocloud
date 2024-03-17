@@ -23,6 +23,6 @@ RSpec.describe "search orchestras", type: :graph do
 
     found_orchestra = data.search_orchestras.edges.first.node
     expect(found_orchestra.id).to eq(el_recodo.id.to_s)
-    expect(found_orchestra.name).to eq("Carlos DI SARLI")
+    expect(found_orchestra.name).to eq("Carlos Di Sarli")
   end
 end

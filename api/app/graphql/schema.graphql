@@ -148,6 +148,7 @@ type Composer {
   deathDate: ISO8601Date
   id: ID
   name: String!
+  photoUrl: String
   rank: Int
   slug: String
   sortName: String
@@ -584,6 +585,7 @@ type Lyricist {
   id: ID
   lyrics: [Lyric!]!
   name: String
+  photoUrl: String
   rank: Int
   slug: String
   sortName: String
@@ -712,6 +714,7 @@ type Orchestra {
   id: ID
   lyricists: [Lyricist!]!
   name: String
+  photoUrl: String
   rank: Int
   recording(id: ID!): Recording!
   recordings(
@@ -805,6 +808,7 @@ type Period {
   description: String
   endYear: Int
   id: ID
+  imageUrl: String
   name: String
   recordings: [Recording!]!
   recordingsCount: Int
@@ -1591,6 +1595,7 @@ type Singer {
   deathDate: ISO8601Date
   id: ID
   name: String
+  photoUrl: String
   rank: Int
   recording(id: ID!): Recording!
   recordingSinger(id: ID!): RecordingSinger!

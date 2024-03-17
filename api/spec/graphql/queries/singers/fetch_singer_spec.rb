@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "singer", type: :graph do
+RSpec.describe "fetch singer", type: :graph do
   describe "Querying for singer" do
     let!(:user) { users(:admin) }
     let!(:singer) { singers(:roberto_rufino) }
@@ -10,6 +10,7 @@ RSpec.describe "singer", type: :graph do
           fetchSinger(id: $id) {
             id
             name
+            photoUrl
           }
         }
       GQL
@@ -20,6 +21,7 @@ RSpec.describe "singer", type: :graph do
 
       expect(data.fetch_singer.id).to eq(singer.id)
       expect(data.fetch_singer.name).to eq("Roberto Rufino")
+      expect(data.fetch_singer.photo_url).to be_present
     end
   end
 end

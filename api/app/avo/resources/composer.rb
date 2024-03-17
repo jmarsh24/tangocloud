@@ -15,6 +15,7 @@ class Avo::Resources::Composer < Avo::BaseResource
   def fields
     field :id, as: :id, readonly: true, only_on: :show
     field :name, as: :text
+    field :photo, as: :file, is_image: true
     field :compositions_count, as: :number, readonly: true
     field :birth_date, as: :date, only_on: :show
     field :death_date, as: :date, only_on: :show

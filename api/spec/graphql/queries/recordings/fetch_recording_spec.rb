@@ -40,8 +40,8 @@ RSpec.describe "Fetch Recording", type: :graph do
       expect(recording_data.id).to eq(recording.id.to_s)
       expect(recording_data.title).to eq("Volver a soñar")
       expect(recording_data.singers.first.name).to eq("Roberto Rufino")
-      expect(recording_data.orchestra.name).to eq("Carlos DI SARLI")
-      expect(recording_data.genre.name).to eq("tango")
+      expect(recording_data.orchestra.name).to eq("Carlos Di Sarli")
+      expect(recording_data.genre.name).to eq("Tango")
 
       expect(recording_data.audio_transfers).not_to be_empty
       audio_transfer = recording_data.audio_transfers.first

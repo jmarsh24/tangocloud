@@ -11,6 +11,7 @@ RSpec.describe "FetchComposer", type: :graph do
           fetchComposer(id: $id) {
             id
             name
+            photoUrl
           }
         }
       GQL
@@ -21,6 +22,7 @@ RSpec.describe "FetchComposer", type: :graph do
 
       expect(data.fetch_composer.id).to eq(composer.id)
       expect(data.fetch_composer.name).to eq("Andrés Fraga")
+      expect(data.fetch_composer.photo_url).to be_present
     end
   end
 end

@@ -10,6 +10,7 @@ export const FETCH_ORCHESTRA = gql`
           node {
             id
             title
+            photoUrl
             recordedDate
             genre {
               name

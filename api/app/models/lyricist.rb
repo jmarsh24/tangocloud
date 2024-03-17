@@ -10,6 +10,8 @@ class Lyricist < ApplicationRecord
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true
 
+  has_one_attached :photo
+
   def self.search_lyricists(query = "*")
     search(query,
       fields: ["name^5"],

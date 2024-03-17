@@ -6,6 +6,7 @@ class Avo::Resources::Period < Avo::BaseResource
 
   def fields
     field :id, as: :id, readonly: true, only_on: :show
+    field :photo, as: :file, is_image: true
     field :name, as: :text
     field :description, as: :textarea
     field :start_year, as: :number

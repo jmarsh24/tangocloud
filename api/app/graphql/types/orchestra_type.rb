@@ -13,6 +13,13 @@ module Types
       object.formatted_name
     end
 
+    field :photo_url, String, null: true
+
+    def photo_url
+      dataloader.with(Sources::Preload, photo_attachment: :blob).load(object)
+      object.photo&.url
+    end
+
     field :compositions, [CompositionType], null: false
     def compositions
       dataloader.with(Sources::Preload, :compositions).load(object)

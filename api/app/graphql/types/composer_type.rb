@@ -9,6 +9,13 @@ module Types
     field :slug, String, null: true
     field :compositions_count, Integer, null: true
 
+    field :photo_url, String, null: true
+
+    def photo_url
+      dataloader.with(Sources::Preload, photo_attachment: :blob).load(object)
+      object.photo.url
+    end
+
     has_many :compositions
   end
 end

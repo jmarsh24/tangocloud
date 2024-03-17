@@ -10,6 +10,7 @@ RSpec.describe "period", type: :graph do
           fetchPeriod(id: $id) {
             id
             name
+            imageUrl
           }
         }
       GQL
@@ -20,6 +21,7 @@ RSpec.describe "period", type: :graph do
 
       expect(data.fetch_period.id).to eq(period.id)
       expect(data.fetch_period.name).to eq("Golden Age")
+      expect(data.fetch_period.image_url).to be_present
     end
   end
 end

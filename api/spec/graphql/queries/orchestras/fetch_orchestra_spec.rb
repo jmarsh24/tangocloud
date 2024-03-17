@@ -10,6 +10,7 @@ RSpec.describe "fetchOrchestras", type: :graph do
           fetchOrchestra(id: $id) {
             id
             name
+            photoUrl
           }
         }
       GQL
@@ -20,7 +21,8 @@ RSpec.describe "fetchOrchestras", type: :graph do
       first_orchestra = data.fetch_orchestra
 
       expect(first_orchestra.id).to eq(orchestra.id)
-      expect(first_orchestra.name).to eq("Carlos DI SARLI")
+      expect(first_orchestra.name).to eq("Carlos Di Sarli")
+      expect(first_orchestra.photo_url).to be_present
     end
   end
 end

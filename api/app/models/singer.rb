@@ -10,6 +10,8 @@ class Singer < ApplicationRecord
   validates :slug, presence: true, uniqueness: true
   validates :rank, presence: true, numericality: {only_integer: true}
 
+  has_one_attached :photo
+
   def self.search_singers(query = "*")
     search(query,
       fields: ["name^5"],

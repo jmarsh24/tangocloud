@@ -14,6 +14,7 @@ class Avo::Resources::Singer < Avo::BaseResource
 
   def fields
     field :id, as: :id, readonly: true, only_on: :show
+    field :photo, as: :file, is_image: true
     field :name, as: :text
     field :slug, as: :text, only_on: :show
     field :rank, as: :number, only_on: :show

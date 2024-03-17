@@ -23,7 +23,7 @@ RSpec.describe "genres", type: :graph do
       gql(query, variables: {query: "tango"}, user:)
 
       expect(data.search_genres.edges.first.node.id).to eq(tango.id.to_s)
-      expect(data.search_genres.edges.first.node.name).to eq("tango")
+      expect(data.search_genres.edges.first.node.name).to eq("Tango")
     end
   end
 end

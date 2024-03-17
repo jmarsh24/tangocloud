@@ -9,9 +9,17 @@ module Types
     field :slug, String, null: true
 
     field :recordings, [RecordingType], null: false
+
     def recordings
       dataloader.with(Sources::Preload, :recordings).load(object)
       object.recordings
+    end
+
+    field :image_url, String, null: true
+
+    def image_url
+      dataloader.with(Sources::Preload, image_attachment: :blob).load(object)
+      object.image&.url
     end
   end
 end

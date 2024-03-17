@@ -14,6 +14,7 @@ class Avo::Resources::Lyricist < Avo::BaseResource
 
   def fields
     field :id, as: :id, readonly: true, only_on: :show
+    field :photo, as: :file, is_image: true
     field :name, as: :text
     field :compositions_count, as: :number, readonly: true
     field :slug, as: :text, readonly: true, only_on: :show

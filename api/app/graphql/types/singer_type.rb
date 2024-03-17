@@ -9,6 +9,13 @@ module Types
     field :birth_date, GraphQL::Types::ISO8601Date, null: true
     field :death_date, GraphQL::Types::ISO8601Date, null: true
 
+    field :photo_url, String, null: true
+
+    def photo_url
+      dataloader.with(Sources::Preload, photo_attachment: :blob).load(object)
+      object.photo&.url
+    end
+
     has_many :recording_singers
     has_many :recordings
   end
