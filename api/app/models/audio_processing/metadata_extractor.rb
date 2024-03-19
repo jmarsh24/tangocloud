@@ -64,7 +64,7 @@ module AudioProcessing
         title: tags.dig(:title),
         artist: tags.dig(:artist),
         album: tags.dig(:album),
-        date: tags.dig(:date),
+        date: tags.dig(:date) || tags.dig(:tdat),
         track: tags.dig(:track),
         genre: tags.dig(:genre),
         album_artist: tags.dig(:album_artist),
