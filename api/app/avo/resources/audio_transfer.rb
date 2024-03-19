@@ -3,6 +3,7 @@ class Avo::Resources::AudioTransfer < Avo::BaseResource
   self.search = {
     query: -> { query.search_audio_transfers(params[:q]) }
   }
+  self.title = :filename
 
   def fields
     field :id, as: :id, only_on: :show
@@ -12,6 +13,7 @@ class Avo::Resources::AudioTransfer < Avo::BaseResource
     field :transfer_agent, as: :belongs_to, readonly: true
     field :audio_variants, as: :has_many, readonly: true
     field :waveform, as: :has_one, readonly: true
+    field :filename, as: :text, only_on: [:show, :edit, :new], readonly: true
     field :external_id, as: :text, only_on: [:show, :edit, :new], readonly: true
     field :position, as: :number, only_on: [:show, :edit, :new], readonly: true
     field :album_id, as: :text, only_on: [:show, :edit, :new], readonly: true
