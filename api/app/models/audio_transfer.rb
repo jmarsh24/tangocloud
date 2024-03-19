@@ -17,6 +17,10 @@ class AudioTransfer < ApplicationRecord
         "filename",
         "album",
         "recording",
+        "orchestra_name",
+        "singer_names",
+        "genre",
+        "period",
         "transfer_agent",
         "audio_variants",
         "waveform"
