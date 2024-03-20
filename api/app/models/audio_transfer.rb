@@ -4,7 +4,7 @@ class AudioTransfer < ApplicationRecord
   belongs_to :transfer_agent, optional: true
   belongs_to :recording, optional: true, dependent: :destroy
   belongs_to :album, optional: true, counter_cache: true, dependent: :destroy
-  has_many :audio_variants, dependent: :destroy
+  has_many :audio_variants, dependent: :delete_all
   has_one :waveform, dependent: :destroy
 
   validates :filename, presence: true, uniqueness: true
