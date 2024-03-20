@@ -26,13 +26,7 @@ class AudioTransfer < ApplicationRecord
         "waveform"
       ],
       match: :word_middle,
-      misspellings: {below: 5},
-      includes: [
-        :album,
-        :recording,
-        :transfer_agent,
-        :audio_variants
-      ])
+      misspellings: {below: 5})
   end
 
   def search_data
