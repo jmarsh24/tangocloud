@@ -10,7 +10,11 @@ class Lyricist < ApplicationRecord
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true
 
-  has_one_attached :photo
+  has_one_attached :photo, dependent: :purge_later do |blob|
+    blob.variant :thumb, resize_to_limit: [100, 100]
+    blob.variant :medium, resize_to_limit: [250, 250]
+    blob.variant :large, resize_to_limit: [500, 500]
+  end
 
   def self.search_lyricists(query = "*")
     search(query,
