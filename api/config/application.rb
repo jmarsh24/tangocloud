@@ -49,5 +49,7 @@ module Tangocloud
     host = Config.host(default: "localhost:3000")
     Rails.application.routes.default_url_options[:host] = host
     config.action_mailer.default_url_options = {host:}
+
+    config.active_storage.variant_processor = :vips
   end
 end
