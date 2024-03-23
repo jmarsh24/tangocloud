@@ -15,7 +15,7 @@ module Types
 
     def album_art_url
       dataloader.with(Sources::Preload, album_art_attachment: :blob).load(object)
-      cdn_image_url(object.album_art.variant(:large))
+      cdn_image_url(object.album_art.variant(:large)) if object.album_art.attached?
     end
 
     field :audio_transfers, [AudioTransferType], null: false

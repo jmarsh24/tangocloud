@@ -13,7 +13,7 @@ module Types
 
     def photo_url
       dataloader.with(Sources::Preload, photo_attachment: :blob).load(object)
-      object.photo.url
+      cdn_image_url(object.photo.variant(:large)) if object.photo.attached?
     end
 
     has_many :compositions
