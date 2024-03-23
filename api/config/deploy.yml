@@ -34,6 +34,7 @@ env:
   secret:
     - RAILS_MASTER_KEY
     - POSTGRES_PASSWORD
+    - CDN_HOST
 accessories:
   db:
     image: postgres:15

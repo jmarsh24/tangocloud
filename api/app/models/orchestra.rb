@@ -14,7 +14,11 @@ class Orchestra < ApplicationRecord
   validates :rank, presence: true, numericality: {only_integer: true}
   validates :slug, presence: true, uniqueness: true
 
-  has_one_attached :photo
+  has_one_attached :photo, dependent: :purge_later do |blob|
+    blob.variant :thumb, resize: "100x100"
+    blob.variant :medium, resize: "300x300"
+    blob.variant :large, resize: "500x500"
+  end
 
   def self.search_orchestras(query = "*")
     search(query,

@@ -13,7 +13,7 @@ module Types
 
     def album_art_url
       dataloader.with(Sources::Preload, album_art_attachment: :blob).load(object)
-      object.album_art&.url
+      cdn_image_url(object.album_art.variant(:large))
     end
 
     field :audio_transfers, [AudioTransferType], null: false
