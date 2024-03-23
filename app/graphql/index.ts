@@ -5,7 +5,7 @@ export * from "./mutations/add_like_to_recording";
 export * from "./mutations/remove_like_from_recording";
 export * from "./queries/check_like_status_on_recording";
 export * from "./queries/whoAmI";
-export * from "./queries/user";
+export * from "./queries/fetch_user";
 export * from "./queries/search_recordings";
 export * from "./queries/fetch_recording";
 export * from "./queries/search_playlists";
