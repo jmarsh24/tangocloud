@@ -42,6 +42,7 @@ class Recording < ApplicationRecord
       ],
       match: :word_middle,
       misspellings: {below: 5},
+      boost_by: [:playbacks_count],
       includes: [
         :orchestra,
         :singers,
@@ -86,4 +87,5 @@ end
 #  record_label_id   :uuid
 #  genre_id          :uuid
 #  period_id         :uuid
+#  playbacks_count   :integer          default(0)
 #

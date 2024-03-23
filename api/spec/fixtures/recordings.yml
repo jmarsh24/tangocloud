@@ -77,4 +77,5 @@ milonga_vieja_milonga:
 #  record_label_id   :uuid
 #  genre_id          :uuid
 #  period_id         :uuid
+#  playbacks_count   :integer          default(0)
 #

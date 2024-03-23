@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_13_114352) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_23_122226) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -357,6 +357,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_13_114352) do
     t.uuid "record_label_id"
     t.uuid "genre_id"
     t.uuid "period_id"
+    t.integer "playbacks_count", default: 0
     t.index ["composition_id"], name: "index_recordings_on_composition_id"
     t.index ["el_recodo_song_id"], name: "index_recordings_on_el_recodo_song_id"
     t.index ["genre_id"], name: "index_recordings_on_genre_id"
