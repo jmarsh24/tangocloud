@@ -1,5 +1,7 @@
 module Types
   class SingerType < Types::BaseObject
+    include Rails.application.routes.url_helpers
+
     field :id, ID, null: true
     field :name, String, null: true
     field :slug, String, null: true

@@ -1,5 +1,7 @@
 module Types
   class AlbumType < Types::BaseObject
+    include Rails.application.routes.url_helpers
+
     field :id, ID, null: true
     field :title, String, null: true
     field :description, String, null: true

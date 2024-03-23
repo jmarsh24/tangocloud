@@ -1,5 +1,7 @@
 module Types
   class PlaylistType < Types::BaseObject
+    include Rails.application.routes.url_helpers
+
     field :id, ID, null: false
     field :title, String, null: false
     field :description, String
@@ -17,7 +19,7 @@ module Types
 
     def image_url
       dataloader.with(Sources::Preload, image_attachment: :blob).load(object)
-      object.image&.url
+      cdn_image_url(object.image.variant(:medium))
     end
 
     field :playlist_items, [PlaylistItemType], null: true

@@ -10,7 +10,11 @@ class Playlist < ApplicationRecord
   has_many :playlist_items, -> { order(position: :asc) }, dependent: :destroy, inverse_of: :playlist
   has_many :recordings, through: :playlist_items, source: :playable, source_type: "Recording"
 
-  has_one_attached :image, dependent: :purge_late
+  has_one_attached :image, dependent: :purge_later do |blob|
+    blob.variant :thumb, resize: "200x200"
+    blob.variant :medium, resize: "400x400"
+    blob.variant :large, resize: "800x800"
+  end
   has_one_attached :playlist_file, dependent: :purge_later
 
   scope :public_playlists, -> { where(public: true) }
