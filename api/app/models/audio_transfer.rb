@@ -1,5 +1,5 @@
 class AudioTransfer < ApplicationRecord
-  searchkick word_middle: [:filename, :album_title, :recording_title, :transfer_agent_name, :audio_variants_filenames, :orchestra_name, :singer_names, :genre, :period, :lyrics, :composer_names, :lyricist_names]
+  searchkick word_middle: [:filename, :album_title, :recording_title, :transfer_agent_name, :audio_variants_filenames, :orchestra_name, :singer_names, :genre, :period, :composer_names, :lyricist_names]
 
   belongs_to :transfer_agent, optional: true
   belongs_to :recording, optional: true, dependent: :destroy
@@ -22,9 +22,9 @@ class AudioTransfer < ApplicationRecord
         "genre",
         "period",
         "transfer_agent",
-        "audio_variants",
-        "waveform"
+        "audio_variants"
       ],
+      includes: [:album, :transfer_agent, recording: [:orchestra, :singers, :genre, :period, composition: [:composer, :lyricist]]],
       match: :word_middle,
       misspellings: {below: 5})
   end
@@ -35,12 +35,10 @@ class AudioTransfer < ApplicationRecord
       album: album&.title,
       recording: recording&.title,
       transfer_agent: transfer_agent&.name,
-      audio_variants: audio_variants&.map(&:filename),
       orchestra_name: recording&.orchestra&.name,
       singer_names: recording&.singers&.map(&:name)&.join(" "),
       genre: recording&.genre&.name,
       period: recording&.period&.name,
-      lyrics: recording&.lyrics&.map(&:content),
       composer_names: recording&.composition&.composer&.name,
       lyricist_names: recording&.composition&.lyricist&.name
     }
