@@ -45,6 +45,9 @@ module Import
 
         ActiveRecord::Base.transaction do
           Rails.logger.info("Importing song from #{file.inspect}")
+
+          el_recodo_song = ElRecodoSong.find_by(ert_number: metadata.ert_number)
+
           lyricist = Lyricist.find_or_create_by!(name: metadata.lyricist) if metadata.lyricist.present?
           composer = Composer.find_or_create_by!(name: metadata.composer) if metadata.composer.present?
 
@@ -55,6 +58,8 @@ module Import
 
           if metadata.lyrics.present?
             composition.lyrics.find_or_create_by!(content: metadata.lyrics, locale: "es", composition:)
+          elsif el_recodo_song&.lyrics.present?
+            composition.lyrics.find_or_create_by!(content: el_recodo_song.lyrics, locale: "es", composition:)
           end
 
           orchestra = Orchestra.find_or_create_by!(name: metadata.album_artist)
@@ -67,7 +72,6 @@ module Import
             Genre.find_or_create_by!(name: metadata.genre.downcase)
           end
 
-          el_recodo_song = ElRecodoSong.find_by(ert_number: metadata.ert_number)
           if metadata.singer.present? && metadata.singer.downcase != "instrumental"
             singer = Singer.find_or_create_by!(name: metadata.artist)
           end
