@@ -47,6 +47,7 @@ export default function OrchestraScreen() {
     url: item.audioTransfers[0]?.audioVariants[0]?.audioFileUrl,
     genre: item.genre.name,
     year: item.year,
+    singer: item.singers[0]?.name,
   }));
 
   return (

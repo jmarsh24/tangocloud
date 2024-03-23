@@ -15,6 +15,16 @@ export const FETCH_COMPOSER = gql`
                 node {
                   id
                   title
+                  year
+                  genre {
+                    name
+                  }
+                  orchestra {
+                    name
+                  }
+                  singers {
+                    name
+                  }
                   audioTransfers {
                     audioVariants {
                       audioFileUrl

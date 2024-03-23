@@ -20,3 +20,4 @@ export * from "./queries/fetch_composer";
 export * from "./queries/search_singers";
 export * from "./queries/fetch_singer";
 export * from "./queries/fetch_liked_recordings";
+export * from "./queries/fetch_recording_url";

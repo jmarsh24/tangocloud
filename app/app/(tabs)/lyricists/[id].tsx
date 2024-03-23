@@ -44,6 +44,9 @@ export default function LyricistScreen() {
       duration: recording.audioTransfers[0]?.audioVariants[0]?.duration || 0,
       artwork: recording.audioTransfers[0]?.album?.albumArtUrl,
       url: recording.audioTransfers[0]?.audioVariants[0]?.audioFileUrl,
+      year: recording.year,
+      genre: recording.genre.name,
+      singer: recording.singers[0]?.name,
     }))
   );
 

@@ -10,12 +10,18 @@ export const FETCH_LYRICIST = gql`
           node {
             id
             title
-            photo_url
             recordings {
               edges {
                 node {
                   id
                   title
+                  year
+                  genre {
+                    name
+                  }
+                  singers {
+                    name
+                  }
                   audioTransfers {
                     audioVariants {
                       audioFileUrl

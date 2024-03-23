@@ -11,8 +11,14 @@ export const FETCH_ORCHESTRA = gql`
           node {
             id
             title
-            recordedDate
+            year
             genre {
+              name
+            }
+            orchestra {
+              name
+            }
+            singers {
               name
             }
             audioTransfers {

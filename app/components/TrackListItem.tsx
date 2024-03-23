@@ -1,39 +1,44 @@
+import React from 'react';
 import { Text, View, StyleSheet, Image, Pressable } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import TrackPlayer from 'react-native-track-player';
-import { useMutation } from '@apollo/client';
-import { CREATE_PLAYBACK } from "@/graphql";
+import { useMutation, useLazyQuery } from '@apollo/client';
+import { CREATE_PLAYBACK, FETCH_RECORDING_URL } from "@/graphql";
 
 export default function TrackListItem({ track }) {
   const { colors } = useTheme();
   const [createPlayback] = useMutation(CREATE_PLAYBACK);
-
-  if (!track) {
-    return null;
-  }
+  const [fetchRecordingURL, { data }] = useLazyQuery(FETCH_RECORDING_URL, {
+    variables: { id: track.id },
+    fetchPolicy: "network-only"
+  });
 
   const onTrackPress = async () => {
-    const trackForPlayer = {
-      id: track.id,
-      url: track.url,
-      title: track.title,
-      artist: track.artist,
-      artwork: track.artwork,
-      duration: track.duration,
-    };
-
+    await fetchRecordingURL();
     try {
-      await createPlayback({
-        variables: {
-          recordingId: track.id,
-        },
-      });
+      if (data) {
+        const audioFileUrl = data.fetchRecording.audioTransfers[0].audioVariants[0].audioFileUrl;
+        const trackForPlayer = {
+          id: track.id,
+          url: audioFileUrl,
+          title: track.title,
+          artist: track.artist,
+          artwork: track.artwork,
+          duration: track.duration,
+        };
 
-      await TrackPlayer.reset();
-      await TrackPlayer.add([trackForPlayer]);
-      await TrackPlayer.play();
+        await createPlayback({
+          variables: {
+            recordingId: track.id,
+          },
+        });
+
+        await TrackPlayer.reset();
+        await TrackPlayer.add([trackForPlayer]);
+        await TrackPlayer.play();
+      }
     } catch (error) {
-      console.error('Error creating playback or playing track:', error);
+      console.error('Error fetching URL or playing track:', error);
     }
   };
 
@@ -43,11 +48,12 @@ export default function TrackListItem({ track }) {
       <View style={styles.songTextContainer}>
         <Text style={[styles.songTitle, { color: colors.text }]}>{track.title}</Text>
         <Text style={[styles.songDetails, { color: colors.text }]}>{[track.artist, track.singer].filter(Boolean).join(' • ')}</Text>
-        <Text style={[styles.songDetails, { color: colors.text }]}>{[track.genre,track.year].filter(Boolean).join(' • ')}</Text>
+        <Text style={[styles.songDetails, { color: colors.text }]}>{[track.genre, track.year].filter(Boolean).join(' • ')}</Text>
       </View>
     </Pressable>
   );
 }
+
 const styles = StyleSheet.create({
   songCard: {
     flex: 1,

@@ -45,6 +45,9 @@ export default function SingerScreen() {
     duration: item.audioTransfers[0]?.audioVariants[0]?.duration || 0,
     artwork: item.audioTransfers[0]?.album?.albumArtUrl,
     url: item.audioTransfers[0]?.audioVariants[0]?.audioFileUrl,
+    year: item.year,
+    genre: item.genre.name,
+    singer: item.singers[0]?.name,
   }));
 
   return (

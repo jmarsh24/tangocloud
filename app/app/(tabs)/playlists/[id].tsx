@@ -41,18 +41,19 @@ export default function PlaylistScreen() {
   const playlist = data?.fetchPlaylist;
 
   const recordings = playlist.playlistItems.map((item) => {
-      const recording = item.playable;
-      return {
-        id: recording.id,
-        title: recording.title,
-        artist: recording.orchestra?.name || "Unknown Artist",
-        duration: recording.audioTransfers[0]?.audioVariants[0]?.duration || 0,
-        artwork: recording.audioTransfers[0]?.album?.albumArtUrl || "",
-        url: recording.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || "",
-        genre: recording.genre.name,
-        year: recording.year,
-      };
-    });
+    const recording = item.playable;
+    return {
+      id: recording.id,
+      title: recording.title,
+      artist: recording.orchestra?.name || "Unknown Artist",
+      duration: recording.audioTransfers[0]?.audioVariants[0]?.duration || 0,
+      artwork: recording.audioTransfers[0]?.album?.albumArtUrl || "",
+      url: recording.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || "",
+      genre: recording.genre.name,
+      year: recording.year,
+      singer: recording.singers[0]?.name,
+    };
+  });
 
   return (
     <SafeAreaView style={{ padding: 10, gap: 20, flex: 1 }}>
