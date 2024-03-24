@@ -2,7 +2,7 @@ import React from 'react';
 import { FlashList } from '@shopify/flash-list';
 import { SEARCH_SINGERS } from '@/graphql';
 import { useQuery } from '@apollo/client';
-import { Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { Text, ActivityIndicator, StyleSheet, View } from 'react-native';
 import SingerItem from '@/components/SingerItem';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native'
@@ -26,15 +26,14 @@ const SingersScreen = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={[styles.title, { color: colors.text }]}>Singers</Text>
+    <View style={styles.container}>
       <FlashList 
         data={singers}
         renderItem={({ item }) => <SingerItem singer={item} />}
         keyExtractor={item => item.id}
         estimatedItemSize={100}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 

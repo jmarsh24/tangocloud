@@ -11,7 +11,7 @@ export default function OrchestraItem({ orchestra }) {
   }
 
   return (
-    <Link href={`/orchestras/${orchestra.id}`}>
+    <Link push href={`/search/orchestras/${orchestra.id}`}>
       <View style={styles.container}>
         <Image source={{ uri: orchestra.photoUrl }} style={styles.image} />
         <Text style={[styles.text, { color: colors.text }]}>{orchestra.name}</Text>
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     gap: 20,
   },
   text: {

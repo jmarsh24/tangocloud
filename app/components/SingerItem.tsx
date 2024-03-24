@@ -10,7 +10,7 @@ export default function SingerItem({ singer }) {
   }
 
   return (
-    <Link href={`/singers/${singer.id}`}>
+    <Link push href={`/search/singers/${singer.id}`}>
       <View style={styles.container}>
         <Image source={{ uri: singer.photoUrl }} style={styles.image} />
         <Text style={[styles.text, { color: colors.text }]}>{singer.name}</Text>

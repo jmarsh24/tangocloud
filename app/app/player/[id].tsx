@@ -189,11 +189,11 @@ export default function PlayerScreen() {
       </View>
     );
   }
-
+  console.log(error);
   if (error) {
     return (
       <View style={styles.container}>
-        <Text style={styles.errorText}>Error loading playlist.</Text>
+        <Text style={styles.errorText}>Error loading recording...</Text>
       </View>
     );
   }

@@ -10,7 +10,7 @@ export default function LyricistItem({ lyricist }) {
   }
 
   return (
-    <Link href={`/lyricists/${lyricist.id}`} style={styles.container}>
+    <Link href={`/search/lyricists/${lyricist.id}`} style={styles.container}>
       <Text style={[styles.text, { color: colors.text }]}>{lyricist.name}</Text>
     </Link>
   );

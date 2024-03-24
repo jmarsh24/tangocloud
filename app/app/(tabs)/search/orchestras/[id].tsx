@@ -51,7 +51,7 @@ export default function OrchestraScreen() {
   }));
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.imageContainer}>
         <Image source={{ uri: orchestra.photoUrl }} style={styles.image} />
         <Text style={[styles.title, { color: colors.text }]}>
@@ -64,7 +64,7 @@ export default function OrchestraScreen() {
         keyExtractor={(item) => item.id.toString()}
         estimatedItemSize={80}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 

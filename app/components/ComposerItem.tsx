@@ -10,7 +10,7 @@ export default function ComposerItem({ composer }) {
   }
 
   return (
-    <Link href={`/composers/${composer.id}`} style={styles.container}>
+    <Link push href={`/search/composers/${composer.id}`} style={styles.container}>
       <Text style={[styles.text, { color: colors.text }]}>{composer.name}</Text>
     </Link>
   );
