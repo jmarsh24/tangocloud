@@ -4,7 +4,7 @@ import {
   View,
   Image,
   Dimensions,
-  TouchableWithoutFeedback,
+  Pressable,
   Alert,
   ActivityIndicator,
   Text,
@@ -189,7 +189,7 @@ export default function PlayerScreen() {
       </View>
     );
   }
-  console.log(error);
+
   if (error) {
     return (
       <View style={styles.container}>
@@ -239,9 +239,9 @@ export default function PlayerScreen() {
               size={36}
               color={colors.text}
             />
-            <TouchableWithoutFeedback onPress={shareRecording}>
+            <Pressable onPress={shareRecording}>
               <FontAwesome6 name={"share"} size={30} style={[styles.icon, {color: colors.text}]} />
-            </TouchableWithoutFeedback>
+            </Pressable>
           </View>
         </View>
         <View style={styles.controls}>
