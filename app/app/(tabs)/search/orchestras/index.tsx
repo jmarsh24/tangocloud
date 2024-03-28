@@ -2,12 +2,15 @@ import React from 'react';
 import { FlashList } from '@shopify/flash-list';
 import { SEARCH_ORCHESTRAS } from '@/graphql';
 import { useQuery } from '@apollo/client';
-import { Text, View, ActivityIndicator, StyleSheet } from 'react-native';
+import { Text, View, ActivityIndicator, StyleSheet, Button } from 'react-native';
 import OrchestraItem from '@/components/OrchestraItem';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native'
+import { Link, useNavigation, useRouter } from "expo-router";
 
 const OrchestrasScreen = () => {
+  const router = useRouter();
+  const navigation = useNavigation();
   const { colors } = useTheme();
   const { data, loading, error } = useQuery(SEARCH_ORCHESTRAS, { variables: { query: '*' } });
   const orchestras = data?.searchOrchestras?.edges.map(edge => edge.node);
@@ -29,14 +32,13 @@ const OrchestrasScreen = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={[styles.title, { color: colors.text }]}>Orchestras</Text>
+    <View style={styles.container}>
       <FlashList 
         data={orchestras}
         renderItem={({ item }) => <OrchestraItem orchestra={item} />}
         estimatedItemSize={100}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 

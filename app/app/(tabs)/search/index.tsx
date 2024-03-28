@@ -99,16 +99,16 @@
         </View>
         {search.length === 0 && (
           <View style={styles.linksContainer}>
-            <Link style={[styles.linkButton, { backgroundColor: colors.card }]} push href="/orchestras">
+            <Link style={[styles.linkButton, { backgroundColor: colors.card }]} push href="/search/orchestras/">
               <Text style={[styles.buttonText, { color: colors.text }]}>Orchestras</Text>
             </Link>
-            <Link style={[styles.linkButton, { backgroundColor: colors.card }]} push href="/singers">
+            <Link style={[styles.linkButton, { backgroundColor: colors.card }]} push href="/search/singers/">
               <Text style={[styles.buttonText, { color: colors.text }]}>Singers</Text>
             </Link>
-            <Link style={[styles.linkButton, { backgroundColor: colors.card }]} push href="/composers">
+            <Link style={[styles.linkButton, { backgroundColor: colors.card }]} push href="/search/composers">
               <Text style={[styles.buttonText, { color: colors.text }]}>Composers</Text>
             </Link>
-            <Link style={[styles.linkButton, { backgroundColor: colors.card }]} push href="/lyricists">
+            <Link style={[styles.linkButton, { backgroundColor: colors.card }]} push href="/search/lyricists">
               <Text style={[styles.buttonText, { color: colors.text }]}>Lyricists</Text>
             </Link>
           </View>

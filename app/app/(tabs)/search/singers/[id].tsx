@@ -51,7 +51,7 @@ export default function SingerScreen() {
   }));
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.imageContainer}>
         {singer.photoUrl && (
           <Image source={{ uri: singer.photoUrl }} style={styles.image} />
@@ -66,7 +66,7 @@ export default function SingerScreen() {
         keyExtractor={(item) => item.id.toString()}
         estimatedItemSize={80}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 

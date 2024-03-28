@@ -73,7 +73,7 @@ module Import
           end
 
           if metadata.singer.present? && metadata.singer.downcase != "instrumental"
-            singer = Singer.find_or_create_by!(name: metadata.artist)
+            singer = Singer.find_or_create_by!(name: metadata.artist, soloist: orchestra.present?)
           end
 
           parsed_date =
