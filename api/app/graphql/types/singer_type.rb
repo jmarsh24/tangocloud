@@ -10,6 +10,7 @@ module Types
     field :bio, String, null: true
     field :birth_date, GraphQL::Types::ISO8601Date, null: true
     field :death_date, GraphQL::Types::ISO8601Date, null: true
+    field :soloist, Boolean, null: false
 
     field :photo_url, String, null: true
 

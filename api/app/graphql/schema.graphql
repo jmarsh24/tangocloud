@@ -1333,12 +1333,12 @@ type Recording {
   audioTransfers: [AudioTransfer!]!
   audioVariants: [AudioVariant!]!
   bpm: Int
-  composer: Composer!
-  composerId: String!
-  composition: Composition!
-  compositionId: String!
-  elRecodoSong: ElRecodoSong!
-  elRecodoSongId: String!
+  composer: Composer
+  composerId: String
+  composition: Composition
+  compositionId: String
+  elRecodoSong: ElRecodoSong
+  elRecodoSongId: String
   genre: Genre!
   genreId: String!
   id: ID!
@@ -1364,12 +1364,12 @@ type Recording {
     """
     last: Int
   ): LikeConnection!
-  lyricist: Lyricist!
-  lyricistId: String!
+  lyricist: Lyricist
+  lyricistId: String
   orchestra: Orchestra!
   orchestraId: String!
-  period: Period!
-  periodId: String!
+  period: Period
+  periodId: String
   playback(id: ID!): Playback!
   playbacks(
     """
@@ -1392,8 +1392,8 @@ type Recording {
     """
     last: Int
   ): PlaybackConnection!
-  recordLabel: RecordLabel!
-  recordLabelId: String!
+  recordLabel: RecordLabel
+  recordLabelId: String
   recordedDate: ISO8601Date
   recordingType: String!
   releaseDate: ISO8601Date
@@ -1642,6 +1642,7 @@ type Singer {
     last: Int
   ): RecordingConnection!
   slug: String
+  soloist: Boolean!
   sortName: String
 }
 
