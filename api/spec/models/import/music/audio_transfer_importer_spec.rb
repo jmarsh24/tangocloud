@@ -125,6 +125,12 @@ RSpec.describe Import::Music::AudioTransferImporter do
           described_class.new.import_from_file(aif_file)
         }.to raise_error(Import::Music::AudioTransferImporter::DuplicateFileError)
       end
+
+      it "creates a soloist singer" do
+        soloist_file = File.open("spec/fixtures/audio/19450519_corrientes_y_esmeralda__tango_6754.aif")
+        audio_transfer = described_class.new.import_from_file(soloist_file)
+        expect(audio_transfer.recording.singers.first.sololist).to be_truthy
+      end
     end
   end
 
