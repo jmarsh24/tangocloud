@@ -27,6 +27,7 @@ export const FETCH_ORCHESTRA = gql`
               }
               audioVariants {
                 audioFileUrl
+                duration
               }
             }
           }
