@@ -10,8 +10,8 @@ module Types
       object.lyrics
     end
 
-    belongs_to :lyricist
-    belongs_to :composer
+    belongs_to :lyricist, null: true
+    belongs_to :composer, null: true
     has_many :recordings
   end
 end
