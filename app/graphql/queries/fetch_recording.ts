@@ -11,8 +11,17 @@ export const FETCH_RECORDING = gql`
       year
       singers {
         name
+        slug
       }
       composition {
+        composer {
+          name
+          slug
+        }
+        lyricist {
+          name
+          slug
+        }
         lyrics {
           locale
           content
@@ -32,6 +41,8 @@ export const FETCH_RECORDING = gql`
       }
       orchestra {
         name
+        slug
+        photoUrl
       }
     }
   }

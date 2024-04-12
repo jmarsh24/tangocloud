@@ -206,7 +206,7 @@ export default function PlayerScreen() {
   const recording = data?.fetchRecording;
   return (
     <ScrollView>
-      <View style={[styles.container, { backgroundColor: colors.background} ]}>
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
         <View style={[styles.vinyl, { width: vinylSize, height: vinylSize }]}>
           <Image
             source={vinylRecordImg}
@@ -226,11 +226,28 @@ export default function PlayerScreen() {
             ]}
           />
         </View>
-        <View style={{flex: 1, flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>  
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <View style={styles.trackInfo}>
-            <Text style={[styles.titleText, { color: colors.text} ]}>{recording?.title}</Text>
-            <Text style={[styles.artistText, { color: colors.text} ]}>{[recording?.orchestra.name, recording?.singers[0]?.name].filter(Boolean).join(' • ')}</Text>
-            <Text style={[styles.artistText, { color: colors.text} ]}>{[recording?.genre.name, recording?.year].filter(Boolean).join(' • ')}</Text>
+            <Text style={[styles.titleText, { color: colors.text }]}>
+              {recording?.title}
+            </Text>
+            <Text style={[styles.artistText, { color: colors.text }]}>
+              {[recording?.orchestra.name, recording?.singers[0]?.name]
+                .filter(Boolean)
+                .join(" • ")}
+            </Text>
+            <Text style={[styles.artistText, { color: colors.text }]}>
+              {[recording?.genre.name, recording?.year]
+                .filter(Boolean)
+                .join(" • ")}
+            </Text>
           </View>
           <View style={styles.row}>
             <Ionicons
@@ -240,7 +257,11 @@ export default function PlayerScreen() {
               color={colors.text}
             />
             <TouchableWithoutFeedback onPress={shareRecording}>
-              <FontAwesome6 name={"share"} size={30} style={[styles.icon, {color: colors.text}]} />
+              <FontAwesome6
+                name={"share"}
+                size={30}
+                style={[styles.icon, { color: colors.text }]}
+              />
             </TouchableWithoutFeedback>
           </View>
         </View>
@@ -257,7 +278,49 @@ export default function PlayerScreen() {
           </View>
         </View>
         <View style={styles.lyricsContainer}>
-          <Text style={[styles.lyricsText, {color: colors.text}]}>{lyrics}</Text>
+          <Text style={[styles.lyricsText, { color: colors.text }]}>
+            {lyrics}
+          </Text>
+        </View>
+        <View style={styles.orchestraContainer}>
+          <Image
+            source={{ uri: recording.orchestra.photoUrl }}
+            style={{ width: 200, height: 200, borderRadius: 100 }}
+          />
+          <Text style={[styles.titleText, { color: colors.text }]}>
+            {recording.orchestra.name}
+          </Text>
+        </View>
+        <View style={styles.creditsContainer}>
+          <Text style={[styles.creditsHeader, { color: colors.text }]}>
+            Credits
+          </Text>
+          <View style={styles.creditsDetails}>
+            <Text style={[styles.creditsText, { color: colors.text }]}>
+              Title: {recording.title}
+            </Text>
+            <Text style={[styles.creditsText, { color: colors.text }]}>
+              Year: {recording.year}
+            </Text>
+            <Text style={[styles.creditsText, { color: colors.text }]}>
+              Genre: {recording.genre.name}
+            </Text>
+            <Text style={[styles.creditsText, { color: colors.text }]}>
+              Orchestra: {recording.orchestra.name}
+            </Text>
+            <Text style={[styles.creditsText, { color: colors.text }]}>
+              Singers:{" "}
+              {recording?.singers?.map((singer) => singer.name).join(", ")}
+            </Text>
+            <Text style={[styles.creditsText, { color: colors.text }]}>
+              Composers:{" "}
+              {recording?.composition?.composer?.name}
+            </Text>
+            <Text style={[styles.creditsText, { color: colors.text }]}>
+              Lyricists:{" "}
+              {recording?.composition?.lyricist?.name}
+            </Text>
+          </View>
         </View>
       </View>
     </ScrollView>
@@ -321,7 +384,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     fontWeight: "600",
-    textAlign: "center"
+    textAlign: "center",
   },
   icon: {
     padding: 10,
@@ -329,5 +392,31 @@ const styles = StyleSheet.create({
   errorText: {
     fontSize: 16,
     textAlign: "center",
+  },
+  creditsContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 36,
+    paddingBottom: 80,
+  },
+  creditsHeader: {
+    fontSize: 36,
+    fontWeight: "bold",
+  },
+  creditsDetails: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "flex-start",
+    gap: 10,
+  },
+  creditsText: {
+    fontSize: 16,
+  },
+  orchestraContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 10,
   },
 });
