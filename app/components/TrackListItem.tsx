@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, Image, Pressable } from 'react-native';
+import { Text, View, StyleSheet, Image, Pressable, Alert } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import TrackPlayer from 'react-native-track-player';
 import { useMutation, useLazyQuery } from '@apollo/client';
@@ -8,16 +8,17 @@ import { CREATE_PLAYBACK, FETCH_RECORDING_URL } from "@/graphql";
 export default function TrackListItem({ track }) {
   const { colors } = useTheme();
   const [createPlayback] = useMutation(CREATE_PLAYBACK);
-  const [fetchRecordingURL, { data }] = useLazyQuery(FETCH_RECORDING_URL, {
+  const [fetchRecordingURL, { data, called, loading, error }] = useLazyQuery(FETCH_RECORDING_URL, {
     variables: { id: track.id },
     fetchPolicy: "network-only"
   });
 
   const onTrackPress = async () => {
-    await fetchRecordingURL();
     try {
-      if (data) {
-        const audioFileUrl = data.fetchRecording.audioTransfers[0].audioVariants[0].audioFileUrl;
+      // Call to fetch the recording URL and wait for response
+      const response = await fetchRecordingURL();
+      if (response && response.data) {
+        const audioFileUrl = response.data.fetchRecording.audioTransfers[0].audioVariants[0].audioFileUrl;
         const trackForPlayer = {
           id: track.id,
           url: audioFileUrl,
@@ -27,18 +28,21 @@ export default function TrackListItem({ track }) {
           duration: track.duration,
         };
 
+        // Create playback record
         await createPlayback({
           variables: {
             recordingId: track.id,
           },
         });
 
+        // Setup track player
         await TrackPlayer.reset();
         await TrackPlayer.add([trackForPlayer]);
         await TrackPlayer.play();
       }
-    } catch (error) {
-      console.error('Error fetching URL or playing track:', error);
+    } catch (err) {
+      console.error('Error fetching URL or playing track:', err);
+      Alert.alert("Playback Error", "Unable to play the track. Please try again.");
     }
   };
 
@@ -79,14 +83,5 @@ const styles = StyleSheet.create({
   },
   songTextContainer: {
     flexDirection: "column",
-  },
-  loadingText: {
-    fontSize: 14,
-    marginLeft: 10,
-  },
-  errorText: {
-    fontSize: 14,
-    color: 'red',
-    marginLeft: 10,
   },
 });
