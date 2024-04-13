@@ -23,8 +23,8 @@ class Avo::Resources::Playlist < Avo::BaseResource
 
   def fields
     field :id, as: :id, readonly: true, only_on: :show
-    field :image, as: :file, is_image: true, accept: "image/*", direct_upload: true, display_filename: false, required: true
-    field :title, as: :text
+    field :image, as: :file, is_image: true, accept: "image/*", direct_upload: true, display_filename: false, required: false
+    field :title, as: :text, required: false
     field :description, as: :textarea
     field :public, as: :boolean
     field :playlist_file, as: :file, accept: "m3u8", required: true

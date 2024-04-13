@@ -5,6 +5,7 @@ class Playlist < ApplicationRecord
   searchkick word_middle: [:title]
 
   before_validation :set_default_title, on: :create
+  before_validation :attach_default_image, on: :create, if: -> { image.blank? }
 
   validates :title, presence: true
 
@@ -41,6 +42,41 @@ class Playlist < ApplicationRecord
 
   def set_default_title
     self.title = playlist_file.filename.to_s.split(".").first if title.blank? && playlist_file.attached?
+  end
+
+  def attach_default_image
+    unique_album_arts = recordings.includes(audio_transfers: {album: {album_art_attachment: :blob}})
+      .flat_map(&:audio_transfers)
+      .map(&:album)
+      .compact
+      .map(&:album_art)
+      .uniq
+
+    if unique_album_arts.size < 4
+      unique_album_arts.first&.attach(image) if unique_album_arts.any? && unique_album_arts.first.attached?
+      return
+    end
+
+    create_and_attach_composite_image(unique_album_arts.take(4))
+  end
+
+  def create_and_attach_composite_image(album_arts)
+    part_width = 500
+    part_height = 500
+
+    images = album_arts.map do |album_art|
+      img = Vips::Image.new_from_buffer(album_art.download, "")
+      img.resize(part_width.to_f / img.width, vscale: part_height.to_f / img.height)
+    end
+
+    composite = Vips::Image.arrayjoin(images, across: 2)
+
+    output_path = Rails.root.join("tmp", "#{SecureRandom.hex}.png").to_s
+    composite.write_to_file(output_path)
+
+    image.attach(io: File.open(output_path), filename: "composite_image.png", content_type: "image/png")
+
+    File.delete(output_path) if File.exist?(output_path)
   end
 end
 
