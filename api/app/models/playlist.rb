@@ -47,6 +47,7 @@ class Playlist < ApplicationRecord
       .map(&:album)
       .compact
       .map(&:album_art)
+      .select(&:attached?)
       .uniq
 
     if unique_album_arts.size < 4
