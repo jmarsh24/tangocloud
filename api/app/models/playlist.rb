@@ -51,7 +51,7 @@ class Playlist < ApplicationRecord
       .uniq
 
     if unique_album_arts.size < 4
-      unique_album_arts.first&.attach(image) if unique_album_arts.any? && unique_album_arts.first.attached?
+      image.attach(unique_album_arts.first.blob)
       return
     end
 
