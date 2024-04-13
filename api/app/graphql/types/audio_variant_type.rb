@@ -15,7 +15,7 @@ module Types
     field :audio_file_url, String, null: true
 
     def audio_file_url
-      object.url
+      object.audio_file.url
     end
 
     belongs_to :audio_transfer
