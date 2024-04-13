@@ -100,9 +100,8 @@ module Import
 
           transfer_agent = TransferAgent.find_or_create_by(name: metadata.encoded_by || "Unknown")
 
-          album = Album.find_or_create_by!(
-            title: metadata.album,
-            release_date: parsed_date
+          album = Album.find_or_initialize_by!(
+            title: metadata.album
           )
 
           unless album.album_art.attached?
