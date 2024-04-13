@@ -9,6 +9,6 @@ class ApplicationController < ActionController::Base
 
   def user_not_authorized(exception)
     flash[:alert] = I18n.t "pundit.not_authorized"
-    redirect_back(fallback_location: login_path)
+    redirect_back(fallback_location: sign_in_path)
   end
 end
