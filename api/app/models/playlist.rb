@@ -5,7 +5,7 @@ class Playlist < ApplicationRecord
   searchkick word_middle: [:title]
 
   before_validation :set_default_title
-  after_commit :attach_default_image, on: :create, if: -> { image.blank? }
+  before_save_commit :attach_default_image, if: -> { image.blank? }
 
   validates :title, presence: true
 
