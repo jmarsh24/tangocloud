@@ -61,6 +61,7 @@ Rails.application.routes.draw do
   end
 
   resources :recordings, only: [:show]
+  resources :audio_variants, only: [:show]
 
   root "pages#home"
   get "up", to: "rails/health#show", as: :rails_health_check
