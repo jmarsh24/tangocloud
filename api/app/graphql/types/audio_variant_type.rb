@@ -1,5 +1,7 @@
 module Types
   class AudioVariantType < Types::BaseObject
+    include Rails.application.routes.url_helpers
+
     field :id, ID, null: false
     field :duration, Integer, null: false
     field :format, String, null: false
@@ -15,7 +17,7 @@ module Types
     field :audio_file_url, String, null: true
 
     def audio_file_url
-      object.audio_file.url
+      url_for(object)
     end
 
     belongs_to :audio_transfer
