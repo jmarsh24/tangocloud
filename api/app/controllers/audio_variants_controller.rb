@@ -6,7 +6,7 @@ class AudioVariantsController < ApplicationController
   def show
     authorize @audio_variant
 
-    redirect_to @audio_variant.audio_file.url
+    redirect_to url_for(@audio_variant.audio_file)
   end
 
   private
