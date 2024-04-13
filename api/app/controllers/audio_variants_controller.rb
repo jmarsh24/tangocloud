@@ -12,6 +12,6 @@ class AudioVariantsController < ApplicationController
   private
 
   def set_audio_variant
-    authorize @audio_variant = AudioVariant.find(params[:id])
+    @audio_variant = AudioVariant.find(params[:id])
   end
 end
