@@ -5,7 +5,7 @@ class Playlist < ApplicationRecord
   searchkick word_middle: [:title]
 
   before_validation :set_default_title, on: :create
-  before_validation :attach_default_image, on: :create, if: -> { image.blank? }
+  before_save :attach_default_image, on: :create, if: -> { image.blank? }
 
   validates :title, presence: true
 
@@ -37,6 +37,8 @@ class Playlist < ApplicationRecord
       title:
     }
   end
+
+  private
 
   def set_default_title
     self.title = playlist_file.filename.to_s.split(".").first if title.blank? && playlist_file.attached?
