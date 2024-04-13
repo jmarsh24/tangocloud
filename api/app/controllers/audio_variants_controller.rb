@@ -3,9 +3,9 @@ class AudioVariantsController < ApplicationController
 
   before_action :set_audio_variant, only: :show
   skip_before_action :authenticate
+  skip_after_action :verify_authorized, only: :show # this should be removed if you want to use the policy
 
   def show
-    authorize @audio_variant
     redirect_to url_for(@audio_variant.audio_file)
   end
 
