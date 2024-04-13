@@ -44,8 +44,8 @@ class Playlist < ApplicationRecord
   end
 
   def attach_default_image
-    unique_albums = albums.with_attached_album_art
-    unique_album_arts = unique_albums.map(&:album_art).compact.uniq
+    unique_albums = albums.with_attached_album_art.uniq
+    unique_album_arts = unique_albums.map(&:album_art)
 
     if unique_album_arts.size < 4
       image.attach(unique_album_arts.first.blob)
