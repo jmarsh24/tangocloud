@@ -11,6 +11,8 @@ class Playlist < ApplicationRecord
   belongs_to :user
   has_many :playlist_items, -> { order(position: :asc) }, dependent: :destroy, inverse_of: :playlist
   has_many :recordings, through: :playlist_items, source: :playable, source_type: "Recording"
+  has_many :audio_transfers, through: :recordings
+  has_many :albums, through: :audio_transfers
 
   has_one_attached :image, dependent: :purge_later do |blob|
     blob.variant :thumb, resize_to_limit: [100, 100]
@@ -42,13 +44,8 @@ class Playlist < ApplicationRecord
   end
 
   def attach_default_image
-    unique_album_arts = recordings.includes(audio_transfers: {album: {album_art_attachment: :blob}})
-      .flat_map(&:audio_transfers)
-      .map(&:album)
-      .compact
-      .map(&:album_art)
-      .select(&:attached?)
-      .uniq
+    unique_albums = albums.with_attached_album_art.distinct
+    unique_album_arts = unique_albums.map(&:album_art).compact
 
     if unique_album_arts.size < 4
       image.attach(unique_album_arts.first.blob)
