@@ -5,6 +5,7 @@ class Avo::PlaylistsController < Avo::ResourcesController
     @record.playlist_file.blob.open do |file|
       Import::Playlist::PlaylistImporter.new(@record).import
     end
+    attach_default_image if @record.image.blank?
     super
   end
 end
