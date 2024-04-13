@@ -38,8 +38,6 @@ class Playlist < ApplicationRecord
     }
   end
 
-  private
-
   def set_default_title
     self.title = playlist_file.filename.to_s.split(".").first if title.blank?
   end
