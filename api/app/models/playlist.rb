@@ -4,6 +4,8 @@ class Playlist < ApplicationRecord
 
   searchkick word_middle: [:title]
 
+  before_validation :set_default_title, on: :create
+
   validates :title, presence: true
 
   belongs_to :user
@@ -33,6 +35,12 @@ class Playlist < ApplicationRecord
     {
       title:
     }
+  end
+
+  private
+
+  def set_default_title
+    self.title = playlist_file.filename.to_s.split(".").first if title.blank? && playlist_file.attached?
   end
 end
 
