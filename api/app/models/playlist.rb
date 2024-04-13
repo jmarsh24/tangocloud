@@ -41,7 +41,7 @@ class Playlist < ApplicationRecord
   private
 
   def set_default_title
-    self.title = playlist_file.filename.to_s.split(".").first if title.blank? && playlist_file.attached?
+    self.title = playlist_file.filename.to_s.split(".").first if title.blank?
   end
 
   def attach_default_image
