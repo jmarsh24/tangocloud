@@ -52,7 +52,7 @@ export default function LibrarysScreen() {
       </Text>
       <FlashList
           data={tracks}
-          renderItem={({ item }) => <TrackListItem track={item} />}
+          renderItem={({ item }) => <TrackListItem track={item}  tracks={recordings} />}
           ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
           estimatedItemSize={75}
         />

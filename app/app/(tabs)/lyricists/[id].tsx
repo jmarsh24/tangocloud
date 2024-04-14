@@ -60,7 +60,7 @@ export default function LyricistScreen() {
         <FlashList
           data={recordings}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <TrackListItem track={item} />}
+          renderItem={({ item }) => <TrackListItem track={item}  tracks={recordings} />}
           estimatedItemSize={80}
         />
       ) : (

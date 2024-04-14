@@ -62,7 +62,7 @@ export default function SingerScreen() {
       </View>
       <FlashList
         data={recordings}
-        renderItem={({ item }) => <TrackListItem track={item} />}
+        renderItem={({ item }) => <TrackListItem track={item}  tracks={recordings} />}
         keyExtractor={(item) => item.id.toString()}
         estimatedItemSize={80}
       />

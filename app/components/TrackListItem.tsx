@@ -9,24 +9,34 @@ export default function TrackListItem({ track, tracks }) {
   const { colors } = useTheme();
   const [createPlayback] = useMutation(CREATE_PLAYBACK);
 
-  const loadTracksToPlayer = async () => {
-    try {
-      await TrackPlayer.reset();
-      const trackObjects = tracks.map(track => ({
-        id: track.id,
-        url: track.url,
-        title: track.title,
-        artist: track.artist,
-        artwork: track.artwork,
-        duration: track.duration,
-      }));
-      await TrackPlayer.add(trackObjects);
-      await TrackPlayer.play();
-    } catch (err) {
-      console.error('Error setting up the track player:', err);
-      Alert.alert("Playback Error", "There was an issue loading the tracks. Please try again.");
-    }
-  };
+  const loadTracksToPlayer = async (selectedTrackId) => {
+  try {
+    await TrackPlayer.reset();
+    const selectedIndex = tracks.findIndex(t => t.id === selectedTrackId);
+    
+    // Create a new array with the selected track as the first element
+    const reorderedTracks = [
+      ...tracks.slice(selectedIndex), // Tracks from the selected one to the end
+      ...tracks.slice(0, selectedIndex) // Tracks from the beginning to the selected one
+    ];
+
+    const trackObjects = reorderedTracks.map(track => ({
+      id: track.id,
+      url: track.url,
+      title: track.title,
+      artist: track.artist,
+      artwork: track.artwork,
+      duration: track.duration,
+    }));
+
+    await TrackPlayer.add(trackObjects);
+    await TrackPlayer.play();
+  } catch (err) {
+    console.error('Error setting up the track player:', err);
+    Alert.alert("Playback Error", "There was an issue loading the tracks. Please try again.");
+  }
+};
+
 
   const onTrackPress = async () => {
     try {
@@ -38,7 +48,7 @@ export default function TrackListItem({ track, tracks }) {
       });
 
       // Load all tracks to the player
-      await loadTracksToPlayer();
+      await loadTracksToPlayer(track.id);
     } catch (err) {
       console.error('Error during playback setup:', err);
       Alert.alert("Playback Error", "Unable to play the track. Please try again.");

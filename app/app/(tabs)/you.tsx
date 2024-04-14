@@ -85,7 +85,7 @@ export default function YouScreen() {
         <Text style={[styles.header, { color: colors.text }]}>History</Text>
         <FlashList
           data={recordings}
-          renderItem={({ item }) => <TrackListItem track={item} />}
+          renderItem={({ item }) => <TrackListItem track={item}  tracks={recordings} />}
           estimatedItemSize={80}
         />
       </View>
