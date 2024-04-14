@@ -12,7 +12,6 @@ import {
 import { useTheme } from "@react-navigation/native";
 import TrackPlayer, {
   useProgress,
-  useIsPlaying,
 } from "react-native-track-player";
 import { PlayerControls } from "@/components/PlayerControls";
 import { Progress } from "@/components/Progress";
@@ -57,7 +56,6 @@ export default function PlayerScreen() {
   const [removeLikeFromRecording] = useMutation(REMOVE_LIKE_FROM_RECORDING);
   const [addLikeToRecording] = useMutation(ADD_LIKE_TO_RECORDING);
   const [isLiked, setIsLiked] = useState(false);
-  const { playing, bufferingDuringPlay } = useIsPlaying();
 
   const {
     data: likeStatusData,
