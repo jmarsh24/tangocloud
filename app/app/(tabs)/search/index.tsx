@@ -115,7 +115,7 @@
         )}
         <FlashList
           data={tracks}
-          renderItem={({ item }) => <TrackListItem track={item}  tracks={recordings} />}
+          renderItem={({ item }) => <TrackListItem track={item} tracks={tracks} />}
           ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
           onEndReached={loadMoreItems}
           onEndReachedThreshold={0.5}
