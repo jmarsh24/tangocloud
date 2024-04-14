@@ -24,13 +24,14 @@ const ComposerScreen = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
       <Text style={[styles.title, { color: colors.text }]}>Composers</Text>
       <FlashList 
         data={composers}
         renderItem={({ item }) => <ComposerItem composer={item} />}
         keyExtractor={item => item.id}
         estimatedItemSize={100}
+        ListFooterComponentStyle={{ paddingBottom: 80 }}
       />
     </SafeAreaView>
   );

@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     width: '100%',
-    bottom: 80
+    bottom: 79
   },
   player: {
     width: '100%',

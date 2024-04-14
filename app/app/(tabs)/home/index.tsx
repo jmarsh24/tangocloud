@@ -38,7 +38,7 @@ export default function HomeScreen() {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
       <Text style={[styles.headerText, { color: colors.text }]}>
         Home
       </Text>
@@ -52,6 +52,7 @@ export default function HomeScreen() {
         ListHeaderComponent={() => <LikedLink />}
         renderItem={({ item }) => <PlaylistItem playlist={item} />}
         estimatedItemSize={100}
+        ListFooterComponentStyle={{ paddingBottom: 80 }}
       />
     </SafeAreaView>
   );

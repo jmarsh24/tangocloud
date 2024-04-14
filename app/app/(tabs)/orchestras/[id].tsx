@@ -22,7 +22,7 @@ export default function OrchestraScreen() {
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
         <ActivityIndicator size="large" />
       </SafeAreaView>
     );
@@ -30,7 +30,7 @@ export default function OrchestraScreen() {
 
   if (error) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
         <Text>Error loading orchestra.</Text>
       </SafeAreaView>
     );
@@ -51,7 +51,7 @@ export default function OrchestraScreen() {
   }));
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
       <View style={styles.imageContainer}>
         <Image source={{ uri: orchestra.photoUrl }} style={styles.image} />
         <Text style={[styles.title, { color: colors.text }]}>
@@ -63,6 +63,7 @@ export default function OrchestraScreen() {
         renderItem={({ item }) => <TrackListItem track={item} tracks={recordings} />}
         keyExtractor={(item) => item.id.toString()}
         estimatedItemSize={80}
+        ListFooterComponentStyle={{ paddingBottom: 80 }}
       />
     </SafeAreaView>
   );
@@ -71,7 +72,7 @@ export default function OrchestraScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom: 60,
+    
   },
   loadingContainer: {
     flex: 1,

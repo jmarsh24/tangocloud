@@ -20,13 +20,14 @@ const BrowseScreen = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
       <Text style={[styles.title, { color: colors.text }]}>Lyricists</Text>
       <FlashList 
         data={lyricists}
         renderItem={({ item }) => <LyricistItem lyricist={item} />}
         keyExtractor={item => item.id}
         estimatedItemSize={100}
+        ListFooterComponentStyle={{ paddingBottom: 80 }}
       />
     </SafeAreaView>
   );
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingBottom: 60,
+    
   },
   title: {
     fontSize: 24,

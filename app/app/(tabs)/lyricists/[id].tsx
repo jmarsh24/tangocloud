@@ -51,7 +51,7 @@ export default function LyricistScreen() {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
       <Stack.Screen options={{ title: data.fetchLyricist.name }} />
       <Text style={[styles.title, { color: colors.text }]}>
         {data.fetchLyricist.name}
@@ -62,6 +62,7 @@ export default function LyricistScreen() {
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => <TrackListItem track={item}  tracks={recordings} />}
           estimatedItemSize={80}
+          ListFooterComponentStyle={{ paddingBottom: 80 }}
         />
       ) : (
         <Text>No recordings found.</Text>
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 10,
-    paddingBottom: 60,
+    
   },
   title: {
     fontSize: 24,

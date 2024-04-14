@@ -15,7 +15,7 @@ const SingersScreen = () => {
   console.log(singers);
   if (loading) {
     return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
       <ActivityIndicator />
     </SafeAreaView>
     )
@@ -26,13 +26,14 @@ const SingersScreen = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
       <Text style={[styles.title, { color: colors.text }]}>Singers</Text>
       <FlashList 
         data={singers}
         renderItem={({ item }) => <SingerItem singer={item} />}
         keyExtractor={item => item.id}
         estimatedItemSize={100}
+        ListFooterComponentStyle={{ paddingBottom: 80 }}
       />
     </SafeAreaView>
   );
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    paddingBottom: 60,
+    
   },
   title: {
     fontSize: 24,

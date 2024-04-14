@@ -20,14 +20,14 @@ export default function LibrarysScreen() {
 
   if (loading) {
     return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
       <ActivityIndicator />
     </SafeAreaView>
     );
   }
   if (error) {
     return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
       <Text>Failed to fetch</Text>
     </SafeAreaView>
     )
@@ -46,7 +46,7 @@ export default function LibrarysScreen() {
   })) || [];
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
       <Text style={[styles.title, { color: colors.text }]}>
         Liked Recordings
       </Text>
@@ -55,6 +55,7 @@ export default function LibrarysScreen() {
           renderItem={({ item }) => <TrackListItem track={item}  tracks={recordings} />}
           ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
           estimatedItemSize={75}
+          ListFooterComponentStyle={{ paddingBottom: 80 }}
         />
     </SafeAreaView>
   );

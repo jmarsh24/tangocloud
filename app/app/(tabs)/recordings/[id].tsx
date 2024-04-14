@@ -108,7 +108,7 @@ export default function RecordingScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
       <View style={[styles.vinyl, { width: vinylSize, height: vinylSize }]}>
         <Image
           source={vinylRecordImg}

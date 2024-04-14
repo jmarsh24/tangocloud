@@ -22,7 +22,7 @@ export default function SingerScreen() {
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
         <ActivityIndicator size="large" />
       </SafeAreaView>
     );
@@ -30,7 +30,7 @@ export default function SingerScreen() {
 
   if (error) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
         <Text>Error loading singer.</Text>
       </SafeAreaView>
     );
@@ -51,7 +51,7 @@ export default function SingerScreen() {
   }));
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
       <View style={styles.imageContainer}>
         {singer.photoUrl && (
           <Image source={{ uri: singer.photoUrl }} style={styles.image} />
@@ -65,6 +65,7 @@ export default function SingerScreen() {
         renderItem={({ item }) => <TrackListItem track={item}  tracks={recordings} />}
         keyExtractor={(item) => item.id.toString()}
         estimatedItemSize={80}
+        ListFooterComponentStyle={{ paddingBottom: 80 }}
       />
     </SafeAreaView>
   );
@@ -73,7 +74,7 @@ export default function SingerScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom: 60,
+    
   },
   imageContainer: {
     alignItems: 'center',

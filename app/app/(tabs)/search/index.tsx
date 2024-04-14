@@ -74,7 +74,7 @@
       })) || [];
 
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView edges={['right', 'top', 'left']} style={{ flex: 1 }}>
         <View style={[styles.header, { backgroundColor: colors.background }]}>
           <View style={[styles.searchContainer, { backgroundColor: colors.card }]}>
             <AntDesign name="search1" size={20} style={[styles.searchIcon, { color: colors.text}]} />
@@ -117,13 +117,11 @@
           data={tracks}
           renderItem={({ item }) => <TrackListItem track={item}  tracks={recordings} />}
           ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
-          ListFooterComponent={() =>
-            loading || loadingMore ? <ActivityIndicator size="large" /> : null
-          }
           onEndReached={loadMoreItems}
           onEndReachedThreshold={0.5}
           showsVerticalScrollIndicator={false}
           estimatedItemSize={75}
+          ListFooterComponentStyle={{ paddingBottom: 80 }}
         />
       </SafeAreaView>
     );
@@ -134,7 +132,7 @@
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      paddingBottom: 60,
+      
       gap: 10,
     },
     linksContainer: {

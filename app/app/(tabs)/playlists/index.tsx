@@ -1,10 +1,11 @@
-import { Text, View, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
+import { Text, ActivityIndicator, StyleSheet } from 'react-native';
 import PlaylistItem from '@/components/PlaylistItem';
 import { SEARCH_PLAYLISTS } from '@/graphql';
 import { useQuery } from '@apollo/client';
 import LikedLink from '@/components/LikedLink';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native';
+import { FlashList } from '@shopify/flash-list';
 
 export default function PlaylistsScreen() {
   const { colors } = useTheme();
@@ -13,7 +14,7 @@ export default function PlaylistsScreen() {
   
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
         <ActivityIndicator />
       </SafeAreaView>
     );
@@ -21,22 +22,22 @@ export default function PlaylistsScreen() {
   
   if (error) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
         <Text>Failed to fetch</Text>
       </SafeAreaView>
     );
   }
   
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
       <Text style={[styles.title,{color: colors.text}]}>
         Playlists
       </Text>
-      <FlatList
+      <FlashList
         data={playlists}
         renderItem={({ item }) => <PlaylistItem playlist={item} />}
         ListHeaderComponent={<LikedLink />}
-        contentContainerStyle={{ gap: 10, padding: 10 }}
+        ListFooterComponentStyle={{ paddingBottom: 80 }}
       />
     </SafeAreaView>
   );
@@ -48,8 +49,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
 
   },
   title: {

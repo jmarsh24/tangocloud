@@ -56,7 +56,7 @@ export default function PlaylistScreen() {
   });
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
       <Text style={[styles.title, { color: colors.text }]}>
         {playlist.title}
       </Text>
@@ -65,6 +65,7 @@ export default function PlaylistScreen() {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <TrackListItem track={item} tracks={recordings} />}
         estimatedItemSize={80}
+        ListFooterComponentStyle={{ paddingBottom: 80 }}
       />
     </SafeAreaView>
   );
@@ -73,8 +74,7 @@ export default function PlaylistScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingBottom: 60,
+    
   },
   loadingContainer: {
     flex: 1,

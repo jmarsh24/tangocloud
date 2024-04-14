@@ -12,11 +12,12 @@ import {
 import { useTheme } from "@react-navigation/native";
 import TrackPlayer, {
   useProgress,
+  Event,
+  useTrackPlayerEvents,
 } from "react-native-track-player";
 import { PlayerControls } from "@/components/PlayerControls";
 import { Progress } from "@/components/Progress";
 import { FETCH_RECORDING } from "@/graphql";
-import { useQuery } from "@apollo/client";
 import Waveform from "@/components/Waveform";
 import * as Sharing from "expo-sharing";
 import FontAwesome6 from "react-native-vector-icons/FontAwesome6";
@@ -26,7 +27,7 @@ import {
   ADD_LIKE_TO_RECORDING,
   CHECK_LIKE_STATUS_ON_RECORDING,
 } from "@/graphql";
-import { useMutation } from "@apollo/client";
+import { useQuery, useMutation, useLazyQuery } from "@apollo/client";
 import { Ionicons } from "@expo/vector-icons";
 import { ScrollView } from "react-native";
 
@@ -50,12 +51,18 @@ export default function PlayerScreen() {
   const progressRef = useRef(0);
   const animationFrameRef = useRef<number>();
   const deviceWidth = Dimensions.get("window").width;
+  // Fetch recording data
   const { data, loading, error } = useQuery(FETCH_RECORDING, {
     variables: { id: id },
+    // skip: !id, // Skip fetching if no ID is available (handling for potential null deep links)
   });
   const [removeLikeFromRecording] = useMutation(REMOVE_LIKE_FROM_RECORDING);
   const [addLikeToRecording] = useMutation(ADD_LIKE_TO_RECORDING);
   const [isLiked, setIsLiked] = useState(false);
+  const [getRecordingDetails, { data: newTrackData, loading: loadingTrackData, error: trackDataError }] = useLazyQuery(FETCH_RECORDING, {
+    fetchPolicy: 'network-only',  // Ensures fresh data is fetched
+  });
+
 
   const {
     data: likeStatusData,
@@ -89,6 +96,37 @@ export default function PlayerScreen() {
       setIsLiked(true);
     }
   };
+
+  // Listening to track changes
+  useTrackPlayerEvents([Event.PlaybackTrackChanged], async (event) => {
+    if (event.type === Event.PlaybackTrackChanged && event.nextTrack !== null && event.nextTrack !== event.track) {
+      const trackInfo = await TrackPlayer.getTrack(event.nextTrack);
+      if (trackInfo && trackInfo.id !== track?.id) {
+        console.log('Track changed:', trackInfo.id)
+        // Fetch new recording details without affecting playback
+        getRecordingDetails({ variables: { id: trackInfo.id } });  // Fetch new recording details without affecting playback
+      }
+    }
+  });
+
+  // Use effect to monitor changes in fetched data and update the state accordingly
+  useEffect(() => {
+    if (!loadingTrackData && newTrackData && newTrackData.fetchRecording && !trackDataError) {
+      console.log('New track data fetched:', newTrackData.fetchRecording)
+      const newTrackDataPrepared = prepareTrackData(newTrackData.fetchRecording);
+      setTrack(newTrackDataPrepared);
+      setTrackDuration(newTrackDataPrepared.duration);
+    }
+  }, [newTrackData, loadingTrackData, trackDataError]);
+
+  const prepareTrackData = (recordingData) => ({
+    id: recordingData.id,
+    url: recordingData.audioTransfers[0]?.audioVariants[0]?.audioFileUrl,
+    title: recordingData.title,
+    artist: recordingData.orchestra.name,
+    artwork: recordingData.audioTransfers[0]?.album?.albumArtUrl,
+    duration: recordingData.audioTransfers[0]?.audioVariants[0]?.duration || 0,
+  });
 
   const loadTrack = async (recordingData) => {
     const trackForPlayer = {

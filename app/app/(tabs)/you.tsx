@@ -28,7 +28,7 @@ export default function YouScreen() {
 
   if (!authState.authenticated) {
     return (
-      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+      <SafeAreaView edges={['right', 'top', 'left']} style={[styles.container, { backgroundColor: colors.background }]}>
         <Link href='/login' asChild>
           <Button onPress={onLogout} text="Login" />
         </Link>
@@ -41,7 +41,7 @@ export default function YouScreen() {
 
   if (loading) {
     return (
-      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+      <SafeAreaView edges={['right', 'top', 'left']} style={[styles.container, { backgroundColor: colors.background }]}>
         <ActivityIndicator size="large" />
       </SafeAreaView>
     );
@@ -49,7 +49,7 @@ export default function YouScreen() {
 
   if (error) {
     return (
-      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+      <SafeAreaView edges={['right', 'top', 'left']} style={[styles.container, { backgroundColor: colors.background }]}>
         <Text style={[styles.text, { color: colors.text }]}>Error loading data...</Text>
         <Button onPress={onLogout} text="Sign out" />
       </SafeAreaView>
@@ -74,7 +74,7 @@ export default function YouScreen() {
   });
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+    <SafeAreaView edges={['right', 'top', 'left']} style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.profileContainer}>
         <Image source={{ uri: avatarUrl }} style={styles.image} />
         {username && <Text style={[styles.header, { color: colors.text }]}>{username}</Text>}
@@ -87,6 +87,7 @@ export default function YouScreen() {
           data={recordings}
           renderItem={({ item }) => <TrackListItem track={item}  tracks={recordings} />}
           estimatedItemSize={80}
+          ListFooterComponentStyle={{ paddingBottom: 80 }}
         />
       </View>
     </SafeAreaView>

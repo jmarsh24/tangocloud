@@ -29,12 +29,13 @@ const OrchestrasScreen = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
       <Text style={[styles.title, { color: colors.text }]}>Orchestras</Text>
       <FlashList 
         data={orchestras}
         renderItem={({ item }) => <OrchestraItem orchestra={item} />}
         estimatedItemSize={100}
+        ListFooterComponentStyle={{ paddingBottom: 80 }}
       />
     </SafeAreaView>
   );
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    paddingBottom: 60,
+    
   },
   title: {
     fontSize: 24,

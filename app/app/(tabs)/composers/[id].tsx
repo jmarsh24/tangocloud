@@ -51,7 +51,7 @@ export default function ComposerScreen() {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
       <Text style={[styles.title, { color: colors.text }]}>
         {data.fetchComposer.name}
       </Text>
@@ -61,6 +61,7 @@ export default function ComposerScreen() {
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => <TrackListItem track={item}  tracks={recordings} />}
           estimatedItemSize={80}
+          ListFooterComponentStyle={{ paddingBottom: 80 }}
         />
       ) : (
         <Text>No recordings found.</Text>
