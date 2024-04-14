@@ -75,7 +75,7 @@ export const PlayerControls: React.FC = () => {
         </View>
         <View style={styles.control}>
           <TouchableWithoutFeedback onPress={toggleRepeatMode}>
-            <FontAwesome6 name={'repeat'} size={30} style={repeatMode !== RepeatMode.Off ? styles.activeIcon : {color: colors.text}} />
+            <FontAwesome6 name={'repeat'} size={30} style={repeatMode !== RepeatMode.Off ? {color: colors.text} : styles.activeIcon} />
           </TouchableWithoutFeedback>
         </View>
       </View>
