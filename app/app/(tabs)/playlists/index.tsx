@@ -37,6 +37,7 @@ export default function PlaylistsScreen() {
         data={playlists}
         renderItem={({ item }) => <PlaylistItem playlist={item} />}
         ListHeaderComponent={<LikedLink />}
+        estimatedItemSize={80}
         ListFooterComponentStyle={{ paddingBottom: 80 }}
       />
     </SafeAreaView>
