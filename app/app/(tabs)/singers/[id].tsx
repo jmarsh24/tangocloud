@@ -73,6 +73,7 @@ export default function SingerScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingBottom: 60,
   },
   imageContainer: {
     alignItems: 'center',

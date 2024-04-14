@@ -71,6 +71,7 @@ export default function OrchestraScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingBottom: 60,
   },
   loadingContainer: {
     flex: 1,

@@ -134,7 +134,7 @@
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      paddingBottom: 10,
+      paddingBottom: 60,
       gap: 10,
     },
     linksContainer: {

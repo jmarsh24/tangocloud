@@ -56,7 +56,7 @@ export default function PlaylistScreen() {
   });
 
   return (
-    <SafeAreaView style={{ padding: 10, gap: 20, flex: 1 }}>
+    <SafeAreaView style={styles.container}>
       <Text style={[styles.title, { color: colors.text }]}>
         {playlist.title}
       </Text>
@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
+    paddingBottom: 60,
   },
   loadingContainer: {
     flex: 1,
