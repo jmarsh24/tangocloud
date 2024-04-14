@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_28_085734) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_14_120150) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -131,7 +131,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_28_085734) do
     t.string "title", null: false
     t.string "tangotube_slug"
     t.uuid "lyricist_id"
-    t.uuid "composer_id", null: false
+    t.uuid "composer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "recordings_count", default: 0
