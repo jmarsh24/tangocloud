@@ -45,7 +45,7 @@ export default function PlaylistScreen() {
     return {
       id: recording.id,
       title: recording.title,
-      artist: recording.orchestra?.name || "Unknown Artist",
+      artist: recording.orchestra.name,
       duration: recording.audioTransfers[0]?.audioVariants[0]?.duration || 0,
       artwork: recording.audioTransfers[0]?.album?.albumArtUrl || "",
       url: recording.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || "",
@@ -63,7 +63,7 @@ export default function PlaylistScreen() {
       <FlashList
         data={recordings}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <TrackListItem track={item} />}
+        renderItem={({ item }) => <TrackListItem track={item} tracks={recordings} />}
         estimatedItemSize={80}
       />
     </SafeAreaView>

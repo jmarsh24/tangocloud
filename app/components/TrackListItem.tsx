@@ -2,46 +2,45 @@ import React from 'react';
 import { Text, View, StyleSheet, Image, Pressable, Alert } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import TrackPlayer from 'react-native-track-player';
-import { useMutation, useLazyQuery } from '@apollo/client';
-import { CREATE_PLAYBACK, FETCH_RECORDING_URL } from "@/graphql";
+import { useMutation } from '@apollo/client';
+import { CREATE_PLAYBACK } from "@/graphql";
 
-export default function TrackListItem({ track }) {
+export default function TrackListItem({ track, tracks }) {
   const { colors } = useTheme();
   const [createPlayback] = useMutation(CREATE_PLAYBACK);
-  const [fetchRecordingURL, { data, called, loading, error }] = useLazyQuery(FETCH_RECORDING_URL, {
-    variables: { id: track.id },
-    fetchPolicy: "network-only"
-  });
+
+  const loadTracksToPlayer = async () => {
+    try {
+      await TrackPlayer.reset();
+      const trackObjects = tracks.map(track => ({
+        id: track.id,
+        url: track.url,
+        title: track.title,
+        artist: track.artist,
+        artwork: track.artwork,
+        duration: track.duration,
+      }));
+      await TrackPlayer.add(trackObjects);
+      await TrackPlayer.play();
+    } catch (err) {
+      console.error('Error setting up the track player:', err);
+      Alert.alert("Playback Error", "There was an issue loading the tracks. Please try again.");
+    }
+  };
 
   const onTrackPress = async () => {
     try {
-      // Call to fetch the recording URL and wait for response
-      const response = await fetchRecordingURL();
-      if (response && response.data) {
-        const audioFileUrl = response.data.fetchRecording.audioTransfers[0].audioVariants[0].audioFileUrl;
-        const trackForPlayer = {
-          id: track.id,
-          url: audioFileUrl,
-          title: track.title,
-          artist: track.artist,
-          artwork: track.artwork,
-          duration: track.duration,
-        };
+      // Create playback record
+      await createPlayback({
+        variables: {
+          recordingId: track.id,
+        },
+      });
 
-        // Create playback record
-        await createPlayback({
-          variables: {
-            recordingId: track.id,
-          },
-        });
-
-        // Setup track player
-        await TrackPlayer.reset();
-        await TrackPlayer.add([trackForPlayer]);
-        await TrackPlayer.play();
-      }
+      // Load all tracks to the player
+      await loadTracksToPlayer();
     } catch (err) {
-      console.error('Error fetching URL or playing track:', err);
+      console.error('Error during playback setup:', err);
       Alert.alert("Playback Error", "Unable to play the track. Please try again.");
     }
   };
