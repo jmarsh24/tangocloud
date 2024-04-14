@@ -54,7 +54,7 @@ export default function TabLayout() {
       tabBar={(props) => (
         <View>
           <Player />
-          <BottomTabBar {...props} />
+          <BottomTabBar style={styles.container}  {...props} />
         </View>
       )}
     >
@@ -136,9 +136,12 @@ export default function TabLayout() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    height: 80
+  },
   image: {
     width: 24,
     height: 24,
     borderRadius: 12,
   },
-});
+});  
