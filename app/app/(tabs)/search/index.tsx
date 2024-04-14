@@ -132,7 +132,6 @@
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      
       gap: 10,
     },
     linksContainer: {
@@ -140,6 +139,7 @@
       flexWrap: 'wrap',
       justifyContent: 'space-between',
       gap: 10,
+      paddingTop: 10,
     },
     linkButton: {
       width: '48%',
@@ -157,7 +157,7 @@
       alignItems: "center",
       padding: 8,
       borderRadius: 5,
-      position: "relative",
+      position: "relative"
     },
     input: {
       flex: 1,
