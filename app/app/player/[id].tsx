@@ -21,7 +21,7 @@ import { FETCH_RECORDING } from "@/graphql";
 import Waveform from "@/components/Waveform";
 import * as Sharing from "expo-sharing";
 import FontAwesome6 from "react-native-vector-icons/FontAwesome6";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, router } from "expo-router";
 import {
   REMOVE_LIKE_FROM_RECORDING,
   ADD_LIKE_TO_RECORDING,
@@ -41,7 +41,8 @@ interface Track {
 }
 
 export default function PlayerScreen() {
-  const { id } = useLocalSearchParams();
+  const params = useLocalSearchParams<{ id?: string }>();
+  const [id, setId] = React.useState(params.id);
   const vinylRecordImg = require("@/assets/images/vinyl_3x.png");
   const { colors } = useTheme();
   const [track, setTrack] = useState<Track | null>(null);
@@ -51,18 +52,15 @@ export default function PlayerScreen() {
   const progressRef = useRef(0);
   const animationFrameRef = useRef<number>();
   const deviceWidth = Dimensions.get("window").width;
-  // Fetch recording data
-  const { data, loading, error } = useQuery(FETCH_RECORDING, {
-    variables: { id: id },
-    // skip: !id, // Skip fetching if no ID is available (handling for potential null deep links)
-  });
   const [removeLikeFromRecording] = useMutation(REMOVE_LIKE_FROM_RECORDING);
   const [addLikeToRecording] = useMutation(ADD_LIKE_TO_RECORDING);
   const [isLiked, setIsLiked] = useState(false);
-  const [getRecordingDetails, { data: newTrackData, loading: loadingTrackData, error: trackDataError }] = useLazyQuery(FETCH_RECORDING, {
-    fetchPolicy: 'network-only',  // Ensures fresh data is fetched
-  });
 
+  const { data, loading, error } = useQuery(FETCH_RECORDING, {
+    variables: { id: id },
+    skip: !id,
+    fetchPolicy: "network-only",
+  });
 
   const {
     data: likeStatusData,
@@ -72,6 +70,19 @@ export default function PlayerScreen() {
     variables: { recordingId: id },
     fetchPolicy: "network-only",
   });
+
+  useEffect(() => {
+    if (data?.fetchRecording) {
+      setTrack({
+        id: data.fetchRecording.id,
+        url: data.fetchRecording.audioTransfers[0]?.audioVariants[0]?.audioFileUrl,
+        title: data.fetchRecording.title,
+        artist: data.fetchRecording.orchestra.name,
+        artwork: data.fetchRecording.audioTransfers[0]?.album?.albumArtUrl,
+        duration: data.fetchRecording.audioTransfers[0]?.audioVariants[0]?.duration,
+      });
+    }
+  }, [data]);
 
   useEffect(() => {
     if (!likeStatusLoading && likeStatusData) {
@@ -102,30 +113,11 @@ export default function PlayerScreen() {
     if (event.type === Event.PlaybackTrackChanged && event.nextTrack !== null && event.nextTrack !== event.track) {
       const trackInfo = await TrackPlayer.getTrack(event.nextTrack);
       if (trackInfo && trackInfo.id !== track?.id) {
-        console.log('Track changed:', trackInfo.id)
-        // Fetch new recording details without affecting playback
-        getRecordingDetails({ variables: { id: trackInfo.id } });  // Fetch new recording details without affecting playback
+        console.log('Track changed:', trackInfo.id);
+        setId(trackInfo.id);
+        console.log('new id:', trackInfo.id);    
       }
     }
-  });
-
-  // Use effect to monitor changes in fetched data and update the state accordingly
-  useEffect(() => {
-    if (!loadingTrackData && newTrackData && newTrackData.fetchRecording && !trackDataError) {
-      console.log('New track data fetched:', newTrackData.fetchRecording)
-      const newTrackDataPrepared = prepareTrackData(newTrackData.fetchRecording);
-      setTrack(newTrackDataPrepared);
-      setTrackDuration(newTrackDataPrepared.duration);
-    }
-  }, [newTrackData, loadingTrackData, trackDataError]);
-
-  const prepareTrackData = (recordingData) => ({
-    id: recordingData.id,
-    url: recordingData.audioTransfers[0]?.audioVariants[0]?.audioFileUrl,
-    title: recordingData.title,
-    artist: recordingData.orchestra.name,
-    artwork: recordingData.audioTransfers[0]?.album?.albumArtUrl,
-    duration: recordingData.audioTransfers[0]?.audioVariants[0]?.duration || 0,
   });
 
   const loadTrack = async (recordingData) => {
