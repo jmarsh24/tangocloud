@@ -7,7 +7,7 @@ import { USER_PROFILE } from '@/graphql';
 import { BottomTabBar } from '@react-navigation/bottom-tabs';
 import { Tabs, Redirect } from 'expo-router';
 import Colors from '@/constants/Colors';
-import Player from '@/components/Player';
+import FloatingPlayer from '@/components/FloatingPlayer';
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof AntDesign>['name'];
@@ -53,7 +53,7 @@ export default function TabLayout() {
       }}
       tabBar={(props) => (
         <View>
-          <Player />
+          <FloatingPlayer />
           <BottomTabBar {...props} />
         </View>
       )}
@@ -101,7 +101,7 @@ export default function TabLayout() {
         options={{
           href: null,
           headerShown: false
-        }} 
+        }}
       />
       <Tabs.Screen
         name="lyricists"

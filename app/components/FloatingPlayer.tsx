@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Image, Text, Pressable } from 'react-native';
+import { View, StyleSheet, Image, Text, Pressable, Dimensions } from 'react-native';
 import { Link } from 'expo-router';
 import TrackPlayer, { Event } from 'react-native-track-player';
 import { PlayPauseButton } from '@/components/PlayPauseButton';
@@ -8,7 +8,7 @@ import { FontAwesome6 } from '@expo/vector-icons';
 
 const performSkipToNext = () => TrackPlayer.skipToNext();
 
-const Player = () => {
+const FloatingPlayer = () => {
   const [track, setTrack] = useState(null);
   const { colors } = useTheme();
 
@@ -26,10 +26,10 @@ const Player = () => {
     fetchCurrentTrack();
 
     const onTrackChange = TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async () => {
-        let trackIndex = await TrackPlayer.getActiveTrackIndex();
-        let trackObject = await TrackPlayer.getTrack(trackIndex);
-        setTrack(trackObject);
-      }
+      let trackIndex = await TrackPlayer.getActiveTrackIndex();
+      let trackObject = await TrackPlayer.getTrack(trackIndex);
+      setTrack(trackObject);
+    }
     );
 
     return () => {
@@ -47,36 +47,40 @@ const Player = () => {
         <View style={styles.player}>
           <Image source={{ uri: track?.artwork }} style={styles.image} />
           <View style={styles.info}>
-            <Text style={[styles.title, { color: colors.text }]}>{track?.title}</Text>
-            <Text style={[ styles.subtitle, { color: colors.text }]}>{track?.artist}</Text>
+            <Text style={[styles.title, { color: colors.text }]}>{track?.title.substring(0, 25)}</Text>
+            <Text style={[styles.subtitle, { color: colors.text }]}>{track?.artist.substring(0, 35)}</Text>
+            {/* <MovingText style={[styles.title, { color: colors.text }]} text={track?.title} animationThreshold={25} />
+            <MovingText style={[styles.subtitle, { color: colors.text }]} text={track?.artist} animationThreshold={35} /> */}
           </View>
-          <PlayPauseButton size={24} />
-          <Pressable onPress={performSkipToNext}>
-            <FontAwesome6 name={'forward'} size={24} style={{ color: colors.text }} />
-          </Pressable>
+          <View style={styles.buttons}>
+            <PlayPauseButton size={24} />
+            <Pressable onPress={performSkipToNext}>
+              <FontAwesome6 name={'forward'} size={24} style={{ color: colors.text }} />
+            </Pressable>
+          </View>
         </View>
       </Link>
     </View>
   );
 };
 
-export default Player;
+export default FloatingPlayer;
 
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    width: '100%',
-    bottom: 79
+    width: Dimensions.get('window').width,
+    borderRadius: 12,
+    paddingVertical: 10,
   },
   player: {
+    display: 'flex',
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     borderRadius: 10,
     padding: 10,
-    paddingRight: 20,
   },
   image: {
     width: 64,
@@ -86,6 +90,12 @@ const styles = StyleSheet.create({
   },
   info: {
     flex: 1,
+  },
+  buttons: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   title: {
     fontSize: 16,

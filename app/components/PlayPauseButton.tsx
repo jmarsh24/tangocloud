@@ -21,9 +21,9 @@ export const PlayPauseButton = ({ size = 48 }) => {
 
   return (
     <View style={styles.container}>
-        <TouchableWithoutFeedback onPress={playing ? TrackPlayer.pause : TrackPlayer.play}>
-          < FontAwesome6 name={playing ? 'pause' : 'play'} size={size} style={styles.icon} />
-        </TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPress={playing ? TrackPlayer.pause : TrackPlayer.play}>
+        < FontAwesome6 name={playing ? 'pause' : 'play'} size={size} style={styles.icon} />
+      </TouchableWithoutFeedback>
     </View>
   );
 };
