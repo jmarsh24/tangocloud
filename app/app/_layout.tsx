@@ -1,16 +1,22 @@
-import React, { useEffect } from 'react';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { SplashScreen, Stack } from 'expo-router';
-import { useColorScheme } from 'react-native';
-import { AuthProvider } from '@/providers/AuthProvider';
-import ApolloClientProvider from '@/providers/ApolloClientProvider';
-import { SetupService } from '@/services/SetupService';
-import { PlaybackService } from '@/services/PlaybackService';
-import TrackPlayer from 'react-native-track-player';
+import { useEffect, useCallback } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-export { ErrorBoundary } from 'expo-router';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useColorScheme, StatusBar } from 'react-native';
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { Stack, SplashScreen } from 'expo-router';
+import { useFonts } from 'expo-font';
+import TrackPlayer from 'react-native-track-player';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+
+import { playbackService } from '@/constants/playbackService';
+import { useLogTrackPlayerState } from '@/hooks/useLogTrackPlayerState';
+import { useSetupTrackPlayer } from '@/hooks/useSetupTrackPlayer';
+import ApolloClientProvider from '@/providers/ApolloClientProvider';
+import { AuthProvider } from '@/providers/AuthProvider';
+
+export {
+  ErrorBoundary,
+} from 'expo-router';
 
 export const unstable_settings = {
   initialRouteName: '(tabs)',
@@ -18,41 +24,44 @@ export const unstable_settings = {
 
 SplashScreen.preventAutoHideAsync();
 
+TrackPlayer.registerPlaybackService(() => playbackService)
+
 export default function RootLayout() {
-  const [loaded, error] = useFonts({
+
+  const [fontsLoaded, fontsError] = useFonts({
     SpaceMono: require('@/assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
   });
 
   useEffect(() => {
-    if (error) throw error;
-  }, [error]);
+    if (fontsError) throw fontsError;
+    if (fontsLoaded) SplashScreen.hideAsync();
+  }, [fontsLoaded, fontsError]);
 
-  useEffect(() => {
-    async function initializeApp() {
-      try {
-        TrackPlayer.registerPlaybackService(() => PlaybackService);
-
-        await SetupService();
-
-        if (loaded) {
-          await SplashScreen.hideAsync();
-        }
-      } catch (error) {
-        console.error("Initialization failed: ", error);
-      }
-    }
-
-    initializeApp();
-  }, [loaded]);
-
-  if (!loaded) {
+  if (!fontsLoaded) {
     return null;
   }
 
+  const handleTrackPlayerLoaded = useCallback(() => {
+		SplashScreen.hideAsync()
+	}, [])
+
+  useSetupTrackPlayer({
+		onLoad: handleTrackPlayerLoaded,
+	})
+
+	useLogTrackPlayerState()
+
+  const colorScheme = useColorScheme();
+  const statusBarStyle = colorScheme === 'dark' ? 'light-content' : 'dark-content';
+
   return (
     <SafeAreaProvider>
-      <RootLayoutNav />
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <RootLayoutNav />
+
+        <StatusBar barStyle={statusBarStyle} />
+      </GestureHandlerRootView>
     </SafeAreaProvider>
   );
 }
