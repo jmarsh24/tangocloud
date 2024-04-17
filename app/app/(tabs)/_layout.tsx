@@ -8,12 +8,13 @@ import { BottomTabBar } from '@react-navigation/bottom-tabs';
 import { Tabs, Redirect } from 'expo-router';
 import Colors from '@/constants/Colors';
 import Player from '@/components/Player';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 function TabBarIcon(props: {
-  name: React.ComponentProps<typeof AntDesign>['name'];
+  name: React.ComponentProps<typeof MaterialIcons>['name'];
   color: string;
 }) {
-  return <AntDesign size={22} style={{ marginBottom: -3 }} {...props} />;
+  return <MaterialIcons size={22} style={{ marginBottom: -3 }} {...props} />;
 }
 
 export default function TabLayout() {
@@ -71,7 +72,7 @@ export default function TabLayout() {
         options={{
           title: 'Search',
           headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="search1" color={color} />
+          tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />
         }}
       />
       <Tabs.Screen
