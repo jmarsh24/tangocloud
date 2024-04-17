@@ -20,7 +20,6 @@ import { Progress } from "@/components/Progress";
 import { FETCH_RECORDING } from "@/graphql";
 import Waveform from "@/components/Waveform";
 import * as Sharing from "expo-sharing";
-import FontAwesome6 from "react-native-vector-icons/FontAwesome6";
 import { useLocalSearchParams, router } from "expo-router";
 import {
   REMOVE_LIKE_FROM_RECORDING,
@@ -28,7 +27,7 @@ import {
   CHECK_LIKE_STATUS_ON_RECORDING,
 } from "@/graphql";
 import { useQuery, useMutation, useLazyQuery } from "@apollo/client";
-import { Ionicons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import { ScrollView } from "react-native";
 
 interface Track {
@@ -278,17 +277,18 @@ export default function PlayerScreen() {
             </Text>
           </View>
           <View style={styles.row}>
-            <Ionicons
+            <MaterialIcons
               onPress={handleLike}
-              name={isLiked ? "heart" : "heart-outline"}
+              name={isLiked ? "favorite" : "favorite-border"}
               size={36}
               color={colors.text}
             />
             <TouchableWithoutFeedback onPress={shareRecording}>
-              <FontAwesome6
+              <MaterialIcons
                 name={"share"}
                 size={30}
                 style={[styles.icon, { color: colors.text }]}
+                onPress={shareRecording}
               />
             </TouchableWithoutFeedback>
           </View>

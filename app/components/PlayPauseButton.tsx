@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import TrackPlayer, { useIsPlaying } from 'react-native-track-player';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import { MaterialIcons } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
 
 export const PlayPauseButton = ({ size = 48 }) => {
@@ -22,7 +22,7 @@ export const PlayPauseButton = ({ size = 48 }) => {
   return (
     <View style={styles.container}>
         <TouchableWithoutFeedback onPress={playing ? TrackPlayer.pause : TrackPlayer.play}>
-          < FontAwesome6 name={playing ? 'pause' : 'play'} size={size} style={styles.icon} />
+          <MaterialIcons name={playing ? 'pause' : 'play-arrow'} size={size} style={styles.icon} />
         </TouchableWithoutFeedback>
     </View>
   );

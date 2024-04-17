@@ -4,7 +4,7 @@ import { Link } from 'expo-router';
 import TrackPlayer, { Event } from 'react-native-track-player';
 import { PlayPauseButton } from '@/components/PlayPauseButton';
 import { useTheme } from '@react-navigation/native';
-import { FontAwesome6 } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const performSkipToNext = () => TrackPlayer.skipToNext();
 
@@ -52,7 +52,7 @@ const Player = () => {
           </View>
           <PlayPauseButton size={24} />
           <Pressable onPress={performSkipToNext}>
-            <FontAwesome6 name={'forward'} size={24} style={{ color: colors.text }} />
+            <MaterialIcons name={'skip-next'} size={24} style={{ color: colors.text }} />
           </Pressable>
         </View>
       </Link>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import TrackPlayer, { usePlaybackState, RepeatMode } from 'react-native-track-player';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import { MaterialIcons } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
 import { PlaybackError } from '@/components/PlaybackError';
 import { PlayPauseButton } from '@/components/PlayPauseButton';
@@ -56,13 +56,13 @@ export const PlayerControls: React.FC = () => {
     <View style={styles.container}>
       <View style={styles.row}>
         <View style={styles.control}>
-          <TouchableWithoutFeedback onPress={handleShuffle}>
-            <FontAwesome6 name={'shuffle'} size={30} style={shuffleActive ? styles.activeIcon : {color: colors.text}} />
-          </TouchableWithoutFeedback>
+          {/* <TouchableWithoutFeedback onPress={handleShuffle}>
+            <MaterialIcons name={shuffleActive ? 'shuffle' : 'shuffle-on'} size={30} style={{ color: shuffleActive ? "#ff7700" : colors.text }} />
+          </TouchableWithoutFeedback> */}
         </View>
         <View style={styles.control}>
           <TouchableWithoutFeedback onPress={performSkipToPrevious}>
-            <FontAwesome6 name={'backward'} size={30} style={{color: colors.text}} />
+            <MaterialIcons name={'skip-previous'} size={30} style={{ color: colors.text }} />
           </TouchableWithoutFeedback>
         </View>
         <View style={styles.control}>
@@ -70,12 +70,16 @@ export const PlayerControls: React.FC = () => {
         </View>
         <View style={styles.control}>
           <TouchableWithoutFeedback onPress={performSkipToNext}>
-            <FontAwesome6 name={'forward'} size={30} style={{color: colors.text}} />
+            <MaterialIcons name={'skip-next'} size={30} style={{ color: colors.text }} />
           </TouchableWithoutFeedback>
         </View>
         <View style={styles.control}>
           <TouchableWithoutFeedback onPress={toggleRepeatMode}>
-            <FontAwesome6 name={'repeat'} size={30} style={repeatMode !== RepeatMode.Off ? {color: colors.text} : styles.activeIcon} />
+            <MaterialIcons
+              name={repeatMode === RepeatMode.Off ? 'repeat' : (repeatMode === RepeatMode.Track ? 'repeat-one' : 'repeat')}
+              size={30}
+              style={{ color: repeatMode !== RepeatMode.Off ? "#ff7700" : colors.text }}
+            />
           </TouchableWithoutFeedback>
         </View>
       </View>

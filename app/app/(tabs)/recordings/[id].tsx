@@ -16,9 +16,9 @@ import { FETCH_RECORDING } from "@/graphql";
 import { useQuery } from "@apollo/client";
 import Waveform from "@/components/Waveform";
 import * as Sharing from "expo-sharing";
-import FontAwesome6 from "react-native-vector-icons/FontAwesome6";
 import { useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { MaterialIcons } from "@expo/vector-icons";
 
 export default function RecordingScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -141,7 +141,7 @@ export default function RecordingScreen() {
         />
         <Progress />
         <TouchableWithoutFeedback onPress={shareRecording}>
-          <FontAwesome6 name={"share"} size={30} style={styles.icon} />
+          <MaterialIcons name={"share"} size={30} style={styles.icon} />
         </TouchableWithoutFeedback>
         <PlayerControls />
       </View>
