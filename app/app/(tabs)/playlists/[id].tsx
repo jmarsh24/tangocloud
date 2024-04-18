@@ -55,7 +55,7 @@ const PlaylistScreen = () => {
   });
 
   return (
-    <View edges={['right', 'top', 'left']} style={styles.container}>
+    <View style={styles.container}>
       <Text style={[styles.title, { color: colors.text }]}>
         {playlist.title}
       </Text>
