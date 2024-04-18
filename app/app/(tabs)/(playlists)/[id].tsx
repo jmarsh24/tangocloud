@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useTheme } from "@react-navigation/native";
@@ -6,9 +6,8 @@ import { useQuery } from "@apollo/client";
 import { FlashList } from "@shopify/flash-list";
 import { FETCH_PLAYLIST } from "@/graphql";
 import TrackListItem from "@/components/TrackListItem";
-import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function PlaylistScreen() {
+const PlaylistScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { colors } = useTheme();
 
@@ -56,7 +55,7 @@ export default function PlaylistScreen() {
   });
 
   return (
-    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
+    <View edges={['right', 'top', 'left']} style={styles.container}>
       <Text style={[styles.title, { color: colors.text }]}>
         {playlist.title}
       </Text>
@@ -67,7 +66,7 @@ export default function PlaylistScreen() {
         estimatedItemSize={80}
         ListFooterComponentStyle={{ paddingBottom: 80 }}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -93,3 +92,5 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
 });
+
+export default PlaylistScreen;

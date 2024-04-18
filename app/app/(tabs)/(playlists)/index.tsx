@@ -8,7 +8,7 @@ import { FlashList } from '@shopify/flash-list';
 
 const PlaylistsScreen = () => {
   const { colors } = useTheme();
-  const { data, loading, error } = useQuery(SEARCH_PLAYLISTS, { variables: { query: "*", first: 20 } })
+  const { data, loading, error } = useQuery(SEARCH_PLAYLISTS, { variables: { query: "*" } })
   const playlists = data?.searchPlaylists.edges.map((edge) => edge.node);
   
   if (loading) {
