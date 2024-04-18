@@ -26,12 +26,25 @@ SplashScreen.preventAutoHideAsync();
 
 TrackPlayer.registerPlaybackService(() => playbackService)
 
-export default function RootLayout() {
+const App = () => {
 
   const [fontsLoaded, fontsError] = useFonts({
     SpaceMono: require('@/assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
   });
+
+  const colorScheme = useColorScheme();
+  const statusBarStyle = colorScheme === 'dark' ? 'light-content' : 'dark-content';
+
+  const handleTrackPlayerLoaded = useCallback(() => {
+    SplashScreen.hideAsync()
+  }, []);
+
+  useSetupTrackPlayer({
+    onLoad: handleTrackPlayerLoaded,
+  });
+
+  useLogTrackPlayerState();
 
   useEffect(() => {
     if (fontsError) throw fontsError;
@@ -41,19 +54,6 @@ export default function RootLayout() {
   if (!fontsLoaded) {
     return null;
   }
-
-  const handleTrackPlayerLoaded = useCallback(() => {
-		SplashScreen.hideAsync()
-	}, [])
-
-  useSetupTrackPlayer({
-		onLoad: handleTrackPlayerLoaded,
-	})
-
-	useLogTrackPlayerState()
-
-  const colorScheme = useColorScheme();
-  const statusBarStyle = colorScheme === 'dark' ? 'light-content' : 'dark-content';
 
   return (
     <SafeAreaProvider>
@@ -83,3 +83,5 @@ function RootLayoutNav() {
     </ThemeProvider>
   );
 }
+
+export default App;
