@@ -1,35 +1,34 @@
-import { Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { Text, ActivityIndicator, StyleSheet, View } from 'react-native';
 import PlaylistItem from '@/components/PlaylistItem';
 import { SEARCH_PLAYLISTS } from '@/graphql';
 import { useQuery } from '@apollo/client';
 import LikedLink from '@/components/LikedLink';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 
-export default function PlaylistsScreen() {
+const PlaylistsScreen = () => {
   const { colors } = useTheme();
   const { data, loading, error } = useQuery(SEARCH_PLAYLISTS, { variables: { query: "*", first: 20 } })
   const playlists = data?.searchPlaylists.edges.map((edge) => edge.node);
   
   if (loading) {
     return (
-      <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
+      <View style={styles.container}>
         <ActivityIndicator />
-      </SafeAreaView>
+      </View>
     );
   }
   
   if (error) {
     return (
-      <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
+      <View style={styles.container}>
         <Text>Failed to fetch</Text>
-      </SafeAreaView>
+      </View>
     );
   }
   
   return (
-    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
+    <View style={styles.container}>
       <Text style={[styles.title,{color: colors.text}]}>
         Playlists
       </Text>
@@ -40,7 +39,7 @@ export default function PlaylistsScreen() {
         estimatedItemSize={80}
         ListFooterComponentStyle={{ paddingBottom: 80 }}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -57,3 +56,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+export default PlaylistsScreen;

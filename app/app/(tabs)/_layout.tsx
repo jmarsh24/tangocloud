@@ -19,7 +19,7 @@ const TabsNavigation = () => {
     return null;
   }
 
-  if (error) {
+  if (error) { 
     console.error('Error fetching user:', error);
   }
 
@@ -31,9 +31,9 @@ const TabsNavigation = () => {
 
   const youIcon = (color) => {
     if (authState?.authenticated && avatarUrl) {
-      return <Image source={{ uri: avatarUrl }} />;
+      return <Image source={{ uri: avatarUrl }} style={{width: 24, height: 24}} />;
     } else {
-      return <MaterialIcons name="person" size={22} color={color} style={{ marginBottom: -3 }} />;
+      return <MaterialIcons name="person" color={color} style={{ marginBottom: -3 }} />;
     }
   };
 
@@ -68,7 +68,7 @@ const TabsNavigation = () => {
 				}}
 			>
       <Tabs.Screen
-        name="playlists"
+        name="(playlists)"
         options={{
           title: 'Home',
           headerShown: false,
