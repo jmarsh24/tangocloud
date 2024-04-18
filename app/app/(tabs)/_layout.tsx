@@ -1,24 +1,14 @@
-import React from 'react';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import { useColorScheme, View, StyleSheet, Image } from 'react-native';
+import { StyleSheet, Image } from 'react-native';
 import { useAuth } from '@/providers/AuthProvider';
 import { useQuery } from '@apollo/client';
 import { USER_PROFILE } from '@/graphql';
-import { BottomTabBar } from '@react-navigation/bottom-tabs';
 import { Tabs, Redirect } from 'expo-router';
-import Colors from '@/constants/Colors';
-import Player from '@/components/Player';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { FloatingPlayer } from '@/components/FloatingPlayer'
+import { colors, fontSize } from '@/constants/tokens'
+import { BlurView } from 'expo-blur'
 
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof MaterialIcons>['name'];
-  color: string;
-}) {
-  return <MaterialIcons size={22} style={{ marginBottom: -3 }} {...props} />;
-}
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+const TabsNavigation = () => {
   const { authState } = useAuth();
 
   const { data, loading, error } = useQuery(USER_PROFILE, {
@@ -41,30 +31,48 @@ export default function TabLayout() {
 
   const youIcon = (color) => {
     if (authState?.authenticated && avatarUrl) {
-      return <Image source={{ uri: avatarUrl }} style={styles.image} />;
+      return <Image source={{ uri: avatarUrl }} />;
     } else {
-      return <AntDesign name="user" size={22} color={color} style={{ marginBottom: -3 }} />;
+      return <MaterialIcons name="person" size={22} color={color} style={{ marginBottom: -3 }} />;
     }
   };
 
-  return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-      }}
-      tabBar={(props) => (
-        <View>
-          <Player />
-          <BottomTabBar {...props} />
-        </View>
-      )}
-    >
+	return (
+		<>
+			<Tabs
+				screenOptions={{
+					tabBarActiveTintColor: colors.primary,
+					tabBarLabelStyle: {
+						fontSize: fontSize.xs,
+						fontWeight: '500',
+					},
+					headerShown: false,
+					tabBarStyle: {
+						position: 'absolute',
+						borderTopLeftRadius: 20,
+						borderTopRightRadius: 20,
+						borderTopWidth: 0,
+						paddingTop: 8,
+					},
+					tabBarBackground: () => (
+						<BlurView
+							intensity={95}
+							style={{
+								...StyleSheet.absoluteFillObject,
+								overflow: 'hidden',
+								borderTopLeftRadius: 20,
+								borderTopRightRadius: 20,
+							}}
+						/>
+					),
+				}}
+			>
       <Tabs.Screen
         name="playlists"
         options={{
           title: 'Home',
           headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />
+          tabBarIcon: ({ color }) => <MaterialIcons name="home" color={color} />
         }}
       />
       <Tabs.Screen
@@ -72,7 +80,7 @@ export default function TabLayout() {
         options={{
           title: 'Search',
           headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />
+          tabBarIcon: ({ color }) => <MaterialIcons name="search" color={color} />
         }}
       />
       <Tabs.Screen
@@ -132,14 +140,18 @@ export default function TabLayout() {
           headerShown: false
         }}
       />
-    </Tabs>
-  );
+			</Tabs>
+
+			<FloatingPlayer
+				style={{
+					position: 'absolute',
+					left: 8,
+					right: 8,
+					bottom: 78,
+				}}
+			/>
+		</>
+	)
 }
 
-const styles = StyleSheet.create({
-  image: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-  },
-});
+export default TabsNavigation

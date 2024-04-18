@@ -2,20 +2,33 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
+    "target": "ES6",
+    "module": "commonjs",
+    "moduleResolution": "Node",
+    "jsx": "react-native",
+    "lib": ["dom", "esnext"],
+    "noEmit": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@/assets/*": ["./assets/*"]
     }
   },
-  "jsx": "react-native",
   "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
   "types": ["nativewind/types"],
   "exclude": ["node_modules"],
   "include": [
-    "app",
+    "src",
     "**/*.ts",
     "**/*.tsx",
     "*.js",
     ".expo/types/**/*.ts",
-    "expo-env.d.ts"
+    "expo-env.d.ts",
+    "app/(auth)",
+    "app/(tabs)",
+    "app/player"
   ]
 }

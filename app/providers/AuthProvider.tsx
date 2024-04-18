@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, PropsWithChildren } from 'react';
+import { createContext, useContext, useEffect, useState, PropsWithChildren } from 'react';
 import { useApolloClient, ApolloError } from '@apollo/client';
 import { REGISTER, LOGIN } from '@/graphql';
 import * as SecureStore from 'expo-secure-store';
