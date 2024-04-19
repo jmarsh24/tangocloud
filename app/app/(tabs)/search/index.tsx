@@ -16,7 +16,7 @@ const SearchScreen = () => {
     const ITEMS_PER_PAGE = 50;
 
     const searchText = useNavigationSearch({
-        searchBarOptions: { placeholder: 'Find in songs' },
+        searchBarOptions: { placeholder: 'Find in recordings' },
     });
 
     useMemo(() => setSearchQuery(searchText), [searchText]);

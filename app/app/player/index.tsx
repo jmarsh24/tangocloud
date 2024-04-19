@@ -61,7 +61,6 @@ const PlayerScreen = () => {
 										alignItems: 'center',
 									}}
 								>
-									{/* Track title */}
 									<View style={styles.trackTitleContainer}>
 										<MovingText
 											text={activeTrack.title ?? ''}
@@ -70,7 +69,6 @@ const PlayerScreen = () => {
 										/>
 									</View>
 
-									{/* Favorite button icon */}
 									<FontAwesome
 										name={isFavorite ? 'heart' : 'heart-o'}
 										size={20}
@@ -80,7 +78,6 @@ const PlayerScreen = () => {
 									/>
 								</View>
 
-								{/* Track artist */}
 								{activeTrack.artist && (
 									<Text numberOfLines={1} style={[styles.trackArtistText, { marginTop: 6 }]}>
 										{activeTrack.artist}

@@ -7,6 +7,7 @@ import { StatusBar, useColorScheme } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import TrackPlayer from 'react-native-track-player'
+import { colors } from '@/constants/tokens'
 
 import { playbackService } from '@/constants/playbackService'
 import { useLogTrackPlayerState } from '@/hooks/useLogTrackPlayerState'
@@ -77,6 +78,19 @@ function RootLayoutNav() {
 								gestureDirection: 'vertical',
 								animationDuration: 400,
 								headerShown: false,
+							}}
+						/>
+						<Stack.Screen
+							name="(modals)/addToPlaylist"
+							options={{
+								presentation: 'modal',
+								headerStyle: {
+									backgroundColor: colors.background,
+								},
+								headerTitle: 'Add to playlist',
+								headerTitleStyle: {
+									color: colors.text,
+								},
 							}}
 						/>
 					</Stack>
