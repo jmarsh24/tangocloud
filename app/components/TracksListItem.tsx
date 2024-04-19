@@ -62,7 +62,6 @@ export const TracksListItem = ({
 						alignItems: 'center',
 					}}
 				>
-					{/* Track title + artist */}
 					<View style={{ width: '100%' }}>
 						<Text
 							numberOfLines={1}
@@ -76,9 +75,12 @@ export const TracksListItem = ({
 
 						{track.artist && (
 							<Text numberOfLines={1} style={styles.trackArtistText}>
-								{track.artist}
+								{`${track.artist} • ${track.singer}`}
 							</Text>
 						)}
+						<Text numberOfLines={1} style={styles.trackArtistText}>
+							{`${track.genre} • ${track.year}`}
+						</Text>
 					</View>
 
 					<StopPropagation>
