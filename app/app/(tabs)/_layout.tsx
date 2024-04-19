@@ -33,7 +33,7 @@ const TabsNavigation = () => {
 		if (authState?.authenticated && avatarUrl) {
 			return <Image source={{ uri: avatarUrl }} style={{ width: 24, height: 24, borderRadius: 12 }} />
 		} else {
-			return <MaterialIcons name="person" color={color} size={20} />
+			return <MaterialIcons name="person" color={color} size={24} />
 		}
 	}
 
@@ -49,8 +49,6 @@ const TabsNavigation = () => {
 					headerShown: false,
 					tabBarStyle: {
 						position: 'absolute',
-						borderTopLeftRadius: 20,
-						borderTopRightRadius: 20,
 						borderTopWidth: 0,
 						paddingTop: 8,
 					},
@@ -59,9 +57,6 @@ const TabsNavigation = () => {
 							intensity={95}
 							style={{
 								...StyleSheet.absoluteFillObject,
-								overflow: 'hidden',
-								borderTopLeftRadius: 20,
-								borderTopRightRadius: 20,
 							}}
 						/>
 					),
@@ -72,7 +67,7 @@ const TabsNavigation = () => {
 					options={{
 						title: 'Home',
 						headerShown: false,
-						tabBarIcon: ({ color }) => <MaterialIcons name="home" size={20} color={color} />,
+						tabBarIcon: ({ color }) => <MaterialIcons name="home" size={24} color={color} />,
 					}}
 				/>
 				<Tabs.Screen
@@ -80,7 +75,7 @@ const TabsNavigation = () => {
 					options={{
 						title: 'Search',
 						headerShown: false,
-						tabBarIcon: ({ color }) => <MaterialIcons name="search" size={20} color={color} />,
+						tabBarIcon: ({ color }) => <MaterialIcons name="search" size={24} color={color} />,
 					}}
 				/>
 				<Tabs.Screen
