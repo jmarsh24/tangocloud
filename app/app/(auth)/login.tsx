@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, Alert, SafeAreaView, KeyboardAvoidingView, Platform, useColorScheme } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert, KeyboardAvoidingView, Platform, useColorScheme } from 'react-native';
 import React, { useState } from 'react';
 import Button from '@/components/Button';
 import Colors from '@/constants/Colors';
@@ -53,7 +53,7 @@ const LoginScreen = () => {
   });
 
   return (
-    <SafeAreaView edges={['right', 'top', 'left']} style={{ flex: 1 }}> 
+    <View style={{ flex: 1 }}> 
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -90,7 +90,7 @@ const LoginScreen = () => {
           </Link>
         </View>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 };
 
