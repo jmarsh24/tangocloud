@@ -7,6 +7,7 @@ import { StyleSheet, TouchableOpacity, View, ViewProps } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { useActiveTrack } from 'react-native-track-player'
 import { MovingText } from './MovingText'
+import SimpleProgressBar from './SimpleProgressBar'
 
 export const FloatingPlayer = ({ style }: ViewProps) => {
     const router = useRouter()
@@ -50,6 +51,9 @@ export const FloatingPlayer = ({ style }: ViewProps) => {
                 <PlayPauseButton iconSize={24} />
                 <SkipToNextButton iconSize={22} />
             </View>
+            <View style={styles.progressBar}>
+                <SimpleProgressBar />
+            </View>
         </TouchableOpacity>
     )
 }
@@ -62,6 +66,7 @@ const styles = StyleSheet.create({
         padding: 8,
         borderRadius: 12,
         paddingVertical: 10,
+        position: 'relative',
     },
     trackArtworkImage: {
         width: 40,
@@ -91,5 +96,11 @@ const styles = StyleSheet.create({
         columnGap: 20,
         marginRight: 16,
         paddingLeft: 16,
+    },
+    progressBar: {
+        position: 'absolute',
+        bottom: 0,
+        left: 15,
+        right: 15,
     },
 })
