@@ -17,7 +17,6 @@ import { useQuery } from "@apollo/client";
 import Waveform from "@/components/Waveform";
 import * as Sharing from "expo-sharing";
 import { useLocalSearchParams } from "expo-router";
-import { View } from "react-native-safe-area-context";
 import { MaterialIcons } from "@expo/vector-icons";
 
 const RecordingScreen = () => {
