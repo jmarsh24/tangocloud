@@ -1,109 +1,54 @@
-import { useEffect } from "react";
-import { ScrollView, View, Text, StyleSheet, ActivityIndicator } from "react-native";
-import { useLocalSearchParams } from "expo-router";
-import { useTheme } from "@react-navigation/native";
-import { useQuery } from "@apollo/client";
-import { FlashList } from "@shopify/flash-list";
-import { FETCH_PLAYLIST } from "@/graphql";
-import TrackListItem from "@/components/TrackListItem";
-import { TracksList } from "@/components/TracksList";
-import { generateTracksListId } from "@/helpers/miscellaneous";
+import { PlaylistTracksList } from '@/components/PlaylistTracksList'
 import { screenPadding } from '@/constants/tokens'
+import { FETCH_PLAYLIST } from '@/graphql'
+import { defaultStyles } from '@/styles'
+import { useQuery } from '@apollo/client'
+import { Redirect, useLocalSearchParams } from 'expo-router'
+import { ScrollView, Text, View } from 'react-native'
 
 const PlaylistScreen = () => {
-  const { id } = useLocalSearchParams<{ id: string }>();
-  const { colors } = useTheme();
+	const { id } = useLocalSearchParams<{ id: string }>()
+	const { data, loading, error } = useQuery(FETCH_PLAYLIST, {
+		variables: { id: id },
+		fetchPolicy: 'network-only',
+	})
+	
+	if (loading) {
+		return (
+			<View style={defaultStyles.container}>
+				<Text>Loading...</Text>
+			</View>
+		)
+	}
 
-  const { data, loading, error } = useQuery(FETCH_PLAYLIST, {variables: { id } });
+	if (error) {
+		console.error('Error fetching playlist:', error)
+		return (
+			<View style={defaultStyles.container}>
+				<Text>Error loading playlist. Please try again later.</Text>
+			</View>
+		)
+	}
 
-  useEffect(() => {
-    if (error) {
-      console.error("Error fetching playlist:", error);
-    }
-  }, [error]);
+	const playlist = data?.fetchPlaylist
+	const playlistTitle = data?.fetchPlaylist?.title
 
-  if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
+	if (!playlist) {
+		console.warn(`Playlist ${playlistTitle} was not found!`)
 
-  if (error) {
-    return (
-      <View style={styles.container}>
-        <Text style={[styles.errorText, { color: colors.text }]}>
-          Error loading playlist.
-        </Text>
-      </View>
-    );
-  }
+		return <Redirect href={'/(tabs)/playlists'} />
+	}
 
-  const playlist = data?.fetchPlaylist;
-
-  const recordings = playlist.playlistItems.map((item) => {
-    const recording = item.playable;
-    return {
-      id: recording.id,
-      title: recording.title,
-      artist: recording.orchestra.name,
-      duration: recording.audioTransfers[0]?.audioVariants[0]?.duration || 0,
-      artwork: recording.audioTransfers[0]?.album?.albumArtUrl || "",
-      url: recording.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || "",
-      genre: recording.genre.name,
-      year: recording.year,
-      singer: recording.singers[0]?.name,
-    };
-  });
-
-  return (
-    <View style={styles.container}>
-      <Text style={[styles.title, { color: colors.text }]}>
-        {playlist.title}
-      </Text>
-      <ScrollView
+	return (
+		<View style={defaultStyles.container}>
+			<ScrollView
 				contentInsetAdjustmentBehavior="automatic"
 				style={{ paddingHorizontal: screenPadding.horizontal }}
-      >
-        <TracksList
-          id={generateTracksListId(playlist.id)}
-          tracks={recordings}
-          scrollEnabled={false}
-          />
-      </ScrollView>
-      <FlashList
-        data={recordings}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <TrackListItem track={item} tracks={recordings} />}
-        estimatedItemSize={80}
-        ListFooterComponentStyle={{ paddingBottom: 80 }}
-      />
-    </View>
-  );
+			>
+				<PlaylistTracksList playlist={playlist} />
+			</ScrollView>
+		</View>
+	)
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginHorizontal: 16,
-    marginTop: 16,
-  },
-  errorText: {
-    fontSize: 16,
-    textAlign: "center",
-    marginTop: 16,
-  },
-});
-
-export default PlaylistScreen;
+export default PlaylistScreen

@@ -11,70 +11,87 @@ import { QueueControls } from './QueueControls'
 import { TracksList } from './TracksList'
 
 export const PlaylistTracksList = ({ playlist }: { playlist: Playlist }) => {
-	const search = useNavigationSearch({
-		searchBarOptions: {
-			hideWhenScrolling: true,
-			placeholder: 'Find in playlist',
-		},
-	})
+    const search = useNavigationSearch({
+        searchBarOptions: {
+            hideWhenScrolling: true,
+            placeholder: 'Find in playlist',
+        },
+    });
 
-	const filteredPlaylistTracks = useMemo(() => {
-		return playlist.tracks.filter(trackTitleFilter(search))
-	}, [playlist.tracks, search])
+    const filteredPlaylistTracks = useMemo(() => {
+        const recordings = playlist.playlistItems.map((item) => {
+            const recording = item.playable;
+            return {
+                id: recording.id,
+                title: recording.title,
+                artist: recording.orchestra.name,
+                duration: recording.audioTransfers[0]?.audioVariants[0]?.duration || 0,
+                artwork: recording.audioTransfers[0]?.album?.albumArtUrl || "",
+                url: recording.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || "",
+                genre: recording.genre.name,
+                year: recording.year,
+                singer: recording.singers[0]?.name,
+            };
+        });
+        return recordings.filter(trackTitleFilter(search));
+    }, [playlist.playlistItems, search]);
 
-	return (
-		<TracksList
-			id={generateTracksListId(playlist.name, search)}
-			scrollEnabled={false}
-			hideQueueControls={true}
-			ListHeaderComponentStyle={styles.playlistHeaderContainer}
-			ListHeaderComponent={
-				<View>
-					<View style={styles.artworkImageContainer}>
-						<FastImage
-							source={{
-								uri: playlist.artworkPreview,
-								priority: FastImage.priority.high,
-							}}
-							style={styles.artworkImage}
-						/>
-					</View>
+    const ListHeaderComponent = (
+        <View>
+            <View style={styles.artworkImageContainer}>
+                <FastImage
+                    source={{
+                        uri: playlist.imageUrl,
+                        priority: FastImage.priority.high,
+                    }}
+                    style={styles.artworkImage}
+                />
+            </View>
+            <Text numberOfLines={1} style={styles.playlistNameText}>
+                {playlist.title}
+            </Text>
+            {search.length === 0 && (
+                <QueueControls style={styles.queueControl} tracks={playlist.playlistItems.map(item => item.playable)} />
+            )}
+        </View>
+    );
 
-					<Text numberOfLines={1} style={styles.playlistNameText}>
-						{playlist.name}
-					</Text>
-
-					{search.length === 0 && (
-						<QueueControls style={{ paddingTop: 24 }} tracks={playlist.tracks} />
-					)}
-				</View>
-			}
-			tracks={filteredPlaylistTracks}
-		/>
-	)
-}
+    return (
+        <TracksList
+            id={generateTracksListId(playlist.title, search)}
+            scrollEnabled={false}
+            hideQueueControls={true}
+            ListHeaderComponentStyle={styles.playlistHeaderContainer}
+            ListHeaderComponent={ListHeaderComponent}
+            tracks={filteredPlaylistTracks}
+        />
+    );
+};
 
 const styles = StyleSheet.create({
-	playlistHeaderContainer: {
-		flex: 1,
-		marginBottom: 32,
-	},
-	artworkImageContainer: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		height: 300,
-	},
-	artworkImage: {
-		width: '85%',
-		height: '100%',
-		resizeMode: 'cover',
-		borderRadius: 12,
-	},
-	playlistNameText: {
-		...defaultStyles.text,
-		marginTop: 22,
-		textAlign: 'center',
-		fontSize: fontSize.lg,
-		fontWeight: '800',
-	},
-})
+    playlistHeaderContainer: {
+        flex: 1,
+        marginBottom: 32,
+    },
+    artworkImageContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        height: 300,
+    },
+    artworkImage: {
+        width: '85%',
+        height: '100%',
+        resizeMode: 'cover',
+        borderRadius: 12,
+    },
+    playlistNameText: {
+        ...defaultStyles.text,
+        marginTop: 22,
+        textAlign: 'center',
+        fontSize: fontSize.lg,
+        fontWeight: '800',
+    },
+    queueControl: {
+        paddingTop: 24,
+    }
+});

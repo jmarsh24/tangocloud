@@ -1,61 +1,67 @@
-import { Text, ActivityIndicator, StyleSheet, View } from 'react-native';
-import PlaylistItem from '@/components/PlaylistItem';
-import { SEARCH_PLAYLISTS } from '@/graphql';
-import { useQuery } from '@apollo/client';
-import LikedLink from '@/components/LikedLink';
-import { useTheme } from '@react-navigation/native';
-import { FlashList } from '@shopify/flash-list';
-import { defaultStyles } from '@/styles';
+import { PlaylistsList } from '@/components/PlaylistsList'
+import { screenPadding } from '@/constants/tokens'
+import { SEARCH_PLAYLISTS } from '@/graphql'
+import { Playlist } from '@/helpers/types'
+import { useNavigationSearch } from '@/hooks/useNavigationSearch'
+import { defaultStyles } from '@/styles'
+import { useQuery } from '@apollo/client'
+import { useRouter } from 'expo-router'
+import { useMemo } from 'react'
+import { ScrollView, Text, View } from 'react-native'
 
 const PlaylistsScreen = () => {
-  const { colors } = useTheme();
-  const { data, loading, error } = useQuery(SEARCH_PLAYLISTS, { variables: { query: "*" } })
-  const playlists = data?.searchPlaylists.edges.map((edge) => edge.node);
-  
-  if (loading) {
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator />
-      </View>
-    );
-  }
-  
-  if (error) {
-    return (
-      <View style={styles.container}>
-        <Text>Failed to fetch</Text>
-      </View>
-    );
-  }
-  
-  return (
-    <View style={defaultStyles.container}>
-      <Text style={[styles.title,{color: colors.text}]}>
-        Playlists
-      </Text>
-      <FlashList
-        data={playlists}
-        renderItem={({ item }) => <PlaylistItem playlist={item} />}
-        ListHeaderComponent={<LikedLink />}
-        estimatedItemSize={80}
-        ListFooterComponentStyle={{ paddingBottom: 80 }}
-      />
-    </View>
-  );
+	const router = useRouter()
+
+	const search = useNavigationSearch({
+		searchBarOptions: {
+			placeholder: 'Find in playlists',
+		},
+	})
+
+	const { data, loading, error } = useQuery(SEARCH_PLAYLISTS, {
+		variables: { query: search || '*' },
+	})
+	const playlists = useMemo(() => {
+		return data?.searchPlaylists?.edges.map((edge) => edge.node) ?? []
+	}, [data])
+
+	const handlePlaylistPress = (playlist: Playlist) => {
+		router.push(`/(tabs)/playlists/${playlist.id}`)
+	}
+
+	if (loading) {
+		return (
+			<View style={defaultStyles.container}>
+				<Text>Loading...</Text>
+			</View>
+		)
+	}
+
+	if (error) {
+		console.error('Error fetching playlists:', error)
+		return (
+			<View style={defaultStyles.container}>
+				<Text>Error loading playlists.</Text>
+			</View>
+		)
+	}
+
+	return (
+		<View style={defaultStyles.container}>
+			<ScrollView
+				contentInsetAdjustmentBehavior="automatic"
+				style={{
+					paddingHorizontal: screenPadding.horizontal,
+				}}
+			>
+				<PlaylistsList
+					scrollEnabled={false}
+					playlists={playlists}
+					onPlaylistPress={handlePlaylistPress}
+				/>
+			</ScrollView>
+		</View>
+	)
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-});
-
-export default PlaylistsScreen;
+export default PlaylistsScreen

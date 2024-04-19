@@ -16,7 +16,7 @@ export const PlaylistListItem = ({ playlist, ...props }: PlaylistListItemProps) 
 				<View>
 					<FastImage
 						source={{
-							uri: playlist.artworkPreview,
+							uri: playlist.imageUrl,
 							priority: FastImage.priority.normal,
 						}}
 						style={styles.playlistArtworkImage}
@@ -32,7 +32,7 @@ export const PlaylistListItem = ({ playlist, ...props }: PlaylistListItemProps) 
 					}}
 				>
 					<Text numberOfLines={1} style={styles.playlistNameText}>
-						{playlist.name}
+						{playlist.title}
 					</Text>
 
 					<AntDesign name="right" size={16} color={colors.icon} style={{ opacity: 0.5 }} />
