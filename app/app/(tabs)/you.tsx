@@ -6,7 +6,7 @@ import { useQuery } from '@apollo/client'
 import { useFocusEffect, useTheme } from '@react-navigation/native'
 import { FlashList } from '@shopify/flash-list'
 import { Link } from 'expo-router'
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 

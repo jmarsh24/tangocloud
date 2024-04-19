@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { useLocalSearchParams, Stack } from "expo-router";
 import { useTheme } from "@react-navigation/native";
@@ -8,7 +8,7 @@ import TrackListItem from "@/components/TrackListItem";
 import { FETCH_LYRICIST } from "@/graphql";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function LyricistScreen() {
+const LyricistScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { colors } = useTheme();
 
@@ -83,3 +83,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+
+export default LyricistScreen;

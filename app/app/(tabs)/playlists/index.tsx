@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/client';
 import LikedLink from '@/components/LikedLink';
 import { useTheme } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
+import { defaultStyles } from '@/styles';
 
 const PlaylistsScreen = () => {
   const { colors } = useTheme();
@@ -28,7 +29,7 @@ const PlaylistsScreen = () => {
   }
   
   return (
-    <View style={styles.container}>
+    <View style={defaultStyles.container}>
       <Text style={[styles.title,{color: colors.text}]}>
         Playlists
       </Text>

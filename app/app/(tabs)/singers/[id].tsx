@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { View, Text, Image, StyleSheet, ActivityIndicator } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useTheme } from "@react-navigation/native";
@@ -8,7 +8,7 @@ import TrackListItem from "@/components/TrackListItem";
 import { FETCH_SINGER } from "@/graphql";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function SingerScreen() {
+const SingerScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { colors } = useTheme();
 
@@ -96,3 +96,5 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
 });
+
+export default SingerScreen;

@@ -17,10 +17,10 @@ import { useQuery } from "@apollo/client";
 import Waveform from "@/components/Waveform";
 import * as Sharing from "expo-sharing";
 import { useLocalSearchParams } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { View } from "react-native-safe-area-context";
 import { MaterialIcons } from "@expo/vector-icons";
 
-export default function RecordingScreen() {
+const RecordingScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const vinylRecordImg = require("@/assets/images/vinyl_3x.png");
   const { colors } = useTheme();
@@ -108,7 +108,7 @@ export default function RecordingScreen() {
   };
 
   return (
-    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
+    <View style={styles.container}>
       <View style={[styles.vinyl, { width: vinylSize, height: vinylSize }]}>
         <Image
           source={vinylRecordImg}
@@ -145,7 +145,7 @@ export default function RecordingScreen() {
         </TouchableWithoutFeedback>
         <PlayerControls />
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -200,3 +200,5 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
   },
 });
+
+export default RecordingScreen;

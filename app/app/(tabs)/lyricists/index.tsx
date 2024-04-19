@@ -1,4 +1,3 @@
-import React from 'react';
 import { FlashList } from '@shopify/flash-list';
 import { SEARCH_LYRICISTS } from '@/graphql';
 import { useQuery } from '@apollo/client';
@@ -7,7 +6,7 @@ import LyricistItem from '@/components/LyricistItem';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native'
 
-const BrowseScreen = () => {
+const LyricistsScreen = () => {
   const { colors } = useTheme();
   const { data, loading, error } = useQuery(SEARCH_LYRICISTS, { variables: { query: '*' } });
   const lyricists = data?.searchLyricists?.edges.map(edge => edge.node);
@@ -46,4 +45,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BrowseScreen;
+export default LyricistsScreen;

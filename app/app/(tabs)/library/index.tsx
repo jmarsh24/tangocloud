@@ -5,7 +5,6 @@ import { FETCH_LIKED_RECORDINGS } from '@/graphql';
 import TrackListItem from '@/components/TrackListItem';
 import { FlashList } from "@shopify/flash-list";
 import { useFocusEffect } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native';
 
 export default function LibrarysScreen() {
@@ -20,16 +19,16 @@ export default function LibrarysScreen() {
 
   if (loading) {
     return (
-    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
+    <View  style={styles.container}>
       <ActivityIndicator />
-    </SafeAreaView>
+    </View>
     );
   }
   if (error) {
     return (
-    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
+    <View  style={styles.container}>
       <Text>Failed to fetch</Text>
-    </SafeAreaView>
+    </View>
     )
   }
 
@@ -46,7 +45,7 @@ export default function LibrarysScreen() {
   })) || [];
 
   return (
-    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
+    <View style={styles.container}>
       <Text style={[styles.title, { color: colors.text }]}>
         Liked Recordings
       </Text>
@@ -57,7 +56,7 @@ export default function LibrarysScreen() {
           estimatedItemSize={75}
           ListFooterComponentStyle={{ paddingBottom: 80 }}
         />
-    </SafeAreaView>
+    </View>
   );
 }
 

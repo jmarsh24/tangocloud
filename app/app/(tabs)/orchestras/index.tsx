@@ -1,4 +1,3 @@
-import React from 'react';
 import { FlashList } from '@shopify/flash-list';
 import { SEARCH_ORCHESTRAS } from '@/graphql';
 import { useQuery } from '@apollo/client';
@@ -29,7 +28,7 @@ const OrchestrasScreen = () => {
   }
 
   return (
-    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
+    <View style={styles.container}>
       <Text style={[styles.title, { color: colors.text }]}>Orchestras</Text>
       <FlashList 
         data={orchestras}
@@ -37,7 +36,7 @@ const OrchestrasScreen = () => {
         estimatedItemSize={100}
         ListFooterComponentStyle={{ paddingBottom: 80 }}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 

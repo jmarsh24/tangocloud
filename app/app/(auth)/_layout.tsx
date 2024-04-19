@@ -1,5 +1,8 @@
 import { useAuth } from '@/providers/AuthProvider';
 import { Redirect, Stack } from 'expo-router';
+import { View } from 'react-native';
+import { defaultStyles } from '@/styles';
+import { StackScreenWithSearchBar } from '@/constants/layout';
 
 export default function AuthLayout() {
   const { authState } = useAuth();
@@ -9,9 +12,21 @@ export default function AuthLayout() {
   }
 
   return (
-    <Stack>
-      <Stack.Screen name="login" options={{ headerShown: false }} />
-      <Stack.Screen name="register" options={{ headerShown: false }} />
-    </Stack>
+    <View style={defaultStyles.container}>
+      <Stack>
+        <Stack.Screen
+          name="login"
+          options={{
+          ...StackScreenWithSearchBar,
+          headerShown: false }}
+        />
+        <Stack.Screen
+          name="register"
+          options={{
+          ...StackScreenWithSearchBar,
+          headerShown: false }} 
+        />
+      </Stack>
+    </View>
   );
 }

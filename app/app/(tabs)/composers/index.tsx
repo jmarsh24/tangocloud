@@ -4,8 +4,8 @@ import { SEARCH_COMPOSERS } from '@/graphql';
 import { useQuery } from '@apollo/client';
 import { Text, ActivityIndicator, StyleSheet } from 'react-native';
 import ComposerItem from '@/components/ComposerItem';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native'
+import { View } from 'react-native';
 
 const ComposerScreen = () => {
   const { colors } = useTheme();
@@ -24,7 +24,7 @@ const ComposerScreen = () => {
   }
 
   return (
-    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
+    <View style={styles.container}>
       <Text style={[styles.title, { color: colors.text }]}>Composers</Text>
       <FlashList 
         data={composers}
@@ -33,7 +33,7 @@ const ComposerScreen = () => {
         estimatedItemSize={100}
         ListFooterComponentStyle={{ paddingBottom: 80 }}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 

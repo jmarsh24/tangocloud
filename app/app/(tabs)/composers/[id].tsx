@@ -51,7 +51,7 @@ export default function ComposerScreen() {
   );
 
   return (
-    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
+    <View style={styles.container}>
       <Text style={[styles.title, { color: colors.text }]}>
         {data.fetchComposer.name}
       </Text>
@@ -66,7 +66,7 @@ export default function ComposerScreen() {
       ) : (
         <Text>No recordings found.</Text>
       )}
-    </SafeAreaView>
+    </View>
   );
 }
 

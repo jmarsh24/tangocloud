@@ -1,9 +1,18 @@
-import React from "react";
 import { Stack } from "expo-router";
+import { View } from "react-native";
+import { defaultStyles } from "@/styles";
+import { StackScreenWithSearchBar } from "@/constants/layout";
 
 const OrchestrasLayout = () => {
   return (
-    <Stack screenOptions={{ title: 'Orchestras', headerShown: false }} />
+    <View style={defaultStyles.container}>
+      <Stack 
+        screenOptions={{ 
+        ...StackScreenWithSearchBar,
+        title: 'Orchestras', 
+        headerShown: false }} 
+      />
+    </View>
   )
 };
 

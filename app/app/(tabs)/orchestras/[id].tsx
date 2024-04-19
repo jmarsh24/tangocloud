@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { View, Text, Image, StyleSheet, ActivityIndicator } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useTheme } from "@react-navigation/native";
@@ -6,9 +6,8 @@ import { useQuery } from "@apollo/client";
 import { FlashList } from "@shopify/flash-list";
 import TrackListItem from "@/components/TrackListItem";
 import { FETCH_ORCHESTRA } from "@/graphql";
-import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function OrchestraScreen() {
+const OrchestraScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { colors } = useTheme();
 
@@ -22,17 +21,17 @@ export default function OrchestraScreen() {
 
   if (loading) {
     return (
-      <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
+      <View style={styles.container}>
         <ActivityIndicator size="large" />
-      </SafeAreaView>
+      </View>
     );
   }
 
   if (error) {
     return (
-      <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
+      <View style={styles.container}>
         <Text>Error loading orchestra.</Text>
-      </SafeAreaView>
+      </View>
     );
   }
   
@@ -51,7 +50,7 @@ export default function OrchestraScreen() {
   }));
 
   return (
-    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.imageContainer}>
         <Image source={{ uri: orchestra.photoUrl }} style={styles.image} />
         <Text style={[styles.title, { color: colors.text }]}>
@@ -65,7 +64,7 @@ export default function OrchestraScreen() {
         estimatedItemSize={80}
         ListFooterComponentStyle={{ paddingBottom: 80 }}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -104,3 +103,5 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
 });
+
+export default OrchestraScreen;

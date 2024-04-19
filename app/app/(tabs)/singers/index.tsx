@@ -1,4 +1,3 @@
-import React from 'react';
 import { FlashList } from '@shopify/flash-list';
 import { SEARCH_SINGERS } from '@/graphql';
 import { useQuery } from '@apollo/client';
