@@ -69,7 +69,16 @@ function RootLayoutNav() {
 					<Stack>
 						<Stack.Screen name="(auth)" options={{ headerShown: false }} />
 						<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-						<Stack.Screen name="player" options={{ presentation: 'modal', headerShown: false }} />
+						<Stack.Screen
+							name="player"
+							options={{
+								presentation: 'card',
+								gestureEnabled: true,
+								gestureDirection: 'vertical',
+								animationDuration: 400,
+								headerShown: false,
+							}}
+						/>
 					</Stack>
 				</AuthProvider>
 			</ApolloClientProvider>
