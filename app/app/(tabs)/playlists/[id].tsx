@@ -1,11 +1,14 @@
 import { useEffect } from "react";
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import { ScrollView, View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useTheme } from "@react-navigation/native";
 import { useQuery } from "@apollo/client";
 import { FlashList } from "@shopify/flash-list";
 import { FETCH_PLAYLIST } from "@/graphql";
 import TrackListItem from "@/components/TrackListItem";
+import { TracksList } from "@/components/TracksList";
+import { generateTracksListId } from "@/helpers/miscellaneous";
+import { screenPadding } from '@/constants/tokens'
 
 const PlaylistScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -59,6 +62,16 @@ const PlaylistScreen = () => {
       <Text style={[styles.title, { color: colors.text }]}>
         {playlist.title}
       </Text>
+      <ScrollView
+				contentInsetAdjustmentBehavior="automatic"
+				style={{ paddingHorizontal: screenPadding.horizontal }}
+      >
+        <TracksList
+          id={generateTracksListId(playlist.id)}
+          tracks={recordings}
+          scrollEnabled={false}
+          />
+      </ScrollView>
       <FlashList
         data={recordings}
         keyExtractor={(item) => item.id}
