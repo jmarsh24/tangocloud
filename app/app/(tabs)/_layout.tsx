@@ -11,6 +11,10 @@ import { BlurView } from 'expo-blur'
 const TabsNavigation = () => {
   const { authState } = useAuth();
 
+  if (!authState.authenticated) {
+    return <Redirect href="/login" />;
+  }
+  
   const { data, loading, error } = useQuery(USER_PROFILE, {
     skip: !authState.authenticated,
   });
@@ -23,9 +27,6 @@ const TabsNavigation = () => {
     console.error('Error fetching user:', error);
   }
 
-  if (!authState.authenticated) {
-    return <Redirect href="/login" />;
-  }
 
   const avatarUrl = data?.userProfile?.avatarUrl;
 

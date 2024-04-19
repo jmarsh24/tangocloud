@@ -18,10 +18,6 @@ export {
   ErrorBoundary,
 } from 'expo-router';
 
-export const unstable_settings = {
-  initialRouteName: '(tabs)',
-};
-
 SplashScreen.preventAutoHideAsync();
 
 TrackPlayer.registerPlaybackService(() => playbackService)
