@@ -21,7 +21,7 @@
   "types": ["nativewind/types"],
   "exclude": ["node_modules"],
   "include": [
-    "src",
+    "app",
     "**/*.ts",
     "**/*.tsx",
     "*.js",
