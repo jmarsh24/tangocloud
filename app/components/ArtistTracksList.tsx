@@ -15,7 +15,7 @@ export const ArtistTracksList = ({ artist }: { artist: Artist }) => {
 	const search = useNavigationSearch({
 		searchBarOptions: {
 			hideWhenScrolling: true,
-			placeholder: 'Find in songs',
+			placeholder: 'Find in recordings',
 		},
 	})
 

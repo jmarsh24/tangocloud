@@ -51,7 +51,7 @@ const PlayerScreen = () => {
 
 					<View style={{ flex: 1 }}>
 						<View style={{ marginTop: 'auto', paddingBottom: 48 }}>
-							<View style={{ height: 60 }}>
+							<View style={{ height: 80 }}>
 								<View
 									style={{
 										flexDirection: 'row',
@@ -78,14 +78,19 @@ const PlayerScreen = () => {
 
 								{activeTrack.artist && (
 									<Text numberOfLines={1} style={[styles.trackArtistText, { marginTop: 6 }]}>
-										{activeTrack.artist}
+										{`${activeTrack.artist} • ${activeTrack.singer}`}
 									</Text>
 								)}
+								<Text numberOfLines={1} style={styles.trackArtistText}>
+									{`${activeTrack.genre} • ${activeTrack.year}`}
+								</Text>
 							</View>
 
 							<PlayerProgressBar style={{ marginTop: 32 }} />
 
 							<PlayerControls style={{ marginTop: 40 }} />
+							{/* <LyricsComponent lyrics={activeTrack.lyrics} style={{ marginTop: 40 }} /> */}
+							{/* <DetailsComponent track={activeTrack} style={{ marginTop: 40 }} /> */}
 						</View>
 					</View>
 				</View>
@@ -137,7 +142,7 @@ const styles = StyleSheet.create({
 		shadowRadius: 11.0,
 		flexDirection: 'row',
 		justifyContent: 'center',
-		height: '45%',
+		height: '50%',
 	},
 	artworkImage: {
 		width: '100%',

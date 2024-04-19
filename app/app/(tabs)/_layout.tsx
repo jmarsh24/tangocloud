@@ -31,7 +31,9 @@ const TabsNavigation = () => {
 
 	const youIcon = (color) => {
 		if (authState?.authenticated && avatarUrl) {
-			return <Image source={{ uri: avatarUrl }} style={{ width: 24, height: 24, borderRadius: 12 }} />
+			return (
+				<Image source={{ uri: avatarUrl }} style={{ width: 24, height: 24, borderRadius: 12 }} />
+			)
 		} else {
 			return <MaterialIcons name="person" color={color} size={24} />
 		}
@@ -76,6 +78,14 @@ const TabsNavigation = () => {
 						title: 'Search',
 						headerShown: false,
 						tabBarIcon: ({ color }) => <MaterialIcons name="search" size={24} color={color} />,
+					}}
+				/>
+				<Tabs.Screen
+					name="favorites"
+					options={{
+						title: 'Favorites',
+						headerShown: false,
+						tabBarIcon: ({ color }) => <MaterialIcons name="favorite" size={24} color={color} />,
 					}}
 				/>
 				<Tabs.Screen
