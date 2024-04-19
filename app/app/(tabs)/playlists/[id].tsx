@@ -9,8 +9,7 @@ import { ScrollView, Text, View } from 'react-native'
 const PlaylistScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>()
 	const { data, loading, error } = useQuery(FETCH_PLAYLIST, {
-		variables: { id: id },
-		fetchPolicy: 'network-only',
+		variables: { id: id }
 	})
 	
 	if (loading) {
