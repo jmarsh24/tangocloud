@@ -13,17 +13,13 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "config": {
         "usesNonExemptEncryption": false
       },
       "infoPlist": {
-        "UIBackgroundModes": [
-          "audio"
-        ],
+        "UIBackgroundModes": ["audio"],
         "NSMicrophoneUsageDescription": "This app needs access to the speaker for streaming music.",
         "ITSAppUsesNonExemptEncryption": false
       },
@@ -31,9 +27,7 @@
       "bundleIdentifier": "tangocloud",
       "runtimeVersion": "1.0.0",
       "buildNumber": "61",
-      "associatedDomains": [
-        "applinks:tangocloud.app"
-      ]
+      "associatedDomains": ["applinks:tangocloud.app"]
     },
     "android": {
       "adaptiveIcon": {
@@ -46,11 +40,6 @@
       "package": "com.tangocloud.app",
       "versionCode": 16
     },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/favicon.png"
-    },
     "plugins": [
       "expo-router",
       [
@@ -62,7 +51,8 @@
       "expo-font"
     ],
     "experiments": {
-      "typedRoutes": true
+      "typedRoutes": true,
+      "tsconfigPaths": true
     },
     "extra": {
       "eas": {
