@@ -6,12 +6,19 @@ import { StackScreenWithSearchBar } from "@/constants/layout";
 const OrchestrasLayout = () => {
   return (
     <View style={defaultStyles.container}>
-      <Stack 
-        screenOptions={{ 
-        ...StackScreenWithSearchBar,
-        title: 'Orchestras', 
-        headerShown: false }} 
-      />
+      <Stack>
+        <Stack.Screen
+          name="index"
+          options={{ 
+          ...StackScreenWithSearchBar,
+          title: 'Orchestras' }} 
+        />
+        <Stack.Screen
+          name="[id]"
+          options={{ 
+          ...StackScreenWithSearchBar }}
+        />
+      </Stack>
     </View>
   )
 };

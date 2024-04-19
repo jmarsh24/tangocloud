@@ -8,17 +8,19 @@ const LyricistsLayout = () => {
     <View style={defaultStyles.container}>
       <Stack>
         <Stack.Screen
-        name="index"
-        options={{
-        ...StackScreenWithSearchBar,
-        title: "Lyricists",
-        headerShown: false }} />
+          name="index"
+          options={{
+          ...StackScreenWithSearchBar,
+          title: "Lyricists",
+          headerShown: false }} 
+        />
         <Stack.Screen
-        name="[id]"
-        options={{
-        ...StackScreenWithSearchBar,
-        title: "Lyricist",
-        headerShown: false }} />
+          name="[id]"
+          options={{
+          ...StackScreenWithSearchBar,
+          title: "Lyricist",
+          headerShown: false }} 
+        />
       </Stack>
     </View>
   )

@@ -1,10 +1,10 @@
 import { FlashList } from '@shopify/flash-list';
 import { SEARCH_SINGERS } from '@/graphql';
 import { useQuery } from '@apollo/client';
-import { Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import SingerItem from '@/components/SingerItem';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native'
+import { defaultStyles } from '@/styles'
 
 const SingersScreen = () => {
   const { colors } = useTheme();
@@ -14,9 +14,9 @@ const SingersScreen = () => {
   console.log(singers);
   if (loading) {
     return (
-    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
+    <View style={styles.container}>
       <ActivityIndicator />
-    </SafeAreaView>
+    </View>
     )
   }
 
@@ -25,7 +25,7 @@ const SingersScreen = () => {
   }
 
   return (
-    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
+    <View style={defaultStyles.container}>
       <Text style={[styles.title, { color: colors.text }]}>Singers</Text>
       <FlashList 
         data={singers}
@@ -34,7 +34,7 @@ const SingersScreen = () => {
         estimatedItemSize={100}
         ListFooterComponentStyle={{ paddingBottom: 80 }}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 

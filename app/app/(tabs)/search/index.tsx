@@ -5,53 +5,35 @@ import { AntDesign } from '@expo/vector-icons'
 import { useTheme } from '@react-navigation/native'
 import { FlashList } from '@shopify/flash-list'
 import { Link } from 'expo-router'
-import React, { useCallback, useEffect, useState } from 'react'
+import { useState } from 'react'
 import { StyleSheet, Text, TextInput, View } from 'react-native'
+import { defaultStyles }	from '@/styles'
 
 const SearchScreen = () => {
 	const { colors } = useTheme()
 	const ITEMS_PER_PAGE = 200
 	const [search, setSearch] = useState('')
-	const [loadingMore, setLoadingMore] = useState(false)
 
-	const { data, loading, fetchMore, error } = useQuery(SEARCH_RECORDINGS, {
-		variables: { query: search, first: ITEMS_PER_PAGE },
-		fetchPolicy: 'cache-and-network',
-	})
+	const { data, loading, error } = useQuery(SEARCH_RECORDINGS, {
+		variables: { query: search, first: ITEMS_PER_PAGE }
+	});
 
-	useEffect(() => {
-		if (error) {
-			console.log('Apollo Query Error:', error)
-		}
-	}, [error])
+	if (loading) {
+		return (
+			<View style={defaultStyles.container}>
+				<Text>Loading...</Text>
+			</View>
+		)
+	}
 
-	const loadMoreItems = useCallback(async () => {
-		if (data?.searchRecordings.pageInfo.hasNextPage && !loadingMore) {
-			setLoadingMore(true)
-			await fetchMore({
-				variables: {
-					after: data.searchRecordings.pageInfo.endCursor,
-					query: search,
-					first: ITEMS_PER_PAGE,
-				},
-				updateQuery: (prev, { fetchMoreResult }) => {
-					if (!fetchMoreResult) return prev
-
-					const newEdges = fetchMoreResult.searchRecordings.edges
-					const pageInfo = fetchMoreResult.searchRecordings.pageInfo
-
-					return {
-						searchRecordings: {
-							__typename: prev.searchRecordings.__typename,
-							edges: [...prev.searchRecordings.edges, ...newEdges],
-							pageInfo,
-						},
-					}
-				},
-			})
-			setLoadingMore(false)
-		}
-	}, [data?.searchRecordings.pageInfo, fetchMore, loadingMore, search])
+	if (error) {
+		console.error('Error fetching recordings:', error)
+		return (
+			<View style={defaultStyles.container}>
+				<Text>Error loading recordings. Please try again later.</Text>
+			</View>
+		)
+	}
 
 	const tracks =
 		data?.searchRecordings.edges.map((edge) => ({
@@ -67,7 +49,7 @@ const SearchScreen = () => {
 		})) || []
 
 	return (
-		<View style={{ flex: 1 }}>
+		<View style={defaultStyles.container}>
 			<View style={[styles.header, { backgroundColor: colors.background }]}>
 				<View style={[styles.searchContainer, { backgroundColor: colors.card }]}>
 					<AntDesign name="search1" size={20} style={[styles.searchIcon, { color: colors.text }]} />
@@ -122,8 +104,6 @@ const SearchScreen = () => {
 				data={tracks}
 				renderItem={({ item }) => <TrackListItem track={item} tracks={tracks} />}
 				ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
-				onEndReached={loadMoreItems}
-				onEndReachedThreshold={0.5}
 				showsVerticalScrollIndicator={false}
 				estimatedItemSize={75}
 				ListFooterComponentStyle={{ paddingBottom: 80 }}
@@ -134,17 +114,17 @@ const SearchScreen = () => {
 
 const styles = StyleSheet.create({
 	header: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		gap: 10,
+		// flexDirection: 'row',
+		// justifyContent: 'space-between',
+		// alignItems: 'center',
+		// gap: 10,
 	},
 	linksContainer: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		justifyContent: 'space-between',
-		gap: 10,
-		paddingTop: 10,
+		// flexDirection: 'row',
+		// flexWrap: 'wrap',
+		// justifyContent: 'space-between',
+		// gap: 10,
+		// paddingTop: 10,
 	},
 	linkButton: {
 		width: '48%',

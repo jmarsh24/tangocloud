@@ -6,7 +6,6 @@ import { useQuery } from "@apollo/client";
 import { FlashList } from "@shopify/flash-list";
 import TrackListItem from "@/components/TrackListItem";
 import { FETCH_COMPOSER } from "@/graphql";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ComposerScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();

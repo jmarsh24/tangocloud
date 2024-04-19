@@ -1,4 +1,3 @@
-import React from "react";
 import { Stack } from "expo-router";
 import { View } from "react-native";
 import { StackScreenWithSearchBar } from "@/constants/layout";
@@ -13,7 +12,15 @@ const ComposersLayout = () => {
           options={{
           ...StackScreenWithSearchBar,
           title: "Composers", 
-          headerShown: false }} />
+          headerShown: false }} 
+        />
+        <Stack.Screen
+          name="[id]"
+          options={{
+          ...StackScreenWithSearchBar,
+          title: "Composer",
+          headerShown: false }}
+        />
       </Stack>
     </View>
   )

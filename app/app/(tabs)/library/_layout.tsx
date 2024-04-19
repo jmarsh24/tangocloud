@@ -8,11 +8,12 @@ const Layout = () => {
     <View style={defaultStyles.container}>
     <Stack>
       <Stack.Screen
-      name="index"
-      options={{
-      ...StackScreenWithSearchBar,
-      title: 'Your Library', 
-      headerShown: false }} />
+        name="index"
+        options={{
+        ...StackScreenWithSearchBar,
+        title: 'Your Library', 
+        headerShown: false }} 
+      />
     </Stack>
     </View>
   );

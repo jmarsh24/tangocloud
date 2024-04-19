@@ -6,7 +6,7 @@ import { useQuery } from "@apollo/client";
 import { FlashList } from "@shopify/flash-list";
 import TrackListItem from "@/components/TrackListItem";
 import { FETCH_SINGER } from "@/graphql";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { defaultStyles } from "@/styles";
 
 const SingerScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -22,17 +22,17 @@ const SingerScreen = () => {
 
   if (loading) {
     return (
-      <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
+      <View style={styles.container}>
         <ActivityIndicator size="large" />
-      </SafeAreaView>
+      </View>
     );
   }
 
   if (error) {
     return (
-      <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
+      <View style={styles.container}>
         <Text>Error loading singer.</Text>
-      </SafeAreaView>
+      </View>
     );
   }
 
@@ -51,7 +51,7 @@ const SingerScreen = () => {
   }));
 
   return (
-    <SafeAreaView edges={['right', 'top', 'left']} style={styles.container}>
+    <View style={defaultStyles.container}>
       <View style={styles.imageContainer}>
         {singer.photoUrl && (
           <Image source={{ uri: singer.photoUrl }} style={styles.image} />
@@ -67,14 +67,13 @@ const SingerScreen = () => {
         estimatedItemSize={80}
         ListFooterComponentStyle={{ paddingBottom: 80 }}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    
   },
   imageContainer: {
     alignItems: 'center',
