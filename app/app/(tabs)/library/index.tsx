@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import { useQuery } from '@apollo/client';
 import { FETCH_LIKED_RECORDINGS } from '@/graphql';

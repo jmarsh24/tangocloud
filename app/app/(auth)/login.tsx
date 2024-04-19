@@ -1,5 +1,5 @@
 import { View, Text, TextInput, StyleSheet, Alert, KeyboardAvoidingView, Platform, useColorScheme } from 'react-native';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Button from '@/components/Button';
 import Colors from '@/constants/Colors';
 import { Link } from 'expo-router';
