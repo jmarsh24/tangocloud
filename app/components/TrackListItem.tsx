@@ -27,6 +27,9 @@ export default function TrackListItem({ track, tracks }) {
       artist: track.artist,
       artwork: track.artwork,
       duration: track.duration,
+      genre: track.genre,
+      year: track.year,
+      singer: track.singer,
     }));
 
     await TrackPlayer.add(trackObjects);
