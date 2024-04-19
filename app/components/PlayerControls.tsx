@@ -2,6 +2,7 @@ import { colors } from '@/constants/tokens'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native'
 import TrackPlayer, { useIsPlaying } from 'react-native-track-player'
+import { PlayerRepeatToggle } from './PlayerRepeatToggle'
 
 type PlayerControlsProps = {
 	style?: ViewStyle
@@ -16,11 +17,14 @@ export const PlayerControls = ({ style }: PlayerControlsProps) => {
 	return (
 		<View style={[styles.container, style]}>
 			<View style={styles.row}>
+				<ShuffleButton iconSize={30} style={{opacity: 0}} />
+				
 				<SkipToPreviousButton />
 
 				<PlayPauseButton />
 
 				<SkipToNextButton />
+				<PlayerRepeatToggle size={30} style={{ marginBottom: 6 }} />
 			</View>
 		</View>
 	)
@@ -56,6 +60,18 @@ export const SkipToPreviousButton = ({ iconSize = 30 }: PlayerButtonProps) => {
 		</TouchableOpacity>
 	)
 }
+
+export const ShuffleButton = ({ iconSize = 30, style }: PlayerButtonProps) => {
+	return (
+		<TouchableOpacity
+			style={[styles.button, style]}
+			activeOpacity={0.7}
+		>
+			<FontAwesome6 name="shuffle" size={iconSize} color={colors.text} />
+		</TouchableOpacity>
+	)
+}
+
 
 const styles = StyleSheet.create({
 	container: {

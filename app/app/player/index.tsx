@@ -1,13 +1,11 @@
 import { MovingText } from '@/components/MovingText'
 import { PlayerControls } from '@/components/PlayerControls'
 import { PlayerProgressBar } from '@/components/PlayerProgressbar'
-import { PlayerRepeatToggle } from '@/components/PlayerRepeatToggle'
-import { PlayerVolumeBar } from '@/components/PlayerVolumeBar'
 import { unknownTrackImageUri } from '@/constants/images'
 import { colors, fontSize, screenPadding } from '@/constants/tokens'
 import { usePlayerBackground } from '@/hooks/usePlayerBackground'
 import { useTrackPlayerFavorite } from '@/hooks/useTrackPlayerFavorite'
-import { defaultStyles, utilsStyles } from '@/styles'
+import { defaultStyles } from '@/styles'
 import { FontAwesome } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
@@ -52,7 +50,7 @@ const PlayerScreen = () => {
 					</View>
 
 					<View style={{ flex: 1 }}>
-						<View style={{ marginTop: 'auto' }}>
+						<View style={{ marginTop: 'auto', paddingBottom: 48 }}>
 							<View style={{ height: 60 }}>
 								<View
 									style={{
@@ -71,7 +69,7 @@ const PlayerScreen = () => {
 
 									<FontAwesome
 										name={isFavorite ? 'heart' : 'heart-o'}
-										size={20}
+										size={28}
 										color={isFavorite ? colors.primary : colors.icon}
 										style={{ marginHorizontal: 14 }}
 										onPress={toggleFavorite}
@@ -88,12 +86,6 @@ const PlayerScreen = () => {
 							<PlayerProgressBar style={{ marginTop: 32 }} />
 
 							<PlayerControls style={{ marginTop: 40 }} />
-						</View>
-
-						<PlayerVolumeBar style={{ marginTop: 'auto', marginBottom: 30 }} />
-
-						<View style={utilsStyles.centeredRow}>
-							<PlayerRepeatToggle size={30} style={{ marginBottom: 6 }} />
 						</View>
 					</View>
 				</View>
