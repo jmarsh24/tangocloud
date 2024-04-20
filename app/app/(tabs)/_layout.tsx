@@ -97,13 +97,6 @@ const TabsNavigation = () => {
 					}}
 				/>
 				<Tabs.Screen
-					name="recordings"
-					options={{
-						href: null,
-						headerShown: false,
-					}}
-				/>
-				<Tabs.Screen
 					name="(home)"
 					options={{
 						href: null,
