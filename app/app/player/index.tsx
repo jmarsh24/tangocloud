@@ -31,7 +31,7 @@ const PlayerScreen = () => {
 
 	return (
 		<LinearGradient
-			style={{ flex: 1 }}
+			style={styles.linearGradient}
 			colors={imageColors ? [imageColors.background, imageColors.primary] : [colors.background]}
 		>
 			<View style={styles.overlayContainer}>
@@ -128,10 +128,17 @@ const DismissPlayerSymbol = () => {
 }
 
 const styles = StyleSheet.create({
+	linearGradient: {
+		flex: 1,
+		borderTopRightRadius: 24,
+		borderTopLeftRadius: 24,
+	},
 	overlayContainer: {
 		...defaultStyles.container,
 		paddingHorizontal: screenPadding.horizontal,
 		backgroundColor: 'rgba(0,0,0,0.5)',
+		borderTopRightRadius: 24,
+		borderTopLeftRadius: 24,
 	},
 	artworkImageContainer: {
 		shadowOffset: {
