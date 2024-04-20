@@ -8,7 +8,7 @@ import { useTrackPlayerFavorite } from '@/hooks/useTrackPlayerFavorite'
 import { defaultStyles } from '@/styles'
 import { FontAwesome } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useActiveTrack } from 'react-native-track-player'
@@ -66,14 +66,14 @@ const PlayerScreen = () => {
 											style={styles.trackTitleText}
 										/>
 									</View>
-
-									<FontAwesome
-										name={isFavorite ? 'heart' : 'heart-o'}
-										size={28}
-										color={isFavorite ? colors.primary : colors.icon}
-										style={{ marginHorizontal: 14 }}
-										onPress={toggleFavorite}
-									/>
+									<TouchableOpacity activeOpacity={0.7} onPress={toggleFavorite}>
+										<FontAwesome
+											name={isFavorite ? 'heart' : 'heart-o'}
+											size={28}
+											color={isFavorite ? colors.primary : colors.icon}
+											style={{ marginHorizontal: 14 }}
+										/>
+									</TouchableOpacity>
 								</View>
 
 								{activeTrack.artist && (

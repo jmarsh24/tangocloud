@@ -26,7 +26,7 @@ export const FloatingPlayer = ({ style }: ViewProps) => {
     const extraInfo = `${displayedTrack.artist} • ${displayedTrack.singer} • ${displayedTrack.year}`;
 
     return (
-        <TouchableOpacity onPress={handlePress} activeOpacity={0.9} style={[styles.container, style]}>
+        <TouchableOpacity onPress={handlePress} activeOpacity={1} style={[styles.container, style]}>
             <FastImage
                 source={{
                     uri: displayedTrack.artwork ?? unknownTrackImageUri,

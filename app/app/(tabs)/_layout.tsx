@@ -144,6 +144,8 @@ const TabsNavigation = () => {
 				style={{
 					position: 'absolute',
 					bottom: 78,
+					left: 8,
+					right: 8,
 				}}
 			/>
 		</>
