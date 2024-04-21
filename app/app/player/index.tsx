@@ -89,8 +89,6 @@ const PlayerScreen = () => {
 							<PlayerProgressBar style={{ marginTop: 32 }} />
 
 							<PlayerControls style={{ marginTop: 40 }} />
-							{/* <LyricsComponent lyrics={activeTrack.lyrics} style={{ marginTop: 40 }} /> */}
-							{/* <DetailsComponent track={activeTrack} style={{ marginTop: 40 }} /> */}
 						</View>
 					</View>
 				</View>

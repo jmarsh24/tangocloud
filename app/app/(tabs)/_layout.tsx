@@ -6,7 +6,7 @@ import { useQuery } from '@apollo/client'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import { BlurView } from 'expo-blur'
 import { Redirect, Tabs } from 'expo-router'
-import { Image, StyleSheet } from 'react-native'
+import { Image, StyleSheet, Platform } from 'react-native'
 
 const TabsNavigation = () => {
 	const { authState } = useAuth()
@@ -38,6 +38,8 @@ const TabsNavigation = () => {
 			return <MaterialIcons name="person" color={color} size={24} />
 		}
 	}
+
+	const floatingPlayerHeight = Platform.OS === 'ios' ? 78 : 50;
 
 	return (
 		<>
@@ -143,7 +145,7 @@ const TabsNavigation = () => {
 			<FloatingPlayer
 				style={{
 					position: 'absolute',
-					bottom: 78,
+					bottom: floatingPlayerHeight,
 					left: 8,
 					right: 8,
 				}}
