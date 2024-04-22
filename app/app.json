@@ -44,7 +44,7 @@
         "policy": "appVersion"
       },
       "package": "com.tangocloud.app",
-      "versionCode": 25
+      "versionCode": 32
     },
     "plugins": [
       "expo-router",

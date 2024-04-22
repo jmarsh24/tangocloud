@@ -32,7 +32,9 @@ const PlayerScreen = () => {
 	return (
 		<LinearGradient
 			style={styles.linearGradient}
-			colors={imageColors ? [imageColors.background, imageColors.primary] : [colors.background]}
+			colors={imageColors && imageColors.background && imageColors.primary 
+				? [imageColors.background, imageColors.primary] 
+				: [colors.background, colors.backgroundDarker]}
 		>
 			<View style={styles.overlayContainer}>
 				<DismissPlayerSymbol />
