@@ -64,7 +64,7 @@ const FavoritesScreen = () => {
 				<TracksList
 					id={generateTracksListId('favorites', search)}
 					tracks={favoritesTracks}
-					scrollEnabled={true}
+					scrollEnabled={false}
 				/>
 			</ScrollView>
 		</View>
