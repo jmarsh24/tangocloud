@@ -1,5 +1,4 @@
 import { TracksListItem } from '@/components/TracksListItem'
-import { unknownTrackImageUri } from '@/constants/images'
 import { useQueue } from '@/store/queue'
 import { utilsStyles } from '@/styles'
 import { useRef } from 'react'
@@ -76,7 +75,7 @@ export const TracksList = ({
 					<Text style={utilsStyles.emptyContentText}>No songs found</Text>
 
 					<FastImage
-						source={{ uri: unknownTrackImageUri, priority: FastImage.priority.normal }}
+						source={{ uri: require('@/assets/unknown_track.png'), priority: FastImage.priority.normal }}
 						style={utilsStyles.emptyContentImage}
 					/>
 				</View>

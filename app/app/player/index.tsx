@@ -1,7 +1,6 @@
 import { MovingText } from '@/components/MovingText'
 import { PlayerControls } from '@/components/PlayerControls'
 import { PlayerProgressBar } from '@/components/PlayerProgressbar'
-import { unknownTrackImageUri } from '@/constants/images'
 import { colors, fontSize, screenPadding } from '@/constants/tokens'
 import { usePlayerBackground } from '@/hooks/usePlayerBackground'
 import { useTrackPlayerFavorite } from '@/hooks/useTrackPlayerFavorite'
@@ -15,7 +14,7 @@ import { useActiveTrack } from 'react-native-track-player'
 
 const PlayerScreen = () => {
 	const activeTrack = useActiveTrack()
-	const { imageColors } = usePlayerBackground(activeTrack?.artwork ?? unknownTrackImageUri)
+	const { imageColors } = usePlayerBackground(activeTrack?.artwork ?? require('@/assets/unknown_track.png'))
 
 	const { top, bottom } = useSafeAreaInsets()
 
@@ -43,7 +42,7 @@ const PlayerScreen = () => {
 					<View style={styles.artworkImageContainer}>
 						<FastImage
 							source={{
-								uri: activeTrack.artwork ?? unknownTrackImageUri,
+								uri: activeTrack.artwork ?? require('@/assets/unknown_track.png'),
 								priority: FastImage.priority.high,
 							}}
 							resizeMode="cover"

@@ -1,6 +1,5 @@
 import { TrackShortcutsMenu } from '@/components/TrackShortcutsMenu'
 import { StopPropagation } from '@/components/utils/StopPropagation'
-import { unknownTrackImageUri } from '@/constants/images'
 import { colors, fontSize } from '@/constants/tokens'
 import { defaultStyles } from '@/styles'
 import { Entypo, Ionicons } from '@expo/vector-icons'
@@ -28,7 +27,7 @@ export const TracksListItem = ({
 				<View>
 					<FastImage
 						source={{
-							uri: track.artwork ?? unknownTrackImageUri,
+							uri: track.artwork ?? require('@/assets/unknown_track.png'),
 							priority: FastImage.priority.normal,
 						}}
 						style={{

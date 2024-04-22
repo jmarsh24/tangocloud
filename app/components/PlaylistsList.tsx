@@ -1,5 +1,4 @@
 import { PlaylistListItem } from '@/components/PlaylistListItem'
-import { unknownTrackImageUri } from '@/constants/images'
 import { playlistNameFilter } from '@/helpers/filter'
 import { Playlist } from '@/helpers/types'
 import { useNavigationSearch } from '@/hooks/useNavigationSearch'
@@ -42,7 +41,7 @@ export const PlaylistsList = ({
 					<Text style={utilsStyles.emptyContentText}>No playlist found</Text>
 
 					<FastImage
-						source={{ uri: unknownTrackImageUri, priority: FastImage.priority.normal }}
+						source={{ uri: require('@/assets/unknown_track.png'), priority: FastImage.priority.normal }}
 						style={utilsStyles.emptyContentImage}
 					/>
 				</View>

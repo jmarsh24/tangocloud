@@ -1,5 +1,4 @@
 import library from '@/assets/data/library.json'
-import { unknownTrackImageUri } from '@/constants/images'
 import { Artist, Playlist, TrackWithPlaylist } from '@/helpers/types'
 import { Track } from 'react-native-track-player'
 import { create } from 'zustand'
@@ -82,7 +81,7 @@ export const usePlaylists = () => {
 					acc.push({
 						name: playlistName,
 						tracks: [track],
-						artworkPreview: track.artwork ?? unknownTrackImageUri,
+						artworkPreview: track.artwork ?? require('@/assets/unknown_track.png'),
 					})
 				}
 			})

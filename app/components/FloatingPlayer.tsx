@@ -1,5 +1,4 @@
 import { PlayPauseButton, SkipToNextButton } from '@/components/PlayerControls'
-import { unknownTrackImageUri } from '@/constants/images'
 import { useLastActiveTrack } from '@/hooks/useLastActiveTrack'
 import { defaultStyles } from '@/styles'
 import { useRouter } from 'expo-router'
@@ -29,7 +28,7 @@ export const FloatingPlayer = ({ style }: ViewProps) => {
         <TouchableOpacity onPress={handlePress} activeOpacity={1} style={[styles.container, style]}>
             <FastImage
                 source={{
-                    uri: displayedTrack.artwork ?? unknownTrackImageUri,
+                    uri: displayedTrack.artwork ?? require('@/assets/unknown_track.png'),
                 }}
                 style={styles.trackArtworkImage}
             />

@@ -1,4 +1,3 @@
-import { unknownArtistImageUri } from '@/constants/images'
 import { fontSize } from '@/constants/tokens'
 import { trackTitleFilter } from '@/helpers/filter'
 import { generateTracksListId } from '@/helpers/miscellaneous'
@@ -34,7 +33,7 @@ export const ArtistTracksList = ({ artist }: { artist: Artist }) => {
 					<View style={styles.artworkImageContainer}>
 						<FastImage
 							source={{
-								uri: unknownArtistImageUri,
+								uri: require('@/assets/unknown_artist.png'),
 								priority: FastImage.priority.high,
 							}}
 							style={styles.artistImage}
