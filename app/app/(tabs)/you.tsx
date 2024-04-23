@@ -1,13 +1,16 @@
 import Button from '@/components/Button'
-import TrackListItem from '@/components/TrackListItem'
+import { TracksList } from '@/components/TracksList'
+import { screenPadding } from '@/constants/tokens'
 import { USER_PROFILE } from '@/graphql'
+import { generateTracksListId } from '@/helpers/miscellaneous'
 import { useAuth } from '@/providers/AuthProvider'
+import { defaultStyles } from '@/styles'
 import { useQuery } from '@apollo/client'
 import { useFocusEffect, useTheme } from '@react-navigation/native'
-import { FlashList } from '@shopify/flash-list'
 import { Link } from 'expo-router'
 import { useCallback } from 'react'
 import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const YouScreen = () => {
@@ -93,14 +96,18 @@ const YouScreen = () => {
 				{email && <Text style={[styles.header, { color: colors.text }]}>{email}</Text>}
 				<Button onPress={onLogout} text="Sign out" />
 			</View>
-			<View style={styles.listContainer}>
-				<Text style={[styles.header, { color: colors.text }]}>History</Text>
-				<FlashList
-					data={recordings}
-					renderItem={({ item }) => <TrackListItem track={item} tracks={recordings} />}
-					estimatedItemSize={80}
-					ListFooterComponentStyle={{ paddingBottom: 80 }}
-				/>
+			<View style={defaultStyles.container}>
+				<ScrollView
+					contentInsetAdjustmentBehavior="automatic"
+					style={{ paddingHorizontal: screenPadding.horizontal }}
+				>
+					<TracksList
+						id={generateTracksListId('recordings', username)}
+						tracks={recordings}
+						scrollEnabled={false}
+						hideQueueControls={false}
+					/>
+				</ScrollView>
 			</View>
 		</SafeAreaView>
 	)
@@ -109,7 +116,6 @@ const YouScreen = () => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		paddingHorizontal: 20,
 		justifyContent: 'center',
 		alignContent: 'center',
 	},
