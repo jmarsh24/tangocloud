@@ -55,10 +55,7 @@ export const PlaylistTracksList = ({ playlist }: { playlist: Playlist }) => {
 				{playlist.title}
 			</Text>
 			{search.length === 0 && (
-				<QueueControls
-					style={styles.queueControl}
-					tracks={playlist.playlistItems.map((item) => item.playable)}
-				/>
+				<QueueControls style={styles.queueControl} tracks={filteredPlaylistTracks} />
 			)}
 		</View>
 	)
