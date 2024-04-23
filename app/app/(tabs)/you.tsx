@@ -15,7 +15,7 @@ const YouScreen = () => {
 	const { colors } = useTheme()
 
 	const { data, loading, error, refetch } = useQuery(USER_PROFILE, {
-		skip: !authState.authenticated,
+		fetchPolicy: 'cache-and-network',
 	})
 
 	useFocusEffect(

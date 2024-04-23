@@ -23,6 +23,7 @@ const SearchScreen = () => {
 
 	const { data, loading, error } = useQuery(SEARCH_RECORDINGS, {
 		variables: { query: searchQuery || '*', first: ITEMS_PER_PAGE },
+		fetchPolicy: 'cache-and-network',
 	})
 
 	const tracks = useMemo(() => {
