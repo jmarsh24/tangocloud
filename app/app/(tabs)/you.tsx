@@ -102,10 +102,10 @@ const YouScreen = () => {
 					style={{ paddingHorizontal: screenPadding.horizontal }}
 				>
 					<TracksList
-						id={generateTracksListId('recordings', username)}
+						id={generateTracksListId('recordings')}
 						tracks={recordings}
 						scrollEnabled={false}
-						hideQueueControls={false}
+						hideQueueControls={true}
 					/>
 				</ScrollView>
 			</View>

@@ -1,7 +1,6 @@
 import { PlaylistsList } from '@/components/PlaylistsList'
 import { screenPadding } from '@/constants/tokens'
 import { Playlist } from '@/helpers/types'
-import { usePlaylists, useTracks } from '@/store/library'
 import { useQueue } from '@/store/queue'
 import { defaultStyles } from '@/styles'
 import { useHeaderHeight } from '@react-navigation/elements'
@@ -19,8 +18,6 @@ const AddToPlaylistModal = () => {
 	const { trackUrl } = useLocalSearchParams<{ trackUrl: Track['url'] }>()
 
 	const tracks = useTracks()
-
-	const { playlists, addToPlaylist } = usePlaylists()
 
 	const track = tracks.find((currentTrack) => trackUrl === currentTrack.url)
 

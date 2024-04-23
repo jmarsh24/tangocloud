@@ -1,8 +1,6 @@
-import { TrackShortcutsMenu } from '@/components/TrackShortcutsMenu'
-import { StopPropagation } from '@/components/utils/StopPropagation'
 import { colors, fontSize } from '@/constants/tokens'
 import { defaultStyles } from '@/styles'
-import { Entypo, Ionicons } from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons'
 import { StyleSheet, Text, TouchableHighlight, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import LoaderKit from 'react-native-loader-kit'
@@ -81,12 +79,12 @@ export const TracksListItem = ({
 							{`${track.genre} • ${track.year}`}
 						</Text>
 					</View>
-
-					<StopPropagation>
+					{/* remove 3 dots on trackitem until we have a menu */}
+					{/* <StopPropagation>
 						<TrackShortcutsMenu track={track}>
 							<Entypo name="dots-three-horizontal" size={18} color={colors.icon} />
 						</TrackShortcutsMenu>
-					</StopPropagation>
+					</StopPropagation> */}
 				</View>
 			</View>
 		</TouchableHighlight>
