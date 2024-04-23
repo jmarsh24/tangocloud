@@ -21,7 +21,7 @@ const PlaylistsScreen = () => {
 	const { data, loading, error } = useQuery(SEARCH_PLAYLISTS, {
 		variables: { query: search || '*' },
 	})
-	
+
 	const playlists = useMemo(() => {
 		return data?.searchPlaylists?.edges.map((edge) => edge.node) ?? []
 	}, [data])

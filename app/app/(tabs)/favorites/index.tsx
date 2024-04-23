@@ -26,7 +26,8 @@ const FavoritesScreen = () => {
 				title: edge.node.title,
 				artist: edge.node.orchestra?.name || 'Unknown Orchestra',
 				duration: edge.node.audioTransfers[0]?.audioVariants[0]?.duration || 0,
-				artwork: edge.node.audioTransfers[0]?.album?.albumArtUrl || require('@/assets/unknown_track.png'),
+				artwork:
+					edge.node.audioTransfers[0]?.album?.albumArtUrl || require('@/assets/unknown_track.png'),
 				url: edge.node.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || '',
 				singer: edge.node.singers?.map((s) => s.name).join(', ') || 'Various Artists',
 				year: edge.node.year || 'Unknown Year',
