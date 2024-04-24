@@ -27,9 +27,6 @@ const App = () => {
 		...FontAwesome.font,
 	})
 
-	const colorScheme = useColorScheme()
-	const statusBarStyle = colorScheme === 'dark' ? 'light-content' : 'dark-content'
-
 	const handleTrackPlayerLoaded = useCallback(() => {
 		SplashScreen.hideAsync()
 	}, [])
@@ -54,7 +51,7 @@ const App = () => {
 			<GestureHandlerRootView style={{ flex: 1 }}>
 				<RootLayoutNav />
 
-				<StatusBar barStyle={statusBarStyle} />
+				<StatusBar barStyle="dark-content" />
 			</GestureHandlerRootView>
 		</SafeAreaProvider>
 	)
