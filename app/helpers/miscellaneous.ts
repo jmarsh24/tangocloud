@@ -12,6 +12,9 @@ export const generateTracksListId = (trackListName: string, search?: string) => 
 	return `${trackListName}${`-${search}` || ''}`
 }
 
-export const joinAttributes = (attributes: [string, any], delimiter = ' • ') => {
+export const joinAttributes = (
+	attributes: [string | undefined, string | undefined],
+	delimiter = ' • ',
+) => {
 	return attributes.filter((attr) => attr).join(delimiter)
 }
