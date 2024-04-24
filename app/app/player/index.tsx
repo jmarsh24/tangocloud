@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
 		borderTopLeftRadius: 24,
 	},
 	artworkImageContainer: {
+		backgroundColor: 'rgba(0,0,0,0.5)',
 		shadowOffset: {
 			width: 0,
 			height: 8,

@@ -18,46 +18,61 @@ export const PlaylistTracksList = ({ playlist }: { playlist: Playlist }) => {
 		},
 	})
 
-	const filteredPlaylistTracks = useMemo(() => {
-		const recordings = playlist.playlistItems.map((item) => {
-			const recording = item.playable
-			return {
-				id: recording.id,
-				title: recording.title,
-				artist: recording.orchestra.name,
-				duration: recording.audioTransfers[0]?.audioVariants[0]?.duration || 0,
-				artwork: recording.audioTransfers[0]?.album?.albumArtUrl || '',
-				url: recording.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || '',
-				orchestraImageUrl: recording.orchestra.photoUrl,
-				lyrics: recording?.composition?.lyrics?.content,
-				genre: recording.genre.name,
-				year: recording.year,
-				singer: recording.singers[0]?.name,
-				composer: recording?.composition?.composer?.name,
-				lyricist: recording?.composition?.lyricist?.name,
-			}
-		})
-		return recordings.filter(trackTitleFilter(search))
-	}, [playlist.playlistItems, search])
+	const recordings = useMemo(
+		() =>
+			playlist.playlistItems.map((item) => {
+				const recording = item.playable
+				return {
+					id: recording.id,
+					title: recording.title,
+					artist: recording.orchestra.name,
+					duration: recording.audioTransfers[0]?.audioVariants[0]?.duration || 0,
+					artwork: recording.audioTransfers[0]?.album?.albumArtUrl || '',
+					url: recording.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || '',
+					orchestraImageUrl: recording.orchestra.photoUrl,
+					lyrics: recording?.composition?.lyrics?.content,
+					genre: recording.genre.name,
+					year: recording.year,
+					singer: recording.singers[0]?.name,
+					composer: recording?.composition?.composer?.name,
+					lyricist: recording?.composition?.lyricist?.name,
+				}
+			}),
+		[playlist.playlistItems],
+	)
+
+	const filteredPlaylistTracks = useMemo(
+		() => recordings.filter(trackTitleFilter(search)),
+		[recordings, search],
+	)
 
 	const ListHeaderComponent = (
-		<View>
-			<View style={styles.artworkImageContainer}>
-				<FastImage
-					source={{
-						uri: playlist.imageUrl,
-						priority: FastImage.priority.high,
-					}}
-					style={styles.artworkImage}
-				/>
-			</View>
-			<Text numberOfLines={1} style={styles.playlistNameText}>
-				{playlist.title}
-			</Text>
-			{search.length === 0 && (
-				<QueueControls style={styles.queueControl} tracks={filteredPlaylistTracks} />
-			)}
-		</View>
+		<TracksList
+			id={generateTracksListId(playlist.id, search)}
+			scrollEnabled={false}
+			hideQueueControls={true}
+			ListHeaderComponentStyle={styles.playlistHeaderContainer}
+			ListHeaderComponent={
+				<View>
+					<View style={styles.artworkImageContainer}>
+						<FastImage
+							source={{
+								uri: playlist.imageUrl,
+								priority: FastImage.priority.high,
+							}}
+							style={styles.artworkImage}
+						/>
+					</View>
+
+					<Text numberOfLines={1} style={styles.playlistNameText}>
+						{playlist.title}
+					</Text>
+
+					{search.length === 0 && <QueueControls style={{ paddingTop: 24 }} tracks={recordings} />}
+				</View>
+			}
+			tracks={filteredPlaylistTracks}
+		/>
 	)
 
 	return (
@@ -94,8 +109,5 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		fontSize: fontSize.lg,
 		fontWeight: '800',
-	},
-	queueControl: {
-		paddingTop: 24,
 	},
 })
