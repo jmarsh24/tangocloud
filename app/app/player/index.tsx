@@ -2,19 +2,22 @@ import { MovingText } from '@/components/MovingText'
 import { PlayerControls } from '@/components/PlayerControls'
 import { PlayerProgressBar } from '@/components/PlayerProgressbar'
 import { colors, fontSize, screenPadding } from '@/constants/tokens'
+import { joinAttributes } from '@/helpers/miscellaneous'
 import { usePlayerBackground } from '@/hooks/usePlayerBackground'
 import { useTrackPlayerFavorite } from '@/hooks/useTrackPlayerFavorite'
 import { defaultStyles } from '@/styles'
 import { FontAwesome } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
-import { ActivityIndicator, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useActiveTrack } from 'react-native-track-player'
 
 const PlayerScreen = () => {
 	const activeTrack = useActiveTrack()
-	const { imageColors } = usePlayerBackground(activeTrack?.artwork ?? require('@/assets/unknown_track.png'))
+	const { imageColors } = usePlayerBackground(
+		activeTrack?.artwork ?? require('@/assets/unknown_track.png'),
+	)
 
 	const { top, bottom } = useSafeAreaInsets()
 
@@ -31,9 +34,11 @@ const PlayerScreen = () => {
 	return (
 		<LinearGradient
 			style={styles.linearGradient}
-			colors={imageColors && imageColors.background && imageColors.primary 
-				? [imageColors.background, imageColors.primary] 
-				: [colors.background, colors.backgroundDarker]}
+			colors={
+				imageColors && imageColors.background && imageColors.primary
+					? [imageColors.background, imageColors.primary]
+					: [colors.background, colors.backgroundDarker]
+			}
 		>
 			<View style={styles.overlayContainer}>
 				<DismissPlayerSymbol />
@@ -79,11 +84,11 @@ const PlayerScreen = () => {
 
 								{activeTrack.artist && (
 									<Text numberOfLines={1} style={[styles.trackArtistText, { marginTop: 6 }]}>
-										{`${activeTrack.artist} • ${activeTrack.singer}`}
+										{`${joinAttributes([activeTrack.artist, activeTrack.singer])}`}
 									</Text>
 								)}
 								<Text numberOfLines={1} style={styles.trackArtistText}>
-									{`${activeTrack.genre} • ${activeTrack.year}`}
+									{`${joinAttributes([activeTrack.genre, activeTrack.year])}`}
 								</Text>
 							</View>
 

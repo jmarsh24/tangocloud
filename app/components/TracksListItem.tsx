@@ -1,4 +1,5 @@
 import { colors, fontSize } from '@/constants/tokens'
+import { joinAttributes } from '@/helpers/miscellaneous'
 import { defaultStyles } from '@/styles'
 import { Ionicons } from '@expo/vector-icons'
 import { StyleSheet, Text, TouchableHighlight, View } from 'react-native'
@@ -72,11 +73,11 @@ export const TracksListItem = ({
 
 						{track.artist && (
 							<Text numberOfLines={1} style={styles.trackArtistText}>
-								{`${[track.artist, track.singer].join(' • ')}`}
+								{`${joinAttributes([track.artist, track.singer])}`}
 							</Text>
 						)}
 						<Text numberOfLines={1} style={styles.trackArtistText}>
-							{`${[track.genre, track.year].join(' • ')}`}
+							{`${joinAttributes([track.genre, track.year])}`}
 						</Text>
 					</View>
 					{/* remove 3 dots on trackitem until we have a menu */}
