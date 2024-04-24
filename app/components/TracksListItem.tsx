@@ -72,11 +72,11 @@ export const TracksListItem = ({
 
 						{track.artist && (
 							<Text numberOfLines={1} style={styles.trackArtistText}>
-								{`${track.artist} • ${track.singer}`}
+								{`${[track.artist, track.singer].join(' • ')}`}
 							</Text>
 						)}
 						<Text numberOfLines={1} style={styles.trackArtistText}>
-							{`${track.genre} • ${track.year}`}
+							{`${[track.genre, track.year].join(' • ')}`}
 						</Text>
 					</View>
 					{/* remove 3 dots on trackitem until we have a menu */}
