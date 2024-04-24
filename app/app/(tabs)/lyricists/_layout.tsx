@@ -1,12 +1,29 @@
-import React from "react";
 import { Stack } from "expo-router";
+import { View } from "react-native";
+import { StackScreenWithSearchBar } from "@/constants/layout";
+import { defaultStyles } from "@/styles";
 
-export default function _layout() {
-
+const LyricistsLayout = () => {
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ title: "Lyricists", headerShown: false }} />
-      <Stack.Screen name="[id]" options={{ title: "Lyricist", headerShown: false }} />
-    </Stack>
+    <View style={defaultStyles.container}>
+      <Stack>
+        <Stack.Screen
+          name="index"
+          options={{
+          ...StackScreenWithSearchBar,
+          title: "Lyricists",
+          headerShown: false }} 
+        />
+        <Stack.Screen
+          name="[id]"
+          options={{
+          ...StackScreenWithSearchBar,
+          title: "Lyricist",
+          headerShown: false }} 
+        />
+      </Stack>
+    </View>
   )
 };
+
+export default LyricistsLayout;

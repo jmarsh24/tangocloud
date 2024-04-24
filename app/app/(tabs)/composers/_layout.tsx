@@ -1,9 +1,28 @@
-import React from "react";
 import { Stack } from "expo-router";
+import { View } from "react-native";
+import { StackScreenWithSearchBar } from "@/constants/layout";
+import { defaultStyles } from "@/styles";
 
 const ComposersLayout = () => {
   return (
-    <Stack screenOptions={{ title: 'Composers', headerShown: false }} />
+    <View style={defaultStyles.container}>
+      <Stack>
+        <Stack.Screen
+          name="index"
+          options={{
+          ...StackScreenWithSearchBar,
+          title: "Composers", 
+          headerShown: false }} 
+        />
+        <Stack.Screen
+          name="[id]"
+          options={{
+          ...StackScreenWithSearchBar,
+          title: "Composer",
+          headerShown: false }}
+        />
+      </Stack>
+    </View>
   )
 };
 

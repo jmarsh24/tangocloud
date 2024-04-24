@@ -1,112 +1,86 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
-import TrackPlayer, { usePlaybackState, RepeatMode } from 'react-native-track-player';
-import { MaterialIcons } from '@expo/vector-icons';
-import { useTheme } from '@react-navigation/native';
-import { PlaybackError } from '@/components/PlaybackError';
-import { PlayPauseButton } from '@/components/PlayPauseButton';
+import { colors } from '@/constants/tokens'
+import { FontAwesome6 } from '@expo/vector-icons'
+import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native'
+import TrackPlayer, { useIsPlaying } from 'react-native-track-player'
+import { PlayerRepeatToggle } from './PlayerRepeatToggle'
 
-const performSkipToNext = () => TrackPlayer.skipToNext();
-const performSkipToPrevious = () => TrackPlayer.skipToPrevious();
+type PlayerControlsProps = {
+	style?: ViewStyle
+}
 
-export const PlayerControls: React.FC = () => {
-  const playback = usePlaybackState();
-  const { colors } = useTheme();
-  const [shuffleActive, setShuffleActive] = useState(false);
-  const [repeatMode, setRepeatMode] = useState(RepeatMode.Off);
+type PlayerButtonProps = {
+	style?: ViewStyle
+	iconSize?: number
+}
 
-  useEffect(() => {
-    const getRepeatMode = async () => {
-      const mode = await TrackPlayer.getRepeatMode();
-      setRepeatMode(mode);
-    };
+export const PlayerControls = ({ style }: PlayerControlsProps) => {
+	return (
+		<View style={[styles.container, style]}>
+			<View style={styles.row}>
+				<ShuffleButton iconSize={30} style={{opacity: 0}} />
+				
+				<SkipToPreviousButton />
 
-    getRepeatMode();
-  }, []);
+				<PlayPauseButton />
 
-  const handleShuffle = async () => {
-    let queue = await TrackPlayer.getQueue();
-    await TrackPlayer.reset();
-    queue.sort(() => Math.random() - 0.5);
-    await TrackPlayer.add(queue);
-    setShuffleActive(!shuffleActive);
-    await TrackPlayer.play();
-  };
+				<SkipToNextButton />
+				<PlayerRepeatToggle size={30} style={{ marginBottom: 6 }} />
+			</View>
+		</View>
+	)
+}
 
-  const toggleRepeatMode = async () => {
-    let newMode;
-    switch (repeatMode) {
-      case RepeatMode.Off:
-        newMode = RepeatMode.Track;
-        break;
-      case RepeatMode.Track:
-        newMode = RepeatMode.Queue;
-        break;
-      case RepeatMode.Queue:
-        newMode = RepeatMode.Off;
-        break;
-      default:
-        newMode = RepeatMode.Off;
-    }
-    await TrackPlayer.setRepeatMode(newMode);
-    setRepeatMode(newMode);
-  };
+export const PlayPauseButton = ({ style, iconSize = 48 }: PlayerButtonProps) => {
+	const { playing } = useIsPlaying()
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.row}>
-        <View style={styles.control}>
-          {/* <TouchableWithoutFeedback onPress={handleShuffle}>
-            <MaterialIcons name={shuffleActive ? 'shuffle' : 'shuffle-on'} size={30} style={{ color: shuffleActive ? "#ff7700" : colors.text }} />
-          </TouchableWithoutFeedback> */}
-        </View>
-        <View style={styles.control}>
-          <TouchableWithoutFeedback onPress={performSkipToPrevious}>
-            <MaterialIcons name={'skip-previous'} size={30} style={{ color: colors.text }} />
-          </TouchableWithoutFeedback>
-        </View>
-        <View style={styles.control}>
-          <PlayPauseButton />
-        </View>
-        <View style={styles.control}>
-          <TouchableWithoutFeedback onPress={performSkipToNext}>
-            <MaterialIcons name={'skip-next'} size={30} style={{ color: colors.text }} />
-          </TouchableWithoutFeedback>
-        </View>
-        <View style={styles.control}>
-          <TouchableWithoutFeedback onPress={toggleRepeatMode}>
-            <MaterialIcons
-              name={repeatMode === RepeatMode.Off ? 'repeat' : (repeatMode === RepeatMode.Track ? 'repeat-one' : 'repeat')}
-              size={30}
-              style={{ color: repeatMode !== RepeatMode.Off ? "#ff7700" : colors.text }}
-            />
-          </TouchableWithoutFeedback>
-        </View>
-      </View>
-      <PlaybackError
-        error={'error' in playback ? playback.error.message : undefined}
-      />
-    </View>
-  );
-};
+	return (
+		<View style={[{ height: iconSize }, style]}>
+			<TouchableOpacity
+				activeOpacity={0.85}
+				onPress={playing ? TrackPlayer.pause : TrackPlayer.play}
+			>
+				<FontAwesome6 name={playing ? 'pause' : 'play'} size={iconSize} color={colors.text} />
+			</TouchableOpacity>
+		</View>
+	)
+}
+
+export const SkipToNextButton = ({ iconSize = 30 }: PlayerButtonProps) => {
+	return (
+		<TouchableOpacity activeOpacity={0.7} onPress={() => TrackPlayer.skipToNext()}>
+			<FontAwesome6 name="forward" size={iconSize} color={colors.text} />
+		</TouchableOpacity>
+	)
+}
+
+export const SkipToPreviousButton = ({ iconSize = 30 }: PlayerButtonProps) => {
+	return (
+		<TouchableOpacity activeOpacity={0.7} onPress={() => TrackPlayer.skipToPrevious()}>
+			<FontAwesome6 name={'backward'} size={iconSize} color={colors.text} />
+		</TouchableOpacity>
+	)
+}
+
+export const ShuffleButton = ({ iconSize = 30, style }: PlayerButtonProps) => {
+	return (
+		<TouchableOpacity
+			style={[styles.button, style]}
+			activeOpacity={0.7}
+		>
+			<FontAwesome6 name="shuffle" size={iconSize} color={colors.text} />
+		</TouchableOpacity>
+	)
+}
+
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    width: '100%',
-  },
-  row: {
-    flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  control: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  activeIcon: {
-    color: "#ff7700",
-  },
-});
+	container: {
+		width: '100%',
+	},
+	row: {
+		flexDirection: 'row',
+		justifyContent: 'space-evenly',
+		alignItems: 'center',
+		gap: 36,
+	},
+})
