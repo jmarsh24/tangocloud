@@ -31,7 +31,7 @@ const YouScreen = () => {
 		return (
 			<SafeAreaView
 				edges={['right', 'top', 'left']}
-				style={[styles.container, { backgroundColor: colors.background }]}
+				style={[defaultStyles.container, styles.container, { backgroundColor: colors.background }]}
 			>
 				<Link href="/login" asChild>
 					<Button onPress={onLogout} text="Login" />
@@ -47,7 +47,7 @@ const YouScreen = () => {
 		return (
 			<SafeAreaView
 				edges={['right', 'top', 'left']}
-				style={[styles.container, { backgroundColor: colors.background }]}
+				style={[defaultStyles.container, styles.container, { backgroundColor: colors.background }]}
 			>
 				<ActivityIndicator size="large" />
 			</SafeAreaView>
@@ -58,7 +58,7 @@ const YouScreen = () => {
 		return (
 			<SafeAreaView
 				edges={['right', 'top', 'left']}
-				style={[styles.container, { backgroundColor: colors.background }]}
+				style={[defaultStyles.container, styles.container, { backgroundColor: colors.background }]}
 			>
 				<Text style={[styles.text, { color: colors.text }]}>Error loading data...</Text>
 				<Button onPress={onLogout} text="Sign out" />
@@ -86,7 +86,7 @@ const YouScreen = () => {
 	return (
 		<SafeAreaView
 			edges={['right', 'top', 'left']}
-			style={[styles.container, { backgroundColor: colors.background }]}
+			style={[defaultStyles.container, styles.container]}
 		>
 			<View style={styles.profileContainer}>
 				<Image source={{ uri: avatarUrl }} style={styles.image} />
