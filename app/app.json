@@ -30,7 +30,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "tangocloud",
       "runtimeVersion": "1.0.0",
-      "buildNumber": "62",
+      "buildNumber": "63",
       "associatedDomains": [
         "applinks:tangocloud.app"
       ]
