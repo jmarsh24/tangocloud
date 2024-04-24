@@ -62,6 +62,7 @@ export const TracksList = ({
 	return (
 		<FlatList
 			data={tracks}
+			keyExtractor={(item, index) => `${item.id}-${index}`}
 			contentContainerStyle={{ paddingTop: 10, paddingBottom: 128 }}
 			ListHeaderComponent={
 				!hideQueueControls ? (
@@ -73,15 +74,14 @@ export const TracksList = ({
 			ListEmptyComponent={
 				<View>
 					<Text style={utilsStyles.emptyContentText}>No songs found</Text>
-
 					<FastImage
-						source={{ uri: require('@/assets/unknown_track.png'), priority: FastImage.priority.normal }}
+						source={require('@/assets/unknown_track.png')}
 						style={utilsStyles.emptyContentImage}
 					/>
 				</View>
 			}
 			renderItem={({ item: track }) => (
-				<TracksListItem track={track} onTrackSelect={handleTrackSelect} />
+				<TracksListItem track={track} onTrackSelect={() => handleTrackSelect(track)} />
 			)}
 			{...flatlistProps}
 		/>
