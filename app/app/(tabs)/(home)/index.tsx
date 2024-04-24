@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native'
 const HomeScreen = () => {
 	return (
 		<View style={[defaultStyles.container, styles.container]}>
-			<Text style={[styles.headerText, defaultStyles.text]}>
+			<Text style={[defaultStyles.text, styles.headerText]}>
 				The people who are crazy enough to think they can change the world are the ones who do.
 			</Text>
 		</View>
