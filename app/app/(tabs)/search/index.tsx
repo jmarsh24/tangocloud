@@ -64,11 +64,9 @@ const SearchScreen = () => {
 			key={category}
 			href={`/${category}`}
 			push
-			style={[defaultStyles.linkButton, { backgroundColor: colors.card }]}
+			style={[defaultStyles.text, { backgroundColor: colors.card }]}
 		>
-			<Text style={[defaultStyles.buttonText, { color: colors.text }]}>
-				{category[0].toUpperCase() + category.slice(1)}
-			</Text>
+			<Text style={[defaultStyles.text]}>{category[0].toUpperCase() + category.slice(1)}</Text>
 		</Link>
 	))
 
