@@ -20,7 +20,6 @@ const PlaylistsScreen = () => {
 
 	const { data, loading, error } = useQuery(SEARCH_PLAYLISTS, {
 		variables: { query: search || '*' },
-		fetchPolicy: 'cache-and-network',
 	})
 
 	const playlists = useMemo(() => {

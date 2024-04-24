@@ -17,9 +17,7 @@ const YouScreen = () => {
 	const { authState, onLogout } = useAuth()
 	const { colors } = useTheme()
 
-	const { data, loading, error, refetch } = useQuery(USER_PROFILE, {
-		fetchPolicy: 'cache-and-network',
-	})
+	const { data, loading, error, refetch } = useQuery(USER_PROFILE)
 
 	useFocusEffect(
 		useCallback(() => {
