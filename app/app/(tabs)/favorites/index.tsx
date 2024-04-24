@@ -5,13 +5,23 @@ import { generateTracksListId } from '@/helpers/miscellaneous'
 import { useNavigationSearch } from '@/hooks/useNavigationSearch'
 import { defaultStyles } from '@/styles'
 import { useQuery } from '@apollo/client'
-import { useMemo } from 'react'
+import { useIsFocused } from '@react-navigation/native'
+import { useEffect, useMemo } from 'react'
 import { ScrollView, Text, View } from 'react-native'
 
 const FavoritesScreen = () => {
-	const { data, loading, error } = useQuery(FETCH_LIKED_RECORDINGS)
+	const isFocused = useIsFocused()
 
-	// Handling search functionality
+	const { data, loading, error, refetch } = useQuery(FETCH_LIKED_RECORDINGS, {
+		fetchPolicy: 'cache-and-network',
+	})
+
+	useEffect(() => {
+		if (isFocused) {
+			refetch()
+		}
+	}, [isFocused, refetch])
+
 	const search = useNavigationSearch({
 		searchBarOptions: {
 			placeholder: 'Find in recordings',
