@@ -5,54 +5,73 @@ import {
 	USER_PROFILE,
 } from '@/graphql'
 import { useQuery } from '@apollo/client'
+import { useEffect, useState } from 'react'
+import { Text } from 'react-native'
 
 const PreloadQueries = () => {
-	const {
-		data: likedRecordingsData,
-		loading: likedRecordingsLoading,
-		error: likedRecordingsError,
-	} = useQuery(FETCH_LIKED_RECORDINGS)
-	const {
-		data: searchPlaylistsData,
-		loading: searchPlaylistsLoading,
-		error: searchPlaylistsError,
-	} = useQuery(SEARCH_PLAYLISTS, {
+	const [initialized, setInitialized] = useState(false)
+
+	const handleQueryCompleted = () => {
+		if (!initialized) {
+			console.log('Queries are loaded')
+			setInitialized(true)
+		}
+	}
+
+	const likedRecordingsQuery = useQuery(FETCH_LIKED_RECORDINGS, {
+		onCompleted: handleQueryCompleted,
+	})
+	const searchPlaylistsQuery = useQuery(SEARCH_PLAYLISTS, {
 		variables: { query: '*' },
+		onCompleted: handleQueryCompleted,
 	})
-	const {
-		data: searchRecordingsData,
-		loading: searchRecordingsLoading,
-		error: searchRecordingsError,
-	} = useQuery(SEARCH_RECORDINGS, {
+	const searchRecordingsQuery = useQuery(SEARCH_RECORDINGS, {
 		variables: { query: '*', first: 50 },
+		onCompleted: handleQueryCompleted,
 	})
-	const {
-		data: userProfileData,
-		loading: userProfileLoading,
-		error: userProfileError,
-	} = useQuery(USER_PROFILE)
+	const userProfileQuery = useQuery(USER_PROFILE, { onCompleted: handleQueryCompleted })
+
+	useEffect(() => {
+		const hasError =
+			likedRecordingsQuery.error ||
+			searchPlaylistsQuery.error ||
+			searchRecordingsQuery.error ||
+			userProfileQuery.error
+
+		if (hasError) {
+			console.error(
+				'Error preloading queries:',
+				likedRecordingsQuery.error ||
+					searchPlaylistsQuery.error ||
+					searchRecordingsQuery.error ||
+					userProfileQuery.error,
+			)
+		}
+	}, [
+		likedRecordingsQuery.error,
+		searchPlaylistsQuery.error,
+		searchRecordingsQuery.error,
+		userProfileQuery.error,
+	])
 
 	if (
-		likedRecordingsLoading ||
-		searchPlaylistsLoading ||
-		searchRecordingsLoading ||
-		userProfileLoading
+		likedRecordingsQuery.loading ||
+		searchPlaylistsQuery.loading ||
+		searchRecordingsQuery.loading ||
+		userProfileQuery.loading
 	) {
 		console.log('Queries are loading...')
 	}
 
-	if (likedRecordingsError || searchPlaylistsError || searchRecordingsError || userProfileError) {
-		console.error(
-			'Error preloading queries:',
-			likedRecordingsError || searchPlaylistsError || searchRecordingsError || userProfileError,
-		)
-	}
-
-	if (likedRecordingsData && searchPlaylistsData && searchRecordingsData && userProfileData) {
-		console.log('Queries are loaded')
+	if (!initialized) {
+		return <LoadingIndicator />
 	}
 
 	return null
+}
+
+const LoadingIndicator = () => {
+	return <Text>Loading data...</Text>
 }
 
 export default PreloadQueries

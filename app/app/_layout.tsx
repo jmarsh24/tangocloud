@@ -9,7 +9,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import TrackPlayer from 'react-native-track-player'
 
-import PreloadQueries from '@/components/PreloadQueries'
 import { playbackService } from '@/constants/playbackService'
 import { useLogTrackPlayerState } from '@/hooks/useLogTrackPlayerState'
 import { useSetupTrackPlayer } from '@/hooks/useSetupTrackPlayer'
@@ -68,7 +67,8 @@ function RootLayoutNav() {
 		<ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
 			<ApolloClientProvider>
 				<AuthProvider>
-					<PreloadQueries />
+					{/* This is not working properly */}
+					{/* <PreloadQueries /> */}
 					<Stack>
 						<Stack.Screen name="(auth)" options={{ headerShown: false }} />
 						<Stack.Screen name="(tabs)" options={{ headerShown: false }} />

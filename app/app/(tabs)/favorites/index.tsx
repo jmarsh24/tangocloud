@@ -12,15 +12,15 @@ import { ScrollView, Text, View } from 'react-native'
 const FavoritesScreen = () => {
 	const isFocused = useIsFocused()
 
-	const { data, loading, error, refetch } = useQuery(FETCH_LIKED_RECORDINGS, {
-		fetchPolicy: 'cache-and-network',
-	})
+	const { data, loading, error, refetch } = useQuery(FETCH_LIKED_RECORDINGS)
+
+	const memoizedData = useMemo(() => data, [data])
 
 	useEffect(() => {
-		if (isFocused) {
+		if (isFocused && memoizedData) {
 			refetch()
 		}
-	}, [isFocused, refetch])
+	}, [isFocused, refetch, memoizedData])
 
 	const search = useNavigationSearch({
 		searchBarOptions: {
