@@ -34,22 +34,27 @@ export const TracksList = ({
 		const isChangingQueue = id !== activeQueueId
 
 		if (isChangingQueue) {
-			// const beforeTracks = tracks.slice(0, trackIndex)
-			// const afterTracks = tracks.slice(trackIndex + 1)
+			const beforeTracks = tracks.slice(0, trackIndex)
+			const afterTracks = tracks.slice(trackIndex + 1)
 
 			await TrackPlayer.reset()
 
 			// we construct the new queue
 			await TrackPlayer.add(selectedTrack)
-			// await TrackPlayer.add(afterTracks)
-			// await TrackPlayer.add(beforeTracks)
+			await TrackPlayer.add(afterTracks)
+			await TrackPlayer.add(beforeTracks)
 
 			await TrackPlayer.play()
 
 			queueOffset.current = trackIndex
 			setActiveQueueId(id)
 		} else {
-			const nextTrackIndex = K
+			const nextTrackIndex =
+				trackIndex - queueOffset.current < 0
+					? tracks.length + trackIndex - queueOffset.current
+					: trackIndex - queueOffset.current
+
+			await TrackPlayer.skip(nextTrackIndex)
 			TrackPlayer.play()
 		}
 	}
