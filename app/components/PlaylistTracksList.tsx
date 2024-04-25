@@ -46,9 +46,9 @@ export const PlaylistTracksList = ({ playlist }: { playlist: Playlist }) => {
 		[recordings, search],
 	)
 
-	const ListHeaderComponent = (
+	return (
 		<TracksList
-			id={generateTracksListId(playlist.id, search)}
+			id={generateTracksListId(playlist.title, search)}
 			scrollEnabled={false}
 			hideQueueControls={true}
 			ListHeaderComponentStyle={styles.playlistHeaderContainer}
@@ -71,17 +71,6 @@ export const PlaylistTracksList = ({ playlist }: { playlist: Playlist }) => {
 					{search.length === 0 && <QueueControls style={{ paddingTop: 24 }} tracks={recordings} />}
 				</View>
 			}
-			tracks={filteredPlaylistTracks}
-		/>
-	)
-
-	return (
-		<TracksList
-			id={generateTracksListId(playlist.title, search)}
-			scrollEnabled={false}
-			hideQueueControls={true}
-			ListHeaderComponentStyle={styles.playlistHeaderContainer}
-			ListHeaderComponent={ListHeaderComponent}
 			tracks={filteredPlaylistTracks}
 		/>
 	)

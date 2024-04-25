@@ -62,7 +62,7 @@ export const TracksList = ({
 	return (
 		<FlatList
 			data={tracks}
-			keyExtractor={(item, index) => `${item.id}-${index}`}
+			keyExtractor={(item) => item.id}
 			contentContainerStyle={{ paddingTop: 10, paddingBottom: 128 }}
 			ListHeaderComponent={
 				!hideQueueControls ? (
