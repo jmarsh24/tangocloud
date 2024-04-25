@@ -12,6 +12,7 @@ import TrackPlayer from 'react-native-track-player'
 import { playbackService } from '@/constants/playbackService'
 import { useLogTrackPlayerState } from '@/hooks/useLogTrackPlayerState'
 import { useSetupTrackPlayer } from '@/hooks/useSetupTrackPlayer'
+import { updateIfPossible } from '@/model/updates'
 import ApolloClientProvider from '@/providers/ApolloClientProvider'
 import { AuthProvider } from '@/providers/AuthProvider'
 
@@ -47,14 +48,14 @@ const App = () => {
 	}
 
 	async function startup(): Promise<void> {
-  await updateIfPossible();
-  try {
-    await refreshToken();
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
-  }
-}
+		await updateIfPossible()
+		try {
+			await refreshToken()
+		} catch (error) {
+			// eslint-disable-next-line no-console
+			console.error(error)
+		}
+	}
 
 	return (
 		<SafeAreaProvider>
