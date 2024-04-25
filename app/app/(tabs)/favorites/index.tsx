@@ -5,22 +5,13 @@ import { generateTracksListId } from '@/helpers/miscellaneous'
 import { useNavigationSearch } from '@/hooks/useNavigationSearch'
 import { defaultStyles } from '@/styles'
 import { useQuery } from '@apollo/client'
-import { useIsFocused } from '@react-navigation/native'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { ScrollView, Text, View } from 'react-native'
 
 const FavoritesScreen = () => {
-	const isFocused = useIsFocused()
-
-	const { data, loading, error, refetch } = useQuery(FETCH_LIKED_RECORDINGS)
-
-	const memoizedData = useMemo(() => data, [data])
-
-	useEffect(() => {
-		if (isFocused && memoizedData) {
-			refetch()
-		}
-	}, [isFocused, refetch, memoizedData])
+	const { data, loading, error } = useQuery(FETCH_LIKED_RECORDINGS, {
+		fetchPolicy: 'cache-and-network',
+	})
 
 	const search = useNavigationSearch({
 		searchBarOptions: {

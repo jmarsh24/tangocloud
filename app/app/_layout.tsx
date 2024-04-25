@@ -46,6 +46,16 @@ const App = () => {
 		return null
 	}
 
+	async function startup(): Promise<void> {
+  await updateIfPossible();
+  try {
+    await refreshToken();
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error);
+  }
+}
+
 	return (
 		<SafeAreaProvider>
 			<GestureHandlerRootView style={{ flex: 1 }}>

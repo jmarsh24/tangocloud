@@ -6,9 +6,8 @@ import { generateTracksListId } from '@/helpers/miscellaneous'
 import { useAuth } from '@/providers/AuthProvider'
 import { defaultStyles } from '@/styles'
 import { useQuery } from '@apollo/client'
-import { useFocusEffect, useTheme } from '@react-navigation/native'
+import { useTheme } from '@react-navigation/native'
 import { Link } from 'expo-router'
-import { useCallback } from 'react'
 import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -18,14 +17,6 @@ const YouScreen = () => {
 	const { colors } = useTheme()
 
 	const { data, loading, error, refetch } = useQuery(USER_PROFILE)
-
-	useFocusEffect(
-		useCallback(() => {
-			if (authState.authenticated) {
-				refetch()
-			}
-		}, [authState.authenticated, refetch]),
-	)
 
 	if (!authState.authenticated) {
 		return (
