@@ -3,17 +3,13 @@ module Types
     include Rails.application.routes.url_helpers
 
     field :id, ID, null: true
-    field :name, String, null: true
+    field :name, String, null: true, method: :formatted_name
     field :rank, Integer, null: true
     field :sort_name, String, null: true
     field :birth_date, GraphQL::Types::ISO8601Date, null: true
     field :death_date, GraphQL::Types::ISO8601Date, null: true
     field :slug, String, null: true
     field :recordings_count, Integer, null: true
-
-    def name
-      object.formatted_name
-    end
 
     field :photo_url, String, null: true
 
