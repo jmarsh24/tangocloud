@@ -22,6 +22,10 @@ SplashScreen.preventAutoHideAsync()
 
 TrackPlayer.registerPlaybackService(() => playbackService)
 
+async function startup(): Promise<void> {
+	await updateIfPossible()
+}
+
 const App = () => {
 	const [fontsLoaded, fontsError] = useFonts({
 		SpaceMono: require('@/assets/fonts/SpaceMono-Regular.ttf'),
@@ -39,22 +43,17 @@ const App = () => {
 	useLogTrackPlayerState()
 
 	useEffect(() => {
-		if (fontsError) throw fontsError
-		if (fontsLoaded) SplashScreen.hideAsync()
-	}, [fontsLoaded, fontsError])
+		startup()
+	})
+
+	useEffect(() => {
+		if (fontsLoaded) {
+			SplashScreen.hideAsync()
+		}
+	}, [fontsLoaded])
 
 	if (!fontsLoaded) {
 		return null
-	}
-
-	async function startup(): Promise<void> {
-		await updateIfPossible()
-		try {
-			await refreshToken()
-		} catch (error) {
-			// eslint-disable-next-line no-console
-			console.error(error)
-		}
 	}
 
 	return (
