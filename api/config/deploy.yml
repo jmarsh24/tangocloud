@@ -31,10 +31,10 @@ env:
     DB_HOST: 10.1.0.3
     CLOUDFLARE_BUCKET: tangocloud
     ELASTICSEARCH_URL: 10.1.0.5:9200
+    CDN_HOST: https://tangocloud.app
   secret:
     - RAILS_MASTER_KEY
     - POSTGRES_PASSWORD
-    - CDN_HOST
 accessories:
   db:
     image: postgres:15
