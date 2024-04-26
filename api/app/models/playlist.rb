@@ -29,7 +29,8 @@ class Playlist < ApplicationRecord
       query,
       fields: [:title],
       match: :word_middle,
-      misspellings: {below: 5}
+      misspellings: {below: 5},
+      order: {title: :desc}
     )
   end
 
