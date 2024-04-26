@@ -5,7 +5,7 @@ import { router, useLocalSearchParams } from 'expo-router'
 import { useEffect } from 'react'
 import TrackPlayer from 'react-native-track-player'
 
-const TrackPage = () => {
+const RecordingPage = () => {
 	const { id } = useLocalSearchParams()
 	const { activeQueueId, setActiveQueueId } = useQueue()
 
@@ -54,4 +54,4 @@ const TrackPage = () => {
 	return null
 }
 
-export default TrackPage
+export default RecordingPage

@@ -2,7 +2,7 @@ import { defaultStyles } from '@/styles'
 import { Stack } from 'expo-router'
 import { View } from 'react-native'
 
-export const TracksLayout = () => {
+export const RecordingsLayout = () => {
 	return (
 		<View style={defaultStyles.container}>
 			<Stack>
@@ -17,4 +17,4 @@ export const TracksLayout = () => {
 	)
 }
 
-export default TracksLayout
+export default RecordingsLayout
