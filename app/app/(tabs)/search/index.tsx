@@ -5,13 +5,10 @@ import { generateTracksListId } from '@/helpers/miscellaneous'
 import { useNavigationSearch } from '@/hooks/useNavigationSearch'
 import { defaultStyles } from '@/styles'
 import { useQuery } from '@apollo/client'
-import { useTheme } from '@react-navigation/native'
-import { Link } from 'expo-router'
 import React, { useMemo, useState } from 'react'
 import { ScrollView, Text, View } from 'react-native'
 
 const SearchScreen = () => {
-	const { colors } = useTheme()
 	const [searchQuery, setSearchQuery] = useState('')
 	const ITEMS_PER_PAGE = 50
 
@@ -58,20 +55,8 @@ const SearchScreen = () => {
 		)
 	}
 
-	const navigationLinks = ['orchestras', 'singers', 'composers', 'lyricists'].map((category) => (
-		<Link
-			key={category}
-			href={`/${category}`}
-			push
-			style={[defaultStyles.text, { backgroundColor: colors.card }]}
-		>
-			<Text style={[defaultStyles.text]}>{category[0].toUpperCase() + category.slice(1)}</Text>
-		</Link>
-	))
-
 	return (
 		<View style={defaultStyles.container}>
-			{!searchQuery && <View style={defaultStyles.linksContainer}>{navigationLinks}</View>}
 			<ScrollView
 				contentInsetAdjustmentBehavior="automatic"
 				style={{ paddingHorizontal: screenPadding.horizontal }}
