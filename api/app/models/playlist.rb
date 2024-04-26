@@ -30,7 +30,7 @@ class Playlist < ApplicationRecord
       fields: [:title],
       match: :word_middle,
       misspellings: {below: 5},
-      order: {title: :desc}
+      order: {title: :asc}
     )
   end
 

@@ -29,7 +29,7 @@ class Recording < ApplicationRecord
 
   def self.search_recordings(query)
     if query.blank? || query == "*"
-      Recording.order(playbacks_count: :desc).includes(
+      Recording.includes(
         :orchestra,
         :singers,
         :composition,
@@ -38,7 +38,7 @@ class Recording < ApplicationRecord
         :lyrics,
         :audio_variants,
         audio_transfers: [album: {album_art_attachment: :blob}]
-      )
+      ).order(playbacks_count: :desc).limit(100)
     else
       Recording.search(query,
         fields: [
