@@ -16,8 +16,8 @@ const TrackPage = () => {
 
 	useEffect(() => {
 		const loadTrack = async () => {
-			if (data && data.recording) {
-				const recording = data.recording
+			if (data && data.fetchRecording) {
+				const recording = data.fetchRecording
 				const track = {
 					id: recording.id,
 					title: recording.title,
@@ -44,7 +44,7 @@ const TrackPage = () => {
 				}
 
 				TrackPlayer.play()
-				router.replace('/player/index')
+				router.replace('/player')
 			}
 		}
 
