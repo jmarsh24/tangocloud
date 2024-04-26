@@ -103,7 +103,7 @@ export default function YouScreen() {
 				{username && <Text style={[styles.header, { color: colors.text }]}>{username}</Text>}
 				{email && <Text style={[styles.header, { color: colors.text }]}>{email}</Text>}
 				<Button onPress={onLogout} text="Sign out" />
-				<Text style={styles.version}>{currentVersion}</Text>
+				<Text style={styles.text}>{currentVersion}</Text>
 			</View>
 			<View style={styles.listContainer}>
 				<Text style={[styles.header, { color: colors.text }]}>History</Text>
