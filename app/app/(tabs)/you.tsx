@@ -2,6 +2,7 @@ import Button from '@/components/Button'
 import { TracksListItem } from '@/components/TracksListItem'
 import { USER_PROFILE } from '@/graphql'
 import { useAuth } from '@/providers/AuthProvider'
+import { useQueue } from '@/store/queue'
 import { utilsStyles } from '@/styles'
 import { useQuery } from '@apollo/client'
 import { useTheme } from '@react-navigation/native'
@@ -25,13 +26,20 @@ export default function YouScreen() {
 		<View style={{ ...utilsStyles.itemSeparator, marginVertical: 9, marginLeft: 60 }} />
 	)
 
+	const { activeQueueId, setActiveQueueId } = useQueue()
+
 	const handleTrackSelect = async (track) => {
+		const id = track.id
 		const queue = await TrackPlayer.getQueue()
 		const trackIndex = queue.findIndex((qTrack) => qTrack.id === track.id)
+		const isChangingQueue = id !== activeQueueId
 
-		if (trackIndex === -1) {
-			await TrackPlayer.add(track)
+		if (isChangingQueue || trackIndex === -1) {
+			if (trackIndex === -1) {
+				await TrackPlayer.add(track)
+			}
 			await TrackPlayer.skipToNext()
+			setActiveQueueId(id)
 		} else {
 			await TrackPlayer.skip(trackIndex)
 		}
@@ -112,7 +120,7 @@ export default function YouScreen() {
 					ListFooterComponent={ItemDivider}
 					ItemSeparatorComponent={ItemDivider}
 					renderItem={({ item }) => (
-						<TracksListItem track={item} onTrackSelect={handleTrackSelect} />
+						<TracksListItem track={item} onTrackSelect={() => handleTrackSelect(item)} />
 					)}
 					estimatedItemSize={80}
 				/>
