@@ -44,7 +44,7 @@ const TrackPage = () => {
 				}
 
 				TrackPlayer.play()
-				router.replace('/player')
+				router.replace('/player/index')
 			}
 		}
 
