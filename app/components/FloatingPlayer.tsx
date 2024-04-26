@@ -1,9 +1,7 @@
 import { PlayPauseButton, SkipToNextButton } from '@/components/PlayerControls'
 import { joinAttributes } from '@/helpers/miscellaneous'
 import { useLastActiveTrack } from '@/hooks/useLastActiveTrack'
-import { usePlayerBackground } from '@/hooks/usePlayerBackground'
 import { defaultStyles } from '@/styles'
-import { LinearGradient } from 'expo-linear-gradient'
 import { useRouter } from 'expo-router'
 import { StyleSheet, TouchableOpacity, View, ViewProps } from 'react-native'
 import FastImage from 'react-native-fast-image'
@@ -22,9 +20,6 @@ export const FloatingPlayer = ({ style }: ViewProps) => {
 	const handlePress = () => {
 		router.navigate('/player')
 	}
-	const { imageColors } = usePlayerBackground(
-		activeTrack?.artwork ?? require('@/assets/unknown_track.png'),
-	)
 
 	if (!displayedTrack) return null
 
@@ -32,63 +27,47 @@ export const FloatingPlayer = ({ style }: ViewProps) => {
 
 	return (
 		<TouchableOpacity onPress={handlePress} activeOpacity={1} style={[styles.container, style]}>
-			<LinearGradient
-				style={styles.linearGradient}
-				colors={
-					imageColors && imageColors.background && imageColors.primary
-						? [imageColors.background, imageColors.primary]
-						: [colors.background, colors.backgroundDarker]
-				}
-			>
-				<View style={[styles.overlayContainer, styles.row]}>
-					<FastImage
-						source={{
-							uri: displayedTrack.artwork ?? require('@/assets/unknown_track.png'),
-						}}
-						style={styles.trackArtworkImage}
-					/>
+			<FastImage
+				source={{
+					uri: displayedTrack.artwork ?? require('@/assets/unknown_track.png'),
+				}}
+				style={styles.trackArtworkImage}
+			/>
 
-					<View style={styles.trackDetailsContainer}>
-						<MovingText
-							style={styles.trackTitle}
-							text={displayedTrack.title ?? ''}
-							animationThreshold={25}
-						/>
-						<MovingText style={styles.trackInfo} text={extraInfo} animationThreshold={25} />
-					</View>
+			<View style={styles.trackDetailsContainer}>
+				<MovingText
+					style={styles.trackTitle}
+					text={displayedTrack.title ?? ''}
+					animationThreshold={25}
+				/>
+				<MovingText style={styles.trackInfo} text={extraInfo} animationThreshold={25} />
+			</View>
 
-					<View style={styles.trackControlsContainer}>
-						<PlayPauseButton iconSize={24} />
-						<SkipToNextButton iconSize={22} />
-					</View>
-					<View style={styles.progressBar}>
-						<SimpleProgressBar />
-					</View>
-				</View>
-			</LinearGradient>
+			<View style={styles.trackControlsContainer}>
+				<PlayPauseButton iconSize={24} />
+				<SkipToNextButton iconSize={22} />
+			</View>
+			<View style={styles.progressBar}>
+				<SimpleProgressBar />
+			</View>
 		</TouchableOpacity>
 	)
 }
 
 const styles = StyleSheet.create({
 	container: {
-		position: 'relative',
-	},
-	linearGradient: {
-		flex: 1,
-		borderRadius: 8,
-	},
-	row: {
-		backgroundColor: 'rgba(0,0,0,0.5)',
 		flexDirection: 'row',
 		alignItems: 'center',
+		backgroundColor: '#252525',
 		padding: 8,
-		paddingVertical: 8,
+		borderRadius: 12,
+		paddingVertical: 10,
+		position: 'relative',
 	},
 	trackArtworkImage: {
 		width: 40,
 		height: 40,
-		borderRadius: 4,
+		borderRadius: 8,
 	},
 	trackDetailsContainer: {
 		flex: 1,
@@ -117,7 +96,7 @@ const styles = StyleSheet.create({
 	progressBar: {
 		position: 'absolute',
 		bottom: 0,
-		left: 10,
-		right: 10,
+		left: 15,
+		right: 15,
 	},
 })
