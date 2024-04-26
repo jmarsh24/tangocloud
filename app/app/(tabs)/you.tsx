@@ -1,6 +1,8 @@
 import Button from '@/components/Button'
 import { TracksListItem } from '@/components/TracksListItem'
+import { colors } from '@/constants/tokens'
 import { USER_PROFILE } from '@/graphql'
+import { currentVersion } from '@/model/updates'
 import { useAuth } from '@/providers/AuthProvider'
 import { useQueue } from '@/store/queue'
 import { utilsStyles } from '@/styles'
@@ -101,6 +103,7 @@ export default function YouScreen() {
 				{username && <Text style={[styles.header, { color: colors.text }]}>{username}</Text>}
 				{email && <Text style={[styles.header, { color: colors.text }]}>{email}</Text>}
 				<Button onPress={onLogout} text="Sign out" />
+				<Text style={styles.version}>{currentVersion}</Text>
 			</View>
 			<View style={styles.listContainer}>
 				<Text style={[styles.header, { color: colors.text }]}>History</Text>
@@ -155,5 +158,6 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		fontSize: 16,
+		color: colors.text,
 	},
 })

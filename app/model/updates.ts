@@ -1,5 +1,5 @@
-import { checkForUpdateAsync, fetchUpdateAsync, reloadAsync } from 'expo-updates'
 import Constants from 'expo-constants'
+import { checkForUpdateAsync, fetchUpdateAsync, reloadAsync } from 'expo-updates'
 
 export async function updateIfPossible(): Promise<void> {
 	if (__DEV__) return
