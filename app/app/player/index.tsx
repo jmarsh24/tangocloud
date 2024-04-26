@@ -12,6 +12,7 @@ import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'rea
 import FastImage from 'react-native-fast-image'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useActiveTrack } from 'react-native-track-player'
+import { ShareButton } from '@/components/ShareButton';
 
 const PlayerScreen = () => {
 	const activeTrack = useActiveTrack()
@@ -80,6 +81,7 @@ const PlayerScreen = () => {
 											style={{ marginHorizontal: 14 }}
 										/>
 									</TouchableOpacity>
+									<ShareButton recording_id={activeTrack.id} />
 								</View>
 
 								{activeTrack.artist && (
