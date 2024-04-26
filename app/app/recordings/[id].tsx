@@ -49,7 +49,7 @@ const TrackPage = () => {
 		}
 
 		loadTrack()
-	})
+	}, [data, id, activeQueueId, setActiveQueueId])
 
 	return null
 }

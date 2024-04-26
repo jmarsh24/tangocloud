@@ -6,7 +6,12 @@ export const TracksLayout = () => {
 	return (
 		<View style={defaultStyles.container}>
 			<Stack>
-				<Stack.Screen name="[id]" />
+				<Stack.Screen 
+					name="[id]"
+					options={{
+            headerShown: false
+          }} 
+				/>
 			</Stack>
 		</View>
 	)
