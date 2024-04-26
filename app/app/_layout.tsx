@@ -1,10 +1,10 @@
 import { colors } from '@/constants/tokens'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
+import { DarkTheme, ThemeProvider } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
 import { SplashScreen, Stack } from 'expo-router'
+import { StatusBar } from 'expo-status-bar'
 import { useCallback, useEffect } from 'react'
-import { StatusBar, useColorScheme } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import TrackPlayer from 'react-native-track-player'
@@ -27,7 +27,7 @@ async function startup(): Promise<void> {
 }
 
 const App = () => {
-	const [fontsLoaded, fontsError] = useFonts({
+	const [fontsLoaded] = useFonts({
 		SpaceMono: require('@/assets/fonts/SpaceMono-Regular.ttf'),
 		...FontAwesome.font,
 	})
@@ -61,21 +61,17 @@ const App = () => {
 			<GestureHandlerRootView style={{ flex: 1 }}>
 				<RootLayoutNav />
 
-				<StatusBar barStyle="dark-content" />
+				<StatusBar style="light" />
 			</GestureHandlerRootView>
 		</SafeAreaProvider>
 	)
 }
 
 function RootLayoutNav() {
-	const colorScheme = useColorScheme()
-
 	return (
-		<ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+		<ThemeProvider value={DarkTheme}>
 			<ApolloClientProvider>
 				<AuthProvider>
-					{/* This is not working properly */}
-					{/* <PreloadQueries /> */}
 					<Stack>
 						<Stack.Screen name="(auth)" options={{ headerShown: false }} />
 						<Stack.Screen name="(tabs)" options={{ headerShown: false }} />

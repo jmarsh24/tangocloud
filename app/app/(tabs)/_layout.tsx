@@ -6,7 +6,7 @@ import { useQuery } from '@apollo/client'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import { BlurView } from 'expo-blur'
 import { Redirect, Tabs } from 'expo-router'
-import { Image, StyleSheet, Platform } from 'react-native'
+import { Image, Platform, StyleSheet } from 'react-native'
 
 const TabsNavigation = () => {
 	const { authState } = useAuth()
@@ -39,7 +39,7 @@ const TabsNavigation = () => {
 		}
 	}
 
-	const floatingPlayerHeight = Platform.OS === 'ios' ? 78 : 50;
+	const floatingPlayerHeight = Platform.OS === 'ios' ? 78 : 50
 
 	return (
 		<>
@@ -58,6 +58,7 @@ const TabsNavigation = () => {
 					},
 					tabBarBackground: () => (
 						<BlurView
+							tint="dark"
 							intensity={95}
 							style={{
 								...StyleSheet.absoluteFillObject,
