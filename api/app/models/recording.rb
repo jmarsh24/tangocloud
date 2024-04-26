@@ -29,16 +29,18 @@ class Recording < ApplicationRecord
 
   def self.search_recordings(query)
     if query.blank? || query == "*"
-      Recording.includes(
-        :orchestra,
-        :singers,
-        :composition,
-        :genre,
-        :period,
-        :lyrics,
-        :audio_variants,
-        audio_transfers: [album: {album_art_attachment: :blob}]
-      ).order(playbacks_count: :desc).limit(100)
+      Recording.search(query,
+        order: {playbacks_count: :desc},
+        includes: [
+          :orchestra,
+          :singers,
+          :composition,
+          :genre,
+          :period,
+          :lyrics,
+          :audio_variants,
+          audio_transfers: [album: {album_art_attachment: :blob}]
+        ])
     else
       Recording.search(query,
         fields: [
@@ -54,7 +56,6 @@ class Recording < ApplicationRecord
         ],
         match: :word_middle,
         misspellings: {below: 5},
-        order: {playbacks_count: :desc},
         boost_by: [:playbacks_count],
         includes: [
           :orchestra,
