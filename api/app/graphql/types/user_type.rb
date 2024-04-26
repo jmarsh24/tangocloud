@@ -37,7 +37,7 @@ module Types
       object.events
     end
 
-    has_many :playbacks, -> { most_recent }
+    has_many :playbacks, -> { most_recent.limit(100).distinct }
     has_many :playlists
     has_many :likes, -> { most_recent }
   end
