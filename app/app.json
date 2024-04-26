@@ -30,7 +30,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "tangocloud",
       "runtimeVersion": "1.0.0",
-      "buildNumber": "66",
+      "buildNumber": "67",
       "associatedDomains": [
         "applinks:tangocloud.app"
       ]
@@ -44,7 +44,7 @@
         "policy": "appVersion"
       },
       "package": "com.tangocloud.app",
-      "versionCode": 34
+      "versionCode": 35
     },
     "plugins": [
       "expo-router",
