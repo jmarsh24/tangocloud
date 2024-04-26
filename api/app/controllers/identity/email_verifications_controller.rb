@@ -6,7 +6,10 @@ class Identity::EmailVerificationsController < ApplicationController
 
   def show
     @user.update! verified: true
-    redirect_to root_path, notice: "Thank you for verifying your email address"
+    # redirect_to root_path, notice: "Thank you for verifying your email address"
+    app_login_url = "tangocloudapp://login?email=#{@user.email}"
+
+    redirect_to app_login_url, allow_other_host: true
   end
 
   def create
