@@ -10,8 +10,7 @@ const RecordingPage = () => {
 	const { activeQueueId, setActiveQueueId } = useQueue()
 
 	const { data } = useQuery(FETCH_RECORDING, {
-		variables: { id },
-		skip: !id,
+		variables: { id }
 	})
 
 	useEffect(() => {
