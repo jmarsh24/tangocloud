@@ -11,13 +11,13 @@ import { Image, Platform, StyleSheet, View } from 'react-native'
 const TabsNavigation = () => {
 	const { authState } = useAuth()
 
-	if (!authState.authenticated) {
-		return <Redirect href="/login" />
-	}
-
 	const { data, loading, error } = useQuery(USER_PROFILE, {
 		skip: !authState.authenticated,
 	})
+
+	if (!authState.authenticated) {
+		return <Redirect href="/login" />
+	}
 
 	if (loading) {
 		return null
