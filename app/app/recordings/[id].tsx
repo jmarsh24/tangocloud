@@ -43,7 +43,7 @@ const RecordingPage = () => {
 				}
 
 				TrackPlayer.play()
-				router.push('/player')
+				// router.push('/player')
 			}
 		}
 
