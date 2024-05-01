@@ -41,6 +41,17 @@ export default (): ExpoConfig => {
 				foregroundImage: './assets/adaptive-icon.png',
 				backgroundColor: '#00000',
 			},
+			intentFilters: [
+				{
+					action: 'VIEW',
+					data: {
+						scheme: 'tangocloudapp',
+						host: 'recordings',
+						pathPrefix: '/',
+					},
+					category: ['BROWSABLE', 'DEFAULT'],
+				},
+			],
 		},
 		plugins: [
 			'expo-router',
