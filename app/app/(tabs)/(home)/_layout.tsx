@@ -1,7 +1,6 @@
-import { Stack } from 'expo-router'
 import { defaultStyles } from '@/styles'
+import { Stack } from 'expo-router'
 import { View } from 'react-native'
-import { StackScreenWithSearchBar } from '@/constants/layout'
 
 const HomeScreenLayout = () => {
 	return (

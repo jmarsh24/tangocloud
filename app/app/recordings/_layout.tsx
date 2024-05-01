@@ -6,11 +6,11 @@ export const RecordingsLayout = () => {
 	return (
 		<View style={defaultStyles.container}>
 			<Stack>
-				<Stack.Screen 
+				<Stack.Screen
 					name="[id]"
 					options={{
-            headerShown: false
-          }} 
+						headerShown: false,
+					}}
 				/>
 			</Stack>
 		</View>

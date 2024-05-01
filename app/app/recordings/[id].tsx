@@ -10,7 +10,7 @@ const RecordingPage = () => {
 	const { activeQueueId, setActiveQueueId } = useQueue()
 
 	const { data } = useQuery(FETCH_RECORDING, {
-		variables: { id }
+		variables: { id },
 	})
 
 	useEffect(() => {
@@ -43,7 +43,7 @@ const RecordingPage = () => {
 				}
 
 				TrackPlayer.play()
-				router.replace('/player/index')
+				router.replace('/player')
 			}
 		}
 
