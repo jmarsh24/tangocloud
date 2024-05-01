@@ -60,7 +60,9 @@ const TabsNavigation = () => {
 						Platform.OS === 'ios' ? (
 							<BlurView tint="dark" intensity={95} style={StyleSheet.absoluteFillObject} />
 						) : (
-							<View style={{ backgroundColor: '#252525' }} />
+							<View
+								style={{ ...StyleSheet.absoluteFillObject, backgroundColor: '#252525', zIndex: -1 }}
+							/>
 						),
 				}}
 			>
