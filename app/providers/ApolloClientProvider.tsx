@@ -1,7 +1,9 @@
 import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink } from '@apollo/client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setContext } from '@apollo/client/link/context';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
+import { persistCache } from 'apollo3-cache-persist';
 
 // Function to retrieve the auth token
 async function getAuthToken(): Promise<string | null> {
@@ -25,14 +27,37 @@ const authLink = setContext(async (_, { headers }) => {
   };
 });
 
-// Create the Apollo Client with the auth and HTTP link
-const client = new ApolloClient({
-  link: authLink.concat(httpLink), // Use the authLink with the httpLink
-  cache: new InMemoryCache(),
-});
+// Initialize Apollo Cache
+const cache = new InMemoryCache();
 
 // ApolloClientProvider component
 const ApolloClientProvider = ({ children }: PropsWithChildren<{}>) => {
+  const [client, setClient] = useState<ApolloClient<any> | null>(null);
+
+  useEffect(() => {
+    const setupApollo = async () => {
+      // Wait for the cache to be persisted before creating the client
+      await persistCache({
+        cache,
+        storage: AsyncStorage,
+      });
+
+      // Create the Apollo Client with the auth and HTTP link
+      const apolloClient = new ApolloClient({
+        link: authLink.concat(httpLink),
+        cache: cache,
+      });
+
+      setClient(apolloClient);
+    };
+
+    setupApollo();
+  }, []);
+  
+   if (!client) {
+    return null;
+  }
+
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
 };
 
