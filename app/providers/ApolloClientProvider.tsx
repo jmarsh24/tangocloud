@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setContext } from '@apollo/client/link/context';
 import { PropsWithChildren, useEffect, useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
-import { persistCache } from 'apollo3-cache-persist';
+import { persistCache, AsyncStorageWrapper } from 'apollo3-cache-persist';
 
 // Function to retrieve the auth token
 async function getAuthToken(): Promise<string | null> {
@@ -39,7 +39,7 @@ const ApolloClientProvider = ({ children }: PropsWithChildren<{}>) => {
       // Wait for the cache to be persisted before creating the client
       await persistCache({
         cache,
-        storage: AsyncStorage,
+        storage: new AsyncStorageWrapper(AsyncStorage),
       });
 
       // Create the Apollo Client with the auth and HTTP link

@@ -4,7 +4,7 @@ export default (): ExpoConfig => {
 	return {
 		name: 'Tango Cloud',
 		slug: 'app',
-		version: '1.0.24',
+		version: '1.0.26',
 		owner: 'tangocloud',
 		orientation: 'portrait',
 		icon: './assets/icon.png',
@@ -71,7 +71,7 @@ export default (): ExpoConfig => {
 			eas: {
 				projectId: '40b28cff-7ae4-44c3-b2b4-da1eb1d5081b',
 			},
-			currentVersion: '1.0.24',
+			currentVersion: '1.0.26',
 		},
 		updates: {
 			url: 'https://u.expo.dev/40b28cff-7ae4-44c3-b2b4-da1eb1d5081b',
