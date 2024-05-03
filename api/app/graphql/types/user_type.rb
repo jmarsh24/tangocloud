@@ -37,8 +37,8 @@ module Types
       object.events
     end
 
-    has_many :playbacks, scope: :most_recent
+    has_many :playbacks, -> { most_recent }
     has_many :playlists
-    has_many :likes, scope: :most_recent
+    has_many :likes, -> { most_recent }
   end
 end
