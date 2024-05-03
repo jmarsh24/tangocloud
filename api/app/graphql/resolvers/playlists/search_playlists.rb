@@ -5,7 +5,7 @@ module Resolvers::Playlists
     argument :query, String, required: false, description: "Search query."
 
     def resolve(query:)
-      Playlist.with_attached_album_art.search_playlists(query.presence || "*").results
+      Playlist.search_playlists(query.presence || "*").results
     end
   end
 end

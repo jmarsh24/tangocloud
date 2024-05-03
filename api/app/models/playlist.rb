@@ -30,7 +30,16 @@ class Playlist < ApplicationRecord
       fields: [:title],
       match: :word_middle,
       misspellings: {below: 5},
-      order: {title: :asc}
+      order: {title: :asc},
+      includes: [
+        :image_attachment,
+        :user,
+        playlist_items: {
+          playable: {
+            audio_transfers: :audio_variants
+          }
+        }
+      ]
     )
   end
 
