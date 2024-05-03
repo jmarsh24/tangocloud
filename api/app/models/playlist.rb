@@ -32,13 +32,7 @@ class Playlist < ApplicationRecord
       misspellings: {below: 5},
       order: {title: :asc},
       includes: [
-        :image_attachment,
-        :user,
-        playlist_items: {
-          playable: {
-            audio_transfers: :audio_variants
-          }
-        }
+        image_attachment: :blob
       ]
     )
   end
