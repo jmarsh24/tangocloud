@@ -21,7 +21,7 @@ export default function YouScreen() {
 	const { colors } = useTheme()
 
 	const { data, loading, error } = useQuery(USER_PROFILE, {
-		skip: !authState.authenticated,
+		fetchPolicy: 'network-only',
 	})
 
 	const ItemDivider = () => (
