@@ -203,12 +203,12 @@ const styles = StyleSheet.create({
 	},
 	lyricsHeader: {
 		...defaultStyles.text,
-		fontSize: fontSize.sm,
-		fontWeight: '700',
+		fontSize: fontSize.base,
+		fontWeight: '600',
 	},
 	lyricsText: {
 		...defaultStyles.textLyrics,
-		fontSize: fontSize.base,
+		fontSize: fontSize.lg,
 		fontWeight: '700',
 	},
 })
