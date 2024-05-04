@@ -30,7 +30,7 @@ export const PlaylistTracksList = ({ playlist }: { playlist: Playlist }) => {
 					artwork: recording.audioTransfers[0]?.album?.albumArtUrl || '',
 					url: recording.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || '',
 					orchestraImageUrl: recording.orchestra.photoUrl,
-					lyrics: recording?.composition?.lyrics?.content,
+					lyrics: recording?.composition?.lyrics[0]?.content,
 					genre: recording.genre.name,
 					year: recording.year,
 					singer: recording.singers[0]?.name,

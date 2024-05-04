@@ -1,6 +1,7 @@
 import { MovingText } from '@/components/MovingText'
 import { PlayerControls } from '@/components/PlayerControls'
 import { PlayerProgressBar } from '@/components/PlayerProgressbar'
+import { ShareButton } from '@/components/ShareButton'
 import { colors, fontSize, screenPadding } from '@/constants/tokens'
 import { joinAttributes } from '@/helpers/miscellaneous'
 import { usePlayerBackground } from '@/hooks/usePlayerBackground'
@@ -8,11 +9,10 @@ import { useTrackPlayerFavorite } from '@/hooks/useTrackPlayerFavorite'
 import { defaultStyles } from '@/styles'
 import { FontAwesome } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
-import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useActiveTrack } from 'react-native-track-player'
-import { ShareButton } from '@/components/ShareButton';
 
 const PlayerScreen = () => {
 	const activeTrack = useActiveTrack()
@@ -20,7 +20,7 @@ const PlayerScreen = () => {
 		activeTrack?.artwork ?? require('@/assets/unknown_track.png'),
 	)
 
-	const { top, bottom } = useSafeAreaInsets()
+	const { top } = useSafeAreaInsets()
 
 	const { isFavorite, toggleFavorite } = useTrackPlayerFavorite()
 
@@ -41,65 +41,83 @@ const PlayerScreen = () => {
 					: [colors.background, colors.backgroundDarker]
 			}
 		>
-			<View style={styles.overlayContainer}>
-				<DismissPlayerSymbol />
-
-				<View style={{ flex: 1, marginTop: top + 70, marginBottom: bottom }}>
-					<View style={styles.artworkImageContainer}>
-						<FastImage
-							source={{
-								uri: activeTrack.artwork ?? require('@/assets/unknown_track.png'),
-								priority: FastImage.priority.high,
-							}}
-							resizeMode="cover"
-							style={styles.artworkImage}
-						/>
-					</View>
-
-					<View style={{ flex: 1 }}>
-						<View style={{ marginTop: 'auto', paddingBottom: 48 }}>
-							<View style={{ height: 80 }}>
-								<View
-									style={{
-										flexDirection: 'row',
-										justifyContent: 'space-between',
-										alignItems: 'center',
+			<View style={[styles.overlayContainer]}>
+				{/* <DismissPlayerSymbol /> */}
+				<ScrollView style={{marginTop: top + 40}}           
+					showsVerticalScrollIndicator={false}
+				>
+					<View style={{display: 'flex', gap: 72, paddingBottom: 24}}>
+						<View style={{display: 'flex', gap: 36}}>
+							<View style={styles.artworkImageContainer}>
+								<FastImage
+									source={{
+										uri: activeTrack.artwork ?? require('@/assets/unknown_track.png'),
+										priority: FastImage.priority.high,
 									}}
-								>
-									<View style={styles.trackTitleContainer}>
-										<MovingText
-											text={activeTrack.title ?? ''}
-											animationThreshold={30}
-											style={styles.trackTitleText}
-										/>
-									</View>
-									<TouchableOpacity activeOpacity={0.7} onPress={toggleFavorite}>
-										<FontAwesome
-											name={isFavorite ? 'heart' : 'heart-o'}
-											size={28}
-											color={isFavorite ? colors.primary : colors.icon}
-											style={{ marginHorizontal: 14 }}
-										/>
-									</TouchableOpacity>
-									<ShareButton recording_id={activeTrack.id} />
-								</View>
-
-								{activeTrack.artist && (
-									<Text numberOfLines={1} style={[styles.trackArtistText, { marginTop: 6 }]}>
-										{`${joinAttributes([activeTrack.artist, activeTrack.singer])}`}
-									</Text>
-								)}
-								<Text numberOfLines={1} style={styles.trackArtistText}>
-									{`${joinAttributes([activeTrack.genre, activeTrack.year])}`}
-								</Text>
+									resizeMode="cover"
+									style={styles.artworkImage}
+								/>
 							</View>
+							<View>
+								<View>
+									<View>
+										<View
+											style={{
+												flexDirection: 'row',
+												justifyContent: 'space-between',
+												alignItems: 'center',
+											}}
+										>
+											<View style={styles.trackTitleContainer}>
+												<MovingText
+													text={activeTrack.title ?? ''}
+													animationThreshold={30}
+													style={styles.trackTitleText}
+												/>
+											</View>
+											<TouchableOpacity activeOpacity={0.7} onPress={toggleFavorite}>
+												<FontAwesome
+													name={isFavorite ? 'heart' : 'heart-o'}
+													size={28}
+													color={isFavorite ? colors.primary : colors.icon}
+													style={{ marginHorizontal: 14 }}
+												/>
+											</TouchableOpacity>
+											<ShareButton recording_id={activeTrack.id} />
+										</View>
 
-							<PlayerProgressBar style={{ marginTop: 32 }} />
+										{activeTrack.artist && (
+											<Text numberOfLines={1} style={[styles.trackArtistText, { marginTop: 6 }]}>
+												{`${joinAttributes([activeTrack.artist, activeTrack.singer])}`}
+											</Text>
+										)}
+										<Text numberOfLines={1} style={styles.trackArtistText}>
+											{`${joinAttributes([activeTrack.genre, activeTrack.year])}`}
+										</Text>
+									</View>
 
-							<PlayerControls style={{ marginTop: 40 }} />
+									<PlayerProgressBar style={{ marginTop: 32 }} />
+
+									<PlayerControls style={{ marginTop: 40 }} />
+								</View>
+							</View>
+						</View>
+						<View
+							style={[
+								{
+									backgroundColor:
+										imageColors && imageColors.background
+											? imageColors.background
+											: colors.background,
+								},
+								styles.lyricsContainer,
+							]}
+						>
+							<Text style={styles.lyricsHeader}>Lyrics</Text>
+							<Text style={styles.lyricsText}>{activeTrack.lyrics}</Text>
 						</View>
 					</View>
-				</View>
+				</ScrollView>
 			</View>
 		</LinearGradient>
 	)
@@ -147,7 +165,6 @@ const styles = StyleSheet.create({
 		borderTopLeftRadius: 24,
 	},
 	artworkImageContainer: {
-		backgroundColor: 'rgba(0,0,0,0.5)',
 		borderRadius: 24,
 		shadowOffset: {
 			width: 0,
@@ -157,13 +174,12 @@ const styles = StyleSheet.create({
 		shadowRadius: 11.0,
 		flexDirection: 'row',
 		justifyContent: 'center',
-		height: '50%',
 	},
 	artworkImage: {
 		width: '100%',
-		height: '100%',
 		resizeMode: 'cover',
 		borderRadius: 12,
+		aspectRatio: 1,
 	},
 	trackTitleContainer: {
 		flex: 1,
@@ -179,6 +195,21 @@ const styles = StyleSheet.create({
 		fontSize: fontSize.base,
 		opacity: 0.8,
 		maxWidth: '90%',
+	},
+	lyricsContainer: {
+		gap: 24,
+		padding: 24,
+		borderRadius: 24,
+	},
+	lyricsHeader: {
+		...defaultStyles.text,
+		fontSize: fontSize.sm,
+		fontWeight: '700',
+	},
+	lyricsText: {
+		...defaultStyles.textLyrics,
+		fontSize: fontSize.base,
+		fontWeight: '700',
 	},
 })
 

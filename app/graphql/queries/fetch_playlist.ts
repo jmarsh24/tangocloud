@@ -22,6 +22,12 @@ export const FETCH_PLAYLIST = gql`
 						singers {
 							name
 						}
+						composition {
+							lyrics {
+								locale
+								content
+							}
+						}
 						audioTransfers {
 							id
 							audioVariants {
