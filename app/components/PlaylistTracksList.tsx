@@ -85,10 +85,9 @@ const styles = StyleSheet.create({
 	artworkImageContainer: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		height: 300,
 	},
 	artworkImage: {
-		width: '85%',
+		width: '100%',
 		aspectRatio: 1,
 		resizeMode: 'cover',
 		borderRadius: 12,
