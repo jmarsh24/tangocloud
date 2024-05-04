@@ -2,7 +2,7 @@ class Playback < ApplicationRecord
   belongs_to :user
   belongs_to :recording, counter_cache: true
 
-  scope :most_recent, -> { order(created_at: :asc) }
+  scope :most_recent, -> { order(created_at: :desc) }
 end
 
 # == Schema Information
