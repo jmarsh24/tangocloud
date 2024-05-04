@@ -102,20 +102,22 @@ const PlayerScreen = () => {
 								</View>
 							</View>
 						</View>
-						<View
-							style={[
-								{
-									backgroundColor:
-										imageColors && imageColors.background
-											? imageColors.background
-											: colors.background,
-								},
-								styles.lyricsContainer,
-							]}
-						>
-							<Text style={styles.lyricsHeader}>Lyrics</Text>
-							<Text style={styles.lyricsText}>{activeTrack.lyrics}</Text>
-						</View>
+						{activeTrack.lyrics && (
+							<View
+								style={[
+									{
+										backgroundColor:
+											imageColors && imageColors.background
+												? imageColors.background
+												: colors.background,
+									},
+									styles.lyricsContainer,
+								]}
+							>
+								<Text style={styles.lyricsHeader}>Lyrics</Text>
+								<Text style={styles.lyricsText}>{activeTrack.lyrics}</Text>
+							</View>
+						)}
 					</View>
 				</ScrollView>
 			</View>

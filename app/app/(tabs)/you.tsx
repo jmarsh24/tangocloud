@@ -142,6 +142,7 @@ const styles = StyleSheet.create({
 	profileContainer: {
 		alignItems: 'center',
 		paddingVertical: 20,
+		gap: 4,
 	},
 	listContainer: {
 		flex: 1,

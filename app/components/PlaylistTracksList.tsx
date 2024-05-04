@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
 	},
 	artworkImage: {
 		width: '85%',
-		height: '100%',
+		aspectRatio: 1,
 		resizeMode: 'cover',
 		borderRadius: 12,
 	},
