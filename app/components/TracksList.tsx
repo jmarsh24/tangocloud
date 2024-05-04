@@ -6,7 +6,7 @@ import { FlatList, FlatListProps, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import TrackPlayer, { Track } from 'react-native-track-player'
 import { QueueControls } from './QueueControls'
-import { CREATE_PLAYBACK } from '@/graphql'
+import { CREATE_PLAYBACK, USER_PROFILE } from '@/graphql'
 import { useMutation } from '@apollo/client'
 
 export type TracksListProps = Partial<FlatListProps<Track>> & {
@@ -27,7 +27,10 @@ export const TracksList = ({
 }: TracksListProps) => {
 	const queueOffset = useRef(0)
 	const { activeQueueId, setActiveQueueId } = useQueue()
-	const [createPlayback] = useMutation(CREATE_PLAYBACK)
+	const [createPlayback] = useMutation(CREATE_PLAYBACK, {
+		refetchQueries: [{ query: USER_PROFILE }],
+		awaitRefetchQueries: true // ensures mutation completion before refetch
+	})
 
 	const handleTrackSelect = async (selectedTrack: Track) => {
 		const trackIndex = tracks.findIndex((track) => track.url === selectedTrack.url)
