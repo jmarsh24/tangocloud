@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
 	playlistHeaderContainer: {
 		flex: 1,
 		marginBottom: 32,
+		gap: 24,
 	},
 	artworkImageContainer: {
 		flexDirection: 'row',
