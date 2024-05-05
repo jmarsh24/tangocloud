@@ -34,14 +34,13 @@ export const usePlayerBackground = (imageUrl: string) => {
 function isReadableAgainstBlackAndWhite(color) {
 	const white = tinycolor('#fff')
 	const black = tinycolor('#000')
-	return tinycolor.readability(color, white) > 3.0 && tinycolor.readability(color, black) > 3.0
+	return tinycolor.readability(color, white) > 3.5 && tinycolor.readability(color, black) > 3.5
 }
 
 function adjustColorForReadability(color) {
-	// If color is too light, darken it. If too dark, lighten it.
 	if (color.isLight()) {
-		return color.darken(25)
+		return color.darken(15)
 	} else {
-		return color.lighten(25)
+		return color.lighten(15)
 	}
 }
