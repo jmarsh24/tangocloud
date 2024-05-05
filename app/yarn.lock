@@ -2229,7 +2229,7 @@
   resolved "https://registry.yarnpkg.com/@react-native-masked-view/masked-view/-/masked-view-0.3.0.tgz#bd29fae18d148a685331910a3c7b766ce87eafcc"
   integrity sha512-qLyoObcjzrkpNcoJjXquUePXfL1dXjHtuv+yX0zZ0Q4kG5yvVqd620+tSh7WbRoHkjpXhFBfLwvGhcWB2I0Lpw==
 
-"@react-native-menu/menu@^1.0.0":
+"@react-native-menu/menu@^1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@react-native-menu/menu/-/menu-1.0.2.tgz#6aba5e19f89e6c2565fe006c32848005e6ad368e"
   integrity sha512-C0TSpjN8DUa9vkEhmY5BNsIyuh3Jf6nHXcNA2vy1quOCouKeUQ3B2jtO0Jb9CDdLw2I1NNbYCshdna0VJRSKBw==
