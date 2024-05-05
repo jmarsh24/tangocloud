@@ -32,6 +32,7 @@ const SearchScreen = () => {
 				artwork: edge.node.audioTransfers[0]?.album?.albumArtUrl || '',
 				url: edge.node.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || '',
 				singer: edge.node.singers[0]?.name || '',
+				lyrics: edge.node.composition?.lyrics[0]?.content,
 				year: edge.node.year || '',
 				genre: edge.node.genre.name || '',
 			})) || []

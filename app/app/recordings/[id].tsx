@@ -24,6 +24,7 @@ const RecordingPage = () => {
 					duration: recording.audioTransfers[0]?.audioVariants[0]?.duration || 0,
 					artwork: recording.audioTransfers[0]?.album?.albumArtUrl || '',
 					url: recording.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || '',
+					lyrics: recording?.composition?.lyrics[0]?.content,
 					genre: recording.genre.name,
 					year: recording.year,
 				}
