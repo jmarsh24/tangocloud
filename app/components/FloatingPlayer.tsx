@@ -1,6 +1,7 @@
 import { PlayPauseButton, SkipToNextButton } from '@/components/PlayerControls'
 import { joinAttributes } from '@/helpers/miscellaneous'
 import { useLastActiveTrack } from '@/hooks/useLastActiveTrack'
+import { usePlayerBackground } from '@/hooks/usePlayerBackground'
 import { defaultStyles } from '@/styles'
 import { useRouter } from 'expo-router'
 import { StyleSheet, TouchableOpacity, View, ViewProps } from 'react-native'
@@ -17,6 +18,10 @@ export const FloatingPlayer = ({ style }: ViewProps) => {
 
 	const displayedTrack = activeTrack ?? lastActiveTrack
 
+	const { imageColors, readablePrimaryColor } = usePlayerBackground(
+		activeTrack?.artwork ?? require('@/assets/unknown_track.png'),
+	)
+
 	const handlePress = () => {
 		router.navigate('/player')
 	}
@@ -26,7 +31,11 @@ export const FloatingPlayer = ({ style }: ViewProps) => {
 	const extraInfo = `${joinAttributes([displayedTrack.artist, displayedTrack.singer, displayedTrack.year])}`
 
 	return (
-		<TouchableOpacity onPress={handlePress} activeOpacity={1} style={[styles.container, style]}>
+		<TouchableOpacity
+			onPress={handlePress}
+			activeOpacity={1}
+			style={[styles.container, style, { backgroundColor: readablePrimaryColor }]}
+		>
 			<FastImage
 				source={{
 					uri: displayedTrack.artwork ?? require('@/assets/unknown_track.png'),

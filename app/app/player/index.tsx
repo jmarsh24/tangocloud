@@ -9,14 +9,21 @@ import { useTrackPlayerFavorite } from '@/hooks/useTrackPlayerFavorite'
 import { defaultStyles } from '@/styles'
 import { FontAwesome } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
-import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native'
+import {
+	ActivityIndicator,
+	ScrollView,
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+	View,
+} from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useActiveTrack } from 'react-native-track-player'
 
 const PlayerScreen = () => {
 	const activeTrack = useActiveTrack()
-	const { imageColors } = usePlayerBackground(
+	const { imageColors, readablePrimaryColor } = usePlayerBackground(
 		activeTrack?.artwork ?? require('@/assets/unknown_track.png'),
 	)
 
@@ -43,11 +50,9 @@ const PlayerScreen = () => {
 		>
 			<View style={[styles.overlayContainer]}>
 				{/* <DismissPlayerSymbol /> */}
-				<ScrollView style={{marginTop: top + 40}}           
-					showsVerticalScrollIndicator={false}
-				>
-					<View style={{display: 'flex', gap: 72, paddingBottom: 24}}>
-						<View style={{display: 'flex', gap: 36}}>
+				<ScrollView style={{ marginTop: top + 40 }} showsVerticalScrollIndicator={false}>
+					<View style={{ display: 'flex', gap: 72, paddingBottom: 24 }}>
+						<View style={{ display: 'flex', gap: 36 }}>
 							<View style={styles.artworkImageContainer}>
 								<FastImage
 									source={{
@@ -106,10 +111,7 @@ const PlayerScreen = () => {
 							<View
 								style={[
 									{
-										backgroundColor:
-											imageColors && imageColors.background
-												? imageColors.background
-												: colors.background,
+										backgroundColor: readablePrimaryColor,
 									},
 									styles.lyricsContainer,
 								]}
@@ -201,7 +203,10 @@ const styles = StyleSheet.create({
 	lyricsContainer: {
 		gap: 24,
 		padding: 24,
-		borderRadius: 24,
+		borderTopRightRadius: 24,
+		borderTopLeftRadius: 24,
+		borderBottomLeftRadius: 32,
+		borderBottomRightRadius: 32,
 	},
 	lyricsHeader: {
 		...defaultStyles.text,
