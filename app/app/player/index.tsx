@@ -43,8 +43,8 @@ const PlayerScreen = () => {
 		<LinearGradient
 			style={styles.linearGradient}
 			colors={
-				imageColors && imageColors.background && imageColors.primary
-					? [imageColors.background, imageColors.primary]
+				imageColors && imageColors.secondary && imageColors.detail
+					? [imageColors.secondary, imageColors.detail]
 					: [colors.background, colors.backgroundDarker]
 			}
 		>
