@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
 	trackInfo: {
 		...defaultStyles.text,
 		fontSize: 12,
-		color: '#ccc',
+		color: 'rgba(255, 255, 255, 0.7)',
 	},
 	trackControlsContainer: {
 		flexDirection: 'row',
