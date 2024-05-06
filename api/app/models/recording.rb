@@ -28,46 +28,32 @@ class Recording < ApplicationRecord
   enum recording_type: {studio: "studio", live: "live"}
 
   def self.search_recordings(query)
-    if query.blank? || query == "*"
-      Recording.search(query,
-        order: {playbacks_count: :desc},
-        includes: [
-          :orchestra,
-          :singers,
-          :composition,
-          :genre,
-          :period,
-          :lyrics,
-          :audio_variants,
-          audio_transfers: [album: {album_art_attachment: :blob}]
-        ])
-    else
-      Recording.search(query,
-        fields: [
-          "title",
-          "composer_names",
-          "lyricist_names",
-          "lyrics",
-          "orchestra_name",
-          "singer_names",
-          "genre",
-          "period",
-          "recorded_date"
-        ],
-        match: :word_middle,
-        misspellings: {below: 5},
-        boost_by: [:playbacks_count],
-        includes: [
-          :orchestra,
-          :singers,
-          :composition,
-          :genre,
-          :period,
-          :lyrics,
-          :audio_variants,
-          audio_transfers: [album: {album_art_attachment: :blob}]
-        ])
-    end
+    Recording.search(query,
+      fields: [
+        "title",
+        "composer_names",
+        "lyricist_names",
+        "lyrics",
+        "orchestra_name",
+        "singer_names",
+        "genre",
+        "period",
+        "recorded_date"
+      ],
+      match: :word_middle,
+      misspellings: {below: 5},
+      boost_by: [:playbacks_count],
+      includes: [
+        :orchestra,
+        :singers,
+        :recording_singers,
+        :composition,
+        :genre,
+        :period,
+        :lyrics,
+        :audio_variants,
+        audio_transfers: [album: {album_art_attachment: :blob}]
+      ])
   end
 
   def search_data
