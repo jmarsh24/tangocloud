@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
 		borderTopLeftRadius: 24,
 	},
 	scrollContainer: {
-		paddingTop: 8,
+		paddingTop: 12,
 		paddingHorizontal: 12,
 		zIndex: 10,
 	},
