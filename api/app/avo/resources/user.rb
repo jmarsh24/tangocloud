@@ -17,5 +17,6 @@ class Avo::Resources::User < Avo::BaseResource
     field :avatar, as: :file
     field :sessions, as: :has_many
     field :events, as: :has_many
+    field :user_preference, as: :has_one
   end
 end
