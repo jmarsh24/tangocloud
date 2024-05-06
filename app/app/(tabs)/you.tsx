@@ -80,7 +80,6 @@ export default function YouScreen() {
 	}
 
 	const username = data.userProfile?.username
-	const email = data.userProfile?.email
 	const avatarUrl = data.userProfile?.avatarUrl
 	const recordings = data.userProfile?.playbacks.edges.map((edge) => {
 		const recording = edge.node.recording
@@ -98,13 +97,14 @@ export default function YouScreen() {
 
 	return (
 		<SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-			<View style={styles.profileContainer}>
+			<Text style={styles.text}>{currentVersion}</Text>
+			<View style={[styles.row, styles.profileContainer]}>
 				<Image source={{ uri: avatarUrl }} style={styles.image} />
-				{username && <Text style={[styles.header, { color: colors.text }]}>{username}</Text>}
-				{email && <Text style={[styles.header, { color: colors.text }]}>{email}</Text>}
-				<Button onPress={onLogout} text="Sign out" />
-				<Text style={styles.text}>{currentVersion}</Text>
+				<View>
+					{username && <Text style={[styles.header, { color: colors.text }]}>{username}</Text>}
+				</View>
 			</View>
+			<Button type="secondary" onPress={onLogout} text="Sign out" />
 			<View style={styles.listContainer}>
 				<Text style={[styles.header, { color: colors.text }]}>History</Text>
 				<FlashList
@@ -142,15 +142,15 @@ const styles = StyleSheet.create({
 	profileContainer: {
 		alignItems: 'center',
 		paddingVertical: 20,
-		gap: 4,
+		gap: 24,
 	},
 	listContainer: {
 		flex: 1,
 	},
 	image: {
-		width: 156,
-		height: 156,
-		borderRadius: 25,
+		width: 80,
+		height: 80,
+		borderRadius: 78,
 	},
 	header: {
 		fontSize: 20,
@@ -160,5 +160,9 @@ const styles = StyleSheet.create({
 	text: {
 		fontSize: 16,
 		color: colors.text,
+	},
+	row: {
+		flexDirection: 'row',
+		alignItems: 'center',
 	},
 })
