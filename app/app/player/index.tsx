@@ -54,7 +54,7 @@ const PlayerScreen = () => {
 					style={[styles.scrollContainer, { marginTop: top + 24 }]}
 					showsVerticalScrollIndicator={false}
 				>
-					<View style={{ display: 'flex', gap: 72, paddingBottom: 24 }}>
+					<View style={{ display: 'flex', gap: 72, paddingBottom: 36 }}>
 						<View style={{ display: 'flex', gap: 36 }}>
 							<View style={styles.artworkImageContainer}>
 								<FastImage
@@ -210,8 +210,8 @@ const styles = StyleSheet.create({
 		padding: 24,
 		borderTopRightRadius: 24,
 		borderTopLeftRadius: 24,
-		borderBottomLeftRadius: 32,
-		borderBottomRightRadius: 32,
+		borderBottomLeftRadius: 38,
+		borderBottomRightRadius: 38,
 	},
 	lyricsHeader: {
 		...defaultStyles.text,
@@ -226,43 +226,3 @@ const styles = StyleSheet.create({
 })
 
 export default PlayerScreen
-
-// const styles = StyleSheet.create({
-// 	overlayContainer: {
-// 		...defaultStyles.container,
-// 		paddingHorizontal: screenPadding.horizontal,
-// 		backgroundColor: 'rgba(0,0,0,0.5)',
-// 	},
-// 	artworkImageContainer: {
-// 		shadowOffset: {
-// 			width: 0,
-// 			height: 8,
-// 		},
-// 		shadowOpacity: 0.44,
-// 		shadowRadius: 11.0,
-// 		flexDirection: 'row',
-// 		justifyContent: 'center',
-// 		height: '45%',
-// 	},
-// 	artworkImage: {
-// 		width: '100%',
-// 		height: '100%',
-// 		resizeMode: 'cover',
-// 		borderRadius: 12,
-// 	},
-// 	trackTitleContainer: {
-// 		flex: 1,
-// 		overflow: 'hidden',
-// 	},
-// 	trackTitleText: {
-// 		...defaultStyles.text,
-// 		fontSize: 22,
-// 		fontWeight: '700',
-// 	},
-// 	trackArtistText: {
-// 		...defaultStyles.text,
-// 		fontSize: fontSize.base,
-// 		opacity: 0.8,
-// 		maxWidth: '90%',
-// 	},
-// })
