@@ -31,6 +31,7 @@ const FavoritesScreen = () => {
 					edge.node.audioTransfers[0]?.album?.albumArtUrl || require('@/assets/unknown_track.png'),
 				url: edge.node.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || '',
 				singer: edge.node.singers?.map((s) => s.name).join(', ') || 'Various Artists',
+				lyrics: edge.node?.composition?.lyrics[0]?.content || '',
 				year: edge.node.year || 'Unknown Year',
 				genre: edge.node.genre?.name || 'Unknown Genre',
 			})) || []
