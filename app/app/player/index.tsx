@@ -2,7 +2,7 @@ import { MovingText } from '@/components/MovingText'
 import { PlayerControls } from '@/components/PlayerControls'
 import { PlayerProgressBar } from '@/components/PlayerProgressbar'
 import { ShareButton } from '@/components/ShareButton'
-import { colors, fontSize, screenPadding } from '@/constants/tokens'
+import { colors, fontSize } from '@/constants/tokens'
 import { joinAttributes } from '@/helpers/miscellaneous'
 import { usePlayerBackground } from '@/hooks/usePlayerBackground'
 import { useTrackPlayerFavorite } from '@/hooks/useTrackPlayerFavorite'
@@ -166,13 +166,15 @@ const styles = StyleSheet.create({
 	},
 	overlayContainer: {
 		...defaultStyles.container,
+		paddingHorizontal: 12,
 		backgroundColor: 'rgba(0,0,0,0.5)',
 		borderTopRightRadius: 24,
 		borderTopLeftRadius: 24,
 	},
 	scrollContainer: {
-		paddingTop: 12,
-		paddingHorizontal: screenPadding.horizontal,
+		paddingTop: 8,
+		paddingHorizontal: 12,
+		zIndex: 10,
 	},
 	artworkImageContainer: {
 		shadowOffset: {
@@ -180,7 +182,7 @@ const styles = StyleSheet.create({
 			height: 4,
 		},
 		shadowOpacity: 0.44,
-		shadowRadius: 11.0,
+		shadowRadius: 8.0,
 	},
 	artworkImage: {
 		width: '100%',
