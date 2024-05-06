@@ -50,7 +50,10 @@ const PlayerScreen = () => {
 		>
 			<View style={[styles.overlayContainer]}>
 				{/* <DismissPlayerSymbol /> */}
-				<ScrollView style={{ marginTop: top + 40 }} showsVerticalScrollIndicator={false}>
+				<ScrollView
+					style={[styles.scrollContainer, { marginTop: top + 24 }]}
+					showsVerticalScrollIndicator={false}
+				>
 					<View style={{ display: 'flex', gap: 72, paddingBottom: 24 }}>
 						<View style={{ display: 'flex', gap: 36 }}>
 							<View style={styles.artworkImageContainer}>
@@ -163,21 +166,21 @@ const styles = StyleSheet.create({
 	},
 	overlayContainer: {
 		...defaultStyles.container,
-		paddingHorizontal: screenPadding.horizontal,
 		backgroundColor: 'rgba(0,0,0,0.5)',
 		borderTopRightRadius: 24,
 		borderTopLeftRadius: 24,
 	},
+	scrollContainer: {
+		paddingTop: 12,
+		paddingHorizontal: screenPadding.horizontal,
+	},
 	artworkImageContainer: {
-		borderRadius: 24,
 		shadowOffset: {
 			width: 0,
-			height: 8,
+			height: 4,
 		},
 		shadowOpacity: 0.44,
 		shadowRadius: 11.0,
-		flexDirection: 'row',
-		justifyContent: 'center',
 	},
 	artworkImage: {
 		width: '100%',
@@ -221,3 +224,43 @@ const styles = StyleSheet.create({
 })
 
 export default PlayerScreen
+
+// const styles = StyleSheet.create({
+// 	overlayContainer: {
+// 		...defaultStyles.container,
+// 		paddingHorizontal: screenPadding.horizontal,
+// 		backgroundColor: 'rgba(0,0,0,0.5)',
+// 	},
+// 	artworkImageContainer: {
+// 		shadowOffset: {
+// 			width: 0,
+// 			height: 8,
+// 		},
+// 		shadowOpacity: 0.44,
+// 		shadowRadius: 11.0,
+// 		flexDirection: 'row',
+// 		justifyContent: 'center',
+// 		height: '45%',
+// 	},
+// 	artworkImage: {
+// 		width: '100%',
+// 		height: '100%',
+// 		resizeMode: 'cover',
+// 		borderRadius: 12,
+// 	},
+// 	trackTitleContainer: {
+// 		flex: 1,
+// 		overflow: 'hidden',
+// 	},
+// 	trackTitleText: {
+// 		...defaultStyles.text,
+// 		fontSize: 22,
+// 		fontWeight: '700',
+// 	},
+// 	trackArtistText: {
+// 		...defaultStyles.text,
+// 		fontSize: fontSize.base,
+// 		opacity: 0.8,
+// 		maxWidth: '90%',
+// 	},
+// })
