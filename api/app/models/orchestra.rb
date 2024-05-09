@@ -50,4 +50,6 @@ end
 #  death_date       :date
 #  slug             :string           not null
 #  recordings_count :integer          default(0)
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #

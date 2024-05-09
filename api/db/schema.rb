@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_14_120150) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_09_231638) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -64,6 +64,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_14_120150) do
     t.string "slug", null: false
     t.string "external_id"
     t.enum "album_type", default: "compilation", null: false, enum_type: "album_type"
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["slug"], name: "index_albums_on_slug", unique: true
   end
 
@@ -149,6 +151,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_14_120150) do
   create_table "couples", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "dancer_id", null: false
     t.uuid "partner_id", null: false
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["dancer_id", "partner_id"], name: "index_couples_on_dancer_id_and_partner_id", unique: true
     t.index ["dancer_id"], name: "index_couples_on_dancer_id"
     t.index ["partner_id"], name: "index_couples_on_partner_id"
@@ -157,7 +161,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_14_120150) do
   create_table "dancer_videos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "dancer_id", null: false
     t.uuid "video_id", null: false
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.index ["created_at"], name: "index_dancer_videos_on_created_at"
     t.index ["dancer_id"], name: "index_dancer_videos_on_dancer_id"
+    t.index ["updated_at"], name: "index_dancer_videos_on_updated_at"
     t.index ["video_id"], name: "index_dancer_videos_on_video_id"
   end
 
@@ -272,6 +280,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_14_120150) do
     t.date "death_date"
     t.string "slug", null: false
     t.integer "recordings_count", default: 0
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["slug"], name: "index_orchestras_on_slug", unique: true
   end
 
@@ -358,7 +368,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_14_120150) do
     t.uuid "genre_id"
     t.uuid "period_id"
     t.integer "playbacks_count", default: 0
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["composition_id"], name: "index_recordings_on_composition_id"
+    t.index ["created_at"], name: "index_recordings_on_created_at"
     t.index ["el_recodo_song_id"], name: "index_recordings_on_el_recodo_song_id"
     t.index ["genre_id"], name: "index_recordings_on_genre_id"
     t.index ["orchestra_id"], name: "index_recordings_on_orchestra_id"
@@ -366,6 +379,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_14_120150) do
     t.index ["record_label_id"], name: "index_recordings_on_record_label_id"
     t.index ["singer_id"], name: "index_recordings_on_singer_id"
     t.index ["slug"], name: "index_recordings_on_slug", unique: true
+    t.index ["updated_at"], name: "index_recordings_on_updated_at"
   end
 
   create_table "sessions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

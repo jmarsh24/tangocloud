@@ -50,4 +50,6 @@ end
 #  slug                  :string           not null
 #  external_id           :string
 #  album_type            :enum             default("compilation"), not null
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
 #
