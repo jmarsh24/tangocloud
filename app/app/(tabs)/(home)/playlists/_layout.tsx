@@ -10,15 +10,15 @@ const PlaylistsLayout = () => {
 				<Stack.Screen
 					name="index"
 					options={{
+						headerShown: false,
 						...StackScreenWithSearchBar,
-						headerTitle: 'Playlists',
 					}}
 				/>
 				<Stack.Screen
 					name="[id]"
 					options={{
+						headerShown: false,
 						...StackScreenWithSearchBar,
-						headerTitle: '',
 					}}
 				/>
 			</Stack>

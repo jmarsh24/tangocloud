@@ -44,6 +44,7 @@ const TabsNavigation = () => {
 	return (
 		<>
 			<Tabs
+				initialRouteName="home"
 				screenOptions={{
 					tabBarActiveTintColor: colors.text,
 					tabBarLabelStyle: {
@@ -67,7 +68,7 @@ const TabsNavigation = () => {
 				}}
 			>
 				<Tabs.Screen
-					name="playlists"
+					name="(home)"
 					options={{
 						title: 'Home',
 						headerShown: false,
@@ -98,50 +99,7 @@ const TabsNavigation = () => {
 						tabBarIcon: ({ color }) => youIcon(color),
 					}}
 				/>
-				<Tabs.Screen
-					name="(home)"
-					options={{
-						href: null,
-						headerShown: false,
-					}}
-				/>
-				<Tabs.Screen
-					name="orchestras"
-					options={{
-						href: null,
-						headerShown: false,
-					}}
-				/>
-				<Tabs.Screen
-					name="lyricists"
-					options={{
-						href: null,
-						headerShown: false,
-					}}
-				/>
-				<Tabs.Screen
-					name="composers"
-					options={{
-						href: null,
-						headerShown: false,
-					}}
-				/>
-				<Tabs.Screen
-					name="singers"
-					options={{
-						href: null,
-						headerShown: false,
-					}}
-				/>
-				<Tabs.Screen
-					name="library"
-					options={{
-						href: null,
-						headerShown: false,
-					}}
-				/>
 			</Tabs>
-
 			<FloatingPlayer
 				style={{
 					position: 'absolute',

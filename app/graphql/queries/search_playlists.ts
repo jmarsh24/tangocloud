@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const SEARCH_PLAYLISTS = gql`
-	query SearchPlaylists($query: String) {
-		searchPlaylists(query: $query) {
+	query SearchPlaylists($query: String, $first: Int) {
+		searchPlaylists(query: $query, first: $first) {
 			edges {
 				node {
 					id

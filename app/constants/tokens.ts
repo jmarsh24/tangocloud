@@ -8,6 +8,7 @@ export const colors = {
 	icon: '#fff',
 	maximumTrackTintColor: 'rgba(255,255,255,0.4)',
 	minimumTrackTintColor: 'rgba(255,255,255,0.6)',
+	playlistButtonBackground: 'rgba(46, 47, 51, 1)',
 }
 
 export const fontSize = {
@@ -18,5 +19,5 @@ export const fontSize = {
 }
 
 export const screenPadding = {
-	horizontal: 24,
+	horizontal: 12,
 }

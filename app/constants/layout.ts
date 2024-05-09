@@ -1,6 +1,6 @@
+import { colors } from '@/constants/tokens'
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack'
 import { Platform } from 'react-native'
-import { colors } from './tokens'
 
 export const StackScreenWithSearchBar: NativeStackNavigationOptions = {
 	headerLargeTitle: true,
