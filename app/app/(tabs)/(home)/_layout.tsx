@@ -10,15 +10,14 @@ const HomeScreenLayout = () => {
 				<Stack.Screen
 					name="index"
 					options={{
+						title: 'Home',
 						...StackScreenWithSearchBar,
-						headerShown: false,
 					}}
 				/>
 				<Stack.Screen
 					name="playlists"
 					options={{
-						headerBackTitle: 'Home',
-						title: 'Playlist',
+						title: 'Playlists',
 						...StackScreenWithSearchBar,
 					}}
 				/>

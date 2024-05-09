@@ -3,6 +3,7 @@ import { screenPadding } from '@/constants/tokens'
 import { SEARCH_PLAYLISTS } from '@/graphql'
 import { defaultStyles } from '@/styles'
 import { useQuery } from '@apollo/client'
+import { Link } from 'expo-router'
 import { useMemo } from 'react'
 import { ActivityIndicator, FlatList, SafeAreaView, Text, View } from 'react-native'
 
@@ -37,7 +38,11 @@ const HomeScreen = () => {
 					keyExtractor={(item) => item.id}
 					columnWrapperStyle={{ gap: 20 }}
 					scrollEnabled={false}
+					style={{ backgroundColor: 'red', flexGrow: 0 }}
 				/>
+				<Link style={defaultStyles.text} href="/playlists">
+					See All Playlists
+				</Link>
 			</View>
 		</SafeAreaView>
 	)
