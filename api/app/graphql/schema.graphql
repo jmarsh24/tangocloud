@@ -190,11 +190,11 @@ type ComposerEdge {
 }
 
 type Composition {
-  composer: Composer!
-  composerId: String!
+  composer: Composer
+  composerId: String
   id: ID
-  lyricist: Lyricist!
-  lyricistId: String!
+  lyricist: Lyricist
+  lyricistId: String
   lyrics: [Lyric!]!
   recording(id: ID!): Recording!
   recordings(
@@ -1263,9 +1263,19 @@ type Query {
     last: Int
 
     """
+    Sort order, can be 'asc' or 'desc'.
+    """
+    order: String
+
+    """
     Query to search for.
     """
     query: String
+
+    """
+    Field to sort by.
+    """
+    sortBy: String
   ): RecordingConnection!
   searchSingers(
     """
