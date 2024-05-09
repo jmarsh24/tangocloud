@@ -3,18 +3,12 @@ import { gql } from '@apollo/client'
 export const SEARCH_RECORDINGS = gql`
 	query SearchRecordings(
 		$query: String
-		$sort_by: String
+		$sortBy: String
 		$order: String
 		$first: Int
 		$after: String
 	) {
-		searchRecordings(
-			query: $query
-			sort_by: $sort_by
-			order: $order
-			first: $first
-			after: $after
-		) {
+		searchRecordings(query: $query, sortBy: $sortBy, order: $order, first: $first, after: $after) {
 			edges {
 				node {
 					id
