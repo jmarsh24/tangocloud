@@ -4,7 +4,7 @@ export default (): ExpoConfig => {
 	return {
 		name: 'Tango Cloud',
 		slug: 'app',
-		version: '1.0.27',
+		version: '1.0.28',
 		owner: 'tangocloud',
 		orientation: 'portrait',
 		icon: './assets/icon.png',
@@ -20,7 +20,7 @@ export default (): ExpoConfig => {
 			supportsTablet: true,
 			bundleIdentifier: 'tangocloud',
 			runtimeVersion: '1.0.0',
-			buildNumber: '67',
+			buildNumber: '68',
 			config: {
 				usesNonExemptEncryption: false,
 			},
@@ -71,7 +71,7 @@ export default (): ExpoConfig => {
 			eas: {
 				projectId: '40b28cff-7ae4-44c3-b2b4-da1eb1d5081b',
 			},
-			currentVersion: '1.0.27',
+			currentVersion: '1.0.28',
 		},
 		updates: {
 			url: 'https://u.expo.dev/40b28cff-7ae4-44c3-b2b4-da1eb1d5081b',
