@@ -1,7 +1,7 @@
 class Avo::Resources::Playlist < Avo::BaseResource
   self.includes = [:playlist_items, :user]
   self.search = {
-    query: -> { query.search_playlists(params[:q]).result(distinct: false) }
+    query: -> { query.search_playlists(params[:q]).results }
   }
   self.find_record_method = -> {
     if id.is_a?(Array)

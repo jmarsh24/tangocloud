@@ -1,8 +1,8 @@
 class Avo::Resources::Album < Avo::BaseResource
   self.includes = [:audio_transfers]
-  # self.search = {
-  #   query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
-  # }
+  self.search = {
+    query: -> { query.search_albums(params[:q]).results }
+  }
   self.find_record_method = -> {
     if id.is_a?(Array)
       query.where(slug: id)

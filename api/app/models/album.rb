@@ -1,6 +1,7 @@
 class Album < ApplicationRecord
   extend FriendlyId
   friendly_id :title, use: :slugged
+  searchkick word_middle: [:title, :description]
 
   has_many :audio_transfers, dependent: :destroy
 
@@ -14,6 +15,26 @@ class Album < ApplicationRecord
     blob.variant :thumb, resize_to_limit: [100, 100]
     blob.variant :medium, resize_to_limit: [250, 250]
     blob.variant :large, resize_to_limit: [500, 500]
+  end
+
+  def self.search_albums(query = "*")
+    search(
+      query,
+      fields: [:title, :description],
+      match: :word_middle,
+      misspellings: {below: 5},
+      order: {title: :asc},
+      includes: [
+        album_art_attachment: :blob
+      ]
+    )
+  end
+
+  def search_data
+    {
+      title: title,
+      description: description
+    }
   end
 end
 
