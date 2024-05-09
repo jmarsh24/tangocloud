@@ -27,13 +27,13 @@ class Recording < ApplicationRecord
 
   enum recording_type: {studio: "studio", live: "live"}
 
-    def self.search_recordings(query, sort_by: nil, order: 'desc')
+    def self.search_recordings(query = nil, sort_by: nil, order: 'desc')
     if query.present?
       search_options = {
         fields: ["title^10", "composer_names", "lyricist_names", "lyrics", "orchestra_name", "singer_names", "genre", "period", "recorded_date"],
         match: :word_middle,
         misspellings: {below: 5},
-        order: sort_by.present? ? { sort_by => order } : { playbacks_count: :desc },
+        boost_by: :playbacks_count,
         includes: [
           :orchestra,
           :singers,
@@ -46,9 +46,13 @@ class Recording < ApplicationRecord
           audio_transfers: [album: {album_art_attachment: :blob}]
         ]
       }
+
+      sort_by.present? ? search_options[:order] = {sort_by => order} : search_options[:order] = {playbacks_count: :desc}
+
       Recording.search(query, search_options)
     else
       recordings = Recording.all.includes(:orchestra, :singers, :recording_singers, :composition, :genre, :period, :lyrics, :audio_variants, audio_transfers: [album: {album_art_attachment: :blob}])
+
       sort_by.present? ? recordings.order(sort_by => order) : recordings.order(playbacks_count: :desc)
     end
   end
