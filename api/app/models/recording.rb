@@ -49,7 +49,7 @@ class Recording < ApplicationRecord
 
       sort_by.present? ? search_options[:order] = {sort_by => order} : search_options[:order] = {playbacks_count: :desc}
 
-      Recording.search(query, **search_options)
+      Recording.search(query, **search_options).results
     else
       recordings = Recording.all.includes(:orchestra, :singers, :recording_singers, :composition, :genre, :period, :lyrics, :audio_variants, audio_transfers: [album: {album_art_attachment: :blob}])
 
