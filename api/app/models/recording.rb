@@ -33,7 +33,7 @@ class Recording < ApplicationRecord
         fields: ["title^10", "composer_names", "lyricist_names", "lyrics", "orchestra_name", "singer_names", "genre", "period", "recorded_date"],
         match: :word_middle,
         misspellings: {below: 5},
-        boost_by: :playbacks_count,
+        boost_by: [:playbacks_count],
         includes: [
           :orchestra,
           :singers,
@@ -49,7 +49,7 @@ class Recording < ApplicationRecord
 
       sort_by.present? ? search_options[:order] = {sort_by => order} : search_options[:order] = {playbacks_count: :desc}
 
-      Recording.search(query, search_options)
+      Recording.search(query, **search_options)
     else
       recordings = Recording.all.includes(:orchestra, :singers, :recording_singers, :composition, :genre, :period, :lyrics, :audio_variants, audio_transfers: [album: {album_art_attachment: :blob}])
 
