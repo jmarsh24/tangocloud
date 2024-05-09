@@ -19,5 +19,5 @@ export const fontSize = {
 }
 
 export const screenPadding = {
-	horizontal: 24,
+	horizontal: 12,
 }

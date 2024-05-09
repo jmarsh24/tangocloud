@@ -15,6 +15,7 @@ export const PlaylistButton = ({ playlist, ...props }: PlaylistButtonProps) => {
 			activeOpacity={0.8}
 			{...props}
 			onPress={() => router.push(`/(home)/playlists/${playlist.id}`)}
+			style={{ flex: 1 }}
 		>
 			<View style={styles.playlistItemContainer}>
 				<View>
@@ -29,6 +30,7 @@ export const PlaylistButton = ({ playlist, ...props }: PlaylistButtonProps) => {
 
 				<View
 					style={{
+						flex: 1,
 						justifyContent: 'center',
 					}}
 				>
@@ -43,12 +45,11 @@ export const PlaylistButton = ({ playlist, ...props }: PlaylistButtonProps) => {
 
 const styles = StyleSheet.create({
 	playlistItemContainer: {
-		flex: 1,
 		flexDirection: 'row',
-		gap: 14,
+		gap: 8,
 		backgroundColor: colors.playlistButtonBackground,
+		paddingRight: 8,
 		borderRadius: 4,
-		flexGrow: 1,
 		overflow: 'hidden',
 	},
 	playlistArtworkImage: {
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
 	},
 	playlistNameText: {
 		...defaultStyles.text,
-		fontSize: 10,
+		fontSize: 12,
 		fontWeight: '600',
 	},
 })
