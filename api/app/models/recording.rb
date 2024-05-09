@@ -27,33 +27,29 @@ class Recording < ApplicationRecord
 
   enum recording_type: {studio: "studio", live: "live"}
 
-  def self.search_recordings(query)
-    Recording.search(query,
-      fields: [
-        "title",
-        "composer_names",
-        "lyricist_names",
-        "lyrics",
-        "orchestra_name",
-        "singer_names",
-        "genre",
-        "period",
-        "recorded_date"
-      ],
-      match: :word_middle,
-      misspellings: {below: 5},
-      boost_by: [:playbacks_count],
-      includes: [
-        :orchestra,
-        :singers,
-        :recording_singers,
-        :composition,
-        :genre,
-        :period,
-        :lyrics,
-        :audio_variants,
-        audio_transfers: [album: {album_art_attachment: :blob}]
-      ])
+  def self.search_recordings(query, sort_by: nil, order: 'desc')
+    if query.present?
+      search_options = {
+        fields: ["title^10", "composer_names", "lyricist_names", "lyrics", "orchestra_name", "singer_names", "genre", "period", "recorded_date"],
+        match: :word_middle,
+        misspellings: {below: 5},
+        order: sort_by.present? ? { sort_by => order } : { playbacks_count: :desc },
+        includes: [
+          :orchestra,
+          :singers,
+          :recording_singers,
+          :composition,
+          :genre,
+          :period,
+          :lyrics,
+          :audio_variants,
+          audio_transfers: [album: {album_art_attachment: :blob}]
+        ]
+      }
+      Recording.search(query, search_options)
+    else
+      sort_by.present? ? Recording.all.order(sort_by => order) : Recording.all.order(playbacks_count: :desc)
+    end
   end
 
   def search_data
@@ -66,7 +62,9 @@ class Recording < ApplicationRecord
       singer_names: singers.map(&:name).join(" "),
       genre: genre&.name,
       period: period&.name,
-      playbacks_count:
+      playbacks_count:,
+      created_at: created_at,
+      updated_at: updated_at
     }
   end
 end
