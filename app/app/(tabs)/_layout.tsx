@@ -44,6 +44,7 @@ const TabsNavigation = () => {
 	return (
 		<>
 			<Tabs
+				initialRouteName="home"
 				screenOptions={{
 					tabBarActiveTintColor: colors.text,
 					tabBarLabelStyle: {
@@ -67,7 +68,7 @@ const TabsNavigation = () => {
 				}}
 			>
 				<Tabs.Screen
-					name="home"
+					name="(home)"
 					options={{
 						title: 'Home',
 						headerShown: false,

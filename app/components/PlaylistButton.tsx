@@ -14,7 +14,7 @@ export const PlaylistButton = ({ playlist, ...props }: PlaylistButtonProps) => {
 		<TouchableHighlight
 			activeOpacity={0.8}
 			{...props}
-			onPress={() => router.push(`/home/playlists/${playlist.id}`)}
+			onPress={() => router.push(`/(home)/playlists/${playlist.id}`)}
 		>
 			<View style={styles.playlistItemContainer}>
 				<View>
