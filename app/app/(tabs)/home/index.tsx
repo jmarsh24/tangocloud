@@ -1,30 +1,46 @@
+import { PlaylistButton } from '@/components/PlaylistButton'
+import { screenPadding } from '@/constants/tokens'
+import { SEARCH_PLAYLISTS } from '@/graphql'
 import { defaultStyles } from '@/styles'
-import { StyleSheet, Text, View } from 'react-native'
+import { useQuery } from '@apollo/client'
+import { useMemo } from 'react'
+import { ActivityIndicator, FlatList, SafeAreaView, Text, View } from 'react-native'
 
 const HomeScreen = () => {
+	const {
+		data: playlistData,
+		loading: playlistLoading,
+		error: playlistsError,
+	} = useQuery(SEARCH_PLAYLISTS, {
+		variables: { query: '*', first: 10 },
+	})
+
+	const playlists = useMemo(() => {
+		return playlistData?.searchPlaylists?.edges.map((edge) => edge.node) ?? []
+	}, [playlistData])
+
+	if (playlistLoading) {
+		return <ActivityIndicator size="large" color="#0000ff" />
+	}
+
+	if (playlistsError) {
+		return <Text>Error loading playlists: {playlistsError.message}</Text>
+	}
+
 	return (
-		<View style={[defaultStyles.container, styles.container]}>
-			<Text style={[defaultStyles.text, styles.headerText]}>
-				The people who are crazy enough to think they can change the world are the ones who do.
-			</Text>
-		</View>
+		<SafeAreaView style={{ flex: 1 }}>
+			<View style={{ ...defaultStyles.container, paddingHorizontal: screenPadding.horizontal }}>
+				<FlatList
+					data={playlists}
+					renderItem={({ item }) => <PlaylistButton playlist={item} />}
+					numColumns={2}
+					keyExtractor={(item) => item.id}
+					columnWrapperStyle={{ gap: 20 }}
+					scrollEnabled={false}
+				/>
+			</View>
+		</SafeAreaView>
 	)
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		paddingHorizontal: 20,
-	},
-	headerText: {
-		fontSize: 24,
-		fontWeight: 'bold',
-		textAlign: 'center',
-		marginHorizontal: 20,
-		marginVertical: 20,
-	},
-})
 
 export default HomeScreen
