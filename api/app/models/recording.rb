@@ -68,6 +68,7 @@ class Recording < ApplicationRecord
       genre: genre&.name,
       period: period&.name,
       playbacks_count:,
+      year: recorded_date.year,
       created_at: created_at,
       updated_at: updated_at
     }
