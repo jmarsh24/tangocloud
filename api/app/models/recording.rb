@@ -1,7 +1,7 @@
 class Recording < ApplicationRecord
   extend FriendlyId
   friendly_id :title, use: :slugged
-  searchkick word_middle: [:title, :composer_name, :author, :lyrics, :orchestra_name, :singer_name]
+  searchkick word_middle: [:title, :composer_name, :author, :lyrics, :orchestra_name, :singer_name, :year]
 
   belongs_to :el_recodo_song, optional: true
   belongs_to :orchestra, counter_cache: true
