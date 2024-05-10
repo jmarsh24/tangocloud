@@ -30,7 +30,7 @@ class Recording < ApplicationRecord
     def self.search_recordings(query = nil, sort_by: nil, order: 'desc')
     if query.present?
       search_options = {
-        fields: ["title^10", "composer_names", "lyricist_names", "lyrics", "orchestra_name", "singer_names", "genre", "period", "recorded_date"],
+        fields: ["title^10", "composer_names", "lyricist_names", "lyrics", "orchestra_name", "singer_names", "genre", "period", "recorded_date", "year"],
         match: :word_middle,
         misspellings: {below: 5},
         boost_by: [:playbacks_count],
