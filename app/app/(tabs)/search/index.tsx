@@ -19,7 +19,7 @@ const SearchScreen = () => {
 	useMemo(() => setSearchQuery(searchText), [searchText])
 
 	const { data, loading, error } = useQuery(SEARCH_RECORDINGS, {
-		variables: { query: searchQuery || '*', first: ITEMS_PER_PAGE },
+		variables: { query: searchQuery, first: ITEMS_PER_PAGE },
 	})
 
 	const tracks = useMemo(() => {
