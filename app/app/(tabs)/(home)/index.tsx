@@ -12,9 +12,7 @@ const HomeScreen = () => {
 		data: playlistData,
 		loading: playlistLoading,
 		error: playlistsError,
-	} = useQuery(SEARCH_PLAYLISTS, {
-		variables: { query: '*' },
-	})
+	} = useQuery(SEARCH_PLAYLISTS)
 
 
 	const playlists = useMemo(() => {
