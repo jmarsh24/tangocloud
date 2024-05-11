@@ -7,8 +7,9 @@ import { joinAttributes } from '@/helpers/miscellaneous'
 import { usePlayerBackground } from '@/hooks/usePlayerBackground'
 import { useTrackPlayerFavorite } from '@/hooks/useTrackPlayerFavorite'
 import { defaultStyles } from '@/styles'
-import { FontAwesome } from '@expo/vector-icons'
+import { FontAwesome, MaterialIcons } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
+import { Link } from 'expo-router'
 import {
 	ActivityIndicator,
 	ScrollView,
@@ -53,6 +54,7 @@ const PlayerScreen = () => {
 				<ScrollView
 					style={[styles.scrollContainer, { marginTop: top + 24 }]}
 					showsVerticalScrollIndicator={false}
+					snapToAlignment="start"
 				>
 					<View style={{ display: 'flex', gap: 72, paddingBottom: 36 }}>
 						<View style={{ display: 'flex', gap: 36 }}>
@@ -91,7 +93,6 @@ const PlayerScreen = () => {
 													style={{ marginHorizontal: 14 }}
 												/>
 											</TouchableOpacity>
-											<ShareButton recording_id={activeTrack.id} />
 										</View>
 
 										{activeTrack.artist && (
@@ -106,7 +107,20 @@ const PlayerScreen = () => {
 
 									<PlayerProgressBar style={{ marginTop: 32 }} />
 
-									<PlayerControls style={{ marginTop: 40 }} />
+									<PlayerControls />
+									<View
+										style={{
+											flexDirection: 'row',
+											justifyContent: 'flex-end',
+											paddingVertical: 24,
+											gap: 36,
+										}}
+									>
+										<ShareButton recording_id={activeTrack.id} />
+										<Link href="/queue" asChild>
+											<MaterialIcons name="queue-music" size={36} color="white" />
+										</Link>
+									</View>
 								</View>
 							</View>
 						</View>

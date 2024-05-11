@@ -16,6 +16,10 @@ import { updateIfPossible } from '@/model/updates'
 import ApolloClientProvider from '@/providers/ApolloClientProvider'
 import { AuthProvider } from '@/providers/AuthProvider'
 
+import { MaterialIcons } from '@expo/vector-icons'
+import { Pressable } from 'react-native'
+import { useNavigation } from 'expo-router'
+
 export { ErrorBoundary } from 'expo-router'
 
 SplashScreen.preventAutoHideAsync()
@@ -68,6 +72,8 @@ const App = () => {
 }
 
 function RootLayoutNav() {
+	const navigation = useNavigation();
+
 	return (
 		<ThemeProvider value={DarkTheme}>
 			<ApolloClientProvider>
@@ -83,6 +89,13 @@ function RootLayoutNav() {
 								gestureEnabled: true,
 								gestureDirection: 'vertical',
 								animationDuration: 400,
+								headerShown: false,
+							}}
+						/>
+						<Stack.Screen
+							name="queue"
+							options={{
+								animation: 'fade',
 								headerShown: false,
 							}}
 						/>

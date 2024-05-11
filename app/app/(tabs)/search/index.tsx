@@ -5,7 +5,7 @@ import { generateTracksListId } from '@/helpers/miscellaneous'
 import { useNavigationSearch } from '@/hooks/useNavigationSearch'
 import { defaultStyles } from '@/styles'
 import { useQuery } from '@apollo/client'
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { ScrollView, Text, View } from 'react-native'
 
 const SearchScreen = () => {
