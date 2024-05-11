@@ -9,7 +9,7 @@ module Resolvers::Recordings
     def resolve(query: nil, sort_by: nil, order: nil)
       raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
 
-      Recording.search_recordings(query, sort_by: sort_by, order: order)
+      Recording.search_recordings(query, sort_by:, order:)
     end
   end
 end
