@@ -99,7 +99,7 @@ const HomeScreen = () => {
 			genre: edge.node.genre?.name || 'Unknown Genre',
 			year: edge.node.year || 'Unknown Year',
 		}))
-		return shuffleAndSlice(recordings, 3)
+		return shuffleAndSlice(recordings, 8)
 	}, [popularRecordingsData])
 
 	const recentlyaddedRecordings = useMemo(() => {
@@ -114,7 +114,7 @@ const HomeScreen = () => {
 			genre: edge.node.genre?.name || 'Unknown Genre',
 			year: edge.node.year || 'Unknown Year',
 		}))
-		return shuffleAndSlice(recordings, 3)
+		return shuffleAndSlice(recordings, 8)
 	}, [recentlyaddedRecordingsData])
 
 	return (
@@ -155,6 +155,7 @@ const HomeScreen = () => {
 							renderItem={({ item }) => (
 								<TracksListItem track={item} onTrackSelect={() => handleTrackSelect(item)} />
 							)}
+							contentContainerStyle={{ gap: 12 }}
 							keyExtractor={(item) => item.id}
 						/>
 					</View>
@@ -165,6 +166,7 @@ const HomeScreen = () => {
 							renderItem={({ item }) => (
 								<TracksListItem track={item} onTrackSelect={() => handleTrackSelect(item)} />
 							)}
+							contentContainerStyle={{ gap: 12 }}
 							keyExtractor={(item) => item.id}
 						/>
 					</View>
