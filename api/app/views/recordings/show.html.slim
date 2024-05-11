@@ -1,4 +1,4 @@
 - meta.title = @recording.title
-- meta.description = [@recording.orchestra.name, @recording&.singers.map(&:name), @recording.recorded_date.year, @recording.genre.name].join(" • ")
+- meta.description = [@recording.orchestra.name, @recording&.singers.map(&:name), @recording.recorded_date.year, @recording.genre.name].compact.join(" • ")
 - meta.image = @recording.audio_transfers.first&.album&.album_art&.url
 div data-controller="redirect" data-redirect-url-value=@deeplink_url
