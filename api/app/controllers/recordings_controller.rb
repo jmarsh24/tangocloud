@@ -3,7 +3,7 @@ class RecordingsController < ApplicationController
   skip_before_action :authenticate
 
   def show
-    @recording = Recording.find!(params[:id])
+    @recording = Recording.find(params[:id])
     @deeplink_url = "tangocloudapp://recordings/#{params[:id]}"
   end
 end
