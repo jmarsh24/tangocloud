@@ -69,7 +69,7 @@ const PlayerScreen = () => {
 								/>
 							</View>
 							<View>
-								<View>
+								<View style={{ flexDirection: 'column', gap: 24 }}>
 									<View>
 										<View
 											style={{
@@ -96,7 +96,7 @@ const PlayerScreen = () => {
 										</View>
 
 										{activeTrack.artist && (
-											<Text numberOfLines={1} style={[styles.trackArtistText, { marginTop: 6 }]}>
+											<Text numberOfLines={1} style={[styles.trackArtistText, { paddingTop: 6 }]}>
 												{`${joinAttributes([activeTrack.artist, activeTrack.singer])}`}
 											</Text>
 										)}
@@ -105,20 +105,20 @@ const PlayerScreen = () => {
 										</Text>
 									</View>
 
-									<PlayerProgressBar style={{ marginTop: 32 }} />
+									<PlayerProgressBar />
 
 									<PlayerControls />
+
 									<View
 										style={{
 											flexDirection: 'row',
 											justifyContent: 'flex-end',
-											paddingVertical: 24,
 											gap: 36,
 										}}
 									>
 										<ShareButton recording_id={activeTrack.id} />
 										<Link href="/queue" asChild>
-											<MaterialIcons name="queue-music" size={36} color="white" />
+											<MaterialIcons name="queue-music" size={30} color="white" />
 										</Link>
 									</View>
 								</View>

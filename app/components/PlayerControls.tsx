@@ -17,14 +17,14 @@ export const PlayerControls = ({ style }: PlayerControlsProps) => {
 	return (
 		<View style={[styles.container, style]}>
 			<View style={styles.row}>
-				<ShuffleButton iconSize={30} style={{opacity: 0}} />
-				
+				<ShuffleButton iconSize={30} style={{ opacity: 0 }} />
+
 				<SkipToPreviousButton />
 
 				<PlayPauseButton />
 
 				<SkipToNextButton />
-				<PlayerRepeatToggle size={30} style={{ marginBottom: 6 }} />
+				<PlayerRepeatToggle size={30} />
 			</View>
 		</View>
 	)
@@ -63,15 +63,11 @@ export const SkipToPreviousButton = ({ iconSize = 30 }: PlayerButtonProps) => {
 
 export const ShuffleButton = ({ iconSize = 30, style }: PlayerButtonProps) => {
 	return (
-		<TouchableOpacity
-			style={[styles.button, style]}
-			activeOpacity={0.7}
-		>
+		<TouchableOpacity style={[style]} activeOpacity={0.7}>
 			<FontAwesome6 name="shuffle" size={iconSize} color={colors.text} />
 		</TouchableOpacity>
 	)
 }
-
 
 const styles = StyleSheet.create({
 	container: {
