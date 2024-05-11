@@ -8,7 +8,7 @@ export default class extends Controller {
 
   declare readonly urlValue: string;
 
-  visit(): void {
+  initialize(): void {
     window.location.href = this.urlValue;
   }
 }
