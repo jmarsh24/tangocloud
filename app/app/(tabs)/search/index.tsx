@@ -60,6 +60,7 @@ const SearchScreen = () => {
 		<View style={defaultStyles.container}>
 			<ScrollView
 				contentInsetAdjustmentBehavior="automatic"
+				keyboardDismissMode='on-drag'
 				style={{ paddingHorizontal: screenPadding.horizontal }}
 			>
 				<TracksList
