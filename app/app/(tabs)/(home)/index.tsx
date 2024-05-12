@@ -29,7 +29,6 @@ const HomeScreen = () => {
 		error: playlistsError,
 	} = useQuery(SEARCH_PLAYLISTS, {
 		variables: { query: '*' },
-		fetchPolicy: 'cache-and-network',
 	})
 
 	const {
@@ -38,7 +37,6 @@ const HomeScreen = () => {
 		error: popularRecordingsError,
 	} = useQuery(SEARCH_RECORDINGS, {
 		variables: { first: 32 },
-		fetchPolicy: 'cache-and-network',
 	})
 
 	const {
@@ -47,7 +45,6 @@ const HomeScreen = () => {
 		error: recentlyaddedRecordingsError,
 	} = useQuery(SEARCH_RECORDINGS, {
 		variables: { query: '*', first: 32, sort_by: 'created_at', order: 'desc' },
-		fetchPolicy: 'cache-and-network',
 	})
 
 	const {
@@ -56,7 +53,6 @@ const HomeScreen = () => {
 		error: tandaOfTheWeekError,
 	} = useQuery(TANDA_OF_THE_WEEK, {
 		variables: { query: 'Tanda of the Week' },
-		fetchPolicy: 'cache-and-network',
 	})
 
 	const shuffleAndSlice = (data, count = 3) => {
