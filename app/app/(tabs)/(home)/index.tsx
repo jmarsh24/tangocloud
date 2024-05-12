@@ -55,6 +55,15 @@ const HomeScreen = () => {
 		variables: { query: 'Tanda of the Week' },
 	})
 
+	const {
+		data: moodPlaylistsData,
+		loading: moodPlaylistsLoading,
+		error: moodPlaylistsError,
+	} = useQuery(SEARCH_PLAYLISTS, {
+		variables: { query: 'Mood', first: 8 },
+		fetchPolicy: 'cache-and-network',
+	})
+
 	const shuffleAndSlice = (data, count = 3) => {
 		return _.shuffle(data).slice(0, count)
 	}
@@ -89,7 +98,8 @@ const HomeScreen = () => {
 		playlistLoading ||
 		popularRecordingsLoading ||
 		recentlyaddedRecordingsLoading ||
-		tandaOfTheWeekLoading
+		tandaOfTheWeekLoading ||
+		moodPlaylistsLoading
 	) {
 		return <ActivityIndicator size="large" color="#0000ff" />
 	}
@@ -98,7 +108,8 @@ const HomeScreen = () => {
 		playlistsError ||
 		popularRecordingsError ||
 		recentlyaddedRecordingsError ||
-		tandaOfTheWeekError
+		tandaOfTheWeekError ||
+		moodPlaylistsError
 	) {
 		return (
 			<View>
@@ -106,6 +117,7 @@ const HomeScreen = () => {
 				<Text>Error loading popular recordings: {popularRecordingsError}</Text>
 				<Text>Error loading recently added recordings: {recentlyaddedRecordingsError}</Text>
 				<Text>Error loading tanda of the week: {tandaOfTheWeekError}</Text>
+				<Text>Error loading mood playlists: {moodPlaylistsError}</Text>
 			</View>
 		)
 	}
@@ -142,6 +154,8 @@ const HomeScreen = () => {
 
 	const tandaOfTheWeek = tandaOfTheWeekData?.searchPlaylists.edges[0]?.node
 
+	const moodPlaylists = moodPlaylistsData?.searchPlaylists?.edges.map((edge) => edge.node) ?? []
+
 	return (
 		<SafeAreaView
 			style={{
@@ -149,6 +163,29 @@ const HomeScreen = () => {
 			}}
 		>
 			<ScrollView>
+				<View style={{ gap: 10 }}>
+					<Text style={[defaultStyles.text, styles.subHeader, { paddingHorizontal: 20 }]}>
+						Moods
+					</Text>
+					<FlatList
+						data={moodPlaylists}
+						horizontal
+						showsHorizontalScrollIndicator={false}
+						directionalLockEnabled={true}
+						alwaysBounceVertical={false}
+						contentContainerStyle={{
+							paddingHorizontal: 10,
+						}}
+						renderItem={({ item }) => (
+							<Link href={`/playlists/${item.id}`} key={item.id} asChild>
+								<Pressable style={styles.pillButton}>
+									<Text style={styles.pillButtonText}>{item.title}</Text>
+								</Pressable>
+							</Link>
+						)}
+						keyExtractor={(item) => item.id}
+					/>
+				</View>
 				<View
 					style={{
 						...defaultStyles.container,
@@ -159,6 +196,7 @@ const HomeScreen = () => {
 					}}
 				>
 					<View style={{ flexDirection: 'column', gap: 24 }}>
+						<Text style={(defaultStyles.text, styles.subHeader)}>Playlists</Text>
 						<FlatList
 							data={playlists}
 							renderItem={({ item }) => <PlaylistButton playlist={item} />}
@@ -244,13 +282,14 @@ const styles = StyleSheet.create({
 	tandaImage: {
 		width: '100%',
 		height: 200,
+		borderRadius: 8,
 	},
 	overlayTextContainer: {
 		position: 'absolute',
 		bottom: 0,
 		left: 0,
 		right: 0,
-		backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent black background
+		backgroundColor: 'rgba(0, 0, 0, 0.5)',
 		padding: 10,
 	},
 	tandaTitle: {
@@ -267,6 +306,25 @@ const styles = StyleSheet.create({
 	},
 	recordingDetail: {
 		color: 'white',
+	},
+	pillButton: {
+		backgroundColor: 'rgba(46, 47, 51, 1)',
+		paddingHorizontal: 15,
+		paddingVertical: 8,
+		borderRadius: 20,
+		marginHorizontal: 5,
+		marginBottom: 10,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	pillButtonText: {
+		color: 'white',
+		fontWeight: 'bold',
+	},
+	subHeader: {
+		fontSize: 11,
+		fontWeight: 'bold',
+		color: 'rgba(235, 235, 245, 0.6)',
 	},
 })
 

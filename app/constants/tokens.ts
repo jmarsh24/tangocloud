@@ -3,6 +3,7 @@ export const colors = {
 	secondary: '#fc3c44',
 	background: '#000',
 	backgroundDarker: '#000',
+	subHeader: 'rbga(255,255,255,0.8)',
 	text: '#fff',
 	textMuted: '#9ca3af',
 	icon: '#fff',
@@ -19,6 +20,6 @@ export const fontSize = {
 }
 
 export const screenPadding = {
-	horizontal: 12,
+	horizontal: 18,
 	vertical: 108,
 }
