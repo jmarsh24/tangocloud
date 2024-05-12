@@ -146,7 +146,6 @@ const HomeScreen = () => {
 		<SafeAreaView
 			style={{
 				...defaultStyles.container,
-				marginBottom: screenPadding.vertical,
 			}}
 		>
 			<ScrollView>
@@ -156,6 +155,7 @@ const HomeScreen = () => {
 						paddingHorizontal: screenPadding.horizontal,
 						display: 'flex',
 						gap: 24,
+						paddingBottom: screenPadding.vertical,
 					}}
 				>
 					<View style={{ flexDirection: 'column', gap: 24 }}>
