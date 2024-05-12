@@ -140,9 +140,7 @@ const HomeScreen = () => {
 		return shuffleAndSlice(recordings, 8)
 	}, [recentlyaddedRecordingsData])
 
-	const tandaOfTheWeek = tandaOfTheWeekData.searchPlaylists.edges
-		.sort(() => Math.random() - 0.5)
-		.slice(0, 8)[0].node
+	const tandaOfTheWeek = tandaOfTheWeekData?.searchPlaylists.edges[0]?.node
 
 	return (
 		<SafeAreaView
@@ -175,36 +173,35 @@ const HomeScreen = () => {
 							See All Playlists
 						</Link>
 					</View>
-					<View style={{ flexDirection: 'column', gap: 12 }}>
-						<Link
-							href={`/playlists/${tandaOfTheWeek.id}`}
-							style={(defaultStyles.text, styles.header)}
-						>
-							Tanda of the Week
-						</Link>
-						<Link href={`/playlists/${tandaOfTheWeek.id}`} asChild>
-							<Pressable style={styles.tandaContainer}>
-								<FastImage
-									source={{
-										uri: tandaOfTheWeek.imageUrl,
-										priority: FastImage.priority.normal,
-									}}
-									style={styles.tandaImage}
-									resizeMode={FastImage.resizeMode.cover}
-								/>
-								<View style={styles.overlayTextContainer}>
-									<Text style={styles.tandaTitle}>{tandaOfTheWeek.title}</Text>
-									{tandaOfTheWeek.playlistItems.slice(0, 4).map((itemEdge) => (
-										<View key={itemEdge.id} style={styles.recordingDetailContainer}>
-											<Text style={styles.recordingDetail}>
-												{joinAttributes([itemEdge.playable.title, itemEdge.playable.year])}
-											</Text>
-										</View>
-									))}
-								</View>
-							</Pressable>
-						</Link>
-					</View>
+					{tandaOfTheWeek && (
+						<View style={{ flexDirection: 'column', gap: 12 }}>
+							<Link
+								href={`/playlists/${tandaOfTheWeek.id}`}
+								style={(defaultStyles.text, styles.header)}
+							>
+								Tanda of the Week
+							</Link>
+							<Link href={`/playlists/${tandaOfTheWeek.id}`} asChild>
+								<Pressable style={styles.tandaContainer}>
+									<FastImage
+										source={{ uri: tandaOfTheWeek.imageUrl, priority: FastImage.priority.normal }}
+										style={styles.tandaImage}
+										resizeMode={FastImage.resizeMode.cover}
+									/>
+									<View style={styles.overlayTextContainer}>
+										<Text style={styles.tandaTitle}>{tandaOfTheWeek.title}</Text>
+										{tandaOfTheWeek.playlistItems.slice(0, 4).map((item) => (
+											<View key={item.id} style={styles.recordingDetailContainer}>
+												<Text style={styles.recordingDetail}>
+													{joinAttributes([item.playable.title, item.playable.year])}
+												</Text>
+											</View>
+										))}
+									</View>
+								</Pressable>
+							</Link>
+						</View>
+					)}
 
 					<View style={{ flexDirection: 'column', gap: 12 }}>
 						<Text style={(defaultStyles.text, styles.header)}>Popular Recordings</Text>
