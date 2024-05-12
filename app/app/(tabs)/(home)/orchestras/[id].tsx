@@ -73,7 +73,9 @@ const OrchestraScreen = () => {
 					<Text style={[styles.title, { color: colors.text }]}>{orchestra.name}</Text>
 				</View>
 				<View style={{ flexDirection: 'column', gap: 12, paddingBottom: 108, paddingHorizontal: screenPadding.horizontal} }>
-					<Text style={(defaultStyles.text, styles.header)}>Recently Added</Text>
+					<Text style={[defaultStyles.text, styles.header]}>
+						Discography
+					</Text>
 					<FlatList
 						data={recordings}
 						renderItem={({ item }) => (
@@ -89,6 +91,10 @@ const OrchestraScreen = () => {
 }
 
 const styles = StyleSheet.create({
+	header: {
+		fontSize: 24,
+		fontWeight: 'bold',
+	},
 	loadingContainer: {
 		flex: 1,
 		justifyContent: 'center',
@@ -100,6 +106,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	imageContainer: {
+		paddingBottom: 10,
 		position: 'relative',
 		alignItems: 'center',
 	},
