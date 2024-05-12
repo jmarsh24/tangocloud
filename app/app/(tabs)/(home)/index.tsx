@@ -61,7 +61,6 @@ const HomeScreen = () => {
 		error: moodPlaylistsError,
 	} = useQuery(SEARCH_PLAYLISTS, {
 		variables: { query: 'Mood', first: 8 },
-		fetchPolicy: 'cache-and-network',
 	})
 
 	const shuffleAndSlice = (data, count = 3) => {
