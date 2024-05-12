@@ -202,7 +202,7 @@ const PlayerScreen = () => {
 					</View>
 					<View>
 					{recentlyaddedRecordings.length > 0 && (
-							<View style={{ flexDirection: 'column', gap: 12, padding: 24, borderRadius:	24, backgroundColor: 'rgba(0,0,0,0.2)' }}>
+						<View style={{ flexDirection: 'column', gap: 12, padding: 24, borderRadius:	32, backgroundColor: 'rgba(0,0,0,0.2)', marginBottom: 36 }}>
 							<Text style={[defaultStyles.text, styles.header]}>
 								Related Recordings
 							</Text>
@@ -214,9 +214,9 @@ const PlayerScreen = () => {
 									contentContainerStyle={{ gap: 12 }}
 									keyExtractor={(item) => item.id}
 							/>
-							</View>
-								)}
 						</View>
+					)}
+					</View>
 				</ScrollView>
 			</View>
 		</LinearGradient>
