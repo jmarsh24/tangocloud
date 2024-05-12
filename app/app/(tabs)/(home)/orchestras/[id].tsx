@@ -9,6 +9,7 @@ import { TracksListItem } from '@/components/TracksListItem'
 import { useQueue } from '@/store/queue'
 import TrackPlayer from 'react-native-track-player'
 import { colors } from '@/constants/tokens'
+import { screenPadding } from '@/constants/tokens'
 
 const OrchestraScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>()
@@ -71,7 +72,7 @@ const OrchestraScreen = () => {
 					<Image source={{ uri: orchestra.photoUrl }} style={styles.image} />
 					<Text style={[styles.title, { color: colors.text }]}>{orchestra.name}</Text>
 				</View>
-				<View style={{ flexDirection: 'column', gap: 12, paddingBottom: 108 }}>
+				<View style={{ flexDirection: 'column', gap: 12, paddingBottom: 108, paddingHorizontal: screenPadding.horizontal} }>
 					<Text style={(defaultStyles.text, styles.header)}>Recently Added</Text>
 					<FlatList
 						data={recordings}
