@@ -19,6 +19,7 @@ import {
 	TouchableOpacity,
 	View,
 	FlatList,
+	Pressable,
 } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -176,17 +177,22 @@ const PlayerScreen = () => {
 							</View>
 						</View>
 						{activeTrack.lyrics && (
-							<View
-								style={[
-									{
-										backgroundColor: readablePrimaryColor,
-									},
-									styles.lyricsContainer,
-								]}
-							>
-								<Text style={styles.lyricsHeader}>Lyrics</Text>
-								<Text style={styles.lyricsText}>{activeTrack.lyrics}</Text>
-							</View>
+							<Link href="/lyrics" style={[
+										{
+											backgroundColor: readablePrimaryColor,
+										},
+										styles.lyricsContainer,
+									]} asChild>
+								<Pressable>
+									<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+										<Text style={styles.lyricsHeader}>Lyrics</Text>	
+											<View style={{ borderRadius: 24, backgroundColor: 'rgba(0,0,0,0.2)', padding: 10 }} >
+												<MaterialIcons name="open-in-full" size={18} color={colors.text} />
+											</View>
+									</View>
+									<Text style={styles.lyricsText}>{activeTrack.lyrics}</Text>
+								</Pressable>
+							</Link>
 						)}
 					</View>
 					<View>

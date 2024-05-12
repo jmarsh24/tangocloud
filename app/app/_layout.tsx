@@ -95,6 +95,13 @@ function RootLayoutNav() {
 							}}
 						/>
 						<Stack.Screen
+							name="lyrics"
+							options={{
+								animation: 'fade',
+								headerShown: false,
+							}}
+						/>
+						<Stack.Screen
 							name="(modals)/addToPlaylist"
 							options={{
 								presentation: 'modal',
