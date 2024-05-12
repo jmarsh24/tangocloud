@@ -16,6 +16,7 @@ const OrchestrasLayout = () => {
         <Stack.Screen
           name="[id]"
           options={{ 
+          headerShown: false,
           ...StackScreenWithSearchBar }}
         />
       </Stack>

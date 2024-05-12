@@ -1,7 +1,7 @@
 import { PlaylistButton } from '@/components/PlaylistButton'
 import { TracksListItem } from '@/components/TracksListItem'
 import { colors, screenPadding } from '@/constants/tokens'
-import { SEARCH_PLAYLISTS, SEARCH_RECORDINGS, TANDA_OF_THE_WEEK } from '@/graphql'
+import { SEARCH_PLAYLISTS, SEARCH_RECORDINGS, TANDA_OF_THE_WEEK, SEARCH_ORCHESTRAS } from '@/graphql'
 import { joinAttributes } from '@/helpers/miscellaneous'
 import { useQueue } from '@/store/queue'
 import { defaultStyles } from '@/styles'
@@ -62,6 +62,14 @@ const HomeScreen = () => {
 	} = useQuery(SEARCH_PLAYLISTS, {
 		variables: { query: 'Mood', first: 8 },
 	})
+
+	const {
+		data: orchestrasData,
+		loading: orchestrasLoading,
+		error: orchestrasError,
+		} = useQuery(SEARCH_ORCHESTRAS, {
+			variables: { query: '*' },
+		})
 
 	const shuffleAndSlice = (data, count = 3) => {
 		return _.shuffle(data).slice(0, count)
@@ -154,6 +162,8 @@ const HomeScreen = () => {
 	const tandaOfTheWeek = tandaOfTheWeekData?.searchPlaylists.edges[0]?.node
 
 	const moodPlaylists = moodPlaylistsData?.searchPlaylists?.edges.map((edge) => edge.node) ?? []
+
+	const orchestras = orchestrasData?.searchOrchestras?.edges.map((edge) => edge.node) ?? []
 
 	return (
 		<SafeAreaView
@@ -264,6 +274,31 @@ const HomeScreen = () => {
 							keyExtractor={(item) => item.id}
 						/>
 					</View>
+					<View style={{ flexDirection: 'column', gap: 12 }}>
+						<Text style={[defaultStyles.text, styles.header]}>
+							Main Orchestras
+						</Text>
+						<FlatList
+							data={orchestras}
+							horizontal
+							showsHorizontalScrollIndicator={false}
+							directionalLockEnabled={true}
+							alwaysBounceVertical={false}
+							contentContainerStyle={{gap: 16}}
+							renderItem={({ item }) => (
+								<Link href={`/orchestras/${item.id}`} key={item.id} asChild>
+									<Pressable style={{ alignItems: 'center', gap: 16 }}>
+										<FastImage
+											source={{ uri: item.photoUrl }}
+											style={{ width: 170, height: 170, borderRadius: 100 }}
+										/>
+										<Text style={styles.orchestraText}>{item.name}</Text>
+									</Pressable>
+								</Link>
+							)}
+							keyExtractor={(item) => item.id}
+						/>
+					</View>
 				</View>
 			</ScrollView>
 		</SafeAreaView>
@@ -326,6 +361,11 @@ const styles = StyleSheet.create({
 		fontSize: 11,
 		fontWeight: 'bold',
 		color: 'rgba(235, 235, 245, 0.6)',
+	},
+	orchestraText: {
+		color: 'white',
+		fontWeight: 'bold',
+		fontSize: 18,
 	},
 })
 

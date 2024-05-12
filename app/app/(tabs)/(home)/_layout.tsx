@@ -21,6 +21,13 @@ const HomeScreenLayout = () => {
 						...StackScreenWithSearchBar,
 					}}
 				/>
+				<Stack.Screen
+					name="orchestras"
+					options={{
+						title: 'Orchestras',
+						...StackScreenWithSearchBar,
+					}}
+				/>
 			</Stack>
 		</View>
 	)
