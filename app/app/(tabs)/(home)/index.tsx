@@ -1,7 +1,8 @@
 import { PlaylistButton } from '@/components/PlaylistButton'
 import { TracksListItem } from '@/components/TracksListItem'
 import { colors, screenPadding } from '@/constants/tokens'
-import { SEARCH_PLAYLISTS, SEARCH_RECORDINGS } from '@/graphql'
+import { SEARCH_PLAYLISTS, SEARCH_RECORDINGS, TANDA_OF_THE_WEEK } from '@/graphql'
+import { joinAttributes } from '@/helpers/miscellaneous'
 import { useQueue } from '@/store/queue'
 import { defaultStyles } from '@/styles'
 import { useQuery } from '@apollo/client'
@@ -11,12 +12,14 @@ import { useMemo } from 'react'
 import {
 	ActivityIndicator,
 	FlatList,
+	Pressable,
 	SafeAreaView,
 	ScrollView,
 	StyleSheet,
 	Text,
 	View,
 } from 'react-native'
+import FastImage from 'react-native-fast-image'
 import TrackPlayer from 'react-native-track-player'
 
 const HomeScreen = () => {
@@ -42,6 +45,14 @@ const HomeScreen = () => {
 		error: recentlyaddedRecordingsError,
 	} = useQuery(SEARCH_RECORDINGS, {
 		variables: { query: '*', first: 32, sort_by: 'created_at', order: 'desc' },
+	})
+
+	const {
+		data: tandaOfTheWeekData,
+		loading: tandaOfTheWeekLoading,
+		error: tandaOfTheWeekError,
+	} = useQuery(TANDA_OF_THE_WEEK, {
+		variables: { query: 'Tanda of the Week' },
 	})
 
 	const shuffleAndSlice = (data, count = 3) => {
@@ -74,15 +85,27 @@ const HomeScreen = () => {
 		return items.sort(() => Math.random() - 0.5).slice(0, 8)
 	}, [playlistData])
 
-	if (playlistLoading || popularRecordingsLoading || recentlyaddedRecordingsLoading) {
+	if (
+		playlistLoading ||
+		popularRecordingsLoading ||
+		recentlyaddedRecordingsLoading ||
+		tandaOfTheWeekLoading
+	) {
 		return <ActivityIndicator size="large" color="#0000ff" />
 	}
 
-	if (playlistsError || popularRecordingsError || recentlyaddedRecordingsError) {
+	if (
+		playlistsError ||
+		popularRecordingsError ||
+		recentlyaddedRecordingsError ||
+		tandaOfTheWeekError
+	) {
 		return (
 			<View>
 				<Text>Error loading playlists: {playlistsError}</Text>
 				<Text>Error loading popular recordings: {popularRecordingsError}</Text>
+				<Text>Error loading recently added recordings: {recentlyaddedRecordingsError}</Text>
+				<Text>Error loading tanda of the week: {tandaOfTheWeekError}</Text>
 			</View>
 		)
 	}
@@ -117,6 +140,10 @@ const HomeScreen = () => {
 		return shuffleAndSlice(recordings, 8)
 	}, [recentlyaddedRecordingsData])
 
+	const tandaOfTheWeek = tandaOfTheWeekData.searchPlaylists.edges
+		.sort(() => Math.random() - 0.5)
+		.slice(0, 8)[0].node
+
 	return (
 		<SafeAreaView
 			style={{
@@ -148,6 +175,37 @@ const HomeScreen = () => {
 							See All Playlists
 						</Link>
 					</View>
+					<View style={{ flexDirection: 'column', gap: 12 }}>
+						<Link
+							href={`/playlists/${tandaOfTheWeek.id}`}
+							style={(defaultStyles.text, styles.header)}
+						>
+							Tanda of the Week
+						</Link>
+						<Link href={`/playlists/${tandaOfTheWeek.id}`} asChild>
+							<Pressable style={styles.tandaContainer}>
+								<FastImage
+									source={{
+										uri: tandaOfTheWeek.imageUrl,
+										priority: FastImage.priority.normal,
+									}}
+									style={styles.tandaImage}
+									resizeMode={FastImage.resizeMode.cover}
+								/>
+								<View style={styles.overlayTextContainer}>
+									<Text style={styles.tandaTitle}>{tandaOfTheWeek.title}</Text>
+									{tandaOfTheWeek.playlistItems.slice(0, 4).map((itemEdge) => (
+										<View key={itemEdge.id} style={styles.recordingDetailContainer}>
+											<Text style={styles.recordingDetail}>
+												{joinAttributes([itemEdge.playable.title, itemEdge.playable.year])}
+											</Text>
+										</View>
+									))}
+								</View>
+							</Pressable>
+						</Link>
+					</View>
+
 					<View style={{ flexDirection: 'column', gap: 12 }}>
 						<Text style={(defaultStyles.text, styles.header)}>Popular Recordings</Text>
 						<FlatList
@@ -181,6 +239,37 @@ const styles = StyleSheet.create({
 		fontSize: 24,
 		fontWeight: 'bold',
 		color: colors.text,
+	},
+	tandaContainer: {
+		position: 'relative',
+		marginBottom: 24,
+	},
+	tandaImage: {
+		width: '100%',
+		height: 200,
+	},
+	overlayTextContainer: {
+		position: 'absolute',
+		bottom: 0,
+		left: 0,
+		right: 0,
+		backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent black background
+		padding: 10,
+	},
+	tandaTitle: {
+		color: 'white',
+		fontWeight: 'bold',
+		fontSize: 18,
+	},
+	recordingDetailContainer: {
+		marginTop: 4,
+	},
+	recordingTitle: {
+		color: 'white',
+		fontWeight: 'bold',
+	},
+	recordingDetail: {
+		color: 'white',
 	},
 })
 
