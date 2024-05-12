@@ -161,7 +161,9 @@ const HomeScreen = () => {
 				...defaultStyles.container,
 			}}
 		>
-			<ScrollView>
+			<ScrollView
+				showsVerticalScrollIndicator={false}
+			>
 				<View style={{ gap: 10 }}>
 					<Text style={[defaultStyles.text, styles.subHeader, { paddingHorizontal: 20 }]}>
 						Moods
