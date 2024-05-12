@@ -2,7 +2,7 @@ class Playlist < ApplicationRecord
   extend FriendlyId
   friendly_id :title, use: :slugged
 
-  searchkick word_middle: [:title]
+  searchkick word_middle: [:title, :description]
 
   before_validation :set_default_title
 
@@ -27,7 +27,7 @@ class Playlist < ApplicationRecord
   def self.search_playlists(query = "*")
     search(
       query,
-      fields: [:title],
+      fields: [:title, :description],
       match: :word_middle,
       misspellings: {below: 5},
       order: {title: :asc},
@@ -39,7 +39,8 @@ class Playlist < ApplicationRecord
 
   def search_data
     {
-      title:
+      title:,
+      description:,
     }
   end
 
