@@ -136,7 +136,12 @@ const HomeScreen = () => {
 
 	const moodPlaylists = moodPlaylistsData?.searchPlaylists?.edges.map((edge) => edge.node) ?? []
 
-	const orchestras = orchestrasData?.searchOrchestras?.edges.map((edge) => edge.node) ?? []
+	const orchestras = useMemo(() => {
+		const sortedOrchestras = orchestrasData?.searchOrchestras?.edges.map((edge) => edge.node)
+			.sort((a, b) => b.recordingsCount - a.recordingsCount) ?? [];
+
+		return sortedOrchestras;
+	}, [orchestrasData]);
 
 	if (
 		playlistLoading ||
