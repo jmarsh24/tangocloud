@@ -3,6 +3,7 @@ import { PlayerControls } from '@/components/PlayerControls'
 import { PlayerProgressBar } from '@/components/PlayerProgressbar'
 import { ShareButton } from '@/components/ShareButton'
 import { colors, fontSize } from '@/constants/tokens'
+import { SEARCH_RECORDINGS } from '@/graphql'
 import { joinAttributes } from '@/helpers/miscellaneous'
 import { usePlayerBackground } from '@/hooks/usePlayerBackground'
 import { useTrackPlayerFavorite } from '@/hooks/useTrackPlayerFavorite'
@@ -17,20 +18,70 @@ import {
 	Text,
 	TouchableOpacity,
 	View,
+	FlatList,
 } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useActiveTrack } from 'react-native-track-player'
+import { useQuery } from '@apollo/client'
+import { TracksListItem } from '@/components/TracksListItem'
+import { useQueue } from '@/store/queue'
+import TrackPlayer from 'react-native-track-player'
+import { useMemo } from 'react'
+
 
 const PlayerScreen = () => {
+	
 	const activeTrack = useActiveTrack()
 	const { imageColors, readablePrimaryColor } = usePlayerBackground(
 		activeTrack?.artwork ?? require('@/assets/unknown_track.png'),
 	)
 
+	const { data: relatedRecordingsData, loading: relatedRecordingsLoading, error: relatedRecordingsError } = useQuery(SEARCH_RECORDINGS, {
+			variables: { query: activeTrack?.title, first: 10 },
+			skip: !activeTrack
+	});
+
 	const { top } = useSafeAreaInsets()
 
 	const { isFavorite, toggleFavorite } = useTrackPlayerFavorite()
+
+	const { activeQueueId, setActiveQueueId } = useQueue()
+
+	const handleTrackSelect = async (track) => {
+		const id = track.id
+		const queue = await TrackPlayer.getQueue()
+		const trackIndex = queue.findIndex((qTrack) => qTrack.id === track.id)
+		const isChangingQueue = id !== activeQueueId
+
+		if (isChangingQueue || trackIndex === -1) {
+			if (trackIndex === -1) {
+				await TrackPlayer.add(track)
+			}
+			await TrackPlayer.skipToNext()
+			setActiveQueueId(id)
+		} else {
+			await TrackPlayer.skip(trackIndex)
+		}
+
+		TrackPlayer.play()
+	}
+
+	const recentlyaddedRecordings = useMemo(() => {
+			if (!relatedRecordingsData) return [];
+			return relatedRecordingsData.searchRecordings.edges
+					.map((edge) => ({
+							id: edge.node.id,
+							title: edge.node.title,
+							artist: edge.node.orchestra?.name || 'Unknown Artist',
+							duration: edge.node.audioTransfers[0]?.audioVariants[0]?.duration || 0,
+							artwork: edge.node.audioTransfers[0]?.album?.albumArtUrl || '',
+							url: edge.node.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || '',
+							genre: edge.node.genre?.name || 'Unknown Genre',
+							year: edge.node.year || 'Unknown Year',
+					}))
+					.filter(recording => recording.id !== activeTrack.id);
+	}, [relatedRecordingsData, activeTrack?.id]);
 
 	if (!activeTrack) {
 		return (
@@ -39,6 +90,7 @@ const PlayerScreen = () => {
 			</View>
 		)
 	}
+
 
 	return (
 		<LinearGradient
@@ -50,7 +102,6 @@ const PlayerScreen = () => {
 			}
 		>
 			<View style={[styles.overlayContainer]}>
-				{/* <DismissPlayerSymbol /> */}
 				<ScrollView
 					style={[styles.scrollContainer, { marginTop: top + 24 }]}
 					showsVerticalScrollIndicator={false}
@@ -138,41 +189,35 @@ const PlayerScreen = () => {
 							</View>
 						)}
 					</View>
+					<View>
+					{recentlyaddedRecordings.length > 0 && (
+							<View style={{ flexDirection: 'column', gap: 12 }}>
+							<Text style={[defaultStyles.text, styles.header]}>
+									Related Recordings
+							</Text>
+							<FlatList
+									data={recentlyaddedRecordings}
+									renderItem={({ item }) => (
+											<TracksListItem track={item} onTrackSelect={() => handleTrackSelect(item)} />
+									)}
+									contentContainerStyle={{ gap: 12 }}
+									keyExtractor={(item) => item.id}
+							/>
+							</View>
+								)}
+						</View>
 				</ScrollView>
 			</View>
 		</LinearGradient>
 	)
 }
 
-const DismissPlayerSymbol = () => {
-	const { top } = useSafeAreaInsets()
-
-	return (
-		<View
-			style={{
-				position: 'absolute',
-				top: top + 8,
-				left: 0,
-				right: 0,
-				flexDirection: 'row',
-				justifyContent: 'center',
-			}}
-		>
-			<View
-				accessible={false}
-				style={{
-					width: 50,
-					height: 8,
-					borderRadius: 8,
-					backgroundColor: '#fff',
-					opacity: 0.7,
-				}}
-			/>
-		</View>
-	)
-}
-
 const styles = StyleSheet.create({
+	header: {
+		fontSize: 24,
+		fontWeight: 'bold',
+		color: colors.text,
+	},
 	linearGradient: {
 		flex: 1,
 		borderTopRightRadius: 24,
