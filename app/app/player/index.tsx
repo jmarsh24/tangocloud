@@ -190,16 +190,21 @@ const PlayerScreen = () => {
 												<MaterialIcons name="open-in-full" size={18} color={colors.text} />
 											</View>
 									</View>
-									<Text style={styles.lyricsText}>{activeTrack.lyrics}</Text>
+									<Text 
+									numberOfLines={8}
+									style={styles.lyricsText}
+									>
+									{activeTrack.lyrics}
+								</Text>
 								</Pressable>
 							</Link>
 						)}
 					</View>
 					<View>
 					{recentlyaddedRecordings.length > 0 && (
-							<View style={{ flexDirection: 'column', gap: 12 }}>
+							<View style={{ flexDirection: 'column', gap: 12, padding: 24, borderRadius:	24, backgroundColor: 'rgba(0,0,0,0.2)' }}>
 							<Text style={[defaultStyles.text, styles.header]}>
-									Related Recordings
+								Related Recordings
 							</Text>
 							<FlatList
 									data={recentlyaddedRecordings}
