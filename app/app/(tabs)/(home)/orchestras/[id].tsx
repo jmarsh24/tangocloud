@@ -15,7 +15,6 @@ const OrchestraScreen = () => {
 	const { activeQueueId, setActiveQueueId } = useQueue()
 	const { data, loading, error } = useQuery(FETCH_ORCHESTRA, { variables: { id } })
 
-
 	const handleTrackSelect = async (track) => {
 		const id = track.id
 		const queue = await TrackPlayer.getQueue()
@@ -36,18 +35,18 @@ const OrchestraScreen = () => {
 	}
 
 	const orchestra = data?.fetchOrchestra
-
-	const recordings = orchestra.recordings.edges.map(({ node: item }) => ({
-		id: item.id,
-		title: item.title,
-		artist: orchestra.name,
-		duration: item.audioTransfers[0]?.audioVariants[0]?.duration || 0,
-		artwork: item.audioTransfers[0]?.album?.albumArtUrl,
-		url: item.audioTransfers[0]?.audioVariants[0]?.audioFileUrl,
-		genre: item.genre.name,
-		year: item.year,
-		singer: item.singers[0]?.name,
-	}))
+	
+	const recordings = orchestra?.recordings?.edges.map(({ node: item }) => ({
+			id: item.id,
+			title: item.title,
+			artist: orchestra.name,
+			duration: item.audioTransfers[0]?.audioVariants[0]?.duration || 0,
+			artwork: item.audioTransfers[0]?.album?.albumArtUrl,
+			url: item.audioTransfers[0]?.audioVariants[0]?.audioFileUrl,
+			genre: item.genre?.name,
+			year: item.year,
+			singer: item.singers[0]?.name,
+	})) || [];
 
 	if (loading) {
 		return (
@@ -64,7 +63,7 @@ const OrchestraScreen = () => {
 			</View>
 		)
 	}
-	
+
 	return (
 		<SafeAreaView style={defaultStyles.container}>
 			<ScrollView>
