@@ -101,33 +101,6 @@ const HomeScreen = () => {
 		return items.sort(() => Math.random() - 0.5).slice(0, 8)
 	}, [playlistData])
 
-	if (
-		playlistLoading ||
-		popularRecordingsLoading ||
-		recentlyaddedRecordingsLoading ||
-		tandaOfTheWeekLoading ||
-		moodPlaylistsLoading
-	) {
-		return <ActivityIndicator size="large" color="#0000ff" />
-	}
-
-	if (
-		playlistsError ||
-		popularRecordingsError ||
-		recentlyaddedRecordingsError ||
-		tandaOfTheWeekError ||
-		moodPlaylistsError
-	) {
-		return (
-			<View>
-				<Text>Error loading playlists: {playlistsError}</Text>
-				<Text>Error loading popular recordings: {popularRecordingsError}</Text>
-				<Text>Error loading recently added recordings: {recentlyaddedRecordingsError}</Text>
-				<Text>Error loading tanda of the week: {tandaOfTheWeekError}</Text>
-				<Text>Error loading mood playlists: {moodPlaylistsError}</Text>
-			</View>
-		)
-	}
 
 	const popularRecordings = useMemo(() => {
 		if (!popularRecordingsData) return []
@@ -165,6 +138,34 @@ const HomeScreen = () => {
 
 	const orchestras = orchestrasData?.searchOrchestras?.edges.map((edge) => edge.node) ?? []
 
+	if (
+		playlistLoading ||
+		popularRecordingsLoading ||
+		recentlyaddedRecordingsLoading ||
+		tandaOfTheWeekLoading ||
+		moodPlaylistsLoading
+	) {
+		return <ActivityIndicator size="large" color="#0000ff" />
+	}
+
+	if (
+		playlistsError ||
+		popularRecordingsError ||
+		recentlyaddedRecordingsError ||
+		tandaOfTheWeekError ||
+		moodPlaylistsError
+	) {
+		return (
+			<View>
+				<Text>Error loading playlists: {playlistsError}</Text>
+				<Text>Error loading popular recordings: {popularRecordingsError}</Text>
+				<Text>Error loading recently added recordings: {recentlyaddedRecordingsError}</Text>
+				<Text>Error loading tanda of the week: {tandaOfTheWeekError}</Text>
+				<Text>Error loading mood playlists: {moodPlaylistsError}</Text>
+			</View>
+		)
+	}
+	
 	return (
 		<SafeAreaView
 			style={{

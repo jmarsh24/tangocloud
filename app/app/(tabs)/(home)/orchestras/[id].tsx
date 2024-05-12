@@ -15,27 +15,6 @@ const OrchestraScreen = () => {
 	const { activeQueueId, setActiveQueueId } = useQueue()
 	const { data, loading, error } = useQuery(FETCH_ORCHESTRA, { variables: { id } })
 
-	useEffect(() => {
-		if (error) {
-			console.error('Error fetching orchestra:', error)
-		}
-	}, [error])
-
-	if (loading) {
-		return (
-			<View style={defaultStyles.container}>
-				<ActivityIndicator size="large" />
-			</View>
-		)
-	}
-
-	if (error) {
-		return (
-			<View style={defaultStyles.container}>
-				<Text>Error loading orchestra.</Text>
-			</View>
-		)
-	}
 
 	const handleTrackSelect = async (track) => {
 		const id = track.id
@@ -70,6 +49,22 @@ const OrchestraScreen = () => {
 		singer: item.singers[0]?.name,
 	}))
 
+	if (loading) {
+		return (
+			<View style={defaultStyles.container}>
+				<ActivityIndicator size="large" />
+			</View>
+		)
+	}
+
+	if (error) {
+		return (
+			<View style={defaultStyles.container}>
+				<Text>Error loading orchestra.</Text>
+			</View>
+		)
+	}
+	
 	return (
 		<SafeAreaView style={defaultStyles.container}>
 			<ScrollView>
