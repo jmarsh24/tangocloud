@@ -46,9 +46,7 @@ Rails.application.routes.draw do
     end
   end
 
-  if Rails.env.development?
-    mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "api/graphql"
-  end
+  mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "api/graphql"
 
   constraints(Constraints::AdminConstraint.new) do
     mount MissionControl::Jobs::Engine, at: "/jobs"
