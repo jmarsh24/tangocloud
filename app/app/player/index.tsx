@@ -2,46 +2,47 @@ import { MovingText } from '@/components/MovingText'
 import { PlayerControls } from '@/components/PlayerControls'
 import { PlayerProgressBar } from '@/components/PlayerProgressbar'
 import { ShareButton } from '@/components/ShareButton'
+import { TracksListItem } from '@/components/TracksListItem'
 import { colors, fontSize } from '@/constants/tokens'
 import { SEARCH_RECORDINGS } from '@/graphql'
 import { joinAttributes } from '@/helpers/miscellaneous'
 import { usePlayerBackground } from '@/hooks/usePlayerBackground'
 import { useTrackPlayerFavorite } from '@/hooks/useTrackPlayerFavorite'
+import { useQueue } from '@/store/queue'
 import { defaultStyles } from '@/styles'
+import { useQuery } from '@apollo/client'
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Link } from 'expo-router'
+import { useMemo } from 'react'
 import {
 	ActivityIndicator,
+	FlatList,
+	Pressable,
 	ScrollView,
 	StyleSheet,
 	Text,
 	TouchableOpacity,
 	View,
-	FlatList,
-	Pressable,
 } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { useActiveTrack } from 'react-native-track-player'
-import { useQuery } from '@apollo/client'
-import { TracksListItem } from '@/components/TracksListItem'
-import { useQueue } from '@/store/queue'
-import TrackPlayer from 'react-native-track-player'
-import { useMemo } from 'react'
-
+import TrackPlayer, { useActiveTrack } from 'react-native-track-player'
 
 const PlayerScreen = () => {
-	
 	const activeTrack = useActiveTrack()
 	const { imageColors, readablePrimaryColor } = usePlayerBackground(
 		activeTrack?.artwork ?? require('@/assets/unknown_track.png'),
 	)
 
-	const { data: relatedRecordingsData, loading: relatedRecordingsLoading, error: relatedRecordingsError } = useQuery(SEARCH_RECORDINGS, {
-			variables: { query: activeTrack?.title, first: 10 },
-			skip: !activeTrack
-	});
+	const {
+		data: relatedRecordingsData,
+		loading: relatedRecordingsLoading,
+		error: relatedRecordingsError,
+	} = useQuery(SEARCH_RECORDINGS, {
+		variables: { query: activeTrack?.title, first: 10 },
+		skip: !activeTrack,
+	})
 
 	const { top } = useSafeAreaInsets()
 
@@ -69,20 +70,20 @@ const PlayerScreen = () => {
 	}
 
 	const recentlyaddedRecordings = useMemo(() => {
-			if (!relatedRecordingsData) return [];
-			return relatedRecordingsData.searchRecordings.edges
-					.map((edge) => ({
-							id: edge.node.id,
-							title: edge.node.title,
-							artist: edge.node.orchestra?.name || 'Unknown Artist',
-							duration: edge.node.audioTransfers[0]?.audioVariants[0]?.duration || 0,
-							artwork: edge.node.audioTransfers[0]?.album?.albumArtUrl || '',
-							url: edge.node.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || '',
-							genre: edge.node.genre?.name || 'Unknown Genre',
-							year: edge.node.year || 'Unknown Year',
-					}))
-					.filter(recording => recording.id !== activeTrack.id);
-	}, [relatedRecordingsData, activeTrack?.id]);
+		if (!relatedRecordingsData) return []
+		return relatedRecordingsData.searchRecordings.edges
+			.map((edge) => ({
+				id: edge.node.id,
+				title: edge.node.title,
+				artist: edge.node.orchestra?.name || 'Unknown Artist',
+				duration: edge.node.audioTransfers[0]?.audioVariants[0]?.duration || 0,
+				artwork: edge.node.audioTransfers[0]?.album?.albumArtUrl || '',
+				url: edge.node.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || '',
+				genre: edge.node.genre?.name || 'Unknown Genre',
+				year: edge.node.year || 'Unknown Year',
+			}))
+			.filter((recording) => recording.id !== activeTrack.id)
+	}, [relatedRecordingsData, activeTrack?.id])
 
 	if (!activeTrack) {
 		return (
@@ -91,7 +92,6 @@ const PlayerScreen = () => {
 			</View>
 		)
 	}
-
 
 	return (
 		<LinearGradient
@@ -177,45 +177,62 @@ const PlayerScreen = () => {
 							</View>
 						</View>
 						{activeTrack.lyrics && (
-							<Link href="/lyrics" style={[
-										{
-											backgroundColor: readablePrimaryColor,
-										},
-										styles.lyricsContainer,
-									]} asChild>
+							<Link
+								href="/lyrics"
+								style={[
+									{
+										backgroundColor: readablePrimaryColor,
+									},
+									styles.lyricsContainer,
+								]}
+								asChild
+							>
 								<Pressable>
-									<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-										<Text style={styles.lyricsHeader}>Lyrics</Text>	
-											<View style={{ borderRadius: 24, backgroundColor: 'rgba(0,0,0,0.2)', padding: 10 }} >
-												<MaterialIcons name="open-in-full" size={18} color={colors.text} />
-											</View>
-									</View>
-									<Text 
-									numberOfLines={8}
-									style={styles.lyricsText}
+									<View
+										style={{
+											flexDirection: 'row',
+											justifyContent: 'space-between',
+											alignItems: 'center',
+										}}
 									>
-									{activeTrack.lyrics}
-								</Text>
+										<Text style={styles.lyricsHeader}>Lyrics</Text>
+										<View
+											style={{ borderRadius: 24, backgroundColor: 'rgba(0,0,0,0.2)', padding: 10 }}
+										>
+											<MaterialIcons name="open-in-full" size={18} color={colors.text} />
+										</View>
+									</View>
+									<Text numberOfLines={8} style={styles.lyricsText}>
+										{activeTrack.lyrics}
+									</Text>
 								</Pressable>
 							</Link>
 						)}
 					</View>
 					<View>
-					{recentlyaddedRecordings.length > 0 && (
-						<View style={{ flexDirection: 'column', gap: 12, padding: 24, borderRadius:	32, backgroundColor: 'rgba(0,0,0,0.2)', marginBottom: 36 }}>
-							<Text style={[defaultStyles.text, styles.header]}>
-								Related Recordings
-							</Text>
-							<FlatList
+						{recentlyaddedRecordings.length > 0 && (
+							<View
+								style={{
+									flexDirection: 'column',
+									gap: 12,
+									padding: 24,
+									borderRadius: 32,
+									backgroundColor: 'rgba(0,0,0,0.2)',
+									marginBottom: 36,
+								}}
+							>
+								<Text style={[defaultStyles.text, styles.header]}>Related Recordings</Text>
+								<FlatList
 									data={recentlyaddedRecordings}
+									scrollEnabled={false}
 									renderItem={({ item }) => (
-											<TracksListItem track={item} onTrackSelect={() => handleTrackSelect(item)} />
+										<TracksListItem track={item} onTrackSelect={() => handleTrackSelect(item)} />
 									)}
 									contentContainerStyle={{ gap: 12 }}
 									keyExtractor={(item) => item.id}
-							/>
-						</View>
-					)}
+								/>
+							</View>
+						)}
 					</View>
 				</ScrollView>
 			</View>
