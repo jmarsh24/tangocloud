@@ -1,7 +1,6 @@
 import { fontSize } from '@/constants/tokens'
 import { trackTitleFilter } from '@/helpers/filter'
 import { generateTracksListId } from '@/helpers/miscellaneous'
-import { Artist } from '@/helpers/types'
 import { useNavigationSearch } from '@/hooks/useNavigationSearch'
 import { defaultStyles } from '@/styles'
 import { useMemo } from 'react'
@@ -10,7 +9,7 @@ import FastImage from 'react-native-fast-image'
 import { QueueControls } from './QueueControls'
 import { TracksList } from './TracksList'
 
-export const ArtistTracksList = ({ artist }: { artist: Artist }) => {
+export const OrchestraTracksList = ({ orchestra }: { orchestra: Orchestra }) => {
 	const search = useNavigationSearch({
 		searchBarOptions: {
 			hideWhenScrolling: true,
@@ -18,13 +17,26 @@ export const ArtistTracksList = ({ artist }: { artist: Artist }) => {
 		},
 	})
 
+	const recordings =
+		orchestra?.recordings?.edges.map(({ node: item }) => ({
+			id: item.id,
+			title: item.title,
+			artist: orchestra.name,
+			duration: item.audioTransfers[0]?.audioVariants[0]?.duration || 0,
+			artwork: item.audioTransfers[0]?.album?.albumArtUrl,
+			url: item.audioTransfers[0]?.audioVariants[0]?.audioFileUrl,
+			genre: item.genre?.name,
+			year: item.year,
+			singer: item.singers[0]?.name,
+		})) || []
+
 	const filteredArtistTracks = useMemo(() => {
-		return artist.tracks.filter(trackTitleFilter(search))
-	}, [artist.tracks, search])
+		return recordings.filter(trackTitleFilter(search))
+	}, [recordings, search])
 
 	return (
 		<TracksList
-			id={generateTracksListId(artist.name, search)}
+			id={generateTracksListId(orchestra.name, search)}
 			scrollEnabled={false}
 			hideQueueControls={true}
 			ListHeaderComponentStyle={styles.artistHeaderContainer}
@@ -33,7 +45,7 @@ export const ArtistTracksList = ({ artist }: { artist: Artist }) => {
 					<View style={styles.artworkImageContainer}>
 						<FastImage
 							source={{
-								uri: require('@/assets/unknown_artist.png'),
+								uri: orchestra.photoUrl || require('@/assets/unknown_artist.png'),
 								priority: FastImage.priority.high,
 							}}
 							style={styles.artistImage}
@@ -41,7 +53,7 @@ export const ArtistTracksList = ({ artist }: { artist: Artist }) => {
 					</View>
 
 					<Text numberOfLines={1} style={styles.artistNameText}>
-						{artist.name}
+						{orchestra.name}
 					</Text>
 
 					{search.length === 0 && (
