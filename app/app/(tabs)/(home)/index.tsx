@@ -388,7 +388,7 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 	},
 	subHeader: {
-		fontSize: 11,
+		fontSize: 14,
 		fontWeight: 'bold',
 		color: 'rgba(235, 235, 245, 0.6)',
 	},
