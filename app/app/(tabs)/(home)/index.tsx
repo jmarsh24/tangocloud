@@ -285,6 +285,7 @@ const HomeScreen = () => {
 						<Text style={(defaultStyles.text, styles.header)}>Popular Recordings</Text>
 						<FlatList
 							data={popularRecordings}
+							scrollEnabled={false}
 							renderItem={({ item }) => (
 								<TracksListItem track={item} onTrackSelect={() => handleTrackSelect(item)} />
 							)}
@@ -296,6 +297,7 @@ const HomeScreen = () => {
 						<Text style={(defaultStyles.text, styles.header)}>Recently Added</Text>
 						<FlatList
 							data={recentlyaddedRecordings}
+							scrollEnabled={false}
 							renderItem={({ item }) => (
 								<TracksListItem track={item} onTrackSelect={() => handleTrackSelect(item)} />
 							)}
