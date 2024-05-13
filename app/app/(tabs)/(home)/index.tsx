@@ -1,7 +1,12 @@
 import { PlaylistButton } from '@/components/PlaylistButton'
 import { TracksListItem } from '@/components/TracksListItem'
 import { colors, screenPadding } from '@/constants/tokens'
-import { SEARCH_PLAYLISTS, SEARCH_RECORDINGS, TANDA_OF_THE_WEEK, SEARCH_ORCHESTRAS } from '@/graphql'
+import {
+	SEARCH_ORCHESTRAS,
+	SEARCH_PLAYLISTS,
+	SEARCH_RECORDINGS,
+	TANDA_OF_THE_WEEK,
+} from '@/graphql'
 import { joinAttributes } from '@/helpers/miscellaneous'
 import { useQueue } from '@/store/queue'
 import { defaultStyles } from '@/styles'
@@ -55,7 +60,7 @@ const HomeScreen = () => {
 		loading: tandaOfTheWeekLoading,
 		error: tandaOfTheWeekError,
 	} = useQuery(TANDA_OF_THE_WEEK, {
-		variables: { query: 'Tanda of the Week' },
+		variables: { query: 'tanda of the week', first: 10 },
 		fetchPolicy: 'cache-and-network',
 	})
 
@@ -72,10 +77,10 @@ const HomeScreen = () => {
 		data: orchestrasData,
 		loading: orchestrasLoading,
 		error: orchestrasError,
-		} = useQuery(SEARCH_ORCHESTRAS, {
-			variables: { query: '*' },
-			fetchPolicy: 'cache-and-network',
-		})
+	} = useQuery(SEARCH_ORCHESTRAS, {
+		variables: { query: '*' },
+		fetchPolicy: 'cache-and-network',
+	})
 
 	const shuffleAndSlice = (data, count = 3) => {
 		return _.shuffle(data).slice(0, count)
@@ -107,7 +112,6 @@ const HomeScreen = () => {
 		return items.sort(() => Math.random() - 0.5).slice(0, 8)
 	}, [playlistData])
 
-
 	const popularRecordings = useMemo(() => {
 		if (!popularRecordingsData) return []
 		const recordings = popularRecordingsData.searchRecordings.edges.map((edge) => ({
@@ -138,16 +142,21 @@ const HomeScreen = () => {
 		return shuffleAndSlice(recordings, 8)
 	}, [recentlyaddedRecordingsData])
 
-	const tandaOfTheWeek = tandaOfTheWeekData?.searchPlaylists.edges[0]?.node
+	const tandaOfTheWeek = useMemo(() => {
+		const tandas = tandaOfTheWeekData?.searchPlaylists?.edges.map((edge) => edge.node) ?? []
+		return tandas
+	}, [tandaOfTheWeekData])
 
 	const moodPlaylists = moodPlaylistsData?.searchPlaylists?.edges.map((edge) => edge.node) ?? []
 
 	const orchestras = useMemo(() => {
-		const sortedOrchestras = orchestrasData?.searchOrchestras?.edges.map((edge) => edge.node)
-			.sort((a, b) => b.recordingsCount - a.recordingsCount) ?? [];
+		const sortedOrchestras =
+			orchestrasData?.searchOrchestras?.edges
+				.map((edge) => edge.node)
+				.sort((a, b) => b.recordingsCount - a.recordingsCount) ?? []
 
-		return sortedOrchestras;
-	}, [orchestrasData]);
+		return sortedOrchestras
+	}, [orchestrasData])
 
 	if (
 		playlistLoading ||
@@ -176,23 +185,21 @@ const HomeScreen = () => {
 			</View>
 		)
 	}
-	
+
 	return (
 		<SafeAreaView
 			style={{
 				...defaultStyles.container,
 			}}
 		>
-			<ScrollView
-				showsVerticalScrollIndicator={false}
-			>
+			<ScrollView showsVerticalScrollIndicator={false}>
 				<View style={{ gap: 10 }}>
 					<Text style={[defaultStyles.text, styles.subHeader, { paddingHorizontal: 20 }]}>
 						Moods
 					</Text>
 					<FlatList
 						data={moodPlaylists}
-						horizontal
+						horizontal={true}
 						showsHorizontalScrollIndicator={false}
 						directionalLockEnabled={true}
 						alwaysBounceVertical={false}
@@ -234,36 +241,46 @@ const HomeScreen = () => {
 							See All Playlists
 						</Link>
 					</View>
-					{tandaOfTheWeek && (
-						<View style={{ flexDirection: 'column', gap: 12 }}>
-							<Link
-								href={`/playlists/${tandaOfTheWeek.id}`}
-								style={(defaultStyles.text, styles.header)}
-							>
-								Tanda of the Week
-							</Link>
-							<Link href={`/playlists/${tandaOfTheWeek.id}`} asChild>
-								<Pressable style={styles.tandaContainer}>
-									<FastImage
-										source={{ uri: tandaOfTheWeek.imageUrl, priority: FastImage.priority.normal }}
-										style={styles.tandaImage}
-										resizeMode={FastImage.resizeMode.cover}
-									/>
-									<View style={styles.overlayTextContainer}>
-										<Text style={styles.tandaTitle}>{tandaOfTheWeek.title}</Text>
-										{tandaOfTheWeek.playlistItems.slice(0, 4).map((item) => (
-											<View key={item.id} style={styles.recordingDetailContainer}>
-												<Text style={styles.recordingDetail}>
-													{joinAttributes([item.playable.title, item.playable.year])}
-												</Text>
+					{tandaOfTheWeek && tandaOfTheWeek.length > 0 && (
+						<View
+							style={{
+								flexDirection: 'column',
+								gap: 12,
+							}}
+						>
+							<Text style={[defaultStyles.text, styles.header]}>Tanda of the Week</Text>
+							<FlatList
+								data={tandaOfTheWeek}
+								horizontal
+								showsHorizontalScrollIndicator={false}
+								directionalLockEnabled={true}
+								alwaysBounceVertical={false}
+								contentContainerStyle={{ gap: 16 }}
+								renderItem={({ item }) => (
+									<Link href={`/playlists/${item.id}`} key={item.id} asChild>
+										<Pressable style={styles.tandaContainer}>
+											<FastImage
+												source={{ uri: item.imageUrl, priority: FastImage.priority.normal }}
+												style={styles.tandaImage}
+												resizeMode={FastImage.resizeMode.cover}
+											/>
+											<View style={styles.overlayTextContainer}>
+												<Text style={styles.tandaTitle}>{item.title}</Text>
+												{item.playlistItems.slice(0, 4).map((item) => (
+													<View key={item.id} style={styles.recordingDetailContainer}>
+														<Text style={styles.recordingDetail}>
+															{joinAttributes([item.playable.title, item.playable.year])}
+														</Text>
+													</View>
+												))}
 											</View>
-										))}
-									</View>
-								</Pressable>
-							</Link>
+										</Pressable>
+									</Link>
+								)}
+								keyExtractor={(item) => item.id}
+							/>
 						</View>
 					)}
-
 					<View style={{ flexDirection: 'column', gap: 12 }}>
 						<Text style={(defaultStyles.text, styles.header)}>Popular Recordings</Text>
 						<FlatList
@@ -287,16 +304,14 @@ const HomeScreen = () => {
 						/>
 					</View>
 					<View style={{ flexDirection: 'column', gap: 12 }}>
-						<Text style={[defaultStyles.text, styles.header]}>
-							Main Orchestras
-						</Text>
+						<Text style={[defaultStyles.text, styles.header]}>Main Orchestras</Text>
 						<FlatList
 							data={orchestras}
 							horizontal
 							showsHorizontalScrollIndicator={false}
 							directionalLockEnabled={true}
 							alwaysBounceVertical={false}
-							contentContainerStyle={{gap: 16}}
+							contentContainerStyle={{ gap: 16 }}
 							renderItem={({ item }) => (
 								<Link href={`/orchestras/${item.id}`} key={item.id} asChild>
 									<Pressable style={{ alignItems: 'center', gap: 16 }}>
@@ -326,9 +341,10 @@ const styles = StyleSheet.create({
 	tandaContainer: {
 		position: 'relative',
 		marginBottom: 24,
+		height: 200,
 	},
 	tandaImage: {
-		width: '100%',
+		width: 300,
 		height: 200,
 		borderRadius: 8,
 	},
