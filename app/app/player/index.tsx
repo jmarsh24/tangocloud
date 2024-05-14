@@ -97,8 +97,12 @@ const PlayerScreen = () => {
 		<LinearGradient
 			style={styles.linearGradient}
 			colors={
-				imageColors && imageColors.secondary && imageColors.detail
-					? [imageColors.secondary, imageColors.detail]
+				imageColors && imageColors.platform
+					? imageColors.platform === 'android' && imageColors.dominant && imageColors.average
+						? [imageColors.dominant, imageColors.average]
+						: imageColors.platform === 'ios' && imageColors.secondary && imageColors.detail
+							? [imageColors.secondary, imageColors.detail]
+							: [colors.background, colors.backgroundDarker]
 					: [colors.background, colors.backgroundDarker]
 			}
 		>

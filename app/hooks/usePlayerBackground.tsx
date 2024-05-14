@@ -1,11 +1,11 @@
 import { colors } from '@/constants/tokens'
 import { useEffect, useState } from 'react'
 import { getColors } from 'react-native-image-colors'
-import { IOSImageColors } from 'react-native-image-colors/build/types'
+import { ImageColorsResult } from 'react-native-image-colors/lib/typescript/types'
 import tinycolor from 'tinycolor2'
 
 export const usePlayerBackground = (imageUrl: string) => {
-	const [imageColors, setImageColors] = useState<IOSImageColors | null>(null)
+	const [imageColors, setImageColors] = useState<ImageColorsResult | null>(null)
 	const [readablePrimaryColor, setReadablePrimaryColor] = useState('')
 
 	useEffect(() => {
@@ -14,8 +14,14 @@ export const usePlayerBackground = (imageUrl: string) => {
 			cache: true,
 			key: imageUrl,
 		}).then((result) => {
-			setImageColors(result as IOSImageColors)
-			const primaryColor = (result as IOSImageColors).primary
+			setImageColors(result)
+			let primaryColor
+			if (result.platform === 'android') {
+				primaryColor = result.dominant
+			} else if (result.platform === 'ios') {
+				primaryColor = result.primary
+			}
+
 			if (primaryColor) {
 				let modifiedColor = tinycolor(primaryColor)
 				// Check if the color is not optimal for readability against both black and white
