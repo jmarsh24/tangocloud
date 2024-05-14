@@ -7,8 +7,12 @@ class Composer < ApplicationRecord
   has_many :recordings, through: :compositions
 
   validates :name, presence: true
+  validates :slug, presence: true, uniqueness: true
+  validates :normalized_name, presence: true, uniqueness: true
 
   has_one_attached :photo
+
+  before_save :set_normalized_name
 
   def self.search_composers(query = "*")
     Composer.search(query,
@@ -20,6 +24,10 @@ class Composer < ApplicationRecord
     {
       name:
     }
+  end
+
+  def set_normalized_name
+    self.normalized_name = I18n.transliterate(name).downcase
   end
 end
 
@@ -35,4 +43,5 @@ end
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  compositions_count :integer          default(0)
+#  normalized_name    :string
 #

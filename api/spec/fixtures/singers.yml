@@ -1,27 +1,31 @@
 roberto_chanel:
   name: Roberto Chanel
   slug: roberto-chanel
+  normalized_name: roberto chanel
 
 francisco_fiorentino:
   name: Francisco Fiorentino
   slug: francisco-fiorentino
+  normalized_name: francisco fiorentino
 
 roberto_rufino:
   name: Roberto Rufino
   slug: roberto-rufino
+  normalized_name: roberto rufino
 # == Schema Information
 #
 # Table name: singers
 #
-#  id         :uuid             not null, primary key
-#  name       :string           not null
-#  slug       :string           not null
-#  rank       :integer          default(0), not null
-#  sort_name  :string
-#  bio        :text
-#  birth_date :date
-#  death_date :date
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  soloist    :boolean          default(FALSE)
+#  id              :uuid             not null, primary key
+#  name            :string           not null
+#  slug            :string           not null
+#  rank            :integer          default(0), not null
+#  sort_name       :string
+#  bio             :text
+#  birth_date      :date
+#  death_date      :date
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  soloist         :boolean          default(FALSE)
+#  normalized_name :string
 #

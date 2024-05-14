@@ -1,18 +1,22 @@
 francisco_garcia_jimenez:
   name: Francisco García Jiménez
   slug: francisco-garcia-jimenez
+  normalized_name: francisco garcia jimenez
 
 jorge_curi:
   name: Jorge Curi
   slug: jorge-curi
+  normalized_name: jorge curi
 
 homero_exposito:
-  name: Homero Expósito
+  name: Homero Exposito
   slug: homero-exposito
+  normalized_name: homero exposito
 
 homero_manzi:
   name: Homero Manzi / Víctor Piuma Vélez
   slug: homero-manzi-victor-piuma-velez
+  normalized_name: homero manzi / victor piuma velez
 # == Schema Information
 #
 # Table name: lyricists
@@ -27,4 +31,5 @@ homero_manzi:
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  compositions_count :integer          default(0)
+#  normalized_name    :string
 #

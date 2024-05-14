@@ -48,8 +48,17 @@ module Import
 
           el_recodo_song = ElRecodoSong.find_by(ert_number: metadata.ert_number)
 
-          lyricist = Lyricist.find_or_create_by!(name: metadata.lyricist) if metadata.lyricist.present?
-          composer = Composer.find_or_create_by!(name: metadata.composer) if metadata.composer.present?
+          if metadata.lyricist.present?
+            lyricist = Lyricist.find_or_create_by!(normalized_name: I18n.transliterate(metadata.lyricist)) do |lyr|
+              lyr.name = metadata.lyricist
+            end
+          end
+
+          if metadata.composer.present?
+            composer = Composer.find_or_create_by!(normalized_name: I18n.transliterate(metadata.composer)) do |comp|
+              comp.name = metadata.composer
+            end
+          end
 
           composition = Composition.find_or_create_by!(title: metadata.title) do |comp|
             comp.lyricist = lyricist if lyricist.present?
@@ -62,7 +71,9 @@ module Import
             composition.lyrics.find_or_create_by!(content: el_recodo_song.lyrics, locale: "es", composition:)
           end
 
-          orchestra = Orchestra.find_or_create_by!(name: metadata.album_artist)
+          orchestra = Orchestra.find_or_create_by!(normalized_name: I18n.transliterate(metadata.album_artist)) do |orch|
+            orch.name = metadata.album_artist
+          end
 
           record_label = if metadata.record_label.present?
             RecordLabel.find_or_create_by!(name: metadata.record_label)
@@ -73,7 +84,9 @@ module Import
           end
 
           if metadata.singer.present? && metadata.singer.downcase != "instrumental"
-            singer = Singer.find_or_create_by!(name: metadata.artist, soloist: orchestra.present?)
+            singer = Singer.find_or_create_by!(normalized_name: I18n.transliterate(metadata.artist), soloist: orchestra.present?) do |s|
+              s.name = metadata.artist
+            end
           end
 
           parsed_date =

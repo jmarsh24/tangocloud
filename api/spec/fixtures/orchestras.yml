@@ -1,18 +1,22 @@
 juan_darienzo:
-  name: Juan D'ARIENZO
+  name: Juan D'Arienzo
   slug: juan-d-arienzo
+  normalized_name: juan d'arienzo
 
 anibal_troilo:
-  name: Aníbal TROILO
+  name: Anibal Troilo
   slug: anibal-troilo
+  normalized_name: anibal troilo
 
 carlos_di_sarli:
-  name: Carlos DI SARLI
+  name: Carlos Di Sarli
   slug: carlos-di-sarli
+  normalized_name: carlos di sarli
 
 osvaldo_pugliese:
-  name: Osvaldo PUGLIESE
+  name: Osvaldo Pugliese
   slug: osvaldo-pugliese
+  normalized_name: osvaldo pugliese
 # == Schema Information
 #
 # Table name: orchestras
@@ -27,4 +31,5 @@ osvaldo_pugliese:
 #  recordings_count :integer          default(0)
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  normalized_name  :string
 #

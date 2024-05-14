@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_09_231638) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_14_160234) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -108,6 +108,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_09_231638) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "compositions_count", default: 0
+    t.string "normalized_name"
+    t.index ["normalized_name"], name: "index_composers_on_normalized_name", unique: true
     t.index ["slug"], name: "index_composers_on_slug", unique: true
   end
 
@@ -260,6 +262,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_09_231638) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "compositions_count", default: 0
+    t.string "normalized_name"
+    t.index ["normalized_name"], name: "index_lyricists_on_normalized_name", unique: true
     t.index ["slug"], name: "index_lyricists_on_slug", unique: true
   end
 
@@ -282,6 +286,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_09_231638) do
     t.integer "recordings_count", default: 0
     t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.string "normalized_name"
+    t.index ["normalized_name"], name: "index_orchestras_on_normalized_name", unique: true
     t.index ["slug"], name: "index_orchestras_on_slug", unique: true
   end
 
@@ -402,6 +408,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_09_231638) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "soloist", default: false
+    t.string "normalized_name"
+    t.index ["normalized_name"], name: "index_singers_on_normalized_name", unique: true
     t.index ["slug"], name: "index_singers_on_slug", unique: true
   end
 
