@@ -1,7 +1,7 @@
 class Recording < ApplicationRecord
   extend FriendlyId
   friendly_id :title, use: :slugged
-  searchkick word_middle: [:title, :composer_name, :author, :lyrics, :orchestra_name, :singer_name, :year]
+  searchkick word_middle: [:title, :orchestra_name, :singer_name]
 
   belongs_to :el_recodo_song, optional: true
   belongs_to :orchestra, counter_cache: true
@@ -27,10 +27,10 @@ class Recording < ApplicationRecord
 
   enum recording_type: {studio: "studio", live: "live"}
 
-    def self.search_recordings(query = nil, sort_by: nil, order: 'desc')
+  def self.search_recordings(query = nil, sort_by: nil, order: "desc")
     if query.present?
       search_options = {
-        fields: ["title^10", "composer_names", "lyricist_names", "lyrics", "orchestra_name", "singer_names", "genre", "period", "recorded_date", "year"],
+        fields: ["title^10", "orchestra_name", "singer_names", "genre", "year"],
         match: :word_middle,
         misspellings: {below: 5},
         includes: [
@@ -46,7 +46,7 @@ class Recording < ApplicationRecord
         ]
       }
 
-      sort_by.present? ? search_options[:order] = {sort_by => order} : search_options[:order] = {playbacks_count: :desc}
+      search_options[:order] = sort_by.present? ? {sort_by => order} : {playbacks_count: :desc}
 
       Recording.search(query, **search_options).results
     else
@@ -68,8 +68,8 @@ class Recording < ApplicationRecord
       period: period&.name,
       playbacks_count:,
       year: recorded_date.year,
-      created_at: created_at,
-      updated_at: updated_at
+      created_at:,
+      updated_at:
     }
   end
 end
