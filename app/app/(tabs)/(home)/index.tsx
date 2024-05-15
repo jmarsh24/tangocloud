@@ -124,7 +124,7 @@ const HomeScreen = () => {
 			genre: edge.node.genre?.name || 'Unknown Genre',
 			year: edge.node.year || 'Unknown Year',
 		}))
-		return shuffleAndSlice(recordings, 8)
+		return shuffleAndSlice(recordings, 4)
 	}, [popularRecordingsData])
 
 	const recentlyaddedRecordings = useMemo(() => {
@@ -139,7 +139,7 @@ const HomeScreen = () => {
 			genre: edge.node.genre?.name || 'Unknown Genre',
 			year: edge.node.year || 'Unknown Year',
 		}))
-		return shuffleAndSlice(recordings, 8)
+		return shuffleAndSlice(recordings, 4)
 	}, [recentlyaddedRecordingsData])
 
 	const tandaOfTheWeek = useMemo(() => {
