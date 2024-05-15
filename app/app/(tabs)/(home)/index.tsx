@@ -51,7 +51,7 @@ const HomeScreen = () => {
 		loading: recentlyaddedRecordingsLoading,
 		error: recentlyaddedRecordingsError,
 	} = useQuery(SEARCH_RECORDINGS, {
-		variables: { query: '*', first: 32, sort_by: 'created_at', order: 'desc' },
+		variables: { query: '*', first: 32, sortBy: 'created_at', order: 'desc' },
 		fetchPolicy: 'cache-and-network',
 	})
 
