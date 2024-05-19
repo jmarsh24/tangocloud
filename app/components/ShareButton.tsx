@@ -14,6 +14,7 @@ export const ShareButton = ({ recording_id }) => {
   const handleShare = async () => {
     try {
       const result = await Share.share({
+        message: shareUrl,
         url: shareUrl
       });
 
