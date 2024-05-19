@@ -14,7 +14,6 @@ export const ShareButton = ({ recording_id }) => {
 		try {
 			const result = await Share.share({
 				message: shareUrl,
-				url: shareUrl,
 			})
 
 			if (result.action === Share.sharedAction) {
