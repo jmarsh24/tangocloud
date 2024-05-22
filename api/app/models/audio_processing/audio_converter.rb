@@ -34,6 +34,7 @@ module AudioProcessing
           "-ar", sample_rate.to_s,             # Audio sample rate
           "-ac", channels.to_s,                # Number of audio channels
           "-movflags", "+faststart",           # Fast start for streaming
+          "-fflags", "+bitexact",              # Enable bitexact mode for accurate duration
           "-id3v2_version", "3"                # Ensure compatibility with ID3v2
         ]
 
