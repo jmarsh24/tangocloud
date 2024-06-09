@@ -1,14 +1,16 @@
 module Resolvers::Recordings
   class SearchRecordings < Resolvers::BaseSearchResolver
     type Types::RecordingType.connection_type, null: false
+    scope { Recording.all }
+    create_connection_for(Recording)
+    add_filter_by_datetime_for(Recording)
+    add_order_by_for(Recording)
+    add_search_for(Recording)
 
-    argument :query, String, required: false, description: "Query to search for."
-
-    def resolve(query: nil, sort_by: nil, order: nil)
+    def resolve(**args)
       raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
 
-      scope { Recording.all }
-      add_search_for(Recording)
+      super
     end
   end
 end

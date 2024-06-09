@@ -417,6 +417,11 @@ type Event {
   userId: String!
 }
 
+input FilterByDateInput {
+  from: ISO8601DateTime!
+  to: ISO8601DateTime!
+}
+
 type Genre {
   createdAt: ISO8601DateTime!
   description: String
@@ -777,6 +782,11 @@ type OrchestraEdge {
   The item at the end of the edge.
   """
   node: Orchestra
+}
+
+enum OrderByDirection {
+  ASC
+  DESC
 }
 
 """
@@ -1251,6 +1261,8 @@ type Query {
     Returns the elements in the list that come before the specified cursor.
     """
     before: String
+    filterByCreatedAt: FilterByDateInput
+    filterByUpdatedAt: FilterByDateInput
 
     """
     Returns the first _n_ elements from the list.
@@ -1261,12 +1273,9 @@ type Query {
     Returns the last _n_ elements from the list.
     """
     last: Int
-
-    """
-    Query to search for.
-    """
-    query: String
-  ): RecordingConnection!
+    orderBy: RecordingOrderByInput
+    search: String
+  ): RecordingsConnection!
   searchSingers(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -1438,6 +1447,31 @@ type RecordingEdge {
   node: Recording
 }
 
+enum RecordingOrderByField {
+  BPM
+  COMPOSITION_ID
+  CREATED_AT
+  EL_RECODO_SONG_ID
+  GENRE_ID
+  ID
+  ORCHESTRA_ID
+  PERIOD_ID
+  PLAYBACKS_COUNT
+  RECORDED_DATE
+  RECORDING_TYPE
+  RECORD_LABEL_ID
+  RELEASE_DATE
+  SINGER_ID
+  SLUG
+  TITLE
+  UPDATED_AT
+}
+
+input RecordingOrderByInput {
+  direction: OrderByDirection!
+  field: RecordingOrderByField!
+}
+
 type RecordingSinger {
   createdAt: ISO8601DateTime!
   id: ID!
@@ -1481,6 +1515,42 @@ type RecordingSingerEdge {
   The item at the end of the edge.
   """
   node: RecordingSinger
+}
+
+"""
+The connection type for Recording.
+"""
+type RecordingsConnection {
+  """
+  A list of edges.
+  """
+  edges: [RecordingsEdgeType]
+
+  """
+  A list of nodes.
+  """
+  nodes: [Recording]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""
+An edge in a connection.
+"""
+type RecordingsEdgeType {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge.
+  """
+  node: Recording
 }
 
 """

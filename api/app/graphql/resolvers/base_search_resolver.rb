@@ -8,7 +8,7 @@ module Resolvers
     scope { [] }
 
     FILTER_BY_DATE_INPUT = begin
-      Class.new(Types::BaseInputObject  ) do
+      Class.new(Types::BaseInputObject) do
         graphql_name "FilterByDateInput"
 
         argument :from, GraphQL::Types::ISO8601DateTime, required: true
@@ -34,7 +34,6 @@ module Resolvers
         node_type("Types::#{klass}Type".constantize)
       end
 
-
       connection =  Class.new(GraphQL::Types::Relay::BaseConnection) do
         graphql_name "#{plural}Connection"
 
@@ -51,7 +50,7 @@ module Resolvers
     def self.add_search_for(klass)
       option(:search, type: String) { |scope, value|
         if value.present?
-          ids = klass.search(value, {execute: false, select: [:id]}).map(&:id)
+          ids = klass.search(value, load: false, select: [:id]).map(&:id)
           scope.where(id: ids)
         end
       }
