@@ -1263,19 +1263,9 @@ type Query {
     last: Int
 
     """
-    Sort order, can be 'asc' or 'desc'.
-    """
-    order: String
-
-    """
     Query to search for.
     """
     query: String
-
-    """
-    Field to sort by.
-    """
-    sortBy: String
   ): RecordingConnection!
   searchSingers(
     """
