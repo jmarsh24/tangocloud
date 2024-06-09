@@ -47,13 +47,14 @@ module Resolvers
       type connection, null: false
     end
 
-    def self.add_search_for(klass)
-      option(:search, type: String) { |scope, value|
+    def self.add_search_for(klass, search_options = {})
+      option(:search, type: String) do |scope, value|
         if value.present?
-          ids = klass.search(value, load: false, select: [:id]).map(&:id)
+          search_params = { load: false, select: [:id] }.merge(search_options)
+          ids = klass.search(value, **search_params).map(&:id)
           scope.where(id: ids)
         end
-      }
+      end
     end
 
     def self.add_order_by_for(klass)
