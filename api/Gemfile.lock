@@ -512,6 +512,10 @@ GEM
     ruby-progressbar (1.13.0)
     ruby-vips (2.2.0)
       ffi (~> 1.12)
+    search_object (1.2.5)
+    search_object_graphql (1.0.5)
+      graphql (> 1.8)
+      search_object (~> 1.2.5)
     searchkick (5.3.1)
       activemodel (>= 6.1)
       hashie
@@ -676,6 +680,8 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec
   ruby-vips
+  search_object
+  search_object_graphql
   searchkick
   sentry-rails
   sentry-ruby
