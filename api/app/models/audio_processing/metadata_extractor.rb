@@ -45,7 +45,7 @@ module AudioProcessing
       metadata = movie.metadata
       streams = metadata.dig(:streams)
       format = metadata.dig(:format)
-      tags = format.dig(:tags)&.transform_keys(&:downcase) || {}
+      tags = format&.dig(:tags)&.transform_keys(&:downcase) || {}
       audio_stream = streams.find { |stream| stream.dig(:codec_type) == "audio" }
       comments = comments || tags.dig(:description) || tags.dig(:tit3)
       parsed_comments = parse_into_hash(comments)

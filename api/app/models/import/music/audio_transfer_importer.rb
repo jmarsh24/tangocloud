@@ -50,19 +50,20 @@ module Import
 
           if metadata.lyricist.present?
             lyricist = Lyricist.find_or_create_by!(normalized_name: I18n.transliterate(metadata.lyricist).downcase) do |lyr|
-              lyr.name = ActiveRecord.custom_titleize(I18n.transliterate(metadata.lyricist))
+              lyr.name = Lyricist.custom_titleize(I18n.transliterate(metadata.lyricist))
             end
           end
 
           if metadata.composer.present?
             composer = Composer.find_or_create_by!(normalized_name: I18n.transliterate(metadata.composer).downcase) do |comp|
-              comp.name = ActiveRecord.custom_titleize(I18n.transliterate(metadata.composer))
+              comp.name = Composer.custom_titleize(I18n.transliterate(metadata.composer))
             end
           end
-
-          composition = Composition.find_or_create_by!(title: metadata.title) do |comp|
-            comp.lyricist = ActiveRecord.custom_titleize(I18n.transliterate(lyricist)) if lyricist.present?
-            comp.composer = ActiveRecord.custom_titleize(I18n.transliterate(composer)) if composer.present?
+          if lyricist.present? && composer.present?
+            composition = Composition.find_or_create_by!(title: metadata.title) do |comp|
+              comp.lyricist = lyricist if lyricist.present?
+              comp.composer = composer if composer.present?
+            end
           end
 
           if metadata.lyrics.present?
@@ -72,7 +73,7 @@ module Import
           end
 
           orchestra = Orchestra.find_or_create_by!(normalized_name: I18n.transliterate(metadata.album_artist).downcase) do |orch|
-            orch.name = ActiveRecord.custom_titleize(I18n.transliterate(metadata.album_artist))
+            orch.name = Orchestra.custom_titleize(metadata.album_artist)
           end
 
           record_label = if metadata.record_label.present?
@@ -83,9 +84,10 @@ module Import
             Genre.find_or_create_by!(name: metadata.genre.downcase)
           end
 
-          if metadata.singer.present? && metadata.singer.downcase != "instrumental"
-            singer = Singer.find_or_create_by!(normalized_name: I18n.transliterate(metadata.artist).downcase, soloist: orchestra.present?) do |s|
-              s.name = ActiveRecord.custom_titleize(I18n.transliterate(metadata.artist))
+          if metadata.artist.present? && metadata.singer.downcase != "instrumental"
+            singer = Singer.find_or_create_by!(normalized_name: I18n.transliterate(metadata.artist).downcase) do |s|
+              s.name = Singer.custom_titleize(metadata.artist)
+              s.soloist = orchestra.nil?
             end
           end
 

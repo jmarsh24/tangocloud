@@ -1,5 +1,6 @@
 class Composer < ApplicationRecord
   extend FriendlyId
+  include Titleizable
   friendly_id :name, use: :slugged
   searchkick word_middle: [:name]
 

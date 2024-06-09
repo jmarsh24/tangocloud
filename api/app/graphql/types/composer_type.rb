@@ -1,5 +1,7 @@
 module Types
   class ComposerType < Types::BaseObject
+    include Rails.application.routes.url_helpers
+
     field :id, ID, null: true
     field :name, String, null: false
     field :rank, Integer, null: true
@@ -13,7 +15,7 @@ module Types
 
     def photo_url
       dataloader.with(Sources::Preload, photo_attachment: :blob).load(object)
-      cdn_image_url(object.photo.variant(:large)) if object.photo.attached?
+      cdn_image_url(object.photo) if object.photo.attached?
     end
 
     has_many :compositions

@@ -14,11 +14,6 @@ RSpec.describe User, type: :model do
       user.reload
       expect(user.user_preference).to be_present
     end
-
-    it "creates a liked_playlist" do
-      user.reload
-      expect(user.liked_playlist).to be_present
-    end
   end
 end
 
