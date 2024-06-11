@@ -1,15 +1,18 @@
 module Resolvers::Recordings
-  class SearchRecordings < Resolvers::BaseResolver
+  class SearchRecordings < Resolvers::BaseSearchResolver
     type Types::RecordingType.connection_type, null: false
+    scope { Recording.all }
+    create_connection_for(Recording)
+    add_filter_by_datetime_for(Recording)
+    add_order_by_for(Recording)
+    add_search_for(Recording,
+      fields: ["title^2", "orchestra_name", "singer_names", "genre", "year"],
+    )
 
-    argument :query, String, required: false, description: "Query to search for."
-    argument :sort_by, String, required: false, description: "Field to sort by."
-    argument :order, String, required: false, description: "Sort order, can be 'asc' or 'desc'."
-
-    def resolve(query: nil, sort_by: nil, order: nil)
+    def resolve(**args)
       raise GraphQL::ExecutionError, "Authentication is required to access this query." unless context[:current_user]
 
-      Recording.search_recordings(query, sort_by:, order:)
+      super
     end
   end
 end
