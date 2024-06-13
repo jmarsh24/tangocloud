@@ -10,7 +10,6 @@ const OrchestrasLayout = () => {
 				<Stack.Screen
 					name="index"
 					options={{
-						headerShown: false,
 						...StackScreenWithSearchBar,
 						title: 'Orchestras',
 					}}
@@ -18,7 +17,6 @@ const OrchestrasLayout = () => {
 				<Stack.Screen
 					name="[id]"
 					options={{
-						headerShown: false,
 						...StackScreenWithSearchBar,
 					}}
 				/>

@@ -1,4 +1,3 @@
-import { StackScreenWithSearchBar } from '@/constants/layout'
 import { defaultStyles } from '@/styles'
 import { Stack } from 'expo-router'
 import { View } from 'react-native'
@@ -11,21 +10,19 @@ const HomeScreenLayout = () => {
 					name="index"
 					options={{
 						title: 'Home',
-						...StackScreenWithSearchBar,
+						headerShown: false,
 					}}
 				/>
 				<Stack.Screen
 					name="playlists"
 					options={{
-						title: 'Playlists',
-						...StackScreenWithSearchBar,
+						headerShown: false,
 					}}
 				/>
 				<Stack.Screen
 					name="orchestras"
 					options={{
-						title: 'Orchestras',
-						...StackScreenWithSearchBar,
+						headerShown: false,
 					}}
 				/>
 			</Stack>

@@ -257,7 +257,7 @@ const HomeScreen = () => {
 								alwaysBounceVertical={false}
 								contentContainerStyle={{ gap: 16 }}
 								renderItem={({ item }) => (
-									<Link href={`/playlists/${item.id}`} key={item.id} asChild>
+									<Link push href={`/playlists/${item.id}`} key={item.id} asChild>
 										<Pressable style={styles.tandaContainer}>
 											<FastImage
 												source={{ uri: item.imageUrl, priority: FastImage.priority.normal }}

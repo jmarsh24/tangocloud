@@ -9,9 +9,9 @@ import { ScrollView, Text, View } from 'react-native'
 const PlaylistScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>()
 	const { data, loading, error } = useQuery(FETCH_PLAYLIST, {
-		variables: { id: id }
+		variables: { id: id },
 	})
-	
+
 	if (loading) {
 		return (
 			<View style={defaultStyles.container}>
@@ -35,7 +35,7 @@ const PlaylistScreen = () => {
 	if (!playlist) {
 		console.warn(`Playlist ${playlistTitle} was not found!`)
 
-		return <Redirect href={'/(tabs)/playlists'} />
+		return <Redirect href={'/playlists'} />
 	}
 
 	return (
