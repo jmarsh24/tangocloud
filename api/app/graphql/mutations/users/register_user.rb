@@ -5,18 +5,11 @@ module Mutations::Users
     argument :password, String, required: true
 
     field :user, Types::UserType, null: true
-    field :errors, Types::ValidationErrorsType, null: true
 
-    def resolve(args)
-      user = User.new(args)
-
-      if user.save
-        UserMailer.with(user:).email_verification.deliver_later
-
-        {user:, success: true}
-      else
-        {errors: user.errors, success: false}
-      end
+    def resolve(email:, password:, username:)
+      user = User.create!(email:, password:, username:)
+      UserMailer.with(user:).email_verification.deliver_later
+      {user:}
     end
   end
 end

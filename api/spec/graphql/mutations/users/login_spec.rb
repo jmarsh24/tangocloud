@@ -17,9 +17,6 @@ RSpec.describe "login", type: :graph do
           }
           token
           success
-          errors {
-            message
-          }
         }
       }
     GQL
@@ -32,7 +29,7 @@ RSpec.describe "login", type: :graph do
     }
 
     gql(mutation, variables:)
-    expect(result.data.login.success).to be(true)
+
     expect(result.data.login.user.email).to eq(user.email)
     expect(result.data.login.user.id).to be_present
     expect(result.data.login.token).to be_present
@@ -46,7 +43,6 @@ RSpec.describe "login", type: :graph do
 
     gql(mutation, variables:)
 
-    expect(result.data.login.success).to be(true)
     expect(result.data.login.user.email).to eq(user.email)
     expect(result.data.login.user.id).to be_present
     expect(result.data.login.token).to be_present

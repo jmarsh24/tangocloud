@@ -5,8 +5,6 @@ module Mutations::Users
 
     field :user, Types::UserType, null: true
     field :token, String, null: true
-    field :success, Boolean, null: false
-    field :errors, [Types::ErrorType], null: true
 
     def resolve(login:, password:)
       user = User.find_by_email_or_username(login)
@@ -15,8 +13,7 @@ module Mutations::Users
         context[:current_user] = user
         {
           token: AuthToken.token(user),
-          user:,
-          success: true
+          user:
         }
       else
         context[:current_user] = nil

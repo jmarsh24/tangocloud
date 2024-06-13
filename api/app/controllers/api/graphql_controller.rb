@@ -13,6 +13,7 @@ module Api
       result = TangocloudSchema.execute(query, variables:, context:, operation_name:)
       render json: result
     rescue => e
+      binding.irb
       raise e unless Rails.env.development?
       handle_error_in_development(e)
     end
