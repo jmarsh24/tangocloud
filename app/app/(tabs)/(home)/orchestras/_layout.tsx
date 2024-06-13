@@ -10,13 +10,14 @@ const OrchestrasLayout = () => {
 				<Stack.Screen
 					name="index"
 					options={{
-						...StackScreenWithSearchBar,
 						title: 'Orchestras',
+						...StackScreenWithSearchBar,
 					}}
 				/>
 				<Stack.Screen
 					name="[id]"
 					options={{
+						title: 'Orchestra',
 						...StackScreenWithSearchBar,
 					}}
 				/>

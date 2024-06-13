@@ -28,7 +28,7 @@ const PlaylistsScreen = () => {
 	}, [data])
 
 	const handlePlaylistPress = (playlist: Playlist) => {
-		router.push(`/(tabs)/playlists/${playlist.id}`)
+		router.push(`/playlists/${playlist.id}`)
 	}
 
 	if (loading) {
