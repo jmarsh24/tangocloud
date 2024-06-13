@@ -386,26 +386,6 @@ type ElRecodoSongEdge {
   node: ElRecodoSong
 }
 
-"""
-Represents an error
-"""
-type Error {
-  """
-  A unique error code
-  """
-  code: String
-
-  """
-  A description of the error
-  """
-  message: String!
-
-  """
-  The path to the field that caused the error
-  """
-  path: [String!]
-}
-
 type Event {
   action: String!
   createdAt: ISO8601DateTime!
@@ -540,8 +520,8 @@ type LoginUserPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
-  errors: [Error!]
-  success: Boolean!
+  errors: [String!]
+  success: Boolean
   token: String
   user: User
 }
@@ -1514,7 +1494,7 @@ type RegisterUserPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
-  errors: ValidationErrors
+  errors: [String!]
   success: Boolean
   user: User
 }
