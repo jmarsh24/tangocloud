@@ -57,56 +57,63 @@ const RegisterScreen = () => {
 				<View style={{ flex: 1 }}>
 					<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 						<View style={{ flex: 1 }}>
-							<ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-								<View style={{ gap: 16, paddingBottom: 50 }}>
+							<ScrollView
+								style={styles.container}
+								contentContainerStyle={styles.scrollContainer}
+								showsVerticalScrollIndicator={false}
+							>
+								<View style={{ flex: 1, justifyContent: 'center', paddingBottom: 50 }}>
 									<View style={styles.imageContainer}>
 										<Image source={require('@/assets/icon.png')} style={styles.image} />
 									</View>
-									<View style={{ gap: 2 }}>
-										<Text style={styles.label}>Username</Text>
-										<TextInput
-											value={username}
-											onChangeText={setUsername}
-											placeholder="ElSeniorDeTango"
-											autoCorrect={false}
-											autoComplete="username"
-											autoCapitalize="none"
-											textContentType="username"
-											style={styles.input}
-										/>
+									<View style={{ gap: 24 }}>
+										<View style={{ gap: 8 }}>
+											<Text style={styles.label}>Username</Text>
+											<TextInput
+												value={username}
+												onChangeText={setUsername}
+												placeholder="ElSeniorDeTango"
+												autoCorrect={false}
+												autoComplete="username"
+												autoCapitalize="none"
+												textContentType="username"
+												style={styles.input}
+											/>
 
-										<Text style={styles.label}>Email</Text>
-										<TextInput
-											value={email}
-											onChangeText={setEmail}
-											placeholder="carlosdisarli@hotmail.com"
-											autoCorrect={false}
-											autoComplete="email"
-											autoCapitalize="none"
-											textContentType="emailAddress"
-											keyboardType="email-address"
-											style={styles.input}
-										/>
+											<Text style={styles.label}>Email</Text>
+											<TextInput
+												value={email}
+												onChangeText={setEmail}
+												placeholder="carlosdisarli@hotmail.com"
+												autoCorrect={false}
+												autoComplete="email"
+												autoCapitalize="none"
+												textContentType="emailAddress"
+												keyboardType="email-address"
+												style={styles.input}
+											/>
 
-										<Text style={styles.label}>Password</Text>
-										<TextInput
-											value={password}
-											onChangeText={setPassword}
-											placeholder=""
-											style={styles.input}
-											autoComplete="password"
-											secureTextEntry
-										/>
-
-										<Button
-											onPress={register}
-											disabled={loading}
-											text={loading ? 'Creating account...' : 'Create account'}
-											style={styles.button}
-										/>
-										<Link replace href="/login" style={styles.textButton}>
-											Sign in
-										</Link>
+											<Text style={styles.label}>Password</Text>
+											<TextInput
+												value={password}
+												onChangeText={setPassword}
+												placeholder=""
+												style={styles.input}
+												autoComplete="password"
+												secureTextEntry
+											/>
+										</View>
+										<View>
+											<Button
+												onPress={register}
+												disabled={loading}
+												text={loading ? 'Creating account...' : 'Create account'}
+												style={styles.button}
+											/>
+											<Link replace href="/login" style={styles.textButton}>
+												Sign in
+											</Link>
+										</View>
 									</View>
 								</View>
 							</ScrollView>
@@ -120,9 +127,12 @@ const RegisterScreen = () => {
 
 const styles = StyleSheet.create({
 	container: {
-		padding: 20,
-		paddingBottom: 500,
 		flex: 1,
+		padding: 20,
+	},
+	scrollContainer: {
+		flexGrow: 1,
+		justifyContent: 'center',
 	},
 	label: {
 		color: colors.text,
@@ -132,8 +142,6 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderColor: colors.icon,
 		padding: 10,
-		marginTop: 5,
-		marginBottom: 20,
 		backgroundColor: colors.background,
 		borderRadius: 5,
 		fontSize: 18,
