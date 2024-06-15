@@ -70,6 +70,7 @@ input AppleLoginInput {
   clientMutationId: String
   email: String
   firstName: String
+  identityToken: String!
   lastName: String
   userIdentifier: String!
 }

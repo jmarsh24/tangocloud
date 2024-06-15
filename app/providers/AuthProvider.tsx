@@ -85,6 +85,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         mutation: APPLE_LOGIN,
         variables: { 
           userIdentifier: credential.user,
+          identityToken: credential.identityToken,
           email: credential.email,
           firstName: credential.fullName?.givenName,
           lastName: credential.fullName?.familyName,
