@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     const loadToken = async () => {
       const token = await SecureStore.getItemAsync('token');
-      console.log(token);
+
       if (token) {
         setAuthState({
           token: token,
