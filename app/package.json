@@ -23,6 +23,7 @@
 		"@shopify/flash-list": "1.6.3",
 		"apollo3-cache-persist": "^0.15.0",
 		"expo": "~50.0.17",
+		"expo-apple-authentication": "~6.3.0",
 		"expo-blur": "~12.9.2",
 		"expo-clipboard": "~5.0.1",
 		"expo-constants": "~15.4.6",

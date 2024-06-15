@@ -21,6 +21,7 @@ export default (): ExpoConfig => {
 			bundleIdentifier: 'tangocloud',
 			runtimeVersion: '1.0.0',
 			buildNumber: '70',
+			usesAppleSignIn: true,
 			config: {
 				usesNonExemptEncryption: false,
 			},
@@ -62,6 +63,7 @@ export default (): ExpoConfig => {
 				},
 			],
 			'expo-font',
+			'expo-apple-authentication',
 		],
 		experiments: {
 			typedRoutes: true,
