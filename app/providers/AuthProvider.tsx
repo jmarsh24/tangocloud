@@ -98,7 +98,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       });
 
       await SecureStore.setItemAsync('token', data.loginWithApple.token);
-      return data.loginWithApple;
+      return data.appleLogin;
     } catch (error) {
       const apolloError = error as ApolloError;
       throw new Error(apolloError.message);
