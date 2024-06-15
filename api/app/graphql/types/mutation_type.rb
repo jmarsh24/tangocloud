@@ -2,7 +2,8 @@ module Types
   class MutationType < Types::BaseObject
     field :login, mutation: Mutations::Users::LoginUser
     field :register, mutation: Mutations::Users::RegisterUser
-
+    field :update_user, mutation: Mutations::Users::UpdateUser
+    field :apple_login, mutation: Mutations::Users::AppleLogin
     field :add_like_to_recording, mutation: Mutations::Recordings::AddLikeToRecording
     field :add_playlist_recording, mutation: Mutations::Playlists::AddPlaylistRecording
     field :change_playlist_item_position, mutation: Mutations::Playlists::ChangePlaylistItemPosition
@@ -13,6 +14,5 @@ module Types
     field :remove_playback, mutation: Mutations::Playbacks::RemovePlayback
     field :remove_playlist_item, mutation: Mutations::Playlists::RemovePlaylistItem
     field :update_playlist, mutation: Mutations::Playlists::UpdatePlaylist
-    field :update_user, mutation: Mutations::Users::UpdateUser
   end
 end

@@ -1,7 +1,8 @@
 import { createContext, useContext, useEffect, useState, PropsWithChildren } from 'react';
 import { useApolloClient, ApolloError } from '@apollo/client';
-import { REGISTER, LOGIN } from '@/graphql';
+import { REGISTER, LOGIN, APPLE_LOGIN } from '@/graphql';
 import * as SecureStore from 'expo-secure-store';
+import * as AppleAuthentication from 'expo-apple-authentication';
 
 interface AuthState {
   token: string | null;
@@ -12,6 +13,7 @@ interface AuthContextType {
   authState: AuthState;
   onRegister: (username: string, email: string, password: string) => Promise<any>;
   onLogin: (login: string, password: string) => Promise<any>;
+  onAppleLogin: () => Promise<any>;
   onLogout: () => Promise<void>;
 }
 
@@ -70,6 +72,38 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
+  const appleLogin = async () => {
+    try {
+      const credential = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+          AppleAuthentication.AppleAuthenticationScope.EMAIL,
+        ],
+      });
+
+      const { data } = await apolloClient.mutate({
+        mutation: APPLE_LOGIN,
+        variables: { 
+          userIdentifier: credential.user,
+          email: credential.email,
+          firstName: credential.fullName?.givenName,
+          lastName: credential.fullName?.familyName,
+         },
+      });
+
+      setAuthState({
+        token: data.appleLogin.token,
+        authenticated: true,
+      });
+
+      await SecureStore.setItemAsync('token', data.loginWithApple.token);
+      return data.loginWithApple;
+    } catch (error) {
+      const apolloError = error as ApolloError;
+      throw new Error(apolloError.message);
+    }
+  };
+
   const logout = async () => {
     await SecureStore.deleteItemAsync('token');
     setAuthState({
@@ -82,6 +116,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     authState,
     onRegister: register,
     onLogin: login,
+    onAppleLogin: appleLogin,
     onLogout: logout,
   };
 

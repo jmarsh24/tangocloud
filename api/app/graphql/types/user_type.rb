@@ -6,7 +6,7 @@ module Types
     field :verified, Boolean, null: false
     field :provider, String
     field :uid, String
-    field :username, String, null: false
+    field :username, String, null: true
     field :name, String, null: false
     field :first_name, String
     field :last_name, String
