@@ -40,7 +40,7 @@ class Playlist < ApplicationRecord
   def search_data
     {
       title:,
-      description:,
+      description:
     }
   end
 

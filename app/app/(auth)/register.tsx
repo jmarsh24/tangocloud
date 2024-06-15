@@ -1,6 +1,7 @@
 import Button from '@/components/Button'
 import { colors } from '@/constants/tokens'
 import { useAuth } from '@/providers/AuthProvider'
+import * as AppleAuthentication from 'expo-apple-authentication'
 import { Link } from 'expo-router'
 import { useState } from 'react'
 import {
@@ -18,7 +19,7 @@ import {
 } from 'react-native'
 
 const RegisterScreen = () => {
-	const { onRegister } = useAuth()
+	const { onRegister, onAppleLogin } = useAuth()
 	const [username, setUsername] = useState('')
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
@@ -38,13 +39,19 @@ const RegisterScreen = () => {
 				const errorMessages = result.errors?.fullMessages?.join('\n') || 'Please try again later.'
 				Alert.alert('Registration Failed', errorMessages)
 			}
-		} catch (error) {
-			Alert.alert(
-				'Registration Failed',
-				error.message || 'An unexpected error occurred. Please try again.',
-			)
-		} finally {
+		} 
+		finally {
 			setLoading(false)
+		}
+	}
+
+	async function signInWithApple() {
+		setLoading(true);
+		try {
+				await onAppleLogin();
+		} 
+		finally {
+				setLoading(false);
 		}
 	}
 
@@ -110,6 +117,13 @@ const RegisterScreen = () => {
 												text={loading ? 'Creating account...' : 'Create account'}
 												style={styles.button}
 											/>
+											<AppleAuthentication.AppleAuthenticationButton
+                                        buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+                                        buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.WHITE}
+                                        cornerRadius={5}
+                                        style={styles.button}
+                                        onPress={signInWithApple}
+                                    />
 											<Link replace href="/login" style={styles.textButton}>
 												Sign in
 											</Link>

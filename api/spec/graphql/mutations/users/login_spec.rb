@@ -16,7 +16,6 @@ RSpec.describe "login", type: :graph do
             name
           }
           token
-          success
         }
       }
     GQL

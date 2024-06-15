@@ -1,5 +1,13 @@
 class User < ApplicationRecord
+  include ActiveModel::SecurePassword
+
   has_secure_password
+
+  def errors
+    super.tap { |errors| errors.delete(:password_digest, :blank) if provider.present? }
+    super.tap { |errors| errors.delete(:password, :blank) if provider.present? }
+  end
+
   searchkick word_start: [:username, :email, :first_name, :last_name]
 
   has_one :user_preference, dependent: :destroy
@@ -20,11 +28,15 @@ class User < ApplicationRecord
   has_many :events, dependent: :destroy
 
   validates :email, presence: true, uniqueness: true, format: {with: URI::MailTo::EMAIL_REGEXP}
-  validates :password, allow_nil: true, length: {minimum: 12}
-  validates :username, presence: true, uniqueness: true, length: {minimum: 3, maximum: 32}, format: {with: /\A[a-zA-Z0-9_]+\z/}
+  validates :password, allow_nil: true, length: {minimum: 12}, unless: -> { provider.present? }
+  validates :username, presence: true, uniqueness: true, length: {minimum: 3, maximum: 32}, format: {with: /\A[a-zA-Z0-9_]+\z/}, unless: -> { provider.present? }
 
   normalizes :email, with: -> { _1.strip.downcase }
   normalizes :username, with: -> { _1.strip.downcase }
+
+  after_create do
+    user_preference || create_user_preference
+  end
 
   before_validation if: :email_changed?, on: :update do
     self.verified = false
@@ -45,8 +57,6 @@ class User < ApplicationRecord
   after_update if: [:verified_previously_changed?, :verified?] do
     events.create! action: "email_verified"
   end
-
-  after_create_commit { build_user_preference.save }
 
   delegate :avatar, to: :user_preference, allow_nil: true
   delegate :first_name, :last_name, :name, to: :user_preference, allow_nil: true
@@ -90,11 +100,11 @@ end
 #
 #  id              :uuid             not null, primary key
 #  email           :string           not null
-#  password_digest :string           not null
+#  password_digest :string
 #  verified        :boolean          default(FALSE), not null
 #  provider        :string
 #  uid             :string
-#  username        :string           not null
+#  username        :string
 #  admin           :boolean          default(FALSE), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null

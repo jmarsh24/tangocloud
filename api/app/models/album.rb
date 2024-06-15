@@ -32,8 +32,8 @@ class Album < ApplicationRecord
 
   def search_data
     {
-      title: title,
-      description: description
+      title:,
+      description:
     }
   end
 end
