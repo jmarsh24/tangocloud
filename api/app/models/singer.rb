@@ -18,7 +18,7 @@ class Singer < ApplicationRecord
     blob.variant :large, resize_to_limit: [500, 500]
   end
 
-  before_save :set_normalized_name\
+  before_save :set_normalized_name \
 
   def self.search_singers(query = "*")
     search(query,

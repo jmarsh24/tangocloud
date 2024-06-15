@@ -15,7 +15,6 @@ class Orchestra < ApplicationRecord
   validates :slug, presence: true, uniqueness: true
   validates :normalized_name, presence: true, uniqueness: true
 
-
   has_one_attached :photo, dependent: :purge_later do |blob|
     blob.variant :thumb, resize_to_limit: [100, 100]
     blob.variant :medium, resize_to_limit: [250, 250]

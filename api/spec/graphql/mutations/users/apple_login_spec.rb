@@ -29,7 +29,7 @@ RSpec.describe "Users::AppleLogin", type: :graph do
       userIdentifier: "apple-user-identifier",
       email: "new@apple-user.com",
       firstName: "John",
-      lastName: "Doe",
+      lastName: "Doe"
     }
 
     gql(mutation, variables:)
@@ -43,7 +43,7 @@ RSpec.describe "Users::AppleLogin", type: :graph do
   it "logins a user with apple uid" do
     user.update!(provider: "apple", uid: "apple-user-identifier")
     variables = {
-      userIdentifier: "apple-user-identifier",
+      userIdentifier: "apple-user-identifier"
     }
 
     gql(mutation, variables:)

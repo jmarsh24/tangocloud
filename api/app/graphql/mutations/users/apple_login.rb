@@ -14,8 +14,8 @@ module Mutations::Users
       if user.new_record?
         user.email = email if email
         user.build_user_preference(
-          first_name: first_name,
-          last_name: last_name
+          first_name:,
+          last_name:
         )
       end
 
@@ -25,7 +25,7 @@ module Mutations::Users
 
       user.save!
       token = AuthToken.token(user)
-      { user:, token: }
+      {user:, token:}
     end
   end
 end
