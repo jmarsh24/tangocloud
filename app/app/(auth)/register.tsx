@@ -110,7 +110,7 @@ const RegisterScreen = () => {
 												secureTextEntry
 											/>
 										</View>
-										<View>
+										<View style={styles.buttonContainer}>
 											<Button
 												onPress={register}
 												disabled={loading}
@@ -175,7 +175,13 @@ const styles = StyleSheet.create({
 		height: 200,
 	},
 	button: {
-		width: '100%',
+			width: '100%',
+			height: 36,
+			paddingVertical: 8,
+	},
+	buttonContainer: {
+		display: 'flex',
+		gap: 10,
 	},
 })
 
