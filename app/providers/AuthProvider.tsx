@@ -29,6 +29,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     const loadToken = async () => {
       const token = await SecureStore.getItemAsync('token');
+      console.log(token);
       if (token) {
         setAuthState({
           token: token,
@@ -97,7 +98,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         authenticated: true,
       });
 
-      await SecureStore.setItemAsync('token', data.loginWithApple.token);
+      await SecureStore.setItemAsync('token', data.appleLogin.token);
       return data.appleLogin;
     } catch (error) {
       const apolloError = error as ApolloError;

@@ -157,33 +157,35 @@ const HomeScreen = () => {
 
 		return sortedOrchestras
 	}, [orchestrasData])
-
 	if (
 		playlistLoading ||
 		popularRecordingsLoading ||
 		recentlyaddedRecordingsLoading ||
 		tandaOfTheWeekLoading ||
-		moodPlaylistsLoading
+		moodPlaylistsLoading ||
+		orchestrasLoading
 	) {
 		return <ActivityIndicator size="large" color="#0000ff" />
 	}
 
 	if (
-		playlistsError ||
-		popularRecordingsError ||
-		recentlyaddedRecordingsError ||
-		tandaOfTheWeekError ||
-		moodPlaylistsError
+			playlistsError ||
+			popularRecordingsError ||
+			recentlyaddedRecordingsError ||
+			tandaOfTheWeekError ||
+			moodPlaylistsError ||
+			orchestrasError
 	) {
-		return (
-			<View>
-				<Text>Error loading playlists: {playlistsError}</Text>
-				<Text>Error loading popular recordings: {popularRecordingsError}</Text>
-				<Text>Error loading recently added recordings: {recentlyaddedRecordingsError}</Text>
-				<Text>Error loading tanda of the week: {tandaOfTheWeekError}</Text>
-				<Text>Error loading mood playlists: {moodPlaylistsError}</Text>
-			</View>
-		)
+			return (
+					<View>
+							<Text>Error loading playlists: {playlistsError?.message}</Text>
+							<Text>Error loading popular recordings: {popularRecordingsError?.message}</Text>
+							<Text>Error loading recently added recordings: {recentlyaddedRecordingsError?.message}</Text>
+							<Text>Error loading tanda of the week: {tandaOfTheWeekError?.message}</Text>
+							<Text>Error loading mood playlists: {moodPlaylistsError?.message}</Text>
+							<Text>Error loading orchestras: {orchestrasError?.message}</Text>
+					</View>
+			)
 	}
 
 	return (
