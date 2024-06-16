@@ -64,11 +64,24 @@ export default (): ExpoConfig => {
 			],
 			'expo-font',
 			'expo-apple-authentication',
-			'react-native-fbsdk-next',
+			[
+				'react-native-fbsdk-next',
+				{
+					appID: '325815450571709',
+					clientToken: '53239ed566763bd1a5492063838c2da7',
+					displayName: 'TangoCloud',
+					scheme: 'fb325815450571709',
+					advertiserIDCollectionEnabled: false,
+					autoLogAppEventsEnabled: false,
+					isAutoInitEnabled: true,
+					iosUserTrackingPermission:
+						'This identifier will be used to deliver personalized ads to you.',
+				},
+			],
 			[
 				'@react-native-google-signin/google-signin',
 				{
-					iosUrlScheme: '863366754084-tqj96bqgkgda0lsq5u4jrmpt53lkkqs9.apps.googleusercontent.com',
+					iosUrlScheme: 'com.googleusercontent.apps.863366754084-tqj96bqgkgda0lsq5u4jrmpt53lkkqs9',
 				},
 			],
 		],
