@@ -209,8 +209,6 @@ GEM
       activesupport (>= 6.1)
     google-cloud-env (2.1.1)
       faraday (>= 1.0, < 3.a)
-    google-id-token (1.4.2)
-      jwt (>= 1)
     googleauth (1.11.0)
       faraday (>= 1.0, < 3.a)
       google-cloud-env (~> 2.1)
@@ -660,7 +658,6 @@ DEPENDENCIES
   faker
   faraday
   friendly_id
-  google-id-token
   googleauth
   graphiql-rails
   graphql
