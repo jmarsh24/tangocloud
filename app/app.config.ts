@@ -64,6 +64,13 @@ export default (): ExpoConfig => {
 			],
 			'expo-font',
 			'expo-apple-authentication',
+			'react-native-fbsdk-next',
+			[
+				'@react-native-google-signin/google-signin',
+				{
+					iosUrlScheme: '863366754084-tqj96bqgkgda0lsq5u4jrmpt53lkkqs9.apps.googleusercontent.com',
+				},
+			],
 		],
 		experiments: {
 			typedRoutes: true,
