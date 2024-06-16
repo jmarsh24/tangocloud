@@ -61,6 +61,9 @@ Rails.application.routes.draw do
   resources :recordings, only: [:show]
   resources :audio_variants, only: [:show]
 
+  get "/privacy", to: "pages#privacy"
+  get "/terms", to: "pages#terms"
+
   root "pages#home"
   get "up", to: "rails/health#show", as: :rails_health_check
 end
