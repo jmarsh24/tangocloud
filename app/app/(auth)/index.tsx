@@ -64,35 +64,50 @@ const LoginScreen = () => {
 					<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 						<View style={styles.container}>
 							<View>
-								<Text style={styles.label}>Email or Username</Text>
-								<TextInput
-									value={login}
-									onChangeText={setLogin}
-									placeholder="ElSeniorDeTango"
-									autoCorrect={false}
-									autoComplete="username"
-									autoCapitalize="none"
-									textContentType="emailAddress"
-									keyboardType="email-address"
-									style={styles.input}
-								/>
-
-								<Text style={styles.label}>Password</Text>
-								<TextInput
-									value={password}
-									onChangeText={setPassword}
-									placeholder=""
-									style={styles.input}
-									autoComplete="password"
-									secureTextEntry
-								/>
+								<View style={styles.imageContainer}>
+									<Text style={styles.logo}>TangoCloud</Text>
+									<Image source={require('@/assets/icon.png')} style={styles.image} />
+								</View>
 								<View style={styles.buttonContainer}>
-									<Button
-										onPress={signIn}
+									<TouchableOpacity style={styles.linkButton}>
+										<Link
+											href="/register"
+											style={{
+												color: 'white',
+												fontWeight: '600',
+												width: '100%',
+												height: '100%',
+												textAlign: 'center',
+											}}
+										>
+											Sign Up Free
+										</Link>
+									</TouchableOpacity>
+									<TouchableOpacity
+										onPress={signInWithApple}
+										style={[styles.customButton, { backgroundColor: 'black' }]}
 										disabled={loading}
-										text={loading ? 'Signing in...' : 'Sign in'}
-										style={styles.button}
-									/>
+									>
+										<AntDesign name="apple1" size={24} color="white" style={styles.icon} />
+										<Text style={styles.buttonText}>Continue with Apple</Text>
+									</TouchableOpacity>
+
+									<TouchableOpacity
+										onPress={signInWithGoogle}
+										style={[styles.customButton, { backgroundColor: 'black' }]}
+										disabled={loading}
+									>
+										<Image
+											source={require('@/assets/images/google_logo.png')}
+											style={styles.icon}
+										/>
+										<Text style={[styles.buttonText, { color: colors.text }]}>
+											Continue with Google
+										</Text>
+									</TouchableOpacity>
+									<Link href="/login" style={styles.textButton}>
+										Log in
+									</Link>
 								</View>
 							</View>
 						</View>
@@ -138,10 +153,17 @@ const styles = StyleSheet.create({
 		width: '100%',
 		alignItems: 'center',
 	},
-	button: {
+	linkButton: {
 		width: '100%',
 		height: 36,
 		paddingVertical: 8,
+		color: 'white',
+		fontWeight: 'bold',
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: colors.primary,
+		textAlign: 'center',
+		borderRadius: 5,
 	},
 	buttonContainer: {
 		gap: 10,
@@ -152,7 +174,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		width: '100%',
 		height: 40,
-		borderColor: 'white',
+		borderColor: 'rgba(255, 255, 255, 0.3)',
 		borderRadius: 5,
 		borderWidth: 1,
 	},
@@ -165,6 +187,13 @@ const styles = StyleSheet.create({
 	buttonText: {
 		fontSize: 16,
 		color: 'white',
+	},
+	logo: {
+		fontSize: 48,
+		fontWeight: 'bold',
+		color: colors.text,
+		textAlign: 'center',
+		marginTop: 20,
 	},
 })
 

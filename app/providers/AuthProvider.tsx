@@ -1,8 +1,9 @@
 import { createContext, useContext, useEffect, useState, PropsWithChildren } from 'react';
 import { useApolloClient, ApolloError } from '@apollo/client';
-import { REGISTER, LOGIN, APPLE_LOGIN } from '@/graphql';
+import { REGISTER, LOGIN, APPLE_LOGIN, GOOGLE_LOGIN } from '@/graphql';
 import * as SecureStore from 'expo-secure-store';
 import * as AppleAuthentication from 'expo-apple-authentication';
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 interface AuthState {
   token: string | null;
@@ -14,6 +15,7 @@ interface AuthContextType {
   onRegister: (username: string, email: string, password: string) => Promise<any>;
   onLogin: (login: string, password: string) => Promise<any>;
   onAppleLogin: () => Promise<any>;
+  onGoogleLogin: () => Promise<any>;
   onLogout: () => Promise<void>;
 }
 
@@ -106,6 +108,30 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
+  const googleLogin = async () => {
+  try {
+    await GoogleSignin.hasPlayServices();
+    const userInfo = await GoogleSignin.signIn();
+    const { idToken } = userInfo;
+
+    const { data } = await apolloClient.mutate({
+      mutation: GOOGLE_LOGIN,
+      variables: { idToken: idToken},
+    });
+
+    setAuthState({
+      token: data.googleLogin.token,
+      authenticated: true,
+    });
+
+    await SecureStore.setItemAsync('token', data.googleLogin.token);
+    return data.googleLogin;
+  } catch (error) {
+    const apolloError = error as ApolloError;
+    throw new Error(apolloError.message);
+  }
+};
+
   const logout = async () => {
     await SecureStore.deleteItemAsync('token');
     setAuthState({
@@ -119,6 +145,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     onRegister: register,
     onLogin: login,
     onAppleLogin: appleLogin,
+    onGoogleLogin: googleLogin,
     onLogout: logout,
   };
 

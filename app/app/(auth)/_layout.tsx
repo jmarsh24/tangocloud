@@ -1,8 +1,8 @@
-import { StackScreenWithSearchBar } from '@/constants/layout'
 import { useAuth } from '@/providers/AuthProvider'
 import { defaultStyles } from '@/styles'
 import { Redirect, Stack } from 'expo-router'
 import { View } from 'react-native'
+import { StackScreenWithSearchBar } from '@/constants/layout'
 
 export default function AuthLayout() {
 	const { authState } = useAuth()
@@ -15,18 +15,25 @@ export default function AuthLayout() {
 		<View style={defaultStyles.container}>
 			<Stack>
 				<Stack.Screen
+					name="index"
+					options={{
+						headerTitle: '',
+						headerShown: false,
+					}}
+				/>
+				<Stack.Screen
 					name="login"
 					options={{
-						headerShown: false,
 						animation: 'none',
+						headerTitle: '',
 						...StackScreenWithSearchBar,
 					}}
 				/>
 				<Stack.Screen
 					name="register"
 					options={{
-						headerShown: false,
 						animation: 'none',
+						headerTitle: '',
 						...StackScreenWithSearchBar,
 					}}
 				/>
