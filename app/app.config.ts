@@ -4,7 +4,7 @@ export default (): ExpoConfig => {
 	return {
 		name: 'Tango Cloud',
 		slug: 'app',
-		version: '1.0.30',
+		version: '1.0.38',
 		owner: 'tangocloud',
 		orientation: 'portrait',
 		icon: './assets/icon.png',
@@ -29,12 +29,19 @@ export default (): ExpoConfig => {
 				UIBackgroundModes: ['audio'],
 				NSMicrophoneUsageDescription: 'This app needs access to the speaker for streaming music.',
 				ITSAppUsesNonExemptEncryption: false,
+				CFBundleURLTypes: [
+					{
+						CFBundleURLSchemes: [
+							'com.googleusercontent.apps.863366754084-tqj96bqgkgda0lsq5u4jrmpt53lkkqs9',
+						],
+					},
+				],
 			},
 			associatedDomains: ['applinks:tangocloud.app'],
 		},
 		android: {
 			package: 'com.tangocloud.app',
-			versionCode: 37,
+			versionCode: 38,
 			runtimeVersion: {
 				policy: 'appVersion',
 			},
@@ -93,7 +100,7 @@ export default (): ExpoConfig => {
 			eas: {
 				projectId: '40b28cff-7ae4-44c3-b2b4-da1eb1d5081b',
 			},
-			currentVersion: '1.0.30',
+			currentVersion: '1.0.38',
 		},
 		updates: {
 			url: 'https://u.expo.dev/40b28cff-7ae4-44c3-b2b4-da1eb1d5081b',
