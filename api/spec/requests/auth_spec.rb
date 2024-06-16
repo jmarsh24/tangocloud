@@ -10,7 +10,7 @@ RSpec.describe "Auth", type: :request do
       user.update!(provider: "facebook", uid: "facebook-uid")
     end
 
-    fit "deletes the user" do
+    it "deletes the user" do
       post "/auth/facebook/data-deletion", params: { id: "facebook-uid" }
 
       expect(response).to have_http_status(200)
@@ -18,7 +18,7 @@ RSpec.describe "Auth", type: :request do
     end
 
     it "returns a 404 if the user is not found" do
-      post "/auth/facebook/data_deletion", params: { id: "unknown" }
+      post "/auth/facebook/data-deletion", params: { id: "unknown" }
 
       expect(response).to have_http_status(404)
       expect(JSON.parse(response.body)).to eq({ "success" => false, "message" => "User not found." })
