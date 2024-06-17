@@ -41,7 +41,7 @@ export default (): ExpoConfig => {
 		},
 		android: {
 			package: 'com.tangocloud.app',
-			versionCode: 38,
+			versionCode: 39,
 			runtimeVersion: {
 				policy: 'appVersion',
 			},
