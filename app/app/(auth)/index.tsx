@@ -1,40 +1,13 @@
 import React, { useState } from 'react'
-import {
-	Alert,
-	Image,
-	Keyboard,
-	KeyboardAvoidingView,
-	Platform,
-	StyleSheet,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	TouchableWithoutFeedback,
-	View,
-} from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useAuth } from '@/providers/AuthProvider'
 import { Link } from 'expo-router'
 import { colors } from '@/constants/tokens'
-import Button from '@/components/Button'
-import * as AppleAuthentication from 'expo-apple-authentication'
-import { AntDesign } from '@expo/vector-icons' // You can use other icons if you prefer
+import { AntDesign } from '@expo/vector-icons'
 
 const LoginScreen = () => {
-	const [login, setLogin] = useState('')
-	const [password, setPassword] = useState('')
 	const [loading, setLoading] = useState(false)
-	const { onLogin, onAppleLogin, onGoogleLogin } = useAuth()
-
-	async function signIn() {
-		setLoading(true)
-		try {
-			await onLogin(login, password)
-		} catch (error) {
-			Alert.alert('Login Failed', error.message)
-		} finally {
-			setLoading(false)
-		}
-	}
+	const { onAppleLogin, onGoogleLogin, onFacebookLogin } = useAuth()
 
 	async function signInWithApple() {
 		setLoading(true)
@@ -54,66 +27,67 @@ const LoginScreen = () => {
 		}
 	}
 
+	async function signInWithFacebook() {
+		setLoading(true)
+		try {
+			await onFacebookLogin()
+		} finally {
+			setLoading(false)
+		}
+	}
+
 	return (
 		<View style={{ flex: 1 }}>
-			<KeyboardAvoidingView
-				style={{ flex: 1 }}
-				behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-			>
-				<View style={{ flex: 1 }}>
-					<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-						<View style={styles.container}>
-							<View>
-								<View style={styles.imageContainer}>
-									<Text style={styles.logo}>TangoCloud</Text>
-									<Image source={require('@/assets/icon.png')} style={styles.image} />
-								</View>
-								<View style={styles.buttonContainer}>
-									<TouchableOpacity style={styles.linkButton}>
-										<Link
-											href="/register"
-											style={{
-												color: 'white',
-												fontWeight: '600',
-												width: '100%',
-												height: '100%',
-												textAlign: 'center',
-											}}
-										>
-											Sign Up Free
-										</Link>
-									</TouchableOpacity>
-									<TouchableOpacity
-										onPress={signInWithApple}
-										style={[styles.customButton, { backgroundColor: 'black' }]}
-										disabled={loading}
-									>
-										<AntDesign name="apple1" size={24} color="white" style={styles.icon} />
-										<Text style={styles.buttonText}>Continue with Apple</Text>
-									</TouchableOpacity>
-
-									<TouchableOpacity
-										onPress={signInWithGoogle}
-										style={[styles.customButton, { backgroundColor: 'black' }]}
-										disabled={loading}
-									>
-										<Image
-											source={require('@/assets/images/google_logo.png')}
-											style={styles.icon}
-										/>
-										<Text style={[styles.buttonText, { color: colors.text }]}>
-											Continue with Google
-										</Text>
-									</TouchableOpacity>
-									<Link href="/login" style={styles.textButton}>
-										Log in
-									</Link>
-								</View>
-							</View>
-						</View>
-					</TouchableWithoutFeedback>
+			<View style={styles.container}>
+				<View style={styles.imageContainer}>
+					<Text style={styles.logo}>TangoCloud</Text>
+					<Image source={require('@/assets/icon.png')} style={styles.image} />
 				</View>
-			</KeyboardAvoidingView>
+				<View style={styles.buttonContainer}>
+					<TouchableOpacity style={styles.linkButton}>
+						<Link
+							href="/register"
+							style={{
+								color: 'white',
+								fontWeight: '600',
+								width: '100%',
+								height: '100%',
+								textAlign: 'center',
+							}}
+						>
+							Sign Up Free
+						</Link>
+					</TouchableOpacity>
+					<TouchableOpacity
+						onPress={signInWithApple}
+						style={[styles.customButton, { backgroundColor: 'black' }]}
+						disabled={loading}
+					>
+						<AntDesign name="apple1" size={24} color="white" style={styles.icon} />
+						<Text style={styles.buttonText}>Continue with Apple</Text>
+					</TouchableOpacity>
+
+					<TouchableOpacity
+						onPress={signInWithGoogle}
+						style={[styles.customButton, { backgroundColor: 'black' }]}
+						disabled={loading}
+					>
+						<Image source={require('@/assets/images/google_logo.png')} style={styles.icon} />
+						<Text style={[styles.buttonText, { color: colors.text }]}>Continue with Google</Text>
+					</TouchableOpacity>
+					{/*<TouchableOpacity
+						onPress={signInWithFacebook}
+						style={[styles.customButton, { backgroundColor: 'black' }]}
+						disabled={loading}
+					>
+						<Image source={require('@/assets/images/facebook_logo.png')} style={styles.icon} />
+						<Text style={[styles.buttonText, { color: colors.text }]}>Continue with Facebook</Text>
+					</TouchableOpacity> */}
+					<Link href="/login" style={styles.textButton}>
+						Log in
+					</Link>
+				</View>
+			</View>
 		</View>
 	)
 }
@@ -122,7 +96,8 @@ const styles = StyleSheet.create({
 	container: {
 		padding: 20,
 		flex: 1,
-		justifyContent: 'center',
+		justifyContent: 'flex-end',
+		paddingBottom: 40,
 	},
 	label: {
 		color: colors.text,
