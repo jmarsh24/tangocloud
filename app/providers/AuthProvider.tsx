@@ -4,8 +4,7 @@ import { REGISTER, LOGIN, APPLE_LOGIN, GOOGLE_LOGIN, FACEBOOK_LOGIN } from '@/gr
 import * as SecureStore from 'expo-secure-store'
 import * as AppleAuthentication from 'expo-apple-authentication'
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
-import { AccessToken, AuthenticationToken, LoginManager } from 'react-native-fbsdk-next'
-import { Platform } from 'react-native'
+import { AccessToken, LoginManager } from 'react-native-fbsdk-next'
 
 interface AuthState {
 	token: string | null
@@ -152,7 +151,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 			if (!token) {
 				throw new Error('Unable to obtain access token')
 			}
-			debugger
+
 			const { data } = await apolloClient.mutate({
 				mutation: FACEBOOK_LOGIN,
 				variables: { accessToken: token.accessToken },
