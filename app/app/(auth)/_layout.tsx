@@ -8,7 +8,7 @@ export default function AuthLayout() {
 	const { authState } = useAuth()
 
 	if (authState?.authenticated === true) {
-		return <Redirect href={'/'} />
+		return <Redirect href={'/(tabs)/(home)/'} />
 	}
 
 	return (
