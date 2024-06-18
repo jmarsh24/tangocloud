@@ -22,8 +22,12 @@ export { ErrorBoundary } from 'expo-router'
 SplashScreen.preventAutoHideAsync()
 
 GoogleSignin.configure({
-	webClientId: '863366754084-r2ncd1fpshhbq2k84s7m7i0gstnbmkpb.apps.googleusercontent.com',
+	scopes: ['https://www.googleapis.com/auth/drive'],
+	webClientId: '863366754084-vod4937qeb106g6j0qb841m9glj6rii7.apps.googleusercontent.com',
 	iosClientId: '863366754084-tqj96bqgkgda0lsq5u4jrmpt53lkkqs9.apps.googleusercontent.com',
+	offlineAccess: true,
+	forceCodeForRefreshToken: true,
+	profileImageSize: 120,
 })
 
 TrackPlayer.registerPlaybackService(() => playbackService)
