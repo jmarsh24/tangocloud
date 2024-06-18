@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useAuth } from '@/providers/AuthProvider'
 import { Link } from 'expo-router'
 import { colors } from '@/constants/tokens'
@@ -58,14 +58,17 @@ const LoginScreen = () => {
 							Sign Up Free
 						</Link>
 					</TouchableOpacity>
-					<TouchableOpacity
-						onPress={signInWithApple}
-						style={[styles.customButton, { backgroundColor: 'black' }]}
-						disabled={loading}
-					>
-						<AntDesign name="apple1" size={24} color="white" style={styles.icon} />
-						<Text style={styles.buttonText}>Continue with Apple</Text>
-					</TouchableOpacity>
+
+					{Platform.OS === 'ios' && (
+						<TouchableOpacity
+							onPress={signInWithApple}
+							style={[styles.customButton, { backgroundColor: 'black' }]}
+							disabled={loading}
+						>
+							<AntDesign name="apple1" size={24} color="white" style={styles.icon} />
+							<Text style={styles.buttonText}>Continue with Apple</Text>
+						</TouchableOpacity>
+					)}
 
 					<TouchableOpacity
 						onPress={signInWithGoogle}
@@ -75,7 +78,9 @@ const LoginScreen = () => {
 						<Image source={require('@/assets/images/google_logo.png')} style={styles.icon} />
 						<Text style={[styles.buttonText, { color: colors.text }]}>Continue with Google</Text>
 					</TouchableOpacity>
-					{/*<TouchableOpacity
+
+					{/* Uncomment if you want to include Facebook login
+					<TouchableOpacity
 						onPress={signInWithFacebook}
 						style={[styles.customButton, { backgroundColor: 'black' }]}
 						disabled={loading}
@@ -83,6 +88,7 @@ const LoginScreen = () => {
 						<Image source={require('@/assets/images/facebook_logo.png')} style={styles.icon} />
 						<Text style={[styles.buttonText, { color: colors.text }]}>Continue with Facebook</Text>
 					</TouchableOpacity> */}
+
 					<Link href="/login" style={styles.textButton}>
 						Log in
 					</Link>
