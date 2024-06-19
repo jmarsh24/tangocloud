@@ -4,7 +4,7 @@ module Authentication
 
     included do
       prepend_before_action :set_current_request_details
-      prepend_before_action :authenticate
+      prepend_before_action :authenticate_user!
       helper_method :current_user
     end
 
@@ -18,7 +18,7 @@ module Authentication
       current_user&.admin?
     end
 
-    def authenticate
+    def authenticate_user!
       if (session_record = Session.find_by_id(cookies.signed[:session_token]))
         Current.session = session_record
         Current.user = Current.session&.user

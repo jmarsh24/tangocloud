@@ -10,7 +10,6 @@ module Mutations::Users
     field :token, String, null: true
 
     def resolve(user_identifier:, identity_token:, email: nil, first_name: nil, last_name: nil)
-
       if email.nil?
         email = AppleToken.new.decode_identity_token(identity_token, user_identifier).dig("email")
       end

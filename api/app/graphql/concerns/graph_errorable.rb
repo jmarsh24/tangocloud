@@ -8,7 +8,7 @@ module GraphErrorable
 
   class_methods do
     def rescue_from(error_type)
-      super(error_type) do |err, obj, args, ctx, field|
+      super do |err, obj, args, ctx, field|
         raise err if (Rails.env.test? || Rails.env.development?) && ctx[:prevent_rescue]
 
         yield(err, obj, args, ctx, field) if block_given?

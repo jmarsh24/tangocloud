@@ -46,6 +46,7 @@ gem "mission_control-jobs"
 gem "streamio-ffmpeg"
 gem "elasticsearch"
 gem "searchkick"
+gem "googleauth"
 
 # Assets
 gem "stimulus-rails"

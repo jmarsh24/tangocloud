@@ -14,11 +14,21 @@ import { useLogTrackPlayerState } from '@/hooks/useLogTrackPlayerState'
 import { useSetupTrackPlayer } from '@/hooks/useSetupTrackPlayer'
 import { updateIfPossible } from '@/model/updates'
 import ApolloClientProvider from '@/providers/ApolloClientProvider'
+import { GoogleSignin } from '@react-native-google-signin/google-signin'
 import { AuthProvider } from '@/providers/AuthProvider'
 
 export { ErrorBoundary } from 'expo-router'
 
 SplashScreen.preventAutoHideAsync()
+
+GoogleSignin.configure({
+	scopes: ['profile', 'email'],
+	webClientId: '863366754084-vod4937qeb106g6j0qb841m9glj6rii7.apps.googleusercontent.com',
+	iosClientId: '863366754084-tqj96bqgkgda0lsq5u4jrmpt53lkkqs9.apps.googleusercontent.com',
+	offlineAccess: true,
+	forceCodeForRefreshToken: true,
+	profileImageSize: 120,
+})
 
 TrackPlayer.registerPlaybackService(() => playbackService)
 
@@ -68,7 +78,6 @@ const App = () => {
 }
 
 function RootLayoutNav() {
-
 	return (
 		<ThemeProvider value={DarkTheme}>
 			<ApolloClientProvider>

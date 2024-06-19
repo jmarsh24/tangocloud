@@ -9,7 +9,7 @@ import { utilsStyles } from '@/styles'
 import { useQuery } from '@apollo/client'
 import { useTheme } from '@react-navigation/native'
 import { FlashList } from '@shopify/flash-list'
-import { Link } from 'expo-router'
+import { Link, Redirect } from 'expo-router'
 import React from 'react'
 import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
@@ -50,16 +50,7 @@ export default function YouScreen() {
 	}
 
 	if (!authState.authenticated) {
-		return (
-			<SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-				<Link href="/login" asChild>
-					<Button onPress={onLogout} text="Login" />
-				</Link>
-				<Link href="/register" asChild>
-					<Button onPress={onLogout} text="Register" />
-				</Link>
-			</SafeAreaView>
-		)
+		return <Redirect href="/" />
 	}
 
 	if (loading) {

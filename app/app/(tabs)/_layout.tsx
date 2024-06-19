@@ -16,7 +16,7 @@ const TabsNavigation = () => {
 	})
 
 	if (!authState.authenticated) {
-		return <Redirect href="/login" />
+		return <Redirect href="/" />
 	}
 
 	if (loading) {

@@ -17,9 +17,10 @@ import {
 	TouchableWithoutFeedback,
 	View,
 } from 'react-native'
+import { GoogleSigninButton } from '@react-native-google-signin/google-signin'
 
 const RegisterScreen = () => {
-	const { onRegister, onAppleLogin } = useAuth()
+	const { onRegister, onAppleLogin, onGoogleLogin } = useAuth()
 	const [username, setUsername] = useState('')
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
@@ -39,19 +40,26 @@ const RegisterScreen = () => {
 				const errorMessages = result.errors?.fullMessages?.join('\n') || 'Please try again later.'
 				Alert.alert('Registration Failed', errorMessages)
 			}
-		} 
-		finally {
+		} finally {
 			setLoading(false)
 		}
 	}
 
 	async function signInWithApple() {
-		setLoading(true);
+		setLoading(true)
 		try {
-				await onAppleLogin();
-		} 
-		finally {
-				setLoading(false);
+			await onAppleLogin()
+		} finally {
+			setLoading(false)
+		}
+	}
+
+	async function signInWithGoogle() {
+		setLoading(true)
+		try {
+			await onGoogleLogin()
+		} finally {
+			setLoading(false)
 		}
 	}
 
@@ -70,9 +78,6 @@ const RegisterScreen = () => {
 								showsVerticalScrollIndicator={false}
 							>
 								<View style={{ flex: 1, justifyContent: 'center', paddingBottom: 50 }}>
-									<View style={styles.imageContainer}>
-										<Image source={require('@/assets/icon.png')} style={styles.image} />
-									</View>
 									<View style={{ gap: 24 }}>
 										<View style={{ gap: 8 }}>
 											<Text style={styles.label}>Username</Text>
@@ -117,16 +122,6 @@ const RegisterScreen = () => {
 												text={loading ? 'Creating account...' : 'Create account'}
 												style={styles.button}
 											/>
-											<AppleAuthentication.AppleAuthenticationButton
-                                        buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-                                        buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.WHITE}
-                                        cornerRadius={5}
-                                        style={styles.button}
-                                        onPress={signInWithApple}
-                                    />
-											<Link replace href="/login" style={styles.textButton}>
-												Sign in
-											</Link>
 										</View>
 									</View>
 								</View>
@@ -175,9 +170,9 @@ const styles = StyleSheet.create({
 		height: 200,
 	},
 	button: {
-			width: '100%',
-			height: 36,
-			paddingVertical: 8,
+		width: '100%',
+		height: 36,
+		paddingVertical: 8,
 	},
 	buttonContainer: {
 		display: 'flex',

@@ -7,6 +7,7 @@ module Types
     field :create_playback, mutation: Mutations::Playbacks::CreatePlayback
     field :create_playlist, mutation: Mutations::Playlists::CreatePlaylist
     field :delete_playlist, mutation: Mutations::Playlists::DeletePlaylist
+    field :google_login, mutation: Mutations::Users::GoogleLogin
     field :login, mutation: Mutations::Users::LoginUser
     field :register, mutation: Mutations::Users::RegisterUser
     field :remove_like_from_recording, mutation: Mutations::Recordings::RemoveLikeFromRecording
