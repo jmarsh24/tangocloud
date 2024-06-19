@@ -3,11 +3,11 @@ module Types
     field :add_like_to_recording, mutation: Mutations::Recordings::AddLikeToRecording
     field :add_playlist_recording, mutation: Mutations::Playlists::AddPlaylistRecording
     field :apple_login, mutation: Mutations::Users::AppleLogin
-    field :google_login, mutation: Mutations::Users::GoogleLogin
     field :change_playlist_item_position, mutation: Mutations::Playlists::ChangePlaylistItemPosition
     field :create_playback, mutation: Mutations::Playbacks::CreatePlayback
     field :create_playlist, mutation: Mutations::Playlists::CreatePlaylist
     field :delete_playlist, mutation: Mutations::Playlists::DeletePlaylist
+    field :google_login, mutation: Mutations::Users::GoogleLogin
     field :login, mutation: Mutations::Users::LoginUser
     field :register, mutation: Mutations::Users::RegisterUser
     field :remove_like_from_recording, mutation: Mutations::Recordings::RemoveLikeFromRecording

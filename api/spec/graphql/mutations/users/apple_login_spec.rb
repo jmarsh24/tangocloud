@@ -41,7 +41,7 @@ RSpec.describe "Users::AppleLogin", type: :graph do
             }
           ]
         }.to_json,
-        headers: { 'Content-Type' => 'application/json' }
+        headers: {"Content-Type" => "application/json"}
       )
 
     allow_any_instance_of(AppleToken).to receive(:decode_identity_token).and_return(

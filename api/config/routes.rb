@@ -61,7 +61,7 @@ Rails.application.routes.draw do
   resources :recordings, only: [:show]
   resources :audio_variants, only: [:show]
 
-  post 'auth/facebook/data-deletion', to: 'auth#facebook_data_deletion'
+  post "auth/facebook/data-deletion", to: "auth#facebook_data_deletion"
 
   get "/privacy", to: "pages#privacy"
   get "/terms", to: "pages#terms"

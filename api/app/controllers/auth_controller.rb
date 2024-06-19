@@ -9,7 +9,7 @@ class AuthController < ApplicationController
       user.destroy!
       render json: {success: true, message: "User data deleted."}
     else
-      render json: {success: false, message: "User not found."}, status: 404
+      render json: {success: false, message: "User not found."}, status: :not_found
     end
   end
 end

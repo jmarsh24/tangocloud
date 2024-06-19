@@ -11,17 +11,17 @@ RSpec.describe "Auth", type: :request do
     end
 
     it "deletes the user" do
-      post "/auth/facebook/data-deletion", params: { id: "facebook-uid" }
+      post "/auth/facebook/data-deletion", params: {id: "facebook-uid"}
 
       expect(response).to have_http_status(200)
       expect(User.find_by(id: user.id)).to be_nil
     end
 
     it "returns a 404 if the user is not found" do
-      post "/auth/facebook/data-deletion", params: { id: "unknown" }
+      post "/auth/facebook/data-deletion", params: {id: "unknown"}
 
       expect(response).to have_http_status(404)
-      expect(JSON.parse(response.body)).to eq({ "success" => false, "message" => "User not found." })
+      expect(JSON.parse(response.body)).to eq({"success" => false, "message" => "User not found."})
     end
   end
 end
