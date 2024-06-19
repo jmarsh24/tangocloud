@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.describe AudioProcessing::AudioFolderConverter, type: :service do
-  let(:source_directory) { Rails.root.join("spec", "fixtures") }
-  let(:target_directory) { Rails.root.join("spec", "fixtures_compressed") }
+  let(:source_directory) { Rails.root.join("spec/fixtures") }
+  let(:target_directory) { Rails.root.join("spec/fixtures_compressed") }
   let(:test_aif_file) { source_directory.join("tone.aif") }
   let(:test_flac_file) { source_directory.join("tone.flac") }
   let(:unprocessed_file) { source_directory.join("tone.mp3") }

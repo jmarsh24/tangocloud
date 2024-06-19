@@ -28,4 +28,16 @@ class Identity::EmailVerificationsController < ApplicationController
   def send_email_verification
     UserMailer.with(user: Current.user).email_verification.deliver_later
   end
+
+  def generate_safe_redirect_url(email)
+    "tangocloudapp://login?email=#{CGI.escape(email)}"
+  end
+
+  def valid_url?(url)
+    allowed_hosts = ["tangocloudapp"]
+    uri = URI.parse(url)
+    allowed_hosts.include?(uri.host)
+  rescue URI::InvalidURIError
+    false
+  end
 end
