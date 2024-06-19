@@ -9,11 +9,20 @@ Sentry.init do |config|
 
   config.environment = sentry_environment
   config.enabled_environments = [sentry_environment].filter_map(&:presence).excluding("development", "test")
-  # To activate performance monitoring, set one of these options.
-  # We recommend adjusting the value in production:
-  config.traces_sample_rate = 1.0
-  # or
-  config.traces_sampler = lambda do |context|
-    0.5
+
+  # Adjust traces sampler to exclude /up transactions
+  config.traces_sampler = lambda do |sampling_context|
+    transaction_context = sampling_context[:transaction_context]
+    op = transaction_context[:op]
+    transaction_name = transaction_context[:name]
+
+    # Exclude /up transactions
+    if op == 'http.server' && transaction_name == '/up'
+      0.0
+    else
+      0.5
+    end
   end
+
+  config.traces_sample_rate = 1.0 # Ensure this is set as a fallback
 end
