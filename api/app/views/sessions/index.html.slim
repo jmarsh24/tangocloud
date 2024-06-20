@@ -1,9 +1,9 @@
-p style="color: green"
+p.text-green-500
   = notice
-h1 Devices & Sessions
-#sessions.stack
+h1.text-2xl.font-semibold.mb-6 Devices & Sessions
+#sessions.space-y-8
   - @sessions.each do |session|
-    .stack id="#{dom_id(session)}"
+    .space-y-4 id="#{dom_id(session)}"
       p
         strong User Agent:
         = session.user_agent
@@ -13,8 +13,8 @@ h1 Devices & Sessions
       p
         strong Created at:
         = session.created_at
-    p
-      = button_to "Log out", session, method: :delete, class: "button button--danger"
+      p
+        = button_to "Log out", session, method: :delete, class: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
 br
 div
-  = link_to "Back", root_path, class: "button button--secondary"
+  = link_to "Back", root_path, class: "bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

@@ -12,8 +12,10 @@
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM"],
     "paths": {
-      "@/*": ["./app/frontend/*"],
-    },
+      "@/*": ["./app/*"],
+      "@/component*": ["app/frontend/components/*"]
+    }
   },
-  "exclude": ["**/dist", "**/node_modules", "**/public", "**/vendor", "./app"],
+  "include": ["app/**/*", "app/frontend/components/*"],
+  "exclude": ["**/dist", "**/node_modules", "**/public", "**/vendor"]
 }

@@ -1,3 +1,4 @@
+import "./main.scss";
 import "vite/modulepreload-polyfill";
 import "@hotwired/turbo-rails";
 import { Application } from "@hotwired/stimulus";
@@ -14,5 +15,6 @@ const controllers = import.meta.glob(
     eager: true,
   }
 );
+
 registerControllers(application, controllers);
 start({ application });

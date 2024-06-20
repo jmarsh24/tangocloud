@@ -14,84 +14,82 @@ class Upload {
   process() {
     this.insertUpload();
 
-    this.directUpload.create((error, blob) =>
-      this.createAudioTransfer(error, blob)
-    );
+    this.directUpload.create((error, blob) => this.createTrack(error, blob));
   }
 
-  async createAudioTransfer(error, blob) {
+  async createTrack(error, blob) {
     if (error) {
-      console.error("Error in direct upload", error);
+      // Handle the error
     } else {
-      const audioTransferData = {
-        audio_transfer: { filename: blob.filename },
+      const trackData = {
+        track: { filename: blob.filename },
         signed_blob_id: blob.signed_id,
       };
 
-      const audioTransferResponse = await post("/audio_transfers", {
-        body: JSON.stringify(audioTransferData),
+      const trackResponse = await post("/tracks", {
+        body: trackData,
         contentType: "application/json",
         responseKind: "json",
       });
 
-      if (audioTransferResponse.ok) {
-        this.audioTransferJSON = await audioTransferResponse.json;
+      if (trackResponse.ok) {
+        this.trackJSON = await trackResponse.json;
+
         this.insertAudio();
-      } else {
-        this.audioTransferJSON = await audioTransferResponse.json;
-        this.progressBar.classList.add("upload-progress-bar--error");
-        this.insertErrorElement(this.audioTransferJSON.errors);
       }
     }
   }
 
-  insertErrorElement(errors) {
-    const errorMessage = document.createElement("div");
-    errorMessage.className = "upload-error-message";
-    // Assuming errors is an array of strings
-    errorMessage.textContent = "Error: " + errors.join(", ");
-    this.progressBar.parentElement.appendChild(errorMessage);
-  }
-
   insertAudio() {
+    // Create audio element
     const audio = document.createElement("audio");
     audio.controls = true;
-    audio.src = this.audioTransferJSON.audio_url;
-    audio.classList.add("audio-player");
+    audio.src = this.trackJSON.audio_url;
+    audio.classList.add("w-full");
 
+    // Make the parent progressWrapper div taller
+    this.progressBar.parentElement.classList.add("h-14");
+    this.progressBar.parentElement.classList.remove("h-4");
+
+    // Insert the audio tag and remove the progress bar.
     this.progressBar.parentElement.appendChild(audio);
+    this.progressBar.remove();
   }
 
   insertUpload() {
     const fileUpload = document.createElement("div");
+
     fileUpload.id = `upload_${this.directUpload.id}`;
-    fileUpload.className = "audio-upload-container";
+    fileUpload.className = "p-3 border-b";
 
-    const filenameStrong = document.createElement("span");
-    filenameStrong.textContent = this.directUpload.file.name;
+    fileUpload.textContent = this.directUpload.file.name;
 
-    fileUpload.appendChild(filenameStrong);
+    const progressWrapper = document.createElement("div");
+    progressWrapper.className =
+      "relative h-4 overflow-hidden rounded-full bg-secondary w-[100%]";
+    fileUpload.appendChild(progressWrapper);
 
     this.progressBar = document.createElement("div");
-    this.progressBar.className = "upload-progress-bar";
-    fileUpload.appendChild(this.progressBar);
+    this.progressBar.className = "progress h-full w-full flex-1 bg-primary";
+    this.progressBar.style = "transform: translateX(-100%);";
+    progressWrapper.appendChild(this.progressBar);
 
     const uploadList = document.querySelector("#uploads");
     uploadList.appendChild(fileUpload);
   }
 
   directUploadWillStoreFileWithXHR(request) {
-    request.upload.addEventListener("progress", (event) => {
-      this.updateProgress(event);
-    });
+    request.upload.addEventListener("progress", (event) =>
+      this.updateProgress(event)
+    );
   }
 
   updateProgress(event) {
     const percentage = (event.loaded / event.total) * 100;
     const progress = document.querySelector(
-      `#upload_${this.directUpload.id} .upload-progress-bar`
+      `#upload_${this.directUpload.id} .progress`
     );
-    progress.style.width = `${percentage}%`;
+    progress.style.transform = `translateX(-${100 - percentage}%)`;
   }
 }
 

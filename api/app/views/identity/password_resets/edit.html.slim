@@ -1,23 +1,23 @@
-h1 Reset your password
-= form_with(url: identity_password_reset_path, method: :patch) do |form|
-  .stack
+h1.text-2xl.font-bold.mb-4 Reset your password
+= form_with(url: identity_password_reset_path, method: :patch, class: "w-full max-w-sm mx-auto") do |form|
+  .space-y-4
     - if @user.errors.any?
-      div style="color: red"
-        h2
+      div.text-red-500
+        h2.font-semibold
           = pluralize(@user.errors.count, "error")
-          prohibited this user from being saved:
+          |  prohibited this user from being saved:
 
-        ul
+        ul.list-disc.list-inside
           - @user.errors.each do |error|
             li
               = error.full_message
     = form.hidden_field :sid, value: params[:sid]
     div
-      = form.label :password, "New password"
-      = form.password_field :password, required: true, autofocus: true, autocomplete: "new-password", class: "input input--password"
-      div 12 characters minimum.
+      = form.label :password, "New password", class: "block text-gray-700 text-sm font-bold mb-2"
+      = form.password_field :password, required: true, autofocus: true, autocomplete: "new-password", class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      div.text-sm.text-gray-600 12 characters minimum.
     div
-      = form.label :password_confirmation, "Confirm new password"
-      = form.password_field :password_confirmation, required: true, autocomplete: "new-password", class: "input input--password"
+      = form.label :password_confirmation, "Confirm new password", class: "block text-gray-700 text-sm font-bold mb-2"
+      = form.password_field :password_confirmation, required: true, autocomplete: "new-password", class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
     div
-      = form.submit "Save changes", class: "button button--primary"
+      = form.submit "Save changes", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

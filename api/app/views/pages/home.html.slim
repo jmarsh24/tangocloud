@@ -1,17 +1,13 @@
-.container.stack.stack--24
-  .stack.stack--24.stack--justify-center.stack--align-center
-    .logo
-    - if Current.user
-      = image_tag Current.user.avatar_thumbnail, class: "avatar"
-      - if Current.user.admin?
-        = link_to "Admin", avo_path, class: "button button--primary"
-        = link_to "Background Jobs", mission_control_jobs_path, class: "button button--primary"
-        = link_to "Upload Audio Transfers", new_audio_transfer_path, class: "button button--primary"
-        = link_to "Upload Playlists", avo.new_resources_playlist_path, class: "button button--primary"
-      = link_to "Devices & Sessions", sessions_path, class: "button button--secondary"
-      = link_to "Change email address", edit_identity_email_path, class: "button button--secondary"
-      = link_to "Change password", edit_password_path, class: "button button--secondary"
-      = button_to "Sign Out", Current.session, method: :delete, class: "button button--danger"
-    - else
-      = link_to "Sign In", sign_in_path, class: "button button--primary"
-      = link_to "Sign Up", sign_up_path, class: "button button--primary"
+.flex.flex-col.gap-4
+  - if Current.user.admin?
+    .btn.btn-primary = link_to "Admin", avo_path
+    .btn.btn-primary = link_to "Background Jobs", mission_control_jobs_path
+    .btn.btn-primary = link_to "Upload Audio Transfers", new_audio_transfer_path
+    .btn.btn-primary = link_to "Upload Playlists", avo.new_resources_playlist_path
+    .btn.btn-secondary = link_to "Devices & Sessions", sessions_path
+    .btn.btn-secondary = link_to "Change email address", edit_identity_email_path
+    .btn.btn-secondary = link_to "Change password", edit_password_path
+    .btn.btn-danger = button_to "Sign Out", Current.session, method: :delete
+  - else
+    .btn.btn-primary = link_to "Sign In", sign_in_path
+    .btn.btn-primary = link_to "Sign Up", sign_up_path

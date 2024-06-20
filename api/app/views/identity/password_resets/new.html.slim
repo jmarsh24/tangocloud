@@ -1,12 +1,12 @@
-p style="color: red"
+p.text-red-500
   = alert
 
-h1 Forgot your password?
+h1.text-2xl.font-bold.mb-4 Forgot your password?
 
-= form_with(url: identity_password_reset_path) do |form|
-  .stack
+= form_with(url: identity_password_reset_path, class: "w-full max-w-sm mx-auto") do |form|
+  .space-y-4
     div
-      = form.label :email, class: "input input--email"
-      = form.email_field :email, required: true, autofocus: true, autocomplete: "email", class: "input input--email"
+      = form.label :email, class: "block text-gray-700 text-sm font-bold mb-2"
+      = form.email_field :email, required: true, autofocus: true, autocomplete: "email", class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
     div
-      = form.submit "Send password reset email", class: "button button--primary"
+      = form.submit "Send password reset email", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
