@@ -67,7 +67,8 @@ Rails.application.routes.draw do
   get "/privacy", to: "pages#privacy"
   get "/terms", to: "pages#terms"
   get "/data-deletion", to: "pages#data_deletion"
+  get "/dashboard", to: "pages#dashboard"
 
-  root "pages#home"
+  root "pages#landing"
   get "up", to: "rails/health#show", as: :rails_health_check
 end

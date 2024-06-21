@@ -3,6 +3,9 @@
   <ul class="menu flex space-x-4 items-center">
     <% if Current.user %>
       <li>
+        <%= nav_link_to "Dashboard", dashboard_path, class: "text-gray-800 hover:text-gray-400" %>
+      </li>
+      <li>
         <%= nav_link_to "Edit profile", edit_identity_email_path, class: "text-gray-800 hover:text-gray-400" %>
       </li>
       <li
