@@ -1,6 +1,6 @@
 <div class="w-full py-4 bg-white">
   <div class="flex justify-center items-center gap-2">
-    <%= image_tag "tangocloud-app-icon.png", alt: "classical-app-logo", class: "block h-9 w-9 rounded-lg" %>
+    <%= image_tag "tangocloud-app-icon.png", alt: "Tango-app-logo", class: "block h-9 w-9 rounded-lg" %>
     <p class="text-sm">Find it on the App Store and Google Play</p>
   </div>
 </div>
@@ -9,40 +9,39 @@
     <div class="flex flex-col items-center pt-6">
       <div class="center max-w-6xl w-full px-6 py-8">
         <div class="flex flex-col items-center space-y-4 text-center">
-          <%= image_tag "apple-logo.svg", class: "block w-48" %>
+          <%= image_tag "tangocloud-logo.svg", class: "block w-48" %>
           <h2 class="text-2xl font-bold">The app designed for tango.</h2>
           <p class="max-w-xl mx-auto text-center text-xl xl:max-w-2xl">
-            TangoCloud elevates your listening experience like never before. Enjoy the world's largest classical music catalog, a powerful search designed specifically for its nuances, and the highest audio quality available — up to 192kHz/24-bit Hi-Res Lossless.
+            TangoCloud elevates your listening experience like never before. Enjoy the world's largest tango music catalog, a powerful search designed specifically for its nuances, and the highest audio quality available — up to 192kHz/24-bit Hi-Res Lossless.
           </p>
-          <%= link_to "Download now", "https://www.apple.com", class: "font-medium text-blue-600 dark:text-blue-500 hover:underline" %>
+          <%= link_to "Download now", root_path, class: "font-medium text-blue-600 dark:text-blue-500 hover:underline" %>
         </div>
       </div>
-      <%= image_tag "violin-hero-hd.png", alt:"violin-hero-hd", class: "block w-full sm:rounded-3xl" %>
+      <%= image_tag "tango-orchestra.jpg", alt:"violin-hero-hd", class: "block w-full sm:rounded-3xl" %>
     </div>
     <div class="py-8 px-4">
       <div class="flex flex-col p-8 mx-auto max-w-6xl bg-gray-200 items-center gap-4 rounded-3xl">
         <div class="flex justify-center space-x-4">
-          <%= image_tag "tangocloud-app-icon.png", alt:"classical-app-logo", class: "block h-14 w-14 rounded-xl" %>
-          <%= image_tag "apple-logo-resized.png", alt:"apple-logo-resized", class: "block h-14 w-14" %>
+          <%= image_tag "tangocloud-app-icon.png", alt:"Tango-app-logo", class: "block h-14 w-14 rounded-xl" %>
         </div>
         <p class="text-3xl font-bold text-center">
-          Two extraordinary apps. <br>
-          Just one subscription.
+          Tango Music History <br>
+          In just one application.
         </p>
         <p class="text-lg font-light typography-body text-center mt-4">
-          TangoCloud is included in your Apple Music subscription at no additional cost. If you've already joined Apple Music, simply download the TangoCloud app to start listening. If you're not a subscriber yet, join today and start exploring the world of TangoCloud.
+          TangoCloud provides an experience that revolutionizes the way you listen/dance to tango. If you're not a subscriber yet, join today and start exploring the world of TangoCloud.
         </p>
-        <%= link_to "Download now", "https://www.apple.com", class: "font-medium text-blue-600 dark:text-blue-500 hover:underline" %>
+        <%= link_to "Download now", root_path, class: "font-medium text-blue-600 dark:text-blue-500 hover:underline" %>
       </div>
     </div>
     <div class="flex flex-col sm:gap-8 md:gap-16 lg:gap-24">
       <%= render partial: "components/feature_highlight_section",
         locals: {
-          image: "apple-grid.png",
+          image: "album-scattered.png",
           alt_text: "apple-grid",
-          title: "The world's largest classical music catalog.",
-          description: "Over 5 million tracks. Discover the very best recordings of Beethoven's Sixth Symphony. Or outstanding performances from the world's most renowned orchestras. Just about anything you'd ever want to hear — all of it just a few taps away.",
-          link: "https://www.apple.com",
+          title: "The world's largest Tango catalog.",
+          description: "Over 5 thousand tracks. Discover the very best recordings of Pugliese's discography. Or outstanding performances from the world's most renowned orchestras. Just about anything you'd ever want to hear — all of it just a few taps away.",
+          link: root_path,
           link_title: "Listen Now",
           reverse: true
 
@@ -52,40 +51,40 @@
         locals: {
           image: "iphone-search.png",
           alt_text: "iphone-search",
-          title: "Easily search by work, composer, conductor, and more.",
-          description: "Apple Music Classical features a search created specifically for the nuances of the music. You can find the exact recording you want, whether you search by composer, opus number, or key. When you do find what you’re looking for, the app’s unique interface ensures you’ll always see essential information from each work, including complete movement titles and a full list of contributing artists.",
-          link: "https://www.apple.com",
+          title: "Easily search by composition, orchestra, singer, and more.",
+          description: "TangoCloud features a search created specifically for the nuances of Tango. You can find the exact recording you want, whether you search by composer, ERT number, or genre. When you do find what you're looking for, the app's unique interface ensures you'll always see essential information from each composition, including complete lyrics and metadata.",
+          link: root_path,
           link_title: "Listen Now"
         }
       %>
       <%= render partial: "components/feature_highlight_section",
         locals: {
-          image: "fazil-say-cover.png",
+          image: "record-player.jpg",
           alt_text: "fazil-say-cover",
           title: "Experience the highest audio quality.",
-          description: "With classical music, every nuance matters, so Apple Music Classical offers the highest audio quality available — up to 192kHz/24-bit Hi-Res Lossless. Plus thousands of recordings available in immersive, Spatial Audio featuring Dolby Atmos.3",
-          link: "https://www.apple.com",
+          description: "With tango music, every nuance matters, so TangoCloud offers the highest audio quality available — up to 192kHz/24-bit Hi-Res Lossless.",
+          link: root_path,
           link_title: "Listen Now",
           reverse: true
         }
       %>
       <%= render partial: "components/feature_highlight_section",
         locals: {
-          image: "module-5-updated.jpeg",
+          image: "iphone-playlist.png",
           alt_text: "module-5-updated",
           title: "Benefit from expert recommendations.",
-          description: "Apple Music Classical is curated by classical music experts who are passionate about helping both beginner and seasoned music lovers discover great works. Users can view definitive recordings through Editor's Choice selections and enjoy exclusive playlists covering key composers, instruments, or periods.",
-          link: "https://www.apple.com",
+          description: "TangoCloud is curated by Tango music experts who are passionate about helping both beginner and seasoned music lovers discover great recordings. Users can view definitive recordings through Editor's Choice selections and enjoy exclusive playlists covering key orchestras, periods, or genres.",
+          link: root_path,
           link_title: "Listen Now",
         }
       %>
       <%= render partial: "components/feature_highlight_section",
         locals: {
-          image: "browse_module_updated.png",
+          image: "iphone-home.png",
           alt_text: "browse_module_updated",
           title: "Browse endlessly and learn as you go.",
-          description: "The Browse tab helps you discover more about classical music, guiding you through composers, periods, genres, instruments, and more. Explore artist and composer bios or insightful guides to works — all written by expert writers and reviewers of classical music.",
-          link: "https://www.apple.com",
+          description: "The Browse tab helps you discover more about Tango music, guiding you through orchestras, periods, genres, composers, and more. Explore orchestra and composer bios or insightful guides to works — all written by expert writers and reviewers of Tango music.",
+          link: root_path,
           link_title: "Listen Now",
           reverse: true
         }
@@ -104,31 +103,25 @@
         <%= render partial: "components/collapsible",
       locals: {
         title: "Who is TangoCloud designed for?",
-        content: "Everyone. Beginners can begin their exploration with amazing content from TangoCloud editors, including The Story of Classical audio companion guide, and Essentials playlists for classical subgenres, composers, instruments, and more. Classical experts can use TangoCloud's powerful search to find any desired recording with just a few keywords."
+        content: "Everyone. Beginners can begin their exploration with amazing content from TangoCloud editors, including The Story of Tango audio companion guide, and Essentials playlists for Tango subgenres, composers, instruments, and more. Tango experts can use TangoCloud's powerful search to find any desired recording with just a few keywords."
         }
       %>
         <%= render partial: "components/collapsible",
       locals: {
-        title: "Why a separate classical app?",
-        content: "Classical music often involves multiple musicians recording works that have been recorded many times before and are referred to by different names. For example, from the formal Beethoven's Piano Sonata No. 14 to the popular byname of Moonlight Sonata, or in multiple languages, such as Mondschein Sonata in German. Such complexities mean that classical music fans have been ill-served by streaming platforms. Until now. A distinct app, included with an Apple Music subscription, gives these classical music lovers the editorial and catalog content they've been missing. Only a dedicated app — with specialized features and a beautiful interface designed for the genre — could remove the complexity and make classical music easily searchable, browsable, and accessible for beginners and experts alike."
+        title: "Why a separate Tango app?",
+        content: "Tango music often involves multiple musicians recording works that have been performed and recorded many times before, often under different names. For example, a classic piece like “La Cumparsita” may be known by various titles and performed by different orchestras over the decades. Such complexities mean that Tango music fans have been ill-served by streaming platforms. Until now. Tangocloud, a distinct app included with an Apple Music subscription, provides these Tango music lovers with the editorial and catalog content they’ve been missing. Only a dedicated app — with specialized features and a beautiful interface designed for the genre — can remove the complexity and make Tango music easily searchable, browsable, and accessible for beginners and experts alike. Tangocloud also offers detailed information beyond just title and artist, including orchestra, year, singer, and translated lyrics, ensuring a rich and immersive listening experience."
       }
       %>
         <%= render partial: "components/collapsible",
       locals: {
         title: "How can I listen to TangoCloud?",
-        content: "Start by checking that Apple Music is installed on your smartphone or iPad and that you have an active Apple Music subscription. Then simply download and install the TangoCloud app on the same device and you're all set."
+        content: "Start by checking that TangoCLoud is installed on your smartphone or iPad and that you have an active TangoCloud subscription. Then simply download and install the TangoCloud app on the same device and you're all set."
       }
       %>
         <%= render partial: "components/collapsible",
       locals: {
         title: "Does TangoCloud feature other types of music?",
-        content: "No. TangoCloud is completely focused on classical music."
-      }
-      %>
-        <%= render partial: "components/collapsible",
-      locals: {
-        title: "Can I still listen to classical music in Apple Music?",
-        content: "Yes. You can still listen to classical music in Apple Music. But for the best experience, we recommend using TangoCloud."
+        content: "No. TangoCloud is completely focused on Tango music. In the future we may add cortinas"
       }
       %>
       </div>
