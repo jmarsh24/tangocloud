@@ -9,7 +9,7 @@
   <meta name="turbo-cache-control" content="no-cache">
   <!-- Favicon -->
 
-  <%# favicon_link_tag vite_asset_path('images/favicon.svg'), type: "image/svg+xml" %>
+  <%# favicon_link_tag vite_asset_path('images/favicon.svg'), type: "image/svg+xml" %> %>
 
   <!-- Security -->
   <%= csrf_meta_tags %>
@@ -17,7 +17,7 @@
 
   <!-- Assets -->
   <%= vite_client_tag %>
-  <%= vite_stylesheet_tag "application.scss" %>
+  <%= vite_typescript_tag "application" %>
 
   <%= render_meta %>
 
