@@ -238,6 +238,7 @@ GEM
     hashdiff (1.1.0)
     hashie (5.0.0)
     highline (3.0.1)
+    htmlbeautifier (1.4.3)
     httparty (0.22.0)
       csv
       mini_mime (>= 1.0.0)
@@ -666,6 +667,7 @@ DEPENDENCIES
   groupdate
   guard
   guard-rspec
+  htmlbeautifier
   i18n-tasks
   image_processing
   jwt

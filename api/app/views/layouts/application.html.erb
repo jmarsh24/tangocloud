@@ -1,0 +1,13 @@
+<doctype html>
+  <html lang=I18n.locale>
+    <%= render "components/head" %>
+    <body class="relative font-inter antialiased">
+      <%= render "shared/navbar" %>
+      <%= render "shared/flash" %>
+      <main class="relative min-h-screen flex flex-col items-center">
+        <%= yield %>
+      </main>
+      <%= render "shared/footer" %>
+    </body>
+  </html>
+</doctype>

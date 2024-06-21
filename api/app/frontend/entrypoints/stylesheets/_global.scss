@@ -32,22 +32,36 @@ h6 {
 
 p {
   font-size: 1em;
-  margin-bottom: 10px;
 }
 
-h1, h2, h3, h4, h5, h6, button, a, label{
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+button,
+a,
+label {
   @apply font-sans;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   @apply leading-tight;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   @apply font-bold;
 }
 
-@media screen and (max-width: 767px){
+@media screen and (max-width: 767px) {
   h1 {
     font-size: 2em;
   }
@@ -69,19 +83,7 @@ h1, h2, h3 {
   }
 }
 
-img, svg {
+img,
+svg {
   @apply w-full h-auto;
-}
-
-.main {
-  @apply flex flex-col h-screen;
-}
-
-.wrapper {
-  @apply flex-1 relative;
-}
-
-.container {
-  width: 95%;
-  @apply mx-auto py-10;
 }
