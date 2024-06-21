@@ -15,7 +15,6 @@ gem "oj"
 # Extensions
 gem "acts_as_list"
 gem "apollo_upload_server"
-gem "authentication-zero"
 gem "avo"
 gem "bcrypt"
 gem "chunky_png"
@@ -35,18 +34,16 @@ gem "progress_bar"
 gem "pundit"
 gem "rack-cors"
 gem "rails-i18n"
-gem "shimmer"
-gem "slim-rails"
 gem "socialization"
 gem "solid_cache"
 gem "translate_client"
-gem "yael"
 gem "solid_queue"
 gem "mission_control-jobs"
 gem "streamio-ffmpeg"
 gem "elasticsearch"
 gem "searchkick"
 gem "googleauth"
+gem "shimmer"
 
 # Assets
 gem "stimulus-rails"
@@ -58,7 +55,6 @@ gem "turbo-rails"
 
 # External Services
 gem "aws-sdk-s3", require: false
-gem "barnes"
 gem "newrelic_rpm"
 gem "sentry-rails"
 gem "sentry-ruby"
@@ -86,6 +82,7 @@ group :development do
   gem "rb-fsevent"
   gem "web-console"
   gem "brakeman"
+  gem "authentication-zero"
 end
 
 group :test do

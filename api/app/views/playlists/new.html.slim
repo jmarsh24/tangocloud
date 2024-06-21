@@ -1,5 +1,0 @@
-= form_with model: Playlist.new, url: "/playlists", html: { multipart: true, class: "upload-container" } do |form|
-  = form.label :playlist_file, class: "upload-box" do
-    .upload-icon
-    span = "Drag Playlist(.m3u8) to Upload or Click Here"
-  = form.file_field :playlist_file, accept: ".m3u8", class: "hidden", data: { controller: "autosubmit", action: "change->autosubmit#submit" }, multiple: true
