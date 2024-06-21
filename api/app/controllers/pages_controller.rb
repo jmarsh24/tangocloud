@@ -1,4 +1,5 @@
 class PagesController < ApplicationController
+  layout "marketing"
   skip_after_action :verify_authorized
 
   def home
