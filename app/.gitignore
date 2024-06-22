@@ -16,6 +16,10 @@ web-build/
 *.key
 *.mobileprovision
 
+# Ignore native build directories
+ios/
+android/
+
 # Metro
 .metro-health-check*
 
@@ -45,3 +49,4 @@ yarn-error.*
 
 expo-env.d.ts
 # @end expo-cli
+
