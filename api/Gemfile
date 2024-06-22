@@ -45,6 +45,7 @@ gem "searchkick"
 gem "googleauth"
 gem "shimmer"
 gem "inline_svg"
+gem "lograge"
 
 # Assets
 gem "stimulus-rails"
