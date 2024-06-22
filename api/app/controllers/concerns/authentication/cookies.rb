@@ -2,12 +2,6 @@ module Authentication
   module Cookies
     extend ActiveSupport::Concern
 
-    included do
-      prepend_before_action :set_current_request_details
-      prepend_before_action :authenticate_user!
-      helper_method :current_user
-    end
-
     private
 
     def current_user
