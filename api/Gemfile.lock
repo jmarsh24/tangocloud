@@ -653,6 +653,7 @@ DEPENDENCIES
   guard-rspec
   i18n-tasks
   image_processing
+  inline_svg
   jwt
   kamal
   kaminari
