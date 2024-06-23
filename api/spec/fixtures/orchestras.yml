@@ -22,14 +22,15 @@ osvaldo_pugliese:
 # Table name: orchestras
 #
 #  id               :uuid             not null, primary key
-#  name             :string           not null
+#  first_name       :string           not null
+#  last_name        :string           not null
 #  rank             :integer          default(0), not null
 #  sort_name        :string
 #  birth_date       :date
 #  death_date       :date
 #  slug             :string           not null
-#  recordings_count :integer          default(0)
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  recordings_count :integer          default(0)
 #  normalized_name  :string
 #

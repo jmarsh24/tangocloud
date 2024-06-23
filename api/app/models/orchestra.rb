@@ -2,6 +2,7 @@ class Orchestra < ApplicationRecord
   extend FriendlyId
   include Titleizable
   friendly_id :name, use: :slugged
+
   searchkick word_middle: [:name], callbacks: :async
 
   has_many :recordings, dependent: :destroy
@@ -10,10 +11,10 @@ class Orchestra < ApplicationRecord
   has_many :composers, through: :compositions
   has_many :lyricists, through: :compositions
 
-  validates :name, presence: true
+  validates :first_name, presence: true
+  validates :last_name, presence: true
   validates :rank, presence: true, numericality: {only_integer: true}
   validates :slug, presence: true, uniqueness: true
-  validates :normalized_name, presence: true, uniqueness: true
 
   has_one_attached :photo, dependent: :purge_later do |blob|
     blob.variant :thumb, resize_to_limit: [100, 100]
@@ -21,20 +22,18 @@ class Orchestra < ApplicationRecord
     blob.variant :large, resize_to_limit: [500, 500]
   end
 
-  before_save :set_normalized_name
-
   def search_data
     {
       name:
     }
   end
 
-  def formatted_name
-    self.class.custom_titleize(name)
+  def name
+    "#{first_name} #{last_name}"
   end
 
-  def set_normalized_name
-    self.normalized_name = I18n.transliterate(name).downcase
+  def formatted_name
+    self.class.custom_titleize(name)
   end
 end
 
@@ -43,14 +42,15 @@ end
 # Table name: orchestras
 #
 #  id               :uuid             not null, primary key
-#  name             :string           not null
+#  first_name       :string           not null
+#  last_name        :string           not null
 #  rank             :integer          default(0), not null
 #  sort_name        :string
 #  birth_date       :date
 #  death_date       :date
 #  slug             :string           not null
-#  recordings_count :integer          default(0)
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  recordings_count :integer          default(0)
 #  normalized_name  :string
 #

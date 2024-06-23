@@ -13,13 +13,6 @@ class Period < ApplicationRecord
 
   has_one_attached :image
 
-  def self.search_periods(query = "*")
-    search(query,
-      fields: ["name^5"],
-      match: :word_middle,
-      misspellings: {below: 5})
-  end
-
   def search_data
     {
       name:,

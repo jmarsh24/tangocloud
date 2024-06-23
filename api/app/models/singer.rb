@@ -10,21 +10,11 @@ class Singer < ApplicationRecord
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true
   validates :rank, presence: true, numericality: {only_integer: true}
-  validates :normalized_name, presence: true, uniqueness: true
 
   has_one_attached :photo, dependent: :purge_later do |blob|
     blob.variant :thumb, resize_to_limit: [100, 100]
     blob.variant :medium, resize_to_limit: [250, 250]
     blob.variant :large, resize_to_limit: [500, 500]
-  end
-
-  before_save :set_normalized_name
-
-  def self.search_singers(query = "*")
-    search(query,
-      fields: ["name^5"],
-      match: :word_middle,
-      misspellings: {below: 5})
   end
 
   def search_data
@@ -33,8 +23,8 @@ class Singer < ApplicationRecord
     }
   end
 
-  def set_normalized_name
-    self.normalized_name = I18n.transliterate(name).downcase
+  def name
+    "#{first_name} #{last_name}"
   end
 end
 

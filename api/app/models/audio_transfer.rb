@@ -11,24 +11,6 @@ class AudioTransfer < ApplicationRecord
 
   has_one_attached :audio_file, dependent: :purge_later
 
-  def self.search_audio_transfers(query)
-    AudioTransfer.search(query,
-      fields: [
-        "filename",
-        "album",
-        "recording",
-        "orchestra_name",
-        "singer_names",
-        "genre",
-        "period",
-        "transfer_agent",
-        "audio_variants"
-      ],
-      includes: [:album, :transfer_agent, recording: [:orchestra, :singers, :genre, :period, composition: [:composer, :lyricist]]],
-      match: :word_middle,
-      misspellings: {below: 5})
-  end
-
   def search_data
     {
       filename:,

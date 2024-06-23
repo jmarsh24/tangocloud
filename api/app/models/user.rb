@@ -65,10 +65,6 @@ class User < ApplicationRecord
     def find_by_email_or_username(email_or_username)
       find_by(email: email_or_username) || find_by(username: email_or_username)
     end
-
-    def search_users(query)
-      search(query, fields: [:username, :email, :first_name, :last_name], match: :word_start)
-    end
   end
 
   def search_data

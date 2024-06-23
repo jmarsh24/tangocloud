@@ -22,7 +22,8 @@ homero_manzi:
 # Table name: lyricists
 #
 #  id                 :uuid             not null, primary key
-#  name               :string           not null
+#  first_name         :string           not null
+#  last_name          :string           not null
 #  slug               :string           not null
 #  sort_name          :string
 #  birth_date         :date

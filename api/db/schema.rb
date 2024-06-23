@@ -64,8 +64,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
     t.string "slug", null: false
     t.string "external_id"
     t.enum "album_type", default: "compilation", null: false, enum_type: "album_type"
-    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_albums_on_slug", unique: true
   end
 
@@ -101,9 +101,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
   end
 
   create_table "composers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name", null: false
+    t.string "first_name", null: false
+    t.string "last_name", null: false
     t.date "birth_date"
     t.date "death_date"
+    t.string "sort_name"
     t.string "slug", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -122,7 +124,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
     t.index ["composition_id"], name: "index_composition_composers_on_composition_id"
   end
 
-  create_table "composition_lyrics", force: :cascade do |t|
+  create_table "composition_lyrics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "composition_id", null: false
     t.uuid "lyric_id", null: false
     t.datetime "created_at", null: false
@@ -153,8 +155,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
   create_table "couples", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "dancer_id", null: false
     t.uuid "partner_id", null: false
-    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["dancer_id", "partner_id"], name: "index_couples_on_dancer_id_and_partner_id", unique: true
     t.index ["dancer_id"], name: "index_couples_on_dancer_id"
     t.index ["partner_id"], name: "index_couples_on_partner_id"
@@ -163,11 +163,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
   create_table "dancer_videos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "dancer_id", null: false
     t.uuid "video_id", null: false
-    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.index ["created_at"], name: "index_dancer_videos_on_created_at"
     t.index ["dancer_id"], name: "index_dancer_videos_on_dancer_id"
-    t.index ["updated_at"], name: "index_dancer_videos_on_updated_at"
     t.index ["video_id"], name: "index_dancer_videos_on_video_id"
   end
 
@@ -253,7 +249,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
   end
 
   create_table "lyricists", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name", null: false
+    t.string "first_name", null: false
+    t.string "last_name", null: false
     t.string "slug", null: false
     t.string "sort_name"
     t.date "birth_date"
@@ -277,15 +274,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
   end
 
   create_table "orchestras", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name", null: false
+    t.string "first_name", null: false
+    t.string "last_name", null: false
     t.integer "rank", default: 0, null: false
     t.string "sort_name"
     t.date "birth_date"
     t.date "death_date"
     t.string "slug", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "recordings_count", default: 0
-    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.string "normalized_name"
     t.index ["normalized_name"], name: "index_orchestras_on_normalized_name", unique: true
     t.index ["slug"], name: "index_orchestras_on_slug", unique: true
@@ -373,11 +371,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
     t.uuid "record_label_id"
     t.uuid "genre_id"
     t.uuid "period_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "playbacks_count", default: 0
-    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["composition_id"], name: "index_recordings_on_composition_id"
-    t.index ["created_at"], name: "index_recordings_on_created_at"
     t.index ["el_recodo_song_id"], name: "index_recordings_on_el_recodo_song_id"
     t.index ["genre_id"], name: "index_recordings_on_genre_id"
     t.index ["orchestra_id"], name: "index_recordings_on_orchestra_id"
@@ -385,7 +382,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
     t.index ["record_label_id"], name: "index_recordings_on_record_label_id"
     t.index ["singer_id"], name: "index_recordings_on_singer_id"
     t.index ["slug"], name: "index_recordings_on_slug", unique: true
-    t.index ["updated_at"], name: "index_recordings_on_updated_at"
   end
 
   create_table "sessions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

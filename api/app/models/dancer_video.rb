@@ -11,9 +11,7 @@ end
 #
 # Table name: dancer_videos
 #
-#  id         :uuid             not null, primary key
-#  dancer_id  :uuid             not null
-#  video_id   :uuid             not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id        :uuid             not null, primary key
+#  dancer_id :uuid             not null
+#  video_id  :uuid             not null
 #

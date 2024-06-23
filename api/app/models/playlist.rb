@@ -24,19 +24,6 @@ class Playlist < ApplicationRecord
   scope :public_playlists, -> { where(public: true) }
   scope :system_playlists, -> { where(system: true) }
 
-  def self.search_playlists(query = "*")
-    search(
-      query,
-      fields: [:title, :description],
-      match: :word_middle,
-      misspellings: {below: 5},
-      order: {title: :asc},
-      includes: [
-        image_attachment: :blob
-      ]
-    )
-  end
-
   def search_data
     {
       title:,

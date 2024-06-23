@@ -7,7 +7,7 @@ end
 #
 # Table name: composition_lyrics
 #
-#  id             :bigint           not null, primary key
+#  id             :uuid             not null, primary key
 #  composition_id :uuid             not null
 #  lyric_id       :uuid             not null
 #  created_at     :datetime         not null
