@@ -19,7 +19,6 @@ gem "avo"
 gem "bcrypt"
 gem "chunky_png"
 gem "dotenv-rails"
-gem "faker"
 gem "faraday"
 gem "friendly_id"
 gem "graphiql-rails"
@@ -89,6 +88,7 @@ group :development do
 end
 
 group :test do
+  gem "faker"
   gem "rspec-retry"
   gem "webmock"
 end
