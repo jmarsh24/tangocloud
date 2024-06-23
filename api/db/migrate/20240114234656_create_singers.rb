@@ -1,8 +1,9 @@
 class CreateSingers < ActiveRecord::Migration[7.1]
   def change
     create_table :singers, id: :uuid do |t|
-      t.string :name, null: false
-      t.string :slug, index: {unique: true}, null: false
+      t.string :first_name, null: false
+      t.string :last_name, null: false
+      t.string :slug, null: false
       t.integer :rank, null: false, default: 0
       t.string :sort_name
       t.text :bio
@@ -11,5 +12,7 @@ class CreateSingers < ActiveRecord::Migration[7.1]
 
       t.timestamps
     end
+
+    add_index :singers, :slug, unique: true
   end
 end

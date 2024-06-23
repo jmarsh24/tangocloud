@@ -1,23 +1,24 @@
 francisco_garcia_jimenez:
-  name: Francisco García Jiménez
+  first_name: Francisco
+  last_name: García Jiménez
   slug: francisco-garcia-jimenez
-  normalized_name: francisco garcia jimenez
 
 jorge_curi:
-  name: Jorge Curi
+  first_name: Jorge
+  last_name: Curi
   slug: jorge-curi
-  normalized_name: jorge curi
 
 homero_exposito:
-  name: Homero Exposito
+  first_name: Homero
+  last_name: Exposito
   slug: homero-exposito
-  normalized_name: homero exposito
 
 homero_manzi:
-  name: Homero Manzi / Víctor Piuma Vélez
-  slug: homero-manzi-victor-piuma-velez
-  normalized_name: homero manzi / victor piuma velez
-# == Schema Information
+  first_name: Homero
+  last_name: Manzi
+  slug: homero-manzi
+
+  # == Schema Information
 #
 # Table name: lyricists
 #

@@ -75,16 +75,27 @@ compositions = ["Libertango", "Adiós Nonino", "Oblivion"].map do |title|
   )
 end
 
+singers = [
+  {first_name: "Roberto", last_name: "Rufino"},
+  {first_name: "Alberto", last_name: "Podestá"},
+  {first_name: "Carlos", last_name: "Gardel"}
+].map do |attrs|
+  singer = Singer.create!(attrs)
+  singer.photo.attach(io: File.open(Rails.root.join("spec/fixtures/files/di_sarli.jpg")), filename: "singer.jpg", content_type: "image/jpeg")
+  singer
+end
+
 # Create recordings
 recordings = ["La Cumparsita", "El Choclo", "A Media Luz"].map do |title|
   Recording.create!(
     title:,
     recording_type: "studio",
     release_date: Faker::Date.between(from: "1930-01-01", to: "1950-12-31"),
+    recorded_date: Faker::Date.between(from: "1930-01-01", to: "1950-12-31"),
     genre: genres.sample,
     orchestra: orchestras.sample,
     composition: compositions.sample,
-    recorded_date: Faker::Date.between(from: "1930-01-01", to: "1950-12-31")
+    singers: singers.sample(2)
   )
 end
 

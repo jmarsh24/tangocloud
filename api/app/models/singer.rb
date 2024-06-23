@@ -7,7 +7,8 @@ class Singer < ApplicationRecord
   has_many :recording_singers, dependent: :destroy
   has_many :recordings, through: :recording_singers
 
-  validates :name, presence: true
+  validates :first_name, presence: true
+  validates :last_name, presence: true
   validates :slug, presence: true, uniqueness: true
   validates :rank, presence: true, numericality: {only_integer: true}
 
@@ -33,7 +34,8 @@ end
 # Table name: singers
 #
 #  id              :uuid             not null, primary key
-#  name            :string           not null
+#  first_name      :string           not null
+#  last_name       :string           not null
 #  slug            :string           not null
 #  rank            :integer          default(0), not null
 #  sort_name       :string

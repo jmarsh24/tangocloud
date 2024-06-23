@@ -5,7 +5,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "UI",
+      "name": "Browser",
       "type": "chrome",
       "request": "launch",
       "url": "http://127.0.0.1:3000/",
@@ -22,7 +22,7 @@
       "type": "ruby_lsp",
       "request": "launch",
       "program": "bin/rails solid_queue:start"
-    }
+    },
     {
       "name": "Vite",
       "type": "node-terminal",
