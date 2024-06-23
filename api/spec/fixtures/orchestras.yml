@@ -1,35 +1,40 @@
 juan_darienzo:
   name: Juan D'Arienzo
+  first_name: Juan
+  last_name: D'Arienzo
   slug: juan-d-arienzo
-  normalized_name: juan d'arienzo
 
 anibal_troilo:
   name: Anibal Troilo
+  first_name: Anibal
+  last_name: Troilo
   slug: anibal-troilo
-  normalized_name: anibal troilo
 
 carlos_di_sarli:
   name: Carlos Di Sarli
+  first_name: Carlos
+  last_name: Di Sarli
   slug: carlos-di-sarli
-  normalized_name: carlos di sarli
 
 osvaldo_pugliese:
   name: Osvaldo Pugliese
+  first_name: Osvaldo
+  last_name: Pugliese
   slug: osvaldo-pugliese
-  normalized_name: osvaldo pugliese
 # == Schema Information
 #
 # Table name: orchestras
 #
 #  id               :uuid             not null, primary key
+#  first_name       :string           not null
+#  last_name        :string
 #  name             :string           not null
 #  rank             :integer          default(0), not null
 #  sort_name        :string
 #  birth_date       :date
 #  death_date       :date
 #  slug             :string           not null
-#  recordings_count :integer          default(0)
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  normalized_name  :string
+#  recordings_count :integer          default(0)
 #

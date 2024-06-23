@@ -2,7 +2,8 @@ class Orchestra < ApplicationRecord
   extend FriendlyId
   include Titleizable
   friendly_id :name, use: :slugged
-  searchkick word_middle: [:name], callbacks: :async
+
+  searchkick word_start: [:first_name, :last_name, :name], callbacks: :async
 
   has_many :recordings, dependent: :destroy
   has_many :singers, through: :recordings
@@ -10,10 +11,11 @@ class Orchestra < ApplicationRecord
   has_many :composers, through: :compositions
   has_many :lyricists, through: :compositions
 
-  validates :name, presence: true
+  validates :first_name, presence: true
   validates :rank, presence: true, numericality: {only_integer: true}
   validates :slug, presence: true, uniqueness: true
-  validates :normalized_name, presence: true, uniqueness: true
+
+  before_validation :assign_names, on: :create
 
   has_one_attached :photo, dependent: :purge_later do |blob|
     blob.variant :thumb, resize_to_limit: [100, 100]
@@ -21,20 +23,25 @@ class Orchestra < ApplicationRecord
     blob.variant :large, resize_to_limit: [500, 500]
   end
 
-  before_save :set_normalized_name
-
   def search_data
     {
+      first_name:,
+      last_name:,
       name:
     }
   end
 
-  def formatted_name
-    self.class.custom_titleize(name)
-  end
+  private
 
-  def set_normalized_name
-    self.normalized_name = I18n.transliterate(name).downcase
+  def assign_names
+    if new_record?
+      formatted_name = self.class.custom_titleize(name)
+      names = formatted_name.split(" ")
+      self.name ||= formatted_name
+      self.first_name ||= names.first
+      self.last_name ||= (names.length > 1) ? names.last : ""
+      self.sort_name ||= (names.length > 1) ? names.last : ""
+    end
   end
 end
 
@@ -43,14 +50,15 @@ end
 # Table name: orchestras
 #
 #  id               :uuid             not null, primary key
+#  first_name       :string           not null
+#  last_name        :string
 #  name             :string           not null
 #  rank             :integer          default(0), not null
 #  sort_name        :string
 #  birth_date       :date
 #  death_date       :date
 #  slug             :string           not null
-#  recordings_count :integer          default(0)
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  normalized_name  :string
+#  recordings_count :integer          default(0)
 #

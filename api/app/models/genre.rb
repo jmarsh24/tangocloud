@@ -4,13 +4,6 @@ class Genre < ApplicationRecord
 
   validates :name, presence: true
 
-  def self.search_genres(query = "*")
-    search(query,
-      fields: ["name^5"],
-      match: :word_middle,
-      misspellings: {below: 5})
-  end
-
   def search_data
     {
       name:

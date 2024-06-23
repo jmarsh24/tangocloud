@@ -72,6 +72,7 @@ group :development, :test do
   gem "rubocop-rspec", require: false
   gem "standard"
   gem "ruby-lsp-rspec", require: false
+  gem "faker"
 end
 
 group :development do
@@ -88,7 +89,6 @@ group :development do
 end
 
 group :test do
-  gem "faker"
   gem "rspec-retry"
   gem "webmock"
 end

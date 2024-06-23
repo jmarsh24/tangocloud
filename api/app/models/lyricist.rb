@@ -2,15 +2,18 @@ class Lyricist < ApplicationRecord
   extend FriendlyId
   include Titleizable
   friendly_id :name, use: :slugged
-  searchkick word_middle: [:name], callbacks: :async
+
+  searchkick word_start: [:first_name, :last_name, :name], callbacks: :async
 
   has_many :compositions, dependent: :destroy, inverse_of: :lyricist
   has_many :lyrics, through: :compositions
   has_many :recordings, through: :compositions
 
+  validates :first_name, presence: true
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true
-  validates :normalized_name, presence: true, uniqueness: true
+
+  before_create :assign_names
 
   has_one_attached :photo, dependent: :purge_later do |blob|
     blob.variant :thumb, resize_to_limit: [100, 100]
@@ -18,23 +21,21 @@ class Lyricist < ApplicationRecord
     blob.variant :large, resize_to_limit: [500, 500]
   end
 
-  before_save :set_normalized_name
-
-  def self.search_lyricists(query = "*")
-    search(query,
-      fields: ["name^5"],
-      match: :word_middle,
-      misspellings: {below: 5})
-  end
-
   def search_data
     {
+      first_name:,
+      last_name:,
       name:
     }
   end
 
-  def set_normalized_name
-    self.normalized_name = I18n.transliterate(name).downcase
+  def assign_names
+    formatted_name = self.class.custom_titleize(name)
+    names = formatted_name.split(" ")
+    self[:name] = formatted_name
+    self.first_name = names.first
+    self.last_name = (names.length > 1) ? names.last : ""
+    self.sort_name = (names.length > 1) ? names.last : ""
   end
 end
 
@@ -43,6 +44,8 @@ end
 # Table name: lyricists
 #
 #  id                 :uuid             not null, primary key
+#  first_name         :string           not null
+#  last_name          :string
 #  name               :string           not null
 #  slug               :string           not null
 #  sort_name          :string
@@ -52,5 +55,4 @@ end
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  compositions_count :integer          default(0)
-#  normalized_name    :string
 #

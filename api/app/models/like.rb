@@ -3,7 +3,6 @@ class Like < ApplicationRecord
   belongs_to :likeable, polymorphic: true
 
   validates :user_id, uniqueness: {scope: [:likeable_type, :likeable_id], message: "has already liked this"}
-  validates :likeable_type, inclusion: {in: ["Recording"], message: "is not a valid type"}
 
   scope :most_recent, -> { order(created_at: :desc) }
 end

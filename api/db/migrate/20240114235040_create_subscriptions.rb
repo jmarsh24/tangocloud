@@ -8,6 +8,7 @@ class CreateSubscriptions < ActiveRecord::Migration[7.1]
       t.datetime :end_date, null: false
       t.enum :subscription_type, default: "free", null: false, enum_type: :subscription_type
       t.belongs_to :user, foreign_key: true, type: :uuid
+
       t.timestamps
     end
   end

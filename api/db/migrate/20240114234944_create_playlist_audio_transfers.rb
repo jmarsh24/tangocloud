@@ -4,6 +4,7 @@ class CreatePlaylistAudioTransfers < ActiveRecord::Migration[7.1]
       t.belongs_to :playlist, null: false, foreign_key: true, type: :uuid
       t.belongs_to :audio_transfer, null: false, foreign_key: true, type: :uuid
       t.integer :position, null: false, default: 0
+
       t.timestamps
     end
   end

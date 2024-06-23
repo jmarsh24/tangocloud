@@ -1,28 +1,27 @@
 module Types
   class QueryType < Types::BaseObject
-    field :fetch_audio_transfer, resolver: Resolvers::AudioTransfers::FetchAudioTransfer
-    field :fetch_audio_variant, resolver: Resolvers::AudioVariants::FetchAudioVariant
-    field :fetch_composer, resolver: Resolvers::Composers::FetchComposer
-    field :fetch_genre, resolver: Resolvers::Genres::FetchGenre
-    field :fetch_liked_recordings, resolver: Resolvers::Recordings::FetchLikedRecordings
-    field :fetch_lyricist, resolver: Resolvers::Lyricists::FetchLyricist
-    field :fetch_orchestra, resolver: Resolvers::Orchestras::FetchOrchestra
-    field :fetch_period, resolver: Resolvers::Periods::FetchPeriod
-    field :fetch_playlist, resolver: Resolvers::Playlists::FetchPlaylist
-    field :fetch_recording, resolver: Resolvers::Recordings::FetchRecording
-    field :fetch_singer, resolver: Resolvers::Singers::FetchSinger
-    field :fetch_user, resolver: Resolvers::Users::FetchUser
-    field :search_composers, resolver: Resolvers::Composers::SearchComposers
-    field :search_el_recodo_songs, resolver: Resolvers::ElRecodoSongs::SearchElRecodoSongs
-    field :search_genres, resolver: Resolvers::Genres::SearchGenres
-    field :search_lyricists, resolver: Resolvers::Lyricists::SearchLyricists
-    field :search_orchestras, resolver: Resolvers::Orchestras::SearchOrchestras
-    field :search_periods, resolver: Resolvers::Periods::SearchPeriods
-    field :search_playlists, resolver: Resolvers::Playlists::SearchPlaylists
-    field :search_recordings, resolver: Resolvers::Recordings::SearchRecordings
-    field :search_singers, resolver: Resolvers::Singers::SearchSingers
-    field :search_users, resolver: Resolvers::Users::SearchUsers
-    field :user_profile, resolver: Resolvers::Users::UserProfile
-    field :check_like_status_on_recording, resolver: Resolvers::Recordings::CheckLikeStatusOnRecording
+    field :audio_transfer, resolver: Resolvers::AudioTransfer
+    field :audio_variant, resolver: Resolvers::AudioVariant
+    field :composer, resolver: Resolvers::Composer
+    field :genre, resolver: Resolvers::Genre
+    field :genres, resolver: Resolvers::Genres
+    field :liked_recordings, resolver: Resolvers::Recordings
+    field :lyricist, resolver: Resolvers::Lyricist
+    field :orchestra, resolver: Resolvers::Orchestra
+    field :period, resolver: Resolvers::Period
+    field :playlist, resolver: Resolvers::Playlist
+    field :recording, resolver: Resolvers::Recording
+    field :singer, resolver: Resolvers::Singer
+    field :user, resolver: Resolvers::User
+    field :composers, resolver: Resolvers::Composers
+    field :el_recodo_songs, resolver: Resolvers::ElRecodoSongs
+    field :lyricists, resolver: Resolvers::Lyricists
+    field :orchestras, resolver: Resolvers::Orchestras
+    field :periods, resolver: Resolvers::Periods
+    field :playlists, resolver: Resolvers::Playlists
+    field :recordings, resolver: Resolvers::Recordings
+    field :singers, resolver: Resolvers::Singers
+    field :users, resolver: Resolvers::Users
+    field :current_user, resolver: Resolvers::CurrentUser
   end
 end

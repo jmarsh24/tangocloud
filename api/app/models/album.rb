@@ -17,19 +17,6 @@ class Album < ApplicationRecord
     blob.variant :large, resize_to_limit: [500, 500]
   end
 
-  def self.search_albums(query = "*")
-    search(
-      query,
-      fields: [:title, :description],
-      match: :word_middle,
-      misspellings: {below: 5},
-      order: {title: :asc},
-      includes: [
-        album_art_attachment: :blob
-      ]
-    )
-  end
-
   def search_data
     {
       title:,

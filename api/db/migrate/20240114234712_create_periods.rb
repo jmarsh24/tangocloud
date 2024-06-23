@@ -7,6 +7,7 @@ class CreatePeriods < ActiveRecord::Migration[7.1]
       t.integer :end_year, null: false, default: 0
       t.integer :recordings_count, null: false, default: 0
       t.string :slug, index: {unique: true}, null: false
+
       t.timestamps
     end
   end

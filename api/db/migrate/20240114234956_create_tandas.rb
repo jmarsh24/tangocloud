@@ -6,6 +6,7 @@ class CreateTandas < ActiveRecord::Migration[7.1]
       t.boolean :public, null: false, default: true
       t.belongs_to :audio_transfer, null: false, foreign_key: true, type: :uuid
       t.belongs_to :user, null: false, type: :uuid
+
       t.timestamps
     end
   end

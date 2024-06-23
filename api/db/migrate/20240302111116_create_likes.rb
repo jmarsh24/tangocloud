@@ -4,6 +4,7 @@ class CreateLikes < ActiveRecord::Migration[7.1]
       t.string :likeable_type, null: false
       t.uuid :likeable_id, null: false
       t.belongs_to :user, type: :uuid, foreign_key: true, null: false
+
       t.timestamps
     end
     add_index :likes, [:likeable_type, :likeable_id]

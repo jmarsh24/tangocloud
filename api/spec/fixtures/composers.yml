@@ -1,38 +1,45 @@
 francisco_aranaz:
   name: Francisco Aranaz
+  first_name: Francisco
+  last_name: Aranaz
   slug: francisco-aranaz
-  normalized_name: francisco aranaz
 
 pedro_maffia:
   name: Pedro Maffia
+  first_name: Pedro
+  last_name: Maffia
   slug: pedro-maffia
-  normalized_name: pedro maffia
 
 virgilio_exposito:
   name: Virgilio Exposito
+  first_name: Virgilio
+  last_name: Exposito
   slug: virgilio-exposito
-  normalized_name: virgilio exposito
 
 rosita_melo:
   name: Rosita Melo
+  first_name: Rosita
+  last_name: Melo
   slug: rosita-melo
-  normalized_name: rosita melo
 
 andres_fraga:
   name: Andres Fraga
+  first_name: Andres
+  last_name: Fraga
   slug: andres-fraga
-  normalized_name: andres fraga
 # == Schema Information
 #
 # Table name: composers
 #
 #  id                 :uuid             not null, primary key
+#  first_name         :string           not null
+#  last_name          :string
 #  name               :string           not null
 #  birth_date         :date
 #  death_date         :date
+#  sort_name          :string
 #  slug               :string           not null
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  compositions_count :integer          default(0)
-#  normalized_name    :string
 #

@@ -22,27 +22,9 @@ module Types
       cdn_image_url(object.image.variant(:medium))
     end
 
-    field :playlist_items, [PlaylistItemType], null: true
-
-    def playlist_items
-      dataloader.with(Sources::Preload, :playlist_items).load(object)
-      object.playlist_items
-    end
-
-    field :recordings, [RecordingType], null: false
-
-    def recordings
-      dataloader.with(Sources::Preload, playlist_items: :recording).load(object)
-      object.recordings
-    end
-
-    field :audio_variants, [AudioVariantType], null: false
-
-    def audio_variants
-      dataloader.with(Sources::Preload, playlist_items: {recording: {audio_transfers: :audio_variants}}).load(object)
-      object.audio_variants
-    end
-
     belongs_to :user
+    has_many :playlist_items
+    has_many :recordings
+    has_many :audio_variants
   end
 end

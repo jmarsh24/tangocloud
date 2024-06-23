@@ -4,6 +4,8 @@ module Types
 
     field :id, ID, null: true
     field :name, String, null: true
+    field :first_name, String, null: true
+    field :last_name, String, null: true
     field :slug, String, null: true
     field :rank, Integer, null: true
     field :sort_name, String, null: true
