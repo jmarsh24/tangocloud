@@ -2,8 +2,8 @@
 ARG NODE_VERSION=20.10.0
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
-ARG RUBY_VERSION=3.2.2
-FROM mcr.microsoft.com/devcontainers/ruby:1-$RUBY_VERSION-bullseye as base
+ARG RUBY_VERSION=3.2
+FROM mcr.microsoft.com/devcontainers/ruby:1-${RUBY_VERSION}-bullseye as base
 
 # Rails app lives here
 WORKDIR /rails
@@ -16,8 +16,7 @@ ENV RAILS_ENV="production" \
 
 # Install packages needed for deployment
 RUN apt-get update -qq && \
-  apt-get install --no-install-recommends -y curl postgresql-client-15 libvips ffmpeg software-properties-common \
-  python3-pip watchman && \
+  apt-get install --no-install-recommends -y curl postgresql-client libvips ffmpeg software-properties-common python3-pip && \
   rm -rf /var/lib/apt/lists/* /var/cache/apt/archives
 
 # Install packages needed for audiowaveform
@@ -76,6 +75,7 @@ FROM base
 
 # Copy built artifacts: gems, application
 COPY --from=build /usr/local/bundle /usr/local/bundle
+COPY --from=build /usr/local/node /usr/local/node
 COPY --from=build /rails /rails
 
 # Run and own only the runtime files as a non-root user for security
