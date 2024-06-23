@@ -109,6 +109,10 @@ jobs:
         run: npx playwright install --with-deps chromium
         working-directory: ./api
 
+      - name: Install Node dependencies
+        run: yarn install
+        working-directory: ./api
+
       - name: Checkout LFS objects
         run: git lfs pull
 
