@@ -665,7 +665,7 @@ DEPENDENCIES
   kamal
   kaminari
   letter_opener
-  lograge (~> 0.14.0)
+  lograge
   mission_control-jobs
   newrelic_rpm
   oj

@@ -1,21 +1,25 @@
-version: "3"
-
 services:
   app:
     build:
       context: ..
-      dockerfile: .devcontainer/Dockerfile
+      dockerfile: Dockerfile
     volumes:
       - ../..:/workspaces:cached
+
+    # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
-  postgres-15:
-    restart: always
-    image: "postgres:15.1"
-    command: postgres -c shared_preload_libraries=pg_stat_statements -c pg_stat_statements.track=all
-    ports:
-      - "54315:5432"
+
+    # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
+    network_mode: service:db
+
+    environment:
+      TZ: Europe/Berlin
+      EDITOR: code --wait
+  db:
+    image: postgres:15.1
+    restart: unless-stopped
     volumes:
-      - ./volumes/postgres-15:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
   elasticsearch-8:
@@ -29,3 +33,7 @@ services:
       - discovery.type=single-node
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - xpack.security.enabled=false
+
+volumes:
+  postgres-data:
+  redis-data:

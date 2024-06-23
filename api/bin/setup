@@ -12,20 +12,8 @@ FileUtils.chdir APP_ROOT do
   system! "gem install bundler --conservative"
   system("bundle check") || system!("bundle install")
 
-  # puts "== Install JavaScript dependencies =="
-  # system!("bin/yarn")
-
-  has_brew = system("which brew")
-  has_vips = system("which vips")
-
-  if !has_vips && has_brew
-    puts "\n== Installing Vips with Homebrew =="
-    system! "brew install vips"
-  elsif has_vips
-    puts "\n== SKIP installing Vips, because you already have it =="
-  elsif !has_brew
-    puts "\n== SKIP installing Vips, because you don't have Homebrew =="
-  end
+  puts "== Install JavaScript dependencies =="
+  system!("bin/yarn")
 
   puts "\n== Preparing database =="
   system! "bin/rails db:prepare"
