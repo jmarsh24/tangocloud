@@ -19,7 +19,7 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg ma
 RUN apt-get update && \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get -y install --no-install-recommends \
-  software-properties-common terraform gh libvips42 postgresql-client-15 python3-pip ffmpeg curl
+  software-properties-common terraform gh libvips42 postgresql-client-15 python3-pip ffmpeg
 
 # Install packages needed for audiowaveform
 RUN apt-get update -qq && \
@@ -43,3 +43,7 @@ RUN npm install -g heroku
 RUN gem install rails pull-request
 
 RUN npx playwright install-deps && npx playwright install chromium
+
+RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash && \
+  apt-get install -y git-lfs && \
+  git lfs install
