@@ -3,7 +3,7 @@ ARG NODE_VERSION=20.10.0
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
 ARG RUBY_VERSION=3.2
-FROM mcr.microsoft.com/devcontainers/ruby:1-${RUBY_VERSION}-bullseye
+FROM mcr.microsoft.com/devcontainers/ruby:1-${RUBY_VERSION}-bookworm
 
 # Prepare for Terraform
 RUN wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
@@ -29,9 +29,9 @@ RUN apt-get update -qq && \
   rm -rf /var/lib/apt/lists/* /var/cache/apt/archives
 
 # install audiowaveform
-RUN curl -LO https://github.com/bbc/audiowaveform/releases/download/1.10.1/audiowaveform_1.10.1-1-12_arm64.deb && \
-  dpkg -i audiowaveform_1.10.1-1-12_arm64.deb && \
-  rm audiowaveform_1.10.1-1-12_arm64.deb
+RUN curl -LO https://github.com/bbc/audiowaveform/releases/download/1.10.1/audiowaveform_1.10.1-1-11_arm64.deb && \
+  dpkg -i audiowaveform_1.10.1-1-11_arm64.deb && \
+  rm audiowaveform_1.10.1-1-11_arm64.deb
 
 RUN curl -fsSL https://get.docker.com | sh
 

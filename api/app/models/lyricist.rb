@@ -13,7 +13,7 @@ class Lyricist < ApplicationRecord
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true
 
-  before_create :assign_names
+  before_validation :assign_names, on: :create
 
   has_one_attached :photo, dependent: :purge_later do |blob|
     blob.variant :thumb, resize_to_limit: [100, 100]
@@ -30,12 +30,15 @@ class Lyricist < ApplicationRecord
   end
 
   def assign_names
-    formatted_name = self.class.custom_titleize(name)
-    names = formatted_name.split(" ")
-    self[:name] = formatted_name
-    self.first_name = names.first
-    self.last_name = (names.length > 1) ? names.last : ""
-    self.sort_name = (names.length > 1) ? names.last : ""
+    if new_record?
+      formatted_name = self.class.custom_titleize(name)
+      names = formatted_name.split(" ")
+
+      self.name = formatted_name
+      self.first_name = names.first
+      self.last_name = (names.length > 1) ? names.last : ""
+      self.sort_name = (names.length > 1) ? names.last : ""
+    end
   end
 end
 

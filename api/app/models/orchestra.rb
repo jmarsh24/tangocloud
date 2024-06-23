@@ -37,10 +37,11 @@ class Orchestra < ApplicationRecord
     if new_record?
       formatted_name = self.class.custom_titleize(name)
       names = formatted_name.split(" ")
-      self.name ||= formatted_name
-      self.first_name ||= names.first
-      self.last_name ||= (names.length > 1) ? names.last : ""
-      self.sort_name ||= (names.length > 1) ? names.last : ""
+
+      self.name = formatted_name
+      self.first_name = names.first
+      self.last_name = (names.length > 1) ? names.last : ""
+      self.sort_name = (names.length > 1) ? names.last : ""
     end
   end
 end

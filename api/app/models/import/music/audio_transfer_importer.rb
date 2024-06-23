@@ -80,7 +80,7 @@ module Import
           orchestra = Orchestra.find_or_initialize_by(slug: metadata.album_artist.parameterize)
 
           if orchestra.new_record?
-            orch.name = metadata.album_artist
+            orchestra.name = metadata.album_artist
           end
 
           record_label = if metadata.record_label.present?
