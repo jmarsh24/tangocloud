@@ -27,6 +27,7 @@ class CreateElRecodoSongs < ActiveRecord::Migration[7.1]
       t.index :date
       t.datetime :synced_at, null: false, default: -> { "CURRENT_TIMESTAMP" }
       t.datetime :page_updated_at, null: false, default: -> { "CURRENT_TIMESTAMP" }
+
       t.timestamps
     end
   end

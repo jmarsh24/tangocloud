@@ -9,6 +9,7 @@ class CreateWaveforms < ActiveRecord::Migration[7.1]
       t.integer :bits, null: false
       t.integer :length, null: false
       t.float :data, array: true, default: []
+
       t.timestamps
     end
   end

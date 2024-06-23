@@ -9,6 +9,8 @@ class CreateAlbums < ActiveRecord::Migration[7.1]
       t.string :slug, index: {unique: true}, null: false
       t.string :external_id
       t.enum :album_type, null: false, default: "compilation", enum_type: :album_type
+
+      t.timestamps
     end
   end
 end

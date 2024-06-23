@@ -6,6 +6,7 @@ class CreateDancers < ActiveRecord::Migration[7.1]
       t.string :nationality
       t.date :birth_date
       t.date :death_date
+
       t.timestamps
     end
   end

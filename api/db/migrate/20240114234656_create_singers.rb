@@ -8,6 +8,7 @@ class CreateSingers < ActiveRecord::Migration[7.1]
       t.text :bio
       t.date :birth_date
       t.date :death_date
+
       t.timestamps
     end
   end
