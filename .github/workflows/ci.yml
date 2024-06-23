@@ -110,7 +110,7 @@ jobs:
         working-directory: ./api
 
       - name: Install Node dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
         working-directory: ./api
 
       - name: Checkout LFS objects
