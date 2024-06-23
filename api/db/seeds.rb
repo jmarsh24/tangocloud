@@ -13,8 +13,8 @@ def create_user(email, password, admin = false)
 end
 
 # Create users
-create_user("admin@example.com", "tangocloud123", true)
-normal_user = create_user("user@example.com", "tangocloud123")
+create_user("admin@tangocloud.app", "tangocloud123", true)
+normal_user = create_user("user@tangocloud.app", "tangocloud123")
 
 # Create genres
 genres = ["Tango", "Vals", "Milonga"].map do |name|
