@@ -10,10 +10,6 @@ module Types
       object.name.titleize
     end
 
-    field :recordings, [RecordingType], null: false
-    def recordings
-      dataloader.with(Sources::Preload, :recordings).load(object)
-      object.recordings
-    end
+    has_many :recordings
   end
 end

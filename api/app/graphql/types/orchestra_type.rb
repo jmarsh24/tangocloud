@@ -18,24 +18,9 @@ module Types
       cdn_image_url(object.photo.variant(:large)) if object.photo.attached?
     end
 
-    field :compositions, [CompositionType], null: false
-    def compositions
-      dataloader.with(Sources::Preload, :compositions).load(object)
-      object.compositions
-    end
-
-    field :singers, [SingerType], null: false
-    def singers
-      dataloader.with(Sources::Preload, :singers).load(object)
-      object.singers
-    end
-
-    field :lyricists, [LyricistType], null: false
-    def lyricists
-      dataloader.with(Sources::Preload, :lyricists).load(object)
-      object.lyricists
-    end
-
+    has_many :compositions
+    has_many :singers
+    has_many :lyricists
     has_many :recordings
   end
 end

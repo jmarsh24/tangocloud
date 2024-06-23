@@ -5,13 +5,9 @@ module Types
     field :tangotube_slug, String, null: true
     field :lyrics, [LyricType], null: false
 
-    def lyrics
-      dataloader.with(Sources::Preload, :lyrics).load(object)
-      object.lyrics
-    end
-
     belongs_to :lyricist, null: true
     belongs_to :composer, null: true
     has_many :recordings
+    has_many :lyrics, null: true
   end
 end

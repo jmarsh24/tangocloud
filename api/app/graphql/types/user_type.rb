@@ -23,20 +23,8 @@ module Types
       end
     end
 
-    field :sessions, [SessionType], null: false
-
-    def sessions
-      dataloader.with(Sources::Preload, :sessions).load(object)
-      object.sessions
-    end
-
-    field :events, [EventType], null: false
-
-    def events
-      dataloader.with(Sources::Preload, :events).load(object)
-      object.events
-    end
-
+    has_many :sessions
+    has_many :events
     has_many :playbacks, -> { most_recent.limit(100) }
     has_many :playlists
     has_many :likes, -> { most_recent }

@@ -18,11 +18,6 @@ module Types
       cdn_image_url(object.album_art.variant(:large)) if object.album_art.attached?
     end
 
-    field :audio_transfers, [AudioTransferType], null: false
-
-    def audio_transfers
-      dataloader.with(Sources::Preload, :audio_transfers).load(object)
-      object.audio_transfers
-    end
+    has_many :audio_transfers
   end
 end

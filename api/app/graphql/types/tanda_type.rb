@@ -9,11 +9,6 @@ module Types
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
-    field :tanda_recordings, [TandaRecordingType], null: false
-
-    def tanda_recordings
-      dataloader.with(Sources::Preload, :tanda_recordings).load(object)
-      object.tanda_recordings
-    end
+    has_many :tanda_recordings
   end
 end
