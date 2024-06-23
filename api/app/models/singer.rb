@@ -8,6 +8,7 @@ class Singer < ApplicationRecord
   has_many :recordings, through: :recording_singers
 
   validates :first_name, presence: true
+  validates :name, presence: true
   validates :slug, presence: true, uniqueness: true
   validates :rank, presence: true, numericality: {only_integer: true}
 

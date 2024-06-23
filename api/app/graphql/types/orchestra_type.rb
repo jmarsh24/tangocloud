@@ -3,7 +3,7 @@ module Types
     include Rails.application.routes.url_helpers
 
     field :id, ID, null: true
-    field :name, String, null: true, method: :formatted_name
+    field :name, String, null: true
     field :first_name, String, null: true
     field :last_name, String, null: true
     field :rank, Integer, null: true

@@ -53,7 +53,7 @@ RSpec.describe "Recordings", type: :graph do
 
     it "returns comprehensive details for recordings including orchestra and singers" do
       gql(query, variables: {query: "Volver a sonar"}, user:)
-      debugger
+
       found_recording = data.recordings.edges.first.node
 
       expect(found_recording.id).to eq(recording.id.to_s)

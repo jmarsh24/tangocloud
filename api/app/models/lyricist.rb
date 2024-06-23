@@ -9,6 +9,7 @@ class Lyricist < ApplicationRecord
   has_many :lyrics, through: :compositions
   has_many :recordings, through: :compositions
 
+  validates :first_name, presence: true
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true
 

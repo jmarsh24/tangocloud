@@ -9,6 +9,7 @@ class Composer < ApplicationRecord
   has_many :recordings, through: :compositions
 
   validates :first_name, presence: true
+  validates :name, presence: true
   validates :slug, presence: true, uniqueness: true
 
   has_one_attached :photo
