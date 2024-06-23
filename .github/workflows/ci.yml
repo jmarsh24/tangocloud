@@ -71,6 +71,9 @@ jobs:
           - elasticsearch:/usr/share/elasticsearch/data
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Install packages
         run: |
           sudo apt-get update
@@ -79,13 +82,11 @@ jobs:
           sudo apt-get install --no-install-recommends -y postgresql-client
           sudo apt-get install --no-install-recommends -y libpq-dev
 
-      - uses: actions/setup-node@v3
+      - name: Set up Node
+        uses: actions/setup-node@v3
         with:
           node-version: "20.x"
           cache: yarn
-
-      - name: Checkout LFS objects
-        run: git lfs pull
 
       - name: Install ffmpeg
         run: sudo apt-get install --no-install-recommends -y ffmpeg
@@ -96,22 +97,23 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y audiowaveform
 
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
           bundler-cache: true
           working-directory: ./api
+
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
         working-directory: ./api
 
       - name: Install Node dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
         working-directory: ./api
+
+      - name: Checkout LFS objects
+        run: git lfs pull
 
       - name: Run Tests
         env:
@@ -120,6 +122,5 @@ jobs:
           CI: true
           RSPEC_RETRY_RETRY_COUNT: 3
           ELASTICSEARCH_URL: http://localhost:9200
-
         run: bin/rspec --format documentation
         working-directory: ./api
