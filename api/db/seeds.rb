@@ -205,7 +205,7 @@ audio_transfers.each do |audio_transfer|
   end
 end
 
-#eindexing models
+# Reindexing models
 
 ElRecodoSong.reindex
 Recording.reindex
