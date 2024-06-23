@@ -23,13 +23,6 @@ class Orchestra < ApplicationRecord
 
   before_save :set_normalized_name
 
-  def self.search_orchestras(query = "*")
-    search(query,
-      fields: ["name^5"],
-      match: :word_middle,
-      misspellings: {below: 5})
-  end
-
   def search_data
     {
       name:
