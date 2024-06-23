@@ -102,7 +102,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
 
   create_table "composers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "first_name", null: false
-    t.string "last_name", null: false
+    t.string "last_name"
+    t.string "name", null: false
     t.date "birth_date"
     t.date "death_date"
     t.string "sort_name"
@@ -110,8 +111,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "compositions_count", default: 0
-    t.string "normalized_name"
-    t.index ["normalized_name"], name: "index_composers_on_normalized_name", unique: true
     t.index ["slug"], name: "index_composers_on_slug", unique: true
   end
 
@@ -250,7 +249,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
 
   create_table "lyricists", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "first_name", null: false
-    t.string "last_name", null: false
+    t.string "last_name"
+    t.string "name", null: false
     t.string "slug", null: false
     t.string "sort_name"
     t.date "birth_date"
@@ -259,8 +259,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "compositions_count", default: 0
-    t.string "normalized_name"
-    t.index ["normalized_name"], name: "index_lyricists_on_normalized_name", unique: true
     t.index ["slug"], name: "index_lyricists_on_slug", unique: true
   end
 
@@ -275,7 +273,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
 
   create_table "orchestras", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "first_name", null: false
-    t.string "last_name", null: false
+    t.string "last_name"
+    t.string "name", null: false
     t.integer "rank", default: 0, null: false
     t.string "sort_name"
     t.date "birth_date"
@@ -284,8 +283,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "recordings_count", default: 0
-    t.string "normalized_name"
-    t.index ["normalized_name"], name: "index_orchestras_on_normalized_name", unique: true
     t.index ["slug"], name: "index_orchestras_on_slug", unique: true
   end
 
@@ -395,7 +392,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
 
   create_table "singers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "first_name", null: false
-    t.string "last_name", null: false
+    t.string "last_name"
+    t.string "name", null: false
     t.string "slug", null: false
     t.integer "rank", default: 0, null: false
     t.string "sort_name"
@@ -405,8 +403,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "soloist", default: false
-    t.string "normalized_name"
-    t.index ["normalized_name"], name: "index_singers_on_normalized_name", unique: true
     t.index ["slug"], name: "index_singers_on_slug", unique: true
   end
 

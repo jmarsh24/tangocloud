@@ -3,7 +3,7 @@ class Orchestra < ApplicationRecord
   include Titleizable
   friendly_id :name, use: :slugged
 
-  searchkick word_middle: [:name], callbacks: :async
+  searchkick word_start: [:first_name, :last_name, :name], callbacks: :async
 
   has_many :recordings, dependent: :destroy
   has_many :singers, through: :recordings
@@ -12,9 +12,10 @@ class Orchestra < ApplicationRecord
   has_many :lyricists, through: :compositions
 
   validates :first_name, presence: true
-  validates :last_name, presence: true
   validates :rank, presence: true, numericality: {only_integer: true}
   validates :slug, presence: true, uniqueness: true
+
+  before_validation :assign_names, on: :create
 
   has_one_attached :photo, dependent: :purge_later do |blob|
     blob.variant :thumb, resize_to_limit: [100, 100]
@@ -24,16 +25,23 @@ class Orchestra < ApplicationRecord
 
   def search_data
     {
+      first_name:,
+      last_name:,
       name:
     }
   end
 
-  def name
-    "#{first_name} #{last_name}"
-  end
+  private
 
-  def formatted_name
-    self.class.custom_titleize(name)
+  def assign_names
+    if new_record?
+      formatted_name = self.class.custom_titleize(name)
+      names = formatted_name.split(" ")
+      self.name ||= formatted_name
+      self.first_name ||= names.first
+      self.last_name ||= (names.length > 1) ? names.last : ""
+      self.sort_name ||= (names.length > 1) ? names.last : ""
+    end
   end
 end
 
@@ -43,7 +51,8 @@ end
 #
 #  id               :uuid             not null, primary key
 #  first_name       :string           not null
-#  last_name        :string           not null
+#  last_name        :string
+#  name             :string           not null
 #  rank             :integer          default(0), not null
 #  sort_name        :string
 #  birth_date       :date
@@ -52,5 +61,4 @@ end
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  recordings_count :integer          default(0)
-#  normalized_name  :string
 #

@@ -157,7 +157,7 @@ playlists.each do |playlist|
 end
 
 # Create el_recodo_songs
-el_recodo_songs = ["El Día Que Me Quieras", "Mi Buenos Aires Querido", "Volver"].map do |title|
+["El Día Que Me Quieras", "Mi Buenos Aires Querido", "Volver"].map do |title|
   ElRecodoSong.create!(
     title:,
     date: Faker::Date.between(from: "1930-01-01", to: "1950-12-31"),
@@ -171,7 +171,7 @@ el_recodo_songs = ["El Día Que Me Quieras", "Mi Buenos Aires Querido", "Volver"
 end
 
 # Create sessions
-sessions = ["Morning Practice", "Evening Rehearsal", "Night Performance"].map do |name|
+["Morning Practice", "Evening Rehearsal", "Night Performance"].map do |name|
   Session.create!(
     user: normal_user,
     user_agent: Faker::Internet.user_agent,
@@ -180,7 +180,7 @@ sessions = ["Morning Practice", "Evening Rehearsal", "Night Performance"].map do
 end
 
 # Create waveforms
-waveforms = audio_transfers.map do |audio_transfer|
+audio_transfers.map do |audio_transfer|
   waveform_filepath = Rails.root.join("spec/fixtures/files/waveform_data_volver_a_sonar.json")
   data = JSON.parse(File.read(waveform_filepath))
   waveform = Waveform.create!(

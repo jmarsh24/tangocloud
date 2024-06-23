@@ -2,7 +2,8 @@ class CreateLyricists < ActiveRecord::Migration[7.1]
   def change
     create_table :lyricists, id: :uuid do |t|
       t.string :first_name, null: false
-      t.string :last_name, null: false
+      t.string :last_name, null: true
+      t.string :name, null: false
       t.string :slug, null: false
       t.string :sort_name
       t.date :birth_date

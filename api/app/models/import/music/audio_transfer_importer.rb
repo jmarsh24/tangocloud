@@ -49,16 +49,21 @@ module Import
           el_recodo_song = ElRecodoSong.find_by(ert_number: metadata.ert_number)
 
           if metadata.lyricist.present?
-            lyricist = Lyricist.find_or_create_by!(normalized_name: I18n.transliterate(metadata.lyricist).downcase) do |lyr|
-              lyr.name = Lyricist.custom_titleize(I18n.transliterate(metadata.lyricist))
+            lyricist = Lyricist.find_or_initialize_by(slug: metadata.lyricist.parameterize)
+
+            if lyricist.new_record?
+              lyricist.name = metadata.lyricist
             end
           end
 
           if metadata.composer.present?
-            composer = Composer.find_or_create_by!(normalized_name: I18n.transliterate(metadata.composer).downcase) do |comp|
-              comp.name = Composer.custom_titleize(I18n.transliterate(metadata.composer))
+            composer = Composer.find_or_initialize_by(slug: metadata.composer.parameterize)
+
+            if composer.new_record?
+              composer.name = metadata.composer
             end
           end
+
           if lyricist.present? && composer.present?
             composition = Composition.find_or_create_by!(title: metadata.title) do |comp|
               comp.lyricist = lyricist if lyricist.present?
@@ -72,8 +77,10 @@ module Import
             composition.lyrics.find_or_create_by!(content: el_recodo_song.lyrics, locale: "es", composition:)
           end
 
-          orchestra = Orchestra.find_or_create_by!(normalized_name: I18n.transliterate(metadata.album_artist).downcase) do |orch|
-            orch.name = Orchestra.custom_titleize(metadata.album_artist)
+          orchestra = Orchestra.find_or_initialize_by(slug: metadata.album_artist.parameterize)
+
+          if orchestra.new_record?
+            orch.name = metadata.album_artist
           end
 
           record_label = if metadata.record_label.present?
@@ -85,9 +92,11 @@ module Import
           end
 
           if metadata.artist.present? && metadata.singer.downcase != "instrumental"
-            singer = Singer.find_or_create_by!(normalized_name: I18n.transliterate(metadata.artist).downcase) do |s|
-              s.name = Singer.custom_titleize(metadata.artist)
-              s.soloist = orchestra.nil?
+            singer = Singer.find_or_initialize_by(slug: metadata.artist.parameterize)
+
+            if singer.new_record?
+              singer.name = metadata.artist
+              singer.soloist = orchestra.nil?
             end
           end
 

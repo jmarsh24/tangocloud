@@ -1,24 +1,29 @@
 francisco_aranaz:
+  name: Francisco Aranaz
   first_name: Francisco
   last_name: Aranaz
   slug: francisco-aranaz
 
 pedro_maffia:
+  name: Pedro Maffia
   first_name: Pedro
   last_name: Maffia
   slug: pedro-maffia
 
 virgilio_exposito:
+  name: Virgilio Exposito
   first_name: Virgilio
   last_name: Exposito
   slug: virgilio-exposito
 
 rosita_melo:
+  name: Rosita Melo
   first_name: Rosita
   last_name: Melo
   slug: rosita-melo
 
 andres_fraga:
+  name: Andres Fraga
   first_name: Andres
   last_name: Fraga
   slug: andres-fraga
@@ -28,7 +33,8 @@ andres_fraga:
 #
 #  id                 :uuid             not null, primary key
 #  first_name         :string           not null
-#  last_name          :string           not null
+#  last_name          :string
+#  name               :string           not null
 #  birth_date         :date
 #  death_date         :date
 #  sort_name          :string
@@ -36,5 +42,4 @@ andres_fraga:
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  compositions_count :integer          default(0)
-#  normalized_name    :string
 #

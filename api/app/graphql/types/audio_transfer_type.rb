@@ -17,7 +17,7 @@ module Types
     belongs_to :album, null: true
     belongs_to :recording, null: true
     belongs_to :transfer_agent, null: true
-    has_many :audio_variants, null: true
-    has_many :playlist_items, null: true
+    has_many :audio_variants
+    has_many :playlist_items
   end
 end
