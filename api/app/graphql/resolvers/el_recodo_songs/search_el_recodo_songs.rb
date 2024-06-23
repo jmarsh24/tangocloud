@@ -5,7 +5,10 @@ module Resolvers::ElRecodoSongs
     argument :query, String, required: false, description: "Search query."
 
     def resolve(query: "*")
-      ElRecodoSong.search_songs(query).results
+      ElRecodoSong.search(query,
+        fields: ["title^5", "composer", "author", "lyrics", "orchestra", "singer"],
+        match: :word_middle,
+        misspellings: {below: 5}).results
     end
   end
 end

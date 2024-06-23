@@ -5,7 +5,10 @@ module Resolvers::Periods
     argument :query, String, required: false, description: "Search query."
 
     def resolve(query: "*")
-      Period.search_periods(query).results
+      Period.search(query,
+        fields: ["name^5"],
+        match: :word_middle,
+        misspellings: {below: 5}).results
     end
   end
 end

@@ -182,7 +182,19 @@ waveforms = audio_transfers.map do |audio_transfer|
     length: 300000,
     data:
   )
+  waveform.image.attach(io: File.open(Rails.root.join("spec/fixtures/files/19401008_volver_a_sonar_roberto_rufino_tango_2476_waveform.png")), filename: "waveform.png", content_type: "image/png")
   waveform
 end
+
+ElRecodoSong.reindex
+Recording.reindex
+Playlist.reindex
+Composer.reindex
+Genre.reindex
+Lyricist.reindex
+Orchestra.reindex
+Period.reindex
+Singer.reindex
+User.reindex
 
 puts "Seed data created successfully!"

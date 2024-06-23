@@ -18,6 +18,12 @@
       "program": "bin/rails server"
     },
     {
+      "name": "Worker",
+      "type": "ruby_lsp",
+      "request": "launch",
+      "program": "bin/rails solid_queue:start"
+    }
+    {
       "name": "Vite",
       "type": "node-terminal",
       "request": "launch",
@@ -29,7 +35,8 @@
       "name": "Run App",
       "configurations": [
         "Vite",
-        "Rails"
+        "Rails",
+        "Worker"
       ],
       "stopAll": true,
       "presentation": {
