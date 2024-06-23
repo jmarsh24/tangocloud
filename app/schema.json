@@ -1,0 +1,812 @@
+{
+	"data": {
+		"__schema": {
+			"types": [
+				{ "name": "AddLikeToRecordingInput", "fields": null },
+				{
+					"name": "AddLikeToRecordingPayload",
+					"fields": [
+						{ "name": "clientMutationId" },
+						{ "name": "errors" },
+						{ "name": "like" },
+						{ "name": "success" }
+					]
+				},
+				{ "name": "AddPlaylistRecordingInput", "fields": null },
+				{
+					"name": "AddPlaylistRecordingPayload",
+					"fields": [
+						{ "name": "clientMutationId" },
+						{ "name": "errors" },
+						{ "name": "playlistItem" },
+						{ "name": "success" }
+					]
+				},
+				{
+					"name": "Album",
+					"fields": [
+						{ "name": "albumArtUrl" },
+						{ "name": "albumType" },
+						{ "name": "audioTransfer" },
+						{ "name": "audioTransfers" },
+						{ "name": "audioTransfersCount" },
+						{ "name": "description" },
+						{ "name": "externalId" },
+						{ "name": "id" },
+						{ "name": "releaseDate" },
+						{ "name": "slug" },
+						{ "name": "title" }
+					]
+				},
+				{ "name": "AppleLoginInput", "fields": null },
+				{
+					"name": "AppleLoginPayload",
+					"fields": [
+						{ "name": "clientMutationId" },
+						{ "name": "errors" },
+						{ "name": "success" },
+						{ "name": "token" },
+						{ "name": "user" }
+					]
+				},
+				{
+					"name": "AudioTransfer",
+					"fields": [
+						{ "name": "album" },
+						{ "name": "albumId" },
+						{ "name": "audioFileUrl" },
+						{ "name": "audioVariant" },
+						{ "name": "audioVariants" },
+						{ "name": "createdAt" },
+						{ "name": "filename" },
+						{ "name": "id" },
+						{ "name": "playlistItem" },
+						{ "name": "playlistItems" },
+						{ "name": "position" },
+						{ "name": "recording" },
+						{ "name": "recordingId" },
+						{ "name": "transferAgent" },
+						{ "name": "transferAgentId" },
+						{ "name": "updatedAt" },
+						{ "name": "waveform" }
+					]
+				},
+				{
+					"name": "AudioTransferConnection",
+					"fields": [{ "name": "edges" }, { "name": "nodes" }, { "name": "pageInfo" }]
+				},
+				{ "name": "AudioTransferEdge", "fields": [{ "name": "cursor" }, { "name": "node" }] },
+				{
+					"name": "AudioVariant",
+					"fields": [
+						{ "name": "audioFileUrl" },
+						{ "name": "audioTransfer" },
+						{ "name": "audioTransferId" },
+						{ "name": "bitRate" },
+						{ "name": "channels" },
+						{ "name": "codec" },
+						{ "name": "createdAt" },
+						{ "name": "duration" },
+						{ "name": "format" },
+						{ "name": "id" },
+						{ "name": "length" },
+						{ "name": "metadata" },
+						{ "name": "sampleRate" },
+						{ "name": "updatedAt" }
+					]
+				},
+				{
+					"name": "AudioVariantConnection",
+					"fields": [{ "name": "edges" }, { "name": "nodes" }, { "name": "pageInfo" }]
+				},
+				{ "name": "AudioVariantEdge", "fields": [{ "name": "cursor" }, { "name": "node" }] },
+				{ "name": "Boolean", "fields": null },
+				{ "name": "ChangePlaylistItemPositionInput", "fields": null },
+				{
+					"name": "ChangePlaylistItemPositionPayload",
+					"fields": [
+						{ "name": "clientMutationId" },
+						{ "name": "errors" },
+						{ "name": "playlistItem" },
+						{ "name": "success" }
+					]
+				},
+				{
+					"name": "Composer",
+					"fields": [
+						{ "name": "birthDate" },
+						{ "name": "composition" },
+						{ "name": "compositions" },
+						{ "name": "compositionsCount" },
+						{ "name": "deathDate" },
+						{ "name": "id" },
+						{ "name": "name" },
+						{ "name": "photoUrl" },
+						{ "name": "rank" },
+						{ "name": "slug" },
+						{ "name": "sortName" }
+					]
+				},
+				{
+					"name": "ComposerConnection",
+					"fields": [{ "name": "edges" }, { "name": "nodes" }, { "name": "pageInfo" }]
+				},
+				{ "name": "ComposerEdge", "fields": [{ "name": "cursor" }, { "name": "node" }] },
+				{
+					"name": "Composition",
+					"fields": [
+						{ "name": "composer" },
+						{ "name": "composerId" },
+						{ "name": "id" },
+						{ "name": "lyric" },
+						{ "name": "lyricist" },
+						{ "name": "lyricistId" },
+						{ "name": "lyrics" },
+						{ "name": "recording" },
+						{ "name": "recordings" },
+						{ "name": "tangotubeSlug" },
+						{ "name": "title" }
+					]
+				},
+				{
+					"name": "CompositionConnection",
+					"fields": [{ "name": "edges" }, { "name": "nodes" }, { "name": "pageInfo" }]
+				},
+				{ "name": "CompositionEdge", "fields": [{ "name": "cursor" }, { "name": "node" }] },
+				{ "name": "CreatePlaybackInput", "fields": null },
+				{
+					"name": "CreatePlaybackPayload",
+					"fields": [
+						{ "name": "clientMutationId" },
+						{ "name": "errors" },
+						{ "name": "playback" },
+						{ "name": "success" }
+					]
+				},
+				{ "name": "CreatePlaylistInput", "fields": null },
+				{
+					"name": "CreatePlaylistPayload",
+					"fields": [
+						{ "name": "clientMutationId" },
+						{ "name": "errors" },
+						{ "name": "playlist" },
+						{ "name": "success" }
+					]
+				},
+				{ "name": "DeletePlaylistInput", "fields": null },
+				{
+					"name": "DeletePlaylistPayload",
+					"fields": [{ "name": "clientMutationId" }, { "name": "errors" }, { "name": "success" }]
+				},
+				{
+					"name": "ElRecodoSong",
+					"fields": [
+						{ "name": "album" },
+						{ "name": "artist" },
+						{ "name": "author" },
+						{ "name": "composer" },
+						{ "name": "date" },
+						{ "name": "ertNumber" },
+						{ "name": "id" },
+						{ "name": "label" },
+						{ "name": "lyrics" },
+						{ "name": "musicId" },
+						{ "name": "orchestra" },
+						{ "name": "recording" },
+						{ "name": "recordingId" },
+						{ "name": "singer" },
+						{ "name": "style" },
+						{ "name": "title" }
+					]
+				},
+				{
+					"name": "ElRecodoSongConnection",
+					"fields": [{ "name": "edges" }, { "name": "nodes" }, { "name": "pageInfo" }]
+				},
+				{ "name": "ElRecodoSongEdge", "fields": [{ "name": "cursor" }, { "name": "node" }] },
+				{
+					"name": "Event",
+					"fields": [
+						{ "name": "action" },
+						{ "name": "createdAt" },
+						{ "name": "id" },
+						{ "name": "ipAddress" },
+						{ "name": "updatedAt" },
+						{ "name": "user" },
+						{ "name": "userAgent" },
+						{ "name": "userId" }
+					]
+				},
+				{
+					"name": "EventConnection",
+					"fields": [{ "name": "edges" }, { "name": "nodes" }, { "name": "pageInfo" }]
+				},
+				{ "name": "EventEdge", "fields": [{ "name": "cursor" }, { "name": "node" }] },
+				{ "name": "Float", "fields": null },
+				{
+					"name": "Genre",
+					"fields": [
+						{ "name": "createdAt" },
+						{ "name": "description" },
+						{ "name": "id" },
+						{ "name": "name" },
+						{ "name": "recording" },
+						{ "name": "recordings" },
+						{ "name": "updatedAt" }
+					]
+				},
+				{
+					"name": "GenreConnection",
+					"fields": [{ "name": "edges" }, { "name": "nodes" }, { "name": "pageInfo" }]
+				},
+				{ "name": "GenreEdge", "fields": [{ "name": "cursor" }, { "name": "node" }] },
+				{ "name": "GoogleLoginInput", "fields": null },
+				{
+					"name": "GoogleLoginPayload",
+					"fields": [
+						{ "name": "clientMutationId" },
+						{ "name": "errors" },
+						{ "name": "success" },
+						{ "name": "token" },
+						{ "name": "user" }
+					]
+				},
+				{ "name": "ID", "fields": null },
+				{ "name": "ISO8601Date", "fields": null },
+				{ "name": "ISO8601DateTime", "fields": null },
+				{ "name": "Int", "fields": null },
+				{ "name": "JSON", "fields": null },
+				{
+					"name": "Like",
+					"fields": [
+						{ "name": "createdAt" },
+						{ "name": "errors" },
+						{ "name": "id" },
+						{ "name": "likeableId" },
+						{ "name": "likeableType" },
+						{ "name": "user" }
+					]
+				},
+				{
+					"name": "LikeConnection",
+					"fields": [{ "name": "edges" }, { "name": "nodes" }, { "name": "pageInfo" }]
+				},
+				{ "name": "LikeEdge", "fields": [{ "name": "cursor" }, { "name": "node" }] },
+				{ "name": "LoginUserInput", "fields": null },
+				{
+					"name": "LoginUserPayload",
+					"fields": [
+						{ "name": "clientMutationId" },
+						{ "name": "errors" },
+						{ "name": "success" },
+						{ "name": "token" },
+						{ "name": "user" }
+					]
+				},
+				{
+					"name": "Lyric",
+					"fields": [
+						{ "name": "composition" },
+						{ "name": "compositionId" },
+						{ "name": "content" },
+						{ "name": "createdAt" },
+						{ "name": "id" },
+						{ "name": "locale" },
+						{ "name": "updatedAt" }
+					]
+				},
+				{
+					"name": "LyricConnection",
+					"fields": [{ "name": "edges" }, { "name": "nodes" }, { "name": "pageInfo" }]
+				},
+				{ "name": "LyricEdge", "fields": [{ "name": "cursor" }, { "name": "node" }] },
+				{
+					"name": "Lyricist",
+					"fields": [
+						{ "name": "bio" },
+						{ "name": "birthDate" },
+						{ "name": "composition" },
+						{ "name": "compositions" },
+						{ "name": "deathDate" },
+						{ "name": "firstName" },
+						{ "name": "id" },
+						{ "name": "lastName" },
+						{ "name": "lyric" },
+						{ "name": "lyrics" },
+						{ "name": "name" },
+						{ "name": "photoUrl" },
+						{ "name": "rank" },
+						{ "name": "slug" },
+						{ "name": "sortName" }
+					]
+				},
+				{
+					"name": "LyricistConnection",
+					"fields": [{ "name": "edges" }, { "name": "nodes" }, { "name": "pageInfo" }]
+				},
+				{ "name": "LyricistEdge", "fields": [{ "name": "cursor" }, { "name": "node" }] },
+				{
+					"name": "Mutation",
+					"fields": [
+						{ "name": "addLikeToRecording" },
+						{ "name": "addPlaylistRecording" },
+						{ "name": "appleLogin" },
+						{ "name": "changePlaylistItemPosition" },
+						{ "name": "createPlayback" },
+						{ "name": "createPlaylist" },
+						{ "name": "deletePlaylist" },
+						{ "name": "googleLogin" },
+						{ "name": "login" },
+						{ "name": "register" },
+						{ "name": "removeLikeFromRecording" },
+						{ "name": "removePlayback" },
+						{ "name": "removePlaylistItem" },
+						{ "name": "updatePlaylist" },
+						{ "name": "updateUser" }
+					]
+				},
+				{
+					"name": "Orchestra",
+					"fields": [
+						{ "name": "birthDate" },
+						{ "name": "composition" },
+						{ "name": "compositions" },
+						{ "name": "deathDate" },
+						{ "name": "firstName" },
+						{ "name": "id" },
+						{ "name": "lastName" },
+						{ "name": "lyricist" },
+						{ "name": "lyricists" },
+						{ "name": "name" },
+						{ "name": "photoUrl" },
+						{ "name": "rank" },
+						{ "name": "recording" },
+						{ "name": "recordings" },
+						{ "name": "recordingsCount" },
+						{ "name": "singer" },
+						{ "name": "singers" },
+						{ "name": "slug" },
+						{ "name": "sortName" }
+					]
+				},
+				{
+					"name": "OrchestraConnection",
+					"fields": [{ "name": "edges" }, { "name": "nodes" }, { "name": "pageInfo" }]
+				},
+				{ "name": "OrchestraEdge", "fields": [{ "name": "cursor" }, { "name": "node" }] },
+				{
+					"name": "PageInfo",
+					"fields": [
+						{ "name": "endCursor" },
+						{ "name": "hasNextPage" },
+						{ "name": "hasPreviousPage" },
+						{ "name": "startCursor" }
+					]
+				},
+				{
+					"name": "Period",
+					"fields": [
+						{ "name": "description" },
+						{ "name": "endYear" },
+						{ "name": "id" },
+						{ "name": "imageUrl" },
+						{ "name": "name" },
+						{ "name": "recording" },
+						{ "name": "recordings" },
+						{ "name": "recordingsCount" },
+						{ "name": "slug" },
+						{ "name": "startYear" }
+					]
+				},
+				{
+					"name": "PeriodConnection",
+					"fields": [{ "name": "edges" }, { "name": "nodes" }, { "name": "pageInfo" }]
+				},
+				{ "name": "PeriodEdge", "fields": [{ "name": "cursor" }, { "name": "node" }] },
+				{ "name": "Playable", "fields": null },
+				{
+					"name": "Playback",
+					"fields": [
+						{ "name": "createdAt" },
+						{ "name": "id" },
+						{ "name": "recording" },
+						{ "name": "recordingId" },
+						{ "name": "user" },
+						{ "name": "userId" }
+					]
+				},
+				{
+					"name": "PlaybackConnection",
+					"fields": [{ "name": "edges" }, { "name": "nodes" }, { "name": "pageInfo" }]
+				},
+				{ "name": "PlaybackEdge", "fields": [{ "name": "cursor" }, { "name": "node" }] },
+				{
+					"name": "Playlist",
+					"fields": [
+						{ "name": "audioVariant" },
+						{ "name": "audioVariants" },
+						{ "name": "createdAt" },
+						{ "name": "description" },
+						{ "name": "followersCount" },
+						{ "name": "id" },
+						{ "name": "imageUrl" },
+						{ "name": "likesCount" },
+						{ "name": "listensCount" },
+						{ "name": "playlistItem" },
+						{ "name": "playlistItems" },
+						{ "name": "public" },
+						{ "name": "recording" },
+						{ "name": "recordings" },
+						{ "name": "sharesCount" },
+						{ "name": "songsCount" },
+						{ "name": "system" },
+						{ "name": "title" },
+						{ "name": "updatedAt" },
+						{ "name": "user" },
+						{ "name": "userId" }
+					]
+				},
+				{
+					"name": "PlaylistConnection",
+					"fields": [{ "name": "edges" }, { "name": "nodes" }, { "name": "pageInfo" }]
+				},
+				{ "name": "PlaylistEdge", "fields": [{ "name": "cursor" }, { "name": "node" }] },
+				{
+					"name": "PlaylistItem",
+					"fields": [
+						{ "name": "createdAt" },
+						{ "name": "id" },
+						{ "name": "playable" },
+						{ "name": "playableId" },
+						{ "name": "playableType" },
+						{ "name": "playlist" },
+						{ "name": "playlistId" },
+						{ "name": "position" },
+						{ "name": "updatedAt" }
+					]
+				},
+				{
+					"name": "PlaylistItemConnection",
+					"fields": [{ "name": "edges" }, { "name": "nodes" }, { "name": "pageInfo" }]
+				},
+				{ "name": "PlaylistItemEdge", "fields": [{ "name": "cursor" }, { "name": "node" }] },
+				{
+					"name": "Query",
+					"fields": [
+						{ "name": "audioTransfer" },
+						{ "name": "audioVariant" },
+						{ "name": "composer" },
+						{ "name": "composers" },
+						{ "name": "currentUser" },
+						{ "name": "elRecodoSongs" },
+						{ "name": "genre" },
+						{ "name": "genres" },
+						{ "name": "likedRecordings" },
+						{ "name": "lyricist" },
+						{ "name": "lyricists" },
+						{ "name": "orchestra" },
+						{ "name": "orchestras" },
+						{ "name": "period" },
+						{ "name": "periods" },
+						{ "name": "playlist" },
+						{ "name": "playlists" },
+						{ "name": "recording" },
+						{ "name": "recordings" },
+						{ "name": "singer" },
+						{ "name": "singers" },
+						{ "name": "user" },
+						{ "name": "users" }
+					]
+				},
+				{
+					"name": "RecordLabel",
+					"fields": [
+						{ "name": "description" },
+						{ "name": "foundedDate" },
+						{ "name": "id" },
+						{ "name": "name" }
+					]
+				},
+				{
+					"name": "Recording",
+					"fields": [
+						{ "name": "audioTransfer" },
+						{ "name": "audioTransfers" },
+						{ "name": "audioVariant" },
+						{ "name": "audioVariants" },
+						{ "name": "bpm" },
+						{ "name": "composer" },
+						{ "name": "composerId" },
+						{ "name": "composition" },
+						{ "name": "compositionId" },
+						{ "name": "elRecodoSong" },
+						{ "name": "elRecodoSongId" },
+						{ "name": "genre" },
+						{ "name": "genreId" },
+						{ "name": "id" },
+						{ "name": "like" },
+						{ "name": "likes" },
+						{ "name": "lyricist" },
+						{ "name": "lyricistId" },
+						{ "name": "orchestra" },
+						{ "name": "orchestraId" },
+						{ "name": "period" },
+						{ "name": "periodId" },
+						{ "name": "playback" },
+						{ "name": "playbacks" },
+						{ "name": "recordLabel" },
+						{ "name": "recordLabelId" },
+						{ "name": "recordedDate" },
+						{ "name": "recordingType" },
+						{ "name": "releaseDate" },
+						{ "name": "singer" },
+						{ "name": "singers" },
+						{ "name": "slug" },
+						{ "name": "title" },
+						{ "name": "year" }
+					]
+				},
+				{
+					"name": "RecordingConnection",
+					"fields": [{ "name": "edges" }, { "name": "nodes" }, { "name": "pageInfo" }]
+				},
+				{ "name": "RecordingEdge", "fields": [{ "name": "cursor" }, { "name": "node" }] },
+				{
+					"name": "RecordingSinger",
+					"fields": [
+						{ "name": "createdAt" },
+						{ "name": "id" },
+						{ "name": "recording" },
+						{ "name": "recordingId" },
+						{ "name": "singer" },
+						{ "name": "singerId" },
+						{ "name": "updatedAt" }
+					]
+				},
+				{
+					"name": "RecordingSingerConnection",
+					"fields": [{ "name": "edges" }, { "name": "nodes" }, { "name": "pageInfo" }]
+				},
+				{ "name": "RecordingSingerEdge", "fields": [{ "name": "cursor" }, { "name": "node" }] },
+				{ "name": "RegisterUserInput", "fields": null },
+				{
+					"name": "RegisterUserPayload",
+					"fields": [
+						{ "name": "clientMutationId" },
+						{ "name": "errors" },
+						{ "name": "success" },
+						{ "name": "user" }
+					]
+				},
+				{ "name": "RemoveLikeFromRecordingInput", "fields": null },
+				{
+					"name": "RemoveLikeFromRecordingPayload",
+					"fields": [{ "name": "clientMutationId" }, { "name": "errors" }, { "name": "success" }]
+				},
+				{ "name": "RemovePlaybackInput", "fields": null },
+				{
+					"name": "RemovePlaybackPayload",
+					"fields": [
+						{ "name": "clientMutationId" },
+						{ "name": "errors" },
+						{ "name": "message" },
+						{ "name": "success" }
+					]
+				},
+				{ "name": "RemovePlaylistItemInput", "fields": null },
+				{
+					"name": "RemovePlaylistItemPayload",
+					"fields": [{ "name": "clientMutationId" }, { "name": "errors" }, { "name": "success" }]
+				},
+				{
+					"name": "Session",
+					"fields": [
+						{ "name": "createdAt" },
+						{ "name": "id" },
+						{ "name": "ipAddress" },
+						{ "name": "updatedAt" },
+						{ "name": "user" },
+						{ "name": "userAgent" },
+						{ "name": "userId" }
+					]
+				},
+				{
+					"name": "SessionConnection",
+					"fields": [{ "name": "edges" }, { "name": "nodes" }, { "name": "pageInfo" }]
+				},
+				{ "name": "SessionEdge", "fields": [{ "name": "cursor" }, { "name": "node" }] },
+				{
+					"name": "Singer",
+					"fields": [
+						{ "name": "bio" },
+						{ "name": "birthDate" },
+						{ "name": "deathDate" },
+						{ "name": "firstName" },
+						{ "name": "id" },
+						{ "name": "lastName" },
+						{ "name": "name" },
+						{ "name": "photoUrl" },
+						{ "name": "rank" },
+						{ "name": "recording" },
+						{ "name": "recordingSinger" },
+						{ "name": "recordingSingers" },
+						{ "name": "recordings" },
+						{ "name": "slug" },
+						{ "name": "soloist" },
+						{ "name": "sortName" }
+					]
+				},
+				{
+					"name": "SingerConnection",
+					"fields": [{ "name": "edges" }, { "name": "nodes" }, { "name": "pageInfo" }]
+				},
+				{ "name": "SingerEdge", "fields": [{ "name": "cursor" }, { "name": "node" }] },
+				{ "name": "String", "fields": null },
+				{
+					"name": "TransferAgent",
+					"fields": [
+						{ "name": "audioTransfer" },
+						{ "name": "audioTransfers" },
+						{ "name": "audioVariant" },
+						{ "name": "audioVariants" },
+						{ "name": "createdAt" },
+						{ "name": "description" },
+						{ "name": "id" },
+						{ "name": "name" },
+						{ "name": "recording" },
+						{ "name": "recordings" },
+						{ "name": "updatedAt" },
+						{ "name": "url" }
+					]
+				},
+				{ "name": "UpdatePlaylistInput", "fields": null },
+				{
+					"name": "UpdatePlaylistPayload",
+					"fields": [
+						{ "name": "clientMutationId" },
+						{ "name": "errors" },
+						{ "name": "playlist" },
+						{ "name": "success" }
+					]
+				},
+				{ "name": "UpdateUserInput", "fields": null },
+				{
+					"name": "UpdateUserPayload",
+					"fields": [
+						{ "name": "clientMutationId" },
+						{ "name": "errors" },
+						{ "name": "success" },
+						{ "name": "user" }
+					]
+				},
+				{ "name": "Upload", "fields": null },
+				{
+					"name": "User",
+					"fields": [
+						{ "name": "admin" },
+						{ "name": "avatarUrl" },
+						{ "name": "createdAt" },
+						{ "name": "email" },
+						{ "name": "event" },
+						{ "name": "events" },
+						{ "name": "firstName" },
+						{ "name": "id" },
+						{ "name": "lastName" },
+						{ "name": "like" },
+						{ "name": "likes" },
+						{ "name": "name" },
+						{ "name": "passwordDigest" },
+						{ "name": "playback" },
+						{ "name": "playbacks" },
+						{ "name": "playlist" },
+						{ "name": "playlists" },
+						{ "name": "provider" },
+						{ "name": "session" },
+						{ "name": "sessions" },
+						{ "name": "uid" },
+						{ "name": "updatedAt" },
+						{ "name": "username" },
+						{ "name": "verified" }
+					]
+				},
+				{
+					"name": "UserConnection",
+					"fields": [{ "name": "edges" }, { "name": "nodes" }, { "name": "pageInfo" }]
+				},
+				{ "name": "UserEdge", "fields": [{ "name": "cursor" }, { "name": "node" }] },
+				{
+					"name": "ValidationErrors",
+					"fields": [{ "name": "details" }, { "name": "fullMessages" }]
+				},
+				{
+					"name": "Waveform",
+					"fields": [
+						{ "name": "audioTransfer" },
+						{ "name": "audioTransferId" },
+						{ "name": "bits" },
+						{ "name": "channels" },
+						{ "name": "createdAt" },
+						{ "name": "data" },
+						{ "name": "id" },
+						{ "name": "imageUrl" },
+						{ "name": "length" },
+						{ "name": "sampleRate" },
+						{ "name": "samplesPerPixel" },
+						{ "name": "updatedAt" },
+						{ "name": "version" }
+					]
+				},
+				{
+					"name": "__Directive",
+					"fields": [
+						{ "name": "args" },
+						{ "name": "description" },
+						{ "name": "isRepeatable" },
+						{ "name": "locations" },
+						{ "name": "name" }
+					]
+				},
+				{ "name": "__DirectiveLocation", "fields": null },
+				{
+					"name": "__EnumValue",
+					"fields": [
+						{ "name": "deprecationReason" },
+						{ "name": "description" },
+						{ "name": "isDeprecated" },
+						{ "name": "name" }
+					]
+				},
+				{
+					"name": "__Field",
+					"fields": [
+						{ "name": "args" },
+						{ "name": "deprecationReason" },
+						{ "name": "description" },
+						{ "name": "isDeprecated" },
+						{ "name": "name" },
+						{ "name": "type" }
+					]
+				},
+				{
+					"name": "__InputValue",
+					"fields": [
+						{ "name": "defaultValue" },
+						{ "name": "deprecationReason" },
+						{ "name": "description" },
+						{ "name": "isDeprecated" },
+						{ "name": "name" },
+						{ "name": "type" }
+					]
+				},
+				{
+					"name": "__Schema",
+					"fields": [
+						{ "name": "description" },
+						{ "name": "directives" },
+						{ "name": "mutationType" },
+						{ "name": "queryType" },
+						{ "name": "subscriptionType" },
+						{ "name": "types" }
+					]
+				},
+				{
+					"name": "__Type",
+					"fields": [
+						{ "name": "description" },
+						{ "name": "enumValues" },
+						{ "name": "fields" },
+						{ "name": "inputFields" },
+						{ "name": "interfaces" },
+						{ "name": "isOneOf" },
+						{ "name": "kind" },
+						{ "name": "name" },
+						{ "name": "ofType" },
+						{ "name": "possibleTypes" },
+						{ "name": "specifiedByURL" }
+					]
+				},
+				{ "name": "__TypeKind", "fields": null }
+			]
+		}
+	}
+}
