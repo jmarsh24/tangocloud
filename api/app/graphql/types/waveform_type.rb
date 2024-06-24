@@ -11,13 +11,7 @@ module Types
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
-    field :image_url, String, null: true
-
-    def image_url
-      dataloader.with(Sources::Preload, image_attachment: :blob).load(object)
-      object.image&.url
-    end
-
     belongs_to :audio_transfer
+    has_one_attached :image
   end
 end

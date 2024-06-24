@@ -13,15 +13,9 @@ module Types
     field :birth_date, GraphQL::Types::ISO8601Date, null: true
     field :death_date, GraphQL::Types::ISO8601Date, null: true
     field :soloist, Boolean, null: false
-    field :photo, AttachedType, null: true
-
-    def photo
-      dataloader
-        .with(GraphQL::Sources::ActiveStorageHasOneAttached, :photo)
-        .load(object)
-    end
 
     has_many :recording_singers
     has_many :recordings
+    has_one_attached :photo
   end
 end

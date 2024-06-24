@@ -10,7 +10,11 @@ RSpec.describe "Orchestras", type: :graph do
           orchestra(id: $id) {
             id
             name
-            photoUrl
+            photo {
+              blob {
+                url
+              }
+            }
           }
         }
       GQL
@@ -22,7 +26,7 @@ RSpec.describe "Orchestras", type: :graph do
 
       expect(first_orchestra.id).to eq(orchestra.id)
       expect(first_orchestra.name).to eq("Carlos Di Sarli")
-      expect(first_orchestra.photo_url).to be_present
+      expect(first_orchestra.photo.blob.url).to include("http://localhost:3000/files/")
     end
   end
 end

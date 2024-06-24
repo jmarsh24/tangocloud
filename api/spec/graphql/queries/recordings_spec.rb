@@ -17,14 +17,22 @@ RSpec.describe "Recordings", type: :graph do
                   edges {
                     node {
                       album {
-                        albumArtUrl
+                        albumArt {
+                          blob {
+                            url
+                          }
+                        }
                       }
                       audioVariants {
                         edges {
                           node {
                             id
                             duration
-                            audioFileUrl
+                            audioFile {
+                              blob {
+                                url
+                              }
+                            }
                           }
                         }
                       }
@@ -63,7 +71,7 @@ RSpec.describe "Recordings", type: :graph do
       expect(found_recording.singers.edges.first.node.name).to eq("Roberto Rufino")
       expect(found_recording.genre.name).to eq("Tango")
       expect(found_recording.audio_transfers.edges).not_to be_empty
-      expect(found_recording.audio_transfers.edges.first.node.album.album_art_url).not_to be_nil
+      expect(found_recording.audio_transfers.edges.first.node.album.album_art.blob.url).not_to be_nil
     end
   end
 end

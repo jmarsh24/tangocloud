@@ -10,14 +10,8 @@ module Types
     field :slug, String, null: true
     field :external_id, String, null: true
     field :album_type, String, null: true
-    field :album_art, AttachedType, null: true
-
-    def album_art
-      dataloader
-        .with(GraphQL::Sources::ActiveStorageHasOneAttached, :album_art)
-        .load(object)
-    end
 
     has_many :audio_transfers
+    has_one_attached :album_art
   end
 end

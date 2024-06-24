@@ -11,7 +11,11 @@ RSpec.describe "Composer", type: :graph do
           composer(id: $id) {
             id
             name
-            photoUrl
+            photo {
+              blob {
+                url
+              }
+            }
           }
         }
       GQL
@@ -22,7 +26,7 @@ RSpec.describe "Composer", type: :graph do
 
       expect(data.composer.id).to eq(composer.id)
       expect(data.composer.name).to eq("Andres Fraga")
-      expect(data.composer.photo_url).to be_present
+      expect(data.composer.photo.blob.url).to include("http://localhost:3000/files/")
     end
   end
 end

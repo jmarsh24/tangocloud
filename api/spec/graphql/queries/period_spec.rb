@@ -10,7 +10,11 @@ RSpec.describe "period", type: :graph do
           period(id: $id) {
             id
             name
-            imageUrl
+            image {
+              blob {
+                url
+              }
+            }
           }
         }
       GQL
@@ -21,7 +25,7 @@ RSpec.describe "period", type: :graph do
 
       expect(data.period.id).to eq(period.id)
       expect(data.period.name).to eq("Golden Age")
-      expect(data.period.image_url).to be_present
+      expect(data.period.image.blob.url).to include("http://localhost:3000/files/")
     end
   end
 end

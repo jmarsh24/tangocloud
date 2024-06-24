@@ -7,12 +7,7 @@ module Types
     field :created_at, GraphQL::Types::ISO8601Date, null: true
     field :updated_at, GraphQL::Types::ISO8601Date, null: true
 
-    field :audio_file_url, String, null: true
-
-    def audio_file_url
-      dataloader.with(Sources::Preload, audio_file_attachment: :blob).load(object)
-      object.audio_file&.url
-    end
+    has_one_attached :audio
 
     belongs_to :album, null: true
     belongs_to :recording, null: true
