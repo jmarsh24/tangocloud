@@ -216,6 +216,10 @@ GEM
       railties
     graphql (2.3.5)
       base64
+    graphql-sources (1.2.0)
+      graphql
+      rails
+      zeitwerk
     groupdate (6.4.0)
       activesupport (>= 6.1)
     guard (2.18.1)
@@ -667,6 +671,7 @@ DEPENDENCIES
   googleauth
   graphiql-rails
   graphql
+  graphql-sources (~> 1.2)
   groupdate
   guard
   guard-rspec

@@ -11,7 +11,13 @@ module Types
     field :slug, String, null: true
     field :compositions_count, Integer, null: true
 
-    field :photo_url, null: true, extensions: [ImageUrlField]
+    field :photo, AttachedType, null: true
+
+    def photo
+      dataloader
+        .with(GraphQL::Sources::ActiveStorageHasOneAttached, :photo)
+        .load(object)
+    end
 
     has_many :compositions
   end

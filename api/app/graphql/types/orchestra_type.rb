@@ -12,8 +12,13 @@ module Types
     field :death_date, GraphQL::Types::ISO8601Date, null: true
     field :slug, String, null: true
     field :recordings_count, Integer, null: true
+    field :photo, AttachedType, null: true
 
-    field :photo_url, null: true, extensions: [ImageUrlField]
+    def photo
+      dataloader
+        .with(GraphQL::Sources::ActiveStorageHasOneAttached, :photo)
+        .load(object)
+    end
 
     has_many :compositions
     has_many :singers
