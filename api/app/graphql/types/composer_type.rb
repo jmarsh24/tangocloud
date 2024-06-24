@@ -11,12 +11,7 @@ module Types
     field :slug, String, null: true
     field :compositions_count, Integer, null: true
 
-    field :photo_url, String, null: true
-
-    def photo_url
-      dataloader.with(Sources::Preload, photo_attachment: :blob).load(object)
-      cdn_image_url(object.photo) if object.photo.attached?
-    end
+    field :photo_url, null: true, extensions: [ImageUrlField]
 
     has_many :compositions
   end

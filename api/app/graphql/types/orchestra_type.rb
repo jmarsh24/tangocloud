@@ -1,6 +1,7 @@
 module Types
   class OrchestraType < Types::BaseObject
     include Rails.application.routes.url_helpers
+    extension(ImageUrlField)
 
     field :id, ID, null: true
     field :name, String, null: true
@@ -13,12 +14,7 @@ module Types
     field :slug, String, null: true
     field :recordings_count, Integer, null: true
 
-    field :photo_url, String, null: true
-
-    def photo_url
-      dataloader.with(Sources::Preload, photo_attachment: :blob).load(object)
-      cdn_image_url(object.photo.variant(:large)) if object.photo.attached?
-    end
+    field :photo_url, null: true, extensions: [ImageUrlField]
 
     has_many :compositions
     has_many :singers

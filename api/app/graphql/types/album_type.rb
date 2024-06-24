@@ -11,12 +11,7 @@ module Types
     field :external_id, String, null: true
     field :album_type, String, null: true
 
-    field :album_art_url, String, null: true
-
-    def album_art_url
-      dataloader.with(Sources::Preload, album_art_attachment: :blob).load(object)
-      cdn_image_url(object.album_art.variant(:large)) if object.album_art.attached?
-    end
+    field :album_art_url, null: true, extensions: [ImageUrlField]
 
     has_many :audio_transfers
   end
