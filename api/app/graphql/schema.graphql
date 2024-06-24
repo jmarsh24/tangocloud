@@ -48,7 +48,7 @@ type AddPlaylistRecordingPayload {
 }
 
 type Album {
-  albumArtUrl: String
+  albumArt: Attached
   albumType: String
   audioTransfer(id: ID!): AudioTransfer!
   audioTransfers(
@@ -108,6 +108,14 @@ type AppleLoginPayload {
   success: Boolean
   token: String
   user: User
+}
+
+type Attached {
+  byteSize: Int!
+  contentType: String!
+  createdAt: ISO8601DateTime!
+  filename: String!
+  url: String!
 }
 
 type AudioTransfer {
@@ -310,7 +318,7 @@ type Composer {
   deathDate: ISO8601Date
   id: ID
   name: String!
-  photoUrl: String
+  photo: Attached
   rank: Int
   slug: String
   sortName: String
@@ -1072,7 +1080,7 @@ type Orchestra {
     last: Int
   ): LyricistConnection!
   name: String
-  photoUrl: String
+  photo: Attached
   rank: Int
   recording(id: ID!): Recording!
   recordings(
@@ -1324,7 +1332,7 @@ type Playlist {
   description: String
   followersCount: Int!
   id: ID!
-  imageUrl: String
+  image: Attached
   likesCount: Int!
   listensCount: Int!
   playlistItem(id: ID!): PlaylistItem!
@@ -2185,7 +2193,7 @@ type Singer {
   id: ID
   lastName: String
   name: String
-  photoUrl: String
+  photo: Attached
   rank: Int
   recording(id: ID!): Recording!
   recordingSinger(id: ID!): RecordingSinger!
