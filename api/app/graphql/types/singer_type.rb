@@ -14,14 +14,8 @@ module Types
     field :death_date, GraphQL::Types::ISO8601Date, null: true
     field :soloist, Boolean, null: false
 
-    field :photo_url, String, null: true
-
-    def photo_url
-      dataloader.with(Sources::Preload, photo_attachment: :blob).load(object)
-      cdn_image_url(object.photo.variant(:large)) if object.photo.attached?
-    end
-
     has_many :recording_singers
     has_many :recordings
+    has_one_attached :photo
   end
 end

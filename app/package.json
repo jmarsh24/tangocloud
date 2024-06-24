@@ -10,7 +10,8 @@
 		"format": "prettier --write \"src/**/*.{tsx,ts,css,scss,json,yml}\" \"*.yml\"",
 		"test": "playwright test",
 		"android": "expo run:android",
-		"ios": "expo run:ios"
+		"ios": "expo run:ios",
+		"codegen": "graphql-codegen --config codegen.ts"
 	},
 	"dependencies": {
 		"@apollo/client": "^3.8.10",
@@ -65,6 +66,11 @@
 	},
 	"devDependencies": {
 		"@babel/core": "^7.20.0",
+		"@graphql-codegen/cli": "5.0.2",
+		"@graphql-codegen/client-preset": "4.3.0",
+		"@graphql-codegen/typescript": "^4.0.7",
+		"@graphql-codegen/typescript-operations": "^4.2.1",
+		"@graphql-codegen/typescript-react-apollo": "^4.3.0",
 		"@types/react": "~18.2.45",
 		"@types/tinycolor2": "^1.4.6",
 		"@typescript-eslint/eslint-plugin": "^6.17.0",

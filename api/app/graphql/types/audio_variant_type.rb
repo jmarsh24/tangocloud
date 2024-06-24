@@ -14,12 +14,7 @@ module Types
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
-    field :audio_file_url, String, null: true
-
-    def audio_file_url
-      url_for(object)
-    end
-
     belongs_to :audio_transfer
+    has_one_attached :audio_file
   end
 end

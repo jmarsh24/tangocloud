@@ -10,14 +10,22 @@ RSpec.describe "audioTransfer", type: :graph do
           audioTransfer(id: $id) {
             id
             album {
-              albumArtUrl
+              albumArt {
+                blob {
+                  url
+                }
+              }
             }
             audioVariants {
               edges {
                 node {
                   id
                   duration
-                  audioFileUrl
+                  audioFile {
+                    blob {
+                      url
+                    }
+                  }
                 }
               }
             }
@@ -31,7 +39,7 @@ RSpec.describe "audioTransfer", type: :graph do
 
       expect(data.audio_transfer).not_to be_nil
       expect(data.audio_transfer.id).to eq(audio_transfer.id.to_s)
-      expect(data.audio_transfer.album.album_art_url).not_to be_nil
+      expect(data.audio_transfer.album.album_art.blob.url).not_to be_nil
       expect(data.audio_transfer.audio_variants.edges).not_to be_empty
       expect(data.audio_transfer.audio_variants.edges.first.node.id).to eq(audio_transfer.audio_variants.first.id.to_s)
     end

@@ -15,16 +15,11 @@ module Types
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
-    field :image_url, String, null: true
-
-    def image_url
-      dataloader.with(Sources::Preload, image_attachment: :blob).load(object)
-      cdn_image_url(object.image.variant(:medium))
-    end
-
     belongs_to :user
     has_many :playlist_items
     has_many :recordings
     has_many :audio_variants
+    has_one_attached :image
+    has_one_attached :playlist_file
   end
 end

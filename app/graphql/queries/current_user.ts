@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
-export const USER_PROFILE = gql`
-	query UserProfile {
-		userProfile {
+export const CURRENT_USER = gql`
+	query CurrentUser {
+		currentUser {
 			id
 			email
 			username
@@ -29,20 +29,38 @@ export const USER_PROFILE = gql`
 							}
 							year
 							singers {
-								name
+								edges {
+									node {
+										name
+									}
+								}
 							}
 							composition {
 								lyrics {
-									content
+									edges {
+										node {
+											locale
+											content
+										}
+									}
 								}
 							}
 							audioTransfers {
-								audioVariants {
-									audioFileUrl
-									duration
-								}
-								album {
-									albumArtUrl
+								edges {
+									node {
+										id
+										audioVariants {
+											edges {
+												node {
+													audioFileUrl
+													duration
+												}
+											}
+										}
+										album {
+											albumArtUrl
+										}
+									}
 								}
 							}
 						}

@@ -1,12 +1,14 @@
 import { gql } from '@apollo/client'
 
-export const FETCH_PLAYLIST = gql`
-	query FetchPlaylist($id: ID!) {
-		fetchPlaylist(id: $id) {
+export const PLAYLIST = gql`
+	query Playlist($id: ID!) {
+		playlist(id: $id) {
 			id
 			title
 			imageUrl
 			playlistItems {
+				edges {
+					node {
 				id
 				playable {
 					... on Recording {
@@ -20,7 +22,11 @@ export const FETCH_PLAYLIST = gql`
 							name
 						}
 						singers {
-							name
+							edges {
+								node {
+									name
+								}
+							}
 						}
 						composition {
 							lyrics {
@@ -29,13 +35,17 @@ export const FETCH_PLAYLIST = gql`
 							}
 						}
 						audioTransfers {
-							id
-							audioVariants {
-								audioFileUrl
-								duration
-							}
-							album {
-								albumArtUrl
+							edges {
+								node {
+									id
+									audioVariants {
+										audioFileUrl
+										duration
+									}
+									album {
+										albumArtUrl
+									}
+								}
 							}
 						}
 					}

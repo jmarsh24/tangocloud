@@ -27,10 +27,18 @@ RSpec.describe "Recording", type: :graph do
               edges {
                 node {
                   album {
-                    albumArtUrl
+                    albumArt {
+                      blob {
+                        url
+                      }
+                    }
                   }
                   waveform {
-                    imageUrl
+                    image {
+                      blob {
+                        url
+                      }
+                    }
                     data
                   }
                 }
@@ -53,8 +61,8 @@ RSpec.describe "Recording", type: :graph do
 
       expect(recording_data.audio_transfers.edges).not_to be_empty
       audio_transfer = recording_data.audio_transfers.edges.first.node
-      expect(audio_transfer.album.album_art_url).not_to be_nil
-      expect(audio_transfer.waveform.image_url).not_to be_nil
+      expect(audio_transfer.album.album_art.blob.url).not_to be_nil
+      expect(audio_transfer.waveform.image.blob.url).not_to be_nil
       expect(audio_transfer.waveform.data).not_to be_empty
     end
   end

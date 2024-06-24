@@ -10,7 +10,11 @@ RSpec.describe "singer", type: :graph do
           singer(id: $id) {
             id
             name
-            photoUrl
+            photo {
+              blob {
+                url
+              }
+            }
           }
         }
       GQL
@@ -21,7 +25,7 @@ RSpec.describe "singer", type: :graph do
 
       expect(data.singer.id).to eq(singer.id)
       expect(data.singer.name).to eq("Roberto Rufino")
-      expect(data.singer.photo_url).to be_present
+      expect(data.singer.photo.blob.url).to be_present
     end
   end
 end

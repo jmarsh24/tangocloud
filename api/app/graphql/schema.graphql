@@ -48,7 +48,7 @@ type AddPlaylistRecordingPayload {
 }
 
 type Album {
-  albumArtUrl: String
+  albumArt: Attachment
   albumType: String
   audioTransfer(id: ID!): AudioTransfer!
   audioTransfers(
@@ -110,10 +110,20 @@ type AppleLoginPayload {
   user: User
 }
 
+type Attachment {
+  blob: Blob!
+  blobId: String!
+  byteSize: Int!
+  contentType: String!
+  createdAt: ISO8601DateTime!
+  filename: String!
+  url: String!
+}
+
 type AudioTransfer {
   album: Album
   albumId: String
-  audioFileUrl: String
+  audio: Attachment
   audioVariant(id: ID!): AudioVariant!
   audioVariants(
     """
@@ -206,7 +216,7 @@ type AudioTransferEdge {
 }
 
 type AudioVariant {
-  audioFileUrl: String
+  audioFile: Attachment
   audioTransfer: AudioTransfer!
   audioTransferId: String!
   bitRate: Int
@@ -255,6 +265,15 @@ type AudioVariantEdge {
   The item at the end of the edge.
   """
   node: AudioVariant
+}
+
+type Blob {
+  byteSize: Int!
+  contentType: String!
+  createdAt: ISO8601DateTime!
+  filename: String!
+  metadata: JSON
+  url(width: Int): String!
 }
 
 """
@@ -310,7 +329,7 @@ type Composer {
   deathDate: ISO8601Date
   id: ID
   name: String!
-  photoUrl: String
+  photo: Attachment
   rank: Int
   slug: String
   sortName: String
@@ -887,7 +906,7 @@ type Lyricist {
     last: Int
   ): LyricConnection!
   name: String
-  photoUrl: String
+  photo: Attachment
   rank: Int
   slug: String
   sortName: String
@@ -1072,7 +1091,7 @@ type Orchestra {
     last: Int
   ): LyricistConnection!
   name: String
-  photoUrl: String
+  photo: Attachment
   rank: Int
   recording(id: ID!): Recording!
   recordings(
@@ -1187,7 +1206,7 @@ type Period {
   description: String
   endYear: Int
   id: ID
-  imageUrl: String
+  image: Attachment
   name: String
   recording(id: ID!): Recording!
   recordings(
@@ -1324,9 +1343,10 @@ type Playlist {
   description: String
   followersCount: Int!
   id: ID!
-  imageUrl: String
+  image: Attachment
   likesCount: Int!
   listensCount: Int!
+  playlistFile: Attachment
   playlistItem(id: ID!): PlaylistItem!
   playlistItems(
     """
@@ -2185,7 +2205,7 @@ type Singer {
   id: ID
   lastName: String
   name: String
-  photoUrl: String
+  photo: Attachment
   rank: Int
   recording(id: ID!): Recording!
   recordingSinger(id: ID!): RecordingSinger!
@@ -2580,7 +2600,7 @@ type Waveform {
   createdAt: ISO8601DateTime!
   data: [Float!]!
   id: ID!
-  imageUrl: String
+  image: Attachment
   length: Int!
   sampleRate: Int!
   samplesPerPixel: Int!
