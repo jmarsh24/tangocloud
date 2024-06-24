@@ -1,7 +1,6 @@
 module Types
   class OrchestraType < Types::BaseObject
     include Rails.application.routes.url_helpers
-    extension(ImageUrlField)
 
     field :id, ID, null: true
     field :name, String, null: true
