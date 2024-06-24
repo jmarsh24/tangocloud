@@ -32,7 +32,11 @@ RSpec.describe "UpdatePlaylist", type: :graph do
             id
             title
             description
-            imageUrl
+            image {
+              blob {
+                url
+              }
+            }
             public
           }
           errors
@@ -59,7 +63,7 @@ RSpec.describe "UpdatePlaylist", type: :graph do
       description: "This is an updated playlist",
       public: false
     )
-    expect(result.data.update_playlist.playlist.image_url).to be_present
+    expect(result.data.update_playlist.playlist.image.blob.url).to be_present
     expect(result.data.update_playlist.errors).to be_empty
   end
 end

@@ -34,6 +34,33 @@ module Types
         end
       end
 
+      def has_one(name, type: infer_type_from_association_name(name), null: false, association: name)
+        field(name, type, null:)
+        define_method name do
+          dataloader.with(Sources::Association, object.class, association, nil).load(object)
+        end
+      end
+
+      def has_one_attached(name)
+        field name, Types::AttachmentType, null: true
+
+        define_method name do
+          dataloader
+            .with(GraphQL::Sources::ActiveStorageHasOneAttached, name)
+            .load(object)
+        end
+      end
+
+      def has_many_attached(name)
+        field name, [Types::AttachmentType], null: true
+
+        define_method name do
+          dataloader
+            .with(GraphQL::Sources::ActiveStorageHasManyAttached, name)
+            .load(object)
+        end
+      end
+
       def enum_field(name, values:, null: false)
         type = Class.new(BaseEnum) do
           values.each do |e|

@@ -8,13 +8,7 @@ module Types
     field :recordings_count, Integer, null: true
     field :slug, String, null: true
 
-    field :image_url, String, null: true
-
-    def image_url
-      dataloader.with(Sources::Preload, image_attachment: :blob).load(object)
-      object.image&.url
-    end
-
     has_many :recordings
+    has_one_attached :image
   end
 end

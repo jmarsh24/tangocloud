@@ -10,7 +10,11 @@ RSpec.describe "lyricist", type: :graph do
           lyricist(id: $id) {
             id
             name
-            photoUrl
+            photo {
+              blob {
+                url
+              }
+            }
           }
         }
       GQL
@@ -22,7 +26,7 @@ RSpec.describe "lyricist", type: :graph do
       lyricist_data = data.lyricist
       expect(lyricist_data.id).to eq(lyricist.id)
       expect(lyricist_data.name).to eq("Francisco García Jiménez")
-      expect(lyricist_data.photo_url).to be_present
+      expect(lyricist_data.photo.blob.url).to include("http://localhost:3000/files/")
     end
   end
 end

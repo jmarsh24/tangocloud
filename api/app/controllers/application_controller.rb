@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  include Shimmer::FileHelper
   include Pundit::Authorization
   include Authentication::Cookies
 
