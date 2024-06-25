@@ -4,29 +4,20 @@ class Recording < ApplicationRecord
   searchkick word_start: [:title, :orchestra_name, :singer_name]
 
   belongs_to :el_recodo_song, optional: true
-  belongs_to :orchestra, counter_cache: true
-  belongs_to :composition, optional: true, counter_cache: true
+  belongs_to :orchestra
+  belongs_to :composition, optional: true
   belongs_to :record_label, optional: true
-  belongs_to :genre, counter_cache: true
-  belongs_to :period, optional: true, counter_cache: true
+  belongs_to :genre
   belongs_to :el_recodo_song, optional: true
   has_many :audio_transfers, dependent: :destroy
-  has_many :audio_variants, through: :audio_transfers, dependent: :destroy
   has_many :recording_singers, dependent: :destroy
-  has_many :singers, through: :recording_singers, dependent: :destroy
-  has_many :lyrics, through: :composition
-  has_many :waveforms, through: :audio_transfers, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :destroy
   has_many :listens, dependent: :destroy
   has_many :mood_tags, dependent: :destroy
-  has_many :moods, through: :mood_tags
   has_many :shares, as: :shareable, dependent: :destroy
-  has_many :sharers, through: :shares, source: :user
-
   has_many :playlist_items, as: :item, dependent: :destroy
-  has_many :playlists, through: :playlist_items
   has_many :tanda_recordings, dependent: :destroy
-  has_many :tandas, through: :tanda_recordings
+  has_many :time_periods, as: :timeable, dependent: :destroy
 
   validates :title, presence: true
   validates :recorded_date, presence: true

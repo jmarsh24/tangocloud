@@ -1,8 +1,6 @@
 class TransferAgent < ApplicationRecord
   validates :name, presence: true
   has_many :audio_transfers, dependent: :destroy
-  has_many :audio_variants, through: :audio_transfers, dependent: :destroy
-  has_many :recordings, through: :audio_transfers, dependent: :destroy
 
   has_one_attached :image
   has_one_attached :logo

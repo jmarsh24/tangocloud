@@ -3,6 +3,8 @@ class Tanda < ApplicationRecord
   has_many :recordings, through: :tanda_recordings
   has_many :playlist_items, as: :item, dependent: :destroy
   has_many :playlists, through: :playlist_items
+  has_many :mood_tags, as: :taggable, dependent: :destroy
+  has_many :moods, through: :mood_tags
 
   validates :name, presence: true
   validates :public, inclusion: {in: [true, false]}

@@ -1403,6 +1403,7 @@ type Playlist {
   ): RecordingConnection!
   sharesCount: Int!
   songsCount: Int!
+  subtitle: String
   system: Boolean!
   title: String!
   updatedAt: ISO8601DateTime!

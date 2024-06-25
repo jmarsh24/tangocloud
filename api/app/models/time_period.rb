@@ -1,9 +1,12 @@
-class Period < ApplicationRecord
+class TimePeriod < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :slugged
   searchkick word_start: [:name], callbacks: :async
 
-  belongs_to :record, counter_cache: true
+  has_many :recordings, dependent: :nullify
+  has_many :orchestras, dependent: :nullify
+  has_many :orchestra_time_periods, dependent: :destroy
+  has_many :orchestras, through: :orchestra_time_periods
 
   validates :name, presence: true
   validates :start_year, presence: true, numericality: {only_integer: true}

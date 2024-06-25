@@ -6,10 +6,7 @@ class Lyricist < ApplicationRecord
   searchkick word_start: [:name, :sort_name], callbacks: :async
 
   has_many :compositions, dependent: :destroy, inverse_of: :lyricist
-  has_many :lyrics, through: :compositions
-  has_many :recordings, through: :compositions
   has_many :shares, as: :shareable, dependent: :destroy
-  has_many :sharers, through: :shares, source: :user
 
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true
