@@ -7,7 +7,7 @@ module Resolvers
     def resolve(query: "*")
       ElRecodoSong.search(query,
         fields: ["title^5", "composer", "author", "lyrics", "orchestra", "singer"],
-        match: :word_middle,
+        match: :word_start,
         misspellings: {below: 5}).results
     end
   end

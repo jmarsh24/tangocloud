@@ -7,7 +7,7 @@ module Resolvers
     def resolve(query: "*")
       ::Period.search(query,
         fields: ["name^5"],
-        match: :word_middle,
+        match: :word_start,
         misspellings: {below: 5}).results
     end
   end

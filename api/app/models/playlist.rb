@@ -2,7 +2,7 @@ class Playlist < ApplicationRecord
   extend FriendlyId
   friendly_id :title, use: :slugged
 
-  searchkick word_middle: [:title, :description]
+  searchkick word_start: [:title, :description]
 
   before_validation :set_default_title
 

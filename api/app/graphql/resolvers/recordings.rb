@@ -12,7 +12,7 @@ module Resolvers
       if query.present?
         search_options = {
           fields: ["title^10", "orchestra_name", "singer_names", "genre", "year"],
-          match: :word_middle,
+          match: :word_start,
           misspellings: {below: 5},
           includes: [
             :orchestra,
