@@ -1257,74 +1257,6 @@ type PageInfo {
   startCursor: String
 }
 
-type Period {
-  description: String
-  endYear: Int
-  id: ID
-  image: Attachment
-  name: String
-  recording(id: ID!): Recording!
-  recordings(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): RecordingConnection!
-  recordingsCount: Int
-  slug: String
-  startYear: Int
-}
-
-"""
-The connection type for Period.
-"""
-type PeriodConnection {
-  """
-  A list of edges.
-  """
-  edges: [PeriodEdge!]!
-
-  """
-  A list of nodes.
-  """
-  nodes: [Period!]!
-
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-}
-
-"""
-An edge in a connection.
-"""
-type PeriodEdge {
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-
-  """
-  The item at the end of the edge.
-  """
-  node: Period
-}
-
 type Playlist {
   audioVariant(id: ID!): AudioVariant!
   audioVariants(
@@ -1679,38 +1611,6 @@ type Query {
     last: Int
     query: String
   ): OrchestraConnection!
-  period(
-    """
-    ID of the period.
-    """
-    id: ID!
-  ): Period!
-  periods(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-
-    """
-    Search query.
-    """
-    query: String
-  ): PeriodConnection!
   playlist(id: ID!): Playlist!
   playlists(
     """
@@ -1808,6 +1708,38 @@ type Query {
     last: Int
     query: String
   ): SingerConnection!
+  timePeriod(
+    """
+    ID of the period.
+    """
+    id: ID!
+  ): TimePeriod!
+  timePeriods(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+
+    """
+    Search query.
+    """
+    query: String
+  ): TimePeriodConnection!
   user(
     """
     ID of the user.
@@ -1952,8 +1884,6 @@ type Recording {
   lyricistId: String
   orchestra: Orchestra!
   orchestraId: String!
-  period: Period
-  periodId: String
   recordLabel: RecordLabel
   recordLabelId: String
   recordedDate: ISO8601Date
@@ -2288,6 +2218,73 @@ type SingerEdge {
   The item at the end of the edge.
   """
   node: Singer
+}
+
+type TimePeriod {
+  description: String
+  endYear: Int
+  id: ID
+  image: Attachment
+  name: String
+  recording(id: ID!): Recording!
+  recordings(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+  ): RecordingConnection!
+  slug: String
+  startYear: Int
+}
+
+"""
+The connection type for TimePeriod.
+"""
+type TimePeriodConnection {
+  """
+  A list of edges.
+  """
+  edges: [TimePeriodEdge!]!
+
+  """
+  A list of nodes.
+  """
+  nodes: [TimePeriod!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+}
+
+"""
+An edge in a connection.
+"""
+type TimePeriodEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge.
+  """
+  node: TimePeriod
 }
 
 type TransferAgent {
