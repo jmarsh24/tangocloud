@@ -13,7 +13,7 @@ class Recording < ApplicationRecord
   has_many :recording_singers, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :destroy
   has_many :listens, dependent: :destroy
-  has_many :mood_tags, dependent: :destroy
+  has_many :mood_tags, as: :taggable, dependent: :destroy
   has_many :shares, as: :shareable, dependent: :destroy
   has_many :playlist_items, as: :item, dependent: :destroy
   has_many :tanda_recordings, dependent: :destroy
@@ -33,7 +33,6 @@ class Recording < ApplicationRecord
       orchestra_name: orchestra&.name,
       singer_names: singers.map(&:name).join(" "),
       genre: genre&.name,
-      time_periods: time_periods.map(&:name),
       listens_count:,
       year: recorded_date.year,
       created_at:,
