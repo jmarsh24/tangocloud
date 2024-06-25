@@ -1,6 +1,4 @@
 class TangocloudSchema < GraphQL::Schema
-  include GraphErrorable
-
   mutation(Types::MutationType)
   query(Types::QueryType)
 
