@@ -1,9 +1,10 @@
-class CreateAudios < ActiveRecord::Migration[7.1]
+class CreateAudioVariants < ActiveRecord::Migration[7.1]
   def change
-    create_table :audios, id: :uuid do |t|
+    create_table :audio_variants, id: :uuid do |t|
       t.integer :duration, null: false, default: 0
       t.string :format, null: false
       t.string :codec, null: false
+      t.string :filename, null: false
       t.integer :bit_rate
       t.integer :sample_rate
       t.integer :channels
@@ -13,5 +14,7 @@ class CreateAudios < ActiveRecord::Migration[7.1]
 
       t.timestamps
     end
+
+    add_index :audio_variants, :filename, unique: true
   end
 end
