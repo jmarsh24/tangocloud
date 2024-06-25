@@ -35,7 +35,11 @@ RSpec.describe "UpdateUser", type: :graph do
             lastName
             name
             email
-            avatarUrl
+            avatar {
+              blob {
+                url
+              }
+            }
           }
           errors
         }
@@ -56,11 +60,11 @@ RSpec.describe "UpdateUser", type: :graph do
 
     gql(mutation, variables:, user:)
 
-    expect(result.data.update_user.user).to have_attributes(
+    expect(data.update_user.user).to have_attributes(
       name: "Updated Updated",
       email: "updated@example.com"
     )
-    expect(result.data.update_user.user.avatar_url).to be_present
-    expect(result.data.update_user.errors).to be_empty
+    expect(data.update_user.user.avatar.blob.url).to be_present
+    expect(data.update_user.errors).to be_empty
   end
 end

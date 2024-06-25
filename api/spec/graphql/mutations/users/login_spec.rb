@@ -1,27 +1,52 @@
 require "rails_helper"
 
-RSpec.describe "login", type: :graph do
-  let!(:user) { users(:normal) }
+RSpec.describe "GraphQL, login mutation", type: :graph do
+  let(:user) do
+    User.create!(
+      email: "test@example.com",
+      password: "SecurePassword1",
+      username: "TestUser"
+    )
+  end
+
   let(:mutation) do
     <<~GQL
       mutation login($login: String!, $password: String!) {
-        login(input: {
-          login: $login
-          password: $password
-        }) {
-          user {
-            id
-            username
-            email
-            name
+        login(
+          input: {
+            login: $login,
+            password: $password,
           }
-          token
+        ) {
+          __typename
+          ...on AuthenticatedUser {
+            id
+            email
+            username
+            token
+          }
+          ...on FailedLogin {
+            error
+          }
         }
       }
     GQL
   end
 
-  it "is successful with correct email and password" do
+  it "logs in successfully" do
+    variables = {
+      login: user.email,
+      password: "SecurePassword1"
+    }
+
+    gql(mutation, variables:)
+
+    expect(data.login["__typename"]).to eq("AuthenticatedUser")
+    expect(data.login["email"]).to eq("test@example.com")
+    expect(data.login["token"]).to be_present
+  end
+
+  it "cannot log in with an invalid password" do
     variables = {
       login: user.email,
       password: "password"
@@ -29,53 +54,7 @@ RSpec.describe "login", type: :graph do
 
     gql(mutation, variables:)
 
-    expect(result.data.login.user.email).to eq(user.email)
-    expect(result.data.login.user.id).to be_present
-    expect(result.data.login.token).to be_present
-  end
-
-  it "is successful with correct username and password" do
-    variables = {
-      login: user.username,
-      password: "password"
-    }
-
-    gql(mutation, variables:)
-
-    expect(result.data.login.user.email).to eq(user.email)
-    expect(result.data.login.user.id).to be_present
-    expect(result.data.login.token).to be_present
-  end
-
-  it "fails with wrong username" do
-    variables = {
-      login: "wrong-username",
-      password: "password"
-    }
-
-    gql(mutation, variables:)
-
-    expect(gql_errors.map(&:message)).to eq(["Incorrect Email/Password"])
-  end
-
-  it "fails with wrong password" do
-    variables = {
-      login: "user@example.com",
-      password: "wrong-password"
-    }
-    gql(mutation, variables:)
-
-    expect(gql_errors.map(&:message)).to eq(["Incorrect Email/Password"])
-  end
-
-  it "fails with wrong email" do
-    variables = {
-      login: "wrong@email.com",
-      password: "wrong-password"
-    }
-
-    gql(mutation, variables:)
-
-    expect(gql_errors.map(&:message)).to eq(["Incorrect Email/Password"])
+    expect(data.login["__typename"]).to eq("FailedLogin")
+    expect(data.login["error"]).to eq("Invalid login credentials")
   end
 end

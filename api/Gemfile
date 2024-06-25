@@ -21,8 +21,9 @@ gem "chunky_png"
 gem "dotenv-rails"
 gem "faraday"
 gem "friendly_id"
-gem "graphiql-rails"
 gem "graphql"
+gem "graphiql-rails"
+gem "graphql-sources"
 gem "groupdate"
 gem "jwt"
 gem "kamal"
@@ -45,6 +46,7 @@ gem "googleauth"
 gem "shimmer"
 gem "inline_svg"
 gem "lograge"
+gem "dry-monads"
 
 # Assets
 gem "stimulus-rails"
@@ -86,11 +88,10 @@ group :development do
   gem "web-console"
   gem "brakeman"
   gem "authentication-zero"
+  gem "error_highlight"
 end
 
 group :test do
   gem "rspec-retry"
   gem "webmock"
 end
-
-gem "graphql-sources", "~> 1.2"
