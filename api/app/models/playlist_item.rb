@@ -1,6 +1,6 @@
 class PlaylistItem < ApplicationRecord
-  belongs_to :playlist, counter_cache: true, touch: true
-  belongs_to :playable, polymorphic: true
+  belongs_to :playlist
+  belongs_to :recording
 
   acts_as_list scope: :playlist
 
@@ -11,11 +11,10 @@ end
 #
 # Table name: playlist_items
 #
-#  id            :uuid             not null, primary key
-#  playlist_id   :uuid             not null
-#  playable_type :string           not null
-#  playable_id   :uuid             not null
-#  position      :integer          not null
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
+#  id           :uuid             not null, primary key
+#  playlist_id  :uuid             not null
+#  recording_id :uuid             not null
+#  position     :integer          not null
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
 #

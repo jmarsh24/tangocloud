@@ -1,5 +1,5 @@
 class Genre < ApplicationRecord
-  searchkick word_middle: [:name]
+  searchkick word_start: [:name]
   has_many :recordings, dependent: :destroy
 
   validates :name, presence: true

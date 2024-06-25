@@ -1,7 +1,7 @@
 class Period < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :slugged
-  searchkick word_middle: [:name], callbacks: :async
+  searchkick word_start: [:name], callbacks: :async
 
   belongs_to :record, counter_cache: true
 
@@ -9,7 +9,6 @@ class Period < ApplicationRecord
   validates :start_year, presence: true, numericality: {only_integer: true}
   validates :end_year, presence: true, numericality: {greater_than_or_equal_to: :start_year}
   validates :slug, presence: true, uniqueness: true
-  validates :recordings_count, presence: true, numericality: {greater_than_or_equal_to: 0}
 
   has_one_attached :image
 

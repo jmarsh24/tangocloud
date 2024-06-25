@@ -26,8 +26,6 @@ osvaldo_pugliese:
 # Table name: orchestras
 #
 #  id               :uuid             not null, primary key
-#  first_name       :string           not null
-#  last_name        :string
 #  name             :string           not null
 #  rank             :integer          default(0), not null
 #  sort_name        :string

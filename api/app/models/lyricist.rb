@@ -3,23 +3,18 @@ class Lyricist < ApplicationRecord
   include Titleizable
   friendly_id :name, use: :slugged
 
-  searchkick word_start: [:first_name, :last_name, :name], callbacks: :async
+  searchkick word_start: [:name, :sort_name], callbacks: :async
 
   has_many :compositions, dependent: :destroy, inverse_of: :lyricist
   has_many :lyrics, through: :compositions
   has_many :recordings, through: :compositions
+  has_many :shares, as: :shareable, dependent: :destroy
+  has_many :sharers, through: :shares, source: :user
 
-  validates :first_name, presence: true
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true
 
-  before_validation :assign_names, on: :create
-
-  has_one_attached :photo, dependent: :purge_later do |blob|
-    blob.variant :thumb, resize_to_limit: [100, 100]
-    blob.variant :medium, resize_to_limit: [250, 250]
-    blob.variant :large, resize_to_limit: [500, 500]
-  end
+  has_one_attached :photo
 
   def search_data
     {
@@ -28,18 +23,6 @@ class Lyricist < ApplicationRecord
       name:
     }
   end
-
-  def assign_names
-    if new_record?
-      formatted_name = self.class.custom_titleize(name)
-      names = formatted_name.split(" ")
-
-      self.name = formatted_name
-      self.first_name = names.first
-      self.last_name = (names.length > 1) ? names.last : ""
-      self.sort_name = (names.length > 1) ? names.last : ""
-    end
-  end
 end
 
 # == Schema Information
@@ -47,8 +30,6 @@ end
 # Table name: lyricists
 #
 #  id                 :uuid             not null, primary key
-#  first_name         :string           not null
-#  last_name          :string
 #  name               :string           not null
 #  slug               :string           not null
 #  sort_name          :string

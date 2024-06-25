@@ -32,8 +32,6 @@ andres_fraga:
 # Table name: composers
 #
 #  id                 :uuid             not null, primary key
-#  first_name         :string           not null
-#  last_name          :string
 #  name               :string           not null
 #  birth_date         :date
 #  death_date         :date

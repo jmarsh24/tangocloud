@@ -1,7 +1,7 @@
 class Recording < ApplicationRecord
   extend FriendlyId
   friendly_id :title, use: :slugged
-  searchkick word_middle: [:title, :orchestra_name, :singer_name]
+  searchkick word_start: [:title, :orchestra_name, :singer_name]
 
   belongs_to :el_recodo_song, optional: true
   belongs_to :orchestra, counter_cache: true
@@ -21,6 +21,11 @@ class Recording < ApplicationRecord
   has_many :likes, as: :likeable, dependent: :destroy
   has_many :playbacks, dependent: :destroy
   has_many :users, through: :playbacks
+  has_many :mood_tags, dependent: :destroy
+  has_many :moods, through: :mood_tags
+  has_many :users, through: :mood_tags
+  has_many :shares, as: :shareable, dependent: :destroy
+  has_many :shared_by_users, through: :shares, source: :user
 
   validates :title, presence: true
   validates :recorded_date, presence: true

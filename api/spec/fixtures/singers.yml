@@ -20,8 +20,6 @@ roberto_rufino:
 # Table name: singers
 #
 #  id         :uuid             not null, primary key
-#  first_name :string           not null
-#  last_name  :string
 #  name       :string           not null
 #  slug       :string           not null
 #  rank       :integer          default(0), not null

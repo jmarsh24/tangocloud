@@ -10,9 +10,9 @@ class Playlist < ApplicationRecord
 
   belongs_to :user
   has_many :playlist_items, -> { order(position: :asc) }, dependent: :destroy, inverse_of: :playlist
-  has_many :recordings, through: :playlist_items, source: :playable, source_type: "Recording"
-  has_many :audio_transfers, through: :recordings
-  has_many :albums, through: :audio_transfers
+  has_many :recordings, through: :playlist_items
+  has_many :shares, as: :shareable, dependent: :destroy
+  has_many :shared_by_users, through: :shares, source: :user
 
   has_one_attached :image, dependent: :purge_later
   has_one_attached :playlist_file, dependent: :purge_later
@@ -67,19 +67,13 @@ end
 #
 # Table name: playlists
 #
-#  id                   :uuid             not null, primary key
-#  title                :string           not null
-#  description          :string
-#  slug                 :string
-#  public               :boolean          default(TRUE), not null
-#  songs_count          :integer          default(0), not null
-#  likes_count          :integer          default(0), not null
-#  playbacks_count      :integer          default(0), not null
-#  shares_count         :integer          default(0), not null
-#  followers_count      :integer          default(0), not null
-#  playlist_items_count :integer          default(0), not null
-#  system               :boolean          default(FALSE), not null
-#  user_id              :uuid             not null
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
+#  id          :uuid             not null, primary key
+#  title       :string           not null
+#  description :string
+#  slug        :string
+#  public      :boolean          default(TRUE), not null
+#  system      :boolean          default(FALSE), not null
+#  user_id     :uuid             not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
 #

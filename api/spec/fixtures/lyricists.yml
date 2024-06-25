@@ -45,8 +45,6 @@ homero_manzi:
 # Table name: lyricists
 #
 #  id                 :uuid             not null, primary key
-#  first_name         :string           not null
-#  last_name          :string
 #  name               :string           not null
 #  slug               :string           not null
 #  sort_name          :string
