@@ -293,13 +293,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
 
   create_table "playlist_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "playlist_id", null: false
-    t.uuid "recording_id", null: false
+    t.string "item_type", null: false
+    t.bigint "item_id", null: false
     t.integer "position", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["item_type", "item_id"], name: "index_playlist_items_on_item"
     t.index ["playlist_id"], name: "index_playlist_items_on_playlist_id"
     t.index ["position"], name: "index_playlist_items_on_position"
-    t.index ["recording_id"], name: "index_playlist_items_on_recording_id"
   end
 
   create_table "playlists", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -594,7 +595,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
   add_foreign_key "mood_tags", "recordings"
   add_foreign_key "mood_tags", "users"
   add_foreign_key "playlist_items", "playlists"
-  add_foreign_key "playlist_items", "recordings"
   add_foreign_key "recording_singers", "recordings"
   add_foreign_key "recording_singers", "singers"
   add_foreign_key "recordings", "compositions"
