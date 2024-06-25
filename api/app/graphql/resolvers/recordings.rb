@@ -20,7 +20,7 @@ module Resolvers
             :recording_singers,
             :composition,
             :genre,
-            :time_period,
+            :time_periods,
             :lyrics,
             :audio_variants,
             audio_transfers: [album: {album_art_attachment: :blob}]
