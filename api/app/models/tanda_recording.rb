@@ -1,6 +1,9 @@
 class TandaRecording < ApplicationRecord
   belongs_to :tanda
   belongs_to :recording
+
+  validates :tanda, presence: true
+  validates :recording, presence: true
 end
 
 # == Schema Information

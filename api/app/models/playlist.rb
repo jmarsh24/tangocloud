@@ -10,9 +10,10 @@ class Playlist < ApplicationRecord
 
   belongs_to :user
   has_many :playlist_items, -> { order(position: :asc) }, dependent: :destroy, inverse_of: :playlist
-  has_many :recordings, through: :playlist_items
   has_many :shares, as: :shareable, dependent: :destroy
   has_many :shared_by_users, through: :shares, source: :user
+  has_many :tandas, through: :playlist_items, source: :item, source_type: "Tanda"
+  has_many :recordings, through: :playlist_items, source: :item, source_type: "Recording"
 
   has_one_attached :image, dependent: :purge_later
   has_one_attached :playlist_file, dependent: :purge_later

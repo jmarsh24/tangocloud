@@ -15,17 +15,18 @@ class Recording < ApplicationRecord
   has_many :recording_singers, dependent: :destroy
   has_many :singers, through: :recording_singers, dependent: :destroy
   has_many :lyrics, through: :composition
-  has_many :tanda_recordings, dependent: :destroy
-  has_many :tandas, through: :tanda_recordings
   has_many :waveforms, through: :audio_transfers, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :destroy
-  has_many :playbacks, dependent: :destroy
-  has_many :users, through: :playbacks
+  has_many :listens, dependent: :destroy
   has_many :mood_tags, dependent: :destroy
   has_many :moods, through: :mood_tags
-  has_many :users, through: :mood_tags
   has_many :shares, as: :shareable, dependent: :destroy
-  has_many :shared_by_users, through: :shares, source: :user
+  has_many :sharers, through: :shares, source: :user
+
+  has_many :playlist_items, as: :item, dependent: :destroy
+  has_many :playlists, through: :playlist_items
+  has_many :tanda_recordings, dependent: :destroy
+  has_many :tandas, through: :tanda_recordings
 
   validates :title, presence: true
   validates :recorded_date, presence: true

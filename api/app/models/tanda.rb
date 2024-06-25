@@ -1,5 +1,8 @@
 class Tanda < ApplicationRecord
   has_many :tanda_recordings, dependent: :destroy
+  has_many :recordings, through: :tanda_recordings
+  has_many :playlist_items, as: :item, dependent: :destroy
+  has_many :playlists, through: :playlist_items
 
   validates :name, presence: true
   validates :public, inclusion: {in: [true, false]}

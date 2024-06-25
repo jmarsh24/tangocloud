@@ -1,8 +1,11 @@
 class PlaylistItem < ApplicationRecord
   belongs_to :playlist
-  belongs_to :recording
+  belongs_to :item, polymorphic: true
 
   acts_as_list scope: :playlist
+
+  validates :playlist, presence: true
+  validates :item, presence: true
 
   validates :position, presence: true, numericality: {only_integer: true}
 end
