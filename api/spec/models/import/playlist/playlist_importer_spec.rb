@@ -21,11 +21,11 @@ RSpec.describe Import::Playlist::PlaylistImporter, type: :model do
       playlist = described_class.new(playlist).import
       playlist_items = playlist.playlist_items
       expect(playlist_items.count).to eq(5)
-      expect(playlist_items[0].playable).to eq(desde_el_alma)
-      expect(playlist_items[1].playable).to eq(milonga_vieja_milonga)
-      expect(playlist_items[2].playable).to eq(volver_a_sonar)
-      expect(playlist_items[3].playable).to eq(te_aconsejo_que_me_olvides)
-      expect(playlist_items[4].playable).to eq(farol)
+      expect(playlist_items[0].item).to eq(desde_el_alma)
+      expect(playlist_items[1].item).to eq(milonga_vieja_milonga)
+      expect(playlist_items[2].item).to eq(volver_a_sonar)
+      expect(playlist_items[3].item).to eq(te_aconsejo_que_me_olvides)
+      expect(playlist_items[4].item).to eq(farol)
     end
   end
 end

@@ -11,7 +11,7 @@ module Types
     field :liked_recordings, resolver: Resolvers::Recordings
     field :lyricist, resolver: Resolvers::Lyricist
     field :orchestra, resolver: Resolvers::Orchestra
-    field :period, resolver: Resolvers::Period
+    field :time_period, resolver: Resolvers::TimePeriod
     field :playlist, resolver: Resolvers::Playlist
     field :recording, resolver: Resolvers::Recording
     field :singer, resolver: Resolvers::Singer
@@ -20,7 +20,7 @@ module Types
     field :el_recodo_songs, resolver: Resolvers::ElRecodoSongs
     field :lyricists, resolver: Resolvers::Lyricists
     field :orchestras, resolver: Resolvers::Orchestras
-    field :periods, resolver: Resolvers::Periods
+    field :time_periods, resolver: Resolvers::TimePeriods
     field :playlists, resolver: Resolvers::Playlists
     field :recordings, resolver: Resolvers::Recordings
     field :singers, resolver: Resolvers::Singers

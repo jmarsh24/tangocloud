@@ -6,6 +6,7 @@ class User < ApplicationRecord
   has_one :user_preference, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :playlists, dependent: :destroy
+  has_many :playlist_items, through: :playlists
   has_many :listens, dependent: :destroy
   has_many :mood_tags, dependent: :destroy
   has_many :shares, dependent: :destroy

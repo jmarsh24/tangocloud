@@ -126,7 +126,7 @@ photo_andres_fraga_attachment:
 
 image_golden_age:
   name: image
-  record_type: "Period"
+  record_type: "TimePeriod"
   record: golden_age
   blob: di_sarli_image
 

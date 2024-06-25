@@ -22,7 +22,7 @@ module Import
             next unless recording
 
             @playlist.playlist_items.create!(
-              playable: recording,
+              item: recording,
               position:
             )
 

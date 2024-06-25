@@ -16,7 +16,7 @@ RSpec.describe "ChangePlaylistItemPosition", type: :graph do
               id
               title
             }
-            playable {
+            item {
               ... on Recording {
                 id
                 title
@@ -34,11 +34,11 @@ RSpec.describe "ChangePlaylistItemPosition", type: :graph do
       gql(mutation, variables: {playlistItemId: volver_a_sonar_item.id, position: 2}, user:)
 
       playlist_title = result.data.change_playlist_item_position.playlist_item.playlist.title
-      playable_title = result.data.change_playlist_item_position.playlist_item.playable.title
+      item_title = result.data.change_playlist_item_position.playlist_item.item.title
       position = result.data.change_playlist_item_position.playlist_item.position
 
       expect(playlist_title).to eq("Awesome Playlist")
-      expect(playable_title).to eq("Volver a soñar")
+      expect(item_title).to eq("Volver a soñar")
       expect(position).to eq(2)
       expect(result.data.change_playlist_item_position.errors).to be_empty
     end

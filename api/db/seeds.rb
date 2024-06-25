@@ -155,7 +155,7 @@ end
 # Create playlist items
 playlists.each do |playlist|
   recordings.each_with_index do |recording, index|
-    PlaylistItem.find_or_create_by!(playlist:, playable: recording) do |item|
+    PlaylistItem.find_or_create_by!(playlist:, item: recording) do |item|
       item.position = index + 1
     end
   end

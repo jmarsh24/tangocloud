@@ -7,6 +7,6 @@ class Avo::Resources::PlaylistItem < Avo::BaseResource
   def fields
     field :id, as: :id, readonly: true, only_on: :show
     field :playlist, as: :belongs_to
-    field :playable, as: :text
+    field :item, as: :text
   end
 end

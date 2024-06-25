@@ -3,11 +3,11 @@ require "rails_helper"
 RSpec.describe "period", type: :graph do
   describe "Querying for period" do
     let!(:user) { users(:admin) }
-    let!(:period) { periods(:golden_age) }
+    let!(:time_period) { time_periods(:golden_age) }
     let(:query) do
       <<~GQL
-        query Period($id: ID!) {
-          period(id: $id) {
+        query TimePeriod($id: ID!) {
+          timePeriod(id: $id) {
             id
             name
             image {
@@ -21,11 +21,11 @@ RSpec.describe "period", type: :graph do
     end
 
     it "returns the correct period details" do
-      gql(query, variables: {id: period.id.to_s}, user:)
+      gql(query, variables: {id: time_period.id.to_s}, user:)
 
-      expect(data.period.id).to eq(period.id)
-      expect(data.period.name).to eq("Golden Age")
-      expect(data.period.image.blob.url).to be_present
+      expect(data.time_period.id).to eq(time_period.id)
+      expect(data.time_period.name).to eq("Golden Age")
+      expect(data.time_period.image.blob.url).to be_present
     end
   end
 end

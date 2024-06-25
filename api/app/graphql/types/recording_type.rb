@@ -18,7 +18,6 @@ module Types
     belongs_to :composition, null: true
     belongs_to :record_label, null: true
     belongs_to :genre
-    belongs_to :period, null: true
     belongs_to :lyricist, null: true
     belongs_to :composer, null: true
 

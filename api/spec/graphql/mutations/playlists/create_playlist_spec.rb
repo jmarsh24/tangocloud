@@ -44,7 +44,7 @@ RSpec.describe "CreatePlaylist", type: :graph do
             playlistItems {
               edges {
                 node {
-                  playable {
+                  item {
                     ... on Recording {
                       id
                     }
@@ -75,6 +75,6 @@ RSpec.describe "CreatePlaylist", type: :graph do
       public: true
     )
     expect(result.data.create_playlist.playlist.image.blob.url).to be_present
-    expect(result.data.create_playlist.playlist.playlist_items.edges.map { |edge| edge.node.playable.id }).to match_array([recording1.id, recording2.id])
+    expect(result.data.create_playlist.playlist.playlist_items.edges.map { |edge| edge.node.item.id }).to match_array([recording1.id, recording2.id])
   end
 end

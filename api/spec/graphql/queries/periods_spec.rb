@@ -23,7 +23,7 @@ RSpec.describe "Periods", type: :graph do
       gql(query, variables: {query: "Golden Age"}, user:)
 
       found_time_periods = data.time_periods.edges.first.node
-      expect(found_time_periods["id"]).to eq(period.id.to_s)
+      expect(found_time_periods["id"]).to eq(time_period.id.to_s)
       expect(found_time_periods["name"]).to eq("Golden Age")
     end
   end
