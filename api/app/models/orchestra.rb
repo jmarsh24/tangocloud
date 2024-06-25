@@ -5,9 +5,9 @@ class Orchestra < ApplicationRecord
 
   searchkick word_start: [:name, :sort_name], callbacks: :async
 
+  has_many :time_periods, dependent: :destroy
   has_many :recordings, dependent: :destroy
   has_many :shares, as: :shareable, dependent: :destroy
-  has_many :time_periods, as: :timeable, dependent: :destroy
 
   validates :rank, presence: true, numericality: {only_integer: true}
   validates :slug, presence: true, uniqueness: true

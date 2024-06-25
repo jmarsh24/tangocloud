@@ -520,12 +520,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
     t.integer "start_year", default: 0, null: false
     t.integer "end_year", default: 0, null: false
     t.string "slug", null: false
-    t.string "timeable_type", null: false
-    t.uuid "timeable_id", null: false
+    t.uuid "orchestra_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["orchestra_id"], name: "index_time_periods_on_orchestra_id"
     t.index ["slug"], name: "index_time_periods_on_slug", unique: true
-    t.index ["timeable_type", "timeable_id"], name: "index_time_periods_on_timeable"
   end
 
   create_table "transfer_agents", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -613,6 +612,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
   add_foreign_key "subscriptions", "users"
   add_foreign_key "tanda_recordings", "recordings"
   add_foreign_key "tanda_recordings", "tandas"
+  add_foreign_key "time_periods", "orchestras"
   add_foreign_key "user_preferences", "users"
   add_foreign_key "waveforms", "audio_transfers"
 end

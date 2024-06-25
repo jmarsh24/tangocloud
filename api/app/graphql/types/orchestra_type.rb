@@ -13,6 +13,7 @@ module Types
     field :slug, String, null: true
     field :recordings_count, Integer, null: true
 
+    has_many :time_periods
     has_many :compositions
     has_many :singers
     has_many :lyricists

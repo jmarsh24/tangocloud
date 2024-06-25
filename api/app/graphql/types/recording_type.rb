@@ -20,6 +20,7 @@ module Types
     belongs_to :genre
     belongs_to :lyricist, null: true
     belongs_to :composer, null: true
+    belongs_to :time_period, null: true
 
     has_many :listens
     has_many :likes

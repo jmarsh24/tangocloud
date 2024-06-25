@@ -3,11 +3,8 @@ class TimePeriod < ApplicationRecord
   friendly_id :name, use: :slugged
   searchkick word_start: [:name], callbacks: :async
 
-  belongs_to :timeable, polymorphic: true
+  belongs_to :orchestra
   has_many :recordings, dependent: :nullify
-  has_many :orchestras, dependent: :nullify
-  has_many :orchestra_time_periods, dependent: :destroy
-  has_many :orchestras, through: :orchestra_time_periods
 
   validates :name, presence: true
   validates :start_year, presence: true, numericality: {only_integer: true}
@@ -29,14 +26,13 @@ end
 #
 # Table name: time_periods
 #
-#  id            :uuid             not null, primary key
-#  name          :string           not null
-#  description   :text
-#  start_year    :integer          default(0), not null
-#  end_year      :integer          default(0), not null
-#  slug          :string           not null
-#  timeable_type :string           not null
-#  timeable_id   :uuid             not null
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
+#  id           :uuid             not null, primary key
+#  name         :string           not null
+#  description  :text
+#  start_year   :integer          default(0), not null
+#  end_year     :integer          default(0), not null
+#  slug         :string           not null
+#  orchestra_id :uuid
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
 #

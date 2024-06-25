@@ -6,8 +6,7 @@ class CreateTimePeriods < ActiveRecord::Migration[7.1]
       t.integer :start_year, null: false, default: 0
       t.integer :end_year, null: false, default: 0
       t.string :slug, index: {unique: true}, null: false
-
-      t.references :timeable, polymorphic: true, null: false, type: :uuid
+      t.references :orchestra, foreign_key: true, type: :uuid, null: true
 
       t.timestamps
     end

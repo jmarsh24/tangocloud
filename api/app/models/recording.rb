@@ -3,12 +3,12 @@ class Recording < ApplicationRecord
   friendly_id :title, use: :slugged
   searchkick word_start: [:title, :orchestra_name, :singer_name]
 
-  belongs_to :el_recodo_song, optional: true
   belongs_to :orchestra
   belongs_to :composition, optional: true
   belongs_to :record_label, optional: true
   belongs_to :genre
   belongs_to :el_recodo_song, optional: true
+  belongs_to :time_period, optional: true
   has_many :audio_transfers, dependent: :destroy
   has_many :recording_singers, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :destroy
@@ -17,7 +17,6 @@ class Recording < ApplicationRecord
   has_many :shares, as: :shareable, dependent: :destroy
   has_many :playlist_items, as: :item, dependent: :destroy
   has_many :tanda_recordings, dependent: :destroy
-  has_many :time_periods, as: :timeable, dependent: :destroy
   has_many :singers, through: :recording_singers
 
   validates :title, presence: true
