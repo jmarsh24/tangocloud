@@ -1,6 +1,6 @@
-class Playback < ApplicationRecord
+class Listen < ApplicationRecord
   belongs_to :user
-  belongs_to :recording, counter_cache: true
+  belongs_to :recording
 
   scope :most_recent, -> { order(created_at: :desc) }
 end
