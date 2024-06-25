@@ -214,7 +214,7 @@ Composer.reindex
 Genre.reindex
 Lyricist.reindex
 Orchestra.reindex
-Period.reindex
+TimePeriod.reindex
 Singer.reindex
 User.reindex
 

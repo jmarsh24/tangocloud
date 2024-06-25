@@ -16,8 +16,6 @@ class Orchestra < ApplicationRecord
 
   def search_data
     {
-      first_name:,
-      last_name:,
       name:
     }
   end

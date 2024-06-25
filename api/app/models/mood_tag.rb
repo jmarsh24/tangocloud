@@ -14,10 +14,11 @@ end
 #
 # Table name: mood_tags
 #
-#  id           :uuid             not null, primary key
-#  recording_id :uuid             not null
-#  mood_id      :uuid             not null
-#  user_id      :uuid             not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  id            :uuid             not null, primary key
+#  mood_id       :uuid             not null
+#  taggable_type :string           not null
+#  taggable_id   :uuid             not null
+#  user_id       :uuid             not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
 #

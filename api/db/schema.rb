@@ -217,7 +217,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
   create_table "listens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id", null: false
     t.uuid "recording_id", null: false
-    t.datetime "listened_at", precision: nil, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["recording_id"], name: "index_listens_on_recording_id"
@@ -248,14 +247,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
   end
 
   create_table "mood_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "recording_id", null: false
     t.uuid "mood_id", null: false
+    t.string "taggable_type", null: false
+    t.uuid "taggable_id", null: false
     t.uuid "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["mood_id", "taggable_type", "taggable_id", "user_id"], name: "idx_on_mood_id_taggable_type_taggable_id_user_id_b388a677b2"
     t.index ["mood_id"], name: "index_mood_tags_on_mood_id"
-    t.index ["recording_id", "mood_id", "user_id"], name: "index_mood_tags_on_recording_id_and_mood_id_and_user_id", unique: true
-    t.index ["recording_id"], name: "index_mood_tags_on_recording_id"
+    t.index ["taggable_type", "taggable_id"], name: "index_mood_tags_on_taggable"
     t.index ["user_id"], name: "index_mood_tags_on_user_id"
   end
 
@@ -279,22 +279,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
     t.index ["slug"], name: "index_orchestras_on_slug", unique: true
   end
 
-  create_table "periods", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name", null: false
-    t.text "description"
-    t.integer "start_year", default: 0, null: false
-    t.integer "end_year", default: 0, null: false
-    t.integer "recordings_count", default: 0, null: false
-    t.string "slug", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["slug"], name: "index_periods_on_slug", unique: true
-  end
-
   create_table "playlist_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "playlist_id", null: false
     t.string "item_type", null: false
-    t.bigint "item_id", null: false
+    t.uuid "item_id", null: false
     t.integer "position", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -305,7 +293,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
 
   create_table "playlists", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title", null: false
-    t.string "description"
+    t.string "subtitle"
+    t.text "description"
     t.string "slug"
     t.boolean "public", default: true, null: false
     t.boolean "system", default: false, null: false
@@ -347,14 +336,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
     t.uuid "composition_id"
     t.uuid "record_label_id"
     t.uuid "genre_id"
-    t.uuid "period_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["composition_id"], name: "index_recordings_on_composition_id"
     t.index ["el_recodo_song_id"], name: "index_recordings_on_el_recodo_song_id"
     t.index ["genre_id"], name: "index_recordings_on_genre_id"
     t.index ["orchestra_id"], name: "index_recordings_on_orchestra_id"
-    t.index ["period_id"], name: "index_recordings_on_period_id"
     t.index ["record_label_id"], name: "index_recordings_on_record_label_id"
     t.index ["singer_id"], name: "index_recordings_on_singer_id"
     t.index ["slug"], name: "index_recordings_on_slug", unique: true
@@ -527,6 +514,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
     t.index ["user_id"], name: "index_tandas_on_user_id"
   end
 
+  create_table "time_periods", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.integer "start_year", default: 0, null: false
+    t.integer "end_year", default: 0, null: false
+    t.string "slug", null: false
+    t.string "timeable_type", null: false
+    t.uuid "timeable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_time_periods_on_slug", unique: true
+    t.index ["timeable_type", "timeable_id"], name: "index_time_periods_on_timeable"
+  end
+
   create_table "transfer_agents", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
@@ -592,7 +593,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
   add_foreign_key "listens", "users"
   add_foreign_key "lyrics", "compositions"
   add_foreign_key "mood_tags", "moods"
-  add_foreign_key "mood_tags", "recordings"
   add_foreign_key "mood_tags", "users"
   add_foreign_key "playlist_items", "playlists"
   add_foreign_key "recording_singers", "recordings"
@@ -601,7 +601,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
   add_foreign_key "recordings", "el_recodo_songs"
   add_foreign_key "recordings", "genres"
   add_foreign_key "recordings", "orchestras"
-  add_foreign_key "recordings", "periods"
   add_foreign_key "recordings", "record_labels"
   add_foreign_key "recordings", "singers"
   add_foreign_key "sessions", "users"

@@ -1,25 +1,17 @@
 francisco_garcia_jimenez:
   name: Francisco García Jiménez
-  first_name: Francisco
-  last_name: García Jiménez
   slug: francisco-garcia-jimenez
 
 jorge_curi:
   name: Jorge Curi
-  first_name: Jorge
-  last_name: Curi
   slug: jorge-curi
 
 homero_exposito:
   name: Homero Exposito
-  first_name: Homero
-  last_name: Exposito
   slug: homero-exposito
 
 homero_manzi:
   name: Homero Manzi
-  first_name: Homero
-  last_name: Manzi
   slug: homero-manzi
 
   # == Schema Information
@@ -44,13 +36,14 @@ homero_manzi:
 #
 # Table name: lyricists
 #
-#  id         :uuid             not null, primary key
-#  name       :string           not null
-#  slug       :string           not null
-#  sort_name  :string
-#  birth_date :date
-#  death_date :date
-#  bio        :text
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                 :uuid             not null, primary key
+#  name               :string           not null
+#  slug               :string           not null
+#  sort_name          :string
+#  birth_date         :date
+#  death_date         :date
+#  bio                :text
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  compositions_count :integer          default(0)
 #

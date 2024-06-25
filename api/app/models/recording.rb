@@ -18,6 +18,7 @@ class Recording < ApplicationRecord
   has_many :playlist_items, as: :item, dependent: :destroy
   has_many :tanda_recordings, dependent: :destroy
   has_many :time_periods, as: :timeable, dependent: :destroy
+  has_many :singers, through: :recording_singers
 
   validates :title, presence: true
   validates :recorded_date, presence: true
@@ -29,11 +30,10 @@ class Recording < ApplicationRecord
       title:,
       composer_names: composition&.composer&.name,
       lyricist_names: composition&.lyricist&.name,
-      lyrics: lyrics.map(&:content),
       orchestra_name: orchestra&.name,
       singer_names: singers.map(&:name).join(" "),
       genre: genre&.name,
-      period: period&.name,
+      time_periods: time_periods.map(&:name),
       playbacks_count:,
       year: recorded_date.year,
       created_at:,
@@ -60,7 +60,6 @@ end
 #  composition_id    :uuid
 #  record_label_id   :uuid
 #  genre_id          :uuid
-#  period_id         :uuid
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #

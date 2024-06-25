@@ -77,7 +77,6 @@ milonga_vieja_milonga:
 #  composition_id    :uuid
 #  record_label_id   :uuid
 #  genre_id          :uuid
-#  period_id         :uuid
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #

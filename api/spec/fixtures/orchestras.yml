@@ -1,25 +1,17 @@
 juan_darienzo:
   name: Juan D'Arienzo
-  first_name: Juan
-  last_name: D'Arienzo
   slug: juan-d-arienzo
 
 anibal_troilo:
   name: Anibal Troilo
-  first_name: Anibal
-  last_name: Troilo
   slug: anibal-troilo
 
 carlos_di_sarli:
   name: Carlos Di Sarli
-  first_name: Carlos
-  last_name: Di Sarli
   slug: carlos-di-sarli
 
 osvaldo_pugliese:
   name: Osvaldo Pugliese
-  first_name: Osvaldo
-  last_name: Pugliese
   slug: osvaldo-pugliese
 # == Schema Information
 #
