@@ -1,7 +1,7 @@
-volver_a_sonar_admin_playback:
+volver_a_sonar_admin_listen:
   user: admin
   recording: volver_a_sonar
-volver_a_sonar_normal_playback:
+volver_a_sonar_normal_listen:
   user: normal
   recording: volver_a_sonar
 # == Schema Information

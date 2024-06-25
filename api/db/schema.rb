@@ -329,7 +329,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
     t.date "recorded_date"
     t.string "slug", null: false
     t.enum "recording_type", default: "studio", null: false, enum_type: "recording_type"
-    t.integer "playbacks_count", default: 0, null: false
+    t.integer "listens_count", default: 0, null: false
     t.uuid "el_recodo_song_id"
     t.uuid "orchestra_id"
     t.uuid "singer_id"

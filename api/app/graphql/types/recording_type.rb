@@ -22,7 +22,7 @@ module Types
     belongs_to :lyricist, null: true
     belongs_to :composer, null: true
 
-    has_many :playbacks
+    has_many :listens
     has_many :likes
     has_many :audio_transfers
     has_many :audio_variants

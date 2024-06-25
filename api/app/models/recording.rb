@@ -34,7 +34,7 @@ class Recording < ApplicationRecord
       singer_names: singers.map(&:name).join(" "),
       genre: genre&.name,
       time_periods: time_periods.map(&:name),
-      playbacks_count:,
+      listens_count:,
       year: recorded_date.year,
       created_at:,
       updated_at:
@@ -53,7 +53,7 @@ end
 #  recorded_date     :date
 #  slug              :string           not null
 #  recording_type    :enum             default("studio"), not null
-#  playbacks_count   :integer          default(0), not null
+#  listens_count     :integer          default(0), not null
 #  el_recodo_song_id :uuid
 #  orchestra_id      :uuid
 #  singer_id         :uuid

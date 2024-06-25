@@ -70,7 +70,7 @@ milonga_vieja_milonga:
 #  recorded_date     :date
 #  slug              :string           not null
 #  recording_type    :enum             default("studio"), not null
-#  playbacks_count   :integer          default(0), not null
+#  listens_count     :integer          default(0), not null
 #  el_recodo_song_id :uuid
 #  orchestra_id      :uuid
 #  singer_id         :uuid
