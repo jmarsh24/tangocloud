@@ -14,17 +14,6 @@ module Resolvers
           fields: ["title^10", "orchestra_name", "singer_names", "genre", "year"],
           match: :word_start,
           misspellings: {below: 5},
-          includes: [
-            :orchestra,
-            :singers,
-            :recording_singers,
-            :composition,
-            :genre,
-            :time_periods,
-            :lyrics,
-            :audio_variants,
-            audio_transfers: [album: {album_art_attachment: :blob}]
-          ]
         }
 
         search_options[:order] = sort_by.present? ? {sort_by => order} : {listens_count: :desc}
