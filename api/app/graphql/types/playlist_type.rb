@@ -4,7 +4,8 @@ module Types
 
     field :id, ID, null: false
     field :title, String, null: false
-    field :description, String
+    field :subtitle, String, null: true
+    field :description, String, null: true
     field :public, Boolean, null: false
     field :songs_count, Integer, null: false
     field :likes_count, Integer, null: false
