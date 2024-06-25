@@ -11,7 +11,7 @@ module Types
 
     def url(width: nil)
       if object.image? && object.variable?
-        Shimmer::FileProxy.new(blob_id: object.id, width:).url
+        object.variant(resize: "100x100", imgproxy_options: {width:})
       else
         Rails.application.routes.url_helpers.rails_blob_url(object)
       end

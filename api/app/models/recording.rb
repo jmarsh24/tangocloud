@@ -56,6 +56,7 @@ end
 #  recorded_date     :date
 #  slug              :string           not null
 #  recording_type    :enum             default("studio"), not null
+#  playbacks_count   :integer          default(0), not null
 #  el_recodo_song_id :uuid
 #  orchestra_id      :uuid
 #  singer_id         :uuid
@@ -63,7 +64,6 @@ end
 #  record_label_id   :uuid
 #  genre_id          :uuid
 #  period_id         :uuid
-#  playbacks_count   :integer          default(0)
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #

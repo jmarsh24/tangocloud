@@ -3,7 +3,7 @@ class CreatePlaylists < ActiveRecord::Migration[7.1]
     create_table :playlists, id: :uuid do |t|
       t.string :title, null: false
       t.string :description
-      t.string :slug, null: false, index: {unique: true}
+      t.string :slug, null: true, index: {unique: true}
       t.boolean :public, null: false, default: true
       t.integer :songs_count, null: false, default: 0
       t.integer :likes_count, null: false, default: 0

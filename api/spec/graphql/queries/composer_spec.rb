@@ -26,7 +26,7 @@ RSpec.describe "Composer", type: :graph do
 
       expect(data.composer.id).to eq(composer.id)
       expect(data.composer.name).to eq("Andres Fraga")
-      expect(data.composer.photo.blob.url).to include("http://localhost:3000/files/")
+      expect(data.composer.photo.blob.url).to be_present
     end
   end
 end

@@ -25,7 +25,7 @@ RSpec.describe "period", type: :graph do
 
       expect(data.period.id).to eq(period.id)
       expect(data.period.name).to eq("Golden Age")
-      expect(data.period.image.blob.url).to include("http://localhost:3000/files/")
+      expect(data.period.image.blob.url).to be_present
     end
   end
 end

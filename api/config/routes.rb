@@ -21,8 +21,6 @@ Rails.application.routes.draw do
   get "/.well-known/apple-app-site-association", to: "apple_app_site_association#show"
   get "/.well-known/change-password", to: "passwords#edit", as: :change_password
 
-  resources :files, only: :show, controller: "shimmer/files"
-
   mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "api/graphql"
 
   constraints(Constraints::AdminConstraint.new) do
@@ -47,5 +45,5 @@ Rails.application.routes.draw do
   get "/dashboard", to: "pages#dashboard"
 
   root "pages#landing"
-  get "up", to: "rails/health#show", as: :rails_health_check
+  get "up", to: "rails/health#show", as: :rails_health_checkb
 end

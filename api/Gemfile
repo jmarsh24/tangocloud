@@ -47,6 +47,7 @@ gem "shimmer"
 gem "inline_svg"
 gem "lograge"
 gem "dry-monads"
+gem "imgproxy-rails"
 
 # Assets
 gem "stimulus-rails"
@@ -89,6 +90,8 @@ group :development do
   gem "brakeman"
   gem "authentication-zero"
   gem "error_highlight"
+  gem "database_validations"
+  gem "database_consistency", require: false
 end
 
 group :test do

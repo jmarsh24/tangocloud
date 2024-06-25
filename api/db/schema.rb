@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_10_135849) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -72,12 +72,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
   create_table "audio_transfers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "external_id"
     t.integer "position", default: 0, null: false
+    t.string "filename", null: false
     t.uuid "album_id"
     t.uuid "transfer_agent_id"
     t.uuid "recording_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "filename", null: false
     t.index ["album_id"], name: "index_audio_transfers_on_album_id"
     t.index ["filename"], name: "index_audio_transfers_on_filename", unique: true
     t.index ["recording_id"], name: "index_audio_transfers_on_recording_id"
@@ -88,14 +88,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
     t.integer "duration", default: 0, null: false
     t.string "format", null: false
     t.string "codec", null: false
+    t.string "filename", null: false
     t.integer "bit_rate"
     t.integer "sample_rate"
     t.integer "channels"
+    t.integer "length", default: 0, null: false
     t.jsonb "metadata", default: {}, null: false
     t.uuid "audio_transfer_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "filename"
     t.index ["audio_transfer_id"], name: "index_audio_variants_on_audio_transfer_id"
     t.index ["filename"], name: "index_audio_variants_on_filename", unique: true
   end
@@ -136,7 +137,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
     t.string "title", null: false
     t.string "tangotube_slug"
     t.uuid "lyricist_id"
-    t.uuid "composer_id"
+    t.uuid "composer_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "recordings_count", default: 0
@@ -269,6 +270,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["composition_id"], name: "index_lyrics_on_composition_id"
+    t.index ["locale", "composition_id"], name: "index_lyrics_on_locale_and_composition_id", unique: true
   end
 
   create_table "orchestras", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -307,6 +309,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
     t.index ["user_id"], name: "index_playbacks_on_user_id"
   end
 
+  create_table "playlist_audio_transfers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "playlist_id", null: false
+    t.uuid "audio_transfer_id", null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["audio_transfer_id"], name: "index_playlist_audio_transfers_on_audio_transfer_id"
+    t.index ["playlist_id"], name: "index_playlist_audio_transfers_on_playlist_id"
+  end
+
   create_table "playlist_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "playlist_id", null: false
     t.string "playable_type", null: false
@@ -322,17 +334,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
   create_table "playlists", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title", null: false
     t.string "description"
+    t.string "slug"
     t.boolean "public", default: true, null: false
+    t.integer "songs_count", default: 0, null: false
     t.integer "likes_count", default: 0, null: false
-    t.integer "listens_count", default: 0, null: false
+    t.integer "playbacks_count", default: 0, null: false
     t.integer "shares_count", default: 0, null: false
     t.integer "followers_count", default: 0, null: false
+    t.integer "playlist_items_count", default: 0, null: false
+    t.boolean "system", default: false, null: false
     t.uuid "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "slug"
-    t.boolean "system", default: false, null: false
-    t.integer "playlist_items_count", default: 0
     t.index ["slug"], name: "index_playlists_on_slug", unique: true
     t.index ["user_id"], name: "index_playlists_on_user_id"
   end
@@ -361,6 +374,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
     t.date "recorded_date"
     t.string "slug", null: false
     t.enum "recording_type", default: "studio", null: false, enum_type: "recording_type"
+    t.integer "playbacks_count", default: 0, null: false
     t.uuid "el_recodo_song_id"
     t.uuid "orchestra_id"
     t.uuid "singer_id"
@@ -370,7 +384,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
     t.uuid "period_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "playbacks_count", default: 0
     t.index ["composition_id"], name: "index_recordings_on_composition_id"
     t.index ["el_recodo_song_id"], name: "index_recordings_on_el_recodo_song_id"
     t.index ["genre_id"], name: "index_recordings_on_genre_id"
@@ -396,13 +409,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
     t.string "name", null: false
     t.string "slug", null: false
     t.integer "rank", default: 0, null: false
+    t.boolean "soloist", default: false, null: false
     t.string "sort_name"
     t.text "bio"
     t.date "birth_date"
     t.date "death_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "soloist", default: false
     t.index ["slug"], name: "index_singers_on_slug", unique: true
   end
 
@@ -550,9 +563,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
   end
 
   create_table "user_preferences", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "user_id", null: false
     t.string "first_name"
     t.string "last_name"
+    t.uuid "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_user_preferences_on_user_id"
@@ -565,6 +578,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
     t.string "provider"
     t.string "uid"
     t.string "username"
+    t.string "first_name"
+    t.string "last_name"
     t.boolean "admin", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -619,6 +634,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_182709) do
   add_foreign_key "lyrics", "compositions"
   add_foreign_key "playbacks", "recordings"
   add_foreign_key "playbacks", "users"
+  add_foreign_key "playlist_audio_transfers", "audio_transfers"
+  add_foreign_key "playlist_audio_transfers", "playlists"
   add_foreign_key "playlist_items", "playlists"
   add_foreign_key "recording_singers", "recordings"
   add_foreign_key "recording_singers", "singers"

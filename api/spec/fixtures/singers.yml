@@ -25,11 +25,11 @@ roberto_rufino:
 #  name       :string           not null
 #  slug       :string           not null
 #  rank       :integer          default(0), not null
+#  soloist    :boolean          default(FALSE), not null
 #  sort_name  :string
 #  bio        :text
 #  birth_date :date
 #  death_date :date
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  soloist    :boolean          default(FALSE)
 #

@@ -16,7 +16,7 @@ end
 #  title            :string           not null
 #  tangotube_slug   :string
 #  lyricist_id      :uuid
-#  composer_id      :uuid
+#  composer_id      :uuid             not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  recordings_count :integer          default(0)

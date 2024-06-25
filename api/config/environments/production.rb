@@ -97,14 +97,7 @@ Rails.application.configure do
     enable_starttls_auto: true
   }
 
-  # Enable DNS rebinding protection and other `Host` header attacks.
-  # config.hosts = [
-  #   "example.com",     # Allow requests from example.com
-  #   /.*\.example\.com/ # Allow requests from subdomains like `www.example.com`
-  # ]
-  # Skip DNS rebinding protection for the default health check endpoint.
-  # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
-  config.active_storage.resolve_model_to_route = :rails_storage_proxy
-
   config.public_file_server.enabled = true
+
+  config.active_storage.resolve_model_to_route = :imgproxy_active_storage
 end

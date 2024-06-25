@@ -26,7 +26,7 @@ RSpec.describe "Orchestras", type: :graph do
 
       expect(first_orchestra.id).to eq(orchestra.id)
       expect(first_orchestra.name).to eq("Carlos Di Sarli")
-      expect(first_orchestra.photo.blob.url).to include("http://localhost:3000/files/")
+      expect(first_orchestra.photo.blob.url).to be_present
     end
   end
 end

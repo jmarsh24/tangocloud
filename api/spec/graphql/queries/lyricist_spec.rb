@@ -26,7 +26,7 @@ RSpec.describe "lyricist", type: :graph do
       lyricist_data = data.lyricist
       expect(lyricist_data.id).to eq(lyricist.id)
       expect(lyricist_data.name).to eq("Francisco García Jiménez")
-      expect(lyricist_data.photo.blob.url).to include("http://localhost:3000/files/")
+      expect(lyricist_data.photo.blob.url).to be_present
     end
   end
 end
