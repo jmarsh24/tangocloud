@@ -1,19 +1,19 @@
-module Mutations::Playbacks
-  class CreatePlayback < Mutations::BaseMutation
+module Mutations::Listens
+  class CreateListen < Mutations::BaseMutation
     argument :recording_id, ID, required: true
 
-    field :playback, Types::PlaybackType, null: true
+    field :listen, Types::ListenType, null: true
     field :errors, [String], null: false
 
     def resolve(recording_id:)
-      playback = current_user.playbacks.new(
+      listen = current_user.listens.new(
         recording_id:
       )
 
-      if playback.save
-        {playback:}
+      if listen.save
+        {listen:}
       else
-        {errors: playback.errors}
+        {errors: listen.errors}
       end
     rescue ActiveRecord::RecordInvalid => e
       GraphQL::ExecutionError.new("Invalid input: #{e.record.errors.full_messages.join(", ")}")
