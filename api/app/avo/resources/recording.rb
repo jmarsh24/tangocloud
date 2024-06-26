@@ -3,7 +3,7 @@ class Avo::Resources::Recording < Avo::BaseResource
     :composition,
     :record_label,
     :genre,
-    :period,
+    :time_period,
     :el_recodo_song,
     :audio_transfers,
     :audio_variants,
@@ -29,7 +29,7 @@ class Avo::Resources::Recording < Avo::BaseResource
     field :composition, as: :belongs_to
     field :record_label, as: :belongs_to
     field :genre, as: :belongs_to
-    field :period, as: :belongs_to
+    field :time_period, as: :belongs_to
     field :el_recodo_song, as: :belongs_to
     field :audio_transfers, as: :has_many
     field :audio_variants, as: :has_many, through: :audio_transfers

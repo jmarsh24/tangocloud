@@ -27,7 +27,7 @@ module Mutations::Playlists
 
       if item_ids.present?
         item_ids.each_with_index do |item_id, position|
-          playlist.playlist_items.build(playable_id: item_id, playable_type: "Recording", position:)
+          playlist.playlist_items.build(item_id:, item_type: "Recording", position:)
         end
       end
 

@@ -14,16 +14,10 @@ class Singer < ApplicationRecord
 
   before_validation :assign_names, on: :create
 
-  has_one_attached :photo, dependent: :purge_later do |blob|
-    blob.variant :thumb, resize_to_limit: [100, 100]
-    blob.variant :medium, resize_to_limit: [250, 250]
-    blob.variant :large, resize_to_limit: [500, 500]
-  end
+  has_one_attached :photo
 
   def search_data
     {
-      first_name:,
-      last_name:,
       name:
     }
   end
@@ -46,8 +40,6 @@ end
 # Table name: singers
 #
 #  id         :uuid             not null, primary key
-#  first_name :string           not null
-#  last_name  :string
 #  name       :string           not null
 #  slug       :string           not null
 #  rank       :integer          default(0), not null

@@ -8,7 +8,7 @@ module Resolvers
       ::Playlist.search(
         query,
         fields: [:title, :description],
-        match: :word_middle,
+        match: :word_start,
         misspellings: {below: 5},
         order: {title: :asc},
         includes: [

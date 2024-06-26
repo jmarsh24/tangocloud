@@ -19,7 +19,7 @@ RSpec.describe "Playlists", type: :graph do
                   edges {
                     node {
                       id
-                      playable {
+                      item {
                         ... on Recording {
                           id
                           title
@@ -70,11 +70,11 @@ RSpec.describe "Playlists", type: :graph do
       expect(playlist_items).not_to be_empty
 
       first_playlist_item = playlist_items.first.node
-      first_playable = first_playlist_item.playable
-      expect(first_playable.id).to eq(recording.id.to_s)
-      expect(first_playable.title).to eq(recording.title)
+      first_item = first_playlist_item.item
+      expect(first_item.id).to eq(recording.id.to_s)
+      expect(first_item.title).to eq(recording.title)
 
-      first_audio_transfer = first_playable.audio_transfers.edges.first.node
+      first_audio_transfer = first_item.audio_transfers.edges.first.node
       expect(first_audio_transfer.id).to eq(audio_variant.audio_transfer.id.to_s)
 
       audio_variant_data = first_audio_transfer.audio_variants.edges.first.node

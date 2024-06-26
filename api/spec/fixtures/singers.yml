@@ -1,27 +1,19 @@
 roberto_chanel:
   name: Roberto Chanel
-  first_name: Roberto
-  last_name: Chanel
   slug: roberto-chanel
 
 francisco_fiorentino:
   name: Francisco Fiorentino
-  first_name: Francisco
-  last_name: Fiorentino
   slug: francisco-fiorentino
 
 roberto_rufino:
   name: Roberto Rufino
-  first_name: Roberto
-  last_name: Rufino
   slug: roberto-rufino
 # == Schema Information
 #
 # Table name: singers
 #
 #  id         :uuid             not null, primary key
-#  first_name :string           not null
-#  last_name  :string
 #  name       :string           not null
 #  slug       :string           not null
 #  rank       :integer          default(0), not null

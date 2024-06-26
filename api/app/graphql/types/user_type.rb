@@ -16,7 +16,7 @@ module Types
 
     has_many :sessions
     has_many :events
-    has_many :playbacks, -> { most_recent.limit(100) }
+    has_many :listens, -> { most_recent.limit(100) }
     has_many :playlists
     has_many :likes, -> { most_recent }
     has_one_attached :avatar

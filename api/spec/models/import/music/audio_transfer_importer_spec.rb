@@ -110,9 +110,9 @@ RSpec.describe Import::Music::AudioTransferImporter do
         #  creates a new singer
         expect(audio_transfer.recording.singers).to eq([])
         #  creates a new lyricist
-        expect(audio_transfer.recording.composition.lyricist.name).to eq("Gabriel Clausi")
+        expect(audio_transfer.recording.composition.lyricist.name).to eq("gabriel clausi")
         #  creates a new composer
-        expect(audio_transfer.recording.composition.composer.name).to eq("Eduardo Arolas")
+        expect(audio_transfer.recording.composition.composer.name).to eq("eduardo arolas")
         # creates a waveform for the audio_transfer
         # cannot install audiowaveform on the dockerimage so removing this for now.
         # expect(audio_transfer.waveform).to be_present

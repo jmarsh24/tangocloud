@@ -18,11 +18,11 @@ module Types
     belongs_to :composition, null: true
     belongs_to :record_label, null: true
     belongs_to :genre
-    belongs_to :period, null: true
     belongs_to :lyricist, null: true
     belongs_to :composer, null: true
+    belongs_to :time_period, null: true
 
-    has_many :playbacks
+    has_many :listens
     has_many :likes
     has_many :audio_transfers
     has_many :audio_variants

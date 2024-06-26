@@ -13,7 +13,7 @@ module Mutations::Playlists
       recording = Recording.find_by(id: recording_id)
       return {playlist_item: nil, errors: ["Recording not found"]} if recording.nil?
 
-      playlist_item = playlist.playlist_items.build(playable: recording)
+      playlist_item = playlist.playlist_items.build(item: recording)
       playlist_item.position = playlist.playlist_items.maximum(:position).to_i + 1
 
       if playlist_item.save
