@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_26_103259) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -25,6 +25,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "album_type", ["compilation", "original"]
+  create_enum "audio_file_status", ["pending", "processing", "completed", "failed"]
   create_enum "recording_type", ["studio", "live"]
   create_enum "subscription_type", ["free", "premium", "hifi"]
 
@@ -67,6 +68,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_albums_on_slug", unique: true
+  end
+
+  create_table "audio_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "filename", null: false
+    t.string "status", default: "pending", null: false
+    t.string "error_message"
+    t.uuid "audio_transfer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["audio_transfer_id"], name: "index_audio_files_on_audio_transfer_id"
+    t.index ["filename"], name: "index_audio_files_on_filename", unique: true
   end
 
   create_table "audio_transfers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -576,6 +588,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "audio_files", "audio_transfers"
   add_foreign_key "audio_transfers", "albums"
   add_foreign_key "audio_transfers", "recordings"
   add_foreign_key "audio_transfers", "transfer_agents"
