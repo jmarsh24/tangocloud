@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Import::Music::DirectoryImporter do
+RSpec.describe Import::DirectoryImporter do
   let(:directory_path) { "spec/fixtures/audio" }
   let(:importer) { described_class.new(directory_path) }
 
