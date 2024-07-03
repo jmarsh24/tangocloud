@@ -5,7 +5,7 @@ RSpec.describe AudioProcessing::MetadataExtractor do
     it "returns a hash of metadata for flac" do
       file = File.open(file_fixture("audio/19401008__volver_a_sonar__roberto_rufino__tango.flac"))
       metadata = AudioProcessing::MetadataExtractor.new(file:).extract
-      binding.irb
+
       expect(metadata.title).to eq("Volver a soñar")
       expect(metadata.artist).to eq("Roberto Rufino")
       expect(metadata.album).to eq("TT - Todo de Carlos -1939-1941 [FLAC]")

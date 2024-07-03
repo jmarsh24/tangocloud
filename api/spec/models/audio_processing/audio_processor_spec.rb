@@ -5,8 +5,6 @@ RSpec.describe AudioProcessing::AudioProcessor do
 
   describe "#process" do
     context "when song is from flac" do
-      let(:processor) { AudioProcessing::AudioProcessor.new(file:) }
-
       before do
         allow_any_instance_of(AudioProcessing::AudioConverter).to receive(:convert).and_return(
           File.open(file_fixture("audio/19421009_no_te_apures_carablanca_juan_carlos_miranda_tango_1918.m4a"))
@@ -66,8 +64,27 @@ RSpec.describe AudioProcessing::AudioProcessor do
         )
       end
 
-      it "successfully builds an audio_transfer with the correct attributes" do
-        audio_processor = processor.process
+      describe "#process" do
+        it "calls the necessary methods to process the audio file" do
+          processor = AudioProcessing::AudioProcessor.new(file:)
+
+          expect(processor).to receive(:extract_waveform).and_call_original
+          expect(processor).to receive(:convert_audio).and_call_original
+          expect(processor).to receive(:extract_album_art).and_call_original
+          expect(processor).to receive(:extract_metadata).and_call_original
+
+          processor.process
+        end
+
+        it "sets the correct attributes after processing" do
+          processor = AudioProcessing::AudioProcessor.new(file:).process
+
+          expect(processor.waveform_image).to be_a(File)
+          expect(processor.waveform_data).to be_a(Waveform)
+          expect(processor.compressed_audio).to be_a(File)
+          expect(processor.album_art).to be_a(File)
+          expect(processor.metadata).to be_a(AudioProcessing::MetadataExtractor::Metadata)
+        end
       end
     end
   end
