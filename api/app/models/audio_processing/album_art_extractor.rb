@@ -5,7 +5,7 @@ module AudioProcessing
     end
 
     def extract
-      tempfile = Tempfile.new(["album-art_", ".jpg"], Rails.root.join("tmp"))
+      tempfile = Tempfile.new(["album-art_", ".jpg"])
       movie = FFMPEG::Movie.new(@file.path)
 
       if !movie.valid?
