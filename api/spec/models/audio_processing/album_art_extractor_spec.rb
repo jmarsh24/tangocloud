@@ -7,11 +7,11 @@ RSpec.describe AudioProcessing::AlbumArtExtractor, type: :model do
 
       it "extracts the album art from the file" do
         album_art_extractor = AudioProcessing::AlbumArtExtractor.new(file:)
-        album_art_extractor.extract do |tempfile|
-          expect(tempfile).not_to be_nil
-          expect(File.exist?(tempfile.path)).to be true
-          expect(File.size(tempfile.path)).to be > 0
-        end
+        album_art = album_art_extractor.extract
+
+        expect(album_art).not_to be_nil
+        expect(File.exist?(album_art.path)).to be true
+        expect(File.size(album_art.path)).to be > 0
       end
     end
 
@@ -20,9 +20,8 @@ RSpec.describe AudioProcessing::AlbumArtExtractor, type: :model do
 
       it "returns nil" do
         album_art_extractor = AudioProcessing::AlbumArtExtractor.new(file:)
-        album_art_extractor.extract do |tempfile|
-          expect(tempfile).to be_nil
-        end
+        album_art = album_art_extractor.extract
+        expect(album_art).to be_nil
       end
     end
   end
