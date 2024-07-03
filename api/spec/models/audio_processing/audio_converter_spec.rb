@@ -3,36 +3,32 @@ require "rails_helper"
 RSpec.describe AudioProcessing::AudioConverter do
   describe "#convert" do
     it "converts the file to the specified format and deletes it afterward" do
-      file = File.open("spec/fixtures/audio/tone.mp3")
-      output_path = nil
-      audio_converter = AudioProcessing::AudioConverter.new(file)
+      file = File.open(file_fixture("audio/19401008__volver_a_sonar__roberto_rufino__tango.flac"))
 
-      audio_converter.convert do |output|
-        converted_movie = FFMPEG::Movie.new(output.path)
-        expect(converted_movie.audio_codec).to eq("aac")
-        output_path = output.path
-      end
+      audio_converter = AudioProcessing::AudioConverter.new(file:)
 
-      expect(audio_converter.filename).to eq("tone.aac")
-      expect(File.exist?(output_path)).to be_falsey
+      audio_file = audio_converter.convert
+      converted_movie = FFMPEG::Movie.new(audio_file.path)
+
+      expect(converted_movie.audio_codec).to eq("aac")
+      expect(audio_converter.filename).to eq("19401008__volver_a_sonar__roberto_rufino__tango.aac")
     end
 
     it "removes all metadata from a flac file" do
-      file = File.open("spec/fixtures/audio/19401008_volver_a_sonar_roberto_rufino_tango_2476.flac")
+      file = File.open(file_fixture("audio/19401008__volver_a_sonar__roberto_rufino__tango.flac"))
 
-      AudioProcessing::AudioConverter.new(file).convert do |file|
-        extracted_metadata = AudioProcessing::MetadataExtractor.new(file).extract_metadata
+      audio_file = AudioProcessing::AudioConverter.new(file:).convert
+      extracted_metadata = AudioProcessing::MetadataExtractor.new(file: audio_file).extract
 
-        non_nil_keys = [:duration, :bit_rate, :sample_rate, :channels, :format, :bit_depth, :codec_name, :codec_long_name]
+      non_nil_keys = [:duration, :bit_rate, :sample_rate, :channels, :format, :bit_depth, :codec_name, :codec_long_name]
 
-        non_nil_keys.each do |key|
-          expect(extracted_metadata.public_send(key)).not_to be_nil
-        end
+      non_nil_keys.each do |key|
+        expect(extracted_metadata.public_send(key)).not_to be_nil
+      end
 
-        (AudioProcessing::MetadataExtractor::Metadata.members - non_nil_keys).each do |field|
-          puts field
-          expect(extracted_metadata.public_send(field)).to be_nil
-        end
+      (AudioProcessing::MetadataExtractor::Metadata.members - non_nil_keys).each do |field|
+        puts field
+        expect(extracted_metadata.public_send(field)).to be_nil
       end
     end
   end
