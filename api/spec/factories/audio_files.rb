@@ -12,8 +12,8 @@
 #
 FactoryBot.define do
   factory :audio_file do
-    filename { "19401008_volver_a_sonar_roberto_rufino_tango_2476.flac" }
-    file { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/19401008_volver_a_sonar_roberto_rufino_tango_2476.flac"), "audio/flac") }
+    filename { "19401008__volver_a_sonar__roberto_rufino__tango.flac" }
+    file { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/audio/19401008__volver_a_sonar__roberto_rufino__tango.flac"), "audio/flac") }
     status { "pending" }
   end
 end

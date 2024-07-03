@@ -15,9 +15,9 @@
 
 FactoryBot.define do
   factory :audio_transfer do
-    external_id { "MyString" }
+    external_id { "ERT_1" }
     position { 1 }
-    filename { "MyString" }
+    filename { "volver_a_sonar" }
     album { nil }
     transfer_agent { nil }
     recording { nil }
