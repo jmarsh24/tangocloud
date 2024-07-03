@@ -24,32 +24,27 @@ module AudioProcessing
       :record_label,
       :encoded_by,
       :singer,
-      :encoder,
       :media_type,
       :lyrics,
       :format,
-      :comments,
       :bpm,
       :ert_number,
       :source,
       :lyricist,
-      :original_album
+      :artist_sort
     ).freeze
 
-    def initialize(file)
+    def initialize(file:)
       @file = file
       @movie = FFMPEG::Movie.new(file.path)
     end
 
-    def extract_metadata
+    def extract
       metadata = movie.metadata
       streams = metadata.dig(:streams)
       format = metadata.dig(:format)
       tags = format&.dig(:tags)&.transform_keys(&:downcase) || {}
       audio_stream = streams.find { |stream| stream.dig(:codec_type) == "audio" }
-      comments = comments || tags.dig(:description) || tags.dig(:tit3)
-      parsed_comments = parse_into_hash(comments)
-      parsed_lyricist_and_composer = parse_into_hash(tags.dig(:composer))
 
       Metadata.new(
         duration: format.dig(:duration).to_f,
@@ -71,50 +66,17 @@ module AudioProcessing
         catalog_number: tags.dig(:catalognumber),
         performer: tags.dig(:performer),
         encoded_by: tags.dig(:encoded_by),
-        encoder: tags.dig(:encoder),
         media_type: tags.dig(:tmed),
         lyrics: tags.dig(:"lyrics-eng") || tags.dig(:lyrics) || tags.dig(:unsyncedlyrics),
-        comments:,
-        record_label: parsed_comments.dig("label"),
+        record_label: tags.dig(:organization),
         singer: tags.dig(:artist),
         bpm: tags.dig(:bpm),
-        ert_number: ert_number(parsed_comments),
-        source: source(parsed_comments),
-        lyricist: parsed_lyricist_and_composer.dig("lyricist"),
-        composer: parsed_lyricist_and_composer.dig("composer"),
-        original_album: parsed_comments.dig("original_album")
+        ert_number: tags.dig(:barcode)&.match(/\d+/)&.[](0).to_i,
+        source: tags.dig(:grouping),
+        lyricist: tags.dig(:lyricist),
+        composer: tags.dig(:composer),
+        artist_sort: tags.dig(:artistsort)
       )
-    end
-
-    def parse_into_hash(comments)
-      return {} unless comments
-
-      comments.split("|").each_with_object({}) do |pair, hash|
-        key, value = pair.split(":", 2).map(&:strip)
-        hash[key.downcase] = value
-      end
-    end
-
-    def ert_number(parsed_comments)
-      ert_str = parsed_comments.dig("id")
-
-      return nil unless ert_str
-      ert_str.split("-").last.to_i
-    end
-
-    def source(parsed_comments)
-      source = parsed_comments.dig("source")&.downcase
-
-      return "TangoTunes" if source == "tt"
-      return "TangoTimeTravel" if source == "ttt"
-      nil
-    end
-
-    def extract_role(tag, regex)
-      return nil unless tag
-
-      match = tag.match(regex)
-      match ? match[1].strip : nil
     end
   end
 end
