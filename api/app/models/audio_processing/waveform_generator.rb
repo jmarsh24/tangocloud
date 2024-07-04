@@ -5,7 +5,7 @@ module AudioProcessing
       @file = file
     end
 
-    def json
+    def generate
       audio_path = @file.path
 
       if FFMPEG::Movie.new(audio_path).audio_codec != "mp3"

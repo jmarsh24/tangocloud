@@ -23,7 +23,7 @@ module AudioProcessing
       :performer,
       :record_label,
       :encoded_by,
-      :singer,
+      :singers,
       :media_type,
       :lyrics,
       :format,
@@ -45,7 +45,6 @@ module AudioProcessing
       format = metadata.dig(:format)
       tags = format&.dig(:tags)&.transform_keys(&:downcase) || {}
       audio_stream = streams.find { |stream| stream.dig(:codec_type) == "audio" }
-
       Metadata.new(
         duration: format.dig(:duration).to_f,
         bit_rate: format.dig(:bit_rate).to_i,
@@ -57,7 +56,7 @@ module AudioProcessing
         sample_rate: audio_stream.dig(:sample_rate).to_i,
         channels: audio_stream.dig(:channels),
         title: tags.dig(:title),
-        artist: tags.dig(:artist),
+        artist: tags.dig(:artist).split("/").map(&:strip),
         album: tags.dig(:album),
         date: tags.dig(:date) || tags.dig(:tdat) || tags.dig(:tyer),
         track: tags.dig(:track),
@@ -69,7 +68,6 @@ module AudioProcessing
         media_type: tags.dig(:tmed),
         lyrics: tags.dig(:"lyrics-eng") || tags.dig(:lyrics) || tags.dig(:unsyncedlyrics),
         record_label: tags.dig(:organization),
-        singer: tags.dig(:artist),
         bpm: tags.dig(:bpm),
         ert_number: tags.dig(:barcode)&.match(/\d+/)&.[](0).to_i,
         source: tags.dig(:grouping),

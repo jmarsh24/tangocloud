@@ -1,8 +1,71 @@
 module Import
   module AudioTransfer
     class Builder
-      def initialize(audio_file:)
-        @audio_file = audio_file
+      attr_reader :audio_transfer
+
+      def initialize
+        @audio_transfer = ::AudioTransfer.new
+      end
+
+      def extract_metadata(file:)
+        AudioProcessing::MetadataExtractor.new(file:).metadata
+      end
+
+      def generate_waveform_image(file:)
+        AudioProcessing::WaveformGenerator.new(file:).image
+      end
+
+      def generate_waveform_data(file:)
+        AudioProcessing::WaveformGenerator.new(file:).json
+      end
+
+      def extract_album_art(file:)
+        AudioProcessing::AlbumArtExtractor.new(file:).extract
+      end
+
+      def compress_audio(file:)
+        AudioProcessing::AudioConverter.new(file:).convert
+      end
+
+      def build_audio_variant(metadata:)
+        AudioVariant.new(
+          duration: metadata.duration,
+          format: metadata.format,
+          codec: metadata.codec,
+          filename: metadata.filename,
+          bit_rate: metadata.bit_rate,
+          sample_rate: metadata.sample_rate,
+          channels: metadata.channels,
+          length: metadata.length,
+          metadata: metadata.to_h
+        )
+      end
+
+      def build_waveform(waveform_data:)
+        Waveform.new(data: waveform_data)
+      end
+
+      def build_and_attach_audio_transfer(audio_file:, metadata:, waveform_data:, waveform_image:, album_art:, compressed_audio:)
+        album = find_or_initialize_album(metadata:)
+        transfer_agent = find_or_initialize_transfer_agent(metadata:)
+        recording = find_or_initialize_recording(metadata:)
+        audio_variant = build_audio_variant(metadata:)
+        waveform = build_waveform(waveform_data:)
+
+        @audio_transfer = AudioTransfer.new(
+          filename: audio_file.filename,
+          album:,
+          transfer_agent:,
+          recording:,
+          audio_variant:,
+          waveform:
+        )
+
+        album.album_art.attach(io: File.open(album_art), filename: File.basename(album_art))
+        audio_variant.audio_file.attach(io: File.open(compressed_audio), filename: File.basename(compressed_audio))
+        waveform.image.attach(io: File.open(waveform_image), filename: File.basename(waveform_image))
+
+        @audio_transfer
       end
 
       def find_or_initialize_album(metadata:)
@@ -24,7 +87,6 @@ module Import
           recording.orchestra = find_or_initialize_orchestra(metadata:)
           recording.genre = find_or_initialize_genre(metadata:)
           recording.composition = find_or_initialize_composition(metadata:)
-          recording.genre = find_or_initialize_genre(metadata:)
           recording.singers = find_or_initialize_singers(metadata:)
         end
       end
@@ -44,9 +106,7 @@ module Import
       end
 
       def find_or_initialize_genre(metadata:)
-        Genre.find_or_initialize_by(name: metadata.genre) do |genre|
-          genre.description = metadata.genre_description
-        end
+        Genre.find_or_initialize_by(name: metadata.genre)
       end
 
       def find_or_initialize_composer(metadata:)
@@ -76,41 +136,8 @@ module Import
         return if metadata.lyrics.blank?
 
         composition.lyrics.find_or_initialize_by(content: metadata.lyrics) do |lyric|
-          lyric.locale = metadata.lyric_locale || "en"
+          lyric.locale = "es"
         end
-      end
-
-      def build_audio_variant(metadata:)
-        AudioVariant.new(
-          duration: metadata.duration,
-          format: metadata.format,
-          codec: metadata.codec,
-          filename: metadata.filename,
-          bit_rate: metadata.bit_rate,
-          sample_rate: metadata.sample_rate,
-          channels: metadata.channels,
-          length: metadata.length,
-          metadata: metadata.to_h
-        )
-      end
-
-      def build_waveform(waveform_data)
-        Waveform.new(waveform_data)
-      end
-
-      def build_audio_transfer(filename:, album:, transfer_agent:, recording:, audio_variant:, waveform:)
-        AudioTransfer.new(
-          filename:,
-          album:,
-          transfer_agent:,
-          recording:,
-          audio_variant:,
-          waveform:
-        )
-      end
-
-      def update_audio_file_status(status)
-        @audio_file.update!(status:)
       end
     end
   end
