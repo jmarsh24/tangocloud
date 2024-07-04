@@ -8,7 +8,5 @@ class CreateAudioTransfers < ActiveRecord::Migration[7.1]
 
       t.timestamps
     end
-
-    add_index :audio_transfers, :filename, unique: true
   end
 end
