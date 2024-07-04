@@ -12,7 +12,7 @@
 #
 class AudioFile < ApplicationRecord
   has_one_attached :file
-  belongs_to :audio_transfer, optional: true
+  belongs_to :audio_transfer, dependent: :destroy
 
   validates :file, attached: true, content_type: [
     "audio/x-aiff",

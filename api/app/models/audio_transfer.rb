@@ -4,13 +4,11 @@ class AudioTransfer < ApplicationRecord
   belongs_to :recording, optional: true, dependent: :destroy
   belongs_to :album, optional: true, dependent: :destroy
   belongs_to :transfer_agent, optional: true
-  has_one :audio_file, dependent: :destroy
+  has_one :audio_file, optional: true
   has_many :audio_variants, dependent: :destroy
   has_one :waveform, dependent: :destroy
 
   validates :filename, presence: true, uniqueness: true
-
-  has_one :audio_file, dependent: :destroy
 
   def search_data
     {
