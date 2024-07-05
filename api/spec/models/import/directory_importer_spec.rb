@@ -1,25 +1,23 @@
 require "rails_helper"
 
 RSpec.describe Import::DirectoryImporter do
-  let(:directory_path) { "spec/fixtures/audio" }
-  let(:importer) { described_class.new(directory_path) }
-
-  describe "#import" do
-    it "creates 6 AudioTransfers and enqueues AudioTransferImportJob 6 times for supported files" do
-      AudioTransfer.destroy_all
-      importer.import
-
-      expect(AudioTransfer.count).to eq(7)
-
-      expect(AudioTransferImportJob).to have_been_enqueued.exactly(7).times
-    end
-  end
-
   describe "#sync" do
-    it "creates 6 AudioTransfers and enqueues AudioTransferImportJob 6 times for supported files" do
-      importer.sync
+    it "creates 6 AudioTransfers and enqueues AudioTransferImportJob 5 times for supported files" do
+      directory_path = Rails.root.join("spec/fixtures/files/audio")
 
-      expect(AudioTransferImportJob).to have_been_enqueued.exactly(6).times
+      Import::DirectoryImporter.new(directory_path).sync
+
+      expect(AudioFileImportJob).to have_been_enqueued.exactly(6).times
+    end
+
+    it "does not import files that are already in the database" do
+      create(:audio_file, :flac)
+
+      directory_path = Rails.root.join("spec/fixtures/files/audio")
+
+      Import::DirectoryImporter.new(directory_path).sync
+
+      expect(AudioFileImportJob).to have_been_enqueued.exactly(5).times
     end
   end
 end

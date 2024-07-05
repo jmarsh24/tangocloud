@@ -10,10 +10,7 @@
 #  updated_at    :datetime         not null
 #
 class AudioFile < ApplicationRecord
-  has_one_attached :file
-  has_one :audio_transfer, dependent: :destroy
-
-  validates :file, content_type: [
+  SUPPORTED_MIME_TYPES = [
     "audio/x-aiff",
     "audio/x-flac",
     "audio/flac",
@@ -23,14 +20,17 @@ class AudioFile < ApplicationRecord
     "audio/mp3"
   ]
 
+  has_one_attached :file
+  has_one :audio_transfer, dependent: :destroy
+
+  validates :file, content_type: SUPPORTED_MIME_TYPES
+
   enum status: {
     pending: "pending",
     processing: "processing",
     completed: "completed",
     failed: "failed"
   }
-
-  after_create_commit :import
 
   def import
     update(status: :processing)
