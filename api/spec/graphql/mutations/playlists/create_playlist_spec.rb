@@ -2,9 +2,9 @@
 require "rails_helper"
 
 RSpec.describe "CreatePlaylist", type: :graph do
-  let(:user) { users(:normal) }
-  let(:recording1) { recordings(:volver_a_sonar) }
-  let(:recording2) { recordings(:milonga_vieja_milonga) }
+  let(:user) { create(:user) }
+  let(:volver_a_sonar) { create(:recording, title: "Volver a soñar") }
+  let(:milonga_vieja) { create(:recording, title: "Milonga vieja") }
   let(:uploaded_file) { Rails.root.join("spec/fixtures/files/di_sarli.jpg") }
   let(:image) do
     ApolloUploadServer::Wrappers::UploadedFile.new(
@@ -64,7 +64,7 @@ RSpec.describe "CreatePlaylist", type: :graph do
       description: "This is a new playlist",
       public: true,
       image:,
-      itemIds: [recording1.id, recording2.id]
+      itemIds: [volver_a_sonar.id, milonga_vieja.id]
     }
 
     gql(mutation, variables:, user:)
@@ -75,6 +75,6 @@ RSpec.describe "CreatePlaylist", type: :graph do
       public: true
     )
     expect(result.data.create_playlist.playlist.image.blob.url).to be_present
-    expect(result.data.create_playlist.playlist.playlist_items.edges.map { |edge| edge.node.item.id }).to match_array([recording1.id, recording2.id])
+    expect(result.data.create_playlist.playlist.playlist_items.edges.map { |edge| edge.node.item.id }).to match_array([volver_a_sonar.id, milonga_vieja.id])
   end
 end
