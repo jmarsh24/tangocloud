@@ -9,7 +9,7 @@ FactoryBot.define do
 
     before(:create) do |playlist|
       playlist.image.attach(io: File.open(Rails.root.join("spec/fixtures/files/album-art-volver-a-sonar.jpg")), filename: "album-art-volver-a-sonar.jpg", content_type: "image/jpg")
-      playlist.playlist_file.attach(io: File.open(Rails.root.join("spec/support/assets/playlist.m3u8")), filename: "playlist.m3u8", content_type: "application/x-mpegURL")
+      playlist.playlist_file.attach(io: File.open(Rails.root.join("spec/fixtures/files/awesome_playlist.m3u8")), filename: "awesome_playlist.m3u8", content_type: "application/x-mpegURL")
     end
 
     trait :with_items do

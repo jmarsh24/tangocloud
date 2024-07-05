@@ -14,6 +14,8 @@ class Playlist < ApplicationRecord
   has_many :tandas, through: :playlist_items, source: :item, source_type: "Tanda"
   has_many :recordings, through: :playlist_items, source: :item, source_type: "Recording"
 
+  alias_method :items, :playlist_items
+
   has_one_attached :image, dependent: :purge_later
   has_one_attached :playlist_file, dependent: :purge_later
 
