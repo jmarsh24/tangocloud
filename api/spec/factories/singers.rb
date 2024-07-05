@@ -10,10 +10,27 @@ FactoryBot.define do
 
     after(:build) do |singer|
       singer.photo.attach(
-        io: File.open(Rails.root.join("spec/support/assets/singer.png")),
-        filename: "singer.png",
-        content_type: "image/png"
+        io: File.open(Rails.root.join("spec/support/assets/orchestra.jpg")),
+        filename: "orchestra.jpg",
+        content_type: "image/jpg"
       )
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: singers
+#
+#  id         :uuid             not null, primary key
+#  name       :string           not null
+#  slug       :string           not null
+#  rank       :integer          default(0), not null
+#  soloist    :boolean          default(FALSE), not null
+#  sort_name  :string
+#  bio        :text
+#  birth_date :date
+#  death_date :date
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#

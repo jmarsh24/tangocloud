@@ -9,10 +9,26 @@ FactoryBot.define do
 
     after(:build) do |album|
       album.album_art.attach(
-        io: File.open(Rails.root.join("spec/support/assets/album_art.png")),
-        filename: "album_art.png",
-        content_type: "image/png"
+        io: File.open(Rails.root.join("spec/support/assets/album_art.jpg")),
+        filename: "album_art.jpg",
+        content_type: "image/jpg"
       )
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: albums
+#
+#  id                    :uuid             not null, primary key
+#  title                 :string           not null
+#  description           :text
+#  release_date          :date
+#  audio_transfers_count :integer          default(0), not null
+#  slug                  :string           not null
+#  external_id           :string
+#  album_type            :enum             default("compilation"), not null
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#

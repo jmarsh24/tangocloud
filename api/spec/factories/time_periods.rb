@@ -8,7 +8,22 @@ FactoryBot.define do
     association :orchestra
 
     after(:build) do |time_period|
-      time_period.image.attach(io: File.open(Rails.root.join("spec/support/assets/time_period.png")), filename: "time_period.png", content_type: "image/png")
+      time_period.image.attach(io: File.open(Rails.root.join("spec/support/assets/orchestra.jpg")), filename: "orchestra.jpg", content_type: "image/jpg")
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: time_periods
+#
+#  id           :uuid             not null, primary key
+#  name         :string           not null
+#  description  :text
+#  start_year   :integer          default(0), not null
+#  end_year     :integer          default(0), not null
+#  slug         :string           not null
+#  orchestra_id :uuid
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#

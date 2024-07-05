@@ -4,9 +4,10 @@
 #
 #  id                :uuid             not null, primary key
 #  external_id       :string
-#  album_id          :uuid
+#  album_id          :uuid             not null
 #  transfer_agent_id :uuid
-#  recording_id      :uuid
+#  recording_id      :uuid             not null
+#  audio_file_id     :uuid             not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #

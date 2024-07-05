@@ -9,3 +9,15 @@ FactoryBot.define do
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: user_preferences
+#
+#  id         :uuid             not null, primary key
+#  first_name :string
+#  last_name  :string
+#  user_id    :uuid             not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#

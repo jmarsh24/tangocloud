@@ -5,3 +5,15 @@ FactoryBot.define do
     founded_date { Faker::Date.between(from: "1900-01-01", to: "2020-12-31") }
   end
 end
+
+# == Schema Information
+#
+# Table name: record_labels
+#
+#  id           :uuid             not null, primary key
+#  name         :string           not null
+#  description  :text
+#  founded_date :date
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#

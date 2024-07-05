@@ -8,7 +8,7 @@ FactoryBot.define do
     association :user
 
     before(:create) do |playlist|
-      playlist.image.attach(io: File.open(Rails.root.join("spec/support/assets/album-art.jpg")), filename: "album-art.jpg", content_type: "image/jpg")
+      playlist.image.attach(io: File.open(Rails.root.join("spec/fixtures/files/album-art-volver-a-sonar.jpg")), filename: "album-art-volver-a-sonar.jpg", content_type: "image/jpg")
       playlist.playlist_file.attach(io: File.open(Rails.root.join("spec/support/assets/playlist.m3u8")), filename: "playlist.m3u8", content_type: "application/x-mpegURL")
     end
 
@@ -31,3 +31,19 @@ FactoryBot.define do
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: playlists
+#
+#  id          :uuid             not null, primary key
+#  title       :string           not null
+#  subtitle    :string
+#  description :text
+#  slug        :string
+#  public      :boolean          default(TRUE), not null
+#  system      :boolean          default(FALSE), not null
+#  user_id     :uuid             not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#

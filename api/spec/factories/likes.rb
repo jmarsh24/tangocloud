@@ -16,3 +16,15 @@ FactoryBot.define do
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: likes
+#
+#  id            :uuid             not null, primary key
+#  likeable_type :string           not null
+#  likeable_id   :uuid             not null
+#  user_id       :uuid             not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#

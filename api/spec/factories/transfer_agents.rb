@@ -6,15 +6,27 @@ FactoryBot.define do
 
     after(:build) do |transfer_agent|
       transfer_agent.image.attach(
-        io: File.open(Rails.root.join("spec/support/assets/transfer_agent_image.png")),
-        filename: "transfer_agent_image.png",
-        content_type: "image/png"
+        io: File.open(Rails.root.join("spec/support/assets/orchestra.jpg")),
+        filename: "orchestra.jpg",
+        content_type: "image/jpg"
       )
       transfer_agent.logo.attach(
-        io: File.open(Rails.root.join("spec/support/assets/transfer_agent_logo.png")),
-        filename: "transfer_agent_logo.png",
-        content_type: "image/png"
+        io: File.open(Rails.root.join("spec/support/assets/orchestra.jpg")),
+        filename: "orchestra.jpg",
+        content_type: "image/jpg"
       )
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: transfer_agents
+#
+#  id          :uuid             not null, primary key
+#  name        :string           not null
+#  description :string
+#  url         :string
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
