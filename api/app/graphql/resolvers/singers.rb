@@ -6,11 +6,7 @@ module Resolvers
 
     def resolve(query: "*")
       ::Singer.search(query,
-        fields: [
-          "first_name",
-          "last_name",
-          "name"
-        ],
+        fields: ["name"],
         match: :word_start,
         misspellings: {below: 5}).results
     end
