@@ -2,13 +2,12 @@
 #
 # Table name: audio_files
 #
-#  id                :uuid             not null, primary key
-#  filename          :string           not null
-#  status            :string           default("pending"), not null
-#  error_message     :string
-#  audio_transfer_id :uuid
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
+#  id            :uuid             not null, primary key
+#  filename      :string           not null
+#  status        :string           default("pending"), not null
+#  error_message :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
 #
 class AudioFile < ApplicationRecord
   has_one_attached :file

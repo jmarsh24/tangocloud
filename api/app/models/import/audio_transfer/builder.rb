@@ -1,22 +1,20 @@
 module Import
   module AudioTransfer
     class Builder
-      attr_reader :audio_transfer
-
       def initialize
         @audio_transfer = ::AudioTransfer.new
       end
 
       def extract_metadata(file:)
-        AudioProcessing::MetadataExtractor.new(file:).metadata
+        AudioProcessing::MetadataExtractor.new(file:).extract
       end
 
       def generate_waveform_image(file:)
-        AudioProcessing::WaveformGenerator.new(file:).image
+        AudioProcessing::WaveformGenerator.new(file:).generate_image
       end
 
-      def generate_waveform_data(file:)
-        AudioProcessing::WaveformGenerator.new(file:).json
+      def generate_waveform(file:)
+        AudioProcessing::WaveformGenerator.new(file:).generate
       end
 
       def extract_album_art(file:)
@@ -31,35 +29,40 @@ module Import
         AudioVariant.new(
           duration: metadata.duration,
           format: metadata.format,
-          codec: metadata.codec,
-          filename: metadata.filename,
+          codec: metadata.codec_name,
           bit_rate: metadata.bit_rate,
           sample_rate: metadata.sample_rate,
           channels: metadata.channels,
-          length: metadata.length,
           metadata: metadata.to_h
         )
       end
 
-      def build_waveform(waveform_data:)
-        Waveform.new(data: waveform_data)
+      def build_waveform(waveform:)
+        Waveform.new(
+          version: waveform.version,
+          channels: waveform.channels,
+          sample_rate: waveform.sample_rate,
+          samples_per_pixel: waveform.samples_per_pixel,
+          bits: waveform.bits,
+          length: waveform.length,
+          data: waveform.data
+        )
       end
 
-      def build_and_attach_audio_transfer(audio_file:, metadata:, waveform_data:, waveform_image:, album_art:, compressed_audio:)
+      def build_and_attach_audio_transfer(audio_file:, metadata:, waveform:, waveform_image:, album_art:, compressed_audio:)
         album = find_or_initialize_album(metadata:)
         transfer_agent = find_or_initialize_transfer_agent(metadata:)
         recording = find_or_initialize_recording(metadata:)
         audio_variant = build_audio_variant(metadata:)
-        waveform = build_waveform(waveform_data:)
+        waveform = build_waveform(waveform:)
 
-        @audio_transfer = AudioTransfer.new(
-          filename: audio_file.filename,
-          album:,
-          transfer_agent:,
-          recording:,
-          audio_variant:,
-          waveform:
-        )
+        @audio_transfer.album = album
+        @audio_transfer.transfer_agent = transfer_agent
+        @audio_transfer.recording = recording
+        @audio_transfer.waveform = waveform
+        @audio_transfer.audio_file = audio_file
+
+        @audio_transfer.audio_variants << audio_variant
 
         album.album_art.attach(io: File.open(album_art), filename: File.basename(album_art))
         audio_variant.audio_file.attach(io: File.open(compressed_audio), filename: File.basename(compressed_audio))
@@ -69,11 +72,7 @@ module Import
       end
 
       def find_or_initialize_album(metadata:)
-        Album.find_or_initialize_by(title: metadata.album) do |album|
-          album.description = metadata.album_description
-          album.release_date = metadata.release_date
-          album.album_type = metadata.album_type || "compilation"
-        end
+        Album.find_or_initialize_by(title: metadata.album)
       end
 
       def find_or_initialize_transfer_agent(metadata:)
@@ -83,19 +82,16 @@ module Import
       def find_or_initialize_recording(metadata:)
         Recording.find_or_initialize_by(title: metadata.title) do |recording|
           recording.release_date = metadata.date
-          recording.recording_type = metadata.recording_type || "studio"
           recording.orchestra = find_or_initialize_orchestra(metadata:)
           recording.genre = find_or_initialize_genre(metadata:)
           recording.composition = find_or_initialize_composition(metadata:)
-          recording.singers = find_or_initialize_singers(metadata:)
+          recording.singers << find_or_initialize_singers(metadata:)
         end
       end
 
       def find_or_initialize_orchestra(metadata:)
         Orchestra.find_or_initialize_by(name: metadata.album_artist) do |orchestra|
-          orchestra.sort_name = metadata.orchestra_sort_name
-          orchestra.birth_date = metadata.orchestra_birth_date
-          orchestra.death_date = metadata.orchestra_death_date
+          orchestra.sort_name = metadata.artist_sort
         end
       end
 
@@ -110,17 +106,11 @@ module Import
       end
 
       def find_or_initialize_composer(metadata:)
-        Composer.find_or_initialize_by(name: metadata.composer) do |composer|
-          composer.birth_date = metadata.composer_birth_date
-          composer.death_date = metadata.composer_death_date
-        end
+        Composer.find_or_initialize_by(name: metadata.composer)
       end
 
       def find_or_initialize_lyricist(metadata:)
-        Lyricist.find_or_initialize_by(name: metadata.lyricist) do |lyricist|
-          lyricist.birth_date = metadata.lyricist_birth_date
-          lyricist.death_date = metadata.lyricist_death_date
-        end
+        Lyricist.find_or_initialize_by(name: metadata.lyricist)
       end
 
       def find_or_initialize_composition(metadata:)

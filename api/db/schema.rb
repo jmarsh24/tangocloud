@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_26_103259) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -74,10 +74,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_26_103259) do
     t.string "filename", null: false
     t.string "status", default: "pending", null: false
     t.string "error_message"
-    t.uuid "audio_transfer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["audio_transfer_id"], name: "index_audio_files_on_audio_transfer_id"
     t.index ["filename"], name: "index_audio_files_on_filename", unique: true
   end
 
@@ -86,9 +84,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_26_103259) do
     t.uuid "album_id"
     t.uuid "transfer_agent_id"
     t.uuid "recording_id"
+    t.uuid "audio_file_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["album_id"], name: "index_audio_transfers_on_album_id"
+    t.index ["audio_file_id"], name: "index_audio_transfers_on_audio_file_id"
     t.index ["recording_id"], name: "index_audio_transfers_on_recording_id"
     t.index ["transfer_agent_id"], name: "index_audio_transfers_on_transfer_agent_id"
   end
@@ -97,7 +97,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_26_103259) do
     t.integer "duration", default: 0, null: false
     t.string "format", null: false
     t.string "codec", null: false
-    t.string "filename", null: false
     t.integer "bit_rate"
     t.integer "sample_rate"
     t.integer "channels"
@@ -107,7 +106,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_26_103259) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["audio_transfer_id"], name: "index_audio_variants_on_audio_transfer_id"
-    t.index ["filename"], name: "index_audio_variants_on_filename", unique: true
   end
 
   create_table "composers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -585,8 +583,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_26_103259) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "audio_files", "audio_transfers"
   add_foreign_key "audio_transfers", "albums"
+  add_foreign_key "audio_transfers", "audio_files"
   add_foreign_key "audio_transfers", "recordings"
   add_foreign_key "audio_transfers", "transfer_agents"
   add_foreign_key "audio_variants", "audio_transfers"

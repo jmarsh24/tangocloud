@@ -5,7 +5,6 @@ class CreateAudioFiles < ActiveRecord::Migration[7.1]
       t.string :filename, null: false, index: {unique: true}
       t.string :status, null: false, default: "pending", enum_type: :audio_file_status
       t.string :error_message
-      t.belongs_to :audio_transfer, foreign_key: true, type: :uuid
 
       t.timestamps
     end

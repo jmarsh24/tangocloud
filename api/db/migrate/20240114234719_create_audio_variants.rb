@@ -4,7 +4,6 @@ class CreateAudioVariants < ActiveRecord::Migration[7.1]
       t.integer :duration, null: false, default: 0
       t.string :format, null: false
       t.string :codec, null: false
-      t.string :filename, null: false
       t.integer :bit_rate
       t.integer :sample_rate
       t.integer :channels
@@ -14,7 +13,5 @@ class CreateAudioVariants < ActiveRecord::Migration[7.1]
 
       t.timestamps
     end
-
-    add_index :audio_variants, :filename, unique: true
   end
 end

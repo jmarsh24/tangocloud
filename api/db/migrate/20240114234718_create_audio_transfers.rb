@@ -5,6 +5,7 @@ class CreateAudioTransfers < ActiveRecord::Migration[7.1]
       t.belongs_to :album, foreign_key: true, type: :uuid
       t.belongs_to :transfer_agent, foreign_key: true, type: :uuid
       t.belongs_to :recording, foreign_key: true, type: :uuid
+      t.belongs_to :audio_file, foreign_key: true, type: :uuid
 
       t.timestamps
     end
