@@ -29,7 +29,7 @@ module AudioProcessing
     end
 
     def convert
-      tempfile = Tempfile.new(["converted-", ".#{format}"])
+      tempfile = Tempfile.create(["converted-", ".#{format}"])
       custom_options = [
         "-map", "0:a:0",           # Map the first (audio) stream from the first input (audio file)
         "-codec:a", codec,         # Audio codec
