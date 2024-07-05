@@ -4,7 +4,7 @@ RSpec.describe "Auth", type: :request do
   fixtures :all
 
   describe "Post /auth/facebook/data_deletion" do
-    let(:user) { users(:normal) }
+    let(:user) { create(:user) }
 
     before do
       user.update!(provider: "facebook", uid: "facebook-uid")
