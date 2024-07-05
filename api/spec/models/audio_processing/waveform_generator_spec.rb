@@ -2,12 +2,11 @@ require "rails_helper"
 
 RSpec.describe AudioProcessing::WaveformGenerator do
   fixtures :all
-
-  describe "#json" do
+  describe "#generate" do
     it "creates a waveform a flac file" do
       file = File.open(file_fixture("audio/19401008__volver_a_sonar__roberto_rufino__tango.flac"))
 
-      waveform = AudioProcessing::WaveformGenerator.new(file:).json
+      waveform = AudioProcessing::WaveformGenerator.new(file:).generate
 
       expect(waveform.version).to eq(2)
       expect(waveform.channels).to eq(1)
@@ -24,7 +23,7 @@ RSpec.describe AudioProcessing::WaveformGenerator do
     it "creates a waveform for an mp3 file" do
       file = File.open(file_fixture("audio/19401008_volver_a_sonar_roberto_rufino_tango_2476.mp3"))
 
-      waveform = AudioProcessing::WaveformGenerator.new(file:).json
+      waveform = AudioProcessing::WaveformGenerator.new(file:).generate
 
       expect(waveform.version).to eq(2)
       expect(waveform.channels).to eq(1)
@@ -42,7 +41,7 @@ RSpec.describe AudioProcessing::WaveformGenerator do
   describe "#image" do
     it "creates a waveform image" do
       audio_file = File.open("spec/fixtures/audio/19401008_volver_a_sonar_roberto_rufino_tango_2476.mp3")
-      AudioProcessing::WaveformGenerator.new(audio_file).image do |image|
+      AudioProcessing::WaveformGenerator.new(audio_file).generate_image do |image|
         expect(Marcel::MimeType.for(File.open(image))).to eq("image/png")
         expect(ChunkyPNG::Image.from_file(image).width).to eq(800)
         expect(ChunkyPNG::Image.from_file(image).height).to eq(150)

@@ -1,5 +1,7 @@
 module AudioProcessing
   class WaveformGenerator
+    attr_reader :waveform, :image
+
     Waveform = Data.define(:version, :channels, :sample_rate, :samples_per_pixel, :bits, :length, :data).freeze
     def initialize(file:)
       @file = file
@@ -7,10 +9,12 @@ module AudioProcessing
 
     def generate
       audio_path = @file.path
+      movie = FFMPEG::Movie.new(audio_path)
 
-      if FFMPEG::Movie.new(audio_path).audio_codec != "mp3"
-        convert_to_mp3(audio_path) do |converted_file|
-          data = generate_waveform_json(converted_file.path)
+      if movie.audio_codec != "mp3"
+        Tempfile.create(["converted-", ".mp3"]) do |tempfile|
+          movie.transcode(tempfile.path, {audio_codec: "mp3"})
+          data = generate_waveform_json(tempfile.path)
           return Waveform.new(
             data["version"],
             data["channels"],
@@ -36,8 +40,8 @@ module AudioProcessing
       end
     end
 
-    def image(width: 800, height: 150)
-      waveform_data = json.data
+    def generate_image(width: 800, height: 150)
+      waveform_data = generate.data
       image = ChunkyPNG::Image.new(width, height, ChunkyPNG::Color::TRANSPARENT)
       tempfile = Tempfile.new(["waveform-", ".png"])
 
@@ -52,16 +56,6 @@ module AudioProcessing
     end
 
     private
-
-    def convert_to_mp3(original_path)
-      movie = FFMPEG::Movie.new(original_path)
-
-      Tempfile.create(["converted-", ".mp3"]) do |tempfile|
-        movie.transcode(tempfile.path, {audio_codec: "mp3"})
-
-        yield tempfile if block_given?
-      end
-    end
 
     def generate_waveform_json(audio_path)
       Tempfile.create(["audios", ".json"]) do |json_tempfile|
