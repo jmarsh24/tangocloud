@@ -1,24 +1,19 @@
 require "rails_helper"
 
 RSpec.describe AudioProcessing::AudioConverter do
+  let(:file) { File.open(file_fixture("audio/19401008__volver_a_sonar__roberto_rufino__tango.flac")) }
+  let(:converted_audio) { AudioProcessing::AudioConverter.new(file:).convert }
+
   describe "#convert" do
     it "converts the file to the specified format and deletes it afterward" do
-      file = File.open(file_fixture("audio/19401008__volver_a_sonar__roberto_rufino__tango.flac"))
-
-      audio_converter = AudioProcessing::AudioConverter.new(file:)
-
-      audio_file = audio_converter.convert
-      converted_movie = FFMPEG::Movie.new(audio_file.path)
+      converted_movie = FFMPEG::Movie.new(converted_audio.path)
 
       expect(converted_movie.audio_codec).to eq("aac")
-      expect(audio_converter.filename).to eq("19401008__volver_a_sonar__roberto_rufino__tango.aac")
+      expect(audio_converter.filename).to eq("19401008__volver_a_sonar__roberto_rufino__tango.m4a")
     end
 
     it "removes all metadata from a flac file" do
-      file = File.open(file_fixture("audio/19401008__volver_a_sonar__roberto_rufino__tango.flac"))
-
-      audio_file = AudioProcessing::AudioConverter.new(file:).convert
-      extracted_metadata = AudioProcessing::MetadataExtractor.new(file: audio_file).extract
+      extracted_metadata = AudioProcessing::MetadataExtractor.new(file: converted_audio).extract
 
       non_nil_keys = [:duration, :bit_rate, :sample_rate, :channels, :format, :bit_depth, :codec_name, :codec_long_name]
 
