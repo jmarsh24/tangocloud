@@ -8,8 +8,8 @@ module Types
     field :uid, String
     field :username, String, null: true
     field :name, String, null: false
-    field :first_name, String
-    field :last_name, String
+    field :first_name, String, null: true
+    field :last_name, String, null: true
     field :admin, Boolean, null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false

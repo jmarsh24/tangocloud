@@ -10,8 +10,6 @@ class CreateUsers < ActiveRecord::Migration[7.1]
       t.string :uid
 
       t.string :username, null: true, index: {unique: true}
-      t.string :first_name
-      t.string :last_name
       t.boolean :admin, null: false, default: false
 
       t.timestamps

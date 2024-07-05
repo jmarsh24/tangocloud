@@ -1,9 +1,9 @@
 require "rails_helper"
 
 RSpec.describe "removeLikeFromRecording", type: :graph do
-  let(:user) { users(:normal) }
-  let(:recording) { recordings(:volver_a_sonar) }
-  let(:like) { likes(:normal_user_like) }
+  let(:user) { create(:user) }
+  let(:recording) { create(:recording) }
+  let(:like) { create(:like, likeable: recording, user:) }
 
   let(:mutation) do
     <<~GQL

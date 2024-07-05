@@ -15,10 +15,11 @@ module Import
 
             next unless match_data
             filename = "#{match_data[1]}.#{match_data[2]}"
-            audio_transfer = AudioTransfer.find_by(filename:)
-            next unless audio_transfer
 
-            recording = audio_transfer.recording
+            audio_file = ::AudioFile.find_by(filename:)
+            next unless audio_file
+
+            recording = audio_file.audio_transfer.recording
             next unless recording
 
             @playlist.playlist_items.create!(

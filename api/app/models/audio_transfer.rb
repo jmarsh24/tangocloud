@@ -1,19 +1,16 @@
 class AudioTransfer < ApplicationRecord
   searchkick word_start: [:filename, :album_title, :recording_title, :transfer_agent_name, :audio_variants_filenames, :orchestra_name, :singer_names, :genre, :period, :composer_names, :lyricist_names]
 
-  belongs_to :transfer_agent, optional: true
-  belongs_to :recording, optional: true, dependent: :destroy
-  belongs_to :album, optional: true, counter_cache: true, dependent: :destroy
+  belongs_to :recording, dependent: :destroy
+  belongs_to :album, dependent: :destroy
+  belongs_to :transfer_agent
+  belongs_to :audio_file
   has_many :audio_variants, dependent: :destroy
   has_one :waveform, dependent: :destroy
 
-  validates :filename, presence: true, uniqueness: true
-
-  has_one_attached :audio_file, dependent: :purge_later
-
   def search_data
     {
-      filename:,
+      filename: audio_file.filename,
       album: album&.title,
       recording: recording&.title,
       transfer_agent: transfer_agent&.name,
@@ -33,11 +30,10 @@ end
 #
 #  id                :uuid             not null, primary key
 #  external_id       :string
-#  position          :integer          default(0), not null
-#  filename          :string           not null
-#  album_id          :uuid
+#  album_id          :uuid             not null
 #  transfer_agent_id :uuid
-#  recording_id      :uuid
+#  recording_id      :uuid             not null
+#  audio_file_id     :uuid             not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #

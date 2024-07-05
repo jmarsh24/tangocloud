@@ -2,8 +2,8 @@ require "rails_helper"
 
 RSpec.describe "Composer", type: :graph do
   describe "Querying a composer" do
-    let!(:user) { users(:normal) }
-    let!(:composer) { composers(:andres_fraga) }
+    let!(:user) { create(:user) }
+    let!(:composer) { create(:composer, name: "Andres Fraga") }
 
     let(:query) do
       <<~GQL
@@ -22,6 +22,8 @@ RSpec.describe "Composer", type: :graph do
     end
 
     it "returns the correct audio variant details" do
+      Composer.reindex
+
       gql(query, variables: {id: composer.id.to_s}, user:)
 
       expect(data.composer.id).to eq(composer.id)

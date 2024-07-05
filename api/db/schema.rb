@@ -25,6 +25,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "album_type", ["compilation", "original"]
+  create_enum "audio_file_status", ["pending", "processing", "completed", "failed"]
   create_enum "recording_type", ["studio", "live"]
   create_enum "subscription_type", ["free", "premium", "hifi"]
 
@@ -69,17 +70,25 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
     t.index ["slug"], name: "index_albums_on_slug", unique: true
   end
 
+  create_table "audio_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "filename", null: false
+    t.string "status", default: "pending", null: false
+    t.string "error_message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["filename"], name: "index_audio_files_on_filename", unique: true
+  end
+
   create_table "audio_transfers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "external_id"
-    t.integer "position", default: 0, null: false
-    t.string "filename", null: false
-    t.uuid "album_id"
+    t.uuid "album_id", null: false
     t.uuid "transfer_agent_id"
-    t.uuid "recording_id"
+    t.uuid "recording_id", null: false
+    t.uuid "audio_file_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["album_id"], name: "index_audio_transfers_on_album_id"
-    t.index ["filename"], name: "index_audio_transfers_on_filename", unique: true
+    t.index ["audio_file_id"], name: "index_audio_transfers_on_audio_file_id"
     t.index ["recording_id"], name: "index_audio_transfers_on_recording_id"
     t.index ["transfer_agent_id"], name: "index_audio_transfers_on_transfer_agent_id"
   end
@@ -88,7 +97,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
     t.integer "duration", default: 0, null: false
     t.string "format", null: false
     t.string "codec", null: false
-    t.string "filename", null: false
     t.integer "bit_rate"
     t.integer "sample_rate"
     t.integer "channels"
@@ -98,7 +106,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["audio_transfer_id"], name: "index_audio_variants_on_audio_transfer_id"
-    t.index ["filename"], name: "index_audio_variants_on_filename", unique: true
   end
 
   create_table "composers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -551,8 +558,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
     t.string "provider"
     t.string "uid"
     t.string "username"
-    t.string "first_name"
-    t.string "last_name"
     t.boolean "admin", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -577,6 +582,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "audio_transfers", "albums"
+  add_foreign_key "audio_transfers", "audio_files"
   add_foreign_key "audio_transfers", "recordings"
   add_foreign_key "audio_transfers", "transfer_agents"
   add_foreign_key "audio_variants", "audio_transfers"

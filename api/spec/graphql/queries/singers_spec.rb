@@ -2,8 +2,8 @@ require "rails_helper"
 
 RSpec.describe "singers", type: :graph do
   describe "Querying for singers" do
-    let!(:user) { users(:admin) }
-    let!(:singer) { singers(:roberto_rufino) }
+    let!(:user) { create(:user) }
+    let!(:singer) { create(:singer, name: "Roberto Rufino") }
     let(:query) do
       <<~GQL
         query Singers($query: String!) {
@@ -20,6 +20,8 @@ RSpec.describe "singers", type: :graph do
     end
 
     it "returns the correct el_recodo_song details" do
+      Singer.reindex
+
       gql(query, variables: {query: "Roberto"}, user:)
 
       found_singer = data.singers.edges.first.node

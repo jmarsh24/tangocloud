@@ -1,29 +1,30 @@
 module AudioProcessing
   class AlbumArtExtractor
-    attr_reader :file
-
-    def initialize(file)
+    def initialize(file:)
       @file = file
     end
 
     def extract
-      Tempfile.create(["album_art", ".jpg"]) do |tempfile|
-        movie = FFMPEG::Movie.new(file.path)
+      tempfile = Tempfile.new(["album-art_", ".jpg"])
+      movie = FFMPEG::Movie.new(@file.path)
 
-        movie.transcode(tempfile.path,
-          {
-            vcodec: "mjpeg",
-            qscale: "1",
-            frame_rate: "1",
-            frames: "1",
-            custom: ["-an"]
-          })
-
-        if File.exist?(tempfile.path) && !tempfile.size.zero?
-          yield tempfile if block_given?
-        end
+      if !movie.valid?
+        raise FFMPEG::Error, "Invalid audio file"
       end
-    rescue FFMPEG::Error
+
+      movie.transcode(tempfile.path,
+        vcodec: "mjpeg",
+        qscale: "1",
+        frame_rate: "1",
+        frames: "1",
+        custom: ["-an"])
+
+      tempfile.rewind
+      tempfile
+    rescue FFMPEG::Error => e
+      Rails.logger.error "Failed to extract album art: #{e.message}"
+      tempfile.close
+      tempfile.unlink
       nil
     end
   end

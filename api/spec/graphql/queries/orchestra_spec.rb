@@ -2,8 +2,8 @@ require "rails_helper"
 
 RSpec.describe "Orchestras", type: :graph do
   describe "Querying for orchestras" do
-    let!(:user) { users(:normal) }
-    let!(:orchestra) { orchestras(:carlos_di_sarli) }
+    let!(:user) { create(:user) }
+    let!(:orchestra) { create(:orchestra, name: "Carlos Di Sarli") }
     let(:query) do
       <<~GQL
         query Orchestra($id: ID!) {

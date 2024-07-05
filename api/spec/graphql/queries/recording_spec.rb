@@ -2,8 +2,13 @@ require "rails_helper"
 
 RSpec.describe "Recording", type: :graph do
   describe "Querying for recording" do
-    let!(:user) { users(:admin) }
-    let!(:recording) { recordings(:volver_a_sonar) }
+    let!(:user) { create(:user) }
+    let!(:singer) { create(:singer, name: "Roberto Rufino") }
+    let!(:orchestra) { create(:orchestra, name: "Carlos Di Sarli") }
+    let!(:genre) { create(:genre, name: "Tango") }
+    let!(:recording) { create(:recording, title: "Volver a soñar", singers: [singer], orchestra:, genre:) }
+    let!(:audio_transfer) { create(:audio_transfer, recording:) }
+    let!(:waveform) { create(:waveform, audio_transfer:) }
     let(:query) do
       <<~GQL
         query Recording($id: ID!) {
@@ -50,6 +55,7 @@ RSpec.describe "Recording", type: :graph do
     end
 
     it "returns the correct recording details" do
+      Recording.reindex
       gql(query, variables: {id: recording.id.to_s}, user:)
       recording_data = data.recording
 

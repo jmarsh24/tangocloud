@@ -11,7 +11,7 @@ module Types
 
     def url(width: nil)
       if object.image? && object.variable?
-        object.variant(resize: "100x100", imgproxy_options: {width:})
+        object.imgproxy_url(imgproxy_options: {width: width || 1000})
       else
         Rails.application.routes.url_helpers.rails_blob_url(object)
       end

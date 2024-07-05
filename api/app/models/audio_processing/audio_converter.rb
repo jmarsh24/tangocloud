@@ -1,19 +1,22 @@
+require "tempfile"
+require "streamio-ffmpeg"
+
 module AudioProcessing
   class AudioConverter
     attr_reader :file, :format, :bitrate, :sample_rate, :channels, :codec, :filename, :movie
 
     DEFAULT_OPTIONS = {
-      format: "aac",
-      bitrate: "320k",
+      format: "mp3",
+      bitrate: "256k",
       sample_rate: 48000,
-      channels: 1,
-      codec: "aac",
+      channels: 2,
+      codec: "mp3",
       strip_metadata: true
     }.freeze
 
-    def initialize(file_or_path, output_dir: nil, **options)
+    def initialize(file:, output_dir: nil, **options)
       options = DEFAULT_OPTIONS.merge(options)
-      @file = file_or_path.is_a?(String) ? File.open(file_or_path) : file_or_path
+      @file = file
       @format = options[:format]
       @bitrate = options[:bitrate]
       @sample_rate = options[:sample_rate]
@@ -26,38 +29,24 @@ module AudioProcessing
     end
 
     def convert
-      if block_given?
-        Tempfile.create([File.basename(@file.path, File.extname(@file.path)), ".#{format}"], @output_dir) do |tempfile|
-          perform_conversion(tempfile.path)
-          yield tempfile
-        end
-      else
-        perform_conversion(@filename)
-        @filename
-      end
-    ensure
-      @file.close if @file.is_a?(File)
-    end
-
-    private
-
-    def perform_conversion(output_path)
+      tempfile = Tempfile.create(["converted-", ".#{format}"])
       custom_options = [
-        "-i", @file.path,          # Input audio file
         "-map", "0:a:0",           # Map the first (audio) stream from the first input (audio file)
         "-codec:a", codec,         # Audio codec
-        "-b:a", bitrate,           # Audio bitrate (enforce 320k)
+        "-b:a", bitrate,           # Audio bitrate (enforce 256k for high quality)
         "-ar", sample_rate.to_s,   # Audio sample rate
-        "-ac", channels.to_s,      # Number of audio channels
+        "-ac", channels.to_s,      # Number of audio channels (2 for stereo)
         "-movflags", "+faststart", # Fast start for streaming
         "-id3v2_version", "3"      # Ensure compatibility with ID3v2
       ]
 
       custom_options += ["-map_metadata", "-1"] if @strip_metadata
 
-      @movie.transcode(output_path, custom_options) do |progress|
+      @movie.transcode(tempfile.path, custom_options) do |progress|
         puts progress
       end
+
+      tempfile
     end
   end
 end

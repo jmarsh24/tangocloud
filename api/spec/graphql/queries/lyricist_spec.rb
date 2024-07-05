@@ -2,8 +2,8 @@ require "rails_helper"
 
 RSpec.describe "lyricist", type: :graph do
   describe "Querying for lyricist" do
-    let!(:user) { users(:admin) }
-    let!(:lyricist) { lyricists(:francisco_garcia_jimenez) }
+    let!(:user) { create(:admin_user) }
+    let!(:lyricist) { create(:lyricist, name: "Francisco García Jiménez") }
     let(:query) do
       <<~GQL
         query Lyricist($id: ID!) {
@@ -21,6 +21,7 @@ RSpec.describe "lyricist", type: :graph do
     end
 
     it "returns the correct lyricist details" do
+      Lyricist.reindex
       gql(query, variables: {id: lyricist.id.to_s}, user:)
 
       lyricist_data = data.lyricist

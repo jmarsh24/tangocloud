@@ -1,9 +1,10 @@
 require "rails_helper"
 
 RSpec.describe "RemovePlaylistItem", type: :graph do
-  let!(:user) { users(:normal) }
-  let!(:playlist) { playlists(:awesome_playlist) }
-  let!(:playlist_item) { playlist_items(:awesome_playlist_item_1) }
+  let!(:user) { create(:user) }
+  let!(:playlist) { create(:playlist, user:) }
+  let!(:volver_a_sonar) { create(:recording, title: "Volver a Sonar") }
+  let!(:playlist_item) { create(:playlist_item, playlist:, item: volver_a_sonar) }
 
   let!(:mutation) do
     <<~GQL

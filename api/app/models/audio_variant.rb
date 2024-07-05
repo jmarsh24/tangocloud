@@ -7,7 +7,6 @@ class AudioVariant < ApplicationRecord
   validates :sample_rate, numericality: {only_integer: true}
   validates :channels, numericality: {only_integer: true}
   validates :codec, presence: true
-  validates :filename, presence: true, uniqueness: true
 
   has_one_attached :audio_file, dependent: :purge_later
 end
@@ -20,7 +19,6 @@ end
 #  duration          :integer          default(0), not null
 #  format            :string           not null
 #  codec             :string           not null
-#  filename          :string           not null
 #  bit_rate          :integer
 #  sample_rate       :integer
 #  channels          :integer

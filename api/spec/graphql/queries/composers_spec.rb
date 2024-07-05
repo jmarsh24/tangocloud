@@ -2,8 +2,8 @@ require "rails_helper"
 
 RSpec.describe "Composers", type: :graph do
   describe "Querying for composers" do
-    let!(:user) { users(:admin) }
-    let!(:composer) { composers(:andres_fraga) }
+    let!(:user) { create(:user) }
+    let!(:composer) { create(:composer, name: "Andres Fraga") }
 
     let(:query) do
       <<~GQL
@@ -21,9 +21,11 @@ RSpec.describe "Composers", type: :graph do
     end
 
     it "returns the correct composer details" do
+      Composer.reindex
+
       gql(query, variables: {query: "Andres Fraga"}, user:)
 
-      expect(data.composers.edges.first.node.id).to eq(composer.id.to_s)
+      expect(data.composers.edges.first.node.id).to eq(composer.id)
       expect(data.composers.edges.first.node.name).to eq("Andres Fraga")
     end
   end

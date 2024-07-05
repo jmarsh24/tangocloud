@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "orchestras", type: :graph do
-  let!(:user) { users(:admin) }
-  let!(:el_recodo) { orchestras(:carlos_di_sarli) }
+  let!(:user) { create(:user) }
+  let!(:el_recodo) { create(:orchestra, name: "Carlos Di Sarli") }
   let(:query) do
     <<~GQL
       query Orchestras($query: String) {
@@ -19,6 +19,8 @@ RSpec.describe "orchestras", type: :graph do
   end
 
   it "returns the correct orchestras" do
+    Orchestra.reindex
+
     gql(query, variables: {query: "Carlos Di Sarli"}, user:)
 
     found_orchestra = data.orchestras.edges.first.node

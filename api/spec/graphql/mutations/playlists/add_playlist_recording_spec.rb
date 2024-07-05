@@ -1,10 +1,12 @@
+# spec/graphql/mutations/add_playlist_recording_spec.rb
+
 require "rails_helper"
 
 RSpec.describe "AddPlaylistRecording", type: :graph do
-  let!(:user) { users(:normal) }
-  let!(:playlist) { playlists(:awesome_playlist) }
-  let!(:volver_a_sonar) { recordings(:volver_a_sonar) }
-  let!(:milonga_vieja) { recordings(:milonga_vieja_milonga) }
+  let!(:user) { create(:user) }
+  let!(:playlist) { create(:playlist, title: "Awesome Playlist", user:) }
+  let!(:volver_a_sonar) { create(:recording, title: "Volver a soñar") }
+
   let!(:mutation) do
     <<~GQL
       mutation AddPlaylistRecording($playlistId: ID!, $recordingId: ID!) {
@@ -30,17 +32,28 @@ RSpec.describe "AddPlaylistRecording", type: :graph do
   end
 
   describe "add playlist recording" do
-    it "successfully adds an recording to a playlist" do
+    it "successfully adds a recording to a playlist" do
       gql(mutation, variables: {playlistId: playlist.id, recordingId: volver_a_sonar.id}, user:)
 
       playlist_title = result.data.add_playlist_recording.playlist_item.playlist.title
       item_title = result.data.add_playlist_recording.playlist_item.item.title
       position = result.data.add_playlist_recording.playlist_item.position
-
       expect(playlist_title).to eq("Awesome Playlist")
       expect(item_title).to eq("Volver a soñar")
-      expect(position).to eq(3)
+      expect(position).to eq(1)
       expect(result.data.add_playlist_recording.errors).to be_empty
+    end
+
+    it "returns an error when the playlist does not exist" do
+      gql(mutation, variables: {playlistId: "non-existent-id", recordingId: volver_a_sonar.id}, user:)
+
+      expect(result.data.add_playlist_recording.errors).not_to be_empty
+    end
+
+    it "returns an error when the recording does not exist" do
+      gql(mutation, variables: {playlistId: playlist.id, recordingId: "non-existent-id"}, user:)
+
+      expect(result.data.add_playlist_recording.errors).not_to be_empty
     end
   end
 end

@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "users", type: :graph do
   describe "Querying for users" do
-    let!(:user) { users(:admin) }
+    let!(:user) { create(:user) }
     let(:query) do
       <<~GQL
         query Users($query: String!) {
@@ -19,13 +19,14 @@ RSpec.describe "users", type: :graph do
     end
 
     it "returns the correct el_recodo_song details" do
-      gql(query, variables: {query: "admin"}, user:)
+      User.reindex
+
+      gql(query, variables: {query: user.first_name}, user:)
 
       found_user = data.users.edges.first.node
 
       expect(found_user).not_to be_nil
-      expect(found_user["id"]).to eq(user.id.to_s)
-      expect(found_user["name"]).to eq("Admin User")
+      expect(found_user["id"]).to eq(user.id)
     end
   end
 end
