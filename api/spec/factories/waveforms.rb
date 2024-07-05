@@ -11,8 +11,8 @@ FactoryBot.define do
 
     after(:build) do |waveform|
       waveform.image.attach(
-        io: File.open(Rails.root.join("spec/support/assets/waveform.png")),
-        filename: "waveform.png",
+        io: File.open(Rails.root.join("spec/fixtures/files/19401008_volver_a_sonar_roberto_rufino_tango_2476_waveform.png")),
+        filename: "19401008_volver_a_sonar_roberto_rufino_tango_2476_waveform.png",
         content_type: "image/png"
       )
     end
