@@ -9,7 +9,7 @@ RSpec.describe AudioProcessing::AudioConverter do
       converted_movie = FFMPEG::Movie.new(converted_audio.path)
 
       # Make sure the file is converted to the correct format
-      expect(converted_movie.audio_codec).to eq("aac")
+      expect(converted_movie.audio_codec).to eq("mp3")
 
       # Make sure metadata is removed from file
       extracted_metadata = AudioProcessing::MetadataExtractor.new(file: converted_audio).extract
