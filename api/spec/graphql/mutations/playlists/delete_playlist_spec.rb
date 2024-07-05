@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "DeletePlaylist", type: :graph do
-  let!(:user) { users(:normal) }
-  let!(:playlist) { playlists(:awesome_playlist) }
+  let!(:user) { create(:user) }
+  let!(:playlist) { create(:playlist, user:) }
   let!(:mutation) do
     <<~GQL
       mutation DeletePlaylist($id: ID!) {
