@@ -87,7 +87,7 @@ RSpec.describe Import::AudioTransfer::Builder do
       orchestra = Import::AudioTransfer::Builder.new.find_or_initialize_orchestra(metadata:)
       expect(orchestra).to be_a_new(Orchestra)
       expect(orchestra.name).to eq("Carlos Di Sarli")
-      expect(orchestra.sort_name).eq("Di Sarli, Carlos")
+      expect(orchestra.sort_name).to eq("Di Sarli, Carlos")
       expect(orchestra.birth_date).to be_nil
       expect(orchestra.death_date).to be_nil
     end
