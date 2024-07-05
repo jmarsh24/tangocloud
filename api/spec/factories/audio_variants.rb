@@ -12,8 +12,8 @@ FactoryBot.define do
 
     after(:build) do |audio_variant|
       audio_variant.audio_file.attach(
-        io: File.open(Rails.root.join("spec/support/assets/19421009_no_te_apures_carablanca_juan_carlos_miranda_tango_1918.m4a")),
-        filename: "audio.mp3",
+        io: File.open(Rails.root.join("spec/fixtures/files/audio/19401008__volver_a_sonar__roberto_rufino__tango.mp3")),
+        filename: "19401008__volver_a_sonar__roberto_rufino__tango.mp3",
         content_type: "audio/mpeg"
       )
     end
