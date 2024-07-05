@@ -15,12 +15,6 @@ FactoryBot.define do
         content_type: "image/jpg"
       )
     end
-
-    trait :reindex do
-      after(:create) do |singer, _evaluator|
-        singer.reindex(refresh: true)
-      end
-    end
   end
 end
 
