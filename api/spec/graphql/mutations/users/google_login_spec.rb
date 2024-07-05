@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "Users::GoogleLogin", type: :graph do
-  let(:user) { users(:normal) }
+  let(:user) { create(:user, email: "new@google-user.com") }
   let(:mutation) do
     <<~GQL
       mutation googleLogin($idToken: String!) {
