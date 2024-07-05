@@ -8,7 +8,7 @@ FactoryBot.define do
     username { Faker::Internet.username }
     admin { false }
 
-    after(:create) do |user|
+    after(:build) do |user|
       create(:user_preference, user:)
     end
 

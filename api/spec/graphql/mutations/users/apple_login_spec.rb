@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "Users::AppleLogin", type: :graph do
-  let(:user) { users(:normal) }
+  let(:user) { create(:user, email: "new@apple-user.com") }
   let(:mutation) do
     <<~GQL
       mutation appleLogin($userIdentifier: String!, $identityToken: String!, $email: String, $firstName: String, $lastName: String) {
@@ -80,7 +80,6 @@ RSpec.describe "Users::AppleLogin", type: :graph do
       identityToken: "apple-user-identity-token",
       userIdentifier: "apple-user-identifier"
     }
-
     gql(mutation, variables:)
 
     expect(result.data.apple_login.user.email).to eq(user.email)
