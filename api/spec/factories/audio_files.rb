@@ -2,46 +2,82 @@
 #
 # Table name: audio_files
 #
-#  id                :uuid             not null, primary key
-#  filename          :string           not null
-#  status            :string           default("pending"), not null
-#  error_message     :string
-#  audio_transfer_id :uuid
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
+#  id            :uuid             not null, primary key
+#  filename      :string           not null
+#  status        :string           default("pending"), not null
+#  error_message :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
 #
 FactoryBot.define do
   factory :audio_file do
     status { "pending" }
+    filename { "default_audio_file.flac" }
 
     trait :flac do
       filename { "19401008__volver_a_sonar__roberto_rufino__tango.flac" }
-      file { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/audio/19401008__volver_a_sonar__roberto_rufino__tango.flac"), "audio/flac") }
+      after(:build) do |audio_file|
+        audio_file.file.attach(
+          io: File.open(Rails.root.join("spec/fixtures/files/audio/19401008__volver_a_sonar__roberto_rufino__tango.flac")),
+          filename: "19401008__volver_a_sonar__roberto_rufino__tango.flac",
+          content_type: "audio/flac"
+        )
+      end
     end
 
     trait :mp3 do
       filename { "19600715__a_los_amigos__instrumental__tango.mp3" }
-      file { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/audio/19600715__a_los_amigos__instrumental__tango.mp3"), "audio/mp3") }
+      after(:build) do |audio_file|
+        audio_file.file.attach(
+          io: File.open(Rails.root.join("spec/fixtures/audio/files/19600715__a_los_amigos__instrumental__tango.mp3")),
+          filename: "19600715__a_los_amigos__instrumental__tango.mp3",
+          content_type: "audio/mp3"
+        )
+      end
     end
 
     trait :orchestra do
       filename { "19401008__volver_a_sonar__roberto_rufino__tango.flac" }
-      file { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/audio/19401008__volver_a_sonar__roberto_rufino__tango.flac"), "audio/flac") }
+      after(:build) do |audio_file|
+        audio_file.file.attach(
+          io: File.open(Rails.root.join("spec/fixtures/audio/files/19401008__volver_a_sonar__roberto_rufino__tango.flac")),
+          filename: "19401008__volver_a_sonar__roberto_rufino__tango.flac",
+          content_type: "audio/flac"
+        )
+      end
     end
 
     trait :soloist do
       filename { "19581023__dicha_pasada__armando_cupo__tango.mp3" }
-      file { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/audio/19581023__dicha_pasada__armando_cupo__tango.mp3"), "audio/mp3") }
+      after(:build) do |audio_file|
+        audio_file.file.attach(
+          io: File.open(Rails.root.join("spec/fixtures/audio/files/19581023__dicha_pasada__armando_cupo__tango.mp3")),
+          filename: "19581023__dicha_pasada__armando_cupo__tango.mp3",
+          content_type: "audio/mp3"
+        )
+      end
     end
 
     trait :instrumental do
       filename { "19600715__a_los_amigos__instrumental__tango.mp3" }
-      file { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/audio/19600715__a_los_amigos__instrumental__tango.mp3"), "audio/mp3") }
+      after(:build) do |audio_file|
+        audio_file.file.attach(
+          io: File.open(Rails.root.join("spec/fixtures/audio/files/19600715__a_los_amigos__instrumental__tango.mp3")),
+          filename: "19600715__a_los_amigos__instrumental__tango.mp3",
+          content_type: "audio/mp3"
+        )
+      end
     end
 
     trait :singer do
       filename { "19800711__nunca_tuvo_novio__roberto_goyeneche__dir_osvaldo_berlingieri__tango.flac" }
-      file { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/audio/19800711__nunca_tuvo_novio__roberto_goyeneche__dir_osvaldo_berlingieri__tango.flac"), "audio/flac") }
+      after(:build) do |audio_file|
+        audio_file.file.attach(
+          io: File.open(Rails.root.join("spec/fixtures/audio/files/19800711__nunca_tuvo_novio__roberto_goyeneche__dir_osvaldo_berlingieri__tango.flac")),
+          filename: "19800711__nunca_tuvo_novio__roberto_goyeneche__dir_osvaldo_berlingieri__tango.flac",
+          content_type: "audio/flac"
+        )
+      end
     end
 
     trait :with_error do
