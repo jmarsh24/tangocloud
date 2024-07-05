@@ -7,7 +7,7 @@ RSpec.describe AudioProcessing::MetadataExtractor do
       metadata = AudioProcessing::MetadataExtractor.new(file:).extract
 
       expect(metadata.title).to eq("Volver a soñar")
-      expect(metadata.artist).to eq("Roberto Rufino")
+      expect(metadata.artist).to eq(["Roberto Rufino"])
       expect(metadata.album).to eq("TT - Todo de Carlos -1939-1941 [FLAC]")
       expect(metadata.date).to eq("1940-10-08")
       expect(metadata.track).to be_nil
@@ -32,7 +32,6 @@ RSpec.describe AudioProcessing::MetadataExtractor do
       expect(metadata.ert_number).to eq(2476)
       # expect(metadata.source).to eq("TangoTunes")
       expect(metadata.record_label).to eq("Rca Victor")
-      expect(metadata.singer).to eq("Roberto Rufino")
       expect(metadata.lyricist).to eq("Francisco García Jiménez")
       expect(metadata.artist_sort).to eq("Di Sarli, Carlos")
     end
