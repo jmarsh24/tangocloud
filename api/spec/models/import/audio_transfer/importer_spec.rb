@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Import::AudioTransfer::Director do
+RSpec.describe Import::AudioTransfer::Importer do
   let(:audio_file) { create(:flac_audio_file) }
   let(:compressed_audio) { File.open(Rails.root.join("spec/fixtures/files/audio/19401008_volver_a_sonar_roberto_rufino_tango_2476.mp3")) }
   let(:metadata) do
