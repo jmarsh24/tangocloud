@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "period", type: :graph do
   describe "Querying for period" do
     let!(:user) { create(:admin_user) }
-    let!(:time_period) { create(:time_period) }
+    let!(:time_period) { create(:time_period, name: "Golden Age") }
     let(:query) do
       <<~GQL
         query TimePeriod($id: ID!) {
@@ -21,6 +21,8 @@ RSpec.describe "period", type: :graph do
     end
 
     it "returns the correct period details" do
+      TimePeriod.reindex
+
       gql(query, variables: {id: time_period.id.to_s}, user:)
 
       expect(data.time_period.id).to eq(time_period.id)
