@@ -29,7 +29,7 @@ module AudioProcessing
     end
 
     def convert
-      output_path = File.join(@output_dir, @filename)
+      tempfile = Tempfile.create(["converted-", ".#{format}"])
       custom_options = [
         "-map", "0:a:0",           # Map the first (audio) stream from the first input (audio file)
         "-codec:a", codec,         # Audio codec
@@ -42,11 +42,11 @@ module AudioProcessing
 
       custom_options += ["-map_metadata", "-1"] if @strip_metadata
 
-      @movie.transcode(output_path, custom_options) do |progress|
+      @movie.transcode(tempfile.path, custom_options) do |progress|
         puts progress
       end
 
-      output_path
+      tempfile
     end
   end
 end
