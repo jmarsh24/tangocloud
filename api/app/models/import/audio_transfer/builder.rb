@@ -49,7 +49,7 @@ module Import
         )
       end
 
-      def build_and_attach_audio_transfer(audio_file:, metadata:, waveform:, waveform_image:, album_art:, compressed_audio:)
+      def build_audio_transfer(audio_file:, metadata:, waveform:, waveform_image:, album_art:, compressed_audio:)
         album = find_or_initialize_album(metadata:)
         transfer_agent = find_or_initialize_transfer_agent(metadata:)
         recording = find_or_initialize_recording(metadata:)

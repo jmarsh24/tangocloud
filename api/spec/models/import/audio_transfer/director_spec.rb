@@ -45,19 +45,27 @@ RSpec.describe Import::AudioTransfer::Director do
   let(:builder) { Import::AudioTransfer::Builder.new }
   let(:director) { described_class.new(builder:) }
 
+  before do
+    allow(builder).to receive(:extract_metadata).and_return(metadata)
+    allow(builder).to receive(:generate_waveform).and_return(waveform)
+    allow(builder).to receive(:extract_album_art).and_return(album_art)
+    allow(builder).to receive(:compress_audio).and_return(compressed_audio)
+    allow(builder).to receive(:generate_waveform_image).and_return(waveform_image)
+  end
+
   describe "#import" do
     it "creates an audio transfer" do
       audio_transfer = director.import(audio_file:)
 
       expect(audio_transfer).to be_persisted
       expect(audio_transfer.album.title).to eq("TT - Todo de Carlos -1939-1941 [FLAC]")
-      expect(audio_transfer.transfer_agent.name).to eq("FREE")
+      expect(audio_transfer.transfer_agent.name).to eq("TangoTunes")
       expect(audio_transfer.recording.title).to eq("Volver a soñar")
     end
 
     it "updates the audio file status to complete on success" do
       director.import(audio_file:)
-      expect(audio_file.reload.status).to eq("complete")
+      expect(audio_file.reload.status).to eq("completed")
     end
 
     it "updates the audio file status to failed on error" do
