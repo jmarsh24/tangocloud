@@ -2,8 +2,8 @@ require "rails_helper"
 
 RSpec.describe "Periods", type: :graph do
   describe "Querying for periods" do
-    let!(:user) { users(:admin) }
-    let!(:time_period) { time_periods(:golden_age) }
+    let!(:user) { create(:user) }
+    let!(:time_period) { create(:time_period, name: "Golden Age") }
     let(:query) do
       <<~GQL
         query TimePeriods($query: String) {
@@ -20,6 +20,8 @@ RSpec.describe "Periods", type: :graph do
     end
 
     it "returns the correct periods" do
+      TimePeriod.reindex
+
       gql(query, variables: {query: "Golden Age"}, user:)
 
       found_time_periods = data.time_periods.edges.first.node

@@ -2,8 +2,8 @@ require "rails_helper"
 
 RSpec.describe "Composer", type: :graph do
   describe "Querying a composer" do
-    let!(:user) { users(:normal) }
-    let!(:composer) { composers(:andres_fraga) }
+    let!(:user) { create(:user) }
+    let!(:composer) { create(:composer) }
 
     let(:query) do
       <<~GQL

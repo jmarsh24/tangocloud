@@ -2,8 +2,8 @@ require "rails_helper"
 
 RSpec.describe "Lyricists", type: :graph do
   describe "Querying for lyricists" do
-    let!(:user) { users(:admin) }
-    let!(:lyricist) { lyricists(:francisco_garcia_jimenez) }
+    let!(:user) { create(:admin_user) }
+    let!(:lyricist) { create(:lyricist) }
     let(:query) do
       <<~GQL
         query Lyricists($query: String) {

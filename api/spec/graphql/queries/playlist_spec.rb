@@ -2,10 +2,10 @@ require "rails_helper"
 
 RSpec.describe "Playlist", type: :graph do
   describe "playlist" do
-    let!(:user) { users(:normal) }
-    let!(:playlist) { playlists(:awesome_playlist) }
-    let!(:recording) { recordings(:volver_a_sonar) }
-    let!(:audio_variant) { audio_variants(:volver_a_sonar_rufino_aac) }
+    let!(:user) { create(:user) }
+    let!(:playlist) { create(:playlist) }
+    let!(:recording) { create(:recording) }
+    let!(:audio_variant) { create(:audio_variant) }
 
     let(:query) do
       <<~GQL

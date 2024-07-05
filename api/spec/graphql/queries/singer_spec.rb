@@ -2,8 +2,8 @@ require "rails_helper"
 
 RSpec.describe "singer", type: :graph do
   describe "Querying for singer" do
-    let!(:user) { users(:admin) }
-    let!(:singer) { singers(:roberto_rufino) }
+    let!(:user) { create(:admin_user) }
+    let!(:singer) { create(:singer) }
     let(:query) do
       <<~GQL
         query Singer($id: ID!) {

@@ -2,8 +2,8 @@ require "rails_helper"
 
 RSpec.describe "period", type: :graph do
   describe "Querying for period" do
-    let!(:user) { users(:admin) }
-    let!(:time_period) { time_periods(:golden_age) }
+    let!(:user) { create(:admin_user) }
+    let!(:time_period) { create(:time_period) }
     let(:query) do
       <<~GQL
         query TimePeriod($id: ID!) {
