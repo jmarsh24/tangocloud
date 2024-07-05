@@ -81,7 +81,7 @@ module Import
 
       def find_or_initialize_recording(metadata:)
         Recording.find_or_initialize_by(title: metadata.title) do |recording|
-          recording.release_date = metadata.date
+          recording.recorded_date = metadata.date
           recording.orchestra = find_or_initialize_orchestra(metadata:)
           recording.genre = find_or_initialize_genre(metadata:)
           recording.composition = find_or_initialize_composition(metadata:)

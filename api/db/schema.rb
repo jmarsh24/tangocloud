@@ -81,10 +81,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
 
   create_table "audio_transfers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "external_id"
-    t.uuid "album_id"
+    t.uuid "album_id", null: false
     t.uuid "transfer_agent_id"
-    t.uuid "recording_id"
-    t.uuid "audio_file_id"
+    t.uuid "recording_id", null: false
+    t.uuid "audio_file_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["album_id"], name: "index_audio_transfers_on_album_id"

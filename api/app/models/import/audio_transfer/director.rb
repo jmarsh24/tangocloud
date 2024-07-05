@@ -1,24 +1,29 @@
 module Import
   module AudioTransfer
     class Director
+      attr_reader :audio_transfer
+
       def initialize(builder:)
         @builder = builder
+        @audio_transfer = nil
       end
 
       def import(audio_file:)
         audio_file.file.blob.open do |tempfile|
           ActiveRecord::Base.transaction do
             audio_file.update!(status: :processing)
-            audio_transfer = build_audio_transfer(audio_file:, tempfile:)
+            @audio_transfer = build_audio_transfer(audio_file:, tempfile:)
 
-            if audio_transfer.save
+            if @audio_transfer.save
               audio_file.update!(status: :completed)
             else
-              audio_file.update!(status: :failed, error_message: audio_transfer.errors.full_messages.join(", "))
+              audio_file.update!(status: :failed, error_message: @audio_transfer.errors.full_messages.join(", "))
               raise ActiveRecord::Rollback
             end
           end
         end
+
+        @audio_transfer
       rescue => e
         audio_file.update!(status: :failed, error_message: e.message)
         raise e
