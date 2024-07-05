@@ -47,6 +47,15 @@ class User < ApplicationRecord
     end
   end
 
+  def search_data
+    {
+      username:,
+      email:,
+      first_name:,
+      last_name:
+    }
+  end
+
   private
 
   def ensure_user_preference
