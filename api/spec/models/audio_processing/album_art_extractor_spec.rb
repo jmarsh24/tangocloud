@@ -14,15 +14,5 @@ RSpec.describe AudioProcessing::AlbumArtExtractor, type: :model do
         expect(File.size(album_art.path)).to be > 0
       end
     end
-
-    context "when the audio file does not have album art" do
-      let(:file) { File.open(file_fixture("audio/19380307_tinta verde_instrumental_tango_no_thumbnail_2760.aif")) }
-
-      xit "returns nil" do
-        album_art_extractor = AudioProcessing::AlbumArtExtractor.new(file:)
-        album_art = album_art_extractor.extract
-        expect(album_art).to be_nil
-      end
-    end
   end
 end
