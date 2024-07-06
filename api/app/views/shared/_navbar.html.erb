@@ -1,0 +1,17 @@
+<nav class="navbar bg-gray-200 p-4 flex justify-between items-center">
+  <%= nav_link_to "TangoCloud", root_path, class: "text-xl font-extrabold text-gray-800 hover:text-gray-400" %>
+  <ul class="menu flex space-x-4 items-center">
+    <% if user_signed_in? %>
+      <%= button_to "Log out", destroy_user_session_path, method: :delete do %>
+        <span class="text-red-400 hover:text-red-600 font-medium text-center">Sign Out</span>
+      <% end %>
+    <% else %>
+      <li>
+        <%= nav_link_to "Register", new_user_registration_path, class: "text-gray-800 hover:text-gray-400" %>
+      </li>
+      <li>
+        <%= nav_link_to "Log in", new_user_session_path, class: "text-gray-800 hover:text-gray-400" %>
+      </li>
+    <% end %>
+  </ul>
+</nav>
