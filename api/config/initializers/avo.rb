@@ -1,11 +1,4 @@
-Rails.configuration.to_prepare do
-  Avo::ApplicationController.include Authentication::Cookies
-end
-
 Avo.configure do |config|
-  config.current_user_method do
-    Current.user
-  end
   config.app_name = "TangoCloud"
   config.per_page_steps = [48, 96, 256]
   config.full_width_index_view = true

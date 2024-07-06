@@ -97,7 +97,6 @@ GEM
       actionpack (>= 6.1.6)
       graphql (>= 1.8)
     ast (2.4.2)
-    authentication-zero (3.0.2)
     avo (3.9.2)
       actionview (>= 6.1)
       active_link_to
@@ -683,7 +682,6 @@ DEPENDENCIES
   acts_as_list
   annotate
   apollo_upload_server
-  authentication-zero
   avo
   aws-sdk-s3
   bcrypt

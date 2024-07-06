@@ -1,6 +1,4 @@
 class User < ApplicationRecord
-  include User::Authentication
-
   searchkick word_start: [:username, :email, :first_name, :last_name]
 
   has_one :user_preference, dependent: :destroy
@@ -13,16 +11,6 @@ class User < ApplicationRecord
   has_many :shared_recordings, through: :shares, source: :shareable, source_type: "Recording"
   has_many :shared_playlists, through: :shares, source: :shareable, source_type: "Playlist"
   has_many :shared_orchestras, through: :shares, source: :shareable, source_type: "Orchestra"
-  has_many :sessions, dependent: :destroy
-  has_many :events, dependent: :destroy
-
-  generates_token_for :email_verification, expires_in: 2.days do
-    email
-  end
-
-  generates_token_for :password_reset, expires_in: 20.minutes do
-    password_salt.last(10)
-  end
 
   after_create :ensure_user_preference
 

@@ -1,14 +1,7 @@
 class ApplicationController < ActionController::Base
   include Shimmer::FileHelper
   include Pundit::Authorization
-  include Authentication::Cookies
-
-  before_action :set_current_request_details
-  before_action :authenticate_user!
-
   after_action :verify_authorized
-
-  helper_method :current_user
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
