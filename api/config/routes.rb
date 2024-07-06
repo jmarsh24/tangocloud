@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   get "/apple-app-site-association", to: "apple_app_site_association#show", as: :apple_app_site_association
   get "/.well-known/apple-app-site-association", to: "apple_app_site_association#show"
 

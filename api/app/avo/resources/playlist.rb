@@ -34,7 +34,7 @@ class Avo::Resources::Playlist < Avo::BaseResource
     field :listens_count, as: :number, only_on: :show
     field :shares_count, as: :number, only_on: :show
     field :followers_count, as: :number, only_on: :show
-    field :user_id, as: :hidden, default: -> { Current.user.id }
+    field :user_id, as: :hidden, default: -> { current_user.id }
     field :playlist_items, as: :has_many
   end
 end

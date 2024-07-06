@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
-  include Shimmer::FileHelper
   include Pundit::Authorization
-  after_action :verify_authorized
+  before_action :authenticate_user!
+  after_action :verify_authorized, unless: :devise_controller?
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 

@@ -49,6 +49,7 @@ gem "lograge"
 gem "dry-monads"
 gem "imgproxy-rails"
 gem "active_storage_validations"
+gem "devise"
 
 # Assets
 gem "stimulus-rails"

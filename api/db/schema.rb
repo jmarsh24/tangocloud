@@ -181,16 +181,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
     t.index ["synced_at"], name: "index_el_recodo_songs_on_synced_at"
   end
 
-  create_table "events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "user_id", null: false
-    t.string "action", null: false
-    t.string "user_agent"
-    t.string "ip_address"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_events_on_user_id"
-  end
-
   create_table "friendly_id_slugs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "slug", null: false
     t.integer "sluggable_id", null: false
@@ -352,15 +342,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
     t.index ["record_label_id"], name: "index_recordings_on_record_label_id"
     t.index ["singer_id"], name: "index_recordings_on_singer_id"
     t.index ["slug"], name: "index_recordings_on_slug", unique: true
-  end
-
-  create_table "sessions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "user_id", null: false
-    t.string "user_agent"
-    t.string "ip_address"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
   create_table "shares", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -552,16 +533,27 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "email", null: false
-    t.string "password_digest"
-    t.boolean "verified", default: false, null: false
-    t.string "provider"
-    t.string "uid"
     t.string "username"
     t.boolean "admin", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string "unconfirmed_email"
+    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
@@ -592,7 +584,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
   add_foreign_key "composition_lyrics", "lyrics"
   add_foreign_key "compositions", "composers"
   add_foreign_key "compositions", "lyricists"
-  add_foreign_key "events", "users"
   add_foreign_key "likes", "users"
   add_foreign_key "listens", "recordings"
   add_foreign_key "listens", "users"
@@ -608,7 +599,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_172245) do
   add_foreign_key "recordings", "orchestras"
   add_foreign_key "recordings", "record_labels"
   add_foreign_key "recordings", "singers"
-  add_foreign_key "sessions", "users"
   add_foreign_key "shares", "users"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
