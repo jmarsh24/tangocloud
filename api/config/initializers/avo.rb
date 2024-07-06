@@ -7,4 +7,5 @@ Avo.configure do |config|
   config.raise_error_on_missing_policy = true
   config.home_path = -> { resources_playlists_path }
   config.license_key = Config.avo_license_key
+  config.current_user_method = :current_user
 end
