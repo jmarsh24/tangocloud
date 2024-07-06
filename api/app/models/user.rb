@@ -2,8 +2,8 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable,
-         :trackable, :confirmable, :omniauthable
+    :recoverable, :rememberable, :validatable,
+    :trackable, :confirmable, :omniauthable
   searchkick word_start: [:username, :email, :first_name, :last_name]
 
   has_one :user_preference, dependent: :destroy
@@ -21,6 +21,8 @@ class User < ApplicationRecord
 
   delegate :avatar, to: :user_preference, allow_nil: true
   delegate :first_name, :last_name, :name, to: :user_preference, allow_nil: true
+
+  accepts_nested_attributes_for :user_preference
 
   class << self
     def find_by_email_or_username(email_or_username)

@@ -5,7 +5,7 @@
       <li>
         <%= link_to edit_user_registration_path, class: "flex items-center space-x-2" do %>
           <% if current_user.avatar.present? %>
-            <img src="<%= current_user.avatar.url %>" alt="User Avatar" class="w-8 h-8 rounded-full">
+            <%= image_tag current_user.avatar, alt: "User Avatar", class: "w-8 h-8 rounded-full" %>
           <% else %>
             <%= image_tag "new-user.svg", alt: "User Avatar", class: "w-8 h-8" %>
           <% end %>
