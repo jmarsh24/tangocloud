@@ -1,5 +1,5 @@
 module Import
-  module AudioTransfer
+  module DigitalRemaster
     class Importer
       attr_reader :audio_transfer
 

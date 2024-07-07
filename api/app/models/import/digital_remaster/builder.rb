@@ -1,8 +1,8 @@
 module Import
-  module AudioTransfer
+  module DigitalRemaster
     class Builder
       def initialize
-        @audio_transfer = ::AudioTransfer.new
+        @audio_transfer = ::DigitalRemaster.new
       end
 
       def extract_metadata(file:)

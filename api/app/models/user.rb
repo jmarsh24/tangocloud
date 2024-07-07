@@ -1,6 +1,4 @@
 class User < ApplicationRecord
-  include User::Authentication
-
   searchkick word_start: [:username, :email, :first_name, :last_name]
 
   has_one :user_preference, dependent: :destroy
@@ -74,8 +72,6 @@ end
 #  provider        :string
 #  uid             :string
 #  username        :string
-#  first_name      :string
-#  last_name       :string
 #  admin           :boolean          default(FALSE), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null

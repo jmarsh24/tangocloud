@@ -225,6 +225,17 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.index ["language_id"], name: "index_lyrics_on_language_id"
   end
 
+  create_table "orchestra_periods", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.date "start_date"
+    t.date "end_date"
+    t.uuid "orchestra_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["orchestra_id"], name: "index_orchestra_periods_on_orchestra_id"
+  end
+
   create_table "orchestra_roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.date "start_date"
     t.date "end_date"
@@ -572,6 +583,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
   add_foreign_key "listens", "users"
   add_foreign_key "lyrics", "compositions"
   add_foreign_key "lyrics", "languages"
+  add_foreign_key "orchestra_periods", "orchestras"
   add_foreign_key "orchestra_roles", "orchestras"
   add_foreign_key "orchestra_roles", "people"
   add_foreign_key "orchestra_roles", "roles"

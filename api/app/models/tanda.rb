@@ -15,7 +15,8 @@ end
 # Table name: tandas
 #
 #  id          :uuid             not null, primary key
-#  name        :string           not null
+#  title       :string           not null
+#  subtitle    :string
 #  description :string
 #  public      :boolean          default(TRUE), not null
 #  user_id     :uuid             not null

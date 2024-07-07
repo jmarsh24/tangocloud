@@ -1,4 +1,4 @@
-module Import
+module ExternalCatalog
   module ElRecodo
     class SongScraper
       class TooManyRequestsError < StandardError; end

@@ -22,14 +22,11 @@ end
 #
 # Table name: albums
 #
-#  id                    :uuid             not null, primary key
-#  title                 :string           not null
-#  description           :text
-#  release_date          :date
-#  audio_transfers_count :integer          default(0), not null
-#  slug                  :string           not null
-#  external_id           :string
-#  album_type            :enum             default("compilation"), not null
-#  created_at            :datetime         not null
-#  updated_at            :datetime         not null
+#  id           :uuid             not null, primary key
+#  title        :string           not null
+#  description  :text
+#  release_date :date
+#  external_id  :string
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
 #

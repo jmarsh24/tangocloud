@@ -1,4 +1,4 @@
-module Import
+module ExternalCatalog
   module ElRecodo
     class SongSynchronizer
       def sync_songs(interval: 30)
