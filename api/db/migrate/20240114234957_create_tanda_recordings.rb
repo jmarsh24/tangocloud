@@ -7,5 +7,7 @@ class CreateTandaRecordings < ActiveRecord::Migration[7.1]
 
       t.timestamps
     end
+
+    add_index :tanda_recordings, :position
   end
 end
