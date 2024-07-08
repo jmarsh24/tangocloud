@@ -3,10 +3,13 @@
     <div>
       <%= image_tag "tangocloud-logo.svg", class: "mx-auto h-12 w-auto" %>
       <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-        Edit <%= resource_name.to_s.humanize %>
+        Sign In
       </h2>
+      <p class="mt-2 text-center text-sm text-gray-600">
+        Or <%= link_to "sign up", new_registration_path(resource_name), class: "font-medium text-indigo-600 hover:text-indigo-500" %>
+      </p>
     </div>
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
       <div class="mt-8 space-y-6">
         <%= render "devise/shared/error_messages", resource: resource %>
         <div class="rounded-md shadow-sm -space-y-px">
@@ -19,31 +22,16 @@
           <% end %>
           <div>
             <%= f.label :password, class: "sr-only", for: "password" %>
-            <%= f.password_field :password, id: "password", autocomplete: "new-password", placeholder: "Password (leave blank if you don't want to change it)", class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" %>
+            <%= f.password_field :password, id: "password", autocomplete: "new-password", placeholder: "Password", class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" %>
             <% if @minimum_password_length %>
               <p class="mt-2 text-sm text-gray-600"><em><%= @minimum_password_length %> characters minimum</em></p>
             <% end %>
           </div>
-          <div>
-            <%= f.label :password_confirmation, class: "sr-only", for: "password-confirmation" %>
-            <%= f.password_field :password_confirmation, id: "password-confirmation", autocomplete: "new-password", placeholder: "Confirm Password", class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" %>
-          </div>
-          <div>
-            <%= f.label :current_password, class: "sr-only", for: "current-password" %>
-            <%= f.password_field :current_password, id: "current-password", autocomplete: "current-password", placeholder: "Current Password (we need your current password to confirm your changes)", class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" %>
-          </div>
         </div>
         <div class="actions">
-          <%= f.submit "Update", class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+          <%= f.submit "Sign In", class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
         </div>
       </div>
     <% end %>
-    <h3 class="mt-6 text-center text-xl font-bold text-gray-900">Cancel my account</h3>
-    <div class="text-center text-sm text-gray-600">Unhappy?
-      <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class: "font-medium text-red-600 hover:text-red-800" %>
-    </div>
-    <div class="mt-4 text-center">
-      <%= link_to "Back", :back, class: "text-sm text-gray-600 hover:text-gray-800" %>
-    </div>
   </div>
 </div>
