@@ -9,4 +9,13 @@ class Avo::Filters::StatusFilter < Avo::Filters::BooleanFilter
   def options
     AudioFile.statuses
   end
+
+  def default
+    {
+      pending: true,
+      processing: true,
+      completed: true,
+      failed: true
+    }
+  end
 end
