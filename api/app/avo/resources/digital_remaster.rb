@@ -3,11 +3,9 @@ class Avo::Resources::DigitalRemaster < Avo::BaseResource
   self.search = {
     query: -> { query.search(params[:q]).results }
   }
-  self.title = :filename
 
   def fields
     field :id, as: :id, only_on: :show
-    field :filename, as: :text, only_on: [:show, :edit, :new], readonly: true
     field :external_id, as: :text, only_on: [:show, :edit, :new], readonly: true
     field :duration, as: :number, only_on: [:show, :edit, :new], readonly: true
     field :bpm, as: :number, only_on: [:show, :edit, :new], readonly: true
