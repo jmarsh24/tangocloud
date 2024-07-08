@@ -13,8 +13,12 @@
 
 class AudioFile < ApplicationRecord
   SUPPORTED_MIME_TYPES = [
+    "audio/x-aiff",
     "audio/x-flac",
     "audio/flac",
+    "audio/mp4",
+    "audio/mpeg",
+    "audio/x-m4a",
     "audio/mp3"
   ]
 
