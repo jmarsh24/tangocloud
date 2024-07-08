@@ -1,9 +1,9 @@
 class Avo::Resources::ElRecodoSong < Avo::BaseResource
   self.title = "El Recodo Songs"
   self.includes = [:recording]
-  self.index_query = -> {
-    query.order(music_id: :asc)
-  }
+  # self.index_query = -> {
+  #   query.order(music_id: :asc)
+  # }
   self.search = {
     query: -> { query.search(params[:q]).results },
     item: -> do
