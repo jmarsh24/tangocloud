@@ -1,7 +1,6 @@
 class AudioVariant < ApplicationRecord
   belongs_to :digital_remaster
 
-  validates :duration, presence: true
   validates :format, presence: true
   validates :bit_rate, numericality: {only_integer: true}
 

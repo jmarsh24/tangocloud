@@ -2,6 +2,8 @@ class Person < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :slugged
 
+  searchkick word_start: [:name]
+
   has_many :composition_roles, dependent: :destroy
   has_many :orchestra_roles, dependent: :destroy
   has_many :recording_singers, dependent: :destroy
@@ -10,6 +12,12 @@ class Person < ApplicationRecord
   validates :slug, presence: true, uniqueness: true
 
   has_one_attached :photo
+
+  def search_data
+    {
+      name:
+    }
+  end
 end
 
 # == Schema Information

@@ -7,7 +7,7 @@ class DigitalRemaster < ApplicationRecord
   has_many :audio_variants, dependent: :destroy
   has_one :waveforms, dependent: :destroy
 
-  validates :duration, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :duration, presence: true, numericality: {greater_than_or_equal_to: 0}
 end
 
 # == Schema Information

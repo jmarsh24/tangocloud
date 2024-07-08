@@ -44,7 +44,7 @@ composers = [
   "Astor Piazzolla",
   "Anibal Troilo"
 ].map do |name|
-  Composer.find_or_create_by!(name:) do |composer|
+  Person.find_or_create_by!(name:) do |composer|
     unless composer.photo.attached?
       composer.photo.attach(io: File.open(Rails.root.join("spec/fixtures/files/di_sarli.jpg")), filename: "composer.jpg", content_type: "image/jpeg")
     end
@@ -57,7 +57,7 @@ lyricists = [
   "Homero Manzi",
   "Enrique Santos Discepolo"
 ].map do |name|
-  Lyricist.find_or_create_by!(name:) do |lyricist|
+  Person.find_or_create_by!(name:) do |lyricist|
     unless lyricist.photo.attached?
       lyricist.photo.attach(io: File.open(Rails.root.join("spec/fixtures/files/di_sarli.jpg")), filename: "lyricist.jpg", content_type: "image/jpeg")
     end
@@ -78,8 +78,8 @@ end
 # Create compositions
 compositions = ["Libertango", "Adiós Nonino", "Oblivion"].map do |title|
   Composition.find_or_create_by!(title:) do |composition|
-    composition.composer = composers.sample
-    composition.lyricist = lyricists.sample
+    composition.composers << composers.sample
+    composition.lyricists << lyricists.sample
   end
 end
 
@@ -89,7 +89,7 @@ singers = [
   "Alberto Podestá",
   "Carlos Gardel"
 ].map do |name|
-  Singer.find_or_create_by!(name:) do |singer|
+  Person.find_or_create_by!(name:) do |singer|
     unless singer.photo.attached?
       singer.photo.attach(io: File.open(Rails.root.join("spec/fixtures/files/di_sarli.jpg")), filename: "singer.jpg", content_type: "image/jpeg")
     end
@@ -97,39 +97,42 @@ singers = [
 end
 
 # Create recordings
-recordings = ["La Cumparsita", "El Choclo", "A Media Luz"].map do |title|
-  Recording.find_or_create_by!(title:) do |recording|
+recordings = compositions.map do |composition|
+  Recording.find_or_create_by!(composition:) do |recording|
     recording.recording_type = "studio"
     recording.recorded_date = Faker::Date.between(from: "1930-01-01", to: "1950-12-31")
     recording.genre = genres.sample
     recording.orchestra = orchestras.sample
-    recording.composition = compositions.sample
     recording.singers = singers.sample(2)
   end
 end
 
-# Create audio transfers
-audio_transfers = recordings.map do |recording|
-  AudioTransfer.find_or_create_by!(recording:) do |audio_transfer|
-    audio_transfer.external_id = Faker::Number.unique.number(digits: 8).to_s
-    audio_transfer.position = Faker::Number.between(from: 1, to: 10)
-    audio_transfer.album = albums.sample
-    audio_transfer.filename = "#{recording.title.parameterize}.mp3"
-    audio_transfer.transfer_agent = TransferAgent.find_or_create_by!(name: Faker::Name.name) do |agent|
+# Create audio files
+audio_files = Dir[Rails.root.join("spec/fixtures/files/audio/*.mp3")].map do |audio_file_path|
+  filename = File.basename(audio_file_path)
+  AudioFile.find_or_create_by!(filename:, format: "audio/mp3") do |audio_file|
+    audio_file.file.attach(io: File.open(audio_file_path), filename:, content_type: "audio/mpeg")
+  end
+end
+
+# Create digital remasters
+digital_remasters = recordings.map do |recording|
+  DigitalRemaster.find_or_create_by!(recording:) do |digital_remaster|
+    digital_remaster.external_id = Faker::Number.unique.number(digits: 8).to_s
+    digital_remaster.album = albums.sample
+    digital_remaster.remaster_agent = RemasterAgent.find_or_create_by!(name: Faker::Name.name) do |agent|
       agent.description = Faker::Lorem.sentence
     end
-    unless audio_transfer.audio_file.attached?
-      audio_transfer.audio_file.attach(io: File.open(Rails.root.join("spec/fixtures/audio/19401008_volver_a_sonar_roberto_rufino_tango_2476.flac")), filename: "audio_file.flac", content_type: "audio/flac")
-    end
+    digital_remaster.audio_file = audio_files.sample
   end
 end
 
 # Create audio variants
-audio_transfers.each do |audio_transfer|
-  AudioVariant.find_or_create_by!(audio_transfer:) do |audio_variant|
+digital_remasters.each do |digital_remaster|
+  AudioVariant.find_or_create_by!(digital_remaster:) do |audio_variant|
     audio_variant.format = "mp3"
     audio_variant.bit_rate = 128
-    audio_variant.digital_remaster = audio_transfer.recording.digital_remaster
+    audio_variant.digital_remaster = digital_remaster
   end
 end
 
@@ -158,7 +161,7 @@ end
 
 # Create el_recodo_songs
 ["El Día Que Me Quieras", "Mi Buenos Aires Querido", "Volver"].map do |title|
-  ElRecodoSong.find_or_create_by!(title:) do |song|
+  ExternalCatalog::ElRecodoSong.find_or_create_by!(title:) do |song|
     song.date = Faker::Date.between(from: "1930-01-01", to: "1950-12-31")
     song.ert_number = Faker::Number.unique.number(digits: 5)
     song.music_id = Faker::Number.unique.number(digits: 5)
@@ -169,19 +172,11 @@ end
   end
 end
 
-# Create sessions
-["Morning Practice", "Evening Rehearsal", "Night Performance"].map do |name|
-  Session.find_or_create_by!(user: normal_user) do |session|
-    session.user_agent = Faker::Internet.user_agent
-    session.ip_address = Faker::Internet.ip_v4_address
-  end
-end
-
 # Create waveforms
-audio_transfers.each do |audio_transfer|
+digital_remasters.each do |digital_remaster|
   waveform_filepath = Rails.root.join("spec/fixtures/files/waveform_data_volver_a_sonar.json")
   data = JSON.parse(File.read(waveform_filepath))
-  Waveform.find_or_create_by!(digital_remaster: audio_transfer.digital_remaster) do |waveform|
+  Waveform.find_or_create_by!(digital_remaster:) do |waveform|
     waveform.version = 1
     waveform.channels = 2
     waveform.sample_rate = 44100
@@ -196,14 +191,12 @@ audio_transfers.each do |audio_transfer|
 end
 
 # Reindexing models
-ElRecodoSong.reindex
+ExternalCatalog::ElRecodoSong.reindex
 Recording.reindex
 Playlist.reindex
-Composer.reindex
+Person.reindex
 Genre.reindex
-Lyricist.reindex
 Orchestra.reindex
-Singer.reindex
 User.reindex
 
 puts "Seed data created successfully!"

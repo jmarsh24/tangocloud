@@ -1,5 +1,5 @@
 class Waveform < ApplicationRecord
-  belongs_to :audio_transfer
+  belongs_to :digital_remaster
 
   has_one_attached :image
 end

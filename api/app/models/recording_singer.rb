@@ -1,6 +1,6 @@
 class RecordingSinger < ApplicationRecord
   belongs_to :recording
-  belongs_to :singer
+  belongs_to :person
 end
 
 # == Schema Information
