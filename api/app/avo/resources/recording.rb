@@ -7,7 +7,7 @@ class Avo::Resources::Recording < Avo::BaseResource
     :genre,
     :time_period,
     :el_recodo_song,
-    :audio_transfers,
+    :digital_remasters,
     :audio_variants,
     :recording_singers,
     :singers,
@@ -19,7 +19,7 @@ class Avo::Resources::Recording < Avo::BaseResource
   self.search = {
     query: -> { query.search(params[:q]).results }
   }
-
+def fields
   field :id, as: :id, readonly: true, only_on: :show
   field :title, as: :text
   field :bpm, as: :number, only_on: :show
@@ -33,12 +33,13 @@ class Avo::Resources::Recording < Avo::BaseResource
   field :genre, as: :belongs_to
   field :time_period, as: :belongs_to
   field :el_recodo_song, as: :belongs_to
-  field :audio_transfers, as: :has_many
-  field :audio_variants, as: :has_many, through: :audio_transfers
+  field :digital_remasters, as: :has_many
+  field :audio_variants, as: :has_many, through: :digital_remasters
   field :recording_singers, as: :has_many
   field :singers, as: :has_many, through: :recording_singers
   field :lyrics, as: :has_many, through: :compositions
   field :tanda_recordings, as: :has_many
   field :tandas, as: :has_many, through: :tanda_recordings
-  field :waveforms, as: :has_many, through: :audio_transfers
+  field :waveforms, as: :has_many, through: :digital_remasters
+  end
 end

@@ -1,4 +1,4 @@
-class Avo::Resources::Tagging < Avo::BaseResource
+class Avo::Resources::Tag < Avo::BaseResource
   self.title = :name
   self.includes = [:taggable, :user]
   self.search = {

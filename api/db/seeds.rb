@@ -69,7 +69,6 @@ albums = ["Best of Tango", "Tango Classics", "Golden Age of Tango"].map do |titl
   Album.find_or_create_by!(title:) do |album|
     album.description = Faker::Lorem.paragraph
     album.release_date = Faker::Date.between(from: "1930-01-01", to: "1950-12-31")
-    album.album_type = "compilation"
     unless album.album_art.attached?
       album.album_art.attach(io: File.open(Rails.root.join("spec/fixtures/files/album-art-volver-a-sonar.jpg")), filename: "album_art.jpg", content_type: "image/jpeg")
     end
@@ -101,7 +100,6 @@ end
 recordings = ["La Cumparsita", "El Choclo", "A Media Luz"].map do |title|
   Recording.find_or_create_by!(title:) do |recording|
     recording.recording_type = "studio"
-    recording.release_date = Faker::Date.between(from: "1930-01-01", to: "1950-12-31")
     recording.recorded_date = Faker::Date.between(from: "1930-01-01", to: "1950-12-31")
     recording.genre = genres.sample
     recording.orchestra = orchestras.sample
@@ -129,17 +127,9 @@ end
 # Create audio variants
 audio_transfers.each do |audio_transfer|
   AudioVariant.find_or_create_by!(audio_transfer:) do |audio_variant|
-    audio_variant.duration = Faker::Number.between(from: 120, to: 360)
     audio_variant.format = "mp3"
-    audio_variant.codec = "libmp3lame"
     audio_variant.bit_rate = 128
-    audio_variant.sample_rate = 44100
-    audio_variant.channels = 2
-    audio_variant.metadata = {}
-    audio_variant.filename = "#{audio_transfer.filename}_variant.mp3"
-    unless audio_variant.audio_file.attached?
-      audio_variant.audio_file.attach(io: File.open(Rails.root.join("spec/fixtures/audio/19421009_no_te_apures_carablanca_juan_carlos_miranda_tango_1918.m4a")), filename: "audio_file.m4a", content_type: "audio/m4a")
-    end
+    audio_variant.digital_remaster = audio_transfer.recording.digital_remaster
   end
 end
 
@@ -191,7 +181,7 @@ end
 audio_transfers.each do |audio_transfer|
   waveform_filepath = Rails.root.join("spec/fixtures/files/waveform_data_volver_a_sonar.json")
   data = JSON.parse(File.read(waveform_filepath))
-  Waveform.find_or_create_by!(audio_transfer:) do |waveform|
+  Waveform.find_or_create_by!(digital_remaster: audio_transfer.digital_remaster) do |waveform|
     waveform.version = 1
     waveform.channels = 2
     waveform.sample_rate = 44100
@@ -206,7 +196,6 @@ audio_transfers.each do |audio_transfer|
 end
 
 # Reindexing models
-
 ElRecodoSong.reindex
 Recording.reindex
 Playlist.reindex
@@ -214,7 +203,6 @@ Composer.reindex
 Genre.reindex
 Lyricist.reindex
 Orchestra.reindex
-TimePeriod.reindex
 Singer.reindex
 User.reindex
 

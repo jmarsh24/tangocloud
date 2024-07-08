@@ -1,4 +1,4 @@
-class Avo::Resources::Tag < Avo::BaseResource
+class Avo::Resources::Tagging < Avo::BaseResource
   self.title = :name
   self.includes = [:taggings]
 
