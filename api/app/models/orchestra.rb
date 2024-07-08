@@ -1,4 +1,7 @@
 class Orchestra < ApplicationRecord
+  extend FriendlyId
+  friendly_id :name, use: :slugged
+
   has_many :orchestra_periods, dependent: :destroy
   has_many :orchestra_roles, dependent: :destroy
   has_many :recordings, dependent: :destroy
@@ -7,6 +10,8 @@ class Orchestra < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
   validates :slug, presence: true, uniqueness: true
+
+  has_one_attached :photo
 end
 
 # == Schema Information

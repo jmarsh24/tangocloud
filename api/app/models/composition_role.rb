@@ -1,5 +1,5 @@
 class CompositionRole < ApplicationRecord
-  enum role: { composer: "composer", lyricist: "lyricist" }
+  enum role: {composer: "composer", lyricist: "lyricist"}
 
   belongs_to :person
   belongs_to :composition
