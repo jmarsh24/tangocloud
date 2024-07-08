@@ -9,11 +9,11 @@ class Avo::Resources::AudioFile < Avo::BaseResource
     field :filename, as: :text
     field :status, as: :select, enum: ::AudioFile.statuses
     field :error_message, as: :text
-    field :audio_transfer, as: :belongs_to
+    field :digital_remaster, as: :has_one
     field :file, as: :file
   end
 
   def filters
-    filter StatusFilter
+    filter Avo::Filters::StatusFilter
   end
 end

@@ -1,8 +1,9 @@
-class Avo::Filters::StatusFilter < Avo::Filters::SelectFilter
+class Avo::Filters::StatusFilter < Avo::Filters::BooleanFilter
   self.name = "Status Filter"
 
   def apply(request, query, value)
-    query.where(status: value)
+    statuses = value.select { |k, v| v }.keys
+    query.where(status: statuses)
   end
 
   def options

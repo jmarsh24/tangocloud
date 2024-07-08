@@ -23,7 +23,7 @@ class AudioFile < ApplicationRecord
   ]
 
   has_one_attached :file
-  has_one :audio_transfer, dependent: :destroy
+  has_one :digital_remaster, dependent: :destroy
 
   validates :file, content_type: SUPPORTED_MIME_TYPES
 
