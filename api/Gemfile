@@ -49,6 +49,7 @@ gem "lograge"
 gem "dry-monads"
 gem "imgproxy-rails"
 gem "active_storage_validations"
+gem "devise"
 
 # Assets
 gem "stimulus-rails"
@@ -90,7 +91,6 @@ group :development do
   gem "rb-fsevent"
   gem "web-console"
   gem "brakeman"
-  gem "authentication-zero"
   gem "error_highlight"
   gem "database_validations"
   gem "database_consistency", require: false

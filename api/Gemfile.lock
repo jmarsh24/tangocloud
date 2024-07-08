@@ -97,7 +97,6 @@ GEM
       actionpack (>= 6.1.6)
       graphql (>= 1.8)
     ast (2.4.2)
-    authentication-zero (3.0.2)
     avo (3.9.2)
       actionview (>= 6.1)
       active_link_to
@@ -174,6 +173,12 @@ GEM
     debug (1.9.2)
       irb (~> 1.10)
       reline (>= 0.3.8)
+    devise (4.9.4)
+      bcrypt (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (>= 4.1.0)
+      responders
+      warden (~> 1.2.3)
     diff-lcs (1.5.1)
     docile (1.4.0)
     dotenv (2.8.1)
@@ -412,6 +417,7 @@ GEM
       actionpack (>= 4.2)
       omniauth (~> 2.0)
     options (2.3.2)
+    orm_adapter (0.5.0)
     os (1.1.4)
     pagy (8.4.5)
     parallel (1.25.1)
@@ -509,6 +515,9 @@ GEM
       io-console (~> 0.5)
     request_store (1.7.0)
       rack (>= 1.4)
+    responders (3.1.1)
+      actionpack (>= 5.2)
+      railties (>= 5.2)
     rexml (3.3.0)
       strscan
     rspec (3.13.0)
@@ -655,6 +664,8 @@ GEM
       dry-cli (>= 0.7, < 2)
       rack-proxy (~> 0.6, >= 0.6.1)
       zeitwerk (~> 2.2)
+    warden (1.2.9)
+      rack (>= 2.0.9)
     web-console (4.2.1)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -683,7 +694,6 @@ DEPENDENCIES
   acts_as_list
   annotate
   apollo_upload_server
-  authentication-zero
   avo
   aws-sdk-s3
   bcrypt
@@ -696,6 +706,7 @@ DEPENDENCIES
   database_consistency
   database_validations
   debug
+  devise
   dotenv-rails
   dry-monads
   elasticsearch
