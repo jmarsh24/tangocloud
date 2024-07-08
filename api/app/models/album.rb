@@ -2,11 +2,9 @@ class Album < ApplicationRecord
   extend FriendlyId
   friendly_id :title, use: :slugged
 
-  has_many :audio_transfers, dependent: :destroy
+  has_many :digital_remasters, dependent: :destroy
 
   validates :title, presence: true
-  validates :audio_transfers_count, presence: true, numericality: {greater_than_or_equal_to: 0}
-  validates :slug, presence: true, uniqueness: true
 
   has_one_attached :album_art
 

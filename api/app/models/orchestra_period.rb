@@ -13,6 +13,4 @@
 #
 class OrchestraPeriod < ApplicationRecord
   belongs_to :orchestra
-
-  validates :orchestra, presence: true
 end

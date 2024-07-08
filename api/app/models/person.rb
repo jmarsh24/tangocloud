@@ -5,6 +5,8 @@ class Person < ApplicationRecord
 
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true
+
+  has_one_attached :avatar
 end
 
 # == Schema Information

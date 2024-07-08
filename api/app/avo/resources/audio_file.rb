@@ -1,12 +1,7 @@
 class Avo::Resources::AudioFile < Avo::BaseResource
-  self.includes = []
+  self.includes = [:digital_remaster]
   self.search = {
-    query: -> do
-      query = params[:q]
-      AudioFile.
-        ransack(id_eq: query, status_eq: query, filename_cont: query, m: "or")
-        .result(distinct: false)
-    end
+    query: -> { AudioFile.search(params[:q]).results }
   }
 
   def fields

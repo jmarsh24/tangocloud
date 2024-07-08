@@ -1,8 +1,5 @@
 class Avo::Resources::OrchestraPeriod < Avo::BaseResource
-  self.includes = []
-  # self.search = {
-  #   query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
-  # }
+  self.includes = [:orchestra]
 
   def fields
     field :id, as: :id

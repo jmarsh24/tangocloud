@@ -1,12 +1,9 @@
 class AudioVariant < ApplicationRecord
-  belongs_to :audio_transfer
+  belongs_to :digital_remaster
 
   validates :duration, presence: true
   validates :format, presence: true
   validates :bit_rate, numericality: {only_integer: true}
-  validates :sample_rate, numericality: {only_integer: true}
-  validates :channels, numericality: {only_integer: true}
-  validates :codec, presence: true
 
   has_one_attached :audio_file, dependent: :purge_later
 end

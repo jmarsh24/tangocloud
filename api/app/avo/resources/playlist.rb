@@ -1,14 +1,7 @@
 class Avo::Resources::Playlist < Avo::BaseResource
   self.includes = [:playlist_items, :user]
   self.search = {
-    query: -> { query.search_playlists(params[:q]).results }
-  }
-  self.find_record_method = -> {
-    if id.is_a?(Array)
-      query.where(slug: id)
-    else
-      query.friendly.find id
-    end
+    query: -> { query.search(params[:q]).results }
   }
 
   self.ordering = {
@@ -26,15 +19,11 @@ class Avo::Resources::Playlist < Avo::BaseResource
     field :playlist_file, as: :file, accept: "m3u8", required: true
     field :image, as: :file, is_image: true, accept: "image/*", direct_upload: true, display_filename: false, required: false
     field :title, as: :text, required: false
+    field :subtitle, as: :text, required: false
     field :description, as: :textarea
     field :public, as: :boolean
     field :system, as: :boolean, only_on: :show
-    field :songs_count, as: :number, only_on: :show
-    field :likes_count, as: :number, only_on: :show
-    field :listens_count, as: :number, only_on: :show
-    field :shares_count, as: :number, only_on: :show
-    field :followers_count, as: :number, only_on: :show
-    field :user_id, as: :hidden, default: -> { Current.user.id }
+    field :user_id, as: :hidden, default: -> { current_user.id }
     field :playlist_items, as: :has_many
   end
 end

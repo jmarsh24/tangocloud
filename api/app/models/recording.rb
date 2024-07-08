@@ -13,7 +13,8 @@ class Recording < ApplicationRecord
   has_many :recording_singers, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :destroy
   has_many :listens, dependent: :destroy
-  has_many :mood_tags, as: :taggable, dependent: :destroy
+  has_many :taggings, as: :taggable, dependent: :destroy
+  has_many :tags, through: :taggings
   has_many :shares, as: :shareable, dependent: :destroy
   has_many :playlist_items, as: :item, dependent: :destroy
   has_many :tanda_recordings, dependent: :destroy
@@ -26,34 +27,16 @@ class Recording < ApplicationRecord
 
   def search_data
     {
-      title:,
+      title: title,
       composer_names: composition&.composer&.name,
       lyricist_names: composition&.lyricist&.name,
       orchestra_name: orchestra&.name,
       singer_names: singers.map(&:name).join(" "),
       genre: genre&.name,
-      listens_count:,
+      listens_count: listens_count,
       year: recorded_date.year,
-      created_at:,
-      updated_at:
+      created_at: created_at,
+      updated_at: updated_at
     }
   end
 end
-
-# == Schema Information
-#
-# Table name: recordings
-#
-#  id                :uuid             not null, primary key
-#  recorded_date     :date
-#  slug              :string           not null
-#  recording_type    :enum             default("studio"), not null
-#  listens_count     :integer          default(0), not null
-#  el_recodo_song_id :uuid
-#  orchestra_id      :uuid
-#  composition_id    :uuid
-#  record_label_id   :uuid
-#  genre_id          :uuid
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#

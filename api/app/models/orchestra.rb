@@ -2,6 +2,8 @@ class Orchestra < ApplicationRecord
   has_many :orchestra_periods, dependent: :destroy
   has_many :orchestra_roles, dependent: :destroy
   has_many :recordings, dependent: :destroy
+  has_many :compositions, through: :recordings
+  has_many :singers, through: :recordings
 
   validates :name, presence: true, uniqueness: true
   validates :slug, presence: true, uniqueness: true

@@ -1,32 +1,19 @@
 class Avo::Resources::Orchestra < Avo::BaseResource
-  self.includes = [:recordings, :singers, :compositions, :composers, :lyricists]
+  self.includes = [:recordings, :singers, :compositions, :orchestra_roles, :orchestra_periods]
   self.search = {
-    query: -> { query.search_orchestras(params[:q]) }
-  }
-  self.find_record_method = -> {
-    if id.is_a?(Array)
-      query.where(slug: id)
-    else
-      # We have to add .friendly to the query
-      query.friendly.find id
-    end
+    query: -> { query.search(params[:q]).results }
   }
 
   def fields
     field :id, as: :id, readonly: true, only_on: :show
     field :photo, as: :file, is_image: true, accept: "image/*"
-    field :name, as: :text, format_using: -> do
-      value.titleize
-    end
-    field :rank, as: :number
+    field :name, as: :text
     field :sort_name, as: :text, only_on: :show
-    field :birth_date, as: :date, only_on: :show
-    field :death_date, as: :date, only_on: :show
     field :slug, as: :text, readonly: true, only_on: :show
     field :recordings, as: :has_many
     field :singers, as: :has_many, through: :recordings
     field :compositions, as: :has_many, through: :recordings
-    field :composers, as: :has_many, through: :compositions
-    field :lyricists, as: :has_many, through: :compositions
+    field :orchestra_roles, as: :has_many
+    field :orchestra_periods, as: :has_many
   end
 end

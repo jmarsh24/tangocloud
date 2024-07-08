@@ -1,5 +1,5 @@
 class Avo::Resources::Like < Avo::BaseResource
-  self.includes = []
+  self.includes = [:user, :likeable]
 
   def fields
     field :id, as: :id

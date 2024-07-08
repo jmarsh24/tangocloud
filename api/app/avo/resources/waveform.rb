@@ -1,8 +1,5 @@
 class Avo::Resources::Waveform < Avo::BaseResource
-  self.includes = [:audio_transfer]
-  # self.search = {
-  #   query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
-  # }
+  self.includes = [:digital_remaster]
 
   def fields
     field :id, as: :id, readonly: true, only_on: :show
@@ -13,7 +10,7 @@ class Avo::Resources::Waveform < Avo::BaseResource
     field :samples_per_pixel, as: :number, readonly: true, only_on: :show
     field :bits, as: :number, readonly: true, only_on: :show
     field :length, as: :number, readonly: true, only_on: :show
-    field :data, as: :number, readonly: true, hide_on: [:index, :edit, :new, :show]
-    field :audio_transfer, as: :belongs_to, readonly: true
+    field :data, as: :code, readonly: true, only_on: :show
+    field :digital_remaster, as: :belongs_to, readonly: true
   end
 end

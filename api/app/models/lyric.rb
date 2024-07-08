@@ -2,7 +2,7 @@ class Lyric < ApplicationRecord
   belongs_to :composition
 
   validates :locale, presence: true
-  validates :content, presence: true
+  validates :text, presence: true
 end
 
 # == Schema Information
