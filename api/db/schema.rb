@@ -192,18 +192,6 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
-  create_table "listens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "duration", default: 0, null: false
-    t.decimal "latitude", precision: 10, scale: 6
-    t.decimal "longitude", precision: 10, scale: 6
-    t.uuid "user_id", null: false
-    t.uuid "recording_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["recording_id"], name: "index_listens_on_recording_id"
-    t.index ["user_id"], name: "index_listens_on_user_id"
-  end
-
   create_table "lyrics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "text", null: false
     t.uuid "composition_id", null: false
@@ -262,6 +250,16 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_people_on_slug", unique: true
     t.index ["sort_name"], name: "index_people_on_sort_name"
+  end
+
+  create_table "playbacks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "duration", default: 0, null: false
+    t.uuid "user_id", null: false
+    t.uuid "recording_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recording_id"], name: "index_playbacks_on_recording_id"
+    t.index ["user_id"], name: "index_playbacks_on_user_id"
   end
 
   create_table "playlist_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -570,14 +568,14 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
   add_foreign_key "digital_remasters", "recordings"
   add_foreign_key "digital_remasters", "remaster_agents"
   add_foreign_key "likes", "users"
-  add_foreign_key "listens", "recordings"
-  add_foreign_key "listens", "users"
   add_foreign_key "lyrics", "compositions"
   add_foreign_key "lyrics", "languages"
   add_foreign_key "orchestra_periods", "orchestras"
   add_foreign_key "orchestra_roles", "orchestras"
   add_foreign_key "orchestra_roles", "people"
   add_foreign_key "orchestra_roles", "roles"
+  add_foreign_key "playbacks", "recordings"
+  add_foreign_key "playbacks", "users"
   add_foreign_key "playlist_items", "playlists"
   add_foreign_key "recording_singers", "people"
   add_foreign_key "recording_singers", "recordings"

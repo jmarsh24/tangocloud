@@ -16,5 +16,6 @@ class Avo::Resources::User < Avo::BaseResource
     field :admin, as: :boolean
     field :avatar, as: :file
     field :user_preference, as: :has_one
+    field :playbacks, as: :has_many
   end
 end

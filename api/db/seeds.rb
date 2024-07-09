@@ -110,6 +110,7 @@ end
 audio_files = Dir[Rails.root.join("spec/fixtures/files/audio/*.mp3")].map do |audio_file_path|
   filename = File.basename(audio_file_path)
   AudioFile.find_or_create_by!(filename:, format: "audio/mp3") do |audio_file|
+    audio_file.filename = filename
     audio_file.file.attach(io: File.open(audio_file_path), filename:, content_type: "audio/mpeg")
   end
 end
@@ -160,7 +161,7 @@ end
 
 # Create el_recodo_songs
 ["El Día Que Me Quieras", "Mi Buenos Aires Querido", "Volver"].map do |title|
-  ExternalCatalog::ElRecodoSong.find_or_create_by!(title:) do |song|
+  ElRecodoSong.find_or_create_by!(title:) do |song|
     song.date = Faker::Date.between(from: "1930-01-01", to: "1950-12-31")
     song.ert_number = Faker::Number.unique.number(digits: 5)
     song.music_id = Faker::Number.unique.number(digits: 5)
@@ -190,7 +191,7 @@ digital_remasters.each do |digital_remaster|
 end
 
 # Reindexing models
-ExternalCatalog::ElRecodoSong.reindex
+ElRecodoSong.reindex
 Recording.reindex
 Playlist.reindex
 Person.reindex

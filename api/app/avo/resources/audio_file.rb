@@ -3,9 +3,10 @@ class Avo::Resources::AudioFile < Avo::BaseResource
   self.search = {
     query: -> { AudioFile.search(params[:q]).results }
   }
+  self.title = :filename
 
   def fields
-    field :id, as: :id
+    field :id, as: :id, readonly: true, only_on: :show
     field :filename, as: :text
     field :status, as: :select, enum: ::AudioFile.statuses
     field :error_message, as: :text
