@@ -27,13 +27,8 @@ module Import
 
       def build_audio_variant(metadata:)
         AudioVariant.new(
-          duration: metadata.duration,
           format: metadata.format,
-          codec: metadata.codec_name,
-          bit_rate: metadata.bit_rate,
-          sample_rate: metadata.sample_rate,
-          channels: metadata.channels,
-          metadata: metadata.to_h
+          bit_rate: metadata.bit_rate
         )
       end
 
@@ -52,8 +47,8 @@ module Import
       def build_digital_remaster(audio_file:, metadata:, waveform:, waveform_image:, album_art:, compressed_audio:)
         album = find_or_initialize_album(metadata:)
         remaster_agent = find_or_initialize_remaster_agent(metadata:)
-        composition = find_or_initialize_composition(metadata:)
-        recording = build_new_recording(metadata:, composition:)
+        find_or_initialize_composition(metadata:)
+        recording = build_recording(metadata:)
         audio_variant = build_audio_variant(metadata:)
         waveform = build_waveform(waveform:)
 

@@ -14,6 +14,7 @@ FactoryBot.define do
   factory :audio_file do
     status { "pending" }
     filename { "default_audio_file.flac" }
+    format { File.extname(filename).delete_prefix(".") }
 
     trait :flac do
       filename { "19401008__volver_a_sonar__roberto_rufino__tango.flac" }

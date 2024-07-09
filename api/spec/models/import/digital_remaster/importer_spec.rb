@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Import::AudioTransfer::Importer do
+RSpec.describe Import::DigitalRemaster::Importer do
   let(:audio_file) { create(:flac_audio_file) }
   let(:compressed_audio) { File.open(Rails.root.join("spec/fixtures/files/audio/19401008_volver_a_sonar_roberto_rufino_tango_2476.mp3")) }
   let(:metadata) do
@@ -55,12 +55,12 @@ RSpec.describe Import::AudioTransfer::Importer do
 
   describe "#import" do
     it "creates an audio transfer" do
-      audio_transfer = director.import(audio_file:)
+      digital_remaster = director.import(audio_file:)
 
-      expect(audio_transfer).to be_persisted
-      expect(audio_transfer.album.title).to eq("TT - Todo de Carlos -1939-1941 [FLAC]")
-      expect(audio_transfer.transfer_agent.name).to eq("TangoTunes")
-      expect(audio_transfer.recording.title).to eq("Volver a soñar")
+      expect(digital_remaster).to be_persisted
+      expect(digital_remaster.album.title).to eq("TT - Todo de Carlos -1939-1941 [FLAC]")
+      expect(digital_remaster.remaster_agent.name).to eq("TangoTunes")
+      expect(digital_remaster.recording.title).to eq("Volver a soñar")
     end
 
     it "updates the audio file status to complete on success" do
@@ -69,7 +69,7 @@ RSpec.describe Import::AudioTransfer::Importer do
     end
 
     it "updates the audio file status to failed on error" do
-      allow(builder).to receive(:build_audio_transfer).and_raise(StandardError.new("some error"))
+      allow(builder).to receive(:build_digital_remaster).and_raise(StandardError.new("some error"))
       expect { director.import(audio_file:) }.to raise_error(StandardError, "some error")
       expect(audio_file.reload.status).to eq("failed")
     end
