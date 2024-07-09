@@ -52,7 +52,8 @@ module Import
       def build_digital_remaster(audio_file:, metadata:, waveform:, waveform_image:, album_art:, compressed_audio:)
         album = find_or_initialize_album(metadata:)
         remaster_agent = find_or_initialize_remaster_agent(metadata:)
-        recording = find_or_initialize_recording(metadata:)
+        composition = find_or_initialize_composition(metadata:)
+        recording = build_new_recording(metadata:, composition:)
         audio_variant = build_audio_variant(metadata:)
         waveform = build_waveform(waveform:)
 
@@ -79,14 +80,14 @@ module Import
         RemasterAgent.find_or_initialize_by(name: metadata.source)
       end
 
-      def find_or_initialize_recording(metadata:)
-        Recording.find_or_initialize_by(title: metadata.title) do |recording|
-          recording.recorded_date = metadata.date
-          recording.orchestra = find_or_initialize_orchestra(metadata:)
-          recording.genre = find_or_initialize_genre(metadata:)
-          recording.composition = find_or_initialize_composition(metadata:)
-          recording.singers << find_or_initialize_singers(metadata:)
-        end
+      def build_recording(metadata:)
+        Recording.new(
+          composition: find_or_initialize_composition(metadata:),
+          recorded_date: metadata.date,
+          orchestra: find_or_initialize_orchestra(metadata:),
+          genre: find_or_initialize_genre(metadata:),
+          singers: find_or_initialize_singers(metadata:)
+        )
       end
 
       def find_or_initialize_orchestra(metadata:)

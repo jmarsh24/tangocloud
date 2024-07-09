@@ -59,9 +59,9 @@ RSpec.describe Import::DigitalRemaster::Builder do
     end
   end
 
-  describe "#find_or_initialize_recording" do
-    it "creates a new recording if it doesn't exist" do
-      recording = Import::DigitalRemaster::Builder.new.find_or_initialize_recording(metadata:)
+  describe "#build_recording" do
+    it "build a new recording" do
+      recording = Import::DigitalRemaster::Builder.new.build_recording(metadata:)
       expect(recording).to be_a_new(Recording)
       expect(recording.title).to eq("Volver a soñar")
       expect(recording.recorded_date).to eq("1940-10-08".to_date)
@@ -69,15 +69,9 @@ RSpec.describe Import::DigitalRemaster::Builder do
       expect(recording.orchestra.name).to eq("Carlos Di Sarli")
       expect(recording.genre.name).to eq("Tango")
       expect(recording.composition.title).to eq("Volver a soñar")
-      expect(recording.composition.composer.name).to eq("Andrés Fraga")
-      expect(recording.composition.lyricist.name).to eq("Francisco García Jiménez")
+      expect(recording.composition.composers.first.name).to eq("Andrés Fraga")
+      expect(recording.composition.lyricists.first.name).to eq("Francisco García Jiménez")
       expect(recording.singers.map(&:name)).to contain_exactly("Roberto Rufino")
-    end
-
-    it "finds an existing recording if it exists" do
-      create(:recording, title: "Volver a soñar")
-      recording = Import::DigitalRemaster::Builder.new.find_or_initialize_recording(metadata:)
-      expect(recording).not_to be_a_new(Recording)
     end
   end
 
