@@ -1,8 +1,11 @@
 FactoryBot.define do
   factory :composition do
     title { Faker::Music.album }
-    association :lyricist, factory: :lyricist
-    association :composer, factory: :composer
+
+    after(:create) do |composition|
+      create(:composition_role, composition:, person: create(:person), role: "composer")
+      create(:composition_role, composition:, person: create(:person), role: "lyricist")
+    end
   end
 end
 

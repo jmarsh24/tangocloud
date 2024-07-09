@@ -21,7 +21,7 @@ RSpec.describe "Composers", type: :graph do
     end
 
     it "returns the correct composer details" do
-      Composer.reindex
+      Person.reindex
 
       gql(query, variables: {query: "Andres Fraga"}, user:)
 

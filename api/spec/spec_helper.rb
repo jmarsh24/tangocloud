@@ -8,12 +8,10 @@ RSpec.configure do |config|
     ElRecodoSong.reindex
     Recording.reindex
     Playlist.reindex
-    Composer.reindex
+    Person.reindex
     Genre.reindex
-    Lyricist.reindex
     Orchestra.reindex
     TimePeriod.reindex
-    Singer.reindex
     User.reindex
 
     # and disable callbacks

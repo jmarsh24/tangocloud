@@ -1,7 +1,7 @@
 class Lyric < ApplicationRecord
   belongs_to :composition
+  belongs_to :language
 
-  validates :locale, presence: true
   validates :text, presence: true
 end
 

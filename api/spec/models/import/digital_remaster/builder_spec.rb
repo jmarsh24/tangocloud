@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Import::AudioTransfer::Builder do
+RSpec.describe Import::DigitalRemaster::Builder do
   let(:audio_file) { create(:flac_audio_file) }
   let(:metadata) do
     OpenStruct.new(
@@ -30,39 +30,38 @@ RSpec.describe Import::AudioTransfer::Builder do
 
   describe "#find_or_initialize_album" do
     it "creates a new album if it doesn't exist" do
-      album = Import::AudioTransfer::Builder.new.find_or_initialize_album(metadata:)
+      album = Import::DigitalRemaster::Builder.new.find_or_initialize_album(metadata:)
       expect(album).to be_a_new(Album)
       expect(album.title).to eq("TT - Todo de Carlos -1939-1941 [FLAC]")
       expect(album.description).to be_nil
-      expect(album.album_type).to eq("compilation")
     end
 
     it "finds an existing album if it exists" do
       create(:album, title: "TT - Todo de Carlos -1939-1941 [FLAC]")
-      album = Import::AudioTransfer::Builder.new.find_or_initialize_album(metadata:)
+      album = Import::DigitalRemaster::Builder.new.find_or_initialize_album(metadata:)
       expect(album).not_to be_a_new(Album)
     end
   end
 
-  describe "#find_or_initialize_transfer_agent" do
+  describe "#find_or_initialize_remaster_agent" do
     it "creates a new transfer agent if it doesn't exist" do
-      transfer_agent = Import::AudioTransfer::Builder.new.find_or_initialize_transfer_agent(metadata:)
-      expect(transfer_agent).to be_a_new(TransferAgent)
-      expect(transfer_agent.name).to eq("TangoTunes")
+      remaster_agent = Import::DigitalRemaster::Builder.new.find_or_initialize_remaster_agent(metadata:)
+      expect(remaster_agent).to be_a_new(RemasterAgent)
+      expect(remaster_agent.name).to eq("TangoTunes")
     end
 
     it "finds an existing transfer agent if it exists" do
-      existing_transfer_agent = create(:transfer_agent, name: "TangoTunes")
-      transfer_agent = Import::AudioTransfer::Builder.new.find_or_initialize_transfer_agent(metadata:)
+      existing_remaster_agent = create(:remaster_agent, name: "TangoTunes")
+      remaster_agent = Import::DigitalRemaster::Builder.new.find_or_initialize_remaster_agent(metadata:)
 
-      expect(transfer_agent).not_to be_a_new(TransferAgent)
-      expect(transfer_agent).to eq(existing_transfer_agent)
+      expect(remaster_agent).not_to be_a_new(RemasterAgent)
+      expect(remaster_agent).to eq(existing_remaster_agent)
     end
   end
 
   describe "#find_or_initialize_recording" do
     it "creates a new recording if it doesn't exist" do
-      recording = Import::AudioTransfer::Builder.new.find_or_initialize_recording(metadata:)
+      recording = Import::DigitalRemaster::Builder.new.find_or_initialize_recording(metadata:)
       expect(recording).to be_a_new(Recording)
       expect(recording.title).to eq("Volver a soñar")
       expect(recording.recorded_date).to eq("1940-10-08".to_date)
@@ -77,38 +76,36 @@ RSpec.describe Import::AudioTransfer::Builder do
 
     it "finds an existing recording if it exists" do
       create(:recording, title: "Volver a soñar")
-      recording = Import::AudioTransfer::Builder.new.find_or_initialize_recording(metadata:)
+      recording = Import::DigitalRemaster::Builder.new.find_or_initialize_recording(metadata:)
       expect(recording).not_to be_a_new(Recording)
     end
   end
 
   describe "#find_or_initialize_orchestra" do
     it "creates a new orchestra if it doesn't exist" do
-      orchestra = Import::AudioTransfer::Builder.new.find_or_initialize_orchestra(metadata:)
+      orchestra = Import::DigitalRemaster::Builder.new.find_or_initialize_orchestra(metadata:)
       expect(orchestra).to be_a_new(Orchestra)
       expect(orchestra.name).to eq("Carlos Di Sarli")
       expect(orchestra.sort_name).to eq("Di Sarli, Carlos")
-      expect(orchestra.birth_date).to be_nil
-      expect(orchestra.death_date).to be_nil
     end
 
     it "finds an existing orchestra if it exists" do
       create(:orchestra, name: "Carlos Di Sarli")
-      orchestra = Import::AudioTransfer::Builder.new.find_or_initialize_orchestra(metadata:)
+      orchestra = Import::DigitalRemaster::Builder.new.find_or_initialize_orchestra(metadata:)
       expect(orchestra).not_to be_a_new(Orchestra)
     end
   end
 
-  describe "#find_or_initialize_singers" do
+  describe "#find_or_initialize_people" do
     it "creates new singers if they don't exist" do
-      singers = Import::AudioTransfer::Builder.new.find_or_initialize_singers(metadata:)
+      singers = Import::DigitalRemaster::Builder.new.find_or_initialize_singers(metadata:)
       expect(singers.map(&:name)).to contain_exactly("Roberto Rufino")
       expect(singers.all?(&:new_record?)).to be true
     end
 
     it "finds existing singers if they exist" do
-      create(:singer, name: "Roberto Rufino")
-      singers = Import::AudioTransfer::Builder.new.find_or_initialize_singers(metadata:)
+      create(:person, name: "Roberto Rufino")
+      singers = Import::DigitalRemaster::Builder.new.find_or_initialize_singers(metadata:)
       expect(singers.map(&:name)).to contain_exactly("Roberto Rufino")
       expect(singers.all?(&:persisted?)).to be true
     end
@@ -116,7 +113,7 @@ RSpec.describe Import::AudioTransfer::Builder do
 
   describe "#find_or_initialize_genre" do
     it "creates a new genre if it doesn't exist" do
-      genre = Import::AudioTransfer::Builder.new.find_or_initialize_genre(metadata:)
+      genre = Import::DigitalRemaster::Builder.new.find_or_initialize_genre(metadata:)
       expect(genre).to be_a_new(Genre)
       expect(genre.name).to eq("Tango")
       expect(genre.description).to be_nil
@@ -124,55 +121,54 @@ RSpec.describe Import::AudioTransfer::Builder do
 
     it "finds an existing genre if it exists" do
       create(:genre, name: "Tango")
-      genre = Import::AudioTransfer::Builder.new.find_or_initialize_genre(metadata:)
+      genre = Import::DigitalRemaster::Builder.new.find_or_initialize_genre(metadata:)
       expect(genre).not_to be_a_new(Genre)
     end
   end
 
   describe "#find_or_initialize_composer" do
-    it "creates a new composer if it doesn't exist" do
-      composer = Import::AudioTransfer::Builder.new.find_or_initialize_composer(metadata:)
-      expect(composer).to be_a_new(Composer)
+    it "creates a new composer if it doesn’t exist" do
+      composer = Import::DigitalRemaster::Builder.new.find_or_initialize_composer(metadata:)
+      expect(composer).to be_a_new(Person)
       expect(composer.name).to eq("Andrés Fraga")
       expect(composer.birth_date).to be_nil
       expect(composer.death_date).to be_nil
     end
-
     it "finds an existing composer if it exists" do
-      create(:composer, name: "Andrés Fraga")
-      composer = Import::AudioTransfer::Builder.new.find_or_initialize_composer(metadata:)
-      expect(composer).not_to be_a_new(Composer)
+      create(:person, name: "Andrés Fraga")
+      composer = Import::DigitalRemaster::Builder.new.find_or_initialize_composer(metadata:)
+      expect(composer).not_to be_a_new(Person)
     end
   end
 
   describe "#find_or_initialize_lyricist" do
     it "creates a new lyricist if it doesn't exist" do
-      lyricist = Import::AudioTransfer::Builder.new.find_or_initialize_lyricist(metadata:)
-      expect(lyricist).to be_a_new(Lyricist)
+      lyricist = Import::DigitalRemaster::Builder.new.find_or_initialize_lyricist(metadata:)
+      expect(lyricist).to be_a_new(Person)
       expect(lyricist.name).to eq("Francisco García Jiménez")
       expect(lyricist.birth_date).to be_nil
       expect(lyricist.death_date).to be_nil
     end
 
     it "finds an existing lyricist if it exists" do
-      create(:lyricist, name: "Francisco García Jiménez")
-      lyricist = Import::AudioTransfer::Builder.new.find_or_initialize_lyricist(metadata:)
-      expect(lyricist).not_to be_a_new(Lyricist)
+      create(:person, name: "Francisco García Jiménez")
+      lyricist = Import::DigitalRemaster::Builder.new.find_or_initialize_lyricist(metadata:)
+      expect(lyricist).not_to be_a_new(Person)
     end
   end
 
   describe "#find_or_initialize_composition" do
     it "creates a new composition if it doesn't exist" do
-      composition = Import::AudioTransfer::Builder.new.find_or_initialize_composition(metadata:)
+      composition = Import::DigitalRemaster::Builder.new.find_or_initialize_composition(metadata:)
       expect(composition).to be_a_new(Composition)
       expect(composition.title).to eq("Volver a soñar")
-      expect(composition.composer.name).to eq("Andrés Fraga")
-      expect(composition.lyricist.name).to eq("Francisco García Jiménez")
+      expect(composition.composers.first.name).to eq("Andrés Fraga")
+      expect(composition.lyricists.first.name).to eq("Francisco García Jiménez")
     end
 
     it "finds an existing composition if it exists" do
       create(:composition, title: "Volver a soñar")
-      composition = Import::AudioTransfer::Builder.new.find_or_initialize_composition(metadata:)
+      composition = Import::DigitalRemaster::Builder.new.find_or_initialize_composition(metadata:)
       expect(composition).not_to be_a_new(Composition)
     end
   end

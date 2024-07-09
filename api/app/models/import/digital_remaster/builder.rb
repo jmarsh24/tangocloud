@@ -2,7 +2,7 @@ module Import
   module DigitalRemaster
     class Builder
       def initialize
-        @audio_transfer = ::DigitalRemaster.new
+        @digital_remaster = ::DigitalRemaster.new
       end
 
       def extract_metadata(file:)
@@ -49,34 +49,34 @@ module Import
         )
       end
 
-      def build_audio_transfer(audio_file:, metadata:, waveform:, waveform_image:, album_art:, compressed_audio:)
+      def build_digital_remaster(audio_file:, metadata:, waveform:, waveform_image:, album_art:, compressed_audio:)
         album = find_or_initialize_album(metadata:)
-        transfer_agent = find_or_initialize_transfer_agent(metadata:)
+        remaster_agent = find_or_initialize_remaster_agent(metadata:)
         recording = find_or_initialize_recording(metadata:)
         audio_variant = build_audio_variant(metadata:)
         waveform = build_waveform(waveform:)
 
-        @audio_transfer.album = album
-        @audio_transfer.transfer_agent = transfer_agent
-        @audio_transfer.recording = recording
-        @audio_transfer.waveform = waveform
-        @audio_transfer.audio_file = audio_file
+        @digital_remaster.album = album
+        @digital_remaster.remaster_agent = remaster_agent
+        @digital_remaster.recording = recording
+        @digital_remaster.waveform = waveform
+        @digital_remaster.audio_file = audio_file
 
-        @audio_transfer.audio_variants << audio_variant
+        @digital_remaster.audio_variants << audio_variant
 
         album.album_art.attach(io: File.open(album_art), filename: File.basename(album_art))
         audio_variant.audio_file.attach(io: File.open(compressed_audio), filename: File.basename(compressed_audio))
         waveform.image.attach(io: File.open(waveform_image), filename: File.basename(waveform_image))
 
-        @audio_transfer
+        @digital_remaster
       end
 
       def find_or_initialize_album(metadata:)
         Album.find_or_initialize_by(title: metadata.album)
       end
 
-      def find_or_initialize_transfer_agent(metadata:)
-        TransferAgent.find_or_initialize_by(name: metadata.source)
+      def find_or_initialize_remaster_agent(metadata:)
+        RemasterAgent.find_or_initialize_by(name: metadata.source)
       end
 
       def find_or_initialize_recording(metadata:)
@@ -97,7 +97,7 @@ module Import
 
       def find_or_initialize_singers(metadata:)
         metadata.artist.map do |singer_name|
-          Singer.find_or_initialize_by(name: singer_name)
+          Person.find_or_initialize_by(name: singer_name)
         end
       end
 
@@ -106,17 +106,17 @@ module Import
       end
 
       def find_or_initialize_composer(metadata:)
-        Composer.find_or_initialize_by(name: metadata.composer)
+        Person.find_or_initialize_by(name: metadata.composer)
       end
 
       def find_or_initialize_lyricist(metadata:)
-        Lyricist.find_or_initialize_by(name: metadata.lyricist)
+        Person.find_or_initialize_by(name: metadata.lyricist)
       end
 
       def find_or_initialize_composition(metadata:)
         composition = Composition.find_or_initialize_by(title: metadata.title) do |comp|
-          comp.composer = find_or_initialize_composer(metadata:)
-          comp.lyricist = find_or_initialize_lyricist(metadata:)
+          comp.composers << find_or_initialize_composer(metadata:)
+          comp.lyricists << find_or_initialize_lyricist(metadata:)
         end
         find_or_initialize_lyrics(metadata:, composition:)
         composition
@@ -125,8 +125,8 @@ module Import
       def find_or_initialize_lyrics(metadata:, composition:)
         return if metadata.lyrics.blank?
 
-        composition.lyrics.find_or_initialize_by(content: metadata.lyrics) do |lyric|
-          lyric.locale = "es"
+        composition.lyrics.find_or_initialize_by(text: metadata.lyrics) do |lyric|
+          lyric.language = Language.find_or_initialize_by(name: "es")
         end
       end
     end

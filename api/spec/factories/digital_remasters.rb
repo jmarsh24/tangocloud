@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: audio_transfers
+# Table name: digital_remasters
 #
 #  id                :uuid             not null, primary key
 #  external_id       :string
@@ -13,7 +13,7 @@
 #
 
 FactoryBot.define do
-  factory :audio_transfer do
+  factory :digital_remaster do
     external_id { "ERT-1" }
     association :album
     association :transfer_agent
@@ -21,18 +21,18 @@ FactoryBot.define do
     association :audio_file
 
     trait :with_flac_file do
-      after(:build) do |audio_transfer|
-        audio_transfer.audio_file = build(:flac_audio_file, audio_transfer: audio_transfer)
+      after(:build) do |digital_remaster|
+        digital_remaster.audio_file = build(:flac_audio_file, digital_remaster:)
       end
     end
 
     trait :with_mp3_file do
-      after(:build) do |audio_transfer|
-        audio_transfer.audio_file = build(:mp3_audio_file, audio_transfer: audio_transfer)
+      after(:build) do |digital_remaster|
+        digital_remaster.audio_file = build(:mp3_audio_file, digital_remaster:)
       end
     end
 
-    factory :flac_audio_transfer, traits: [:with_flac_file]
-    factory :mp3_audio_transfer, traits: [:with_mp3_file]
+    factory :flac_digital_remaster, traits: [:with_flac_file]
+    factory :mp3_digital_remaster, traits: [:with_mp3_file]
   end
 end

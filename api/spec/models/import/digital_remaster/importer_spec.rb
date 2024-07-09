@@ -42,7 +42,7 @@ RSpec.describe Import::AudioTransfer::Importer do
   let(:album_art) { File.open(Rails.root.join("spec/support/assets/album_art.jpg")) }
   let(:waveform_image) { File.open(Rails.root.join("spec/fixtures/files/19401008_volver_a_sonar_roberto_rufino_tango_2476_waveform.png")) }
   let(:processor) { instance_double("AudioProcessing::AudioProcessor", process: processor, extract_metadata: metadata, generate_waveform_data: waveform, album_art:, compressed_audio:, waveform_image:) }
-  let(:builder) { Import::AudioTransfer::Builder.new }
+  let(:builder) { Import::DigitalRemaster::Builder.new }
   let(:director) { described_class.new(builder:) }
 
   before do

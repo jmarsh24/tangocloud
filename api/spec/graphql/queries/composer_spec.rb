@@ -22,7 +22,7 @@ RSpec.describe "Composer", type: :graph do
     end
 
     it "returns the correct audio variant details" do
-      Composer.reindex
+      Person.reindex
 
       gql(query, variables: {id: composer.id.to_s}, user:)
 
