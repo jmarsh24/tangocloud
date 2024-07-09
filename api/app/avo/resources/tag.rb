@@ -11,7 +11,7 @@ class Avo::Resources::Tag < Avo::BaseResource
     field :taggable,
       as: :belongs_to,
       polymorphic_as: :taggable,
-      types: [::Recording, ::Tanda, ::Orchestra, ::Playlist, ::Composition, ::Lyric, ::Singer, ::User]
+      types: [::Recording, ::Tanda, ::Orchestra, ::Playlist, ::Composition, ::Person, ::User]
     field :user, as: :belongs_to
 
     field :created_at, as: :date_time

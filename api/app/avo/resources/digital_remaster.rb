@@ -1,5 +1,5 @@
 class Avo::Resources::DigitalRemaster < Avo::BaseResource
-  self.includes = [:audio_file, :album, :recording, :remaster_agent, :audio_variants, :waveform]
+  self.includes = [:audio_file, :album, :recording, :remaster_agent, :audio_variants]
   self.search = {
     query: -> { query.search(params[:q]).results }
   }
