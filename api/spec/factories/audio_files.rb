@@ -31,7 +31,7 @@ FactoryBot.define do
       filename { "19600715__a_los_amigos__instrumental__tango.mp3" }
       after(:build) do |audio_file|
         audio_file.file.attach(
-          io: File.open(Rails.root.join("spec/fixtures/audio/files/19600715__a_los_amigos__instrumental__tango.mp3")),
+          io: File.open(Rails.root.join("spec/fixtures/files/audio/19600715__a_los_amigos__instrumental__tango.mp3")),
           filename: "19600715__a_los_amigos__instrumental__tango.mp3",
           content_type: "audio/mp3"
         )
@@ -42,7 +42,7 @@ FactoryBot.define do
       filename { "19401008__volver_a_sonar__roberto_rufino__tango.flac" }
       after(:build) do |audio_file|
         audio_file.file.attach(
-          io: File.open(Rails.root.join("spec/fixtures/audio/files/19401008__volver_a_sonar__roberto_rufino__tango.flac")),
+          io: File.open(Rails.root.join("spec/fixtures/files/audio/19401008__volver_a_sonar__roberto_rufino__tango.flac")),
           filename: "19401008__volver_a_sonar__roberto_rufino__tango.flac",
           content_type: "audio/flac"
         )
@@ -53,7 +53,7 @@ FactoryBot.define do
       filename { "19581023__dicha_pasada__armando_cupo__tango.mp3" }
       after(:build) do |audio_file|
         audio_file.file.attach(
-          io: File.open(Rails.root.join("spec/fixtures/audio/files/19581023__dicha_pasada__armando_cupo__tango.mp3")),
+          io: File.open(Rails.root.join("spec/fixtures/files/audio/19581023__dicha_pasada__armando_cupo__tango.mp3")),
           filename: "19581023__dicha_pasada__armando_cupo__tango.mp3",
           content_type: "audio/mp3"
         )
@@ -64,7 +64,7 @@ FactoryBot.define do
       filename { "19600715__a_los_amigos__instrumental__tango.mp3" }
       after(:build) do |audio_file|
         audio_file.file.attach(
-          io: File.open(Rails.root.join("spec/fixtures/audio/files/19600715__a_los_amigos__instrumental__tango.mp3")),
+          io: File.open(Rails.root.join("spec/fixtures/files/audio/19600715__a_los_amigos__instrumental__tango.mp3")),
           filename: "19600715__a_los_amigos__instrumental__tango.mp3",
           content_type: "audio/mp3"
         )
@@ -75,7 +75,7 @@ FactoryBot.define do
       filename { "19800711__nunca_tuvo_novio__roberto_goyeneche__dir_osvaldo_berlingieri__tango.flac" }
       after(:build) do |audio_file|
         audio_file.file.attach(
-          io: File.open(Rails.root.join("spec/fixtures/audio/files/19800711__nunca_tuvo_novio__roberto_goyeneche__dir_osvaldo_berlingieri__tango.flac")),
+          io: File.open(Rails.root.join("spec/fixtures/files/audio/19800711__nunca_tuvo_novio__roberto_goyeneche__dir_osvaldo_berlingieri__tango.flac")),
           filename: "19800711__nunca_tuvo_novio__roberto_goyeneche__dir_osvaldo_berlingieri__tango.flac",
           content_type: "audio/flac"
         )

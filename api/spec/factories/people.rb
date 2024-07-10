@@ -28,3 +28,18 @@ FactoryBot.define do
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: people
+#
+#  id         :uuid             not null, primary key
+#  name       :string           not null
+#  slug       :string           not null
+#  sort_name  :string
+#  bio        :text
+#  birth_date :date
+#  death_date :date
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#

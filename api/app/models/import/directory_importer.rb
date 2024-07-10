@@ -1,6 +1,6 @@
 module Import
   class DirectoryImporter
-    MAX_THREADS = 6
+    MAX_THREADS = 1
 
     def initialize(directory)
       @directory = directory
@@ -26,6 +26,8 @@ module Import
           Thread.new do
             audio_file = AudioFile.create!(filename: File.basename(file), format: Marcel::MimeType.for(file))
             audio_file.file.attach(io: file, filename: File.basename(file))
+
+            Rails.logger.info("Importing #{audio_file.filename}...")
 
             if async
               AudioFileImportJob.perform_later(audio_file)

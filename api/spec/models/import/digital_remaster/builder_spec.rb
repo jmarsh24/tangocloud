@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe Import::DigitalRemaster::Builder do
   let(:audio_file) { create(:flac_audio_file) }
   let(:metadata) do
-    OpenStruct.new(
+    AudioProcessing::MetadataExtractor::Metadata.new(
       duration: 165.158396,
       bit_rate: 1325044,
       bit_depth: 24,

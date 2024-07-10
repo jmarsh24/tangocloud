@@ -3,9 +3,12 @@
 # Table name: digital_remasters
 #
 #  id                :uuid             not null, primary key
+#  duration          :integer          default(0), not null
+#  bpm               :integer
 #  external_id       :string
+#  replay_gain       :float
 #  album_id          :uuid             not null
-#  transfer_agent_id :uuid
+#  remaster_agent_id :uuid
 #  recording_id      :uuid             not null
 #  audio_file_id     :uuid             not null
 #  created_at        :datetime         not null

@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe Import::DigitalRemaster::Importer do
   let(:audio_file) { create(:flac_audio_file) }
-  let(:compressed_audio) { File.open(Rails.root.join("spec/fixtures/files/audio/19401008_volver_a_sonar_roberto_rufino_tango_2476.mp3")) }
+  let(:compressed_audio) { File.open(Rails.root.join("spec/fixtures/files/audio/compressed/19401008_volver_a_sonar_roberto_rufino_tango_2476.mp3")) }
   let(:metadata) do
     OpenStruct.new(
       duration: 165.158396,
