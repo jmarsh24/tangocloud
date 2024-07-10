@@ -26,6 +26,8 @@ module Import
       end
 
       def build_audio_variant(metadata:)
+        return if metadata.format.blank?
+
         AudioVariant.new(
           format: metadata.format,
           bit_rate: metadata.bit_rate
@@ -33,6 +35,8 @@ module Import
       end
 
       def build_waveform(waveform:)
+        return if waveform.blank?
+
         Waveform.new(
           version: waveform.version,
           channels: waveform.channels,
@@ -68,10 +72,14 @@ module Import
       end
 
       def find_or_initialize_album(metadata:)
+        return if metadata.album.blank?
+
         Album.find_or_initialize_by(title: metadata.album)
       end
 
       def find_or_initialize_remaster_agent(metadata:)
+        return if metadata.source.blank?
+
         RemasterAgent.find_or_initialize_by(name: metadata.source)
       end
 
@@ -86,35 +94,46 @@ module Import
       end
 
       def find_or_initialize_orchestra(metadata:)
+        return if metadata.album_artist.blank?
+
         Orchestra.find_or_initialize_by(name: metadata.album_artist) do |orchestra|
           orchestra.sort_name = metadata.artist_sort
         end
       end
 
       def find_or_initialize_singers(metadata:)
+        return if metadata.artist.blank?
+
         metadata.artist.map do |singer_name|
           Person.find_or_initialize_by(name: singer_name)
         end
       end
 
       def find_or_initialize_genre(metadata:)
+        return if metadata.genre.blank?
+
         Genre.find_or_initialize_by(name: metadata.genre)
       end
 
       def find_or_initialize_composer(metadata:)
+        return if metadata.composer.blank?
+
         Person.find_or_initialize_by(name: metadata.composer)
       end
 
       def find_or_initialize_lyricist(metadata:)
+        return if metadata.lyricist.blank?
+
         Person.find_or_initialize_by(name: metadata.lyricist)
       end
 
       def find_or_initialize_composition(metadata:)
         composition = Composition.find_or_initialize_by(title: metadata.title) do |comp|
-          comp.composers << find_or_initialize_composer(metadata:)
-          comp.lyricists << find_or_initialize_lyricist(metadata:)
+          comp.composers << find_or_initialize_composer(metadata:) if metadata.composer.present?
+          comp.lyricists << find_or_initialize_lyricist(metadata:) if metadata.lyricist.present?
         end
         find_or_initialize_lyrics(metadata:, composition:)
+
         composition
       end
 
@@ -122,7 +141,8 @@ module Import
         return if metadata.lyrics.blank?
 
         composition.lyrics.find_or_initialize_by(text: metadata.lyrics) do |lyric|
-          lyric.language = Language.find_or_initialize_by(name: "es")
+          lyric.language = Language.find_or_initialize_by(name: "spanish", code: "es")
+          lyric.composition = composition
         end
       end
     end

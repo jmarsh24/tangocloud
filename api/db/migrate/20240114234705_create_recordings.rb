@@ -8,10 +8,10 @@ class CreateRecordings < ActiveRecord::Migration[7.1]
       t.integer :listens_count, null: false, default: 0
 
       t.belongs_to :el_recodo_song, foreign_key: true, type: :uuid
-      t.belongs_to :orchestra, foreign_key: true, type: :uuid
-      t.belongs_to :composition, foreign_key: true, type: :uuid
+      t.belongs_to :orchestra, foreign_key: true, type: :uuid, null: false
+      t.belongs_to :composition, foreign_key: true, type: :uuid, null: false
       t.belongs_to :record_label, foreign_key: true, type: :uuid
-      t.belongs_to :genre, foreign_key: true, type: :uuid
+      t.belongs_to :genre, foreign_key: true, type: :uuid, null: false
 
       t.timestamps
     end

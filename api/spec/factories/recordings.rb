@@ -19,10 +19,10 @@ end
 #  recording_type    :enum             default("studio"), not null
 #  listens_count     :integer          default(0), not null
 #  el_recodo_song_id :uuid
-#  orchestra_id      :uuid
-#  composition_id    :uuid
+#  orchestra_id      :uuid             not null
+#  composition_id    :uuid             not null
 #  record_label_id   :uuid
-#  genre_id          :uuid
+#  genre_id          :uuid             not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #

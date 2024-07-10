@@ -313,10 +313,10 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.enum "recording_type", default: "studio", null: false, enum_type: "recording_type"
     t.integer "listens_count", default: 0, null: false
     t.uuid "el_recodo_song_id"
-    t.uuid "orchestra_id"
-    t.uuid "composition_id"
+    t.uuid "orchestra_id", null: false
+    t.uuid "composition_id", null: false
     t.uuid "record_label_id"
-    t.uuid "genre_id"
+    t.uuid "genre_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["composition_id"], name: "index_recordings_on_composition_id"
