@@ -69,7 +69,7 @@ module Import
       def find_or_initialize_remaster_agent(metadata:)
         return if metadata.source.blank?
 
-        RemasterAgent.find_or_initialize_by(name: metadata.source)
+        RemasterAgent.find_or_initialize_by(name: metadata.grouping)
       end
 
       def find_or_initialize_orchestra(metadata:)

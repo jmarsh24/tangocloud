@@ -23,7 +23,6 @@ module AudioProcessing
       :lyrics,
       :format,
       :ert_number,
-      :source,
       :lyricist,
       :album_artist_sort,
       :replay_gain
@@ -59,7 +58,6 @@ module AudioProcessing
         lyrics: tags.dig(:"lyrics-eng") || tags.dig(:lyrics) || tags.dig(:unsyncedlyrics),
         publisher: tags.dig(:publisher),
         ert_number: tags.dig(:barcode),
-        source: tags.dig(:grouping),
         lyricist: tags.dig(:lyricist),
         composer: tags.dig(:composer),
         album_artist_sort: tags.dig(:albumartistsort),

@@ -23,11 +23,10 @@ RSpec.describe Import::DigitalRemaster::Importer do
       lyrics: "No sé si fue mi mano\r\nO fue la tuya\r\nQue escribió,\r\nLa carta del adiós\r\nEn nuestro amor.\r\n \r\nNo quiero ni saber\r\nQuién fue culpable\r\nDe los dos,\r\nNi pido desazones\r\nNi rencor.\r\n \r\nMe queda del ayer\r\nEnvuelto en tu querer,\r\nEl rastro de un perfume antiguo.\r\nMe queda de tu amor\r\nEl lánguido sabor\r\nDe un néctar\r\nQue ya nunca beberé.\r\n \r\nPor eso que esta estrofa\r\nAl muerto idilio, no es capaz,\r\nDe hacerlo entre los dos resucitar.\r\nSi acaso algo pretendo\r\nEs por ofrenda al corazón,\r\nSalvarlo del olvido, nada más...",
       format: "flac",
       ert_number: 2476,
-      source: "TangoTunes",
       lyricist: "Francisco García Jiménez",
       album_artist_sort: "Di Sarli, Carlos",
       catalog_number: "TC2476",
-      grouping: "TangoTunes",
+      grouping: "Tango Tunes",
       replay_gain: -7.0
     )
   end

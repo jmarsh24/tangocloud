@@ -26,7 +26,7 @@ RSpec.describe Import::DigitalRemaster::Builder do
       lyricist: "Francisco García Jiménez",
       album_artist_sort: "Di Sarli, Carlos",
       catalog_number: "TC2476",
-      grouping: "TangoTunes",
+      grouping: "Tango Tunes",
       replay_gain: -7.0
     )
   end
@@ -111,7 +111,7 @@ RSpec.describe Import::DigitalRemaster::Builder do
     it "creates a new remaster agent if it doesn't exist" do
       remaster_agent = Import::DigitalRemaster::Builder.new.find_or_initialize_remaster_agent(metadata:)
       expect(remaster_agent).to be_a_new(RemasterAgent)
-      expect(remaster_agent.name).to eq("TangoTunes")
+      expect(remaster_agent.name).to eq("Tango Tunes")
     end
 
     it "finds an existing remaster agent if it exists" do
