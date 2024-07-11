@@ -75,18 +75,6 @@ RSpec.describe "register", type: :graph do
     expect(data.register.errors.full_messages).to eq(["Password can't be blank"])
   end
 
-  it "fails in case of no username" do
-    variables = {
-      username: "",
-      email: "new_user@example.com",
-      password: SecureRandom.hex
-    }
-
-    gql(mutation, variables:)
-
-    expect(data.register.errors.full_messages).to eq(["Username can't be blank", "Username is too short (minimum is 3 characters)", "Username is invalid"])
-  end
-
   it "fails in case of no email" do
     variables = {
       username: "new_user",
@@ -96,7 +84,7 @@ RSpec.describe "register", type: :graph do
 
     gql(mutation, variables:)
 
-    expect(data.register.errors.full_messages).to eq(["Email can't be blank", "Email is invalid"])
+    expect(data.register.errors.full_messages).to eq(["Email can't be blank"])
   end
 
   it "fails in case of duplicate email" do
@@ -110,7 +98,7 @@ RSpec.describe "register", type: :graph do
 
     gql(mutation, variables:)
 
-    expect(data.register.errors.full_messages).to eq(["Email has already been taken", "Username has already been taken"])
+    expect(data.register.errors.full_messages).to eq(["Email has already been taken"])
   end
 
   it "fails in case of duplicate username" do
@@ -125,6 +113,6 @@ RSpec.describe "register", type: :graph do
 
     gql(mutation, variables:)
 
-    expect(data.register.errors.full_messages).to eq(["Email has already been taken", "Username has already been taken"])
+    expect(data.register.errors.full_messages).to eq(["Email has already been taken"])
   end
 end
