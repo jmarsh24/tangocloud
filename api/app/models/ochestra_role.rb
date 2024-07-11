@@ -1,4 +1,4 @@
-class Role < ApplicationRecord
+class OrchestraRole < ApplicationRecord
   has_many :orchestra_roles, dependent: :destroy
 
   validates :name, presence: true

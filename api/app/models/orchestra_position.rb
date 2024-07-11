@@ -12,12 +12,12 @@
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #
-class OrchestraRole < ApplicationRecord
+class OrchestraPosition < ApplicationRecord
   belongs_to :orchestra
-  belongs_to :role
+  belongs_to :orchestra_role
   belongs_to :person
 
   validates :orchestra, presence: true
-  validates :role, presence: true
+  validates :orchestra_role, presence: true
   validates :person, presence: true
 end

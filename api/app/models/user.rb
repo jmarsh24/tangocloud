@@ -9,11 +9,14 @@ class User < ApplicationRecord
   has_many :playlists, dependent: :destroy
   has_many :playlist_items, through: :playlists
   has_many :listens, dependent: :destroy
-  has_many :mood_tags, dependent: :destroy
+  has_many :taggings, dependent: :destroy
+  has_many :tags, through: :taggings
   has_many :shares, dependent: :destroy
   has_many :shared_recordings, through: :shares, source: :shareable, source_type: "Recording"
   has_many :shared_playlists, through: :shares, source: :shareable, source_type: "Playlist"
   has_many :shared_orchestras, through: :shares, source: :shareable, source_type: "Orchestra"
+  has_many :shared_tandas, through: :shares, source: :shareable, source_type: "Tanda"
+  has_many :playbacks, dependent: :destroy
 
   after_create :ensure_user_preference
 
