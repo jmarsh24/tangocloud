@@ -6,7 +6,7 @@ RSpec.describe "Playlist", type: :graph do
     let!(:audio_file) { create(:audio_file) }
     let!(:digital_remaster) { create(:digital_remaster, audio_file:) }
     let!(:audio_variant) { create(:audio_variant, digital_remaster:) }
-    let!(:recording) { create(:recording, digital_remaster: [digital_remaster]) }
+    let!(:recording) { create(:recording, digital_remaster:) }
     let!(:playlist_item) { create(:playlist_item, playlist:, item: recording) }
     let!(:playlist) { create(:playlist, user:) }
 

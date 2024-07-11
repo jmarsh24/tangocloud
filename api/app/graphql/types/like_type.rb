@@ -7,6 +7,5 @@ module Types
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
     belongs_to :user
-    belongs_to :likeable, polymorphic: true
   end
 end

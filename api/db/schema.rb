@@ -215,18 +215,24 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.index ["orchestra_id"], name: "index_orchestra_periods_on_orchestra_id"
   end
 
-  create_table "orchestra_roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "orchestra_positions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.date "start_date"
     t.date "end_date"
     t.boolean "principal", default: false, null: false
     t.uuid "orchestra_id", null: false
-    t.uuid "role_id", null: false
+    t.uuid "orchestra_role_id", null: false
     t.uuid "person_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["orchestra_id"], name: "index_orchestra_roles_on_orchestra_id"
-    t.index ["person_id"], name: "index_orchestra_roles_on_person_id"
-    t.index ["role_id"], name: "index_orchestra_roles_on_role_id"
+    t.index ["orchestra_id"], name: "index_orchestra_positions_on_orchestra_id"
+    t.index ["orchestra_role_id"], name: "index_orchestra_positions_on_orchestra_role_id"
+    t.index ["person_id"], name: "index_orchestra_positions_on_person_id"
+  end
+
+  create_table "orchestra_roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "orchestras", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -334,12 +340,6 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.string "name", null: false
     t.text "description"
     t.string "url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -576,9 +576,9 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
   add_foreign_key "lyrics", "compositions"
   add_foreign_key "lyrics", "languages"
   add_foreign_key "orchestra_periods", "orchestras"
-  add_foreign_key "orchestra_roles", "orchestras"
-  add_foreign_key "orchestra_roles", "people"
-  add_foreign_key "orchestra_roles", "roles"
+  add_foreign_key "orchestra_positions", "orchestra_roles"
+  add_foreign_key "orchestra_positions", "orchestras"
+  add_foreign_key "orchestra_positions", "people"
   add_foreign_key "playbacks", "recordings"
   add_foreign_key "playbacks", "users"
   add_foreign_key "playlist_items", "playlists"

@@ -5,8 +5,11 @@ class Person < ApplicationRecord
   searchkick word_start: [:name]
 
   has_many :composition_roles, dependent: :destroy
+  has_many :compositions, through: :composition_roles
   has_many :orchestra_roles, dependent: :destroy
+  has_many :orchestras, through: :orchestra_roles
   has_many :recording_singers, dependent: :destroy
+  has_many :recordings, through: :recording_singers
 
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true

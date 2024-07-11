@@ -1,16 +1,16 @@
 # == Schema Information
 #
-# Table name: orchestra_roles
+# Table name: orchestra_positions
 #
-#  id           :uuid             not null, primary key
-#  start_date   :date
-#  end_date     :date
-#  principal    :boolean          default(FALSE), not null
-#  orchestra_id :uuid             not null
-#  role_id      :uuid             not null
-#  person_id    :uuid             not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  id                :uuid             not null, primary key
+#  start_date        :date
+#  end_date          :date
+#  principal         :boolean          default(FALSE), not null
+#  orchestra_id      :uuid             not null
+#  orchestra_role_id :uuid             not null
+#  person_id         :uuid             not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
 #
 class OrchestraPosition < ApplicationRecord
   belongs_to :orchestra

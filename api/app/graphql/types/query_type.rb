@@ -12,7 +12,6 @@ module Types
     field :time_period, resolver: Resolvers::TimePeriod
     field :playlist, resolver: Resolvers::Playlist
     field :recording, resolver: Resolvers::Recording
-    field :singer, resolver: Resolvers::Singer
     field :user, resolver: Resolvers::User
     field :el_recodo_songs, resolver: Resolvers::ElRecodoSongs
     field :orchestras, resolver: Resolvers::Orchestras

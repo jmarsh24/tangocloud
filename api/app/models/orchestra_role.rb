@@ -6,7 +6,7 @@ end
 
 # == Schema Information
 #
-# Table name: roles
+# Table name: orchestra_roles
 #
 #  id         :uuid             not null, primary key
 #  name       :string           not null

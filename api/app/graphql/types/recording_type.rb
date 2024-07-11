@@ -1,4 +1,9 @@
 module Types
+  class RecordingTypeEnum < Types::BaseEnum
+    value "studio"
+    value "live"
+  end
+
   class RecordingType < Types::BaseObject
     field :id, ID, null: false
     field :title, String, null: false
@@ -14,23 +19,16 @@ module Types
     belongs_to :composition
     belongs_to :record_label
     belongs_to :genre
-    belongs_to :lyricist
-    belongs_to :composer
     belongs_to :time_period
 
-    has_many :listens
+    has_many :playbacks
     has_many :likes
     has_many :digital_remasters
     has_many :audio_variants
-    has_many :singers
+    has_many :recording_singers
 
     def year
       object.recorded_date&.year
     end
-  end
-
-  class RecordingTypeEnum < Types::BaseEnum
-    value "studio"
-    value "live"
   end
 end

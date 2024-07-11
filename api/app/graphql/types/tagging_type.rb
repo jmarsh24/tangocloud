@@ -3,7 +3,6 @@ module Types
     field :id, ID, null: false
 
     belongs_to :tag
-    belongs_to :taggable
     belongs_to :user
   end
 end
