@@ -24,7 +24,9 @@ RSpec.describe Import::DigitalRemaster::Builder do
       ert_number: 2476,
       source: "TangoTunes",
       lyricist: "Francisco García Jiménez",
-      artist_sort: "Di Sarli, Carlos"
+      album_artist_sort: "Di Sarli, Carlos",
+      catalog_number: "TC2476",
+      grouping: "TangoTunes"
     )
   end
 
@@ -90,7 +92,7 @@ RSpec.describe Import::DigitalRemaster::Builder do
     end
   end
 
-  describe "#find_or_initialize_people" do
+  describe "#find_or_initialize_singers" do
     it "creates new singers if they don't exist" do
       singers = Import::DigitalRemaster::Builder.new.find_or_initialize_singers(metadata:)
       expect(singers.map(&:name)).to contain_exactly("Roberto Rufino")
@@ -102,6 +104,21 @@ RSpec.describe Import::DigitalRemaster::Builder do
       singers = Import::DigitalRemaster::Builder.new.find_or_initialize_singers(metadata:)
       expect(singers.map(&:name)).to contain_exactly("Roberto Rufino")
       expect(singers.all?(&:persisted?)).to be true
+    end
+
+    it "ignores 'Instrumental' artist" do
+      metadata_with_instrumental = OpenStruct.new(artist: "Instrumental")
+
+      singers = Import::DigitalRemaster::Builder.new.find_or_initialize_singers(metadata: metadata_with_instrumental)
+      expect(singers).to be_empty
+    end
+
+    it "processes 'Dir. XXXXXX' as soloist" do
+      metadata_with_instrumental = OpenStruct.new(artist: "Dir. Carlos Di Sarli")
+      singers = Import::DigitalRemaster::Builder.new.find_or_initialize_singers(metadata: metadata_with_instrumental)
+      expect(singers.map(&:name)).to contain_exactly("Carlos Di Sarli")
+      expect(singers.first).to be_a(Person)
+      expect(singers.first.recording_singers.first.soloist).to be true
     end
   end
 

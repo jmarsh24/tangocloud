@@ -104,8 +104,17 @@ module Import
       def find_or_initialize_singers(metadata:)
         return if metadata.artist.blank?
 
-        metadata.artist.map do |singer_name|
-          Person.find_or_initialize_by(name: singer_name)
+        metadata.artist.split(",").filter_map do |singer_name|
+          next if singer_name.casecmp("instrumental").zero?
+
+          if singer_name.start_with?("Dir. ")
+            singer_name = singer_name.sub("Dir. ", "").strip
+            singer = Person.find_or_initialize_by(name: singer_name)
+            singer.recording_singers << RecordingSinger.new(recording: @digital_remaster.recording, person: singer, soloist: true)
+            singer
+          else
+            Person.find_or_initialize_by(name: singer_name)
+          end
         end
       end
 
