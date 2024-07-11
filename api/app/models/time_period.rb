@@ -3,7 +3,6 @@ class TimePeriod < ApplicationRecord
   friendly_id :name, use: :slugged
   searchkick word_start: [:name], callbacks: :async
 
-  belongs_to :orchestra
   has_many :recordings, dependent: :nullify
 
   validates :name, presence: true
@@ -12,6 +11,8 @@ class TimePeriod < ApplicationRecord
   validates :slug, presence: true, uniqueness: true
 
   has_one_attached :image
+
+  scope :covering_year, ->(year) { where("? BETWEEN start_year AND end_year", year) }
 
   def search_data
     {

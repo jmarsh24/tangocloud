@@ -18,7 +18,7 @@ RSpec.describe Import::DigitalRemaster::Builder do
       genre: "Tango",
       album_artist: "Carlos Di Sarli",
       composer: "Andrés Fraga",
-      record_label: "Rca Victor",
+      publisher: "Rca Victor",
       lyrics: "No sé si fue mi mano\r\nO fue la tuya\r\nQue escribió,\r\nLa carta del adiós\r\nEn nuestro amor.\r\n \r\nNo quiero ni saber\r\nQuién fue culpable\r\nDe los dos,\r\nNi pido desazones\r\nNi rencor.\r\n \r\nMe queda del ayer\r\nEnvuelto en tu querer,\r\nEl rastro de un perfume antiguo.\r\nMe queda de tu amor\r\nEl lánguido sabor\r\nDe un néctar\r\nQue ya nunca beberé.\r\n \r\nPor eso que esta estrofa\r\nAl muerto idilio, no es capaz,\r\nDe hacerlo entre los dos resucitar.\r\nSi acaso algo pretendo\r\nEs por ofrenda al corazón,\r\nSalvarlo del olvido, nada más...",
       format: "flac",
       ert_number: 2476,
@@ -76,6 +76,18 @@ RSpec.describe Import::DigitalRemaster::Builder do
       expect(recording.composition.composers.first.name).to eq("Andrés Fraga")
       expect(recording.composition.lyricists.first.name).to eq("Francisco García Jiménez")
       expect(recording.singers.map(&:name)).to contain_exactly("Roberto Rufino")
+    end
+
+    it "associates the recording with the correct time period" do
+      create(:time_period, start_year: 1939, end_year: 1941, name: "Early 1940s")
+      recording = Import::DigitalRemaster::Builder.new.build_recording(metadata:)
+      expect(recording.time_period.name).to eq("Early 1940s")
+    end
+
+    it "does not associate a time period if none match" do
+      create(:time_period, start_year: 1950, end_year: 1960, name: "1950s")
+      recording = Import::DigitalRemaster::Builder.new.build_recording(metadata:)
+      expect(recording.time_period).to be_nil
     end
   end
 
@@ -221,6 +233,26 @@ RSpec.describe Import::DigitalRemaster::Builder do
       composition = create(:composition, title: "Volver a soñar")
       Import::DigitalRemaster::Builder.new.find_or_initialize_lyrics(metadata:, composition:)
       expect(composition.lyrics).to be_present
+    end
+  end
+
+  describe "#find_existing_time_period" do
+    it "returns nil if date is blank" do
+      time_period = Import::DigitalRemaster::Builder.new.find_existing_time_period(metadata: OpenStruct.new(date: nil))
+      expect(time_period).to be_nil
+    end
+
+    it "returns nil if no time period covers the year" do
+      create(:time_period, start_year: 1950, end_year: 1960, name: "1950s")
+      time_period = Import::DigitalRemaster::Builder.new.find_existing_time_period(metadata: OpenStruct.new(date: "1940-10-08"))
+      expect(time_period).to be_nil
+    end
+
+    it "returns a time period if it exists" do
+      existing_time_period = create(:time_period, start_year: 1939, end_year: 1941)
+      metadata = OpenStruct.new(date: "1940-10-08")
+      time_period = Import::DigitalRemaster::Builder.new.find_existing_time_period(metadata:)
+      expect(time_period).to eq(existing_time_period)
     end
   end
 

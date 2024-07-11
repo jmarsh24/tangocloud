@@ -54,7 +54,9 @@ module Import
           recorded_date: metadata.date,
           orchestra: find_or_initialize_orchestra(metadata:),
           genre: find_or_initialize_genre(metadata:),
-          singers: find_or_initialize_singers(metadata:)
+          singers: find_or_initialize_singers(metadata:),
+          time_period: find_existing_time_period(metadata:),
+          record_label: find_or_initialize_record_label(metadata:)
         )
       end
 
@@ -130,6 +132,19 @@ module Import
           lyric.language = Language.find_or_initialize_by(name: "spanish", code: "es")
           lyric.composition = composition
         end
+      end
+
+      def find_existing_time_period(metadata:)
+        return nil if metadata.date.blank?
+
+        year = Date.parse(metadata.date).year
+        TimePeriod.covering_year(year).first
+      end
+
+      def find_or_initialize_record_label(metadata:)
+        return if metadata.publisher.blank?
+
+        RecordLabel.find_or_initialize_by(name: metadata.publisher)
       end
 
       def build_digital_remaster(audio_file:, metadata:, waveform:, waveform_image:, album_art:, compressed_audio:)

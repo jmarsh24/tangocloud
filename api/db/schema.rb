@@ -316,8 +316,9 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.uuid "el_recodo_song_id"
     t.uuid "orchestra_id", null: false
     t.uuid "composition_id", null: false
-    t.uuid "record_label_id"
     t.uuid "genre_id", null: false
+    t.uuid "record_label_id"
+    t.uuid "time_period_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["composition_id"], name: "index_recordings_on_composition_id"
@@ -326,6 +327,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.index ["orchestra_id"], name: "index_recordings_on_orchestra_id"
     t.index ["record_label_id"], name: "index_recordings_on_record_label_id"
     t.index ["slug"], name: "index_recordings_on_slug", unique: true
+    t.index ["time_period_id"], name: "index_recordings_on_time_period_id"
   end
 
   create_table "remaster_agents", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -585,6 +587,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
   add_foreign_key "recordings", "genres"
   add_foreign_key "recordings", "orchestras"
   add_foreign_key "recordings", "record_labels"
+  add_foreign_key "recordings", "time_periods"
   add_foreign_key "shares", "users"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
