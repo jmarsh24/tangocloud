@@ -5,6 +5,7 @@ class CreateDigitalRemasters < ActiveRecord::Migration[7.1]
       t.integer :bpm
       t.string :external_id
       t.float :replay_gain, null: true
+      t.integer :tango_cloud_id, null: false
       t.belongs_to :album, foreign_key: true, type: :uuid, null: false
       t.belongs_to :remaster_agent, foreign_key: true, type: :uuid
       t.belongs_to :recording, foreign_key: true, type: :uuid, null: false
@@ -13,5 +14,6 @@ class CreateDigitalRemasters < ActiveRecord::Migration[7.1]
       t.timestamps
     end
     add_index :digital_remasters, :external_id, unique: true
+    add_index :digital_remasters, :tango_cloud_id, unique: true
   end
 end
