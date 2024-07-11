@@ -10,7 +10,7 @@ module Types
     field :external_id, String, null: true
     field :album_type, String, null: true
 
-    has_many :digital_remaster
+    has_many :digital_remasters
     has_one_attached :album_art
   end
 end

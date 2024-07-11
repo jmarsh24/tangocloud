@@ -9,6 +9,6 @@ module Types
 
     has_many :recordings
     has_many :audio_variants
-    has_many :digital_remaster
+    has_many :digital_remasters
   end
 end

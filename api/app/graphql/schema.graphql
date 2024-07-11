@@ -50,8 +50,9 @@ type AddPlaylistRecordingPayload {
 type Album {
   albumArt: Attachment
   albumType: String
-  audioTransfer(id: ID!): AudioTransfer!
-  audioTransfers(
+  description: String
+  digitalRemaster(id: ID!): DigitalRemaster!
+  digitalRemasters(
     """
     Returns the elements in the list that come after the specified cursor.
     """
@@ -71,9 +72,7 @@ type Album {
     Returns the last _n_ elements from the list.
     """
     last: Int
-  ): AudioTransferConnection!
-  audioTransfersCount: Int
-  description: String
+  ): DigitalRemasterConnection!
   externalId: String
   id: ID
   releaseDate: ISO8601Date
@@ -125,115 +124,21 @@ type AttributeError {
   errors: [String!]!
 }
 
-type AudioTransfer {
-  album: Album
-  albumId: String
-  audio: Attachment
-  audioVariant(id: ID!): AudioVariant!
-  audioVariants(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): AudioVariantConnection!
-  createdAt: ISO8601Date
-  filename: String
-  id: ID
-  playlistItem(id: ID!): PlaylistItem!
-  playlistItems(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): PlaylistItemConnection!
-  position: Int
-  recording: Recording
-  recordingId: String
-  transferAgent: TransferAgent
-  transferAgentId: String
-  updatedAt: ISO8601Date
-  waveform: Waveform
-}
-
-"""
-The connection type for AudioTransfer.
-"""
-type AudioTransferConnection {
-  """
-  A list of edges.
-  """
-  edges: [AudioTransferEdge!]!
-
-  """
-  A list of nodes.
-  """
-  nodes: [AudioTransfer!]!
-
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-}
-
-"""
-An edge in a connection.
-"""
-type AudioTransferEdge {
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-
-  """
-  The item at the end of the edge.
-  """
-  node: AudioTransfer
+type AudioFile {
+  digitalRemaster: DigitalRemaster!
+  file: Attachment
+  filename: String!
+  id: ID!
 }
 
 type AudioVariant {
   audioFile: Attachment
-  audioTransfer: AudioTransfer!
-  audioTransferId: String!
   bitRate: Int
-  channels: Int
-  codec: String!
   createdAt: ISO8601DateTime!
-  duration: Int!
+  digitalRemaster: DigitalRemaster!
+  digitalRemasterId: String!
   format: String!
   id: ID!
-  length: Int!
-  metadata: JSON!
-  sampleRate: Int
   updatedAt: ISO8601DateTime!
 }
 
@@ -544,6 +449,100 @@ type DeletePlaylistPayload {
   clientMutationId: String
   errors: [String!]!
   success: Boolean!
+}
+
+type DigitalRemaster {
+  album: Album
+  albumId: String
+  audioFile: AudioFile!
+  audioVariant(id: ID!): AudioVariant!
+  audioVariants(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+  ): AudioVariantConnection!
+  createdAt: ISO8601Date
+  duration: Int
+  id: ID
+  playlistItem(id: ID!): PlaylistItem!
+  playlistItems(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+  ): PlaylistItemConnection!
+  recording: Recording
+  recordingId: String
+  remasterAgent: RemasterAgent
+  remasterAgentId: String
+  updatedAt: ISO8601Date
+  waveform: Waveform
+}
+
+"""
+The connection type for DigitalRemaster.
+"""
+type DigitalRemasterConnection {
+  """
+  A list of edges.
+  """
+  edges: [DigitalRemasterEdge!]!
+
+  """
+  A list of nodes.
+  """
+  nodes: [DigitalRemaster!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+}
+
+"""
+An edge in a connection.
+"""
+type DigitalRemasterEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge.
+  """
+  node: DigitalRemaster
 }
 
 type ElRecodoSong {
@@ -1448,12 +1447,6 @@ type PlaylistItemEdge {
 }
 
 type Query {
-  audioTransfer(
-    """
-    ID of the audio transfer.
-    """
-    id: ID!
-  ): AudioTransfer!
   audioVariant(
     """
     ID of the audio variant.
@@ -1493,6 +1486,12 @@ type Query {
     query: String
   ): ComposerConnection!
   currentUser: User!
+  digitalRemaster(
+    """
+    ID of the audio transfer.
+    """
+    id: ID!
+  ): DigitalRemaster!
   elRecodoSongs(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -1804,28 +1803,6 @@ type RecordLabel {
 }
 
 type Recording {
-  audioTransfer(id: ID!): AudioTransfer!
-  audioTransfers(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): AudioTransferConnection!
   audioVariant(id: ID!): AudioVariant!
   audioVariants(
     """
@@ -1853,6 +1830,28 @@ type Recording {
   composerId: String
   composition: Composition
   compositionId: String
+  digitalRemaster(id: ID!): DigitalRemaster!
+  digitalRemasters(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+  ): DigitalRemasterConnection!
   elRecodoSong: ElRecodoSong
   elRecodoSongId: String
   genre: Genre!
@@ -2034,6 +2033,81 @@ input RegisterInput {
 }
 
 union RegistrationResult = AuthenticatedUser | ValidationError
+
+type RemasterAgent {
+  audioVariant(id: ID!): AudioVariant!
+  audioVariants(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+  ): AudioVariantConnection!
+  createdAt: ISO8601DateTime!
+  description: String
+  digitalRemaster(id: ID!): DigitalRemaster!
+  digitalRemasters(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+  ): DigitalRemasterConnection!
+  id: ID!
+  name: String!
+  recording(id: ID!): Recording!
+  recordings(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+  ): RecordingConnection!
+  updatedAt: ISO8601DateTime!
+  url: String
+}
 
 """
 Autogenerated input type of RemoveLikeFromRecording
@@ -2311,81 +2385,6 @@ type TimePeriodEdge {
   node: TimePeriod
 }
 
-type TransferAgent {
-  audioTransfer(id: ID!): AudioTransfer!
-  audioTransfers(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): AudioTransferConnection!
-  audioVariant(id: ID!): AudioVariant!
-  audioVariants(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): AudioVariantConnection!
-  createdAt: ISO8601DateTime!
-  description: String
-  id: ID!
-  name: String!
-  recording(id: ID!): Recording!
-  recordings(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): RecordingConnection!
-  updatedAt: ISO8601DateTime!
-  url: String
-}
-
 """
 Autogenerated input type of Update
 """
@@ -2617,12 +2616,12 @@ type ValidationErrors {
 }
 
 type Waveform {
-  audioTransfer: AudioTransfer!
-  audioTransferId: String!
   bits: Int!
   channels: Int!
   createdAt: ISO8601DateTime!
   data: [Float!]!
+  digitalRemaster: DigitalRemaster!
+  digitalRemasterId: String!
   id: ID!
   image: Attachment
   length: Int!
