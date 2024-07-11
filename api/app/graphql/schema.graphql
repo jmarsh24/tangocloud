@@ -1308,7 +1308,7 @@ type Playlist {
   id: ID!
   image: Attachment
   likesCount: Int!
-  listensCount: Int!
+  playbacksCount: Int!
   playlistFile: Attachment
   playlistItem(id: ID!): PlaylistItem!
   playlistItems(
