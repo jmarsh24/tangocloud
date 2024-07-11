@@ -1,11 +1,11 @@
 module Types
-  class SessionType < Types::BaseObject
+  class LanguageType < Types::BaseObject
     field :id, ID, null: false
-    field :user_agent, String
-    field :ip_address, String
+    field :name, String, null: false
+    field :code, String, null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
-    belongs_to :user
+    has_many :lyrics
   end
 end

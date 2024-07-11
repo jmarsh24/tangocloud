@@ -7,8 +7,6 @@ module Types
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
-    has_many :recordings
-    has_many :audio_variants
     has_many :digital_remasters
   end
 end

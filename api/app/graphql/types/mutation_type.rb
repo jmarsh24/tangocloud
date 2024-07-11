@@ -6,8 +6,8 @@ module Types
 
     field :change_playlist_item_position, mutation: Mutations::Playlists::ChangePlaylistItemPosition
 
-    field :create_listen, mutation: Mutations::Listens::CreateListen
-    field :remove_listen, mutation: Mutations::Listens::RemoveListen
+    field :create_playback, mutation: Mutations::Playbacks::CreatePlayback
+    field :remove_playback, mutation: Mutations::Playbacks::RemovePlayback
 
     field :create_playlist, mutation: Mutations::Playlists::CreatePlaylist
     field :delete_playlist, mutation: Mutations::Playlists::DeletePlaylist

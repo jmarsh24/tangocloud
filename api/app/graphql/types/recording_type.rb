@@ -3,29 +3,34 @@ module Types
     field :id, ID, null: false
     field :title, String, null: false
     field :bpm, Integer, null: true
-    field :release_date, GraphQL::Types::ISO8601Date, null: true
-    field :recorded_date, GraphQL::Types::ISO8601Date, null: true
+    field :release_date, GraphQL::Types::ISO8601DateTime, null: true
+    field :recorded_date, GraphQL::Types::ISO8601DateTime, null: true
     field :slug, String, null: false
-    field :recording_type, String, null: false
+    field :recording_type, Types::RecordingTypeEnum, null: false
     field :year, Integer, null: true
 
-    def year
-      object.recorded_date&.year
-    end
-
-    belongs_to :el_recodo_song, null: true
+    belongs_to :el_recodo_song
     belongs_to :orchestra
-    belongs_to :composition, null: true
-    belongs_to :record_label, null: true
+    belongs_to :composition
+    belongs_to :record_label
     belongs_to :genre
-    belongs_to :lyricist, null: true
-    belongs_to :composer, null: true
-    belongs_to :time_period, null: true
+    belongs_to :lyricist
+    belongs_to :composer
+    belongs_to :time_period
 
     has_many :listens
     has_many :likes
     has_many :digital_remasters
     has_many :audio_variants
     has_many :singers
+
+    def year
+      object.recorded_date&.year
+    end
+  end
+
+  class RecordingTypeEnum < Types::BaseEnum
+    value "studio"
+    value "live"
   end
 end
