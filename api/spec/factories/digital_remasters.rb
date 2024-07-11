@@ -18,9 +18,9 @@
 
 FactoryBot.define do
   factory :digital_remaster do
-    external_id { "ERT-1" }
+    external_id { Faker::Internet.uuid }
     duration { 180 }
-    tango_cloud_id { 1 }
+    tango_cloud_id { Faker::Number.number(digits: 6) }
     association :album
     association :remaster_agent
     association :recording

@@ -13,7 +13,7 @@
 FactoryBot.define do
   factory :audio_file do
     status { "pending" }
-    filename { "default_audio_file.flac" }
+    filename { Faker::File.file_name }
     format { File.extname(filename).delete_prefix(".") }
 
     trait :flac do
