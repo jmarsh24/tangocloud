@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "Recording", type: :graph do
   describe "Querying for recording" do
     let!(:user) { create(:user) }
-    let!(:singer) { create(:singer, name: "Roberto Rufino") }
+    let!(:singer) { create(:person, name: "Roberto Rufino") }
     let!(:orchestra) { create(:orchestra, name: "Carlos Di Sarli") }
     let!(:genre) { create(:genre, name: "Tango") }
     let!(:recording) { create(:recording, composition_title: "Volver a soñar", singers: [singer], orchestra:, genre:) }

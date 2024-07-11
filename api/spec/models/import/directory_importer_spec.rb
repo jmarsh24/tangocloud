@@ -7,7 +7,7 @@ RSpec.describe Import::DirectoryImporter do
 
       Import::DirectoryImporter.new(directory_path).sync
 
-      expect(AudioFileImportJob).to have_been_enqueued.exactly(6).times
+      expect(AudioFileImportJob).to have_been_enqueued.exactly(5).times
     end
 
     it "does not import files that are already in the database" do
@@ -17,7 +17,7 @@ RSpec.describe Import::DirectoryImporter do
 
       Import::DirectoryImporter.new(directory_path).sync
 
-      expect(AudioFileImportJob).to have_been_enqueued.exactly(5).times
+      expect(AudioFileImportJob).to have_been_enqueued.exactly(4).times
     end
   end
 end
