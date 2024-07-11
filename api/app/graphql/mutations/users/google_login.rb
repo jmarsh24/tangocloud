@@ -32,7 +32,7 @@ module Mutations::Users
 
       user.provider = "google"
       user.uid = user_identifier
-      user.verified = google_user_info["email_verified"]
+      user.confirmed_at = Time.zone.now
 
       user.save!
       token = AuthToken.token(user)
