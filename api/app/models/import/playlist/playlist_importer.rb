@@ -19,7 +19,7 @@ module Import
             audio_file = ::AudioFile.find_by(filename:)
             next unless audio_file
 
-            recording = audio_file.audio_transfer.recording
+            recording = audio_file.digital_remaster.recording
             next unless recording
 
             @playlist.playlist_items.create!(

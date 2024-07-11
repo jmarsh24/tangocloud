@@ -7,7 +7,7 @@ RSpec.describe "Recordings", type: :graph do
     let!(:genre) { create(:genre, name: "Tango") }
     let!(:orchestra) { create(:orchestra, name: "Carlos Di Sarli") }
     let!(:recording) { create(:recording, composition_title: "Volver a soñar", singers: [singer], orchestra:, genre:) }
-    let!(:audio_transfer) { create(:audio_transfer, recording:) }
+    let!(:digital_remaster) { create(:digital_remaster, recording:) }
 
     let(:query) do
       <<~GQL
@@ -77,8 +77,8 @@ RSpec.describe "Recordings", type: :graph do
       expect(found_recording.orchestra.name).to eq("Carlos Di Sarli")
       expect(found_recording.singers.edges.first.node.name).to eq("Roberto Rufino")
       expect(found_recording.genre.name).to eq("Tango")
-      expect(found_recording.audio_transfers.edges).not_to be_empty
-      expect(found_recording.audio_transfers.edges.first.node.album.album_art.blob.url).not_to be_nil
+      expect(found_recording.digital_remaster.edges).not_to be_empty
+      expect(found_recording.digital_remaster.edges.first.node.album.album_art.blob.url).not_to be_nil
     end
   end
 end

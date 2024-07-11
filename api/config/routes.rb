@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   mount MissionControl::Jobs::Engine, at: "/jobs"
   mount Avo::Engine => "admin"
-  resources :audio_transfers, only: [:new, :create]
+  resources :digital_remaster, only: [:new, :create]
 
   namespace :api do
     post "/graphql", to: "graphql#execute"

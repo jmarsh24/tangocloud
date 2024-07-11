@@ -7,7 +7,7 @@ FactoryBot.define do
     bits { Faker::Number.between(from: 8, to: 32) }
     length { Faker::Number.between(from: 60, to: 3600) }
     data { Array.new(100) { Faker::Number.decimal(l_digits: 2, r_digits: 2) } }
-    association :audio_transfer
+    association :digital_remaster
 
     after(:build) do |waveform|
       waveform.image.attach(

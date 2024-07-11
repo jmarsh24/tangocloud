@@ -20,8 +20,9 @@ FactoryBot.define do
   factory :digital_remaster do
     external_id { "ERT-1" }
     duration { 180 }
+    tango_cloud_id { 1 }
     association :album
-    association :transfer_agent
+    association :remaster_agent
     association :recording
     association :audio_file
 

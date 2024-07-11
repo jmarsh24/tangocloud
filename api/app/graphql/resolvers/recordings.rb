@@ -13,14 +13,14 @@ module Resolvers
         search_options = {
           fields: ["title^10", "orchestra_name", "singer_names", "genre", "year"],
           match: :word_start,
-          misspellings: {below: 5},
+          misspellings: {below: 5}
         }
 
         search_options[:order] = sort_by.present? ? {sort_by => order} : {playbacks_count: :desc}
 
         ::Recording.search(query, **search_options).results
       else
-        recordings = ::Recording.all.includes(:orchestra, :singers, :recording_singers, :composition, :genre, :period, :lyrics, :audio_variants, audio_transfers: [album: {album_art_attachment: :blob}])
+        recordings = ::Recording.all.includes(:orchestra, :singers, :recording_singers, :composition, :genre, :period, :lyrics, :audio_variants, digital_remaster: [album: {album_art_attachment: :blob}])
 
         sort_by.present? ? recordings.order(sort_by => order) : recordings.order(playbacks_count: :desc)
       end

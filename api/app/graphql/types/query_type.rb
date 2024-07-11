@@ -3,7 +3,7 @@ module Types
     include GraphQL::Types::Relay::HasNodeField
     include GraphQL::Types::Relay::HasNodesField
 
-    field :audio_transfer, resolver: Resolvers::AudioTransfer
+    field :digital_remaster, resolver: Resolvers::DigitalRemaster
     field :audio_variant, resolver: Resolvers::AudioVariant
     field :composer, resolver: Resolvers::Composer
     field :genre, resolver: Resolvers::Genre

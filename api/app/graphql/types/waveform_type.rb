@@ -11,7 +11,7 @@ module Types
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
-    belongs_to :audio_transfer
+    belongs_to :digital_remaster
     has_one_attached :image
   end
 end

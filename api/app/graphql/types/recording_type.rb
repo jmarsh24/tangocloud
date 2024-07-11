@@ -24,7 +24,7 @@ module Types
 
     has_many :listens
     has_many :likes
-    has_many :audio_transfers
+    has_many :digital_remaster
     has_many :audio_variants
     has_many :singers
   end

@@ -25,7 +25,7 @@ module Mutations::Users
 
       user.provider = "apple"
       user.uid = user_identifier
-      user.verified = true
+      user.confirmed_at = Time.zone.now
 
       user.save!
       token = AuthToken.token(user)

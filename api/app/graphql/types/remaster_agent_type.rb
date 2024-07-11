@@ -1,5 +1,5 @@
 module Types
-  class TransferAgentType < Types::BaseObject
+  class RemasterAgentType < Types::BaseObject
     field :id, ID, null: false
     field :name, String, null: false
     field :description, String
@@ -9,6 +9,6 @@ module Types
 
     has_many :recordings
     has_many :audio_variants
-    has_many :audio_transfers
+    has_many :digital_remaster
   end
 end

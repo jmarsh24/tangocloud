@@ -1,17 +1,12 @@
 FactoryBot.define do
   factory :audio_variant do
     format { "mp3" }
-    codec { "libmp3lame" }
     bit_rate { Faker::Number.between(from: 64000, to: 320000) }
-    sample_rate { Faker::Number.between(from: 22050, to: 48000) }
-    channels { [1, 2].sample }
-    length { duration }
-    metadata { {} }
-    association :audio_transfer
+    association :digital_remaster
 
     after(:build) do |audio_variant|
       audio_variant.audio_file.attach(
-        io: File.open(Rails.root.join("spec/fixtures/files/audio/19401008__volver_a_sonar__roberto_rufino__tango.mp3")),
+        io: File.open(Rails.root.join("spec/fixtures/files/audio/compressed/19401008_volver_a_sonar_roberto_rufino_tango_2476.mp3")),
         filename: "19401008__volver_a_sonar__roberto_rufino__tango.mp3",
         content_type: "audio/mpeg"
       )
