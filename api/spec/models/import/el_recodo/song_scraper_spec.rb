@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Import::ElRecodo::SongScraper do
+RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
   describe "#metadata" do
     context "for normal songs" do
       before do
@@ -71,7 +71,7 @@ RSpec.describe Import::ElRecodo::SongScraper do
       end
 
       it "raises a TooManyRequestsError" do
-        expect { described_class.new(music_id: 1).metadata }.to raise_error(Import::ElRecodo::SongScraper::TooManyRequestsError)
+        expect { described_class.new(music_id: 1).metadata }.to raise_error(ExternalCatalog::ElRecodo::SongScraper::TooManyRequestsError)
       end
     end
 
@@ -82,7 +82,7 @@ RSpec.describe Import::ElRecodo::SongScraper do
       end
 
       it "raises a PageNotFoundError" do
-        expect { described_class.new(music_id: 1).metadata }.to raise_error(Import::ElRecodo::SongScraper::PageNotFoundError)
+        expect { described_class.new(music_id: 1).metadata }.to raise_error(ExternalCatalog::ElRecodo::SongScraper::PageNotFoundError)
       end
     end
 
@@ -93,7 +93,7 @@ RSpec.describe Import::ElRecodo::SongScraper do
       end
 
       it "raises a PageNotFoundError" do
-        expect { described_class.new(music_id: 1).metadata }.to raise_error(Import::ElRecodo::SongScraper::PageNotFoundError)
+        expect { described_class.new(music_id: 1).metadata }.to raise_error(ExternalCatalog::ElRecodo::SongScraper::PageNotFoundError)
       end
     end
   end

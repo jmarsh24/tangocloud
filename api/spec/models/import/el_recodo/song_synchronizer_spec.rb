@@ -1,17 +1,17 @@
 require "rails_helper"
 
-RSpec.describe Import::ElRecodo::SongSynchronizer do
+RSpec.describe ExternalCatalog::ElRecodo::SongSynchronizer do
   describe "#sync_songs" do
     it "enqueues jobs for the specified range of music IDs" do
       ElRecodoSong.destroy_all
       ElRecodoSong.create!(title: "random song", music_id: 1, date: Date.today, page_updated_at: Time.now)
       ElRecodoSong.create!(title: "random song 2", music_id: 2, date: Date.today, page_updated_at: Time.now)
       expect do
-        Import::ElRecodo::SongSynchronizer.new.sync_songs(interval: 20)
-      end.to have_enqueued_job(Import::ElRecodo::SyncSongJob).exactly(2).times
+        ExternalCatalog::ElRecodo::SongSynchronizer.new.sync_songs(interval: 20)
+      end.to have_enqueued_job(ExternalCatalog::ElRecodo::SyncSongJob).exactly(2).times
 
-      expect(Import::ElRecodo::SyncSongJob).to have_been_enqueued.with(music_id: 1, interval: 20)
-      expect(Import::ElRecodo::SyncSongJob).to have_been_enqueued.with(music_id: 2, interval: 20)
+      expect(ExternalCatalog::ElRecodo::SyncSongJob).to have_been_enqueued.with(music_id: 1, interval: 20)
+      expect(ExternalCatalog::ElRecodo::SyncSongJob).to have_been_enqueued.with(music_id: 2, interval: 20)
     end
   end
 
@@ -23,7 +23,7 @@ RSpec.describe Import::ElRecodo::SongSynchronizer do
     context "when the song does not exist" do
       it "creates a new song" do
         freeze_time
-        expect { Import::ElRecodo::SongSynchronizer.new.sync_song(music_id: 1) }.to change(ElRecodoSong, :count).by(1)
+        expect { ExternalCatalog::ElRecodo::SongSynchronizer.new.sync_song(music_id: 1) }.to change(ElRecodoSong, :count).by(1)
         song = ElRecodoSong.find_by(music_id: 1)
 
         expect(song.ert_number).to eq(1)
@@ -56,8 +56,8 @@ RSpec.describe Import::ElRecodo::SongSynchronizer do
           lyrics: "foo"
         )
 
-        expect { Import::ElRecodo::SongSynchronizer.new.sync_song(music_id: 1) }.to change { ElRecodoSong.find_by(music_id: 1).title }.from("foo").to("Te burlas tristeza")
-        expect { Import::ElRecodo::SongSynchronizer.new.sync_song(music_id: 1) }.not_to change { ElRecodoSong.all.count }
+        expect { ExternalCatalog::ElRecodo::SongSynchronizer.new.sync_song(music_id: 1) }.to change { ElRecodoSong.find_by(music_id: 1).title }.from("foo").to("Te burlas tristeza")
+        expect { ExternalCatalog::ElRecodo::SongSynchronizer.new.sync_song(music_id: 1) }.not_to change { ElRecodoSong.all.count }
       end
     end
 
@@ -71,7 +71,7 @@ RSpec.describe Import::ElRecodo::SongSynchronizer do
           page_updated_at: 1.week.ago
         )
 
-        expect { Import::ElRecodo::SongSynchronizer.new.sync_song(music_id: 1) }.not_to change(ElRecodoSong, :count)
+        expect { ExternalCatalog::ElRecodo::SongSynchronizer.new.sync_song(music_id: 1) }.not_to change(ElRecodoSong, :count)
         existing_song.reload
 
         expect(existing_song.title).to eq("Te burlas tristeza")

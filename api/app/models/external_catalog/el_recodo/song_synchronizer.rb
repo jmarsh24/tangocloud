@@ -3,7 +3,7 @@ module ExternalCatalog
     class SongSynchronizer
       def sync_songs(interval: 30)
         ElRecodoSong.all.pluck(:music_id).each do |music_id|
-          ::Import::ElRecodo::SyncSongJob.perform_later(music_id:, interval:)
+          ::ExternalCatalog::ElRecodo::SyncSongJob.perform_later(music_id:, interval:)
         end
       end
 
