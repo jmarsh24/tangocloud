@@ -1,6 +1,5 @@
 FactoryBot.define do
   factory :audio_variant do
-    duration { Faker::Number.between(from: 60, to: 3600) }
     format { "mp3" }
     codec { "libmp3lame" }
     bit_rate { Faker::Number.between(from: 64000, to: 320000) }

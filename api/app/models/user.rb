@@ -63,6 +63,8 @@ end
 #  id                     :uuid             not null, primary key
 #  username               :string
 #  admin                  :boolean          default(FALSE), not null
+#  provider               :string
+#  uid                    :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  email                  :string           default(""), not null

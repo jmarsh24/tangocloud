@@ -523,6 +523,8 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "username"
     t.boolean "admin", default: false, null: false
+    t.string "provider"
+    t.string "uid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "email", default: "", null: false

@@ -19,6 +19,7 @@
 FactoryBot.define do
   factory :digital_remaster do
     external_id { "ERT-1" }
+    duration { 180 }
     association :album
     association :transfer_agent
     association :recording
