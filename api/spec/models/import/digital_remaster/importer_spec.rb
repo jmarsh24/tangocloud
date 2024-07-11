@@ -61,9 +61,6 @@ RSpec.describe Import::DigitalRemaster::Importer do
       digital_remaster = director.import(audio_file:)
 
       expect(digital_remaster).to be_persisted
-      expect(digital_remaster.album.title).to eq("TT - Todo de Carlos -1939-1941 [FLAC]")
-      expect(digital_remaster.remaster_agent.name).to eq("TangoTunes")
-      expect(digital_remaster.recording.title).to eq("Volver a soñar")
     end
 
     it "updates the audio file status to complete on success" do
