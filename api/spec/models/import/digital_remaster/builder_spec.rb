@@ -22,7 +22,6 @@ RSpec.describe Import::DigitalRemaster::Builder do
       lyrics: "No sé si fue mi mano\r\nO fue la tuya\r\nQue escribió,\r\nLa carta del adiós\r\nEn nuestro amor.\r\n \r\nNo quiero ni saber\r\nQuién fue culpable\r\nDe los dos,\r\nNi pido desazones\r\nNi rencor.\r\n \r\nMe queda del ayer\r\nEnvuelto en tu querer,\r\nEl rastro de un perfume antiguo.\r\nMe queda de tu amor\r\nEl lánguido sabor\r\nDe un néctar\r\nQue ya nunca beberé.\r\n \r\nPor eso que esta estrofa\r\nAl muerto idilio, no es capaz,\r\nDe hacerlo entre los dos resucitar.\r\nSi acaso algo pretendo\r\nEs por ofrenda al corazón,\r\nSalvarlo del olvido, nada más...",
       format: "flac",
       ert_number: 2476,
-      source: "TangoTunes",
       lyricist: "Francisco García Jiménez",
       album_artist_sort: "Di Sarli, Carlos",
       catalog_number: "TC2476",
@@ -115,7 +114,7 @@ RSpec.describe Import::DigitalRemaster::Builder do
     end
 
     it "finds an existing remaster agent if it exists" do
-      existing_remaster_agent = create(:remaster_agent, name: "TangoTunes")
+      existing_remaster_agent = create(:remaster_agent, name: "Tango Tunes")
       remaster_agent = Import::DigitalRemaster::Builder.new.find_or_initialize_remaster_agent(metadata:)
 
       expect(remaster_agent).not_to be_a_new(RemasterAgent)
@@ -308,7 +307,7 @@ RSpec.describe Import::DigitalRemaster::Builder do
       expect(digital_remaster.recording.orchestra.name).to eq("Carlos Di Sarli")
       expect(digital_remaster.recording.genre.name).to eq("Tango")
       expect(digital_remaster.album.title).to eq("TT - Todo de Carlos -1939-1941 [FLAC]")
-      expect(digital_remaster.remaster_agent.name).to eq("TangoTunes")
+      expect(digital_remaster.remaster_agent.name).to eq("Tango Tunes")
       expect(digital_remaster.recording.recorded_date).to eq("1940-10-08".to_date)
       expect(digital_remaster.recording.record_label.name).to eq("Rca Victor")
     end

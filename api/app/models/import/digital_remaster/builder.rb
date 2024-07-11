@@ -67,7 +67,7 @@ module Import
       end
 
       def find_or_initialize_remaster_agent(metadata:)
-        return if metadata.source.blank?
+        return if metadata.publisher.blank?
 
         RemasterAgent.find_or_initialize_by(name: metadata.grouping)
       end
