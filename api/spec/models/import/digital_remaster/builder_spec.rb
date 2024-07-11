@@ -76,6 +76,7 @@ RSpec.describe Import::DigitalRemaster::Builder do
       expect(recording.composition.composers.first.name).to eq("Andrés Fraga")
       expect(recording.composition.lyricists.first.name).to eq("Francisco García Jiménez")
       expect(recording.singers.map(&:name)).to contain_exactly("Roberto Rufino")
+      expect(recording.record_label.name).to eq("Rca Victor")
     end
 
     it "associates the recording with the correct time period" do
@@ -256,6 +257,20 @@ RSpec.describe Import::DigitalRemaster::Builder do
     end
   end
 
+  describe "#find_or_intialize_record_label" do
+    it "creates a new record label if it doesn't exist" do
+      record_label = Import::DigitalRemaster::Builder.new.find_or_initialize_record_label(metadata:)
+      expect(record_label).to be_a_new(RecordLabel)
+      expect(record_label.name).to eq("Rca Victor")
+    end
+
+    it "finds an existing record label if it exists" do
+      create(:record_label, name: "Rca Victor")
+      record_label = Import::DigitalRemaster::Builder.new.find_or_initialize_record_label(metadata:)
+      expect(record_label).not_to be_a_new(RecordLabel)
+    end
+  end
+
   describe "#build_digital_remaster" do
     it "builds a new digital remaster" do
       album_art = File.open(Rails.root.join("spec/support/assets/album_art.jpg"))
@@ -295,6 +310,7 @@ RSpec.describe Import::DigitalRemaster::Builder do
       expect(digital_remaster.album.title).to eq("TT - Todo de Carlos -1939-1941 [FLAC]")
       expect(digital_remaster.remaster_agent.name).to eq("TangoTunes")
       expect(digital_remaster.recording.recorded_date).to eq("1940-10-08".to_date)
+      expect(digital_remaster.recording.record_label.name).to eq("Rca Victor")
     end
   end
 end
