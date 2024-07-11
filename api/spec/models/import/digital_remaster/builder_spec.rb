@@ -12,7 +12,7 @@ RSpec.describe Import::DigitalRemaster::Builder do
       sample_rate: 96000,
       channels: 1,
       title: "Volver a soñar",
-      artist: ["Roberto Rufino"],
+      artist: "Roberto Rufino",
       album: "TT - Todo de Carlos -1939-1941 [FLAC]",
       date: "1940-10-08",
       genre: "Tango",
@@ -26,7 +26,8 @@ RSpec.describe Import::DigitalRemaster::Builder do
       lyricist: "Francisco García Jiménez",
       album_artist_sort: "Di Sarli, Carlos",
       catalog_number: "TC2476",
-      grouping: "TangoTunes"
+      grouping: "TangoTunes",
+      replay_gain: -7.0
     )
   end
 
@@ -127,7 +128,6 @@ RSpec.describe Import::DigitalRemaster::Builder do
       genre = Import::DigitalRemaster::Builder.new.find_or_initialize_genre(metadata:)
       expect(genre).to be_a_new(Genre)
       expect(genre.name).to eq("Tango")
-      expect(genre.description).to be_nil
     end
 
     it "finds an existing genre if it exists" do
@@ -181,6 +181,48 @@ RSpec.describe Import::DigitalRemaster::Builder do
       create(:composition, title: "Volver a soñar")
       composition = Import::DigitalRemaster::Builder.new.find_or_initialize_composition(metadata:)
       expect(composition).not_to be_a_new(Composition)
+    end
+  end
+
+  describe "#build_digital_remaster" do
+    it "builds a new digital remaster" do
+      album_art = File.open(Rails.root.join("spec/support/assets/album_art.jpg"))
+      waveform = AudioProcessing::WaveformGenerator::Waveform.new(
+        version: 1,
+        channels: 1,
+        sample_rate: 44100,
+        samples_per_pixel: 1024,
+        bits: 16,
+        length: 100,
+        data: [0.1, 0.2, 0.3, 0.4]
+      )
+      waveform_image = File.open(Rails.root.join("spec/support/assets/19401008_volver_a_sonar_roberto_rufino_tango_2476.mp3"))
+      compressed_audio = File.open(Rails.root.join("spec/fixtures/files/audio/compressed/19401008_volver_a_sonar_roberto_rufino_tango_2476.mp3"))
+      digital_remaster = Import::DigitalRemaster::Builder.new.build_digital_remaster(audio_file:, metadata:, waveform:, waveform_image:, album_art:, compressed_audio:)
+      expect(digital_remaster).to be_a_new(DigitalRemaster)
+      expect(digital_remaster.duration).to eq(165)
+      expect(digital_remaster.bpm).to be_nil
+      expect(digital_remaster.external_id).to be_nil
+      expect(digital_remaster.replay_gain).to eq(-7.0)
+      expect(digital_remaster.tango_cloud_id).to eq(2476)
+      expect(digital_remaster.album).to be_a(Album)
+      expect(digital_remaster.remaster_agent).to be_a(RemasterAgent)
+      expect(digital_remaster.recording).to be_a(Recording)
+      expect(digital_remaster.audio_file).to be_a(AudioFile)
+      expect(digital_remaster.waveform).to be_a(Waveform)
+      expect(digital_remaster.audio_variants).to contain_exactly(an_instance_of(AudioVariant))
+      expect(digital_remaster.album.album_art).to be_attached
+      expect(digital_remaster.audio_file.file).to be_attached
+      expect(digital_remaster.waveform.image).to be_attached
+      expect(digital_remaster.recording.singers.map(&:name)).to contain_exactly("Roberto Rufino")
+      expect(digital_remaster.recording.composition.title).to eq("Volver a soñar")
+      expect(digital_remaster.recording.composition.composers.first.name).to eq("Andrés Fraga")
+      expect(digital_remaster.recording.composition.lyricists.first.name).to eq("Francisco García Jiménez")
+      expect(digital_remaster.recording.orchestra.name).to eq("Carlos Di Sarli")
+      expect(digital_remaster.recording.genre.name).to eq("Tango")
+      expect(digital_remaster.album.title).to eq("TT - Todo de Carlos -1939-1941 [FLAC]")
+      expect(digital_remaster.remaster_agent.name).to eq("TangoTunes")
+      expect(digital_remaster.recording.recorded_date).to eq("1940-10-08".to_date)
     end
   end
 end

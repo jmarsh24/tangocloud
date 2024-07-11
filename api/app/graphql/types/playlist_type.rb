@@ -9,7 +9,7 @@ module Types
     field :public, Boolean, null: false
     field :songs_count, Integer, null: false
     field :likes_count, Integer, null: false
-    field :listens_count, Integer, null: false
+    field :playbacks_count, Integer, null: false
     field :shares_count, Integer, null: false
     field :followers_count, Integer, null: false
     field :system, Boolean, null: false

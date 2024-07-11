@@ -19,6 +19,7 @@ end
 #  bpm               :integer
 #  external_id       :string
 #  replay_gain       :float
+#  tango_cloud_id    :integer          not null
 #  album_id          :uuid             not null
 #  remaster_agent_id :uuid
 #  recording_id      :uuid             not null

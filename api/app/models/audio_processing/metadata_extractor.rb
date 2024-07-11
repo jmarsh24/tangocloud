@@ -25,7 +25,8 @@ module AudioProcessing
       :ert_number,
       :source,
       :lyricist,
-      :album_artist_sort
+      :album_artist_sort,
+      :replay_gain
     ).freeze
 
     def initialize(file:)
@@ -55,7 +56,6 @@ module AudioProcessing
         genre: tags.dig(:genre),
         album_artist: tags.dig(:album_artist),
         catalog_number: tags.dig(:catalognumber),
-        encoded_by: tags.dig(:encoded_by),
         lyrics: tags.dig(:"lyrics-eng") || tags.dig(:lyrics) || tags.dig(:unsyncedlyrics),
         record_label: tags.dig(:organization),
         ert_number: tags.dig(:barcode),
@@ -63,7 +63,8 @@ module AudioProcessing
         lyricist: tags.dig(:lyricist),
         composer: tags.dig(:composer),
         album_artist_sort: tags.dig(:albumartistsort),
-        grouping: tags.dig(:grouping)
+        grouping: tags.dig(:grouping),
+        replay_gain: tags.dig(:replaygain)
       )
     end
   end

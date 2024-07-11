@@ -114,6 +114,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.integer "bpm"
     t.string "external_id"
     t.float "replay_gain"
+    t.integer "tango_cloud_id", null: false
     t.uuid "album_id", null: false
     t.uuid "remaster_agent_id"
     t.uuid "recording_id", null: false
@@ -125,6 +126,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.index ["external_id"], name: "index_digital_remasters_on_external_id", unique: true
     t.index ["recording_id"], name: "index_digital_remasters_on_recording_id"
     t.index ["remaster_agent_id"], name: "index_digital_remasters_on_remaster_agent_id"
+    t.index ["tango_cloud_id"], name: "index_digital_remasters_on_tango_cloud_id", unique: true
   end
 
   create_table "el_recodo_songs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -310,7 +312,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.date "recorded_date"
     t.string "slug", null: false
     t.enum "recording_type", default: "studio", null: false, enum_type: "recording_type"
-    t.integer "listens_count", default: 0, null: false
+    t.integer "playbacks_count", default: 0, null: false
     t.uuid "el_recodo_song_id"
     t.uuid "orchestra_id", null: false
     t.uuid "composition_id", null: false

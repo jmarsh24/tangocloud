@@ -55,7 +55,9 @@ module Import
         recording = build_recording(metadata:)
         audio_variant = build_audio_variant(metadata:)
         waveform = build_waveform(waveform:)
-
+        @digital_remaster.duration = metadata.duration
+        @digital_remaster.replay_gain = metadata.replay_gain
+        @digital_remaster.tango_cloud_id = metadata.catalog_number.split("TC").last.to_i
         @digital_remaster.album = album
         @digital_remaster.remaster_agent = remaster_agent
         @digital_remaster.recording = recording
@@ -97,7 +99,7 @@ module Import
         return if metadata.album_artist.blank?
 
         Orchestra.find_or_initialize_by(name: metadata.album_artist) do |orchestra|
-          orchestra.sort_name = metadata.artist_sort
+          orchestra.sort_name = metadata.album_artist_sort
         end
       end
 

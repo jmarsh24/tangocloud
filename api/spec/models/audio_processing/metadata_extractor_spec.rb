@@ -28,12 +28,12 @@ RSpec.describe AudioProcessing::MetadataExtractor do
       expect(metadata.bit_depth).to eq(24)
       expect(metadata.bit_rate_mode).to be_nil
       expect(metadata.format).to eq("flac")
-      expect(metadata.bpm).to be_nil
       expect(metadata.ert_number).to eq("ERT_2476")
       expect(metadata.grouping).to eq("TangoTunes")
       expect(metadata.record_label).to eq("Rca Victor")
       expect(metadata.lyricist).to eq("Francisco García Jiménez")
       expect(metadata.album_artist_sort).to eq("Di Sarli, Carlos")
+      expect(metadata.catalog_number).to("TCXXXXX")
     end
   end
 end

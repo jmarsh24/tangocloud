@@ -6,7 +6,7 @@
 #  recorded_date     :date
 #  slug              :string           not null
 #  recording_type    :enum             default("studio"), not null
-#  listens_count     :integer          default(0), not null
+#  playbacks_count   :integer          default(0), not null
 #  el_recodo_song_id :uuid
 #  orchestra_id      :uuid             not null
 #  composition_id    :uuid             not null
@@ -58,7 +58,7 @@ class Recording < ApplicationRecord
       orchestra_name: orchestra&.name,
       singer_names: singers.map(&:name).join(" "),
       genre: genre&.name,
-      listens_count:,
+      playbacks_count:,
       year: recorded_date.year,
       created_at:,
       updated_at:
