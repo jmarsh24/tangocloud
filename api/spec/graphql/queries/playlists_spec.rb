@@ -4,7 +4,7 @@ RSpec.describe "Playlists", type: :graph do
   describe "Fetching playlists" do
     let!(:user) { create(:user) }
     let!(:playlist) { create(:playlist, :public, title: "Awesome Playlist", user:) }
-    let!(:recording) { create(:recording, title: "Awesome Recording") }
+    let!(:recording) { create(:recording, composition_title: "Awesome Recording") }
     let!(:playlist_item) { create(:playlist_item, playlist:, item: recording) }
     let!(:audio_transfer) { create(:audio_transfer, recording:) }
     let!(:audio_variant) { create(:audio_variant, audio_transfer:) }

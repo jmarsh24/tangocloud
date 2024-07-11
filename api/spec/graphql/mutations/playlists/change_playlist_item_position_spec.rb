@@ -5,8 +5,8 @@ require "rails_helper"
 RSpec.describe "ChangePlaylistItemPosition", type: :graph do
   let!(:user) { create(:user) }
   let!(:playlist) { create(:playlist, title: "Awesome Playlist", user:) }
-  let!(:volver_a_sonar) { create(:recording, title: "Volver a soñar") }
-  let!(:milonga_vieja) { create(:recording, title: "Milonga vieja") }
+  let!(:volver_a_sonar) { create(:recording, composition_title: "Volver a soñar") }
+  let!(:milonga_vieja) { create(:recording, composition_title: "Milonga vieja") }
   let!(:volver_a_sonar_item) { create(:playlist_item, playlist:, item: volver_a_sonar, position: 1) }
   let!(:milonga_vieja_item) { create(:playlist_item, playlist:, item: milonga_vieja, position: 2) }
 

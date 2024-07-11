@@ -6,7 +6,7 @@ RSpec.describe "Recordings", type: :graph do
     let!(:singer) { create(:singer, name: "Roberto Rufino") }
     let!(:genre) { create(:genre, name: "Tango") }
     let!(:orchestra) { create(:orchestra, name: "Carlos Di Sarli") }
-    let!(:recording) { create(:recording, title: "Volver a soñar", singers: [singer], orchestra:, genre:) }
+    let!(:recording) { create(:recording, composition_title: "Volver a soñar", singers: [singer], orchestra:, genre:) }
     let!(:audio_transfer) { create(:audio_transfer, recording:) }
 
     let(:query) do

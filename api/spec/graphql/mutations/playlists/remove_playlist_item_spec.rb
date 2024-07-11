@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "RemovePlaylistItem", type: :graph do
   let!(:user) { create(:user) }
   let!(:playlist) { create(:playlist, user:) }
-  let!(:volver_a_sonar) { create(:recording, title: "Volver a Sonar") }
+  let!(:volver_a_sonar) { create(:recording, composition_title: "Volver a Sonar") }
   let!(:playlist_item) { create(:playlist_item, playlist:, item: volver_a_sonar) }
 
   let!(:mutation) do

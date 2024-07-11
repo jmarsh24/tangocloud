@@ -5,7 +5,17 @@ FactoryBot.define do
     playbacks_count { Faker::Number.between(from: 0, to: 10000) }
     association :orchestra
     association :genre
-    association :composition, factory: :composition
+    association :composition
+
+    transient do
+      composition_title { nil }
+    end
+
+    after(:build) do |recording, evaluator|
+      if evaluator.composition_title
+        recording.composition = build(:composition, title: evaluator.composition_title)
+      end
+    end
   end
 end
 
