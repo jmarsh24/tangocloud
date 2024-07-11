@@ -9,9 +9,6 @@ FactoryBot.define do
     association :time_period
     association :record_label
     association :el_recodo_song
-    association :orchestra
-    association :genre
-    association :composition
     association :digital_remaster
 
     transient do

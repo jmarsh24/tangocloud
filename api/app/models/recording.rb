@@ -31,7 +31,7 @@ class Recording < ApplicationRecord
   has_many :recording_singers, dependent: :destroy
   has_many :singers, through: :recording_singers, source: :person
   has_many :likes, as: :likeable, dependent: :destroy
-  has_many :listens, dependent: :destroy
+  has_many :playbacks, dependent: :destroy
   has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings
   has_many :shares, as: :shareable, dependent: :destroy
