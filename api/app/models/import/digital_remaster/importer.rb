@@ -13,11 +13,11 @@ module Import
           ActiveRecord::Base.transaction do
             audio_file.update!(status: :processing)
 
-            metadata = AudioProcessing::MetadataExtractor.new(file: tempfile).extract
-            waveform = AudioProcessing::WaveformGenerator.new(file: tempfile).generate
-            waveform_image = AudioProcessing::WaveformGenerator.new(file: tempfile).generate_image
-            album_art = AudioProcessing::AlbumArtExtractor.new(file: tempfile).extract
-            compressed_audio = AudioProcessing::AudioConverter.new(file: tempfile).convert
+            metadata = @builder.extract_metadata(file: tempfile)
+            waveform = @builder.generate_waveform(file: tempfile)
+            waveform_image = @builder.generate_waveform_image(file: tempfile)
+            album_art = @builder.extract_album_art(file: tempfile)
+            compressed_audio = @builder.compress_audio(file: tempfile)
 
             @digital_remaster = @builder.build_digital_remaster(
               audio_file:,

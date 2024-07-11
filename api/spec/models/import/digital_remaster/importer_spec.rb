@@ -4,7 +4,7 @@ RSpec.describe Import::DigitalRemaster::Importer do
   let(:audio_file) { create(:flac_audio_file) }
   let(:compressed_audio) { File.open(Rails.root.join("spec/fixtures/files/audio/compressed/19401008_volver_a_sonar_roberto_rufino_tango_2476.mp3")) }
   let(:metadata) do
-    OpenStruct.new(
+    AudioProcessing::MetadataExtractor::Metadata.new(
       duration: 165.158396,
       bit_rate: 1325044,
       bit_depth: 24,
@@ -13,7 +13,7 @@ RSpec.describe Import::DigitalRemaster::Importer do
       sample_rate: 96000,
       channels: 1,
       title: "Volver a soñar",
-      artist: ["Roberto Rufino"],
+      artist: "Roberto Rufino",
       album: "TT - Todo de Carlos -1939-1941 [FLAC]",
       date: "1940-10-08",
       genre: "Tango",
@@ -25,7 +25,10 @@ RSpec.describe Import::DigitalRemaster::Importer do
       ert_number: 2476,
       source: "TangoTunes",
       lyricist: "Francisco García Jiménez",
-      artist_sort: "Di Sarli, Carlos"
+      album_artist_sort: "Di Sarli, Carlos",
+      catalog_number: "TC2476",
+      grouping: "TangoTunes",
+      replay_gain: -7.0
     )
   end
   let(:waveform) {
