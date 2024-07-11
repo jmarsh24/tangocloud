@@ -31,34 +31,35 @@ RSpec.describe Import::DigitalRemaster::Builder do
     )
   end
 
-  describe "#find_or_initialize_album" do
-    it "creates a new album if it doesn't exist" do
-      album = Import::DigitalRemaster::Builder.new.find_or_initialize_album(metadata:)
-      expect(album).to be_a_new(Album)
-      expect(album.title).to eq("TT - Todo de Carlos -1939-1941 [FLAC]")
-      expect(album.description).to be_nil
-    end
-
-    it "finds an existing album if it exists" do
-      create(:album, title: "TT - Todo de Carlos -1939-1941 [FLAC]")
-      album = Import::DigitalRemaster::Builder.new.find_or_initialize_album(metadata:)
-      expect(album).not_to be_a_new(Album)
+  describe "#build_audio_variant" do
+    it "builds a new audio variant" do
+      audio_variant = Import::DigitalRemaster::Builder.new.build_audio_variant(metadata:)
+      expect(audio_variant).to be_a_new(AudioVariant)
+      expect(audio_variant.format).to eq("flac")
+      expect(audio_variant.bit_rate).to eq(1325044)
     end
   end
 
-  describe "#find_or_initialize_remaster_agent" do
-    it "creates a new transfer agent if it doesn't exist" do
-      remaster_agent = Import::DigitalRemaster::Builder.new.find_or_initialize_remaster_agent(metadata:)
-      expect(remaster_agent).to be_a_new(RemasterAgent)
-      expect(remaster_agent.name).to eq("TangoTunes")
-    end
-
-    it "finds an existing transfer agent if it exists" do
-      existing_remaster_agent = create(:remaster_agent, name: "TangoTunes")
-      remaster_agent = Import::DigitalRemaster::Builder.new.find_or_initialize_remaster_agent(metadata:)
-
-      expect(remaster_agent).not_to be_a_new(RemasterAgent)
-      expect(remaster_agent).to eq(existing_remaster_agent)
+  describe "#build_waveform" do
+    it "builds a new waveform" do
+      waveform = AudioProcessing::WaveformGenerator::Waveform.new(
+        version: 1,
+        channels: 1,
+        sample_rate: 44100,
+        samples_per_pixel: 1024,
+        bits: 16,
+        length: 100,
+        data: [0.1, 0.2, 0.3, 0.4]
+      )
+      waveform = Import::DigitalRemaster::Builder.new.build_waveform(waveform:)
+      expect(waveform).to be_a_new(Waveform)
+      expect(waveform.version).to eq(1)
+      expect(waveform.channels).to eq(1)
+      expect(waveform.sample_rate).to eq(44100)
+      expect(waveform.samples_per_pixel).to eq(1024)
+      expect(waveform.bits).to eq(16)
+      expect(waveform.length).to eq(100)
+      expect(waveform.data).to eq([0.1, 0.2, 0.3, 0.4])
     end
   end
 
@@ -75,6 +76,37 @@ RSpec.describe Import::DigitalRemaster::Builder do
       expect(recording.composition.composers.first.name).to eq("Andrés Fraga")
       expect(recording.composition.lyricists.first.name).to eq("Francisco García Jiménez")
       expect(recording.singers.map(&:name)).to contain_exactly("Roberto Rufino")
+    end
+  end
+
+  describe "#find_or_initialize_album" do
+    it "creates a new album if it doesn't exist" do
+      album = Import::DigitalRemaster::Builder.new.find_or_initialize_album(metadata:)
+      expect(album).to be_a_new(Album)
+      expect(album.title).to eq("TT - Todo de Carlos -1939-1941 [FLAC]")
+      expect(album.description).to be_nil
+    end
+
+    it "finds an existing album if it exists" do
+      create(:album, title: "TT - Todo de Carlos -1939-1941 [FLAC]")
+      album = Import::DigitalRemaster::Builder.new.find_or_initialize_album(metadata:)
+      expect(album).not_to be_a_new(Album)
+    end
+  end
+
+  describe "#find_or_initialize_remaster_agent" do
+    it "creates a new remaster agent if it doesn't exist" do
+      remaster_agent = Import::DigitalRemaster::Builder.new.find_or_initialize_remaster_agent(metadata:)
+      expect(remaster_agent).to be_a_new(RemasterAgent)
+      expect(remaster_agent.name).to eq("TangoTunes")
+    end
+
+    it "finds an existing remaster agent if it exists" do
+      existing_remaster_agent = create(:remaster_agent, name: "TangoTunes")
+      remaster_agent = Import::DigitalRemaster::Builder.new.find_or_initialize_remaster_agent(metadata:)
+
+      expect(remaster_agent).not_to be_a_new(RemasterAgent)
+      expect(remaster_agent).to eq(existing_remaster_agent)
     end
   end
 
@@ -181,6 +213,14 @@ RSpec.describe Import::DigitalRemaster::Builder do
       create(:composition, title: "Volver a soñar")
       composition = Import::DigitalRemaster::Builder.new.find_or_initialize_composition(metadata:)
       expect(composition).not_to be_a_new(Composition)
+    end
+  end
+
+  describe "#find_or_initialize_lyrics" do
+    it "creates a new lyrics if it doesn't exist" do
+      composition = create(:composition, title: "Volver a soñar")
+      Import::DigitalRemaster::Builder.new.find_or_initialize_lyrics(metadata:, composition:)
+      expect(composition.lyrics).to be_present
     end
   end
 
