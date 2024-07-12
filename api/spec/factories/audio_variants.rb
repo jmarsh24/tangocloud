@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :audio_variant do
     format { "mp3" }
     bit_rate { Faker::Number.between(from: 64000, to: 320000) }
+    association :digital_remaster
 
     after(:build) do |audio_variant|
       audio_variant.audio_file.attach(
