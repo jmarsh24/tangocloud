@@ -15,10 +15,12 @@ RSpec.describe "Recording", type: :graph do
           recording(id: $id) {
             id
             title
-            singers {
+            recordingSingers {
               edges {
                 node {
-                  name
+                  person {
+                    name
+                  }
                 }
               }
             }
@@ -28,7 +30,7 @@ RSpec.describe "Recording", type: :graph do
             genre {
               name
             }
-            audioTransfers {
+            digitalRemasters {
               edges {
                 node {
                   album {
@@ -61,12 +63,12 @@ RSpec.describe "Recording", type: :graph do
 
       expect(recording_data.id).to eq(recording.id.to_s)
       expect(recording_data.title).to eq("Volver a soñar")
-      expect(recording_data.singers.edges.first.node.name).to eq("Roberto Rufino")
+      expect(recording_data.recording_singers.edges.first.node.person.name).to eq("Roberto Rufino")
       expect(recording_data.orchestra.name).to eq("Carlos Di Sarli")
       expect(recording_data.genre.name).to eq("Tango")
 
-      expect(recording_data.digital_remaster.edges).not_to be_empty
-      digital_remaster = recording_data.digital_remaster.edges.first.node
+      expect(recording_data.digital_remasters.edges).not_to be_empty
+      digital_remaster = recording_data.digital_remasters.edges.first.node
       expect(digital_remaster.album.album_art.blob.url).not_to be_nil
       expect(digital_remaster.waveform.image.blob.url).not_to be_nil
       expect(digital_remaster.waveform.data).not_to be_empty
