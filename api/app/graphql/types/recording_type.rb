@@ -8,8 +8,7 @@ module Types
     field :id, ID, null: false
     field :title, String, null: false
     field :bpm, Integer, null: true
-    field :release_date, GraphQL::Types::ISO8601DateTime, null: true
-    field :recorded_date, GraphQL::Types::ISO8601DateTime, null: true
+    field :recorded_date, GraphQL::Types::ISO8601Date, null: true
     field :slug, String, null: false
     field :recording_type, Types::RecordingTypeEnum, null: false
     field :year, Integer, null: true

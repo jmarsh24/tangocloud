@@ -18,9 +18,10 @@ RSpec.describe "Recordings", type: :graph do
                 id
                 title
                 recordedDate
-                audioTransfers {
+                digitalRemasters {
                   edges {
                     node {
+                      duration
                       album {
                         albumArt {
                           blob {
@@ -32,7 +33,6 @@ RSpec.describe "Recordings", type: :graph do
                         edges {
                           node {
                             id
-                            duration
                             audioFile {
                               blob {
                                 url
@@ -47,10 +47,12 @@ RSpec.describe "Recordings", type: :graph do
                 orchestra {
                   name
                 }
-                singers {
+                recordingSingers {
                   edges {
                     node {
-                      name
+                      person {
+                        name
+                      }
                     }
                   }
                 }
@@ -75,10 +77,10 @@ RSpec.describe "Recordings", type: :graph do
       expect(found_recording.title).to eq("Volver a soñar")
       expect(found_recording.recorded_date).to eq(recording.recorded_date.iso8601)
       expect(found_recording.orchestra.name).to eq("Carlos Di Sarli")
-      expect(found_recording.singers.edges.first.node.name).to eq("Roberto Rufino")
+      expect(found_recording.recording_singers.edges.first.node.person.name).to eq("Roberto Rufino")
       expect(found_recording.genre.name).to eq("Tango")
-      expect(found_recording.digital_remaster.edges).not_to be_empty
-      expect(found_recording.digital_remaster.edges.first.node.album.album_art.blob.url).not_to be_nil
+      expect(found_recording.digital_remasters.edges).not_to be_empty
+      expect(found_recording.digital_remasters.edges.first.node.album.album_art.blob.url).not_to be_nil
     end
   end
 end
