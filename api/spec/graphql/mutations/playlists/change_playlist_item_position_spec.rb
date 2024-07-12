@@ -9,7 +9,6 @@ RSpec.describe "ChangePlaylistItemPosition", type: :graph do
   let!(:milonga_vieja) { create(:recording, composition_title: "Milonga vieja") }
   let!(:volver_a_sonar_item) { create(:playlist_item, playlist:, item: volver_a_sonar, position: 1) }
   let!(:milonga_vieja_item) { create(:playlist_item, playlist:, item: milonga_vieja, position: 2) }
-
   let!(:mutation) do
     <<~GQL
       mutation ChangePlaylistItemPosition($playlistItemId: ID!, $position: Int!) {

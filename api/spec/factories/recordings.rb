@@ -6,7 +6,7 @@ FactoryBot.define do
     association :orchestra
     association :genre
     association :composition
-    # association :time_period
+    association :time_period
     association :record_label
     association :el_recodo_song
 
@@ -17,6 +17,7 @@ FactoryBot.define do
     after(:create) do |recording, evaluator|
       if evaluator.composition_title
         recording.composition = build(:composition, title: evaluator.composition_title)
+        recording.save!
       end
     end
   end
