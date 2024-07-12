@@ -16,10 +16,17 @@ module Mutations
         )
 
         if user.save
-          # UserMailer.with(user:).email_verification.deliver_later
-          Success(user)
+          payload = {user_id: user.id}
+          session = JWTSessions::Session.new(payload:, refresh_by_access_allowed: true)
+          tokens = session.login
+
+          Success(
+            user:,
+            access: tokens[:access],
+            csrf: tokens[:csrf]
+          )
         else
-          Failure(user)
+          Failure(messages: user.errors.full_messages)
         end
       end
     end

@@ -307,6 +307,8 @@ GEM
     json (2.7.2)
     jwt (2.8.2)
       base64
+    jwt_sessions (3.2.2)
+      jwt (>= 2.8, < 3)
     kamal (1.7.0)
       activesupport (>= 7.0)
       base64 (~> 0.2)
@@ -727,6 +729,7 @@ DEPENDENCIES
   imgproxy-rails
   inline_svg
   jwt
+  jwt_sessions
   kamal
   kaminari
   letter_opener

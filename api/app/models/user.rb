@@ -2,6 +2,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
     :recoverable, :rememberable, :validatable,
     :trackable, :confirmable, :omniauthable
+
   searchkick word_start: [:username, :email, :first_name, :last_name]
 
   has_one :user_preference, dependent: :destroy

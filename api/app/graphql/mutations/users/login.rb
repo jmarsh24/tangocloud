@@ -10,10 +10,10 @@ module Mutations
       def resolve(login:, password:)
         user = User.find_by_email_or_username(login)
 
-        if user&.authenticate(password)
+        if user&.valid_password?(password)
           Success(user)
         else
-          Failure()
+          Failure(message: "Invalid email or password")
         end
       end
     end

@@ -1,7 +1,7 @@
 module Api
   class GraphQLController < ActionController::API
-    include ActiveStorage::SetCurrent
-    include Authentication::Token
+    include JWTSessions::RailsAuthorization
+    rescue_from JWTSessions::Errors::Unauthorized, with: :not_authorized
 
     def execute
       variables = prepare_variables(params[:variables])
@@ -44,6 +44,10 @@ module Api
       logger.error e.backtrace.join("\n")
 
       render json: {errors: [{message: e.message, backtrace: e.backtrace}], data: {}}, status: :internal_server_error
+    end
+
+    def not_authorized
+      render json: {error: "Not authorized"}, status: :unauthorized
     end
   end
 end

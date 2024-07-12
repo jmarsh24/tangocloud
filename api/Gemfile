@@ -50,6 +50,7 @@ gem "dry-monads"
 gem "imgproxy-rails"
 gem "active_storage_validations"
 gem "devise"
+gem "jwt_sessions"
 
 # Assets
 gem "stimulus-rails"
