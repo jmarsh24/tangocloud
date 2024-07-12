@@ -6,7 +6,7 @@ FactoryBot.define do
     association :orchestra
     association :genre
     association :composition
-    association :time_period
+    # association :time_period
     association :record_label
     association :el_recodo_song
 
