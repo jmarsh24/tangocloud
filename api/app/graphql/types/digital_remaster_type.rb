@@ -9,8 +9,8 @@ module Types
     belongs_to :album, null: true
     belongs_to :recording, null: true
     belongs_to :remaster_agent, null: true
-    has_one :audio_file
     has_many :audio_variants
     has_many :playlist_items
+    has_one :audio_file
   end
 end

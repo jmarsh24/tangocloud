@@ -25,7 +25,7 @@ RSpec.describe "Playlists", type: :graph do
                         ... on Recording {
                           id
                           title
-                          audioTransfers {
+                          digitalRemasters {
                             edges {
                               node {
                                 id
@@ -78,7 +78,7 @@ RSpec.describe "Playlists", type: :graph do
       expect(first_item.id).to eq(recording.id)
       expect(first_item.title).to eq(recording.title)
 
-      first_digital_remaster = first_item.digital_remaster.edges.first.node
+      first_digital_remaster = first_item.digital_remasters.edges.first.node
       expect(first_digital_remaster.id).to eq(audio_variant.digital_remaster.id)
 
       audio_variant_data = first_digital_remaster.audio_variants.edges.first.node
