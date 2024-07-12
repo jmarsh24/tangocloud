@@ -1443,6 +1443,7 @@ type Playlist {
   createdAt: ISO8601DateTime!
   description: String
   id: ID!
+  image: Attachment
   like(id: ID!): Like!
   likes(
     """
@@ -2033,7 +2034,7 @@ type Recording {
   ): PlaybackConnection!
   recordLabel: RecordLabel!
   recordLabelId: String!
-  recordedDate: ISO8601DateTime
+  recordedDate: ISO8601Date
   recordingSinger(id: ID!): RecordingSinger!
   recordingSingers(
     """
@@ -2057,7 +2058,6 @@ type Recording {
     last: Int
   ): RecordingSingerConnection!
   recordingType: RecordingTypeEnum!
-  releaseDate: ISO8601DateTime
   slug: String!
   timePeriod: TimePeriod!
   timePeriodId: String!
