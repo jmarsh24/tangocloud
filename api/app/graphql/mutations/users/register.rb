@@ -16,17 +16,9 @@ module Mutations
         )
 
         if user.save
-          payload = {user_id: user.id}
-          session = JWTSessions::Session.new(payload:, refresh_by_access_allowed: true)
-          tokens = session.login
-
-          Success(
-            user:,
-            access: tokens[:access],
-            csrf: tokens[:csrf]
-          )
+          Success(user)
         else
-          Failure(messages: user.errors.full_messages)
+          Failure(user)
         end
       end
     end

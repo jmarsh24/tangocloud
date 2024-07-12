@@ -18,7 +18,10 @@ RSpec.describe "register", type: :graph do
             id
             username
             email
-            token
+            access
+            accessExpiresAt
+            refresh
+            refreshExpiresAt
           }
           ...on ValidationError {
             errors {
