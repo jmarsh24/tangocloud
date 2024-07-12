@@ -1,7 +1,6 @@
 FactoryBot.define do
   factory :person do
     name { Faker::Name.name }
-    slug { Faker::Internet.slug(words: name, glue: "-") }
     birth_date { Faker::Date.between(from: "1850-01-01", to: "1950-12-31") }
     death_date { Faker::Date.between(from: "1900-01-01", to: "2000-12-31") }
 

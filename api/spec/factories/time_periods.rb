@@ -4,7 +4,6 @@ FactoryBot.define do
     description { Faker::Lorem.paragraph }
     start_year { Faker::Number.between(from: 1900, to: 1950) }
     end_year { Faker::Number.between(from: 1951, to: 2000) }
-    slug { Faker::Internet.slug(words: name, glue: "-") }
 
     after(:build) do |time_period|
       time_period.image.attach(io: File.open(Rails.root.join("spec/support/assets/orchestra.jpg")), filename: "orchestra.jpg", content_type: "image/jpg")

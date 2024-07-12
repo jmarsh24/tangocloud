@@ -22,18 +22,16 @@ FactoryBot.define do
     duration { 180 }
     tango_cloud_id { Faker::Number.number(digits: 6) }
     association :album
-    association :remaster_agent
-    association :recording
     association :audio_file
 
     trait :with_flac_file do
-      after(:build) do |digital_remaster|
+      after(:create) do |digital_remaster|
         digital_remaster.audio_file = build(:flac_audio_file, digital_remaster:)
       end
     end
 
     trait :with_mp3_file do
-      after(:build) do |digital_remaster|
+      after(:create) do |digital_remaster|
         digital_remaster.audio_file = build(:mp3_audio_file, digital_remaster:)
       end
     end

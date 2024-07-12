@@ -86,6 +86,7 @@ group :development do
   gem "chusaku"
   gem "guard"
   gem "guard-rspec"
+  gem "listen"
   gem "letter_opener"
   gem "pry-rails"
   gem "rb-fsevent"

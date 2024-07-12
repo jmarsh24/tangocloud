@@ -1,7 +1,6 @@
 FactoryBot.define do
   factory :orchestra do
-    name { Faker::Music.band }
-    slug { Faker::Internet.slug(words: name, glue: "-") }
+    sequence(:name) { |n| Faker::Lorem.word + n.to_s }
     sort_name { name.split.last }
 
     after(:build) do |orchestra|

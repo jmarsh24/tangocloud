@@ -730,6 +730,7 @@ DEPENDENCIES
   kamal
   kaminari
   letter_opener
+  listen
   lograge
   mission_control-jobs
   newrelic_rpm

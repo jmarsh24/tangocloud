@@ -9,13 +9,12 @@ FactoryBot.define do
     association :time_period
     association :record_label
     association :el_recodo_song
-    association :digital_remaster
 
     transient do
       composition_title { nil }
     end
 
-    after(:build) do |recording, evaluator|
+    after(:create) do |recording, evaluator|
       if evaluator.composition_title
         recording.composition = build(:composition, title: evaluator.composition_title)
       end

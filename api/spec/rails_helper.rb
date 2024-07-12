@@ -32,4 +32,8 @@ RSpec.configure do |config|
   config.before(:each) do
     ActiveStorage::Current.url_options = {host: "example.com"}
   end
+
+  config.before(:each) do
+    Faker::UniqueGenerator.clear
+  end
 end
