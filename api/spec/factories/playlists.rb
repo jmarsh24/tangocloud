@@ -5,6 +5,7 @@ FactoryBot.define do
     description { Faker::Lorem.paragraph }
     public { true }
     system { false }
+    user
 
     before(:create) do |playlist|
       playlist.image.attach(io: File.open(Rails.root.join("spec/fixtures/files/album-art-volver-a-sonar.jpg")), filename: "album-art-volver-a-sonar.jpg", content_type: "image/jpg")

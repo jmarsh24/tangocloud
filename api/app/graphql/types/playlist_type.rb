@@ -15,5 +15,6 @@ module Types
     has_many :likes
     has_many :tandas
     has_many :recordings
+    has_one_attached :image
   end
 end
