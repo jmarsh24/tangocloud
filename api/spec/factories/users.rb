@@ -5,7 +5,7 @@ FactoryBot.define do
     password { Faker::Internet.password }
     admin { false }
 
-    after(:create) do |user|
+    after(:build) do |user|
       create(:user_preference, user:)
     end
 

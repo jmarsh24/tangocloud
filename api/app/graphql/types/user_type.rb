@@ -9,6 +9,10 @@ module Types
     field :admin, Boolean, null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
+    field :first_name, String
+    field :last_name, String
+    field :name, String
+    field :username, String
 
     has_many :playbacks, -> { most_recent.limit(100) }
     has_many :playlists

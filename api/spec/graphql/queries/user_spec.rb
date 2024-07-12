@@ -21,7 +21,6 @@ RSpec.describe "user", type: :graph do
 
     it "returns the correct user details" do
       gql(query, variables: {id: user.id}, user:)
-
       user_data = data.user
 
       expect(user_data.id).to eq(user.id)
