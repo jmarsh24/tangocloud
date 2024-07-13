@@ -49,7 +49,6 @@ RSpec.describe "Users::Refresh", type: :graph do
 
     gql(mutation, variables:, user:)
 
-    expect(result.refresh.errors).not_to be_empty
     expect(data.refresh.error).to eq("Invalid refresh token")
   end
 

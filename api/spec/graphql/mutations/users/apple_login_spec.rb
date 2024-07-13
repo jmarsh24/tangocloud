@@ -12,14 +12,21 @@ RSpec.describe "Users::AppleLogin", type: :graph do
           firstName: $firstName
           lastName: $lastName
         }) {
-          user {
+          __typename
+          ...on AuthenticatedUser {
             id
-            username
             email
-            firstName
-            lastName
+            username
+            session {
+              access
+              accessExpiresAt
+              refresh
+              refreshExpiresAt
+            }
           }
-          token
+          ...on FailedLogin {
+            error
+          }
         }
       }
     GQL
@@ -68,10 +75,12 @@ RSpec.describe "Users::AppleLogin", type: :graph do
 
     gql(mutation, variables:)
 
-    expect(result.data.apple_login.user.email).to eq("new@apple-user.com")
-    expect(result.data.apple_login.user.first_name).to eq("John")
-    expect(result.data.apple_login.user.last_name).to eq("Doe")
-    expect(result.data.apple_login.token).to eq(AuthToken.token(User.find_by!(email: "new@apple-user.com")))
+    expect(data.apple_login["__typename"]).to eq("AuthenticatedUser")
+    expect(data.apple_login.email).to eq("new@apple-user.com")
+    expect(data.apple_login.session.access).to be_present
+    expect(data.apple_login.session.refresh).to be_present
+    expect(data.apple_login.session.access_expires_at).to be_present
+    expect(data.apple_login.session.refresh_expires_at).to be_present
   end
 
   it "logs in an existing user with apple uid" do
@@ -82,10 +91,13 @@ RSpec.describe "Users::AppleLogin", type: :graph do
     }
     gql(mutation, variables:)
 
-    expect(result.data.apple_login.user.email).to eq(user.email)
-    expect(result.data.apple_login.user.username).to eq(user.username)
-    expect(result.data.apple_login.user.first_name).to eq(user.first_name)
-    expect(result.data.apple_login.user.last_name).to eq(user.last_name)
-    expect(result.data.apple_login.token).to eq(AuthToken.token(user))
+    expect(data.apple_login["__typename"]).to eq("AuthenticatedUser")
+
+    expect(data.apple_login.email).to eq(user.email)
+    expect(data.apple_login.username).to eq(user.username)
+    expect(data.apple_login.session.access).to be_present
+    expect(data.apple_login.session.refresh).to be_present
+    expect(data.apple_login.session.access_expires_at).to be_present
+    expect(data.apple_login.session.refresh_expires_at).to be_present
   end
 end
