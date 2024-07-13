@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :time_period do
-    name { Faker::Music.genre }
+    name { Faker::Music.unique.genre }
     description { Faker::Lorem.paragraph }
     start_year { Faker::Number.between(from: 1900, to: 1950) }
     end_year { Faker::Number.between(from: 1951, to: 2000) }
