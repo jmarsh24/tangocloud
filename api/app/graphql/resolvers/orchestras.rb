@@ -5,6 +5,8 @@ module Resolvers
     argument :query, String, required: false
 
     def resolve(query: "*")
+      check_authentication!
+
       ::Orchestra.search(query,
         fields: ["name^5"],
         match: :word_start,

@@ -5,6 +5,8 @@ module Resolvers
     argument :id, ID
 
     def resolve(id:)
+      check_authentication!
+
       ::Playlist.find(id)
     end
   end

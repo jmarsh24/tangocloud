@@ -156,7 +156,7 @@ module Import
         waveform = build_waveform(waveform:)
         @digital_remaster.duration = metadata.duration
         @digital_remaster.replay_gain = metadata.replay_gain
-        @digital_remaster.tango_cloud_id = metadata.catalog_number.split("TC").last.to_i
+        @digital_remaster.tango_cloud_id = metadata.catalog_number&.split("TC")&.last.to_i
         @digital_remaster.album = album
         @digital_remaster.remaster_agent = remaster_agent
         @digital_remaster.recording = recording

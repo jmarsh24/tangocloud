@@ -5,6 +5,8 @@ module Resolvers
     argument :query, String, required: false, description: "Search query."
 
     def resolve(query: "*")
+      check_authentication!
+
       ::TimePeriod.search(query,
         fields: ["name^5"],
         match: :word_start,

@@ -5,6 +5,8 @@ module Resolvers
     argument :id, ID, required: true, description: "ID of the user."
 
     def resolve(id:)
+      check_authentication!
+
       ::User.find(id)
     end
   end

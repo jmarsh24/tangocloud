@@ -10,6 +10,7 @@ module Api
       context = {
         current_user:
       }
+
       result = TangocloudSchema.execute(query, variables:, context:, operation_name:)
       render json: result
     rescue => e
@@ -48,6 +49,12 @@ module Api
 
     def not_authorized
       render json: {error: "Not authorized"}, status: :unauthorized
+    end
+
+    def current_user
+      return unless payload.present?
+
+      @current_user ||= User.find(payload["user_id"])
     end
   end
 end

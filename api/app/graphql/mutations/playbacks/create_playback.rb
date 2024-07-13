@@ -6,6 +6,8 @@ module Mutations::Playbacks
     field :errors, [String], null: false
 
     def resolve(recording_id:)
+      check_authentication!
+
       playback = current_user.playbacks.new(
         recording_id:
       )

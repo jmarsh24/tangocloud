@@ -10,6 +10,8 @@ module Mutations::Playlists
     field :errors, [String], null: false
 
     def resolve(title:, description: nil, public: true, image: nil, item_ids: [])
+      check_authentication!
+
       playlist = Playlist.new(
         title:,
         description:,

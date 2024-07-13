@@ -11,6 +11,8 @@ module Mutations
       field :errors, [String], null: true
 
       def resolve(email: nil, password: nil, first_name: nil, last_name: nil, avatar: nil)
+        check_authentication!
+
         user = context[:current_user]
         user_preference = user.user_preference
 

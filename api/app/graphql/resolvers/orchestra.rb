@@ -5,6 +5,8 @@ module Resolvers
     argument :id, ID, required: true
 
     def resolve(id:)
+      check_authentication!
+
       ::Orchestra.find(id)
     end
   end

@@ -17,6 +17,7 @@ module Types
     field :apple_login, mutation: Mutations::Users::AppleLogin
     field :google_login, mutation: Mutations::Users::GoogleLogin
     field :login, mutation: Mutations::Users::Login
+    field :refresh, mutation: Mutations::Users::Refresh
     field :register, mutation: Mutations::Users::Register
     field :update_user, mutation: Mutations::Users::Update
   end
