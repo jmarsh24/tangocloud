@@ -20,5 +20,7 @@ module Types
     field :recordings, resolver: Resolvers::Recordings
     field :users, resolver: Resolvers::Users
     field :current_user, resolver: Resolvers::CurrentUser
+    field :composers, resolver: Resolvers::Composers
+    field :lyricists, resolver: Resolvers::Lyricists
   end
 end

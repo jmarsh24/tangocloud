@@ -18,7 +18,8 @@ class Person < ApplicationRecord
 
   def search_data
     {
-      name:
+      name:,
+      composition_roles: composition_roles.map(&:role) # Include roles in search data
     }
   end
 end

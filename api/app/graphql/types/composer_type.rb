@@ -1,5 +1,5 @@
 module Types
-  class LyricistType < Types::PersonType
+  class ComposerType < Types::PersonType
     has_many :compositions
   end
 end
