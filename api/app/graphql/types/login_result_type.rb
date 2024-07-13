@@ -1,5 +1,5 @@
 module Types
-  class LoginResult < BaseUnion
+  class LoginResultType < BaseUnion
     possible_types Types::AuthenticatedUserType, Types::FailedLoginType
 
     def self.resolve_type(object, context)

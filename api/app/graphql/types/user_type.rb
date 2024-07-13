@@ -17,6 +17,6 @@ module Types
     has_many :playbacks, -> { most_recent.limit(100) }
     has_many :playlists
     has_many :likes, -> { most_recent }
-    has_one_attached :avatar
+    has_one :user_preference
   end
 end

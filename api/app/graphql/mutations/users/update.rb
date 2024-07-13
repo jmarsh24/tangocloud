@@ -1,51 +1,50 @@
 module Mutations
-  module Users
-    class Update < Mutations::BaseMutation
-      argument :first_name, String, required: false
-      argument :last_name, String, required: false
-      argument :email, String, required: false
-      argument :password, String, required: false
-      argument :avatar, ApolloUploadServer::Upload, required: false
+  class Users::Update < Mutations::BaseMutation
+    include Dry::Monads[:result]
+    type Types::UserResultType, null: false
 
-      field :user, Types::UserType, null: true
-      field :errors, [String], null: true
+    argument :avatar, ApolloUploadServer::Upload, required: false
+    argument :password, String, required: false
+    argument :first_name, String, required: false
+    argument :last_name, String, required: false
 
-      def resolve(email: nil, password: nil, first_name: nil, last_name: nil, avatar: nil)
-        check_authentication!
+    def resolve(avatar: nil, password: nil, first_name: nil, last_name: nil)
+      check_authentication!
 
-        user = context[:current_user]
-        user_preference = user.user_preference
+      user = current_user
 
-        user_attributes = {
-          email:,
-          password:
-        }
-
-        user_preference_attributes = {
-          first_name:,
-          last_name:
-        }
-
-        if avatar.present?
-          user_preference.avatar.attach(
-            io: File.open(avatar),
-            filename: avatar.original_filename,
-            content_type: avatar.content_type
-          )
-        end
-
-        if user.update(user_attributes) && user_preference.update(user_preference_attributes)
-          {
-            user:,
-            errors: []
-          }
-        else
-          {
-            user: nil,
-            errors: user.errors.full_messages + user_preference.errors.full_messages
-          }
-        end
+      if avatar
+        user.user_preference.avatar.attach(
+          io: avatar.tempfile.open,
+          filename: avatar.original_filename,
+          content_type: avatar.content_type
+        )
       end
+      user.password = password if password
+      user.user_preference.first_name = first_name if first_name
+      user.user_preference.last_name = last_name if last_name
+
+      if user.save
+        Success(user)
+      else
+        Failure(user)
+      end
+    end
+
+    private
+
+    def format_errors(errors)
+      attribute_errors = errors.messages.map do |attribute, messages|
+        {
+          attribute: attribute.to_s.camelize(:lower),
+          errors: messages
+        }
+      end
+
+      {
+        full_messages: errors.full_messages,
+        attribute_errors:
+      }
     end
   end
 end

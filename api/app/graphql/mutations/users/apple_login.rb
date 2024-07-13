@@ -1,7 +1,7 @@
 module Mutations::Users
   class AppleLogin < Mutations::BaseMutation
     include Dry::Monads[:result]
-    type Types::LoginResult, null: false
+    type Types::LoginResultType, null: false
 
     argument :user_identifier, String, required: true
     argument :identity_token, String, required: true

@@ -1,7 +1,7 @@
 module Mutations::Users
   class GoogleLogin < Mutations::BaseMutation
     include Dry::Monads[:result]
-    type Types::LoginResult, null: false
+    type Types::LoginResultType, null: false
 
     argument :id_token, String, required: true
 

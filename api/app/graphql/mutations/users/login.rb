@@ -2,7 +2,7 @@ module Mutations
   module Users
     class Login < Mutations::BaseMutation
       include Dry::Monads[:result]
-      type Types::LoginResult, null: false
+      type Types::LoginResultType, null: false
 
       argument :login, String, required: true
       argument :password, String, required: true
