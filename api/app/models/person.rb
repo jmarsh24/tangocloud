@@ -19,7 +19,8 @@ class Person < ApplicationRecord
   def search_data
     {
       name:,
-      composition_roles: composition_roles.map(&:role) # Include roles in search data
+      composition_roles: composition_roles.map(&:role),
+      singer: recording_singers.any?
     }
   end
 end

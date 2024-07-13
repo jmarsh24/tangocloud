@@ -22,5 +22,6 @@ module Types
     field :current_user, resolver: Resolvers::CurrentUser
     field :composers, resolver: Resolvers::Composers
     field :lyricists, resolver: Resolvers::Lyricists
+    field :singers, resolver: Resolvers::Singers
   end
 end
