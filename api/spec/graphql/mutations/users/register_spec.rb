@@ -18,10 +18,12 @@ RSpec.describe "register", type: :graph do
             id
             username
             email
-            access
-            accessExpiresAt
-            refresh
-            refreshExpiresAt
+            session {
+              access
+              accessExpiresAt
+              refresh
+              refreshExpiresAt
+            }
           }
           ...on ValidationError {
             errors {
@@ -50,6 +52,7 @@ RSpec.describe "register", type: :graph do
 
     expect(result.data.register.email).to eq(email)
     expect(result.data.register.username).to eq(username)
+    expect(result.data.register.session.access).to be_present
     expect(last_mail!.to).to eq("new_user@example.com")
   end
 

@@ -23,10 +23,12 @@ RSpec.describe "GraphQL, login mutation", type: :graph do
             id
             email
             username
-            access
-            accessExpiresAt
-            refresh
-            refreshExpiresAt
+            session {
+              access
+              accessExpiresAt
+              refresh
+              refreshExpiresAt
+            }
           }
           ...on FailedLogin {
             error
@@ -46,7 +48,7 @@ RSpec.describe "GraphQL, login mutation", type: :graph do
 
     expect(data.login["__typename"]).to eq("AuthenticatedUser")
     expect(data.login["email"]).to eq("test@example.com")
-    expect(data.login["access"]).to be_present
+    expect(data.login.session["access"]).to be_present
   end
 
   it "cannot log in with an invalid password" do
