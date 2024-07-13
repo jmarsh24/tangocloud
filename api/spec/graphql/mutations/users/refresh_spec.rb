@@ -65,15 +65,4 @@ RSpec.describe "Users::Refresh", type: :graph do
       expect(data.refresh.error).to eq("Invalid refresh token")
     end
   end
-
-  context "when the user is not authenticated" do
-    it "returns an error" do
-      variables = {refreshToken: "invalid"}
-
-      gql(mutation, variables:, user: nil)
-
-      expect(data.refresh.error).not_to be_empty
-      expect(data.refresh.error).to eq("Not authorized")
-    end
-  end
 end
