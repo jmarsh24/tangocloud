@@ -15,8 +15,8 @@ FactoryBot.define do
   factory :orchestra_period do
     name { "MyString" }
     description { "MyText" }
-    start_date { "2024-07-07" }
-    end_date { "2024-07-07" }
-    orchestra { nil }
+    start_date { Faker::Date.between(from: "1930-01-01", to: "1950-12-31") }
+    end_date { Faker::Date.between(from: "1960-01-01", to: "1980-12-31") }
+    orchestra
   end
 end

@@ -9,6 +9,7 @@ class Orchestra < ApplicationRecord
   has_many :recordings, dependent: :destroy
   has_many :compositions, through: :recordings
   has_many :singers, through: :recordings
+  has_many :genres, through: :recordings
 
   validates :name, presence: true, uniqueness: true
   validates :slug, presence: true, uniqueness: true
@@ -17,7 +18,12 @@ class Orchestra < ApplicationRecord
 
   def search_data
     {
-      name:
+      id:,
+      name:,
+      periods: orchestra_periods.pluck(:name),
+      roles: orchestra_roles.pluck(:name),
+      singers: singers.pluck(:name),
+      genres: genres.pluck(:name)
     }
   end
 end

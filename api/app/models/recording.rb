@@ -54,10 +54,11 @@ class Recording < ApplicationRecord
   def search_data
     {
       title: composition.title,
-      composer_names: composition&.composers&.map(&:name),
-      lyricist_names: composition&.lyricists&.map(&:name),
-      orchestra_name: orchestra&.name,
-      singer_names: singers.map(&:name).join(" "),
+      composers: composition&.composers&.map(&:name),
+      lyricists: composition&.lyricists&.map(&:name),
+      orchestra_periods: orchestra&.orchestra_periods&.map(&:name),
+      orchestra: orchestra&.name,
+      singers: singers.map(&:name).join(" "),
       genre: genre&.name,
       playbacks_count:,
       year: recorded_date.year,
