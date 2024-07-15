@@ -66,7 +66,7 @@ module AudioProcessing
         grouping: tags.dig(:grouping),
         replaygain_track_gain: tags.dig(:replaygain_track_gain),
         replaygain_track_peak: tags.dig(:replaygain_track_peak),
-        year: tags.dig(:year) || Date.parse(date).year.to_s
+        year: tags.dig(:year) || (date && Date.parse(date).year.to_s)
       )
     end
   end
