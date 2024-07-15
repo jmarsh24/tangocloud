@@ -17,3 +17,12 @@ inherit_gem:
 
 Style/FrozenStringLiteralComment:
   Enabled: false
+
+GraphQL/FieldDescription:
+  Enabled: false
+
+GraphQL/ObjectDescription:
+  Enabled: false
+
+GraphQL/ArgumentDescription:
+  Enabled: false
