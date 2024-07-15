@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe AudioProcessing::AudioConverter do
-  let(:file) { File.open(file_fixture("audio/19401008__volver_a_sonar__roberto_rufino__tango.flac")) }
+  let(:file) { File.open(file_fixture("audio/raw/19390201__enrique_rodriguez__te_quiero_ver_escopeta__roberto_flores__tango__TC6612_TT.flac")) }
   let!(:converted_audio) { AudioProcessing::AudioConverter.new(file:).convert }
 
   describe "#convert" do

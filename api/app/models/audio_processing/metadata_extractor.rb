@@ -40,6 +40,7 @@ module AudioProcessing
       format = metadata.dig(:format)
       tags = format&.dig(:tags)&.transform_keys(&:downcase) || {}
       audio_stream = streams.find { |stream| stream.dig(:codec_type) == "audio" }
+      date = tags.dig(:date) || tags.dig(:tdat) || tags.dig(:tyer)
 
       Metadata.new(
         duration: format.dig(:duration).to_f,
@@ -52,7 +53,7 @@ module AudioProcessing
         title: tags.dig(:title),
         artist: tags.dig(:artist),
         album: tags.dig(:album),
-        date: tags.dig(:date) || tags.dig(:tdat) || tags.dig(:tyer),
+        date:,
         genre: tags.dig(:genre),
         album_artist: tags.dig(:album_artist),
         catalog_number: tags.dig(:catalognumber),
@@ -65,7 +66,7 @@ module AudioProcessing
         grouping: tags.dig(:grouping),
         replaygain_track_gain: tags.dig(:replaygain_track_gain),
         replaygain_track_peak: tags.dig(:replaygain_track_peak),
-        year: tags.dig(:year)
+        year: tags.dig(:year) || Date.parse(date).year.to_s
       )
     end
   end
