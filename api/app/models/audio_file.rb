@@ -20,7 +20,7 @@ class AudioFile < ApplicationRecord
     "audio/mpeg",
     "audio/x-m4a",
     "audio/mp3"
-  ]
+  ].freeze
 
   has_one_attached :file
   has_one :digital_remaster, dependent: :destroy

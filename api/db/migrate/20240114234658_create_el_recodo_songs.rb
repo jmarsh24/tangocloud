@@ -13,7 +13,7 @@ class CreateElRecodoSongs < ActiveRecord::Migration[7.1]
       t.string :composer
       t.string :author
       t.string :label
-      t.jsonb :members, null: false, default: '{}'
+      t.jsonb :members, null: false, default: "{}"
       t.text :lyrics
       t.string :search_data
       t.index :ert_number
