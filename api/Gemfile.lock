@@ -201,7 +201,6 @@ GEM
       elasticsearch-api (= 8.14.0)
     elasticsearch-api (8.14.0)
       multi_json
-    error_highlight (0.6.0)
     erubi (1.13.0)
     et-orbi (1.2.11)
       tzinfo
@@ -703,7 +702,6 @@ DEPENDENCIES
   dotenv-rails
   dry-monads
   elasticsearch
-  error_highlight
   factory_bot_rails
   faker
   faraday
