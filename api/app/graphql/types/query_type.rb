@@ -7,7 +7,7 @@ module Types
     field :audio_variant, resolver: Resolvers::AudioVariant
     field :genre, resolver: Resolvers::Genre
     field :genres, resolver: Resolvers::Genres
-    field :liked_recordings, resolver: Resolvers::Recordings
+    # field :liked_recordings, resolver: Resolvers::Recordings
     field :orchestra, resolver: Resolvers::Orchestra
     field :time_period, resolver: Resolvers::TimePeriod
     field :playlist, resolver: Resolvers::Playlist
@@ -17,11 +17,13 @@ module Types
     field :orchestras, resolver: Resolvers::Orchestras
     field :time_periods, resolver: Resolvers::TimePeriods
     field :playlists, resolver: Resolvers::Playlists
-    field :recordings, resolver: Resolvers::Recordings
+    # field :recordings, resolver: Resolvers::Recordings
     field :users, resolver: Resolvers::Users
     field :current_user, resolver: Resolvers::CurrentUser
     field :composers, resolver: Resolvers::Composers
     field :lyricists, resolver: Resolvers::Lyricists
     field :singers, resolver: Resolvers::Singers
+    # field :recording_aggregations, resolver: Resolvers::RecordingAggregations
+    field :search_recordings, resolver: Resolvers::SearchRecordings
   end
 end

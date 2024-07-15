@@ -63,7 +63,10 @@ class Recording < ApplicationRecord
       playbacks_count:,
       year: recorded_date.year,
       created_at:,
-      updated_at:
+      updated_at:,
+      time_period: time_period&.name,
+      record_label: record_label&.name,
+      slug:
     }
   end
 

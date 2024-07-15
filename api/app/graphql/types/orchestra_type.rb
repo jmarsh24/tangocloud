@@ -1,7 +1,5 @@
 module Types
   class OrchestraType < Types::BaseObject
-    include Rails.application.routes.url_helpers
-
     field :id, ID, null: true
     field :name, String, null: true
     field :first_name, String, null: true
