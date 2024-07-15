@@ -2,8 +2,8 @@ module Mutations::Playbacks
   class CreatePlayback < Mutations::BaseMutation
     argument :recording_id, ID, required: true
 
-    field :playback, Types::PlaybackType, null: true
     field :errors, [String], null: false
+    field :playback, Types::PlaybackType, null: true
 
     def resolve(recording_id:)
       check_authentication!

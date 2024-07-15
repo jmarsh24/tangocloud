@@ -1,12 +1,12 @@
 module Types
   class PlaylistType < Types::BaseObject
-    field :id, ID, null: false
-    field :title, String, null: false
-    field :subtitle, String, null: true
-    field :description, String, null: true
-    field :public, Boolean, null: false
-    field :system, Boolean, null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
+    field :description, String, null: true
+    field :id, ID, null: false
+    field :public, Boolean, null: false
+    field :subtitle, String, null: true
+    field :system, Boolean, null: false
+    field :title, String, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
     belongs_to :user

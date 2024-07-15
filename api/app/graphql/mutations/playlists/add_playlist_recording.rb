@@ -3,8 +3,8 @@ module Mutations::Playlists
     argument :playlist_id, ID, required: true
     argument :recording_id, ID, required: true
 
-    field :playlist_item, Types::PlaylistItemType, null: true
     field :errors, [String], null: false
+    field :playlist_item, Types::PlaylistItemType, null: true
 
     def resolve(playlist_id:, recording_id:)
       check_authentication!

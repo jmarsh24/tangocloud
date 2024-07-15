@@ -3,11 +3,11 @@ module Mutations::Users
     include Dry::Monads[:result]
     type Types::LoginResultType, null: false
 
-    argument :user_identifier, String, required: true
-    argument :identity_token, String, required: true
     argument :email, String, required: false
     argument :first_name, String, required: false
+    argument :identity_token, String, required: true
     argument :last_name, String, required: false
+    argument :user_identifier, String, required: true
 
     def resolve(user_identifier:, identity_token:, email: nil, first_name: nil, last_name: nil)
       if email.nil?

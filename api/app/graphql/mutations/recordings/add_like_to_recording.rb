@@ -1,8 +1,8 @@
 module Mutations::Recordings
   class AddLikeToRecording < Mutations::BaseMutation
+    field :errors, [String], null: false
     field :like, Types::LikeType, null: true
     field :success, Boolean, null: false
-    field :errors, [String], null: false
 
     argument :recording_id, ID, required: true
 

@@ -1,8 +1,8 @@
 module Mutations
   module Recordings
     class RemoveLikeFromRecording < Mutations::BaseMutation
-      field :success, Boolean, null: false
       field :errors, [String], null: false
+      field :success, Boolean, null: false
 
       argument :recording_id, ID, required: true
 

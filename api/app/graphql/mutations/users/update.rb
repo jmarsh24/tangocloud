@@ -4,9 +4,9 @@ module Mutations
     type Types::UserResultType, null: false
 
     argument :avatar, ApolloUploadServer::Upload, required: false
-    argument :password, String, required: false
     argument :first_name, String, required: false
     argument :last_name, String, required: false
+    argument :password, String, required: false
 
     def resolve(avatar: nil, password: nil, first_name: nil, last_name: nil)
       check_authentication!

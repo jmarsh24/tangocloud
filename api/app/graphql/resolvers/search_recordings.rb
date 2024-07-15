@@ -3,9 +3,9 @@ module Resolvers
   class SearchRecordings < BaseResolver
     type Types::RecordingSearchResultsType, null: false
 
-    argument :query, String, required: false
     argument :filters, Types::RecordingFilterInputType, required: false
     argument :order_by, Types::RecordingOrderByInputType, required: false
+    argument :query, String, required: false
 
     def resolve(query: "*", filters: nil, order_by: nil)
       search_options = {

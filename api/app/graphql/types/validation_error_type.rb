@@ -10,8 +10,8 @@ module Types
     end
 
     class Errors < Types::BaseObject
-      field :full_messages, [String], null: false
       field :attribute_errors, [AttributeError], null: false
+      field :full_messages, [String], null: false
 
       def attribute_errors
         object.group_by_attribute.map do |attribute, errors|

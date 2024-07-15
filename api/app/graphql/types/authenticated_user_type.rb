@@ -2,10 +2,10 @@ module Types
   class AuthenticatedUserType < BaseObject
     Session = Data.define(:access, :access_expires_at, :refresh, :refresh_expires_at).freeze
 
-    field :id, ID, null: true
     field :email, String, null: true
-    field :username, String, null: true
+    field :id, ID, null: true
     field :session, Types::SessionType, null: false
+    field :username, String, null: true
 
     def session
       payload = {user_id: object.id}

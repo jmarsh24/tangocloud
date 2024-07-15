@@ -2,9 +2,9 @@ module Mutations::Playbacks
   class RemovePlayback < Mutations::BaseMutation
     argument :id, ID, required: true
 
+    field :errors, [String], null: true
     field :message, String, null: false
     field :success, Boolean, null: false
-    field :errors, [String], null: true
 
     def resolve(id:)
       check_authentication!

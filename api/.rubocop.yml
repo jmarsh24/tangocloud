@@ -17,14 +17,3 @@ inherit_gem:
 
 Style/FrozenStringLiteralComment:
   Enabled: false
-
-GraphQL:
-  AlphabetizeFields:
-    Enabled: true
-    TreatUnionsSeparately: false
-
-  AlphabetizeArguments:
-    Enabled: true
-
-  AlphabetizeTypes:
-    Enabled: true

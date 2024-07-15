@@ -2,8 +2,8 @@ module Mutations::Playlists
   class RemovePlaylistItem < Mutations::BaseMutation
     argument :playlist_item_id, ID, required: true
 
-    field :success, Boolean, null: false
     field :errors, [String], null: false
+    field :success, Boolean, null: false
 
     def resolve(playlist_item_id:)
       check_authentication!

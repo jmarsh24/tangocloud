@@ -7,11 +7,11 @@ module Types
   end
 
   class AudioFileType < Types::BaseObject
-    field :id, ID, null: false
+    field :error_message, String, null: true
     field :filename, String, null: false
     field :format, String, null: false
+    field :id, ID, null: false
     field :status, AudioFileStatusEnum, null: false
-    field :error_message, String, null: true
 
     has_one :digital_remaster
     has_one_attached :file

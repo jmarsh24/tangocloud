@@ -1,13 +1,13 @@
 module Mutations::Playlists
   class CreatePlaylist < Mutations::BaseMutation
-    argument :title, String, required: true
     argument :description, String, required: false
-    argument :public, Boolean, required: false
     argument :image, ApolloUploadServer::Upload, required: false
     argument :item_ids, [ID], required: false
+    argument :public, Boolean, required: false
+    argument :title, String, required: true
 
-    field :playlist, Types::PlaylistType, null: true
     field :errors, [String], null: false
+    field :playlist, Types::PlaylistType, null: true
 
     def resolve(title:, description: nil, public: true, image: nil, item_ids: [])
       check_authentication!

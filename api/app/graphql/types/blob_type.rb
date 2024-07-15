@@ -1,11 +1,11 @@
 module Types
   class BlobType < GraphQL::Schema::Object
-    field :content_type, String, null: false
-    field :filename, String, null: false
     field :byte_size, Integer, null: false
+    field :content_type, String, null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
-    field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
+    field :filename, String, null: false
     field :metadata, GraphQL::Types::JSON, null: true
+    field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
     field :url, String, null: false do
       argument :width, Integer, required: false
     end

@@ -4,9 +4,9 @@ module Mutations
       include Dry::Monads[:result]
       type Types::RegistrationResult, null: false
 
-      argument :username, String, required: false
       argument :email, String, required: true
       argument :password, String, required: true
+      argument :username, String, required: false
 
       def resolve(email:, username:, password:)
         user = User.new(
