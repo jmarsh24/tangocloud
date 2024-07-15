@@ -1,16 +1,17 @@
 class Avo::Resources::Composition < Avo::BaseResource
-  self.includes = [:lyricist, :composer, :recordings, :lyrics]
+  self.includes = [:recordings, :composition_lyrics, :lyrics, :composition_roles]
   self.search = {
-    query: -> { query.search_compositions(params[:q]) }
+    query: -> { query.search(params[:q]) }
   }
 
   def fields
     field :id, as: :id, readonly: true, only_on: :show
     field :title, as: :text
-    field :tangotube_slug, as: :text, only_on: :show
-    field :lyricist, as: :belongs_to
-    field :composer, as: :belongs_to
+    field :composers, as: :has_many
+    field :lyricists, as: :has_many
     field :recordings, as: :has_many
+    field :composition_lyrics, as: :has_many
     field :lyrics, as: :has_many
+    field :composition_roles, as: :has_many
   end
 end

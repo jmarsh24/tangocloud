@@ -16,7 +16,6 @@ module Mutations
         )
 
         if user.save
-          UserMailer.with(user:).email_verification.deliver_later
           Success(user)
         else
           Failure(user)

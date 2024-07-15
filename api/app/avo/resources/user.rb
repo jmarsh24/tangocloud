@@ -1,8 +1,8 @@
 class Avo::Resources::User < Avo::BaseResource
   self.includes = []
-  # self.search = {
-  #   query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
-  # }
+  self.search = {
+    query: -> { query.search(params[:q]).results }
+  }
 
   def fields
     field :id, as: :id, readonly: true, only_on: :show
@@ -15,8 +15,7 @@ class Avo::Resources::User < Avo::BaseResource
     field :last_name, as: :text
     field :admin, as: :boolean
     field :avatar, as: :file
-    field :sessions, as: :has_many
-    field :events, as: :has_many
     field :user_preference, as: :has_one
+    field :playbacks, as: :has_many
   end
 end

@@ -1,7 +1,6 @@
 class CreateWaveforms < ActiveRecord::Migration[7.1]
   def change
     create_table :waveforms, id: :uuid do |t|
-      t.references :audio_transfer, null: false, foreign_key: true, type: :uuid
       t.integer :version, null: false
       t.integer :channels, null: false
       t.integer :sample_rate, null: false
@@ -9,6 +8,7 @@ class CreateWaveforms < ActiveRecord::Migration[7.1]
       t.integer :bits, null: false
       t.integer :length, null: false
       t.float :data, array: true, default: []
+      t.belongs_to :digital_remaster, null: false, foreign_key: true, type: :uuid
 
       t.timestamps
     end

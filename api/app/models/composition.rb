@@ -1,9 +1,10 @@
 class Composition < ApplicationRecord
-  belongs_to :lyricist, optional: true
-  belongs_to :composer, optional: true
   has_many :recordings, dependent: :destroy
   has_many :composition_lyrics, dependent: :destroy
+  has_many :composition_roles, dependent: :destroy
   has_many :lyrics, through: :composition_lyrics
+  has_many :composers, -> { where(composition_roles: {role: "composer"}) }, through: :composition_roles, source: :person
+  has_many :lyricists, -> { where(composition_roles: {role: "lyricist"}) }, through: :composition_roles, source: :person
 
   validates :title, presence: true
 end
@@ -12,12 +13,8 @@ end
 #
 # Table name: compositions
 #
-#  id               :uuid             not null, primary key
-#  title            :string           not null
-#  tangotube_slug   :string
-#  lyricist_id      :uuid
-#  composer_id      :uuid             not null
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  recordings_count :integer          default(0)
+#  id         :uuid             not null, primary key
+#  title      :string           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #

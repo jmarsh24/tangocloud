@@ -1,17 +1,16 @@
 class Avo::Resources::TimePeriod < Avo::BaseResource
-  self.includes = []
+  self.includes = [:recording]
   self.search = {
-    query: -> { query.search_periods(params[:q]) }
+    query: -> { query.search(params[:q]).results }
   }
 
   def fields
     field :id, as: :id, readonly: true, only_on: :show
-    field :photo, as: :file, is_image: true
+    field :image, as: :file, is_image: true
     field :name, as: :text
     field :description, as: :textarea
     field :start_year, as: :number
     field :end_year, as: :number
-    field :recordings_count, as: :number
     field :slug, as: :text
     field :record, as: :belongs_to
   end

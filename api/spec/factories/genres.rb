@@ -1,7 +1,6 @@
 FactoryBot.define do
   factory :genre do
     name { Faker::Music.genre }
-    description { Faker::Lorem.sentence }
   end
 end
 
@@ -9,10 +8,8 @@ end
 #
 # Table name: genres
 #
-#  id               :uuid             not null, primary key
-#  name             :string           not null
-#  description      :string
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  recordings_count :integer          default(0)
+#  id         :uuid             not null, primary key
+#  name       :string           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #

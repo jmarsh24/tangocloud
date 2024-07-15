@@ -1,19 +1,12 @@
 FactoryBot.define do
   factory :user do
     email { Faker::Internet.email }
-    password_digest { BCrypt::Password.create("password") }
-    verified { false }
-    provider { "email" }
-    uid { SecureRandom.uuid }
     username { Faker::Internet.username }
+    password { Faker::Internet.password }
     admin { false }
 
     after(:build) do |user|
       create(:user_preference, user:)
-    end
-
-    factory :verified_user do
-      verified { true }
     end
 
     factory :admin_user do
@@ -26,16 +19,25 @@ end
 #
 # Table name: users
 #
-#  id              :uuid             not null, primary key
-#  email           :string           not null
-#  password_digest :string
-#  verified        :boolean          default(FALSE), not null
-#  provider        :string
-#  uid             :string
-#  username        :string
-#  first_name      :string
-#  last_name       :string
-#  admin           :boolean          default(FALSE), not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  id                     :uuid             not null, primary key
+#  username               :string
+#  admin                  :boolean          default(FALSE), not null
+#  provider               :string
+#  uid                    :string
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  email                  :string           default(""), not null
+#  encrypted_password     :string           default(""), not null
+#  reset_password_token   :string
+#  reset_password_sent_at :datetime
+#  remember_created_at    :datetime
+#  sign_in_count          :integer          default(0), not null
+#  current_sign_in_at     :datetime
+#  last_sign_in_at        :datetime
+#  current_sign_in_ip     :string
+#  last_sign_in_ip        :string
+#  confirmation_token     :string
+#  confirmed_at           :datetime
+#  confirmation_sent_at   :datetime
+#  unconfirmed_email      :string
 #

@@ -1,22 +1,24 @@
 <nav class="navbar bg-gray-200 p-4 flex justify-between items-center">
   <%= nav_link_to "TangoCloud", root_path, class: "text-xl font-extrabold text-gray-800 hover:text-gray-400" %>
   <ul class="menu flex space-x-4 items-center">
-    <% if Current.user %>
+    <% if user_signed_in? %>
       <li>
-        <%= nav_link_to "Dashboard", dashboard_path, class: "text-gray-800 hover:text-gray-400" %>
+        <%= link_to edit_user_registration_path, class: "flex items-center space-x-2" do %>
+          <% if current_user.avatar.present? %>
+            <%= image_tag current_user.avatar, alt: "User Avatar", class: "w-8 h-8 rounded-full" %>
+          <% else %>
+            <%= image_tag "new-user.svg", alt: "User Avatar", class: "w-8 h-8" %>
+          <% end %>
+        <% end %>
       </li>
       <li>
-        <%= nav_link_to "Edit profile", edit_identity_email_path, class: "text-gray-800 hover:text-gray-400" %>
+        <%= button_to destroy_user_session_path, method: :delete, class: "text-red-400 hover:text-red-600 font-medium" do %>
+          Sign Out
+        <% end %>
       </li>
-      <%= button_to Current.session, method: :delete do %>
-        <span class="text-red-400 hover:text-red-600 font-medium text-center">Sign Out</span>
-      <% end %>
     <% else %>
       <li>
-        <%= nav_link_to "Sign up", sign_up_path, class: "text-gray-800 hover:text-gray-400" %>
-      </li>
-      <li>
-        <%= nav_link_to "Login", sign_in_path, class: "text-gray-800 hover:text-gray-400" %>
+        <%= nav_link_to "Log in", new_user_session_path, class: "text-gray-800 hover:text-gray-400" %>
       </li>
     <% end %>
   </ul>

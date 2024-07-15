@@ -1,13 +1,13 @@
 module Mutations::Users
   class AppleLogin < Mutations::BaseMutation
+    include Dry::Monads[:result]
+    type Types::LoginResultType, null: false
+
     argument :user_identifier, String, required: true
     argument :identity_token, String, required: true
     argument :email, String, required: false
     argument :first_name, String, required: false
     argument :last_name, String, required: false
-
-    field :user, Types::UserType, null: true
-    field :token, String, null: true
 
     def resolve(user_identifier:, identity_token:, email: nil, first_name: nil, last_name: nil)
       if email.nil?
@@ -17,19 +17,19 @@ module Mutations::Users
 
       if user.new_record?
         user.email = email if email
-        user.build_user_preference(
-          first_name:,
-          last_name:
-        )
+        user.password = Devise.friendly_token[0, 20]
+        user.build_user_preference(first_name:, last_name:)
       end
 
       user.provider = "apple"
       user.uid = user_identifier
-      user.verified = true
+      user.confirmed_at = Time.zone.now
 
-      user.save!
-      token = AuthToken.token(user)
-      {user:, token:}
+      if user.save
+        Success(user)
+      else
+        Failure(user)
+      end
     end
   end
 end

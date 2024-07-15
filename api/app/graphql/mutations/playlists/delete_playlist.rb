@@ -6,6 +6,8 @@ module Mutations::Playlists
     field :errors, [String], null: false
 
     def resolve(id:)
+      check_authentication!
+
       playlist = current_user.playlists.find_by(id:)
 
       if playlist.nil?

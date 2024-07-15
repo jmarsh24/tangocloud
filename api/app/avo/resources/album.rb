@@ -1,15 +1,7 @@
 class Avo::Resources::Album < Avo::BaseResource
-  self.includes = [:audio_transfers]
+  self.includes = [:digital_remasters]
   self.search = {
-    query: -> { query.search_albums(params[:q]).results }
-  }
-  self.find_record_method = -> {
-    if id.is_a?(Array)
-      query.where(slug: id)
-    else
-      # We have to add .friendly to the query
-      query.friendly.find id
-    end
+    query: -> { query.search(params[:q]).results }
   }
 
   def fields
@@ -18,10 +10,7 @@ class Avo::Resources::Album < Avo::BaseResource
     field :title, as: :text
     field :description, as: :textarea
     field :release_date, as: :date
-    field :audio_transfers_count, as: :number
-    field :slug, as: :text, readonly: true, only_on: :show
     field :external_id, as: :text, only_on: :show, readonly: true
-    field :album_type, as: :select, enum: ::Album.album_types, only_on: :show
-    field :audio_transfers, as: :has_many
+    field :digital_remasters, as: :has_many
   end
 end

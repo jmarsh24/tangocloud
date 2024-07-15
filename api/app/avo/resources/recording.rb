@@ -1,22 +1,23 @@
 class Avo::Resources::Recording < Avo::BaseResource
-  self.includes = [:orchestra,
+  self.title = :title
+  self.includes = [
+    :orchestra,
     :composition,
     :record_label,
     :genre,
     :time_period,
     :el_recodo_song,
-    :audio_transfers,
+    :digital_remasters,
     :audio_variants,
     :recording_singers,
     :singers,
     :lyrics,
     :tanda_recordings,
-    :tandas,
-    :waveforms]
+    :tandas
+  ]
   self.search = {
-    query: -> { query.search_recordings(params[:q]) }
+    query: -> { query.search(params[:q]).results }
   }
-
   def fields
     field :id, as: :id, readonly: true, only_on: :show
     field :title, as: :text
@@ -31,13 +32,14 @@ class Avo::Resources::Recording < Avo::BaseResource
     field :genre, as: :belongs_to
     field :time_period, as: :belongs_to
     field :el_recodo_song, as: :belongs_to
-    field :audio_transfers, as: :has_many
-    field :audio_variants, as: :has_many, through: :audio_transfers
+    field :digital_remasters, as: :has_many
+    field :audio_variants, as: :has_many, through: :digital_remasters
     field :recording_singers, as: :has_many
     field :singers, as: :has_many, through: :recording_singers
     field :lyrics, as: :has_many, through: :compositions
     field :tanda_recordings, as: :has_many
     field :tandas, as: :has_many, through: :tanda_recordings
-    field :waveforms, as: :has_many, through: :audio_transfers
+    field :waveform, as: :has_one, through: :digital_remasters
+    field :playbacks, as: :has_many
   end
 end

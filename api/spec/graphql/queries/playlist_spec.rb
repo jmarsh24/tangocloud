@@ -4,12 +4,14 @@ RSpec.describe "Playlist", type: :graph do
   describe "playlist" do
     let!(:user) { create(:user) }
     let!(:audio_file) { create(:audio_file) }
-    let!(:audio_transfer) { create(:audio_transfer, audio_file:) }
-    let!(:audio_variant) { create(:audio_variant, audio_transfer:) }
-    let!(:recording) { create(:recording, audio_transfers: [audio_transfer]) }
-    let!(:playlist_item) { create(:playlist_item, playlist:, item: recording) }
+    let!(:orchestra) { create(:orchestra) }
+    let!(:genre) { create(:genre) }
+    let!(:composition) { create(:composition) }
+    let!(:recording) { create(:recording, orchestra:, genre:, composition:) }
+    let!(:digital_remaster) { create(:digital_remaster, recording:, audio_file:) }
+    let!(:audio_variant) { create(:audio_variant, digital_remaster:) }
     let!(:playlist) { create(:playlist, user:) }
-
+    let!(:playlist_item) { create(:playlist_item, playlist:, item: recording) }
     let(:query) do
       <<~GQL
         query Playlist($id: ID!) {
@@ -24,7 +26,7 @@ RSpec.describe "Playlist", type: :graph do
                     ... on Recording {
                       id
                       title
-                      audioTransfers {
+                      digitalRemasters {
                         edges {
                           node {
                             id
@@ -69,11 +71,11 @@ RSpec.describe "Playlist", type: :graph do
       recording_data = item_data
       expect(recording_data.id).to eq(recording.id.to_s)
       expect(recording_data.title).to eq(recording.title)
+      first_digital_remaster_data = recording_data.digital_remasters.edges.first.node
+      expect(first_digital_remaster_data).not_to be_nil
 
-      first_audio_transfer_data = recording_data.audio_transfers.edges.first.node
-      expect(first_audio_transfer_data).not_to be_nil
+      first_audio_variant_data = first_digital_remaster_data.audio_variants.edges.first.node
 
-      first_audio_variant_data = first_audio_transfer_data.audio_variants.edges.first.node
       expect(first_audio_variant_data.id).to eq(audio_variant.id.to_s)
       expect(first_audio_variant_data.audio_file.blob.url).to be_present
     end

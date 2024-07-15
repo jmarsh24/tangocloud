@@ -8,14 +8,21 @@ RSpec.describe "Users::GoogleLogin", type: :graph do
         googleLogin(input: {
           idToken: $idToken
         }) {
-          user {
+         __typename
+          ...on AuthenticatedUser {
             id
-            username
             email
-            firstName
-            lastName
+            username
+            session {
+              access
+              accessExpiresAt
+              refresh
+              refreshExpiresAt
+            }
           }
-          token
+          ...on FailedLogin {
+            error
+          }
         }
       }
     GQL
@@ -50,10 +57,11 @@ RSpec.describe "Users::GoogleLogin", type: :graph do
 
     gql(mutation, variables:)
 
-    expect(result.data.google_login.user.email).to eq("new@google-user.com")
-    expect(result.data.google_login.user.first_name).to eq("John")
-    expect(result.data.google_login.user.last_name).to eq("Doe")
-    expect(result.data.google_login.token).to eq(AuthToken.token(User.find_by!(email: "new@google-user.com")))
+    expect(data.google_login.email).to eq("new@google-user.com")
+    expect(data.google_login.session.access).to be_present
+    expect(data.google_login.session.refresh).to be_present
+    expect(data.google_login.session.access_expires_at).to be_present
+    expect(data.google_login.session.refresh_expires_at).to be_present
   end
 
   it "logs in an existing user with google uid" do
@@ -61,13 +69,13 @@ RSpec.describe "Users::GoogleLogin", type: :graph do
     variables = {
       idToken: "google-user-identity-token"
     }
-
     gql(mutation, variables:)
-
-    expect(result.data.google_login.user.email).to eq(user.email)
-    expect(result.data.google_login.user.username).to eq(user.username)
-    expect(result.data.google_login.user.first_name).to eq(user.first_name)
-    expect(result.data.google_login.user.last_name).to eq(user.last_name)
-    expect(result.data.google_login.token).to eq(AuthToken.token(user))
+    expect(data.google_login["__typename"]).to eq("AuthenticatedUser")
+    expect(data.google_login.email).to eq(user.email)
+    expect(data.google_login.username).to eq(user.username)
+    expect(data.google_login.session.access).to be_present
+    expect(data.google_login.session.refresh).to be_present
+    expect(data.google_login.session.access_expires_at).to be_present
+    expect(data.google_login.session.refresh_expires_at).to be_present
   end
 end

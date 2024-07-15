@@ -2,12 +2,14 @@ module Resolvers
   class Lyricists < BaseResolver
     type Types::LyricistType.connection_type, null: false
 
-    argument :query, String, required: false, description: "Search query."
+    argument :query, String, required: false
 
     def resolve(query: "*")
-      ::Lyricist.search(query,
-        fields: ["name^5"],
+      check_authentication!
+
+      ::Person.search(query,
         match: :word_start,
+        where: {composition_roles: "lyricist"},
         misspellings: {below: 5}).results
     end
   end

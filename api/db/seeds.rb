@@ -1,10 +1,10 @@
-# Helper method to create a user
+require "csv"
+
 def create_user(email, password, admin = false)
   user = User.find_or_create_by!(email:) do |u|
     u.password = password
     u.admin = admin
     u.username = email.split("@").first
-    u.verified = true
   end
 
   unless user.avatar.attached?
@@ -18,132 +18,81 @@ end
 create_user("admin@tangocloud.app", "tangocloud123", true)
 normal_user = create_user("user@tangocloud.app", "tangocloud123")
 
-# Create genres
-genres = ["Tango", "Vals", "Milonga"].map do |name|
-  Genre.find_or_create_by!(name:) do |genre|
-    genre.description = Faker::Lorem.sentence
-  end
+["Tango", "Vals", "Milonga"].map do |name|
+  Genre.find_or_create_by!(name:)
 end
 
-# Create orchestras (use name for orchestras as is)
-orchestras = [
-  "Carlos Di Sarli",
-  "Juan D'Arienzo",
-  "Osvaldo Pugliese"
-].map do |name|
-  Orchestra.find_or_create_by!(name:) do |orchestra|
-    unless orchestra.photo.attached?
-      orchestra.photo.attach(io: File.open(Rails.root.join("spec/fixtures/files/di_sarli.jpg")), filename: "orchestra.jpg", content_type: "image/jpeg")
-    end
-  end
+records = []
+
+CSV.parse(File.read(Rails.root.join("spec/fixtures/files/el_recodo_songs.csv")),
+  headers: true, quote_char: '"', col_sep: ";", liberal_parsing: true) do |row|
+  records << {
+    id: row["id"].presence || "",
+    date: row["date"].presence || "",
+    ert_number: row["ert_number"].presence || "",
+    music_id: row["music_id"].presence || "",
+    title: row["title"].presence || "",
+    style: row["style"].presence || "",
+    orchestra: row["orchestra"].presence || "",
+    singer: row["singer"].presence || "",
+    soloist: row["soloist"].presence || "",
+    director: row["director"].presence || "",
+    composer: row["composer"].presence || "",
+    author: row["author"].presence || "",
+    label: row["label"].presence || "",
+    lyrics: row["lyrics"].presence || "",
+    search_data: row["search_data"].presence || "",
+    synced_at: row["synced_at"].presence || "",
+    page_updated_at: row["page_updated_at"].presence || "",
+    created_at: row["created_at"].presence || "",
+    updated_at: row["updated_at"].presence || ""
+  }
 end
 
-# Create composers
-composers = [
-  "Carlos Gardel",
-  "Astor Piazzolla",
-  "Anibal Troilo"
-].map do |name|
-  Composer.find_or_create_by!(name:) do |composer|
-    unless composer.photo.attached?
-      composer.photo.attach(io: File.open(Rails.root.join("spec/fixtures/files/di_sarli.jpg")), filename: "composer.jpg", content_type: "image/jpeg")
-    end
-  end
-end
+ElRecodoSong.insert_all(records)
 
-# Create lyricists
-lyricists = [
-  "Alfredo Le Pera",
-  "Homero Manzi",
-  "Enrique Santos Discepolo"
-].map do |name|
-  Lyricist.find_or_create_by!(name:) do |lyricist|
-    unless lyricist.photo.attached?
-      lyricist.photo.attach(io: File.open(Rails.root.join("spec/fixtures/files/di_sarli.jpg")), filename: "lyricist.jpg", content_type: "image/jpeg")
-    end
-  end
-end
+Import::DirectoryImporter.new(Rails.root.join("spec/fixtures/files/audio/")).sync(async: false)
 
-# Create albums
-albums = ["Best of Tango", "Tango Classics", "Golden Age of Tango"].map do |title|
-  Album.find_or_create_by!(title:) do |album|
-    album.description = Faker::Lorem.paragraph
-    album.release_date = Faker::Date.between(from: "1930-01-01", to: "1950-12-31")
-    album.album_type = "compilation"
-    unless album.album_art.attached?
-      album.album_art.attach(io: File.open(Rails.root.join("spec/fixtures/files/album-art-volver-a-sonar.jpg")), filename: "album_art.jpg", content_type: "image/jpeg")
-    end
-  end
-end
+# # Attach images to orchestras if they exist
+# orchestra_name = row["orchestra"]
+# if orchestra_name.present?
+#   orchestra = Orchestra.find_by(name: orchestra_name)
+#   if orchestra && !orchestra.photo.attached?
+#     orchestra_image_path = Rails.root.join("spec/fixtures/files/orchestras/#{orchestra_name.parameterize}.jpg")
+#     orchestra.photo.attach(io: File.open(orchestra_image_path), filename: "#{orchestra_name.parameterize}.jpg", content_type: "image/jpeg")
+#   end
+# end
 
-# Create compositions
-compositions = ["Libertango", "Adiós Nonino", "Oblivion"].map do |title|
-  Composition.find_or_create_by!(title:) do |composition|
-    composition.composer = composers.sample
-    composition.lyricist = lyricists.sample
-  end
-end
+# # Attach images to composers if they exist
+# composer_name = row["composer"]
+# if composer_name.present?
+#   composer = Person.find_by(name: composer_name)
+#   if composer && !composer.photo.attached?
+#     composer_image_path = Rails.root.join("spec/fixtures/files/composers/#{composer_name.parameterize}.jpg")
+#     composer.photo.attach(io: File.open(composer_image_path), filename: "#{composer_name.parameterize}.jpg", content_type: "image/jpeg")
+#   end
+# end
 
-# Create singers
-singers = [
-  "Roberto Rufino",
-  "Alberto Podestá",
-  "Carlos Gardel"
-].map do |name|
-  Singer.find_or_create_by!(name:) do |singer|
-    unless singer.photo.attached?
-      singer.photo.attach(io: File.open(Rails.root.join("spec/fixtures/files/di_sarli.jpg")), filename: "singer.jpg", content_type: "image/jpeg")
-    end
-  end
-end
+# # Attach images to lyricists if they exist
+# author_name = row["author"]
+# if author_name.present?
+#   lyricist = Person.find_by(name: author_name)
+#   if lyricist && !lyricist.photo.attached?
+#     lyricist_image_path = Rails.root.join("spec/fixtures/files/lyricists/#{author_name.parameterize}.jpg")
+#     lyricist.photo.attach(io: File.open(lyricist_image_path), filename: "#{author_name.parameterize}.jpg", content_type: "image/jpeg")
+#   end
+# end
 
-# Create recordings
-recordings = ["La Cumparsita", "El Choclo", "A Media Luz"].map do |title|
-  Recording.find_or_create_by!(title:) do |recording|
-    recording.recording_type = "studio"
-    recording.release_date = Faker::Date.between(from: "1930-01-01", to: "1950-12-31")
-    recording.recorded_date = Faker::Date.between(from: "1930-01-01", to: "1950-12-31")
-    recording.genre = genres.sample
-    recording.orchestra = orchestras.sample
-    recording.composition = compositions.sample
-    recording.singers = singers.sample(2)
-  end
-end
+# # Attach images to lyricists if they exist
+# singer_name = row["singer"]
+# if singer_name.present?
+#   lyricist = Person.find_by(name: singer_name)
+#   if lyricist && !lyricist.photo.attached?
+#     lyricist_image_path = Rails.root.join("spec/fixtures/files/lyricists/#{singer_name.parameterize}.jpg")
+#     lyricist.photo.attach(io: File.open(lyricist_image_path), filename: "#{singer_name.parameterize}.jpg", content_type: "image/jpeg")
+#   end
+# end
 
-# Create audio transfers
-audio_transfers = recordings.map do |recording|
-  AudioTransfer.find_or_create_by!(recording:) do |audio_transfer|
-    audio_transfer.external_id = Faker::Number.unique.number(digits: 8).to_s
-    audio_transfer.position = Faker::Number.between(from: 1, to: 10)
-    audio_transfer.album = albums.sample
-    audio_transfer.filename = "#{recording.title.parameterize}.mp3"
-    audio_transfer.transfer_agent = TransferAgent.find_or_create_by!(name: Faker::Name.name) do |agent|
-      agent.description = Faker::Lorem.sentence
-    end
-    unless audio_transfer.audio_file.attached?
-      audio_transfer.audio_file.attach(io: File.open(Rails.root.join("spec/fixtures/audio/19401008_volver_a_sonar_roberto_rufino_tango_2476.flac")), filename: "audio_file.flac", content_type: "audio/flac")
-    end
-  end
-end
-
-# Create audio variants
-audio_transfers.each do |audio_transfer|
-  AudioVariant.find_or_create_by!(audio_transfer:) do |audio_variant|
-    audio_variant.duration = Faker::Number.between(from: 120, to: 360)
-    audio_variant.format = "mp3"
-    audio_variant.codec = "libmp3lame"
-    audio_variant.bit_rate = 128
-    audio_variant.sample_rate = 44100
-    audio_variant.channels = 2
-    audio_variant.metadata = {}
-    audio_variant.filename = "#{audio_transfer.filename}_variant.mp3"
-    unless audio_variant.audio_file.attached?
-      audio_variant.audio_file.attach(io: File.open(Rails.root.join("spec/fixtures/audio/19421009_no_te_apures_carablanca_juan_carlos_miranda_tango_1918.m4a")), filename: "audio_file.m4a", content_type: "audio/m4a")
-    end
-  end
-end
-
-# Create playlists
 playlists = ["Morning Tango", "Evening Milonga", "Night Vals"].map do |title|
   Playlist.find_or_create_by!(title:) do |playlist|
     playlist.description = Faker::Lorem.sentence
@@ -152,7 +101,8 @@ playlists = ["Morning Tango", "Evening Milonga", "Night Vals"].map do |title|
   end
 end
 
-# Create playlist items
+# Attach recordings to playlists
+recordings = Recording.all.sample(10)
 playlists.each do |playlist|
   recordings.each_with_index do |recording, index|
     PlaylistItem.find_or_create_by!(playlist:, item: recording) do |item|
@@ -166,56 +116,13 @@ playlists.each do |playlist|
   Like.find_or_create_by!(likeable: playlist, user: normal_user)
 end
 
-# Create el_recodo_songs
-["El Día Que Me Quieras", "Mi Buenos Aires Querido", "Volver"].map do |title|
-  ElRecodoSong.find_or_create_by!(title:) do |song|
-    song.date = Faker::Date.between(from: "1930-01-01", to: "1950-12-31")
-    song.ert_number = Faker::Number.unique.number(digits: 5)
-    song.music_id = Faker::Number.unique.number(digits: 5)
-    song.orchestra = orchestras.sample.name
-    song.composer = composers.sample.name
-    song.author = lyricists.sample.name
-    song.page_updated_at = Faker::Date.between(from: "2020-01-01", to: "2021-12-31")
-  end
-end
-
-# Create sessions
-["Morning Practice", "Evening Rehearsal", "Night Performance"].map do |name|
-  Session.find_or_create_by!(user: normal_user) do |session|
-    session.user_agent = Faker::Internet.user_agent
-    session.ip_address = Faker::Internet.ip_v4_address
-  end
-end
-
-# Create waveforms
-audio_transfers.each do |audio_transfer|
-  waveform_filepath = Rails.root.join("spec/fixtures/files/waveform_data_volver_a_sonar.json")
-  data = JSON.parse(File.read(waveform_filepath))
-  Waveform.find_or_create_by!(audio_transfer:) do |waveform|
-    waveform.version = 1
-    waveform.channels = 2
-    waveform.sample_rate = 44100
-    waveform.samples_per_pixel = 256
-    waveform.bits = 16
-    waveform.length = 300000
-    waveform.data = data
-    unless waveform.image.attached?
-      waveform.image.attach(io: File.open(Rails.root.join("spec/fixtures/files/19401008_volver_a_sonar_roberto_rufino_tango_2476_waveform.png")), filename: "waveform.png", content_type: "image/png")
-    end
-  end
-end
-
 # Reindexing models
-
 ElRecodoSong.reindex
 Recording.reindex
 Playlist.reindex
-Composer.reindex
+Person.reindex
 Genre.reindex
-Lyricist.reindex
 Orchestra.reindex
-TimePeriod.reindex
-Singer.reindex
 User.reindex
 
 puts "Seed data created successfully!"

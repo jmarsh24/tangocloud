@@ -1,3 +1,28 @@
+# == Schema Information
+#
+# Table name: el_recodo_songs
+#
+#  id              :uuid             not null, primary key
+#  date            :date             not null
+#  ert_number      :integer          default(0), not null
+#  music_id        :integer          default(0), not null
+#  title           :string           not null
+#  style           :string
+#  orchestra       :string
+#  singer          :string
+#  soloist         :string
+#  director        :string
+#  composer        :string
+#  author          :string
+#  label           :string
+#  members         :jsonb            not null
+#  lyrics          :text
+#  search_data     :string
+#  synced_at       :datetime         not null
+#  page_updated_at :datetime         not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
 class ElRecodoSong < ApplicationRecord
   searchkick word_start: [:title, :composer, :author, :lyrics, :orchestra, :singer], callbacks: :async
 

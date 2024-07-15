@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe "AddPlaylistRecording", type: :graph do
   let!(:user) { create(:user) }
   let!(:playlist) { create(:playlist, title: "Awesome Playlist", user:) }
-  let!(:volver_a_sonar) { create(:recording, title: "Volver a soñar") }
+  let!(:volver_a_sonar) { create(:recording, composition_title: "Volver a soñar") }
 
   let!(:mutation) do
     <<~GQL

@@ -1,9 +1,9 @@
 module Mutations::Users
   class GoogleLogin < Mutations::BaseMutation
-    argument :id_token, String, required: true
+    include Dry::Monads[:result]
+    type Types::LoginResultType, null: false
 
-    field :user, Types::UserType, null: true
-    field :token, String, null: true
+    argument :id_token, String, required: true
 
     def resolve(id_token:)
       google_user_info = Google::Auth::IDTokens.verify_oidc(id_token, aud: Config.google_client_id!)
@@ -18,6 +18,7 @@ module Mutations::Users
 
       if user.new_record?
         user.email = email if email
+        user.password = Devise.friendly_token[0, 20]
         user.build_user_preference(first_name:, last_name:)
       end
 
@@ -32,11 +33,14 @@ module Mutations::Users
 
       user.provider = "google"
       user.uid = user_identifier
-      user.verified = google_user_info["email_verified"]
+      user.confirmed_at = Time.zone.now
 
       user.save!
-      token = AuthToken.token(user)
-      {user:, token:}
+      if user.save
+        Success(user)
+      else
+        Failure(user)
+      end
     end
   end
 end

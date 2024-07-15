@@ -1,6 +1,6 @@
 - meta.title = @recording.title
 - meta.description = [@recording.orchestra.name, @recording&.singers.compact&.map(&:name), @recording.recorded_date.year, @recording.genre.name].compact.join(" • ")
-- meta.image = @recording.audio_transfers.first&.album&.album_art&.url
+- meta.image = @recording.digital_remaster.first&.album&.album_art&.url
 = content_for :additional_head_tags do
   meta property="al:ios:url" content=@deeplink_url
   meta property="al:ios:app_store_id" content="6476820703"

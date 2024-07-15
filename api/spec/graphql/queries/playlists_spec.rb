@@ -4,10 +4,10 @@ RSpec.describe "Playlists", type: :graph do
   describe "Fetching playlists" do
     let!(:user) { create(:user) }
     let!(:playlist) { create(:playlist, :public, title: "Awesome Playlist", user:) }
-    let!(:recording) { create(:recording, title: "Awesome Recording") }
+    let!(:recording) { create(:recording, composition_title: "Awesome Recording") }
     let!(:playlist_item) { create(:playlist_item, playlist:, item: recording) }
-    let!(:audio_transfer) { create(:audio_transfer, recording:) }
-    let!(:audio_variant) { create(:audio_variant, audio_transfer:) }
+    let!(:digital_remaster) { create(:digital_remaster, recording:) }
+    let!(:audio_variant) { create(:audio_variant, digital_remaster:) }
 
     let(:query) do
       <<~GQL
@@ -25,7 +25,7 @@ RSpec.describe "Playlists", type: :graph do
                         ... on Recording {
                           id
                           title
-                          audioTransfers {
+                          digitalRemasters {
                             edges {
                               node {
                                 id
@@ -78,10 +78,10 @@ RSpec.describe "Playlists", type: :graph do
       expect(first_item.id).to eq(recording.id)
       expect(first_item.title).to eq(recording.title)
 
-      first_audio_transfer = first_item.audio_transfers.edges.first.node
-      expect(first_audio_transfer.id).to eq(audio_variant.audio_transfer.id)
+      first_digital_remaster = first_item.digital_remasters.edges.first.node
+      expect(first_digital_remaster.id).to eq(audio_variant.digital_remaster.id)
 
-      audio_variant_data = first_audio_transfer.audio_variants.edges.first.node
+      audio_variant_data = first_digital_remaster.audio_variants.edges.first.node
       expect(audio_variant_data.id).to eq(audio_variant.id)
       expect(audio_variant_data.audio_file.blob.url).to be_present
     end

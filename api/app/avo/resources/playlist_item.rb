@@ -1,12 +1,12 @@
 class Avo::Resources::PlaylistItem < Avo::BaseResource
-  self.includes = []
-  # self.search = {
-  #   query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
-  # }
+  self.includes = [:playlist]
 
   def fields
     field :id, as: :id, readonly: true, only_on: :show
     field :playlist, as: :belongs_to
-    field :item, as: :text
+    field :item,
+      as: :belongs_to,
+      polymorphic_as: :reviewable,
+      types: [::Recording, ::Tanda]
   end
 end

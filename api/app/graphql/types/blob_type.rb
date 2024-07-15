@@ -4,6 +4,7 @@ module Types
     field :filename, String, null: false
     field :byte_size, Integer, null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
+    field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
     field :metadata, GraphQL::Types::JSON, null: true
     field :url, String, null: false do
       argument :width, Integer, required: false

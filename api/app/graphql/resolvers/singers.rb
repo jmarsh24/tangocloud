@@ -5,8 +5,9 @@ module Resolvers
     argument :query, String, required: false
 
     def resolve(query: "*")
-      ::Singer.search(query,
+      ::Person.search(query,
         fields: ["name"],
+        where: {singer: true},
         match: :word_start,
         misspellings: {below: 5}).results
     end

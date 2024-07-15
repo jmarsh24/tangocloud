@@ -7,17 +7,13 @@ RSpec.describe AudioProcessing::MetadataExtractor do
       metadata = AudioProcessing::MetadataExtractor.new(file:).extract
 
       expect(metadata.title).to eq("Volver a soñar")
-      expect(metadata.artist).to eq(["Roberto Rufino"])
+      expect(metadata.artist).to eq("Roberto Rufino")
       expect(metadata.album).to eq("TT - Todo de Carlos -1939-1941 [FLAC]")
       expect(metadata.date).to eq("1940-10-08")
-      expect(metadata.track).to be_nil
       expect(metadata.genre).to eq("Tango")
       expect(metadata.album_artist).to eq("Carlos Di Sarli")
       expect(metadata.catalog_number).to be_nil
       expect(metadata.composer).to eq("Andrés Fraga")
-      expect(metadata.performer).to be_nil
-      expect(metadata.encoded_by).to be_nil
-      expect(metadata.media_type).to be_nil
       expect(metadata.lyrics).to be_present
       expect(metadata.duration).to eq(165.158396)
       expect(metadata.bit_rate).to eq(1325044)
@@ -26,14 +22,13 @@ RSpec.describe AudioProcessing::MetadataExtractor do
       expect(metadata.sample_rate).to eq(96000)
       expect(metadata.channels).to eq(1)
       expect(metadata.bit_depth).to eq(24)
-      expect(metadata.bit_rate_mode).to be_nil
       expect(metadata.format).to eq("flac")
-      expect(metadata.bpm).to be_nil
-      expect(metadata.ert_number).to eq(2476)
-      # expect(metadata.source).to eq("TangoTunes")
-      expect(metadata.record_label).to eq("Rca Victor")
+      expect(metadata.ert_number).to eq("ERT-2476")
+      expect(metadata.grouping).to eq("FREE")
+      expect(metadata.publisher).to be_nil
       expect(metadata.lyricist).to eq("Francisco García Jiménez")
-      expect(metadata.artist_sort).to eq("Di Sarli, Carlos")
+      expect(metadata.album_artist_sort).to be_nil
+      expect(metadata.catalog_number).to be_nil
     end
   end
 end

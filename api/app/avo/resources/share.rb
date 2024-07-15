@@ -1,16 +1,14 @@
 class Avo::Resources::Share < Avo::BaseResource
-  self.title = :id
   self.includes = [:user, :shareable]
-  # self.search_query = ->(params:) do
-  #   scope.ransack(id_eq: params[:q], user_id_eq: params[:q]).result(distinct: false)
-  # end
 
   def fields
-    field :id, as: :id
+    field :id, as: :id, readonly: true, only_on: :show
     field :user, as: :belongs_to
-    field :shareable, as: :polymorphic_belongs_to
-
+    field :shareable,
+      as: :belongs_to,
+      polymorphic_as: :shareable,
+      types: [::Recording, ::Tanda, ::Orchestra, ::Playlist],
+      required: true
     field :created_at, as: :date_time
-    field :updated_at, as: :date_time
   end
 end

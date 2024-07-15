@@ -5,6 +5,6 @@ module Types
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
     belongs_to :recording
-    belongs_to :singer
+    belongs_to :person
   end
 end

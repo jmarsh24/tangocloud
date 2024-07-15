@@ -49,6 +49,8 @@ gem "lograge"
 gem "dry-monads"
 gem "imgproxy-rails"
 gem "active_storage_validations"
+gem "devise"
+gem "jwt_sessions"
 
 # Assets
 gem "stimulus-rails"
@@ -85,12 +87,12 @@ group :development do
   gem "chusaku"
   gem "guard"
   gem "guard-rspec"
+  gem "listen"
   gem "letter_opener"
   gem "pry-rails"
   gem "rb-fsevent"
   gem "web-console"
   gem "brakeman"
-  gem "authentication-zero"
   gem "error_highlight"
   gem "database_validations"
   gem "database_consistency", require: false

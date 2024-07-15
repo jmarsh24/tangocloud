@@ -8,23 +8,23 @@ class AudioTransfersController < ApplicationController
   def create
     authorize AudioTransfer
 
-    audio_transfer = AudioTransfer.new(audio_transfer_params)
-    audio_transfer.audio_file.attach(params[:signed_blob_id])
+    digital_remaster = AudioTransfer.new(digital_remaster_params)
+    digital_remaster.audio_file.attach(params[:signed_blob_id])
 
-    if audio_transfer.save
-      AudioTransferImportJob.perform_later(audio_transfer)
+    if digital_remaster.save
+      AudioTransferImportJob.perform_later(digital_remaster)
       render json: {
-        audio_transfer:,
-        audio_url: url_for(audio_transfer.audio_file)
+        digital_remaster:,
+        audio_url: url_for(digital_remaster.audio_file)
       }, status: :created
     else
-      render json: {errors: audio_transfer.errors.full_messages}, status: :unprocessable_entity
+      render json: {errors: digital_remaster.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
   private
 
-  def audio_transfer_params
-    params.require(:audio_transfer).permit(:filename)
+  def digital_remaster_params
+    params.require(:digital_remaster).permit(:filename)
   end
 end

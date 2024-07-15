@@ -1,12 +1,8 @@
 class AudioVariant < ApplicationRecord
-  belongs_to :audio_transfer
+  belongs_to :digital_remaster
 
-  validates :duration, presence: true
   validates :format, presence: true
   validates :bit_rate, numericality: {only_integer: true}
-  validates :sample_rate, numericality: {only_integer: true}
-  validates :channels, numericality: {only_integer: true}
-  validates :codec, presence: true
 
   has_one_attached :audio_file, dependent: :purge_later
 end
@@ -15,16 +11,10 @@ end
 #
 # Table name: audio_variants
 #
-#  id                :uuid             not null, primary key
-#  duration          :integer          default(0), not null
-#  format            :string           not null
-#  codec             :string           not null
-#  bit_rate          :integer
-#  sample_rate       :integer
-#  channels          :integer
-#  length            :integer          default(0), not null
-#  metadata          :jsonb            not null
-#  audio_transfer_id :uuid             not null
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
+#  id                  :uuid             not null, primary key
+#  format              :string           not null
+#  bit_rate            :integer          default(0), not null
+#  digital_remaster_id :uuid             not null
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
 #

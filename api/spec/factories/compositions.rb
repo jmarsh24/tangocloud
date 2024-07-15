@@ -1,8 +1,11 @@
 FactoryBot.define do
   factory :composition do
     title { Faker::Music.album }
-    association :lyricist, factory: :lyricist
-    association :composer, factory: :composer
+
+    after(:create) do |composition|
+      create(:composition_role, composition:, person: create(:person), role: "composer")
+      create(:composition_role, composition:, person: create(:person), role: "lyricist")
+    end
   end
 end
 
@@ -10,12 +13,8 @@ end
 #
 # Table name: compositions
 #
-#  id               :uuid             not null, primary key
-#  title            :string           not null
-#  tangotube_slug   :string
-#  lyricist_id      :uuid
-#  composer_id      :uuid             not null
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  recordings_count :integer          default(0)
+#  id         :uuid             not null, primary key
+#  title      :string           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #

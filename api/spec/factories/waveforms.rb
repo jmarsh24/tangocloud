@@ -7,7 +7,7 @@ FactoryBot.define do
     bits { Faker::Number.between(from: 8, to: 32) }
     length { Faker::Number.between(from: 60, to: 3600) }
     data { Array.new(100) { Faker::Number.decimal(l_digits: 2, r_digits: 2) } }
-    association :audio_transfer
+    association :digital_remaster
 
     after(:build) do |waveform|
       waveform.image.attach(
@@ -23,15 +23,15 @@ end
 #
 # Table name: waveforms
 #
-#  id                :uuid             not null, primary key
-#  audio_transfer_id :uuid             not null
-#  version           :integer          not null
-#  channels          :integer          not null
-#  sample_rate       :integer          not null
-#  samples_per_pixel :integer          not null
-#  bits              :integer          not null
-#  length            :integer          not null
-#  data              :float            default([]), is an Array
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
+#  id                  :uuid             not null, primary key
+#  version             :integer          not null
+#  channels            :integer          not null
+#  sample_rate         :integer          not null
+#  samples_per_pixel   :integer          not null
+#  bits                :integer          not null
+#  length              :integer          not null
+#  data                :float            default([]), is an Array
+#  digital_remaster_id :uuid             not null
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
 #

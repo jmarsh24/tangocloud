@@ -1,22 +1,29 @@
 class Orchestra < ApplicationRecord
   extend FriendlyId
-  include Titleizable
   friendly_id :name, use: :slugged
 
-  searchkick word_start: [:name, :sort_name], callbacks: :async
+  searchkick word_start: [:name]
 
-  has_many :time_periods, dependent: :destroy
+  has_many :orchestra_periods, dependent: :destroy
+  has_many :orchestra_roles, dependent: :destroy
   has_many :recordings, dependent: :destroy
-  has_many :shares, as: :shareable, dependent: :destroy
+  has_many :compositions, through: :recordings
+  has_many :singers, through: :recordings
+  has_many :genres, through: :recordings
 
-  validates :rank, presence: true, numericality: {only_integer: true}
+  validates :name, presence: true, uniqueness: true
   validates :slug, presence: true, uniqueness: true
 
   has_one_attached :photo
 
   def search_data
     {
-      name:
+      id:,
+      name:,
+      periods: orchestra_periods.pluck(:name),
+      roles: orchestra_roles.pluck(:name),
+      singers: singers.pluck(:name),
+      genres: genres.pluck(:name)
     }
   end
 end
@@ -25,14 +32,10 @@ end
 #
 # Table name: orchestras
 #
-#  id               :uuid             not null, primary key
-#  name             :string           not null
-#  rank             :integer          default(0), not null
-#  sort_name        :string
-#  birth_date       :date
-#  death_date       :date
-#  slug             :string           not null
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  recordings_count :integer          default(0)
+#  id         :uuid             not null, primary key
+#  name       :string           not null
+#  sort_name  :string
+#  slug       :string           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #

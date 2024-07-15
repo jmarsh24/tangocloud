@@ -1,5 +1,7 @@
 class User < ApplicationRecord
-  include User::Authentication
+  devise :database_authenticatable, :registerable,
+    :recoverable, :rememberable, :validatable,
+    :trackable, :confirmable, :omniauthable
 
   searchkick word_start: [:username, :email, :first_name, :last_name]
 
@@ -7,27 +9,21 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :playlists, dependent: :destroy
   has_many :playlist_items, through: :playlists
-  has_many :listens, dependent: :destroy
-  has_many :mood_tags, dependent: :destroy
+  has_many :taggings, dependent: :destroy
+  has_many :tags, through: :taggings
   has_many :shares, dependent: :destroy
   has_many :shared_recordings, through: :shares, source: :shareable, source_type: "Recording"
   has_many :shared_playlists, through: :shares, source: :shareable, source_type: "Playlist"
   has_many :shared_orchestras, through: :shares, source: :shareable, source_type: "Orchestra"
-  has_many :sessions, dependent: :destroy
-  has_many :events, dependent: :destroy
-
-  generates_token_for :email_verification, expires_in: 2.days do
-    email
-  end
-
-  generates_token_for :password_reset, expires_in: 20.minutes do
-    password_salt.last(10)
-  end
+  has_many :shared_tandas, through: :shares, source: :shareable, source_type: "Tanda"
+  has_many :playbacks, dependent: :destroy
 
   after_create :ensure_user_preference
 
   delegate :avatar, to: :user_preference, allow_nil: true
   delegate :first_name, :last_name, :name, to: :user_preference, allow_nil: true
+
+  accepts_nested_attributes_for :user_preference
 
   class << self
     def find_by_email_or_username(email_or_username)
@@ -67,16 +63,25 @@ end
 #
 # Table name: users
 #
-#  id              :uuid             not null, primary key
-#  email           :string           not null
-#  password_digest :string
-#  verified        :boolean          default(FALSE), not null
-#  provider        :string
-#  uid             :string
-#  username        :string
-#  first_name      :string
-#  last_name       :string
-#  admin           :boolean          default(FALSE), not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  id                     :uuid             not null, primary key
+#  username               :string
+#  admin                  :boolean          default(FALSE), not null
+#  provider               :string
+#  uid                    :string
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  email                  :string           default(""), not null
+#  encrypted_password     :string           default(""), not null
+#  reset_password_token   :string
+#  reset_password_sent_at :datetime
+#  remember_created_at    :datetime
+#  sign_in_count          :integer          default(0), not null
+#  current_sign_in_at     :datetime
+#  last_sign_in_at        :datetime
+#  current_sign_in_ip     :string
+#  last_sign_in_ip        :string
+#  confirmation_token     :string
+#  confirmed_at           :datetime
+#  confirmation_sent_at   :datetime
+#  unconfirmed_email      :string
 #
