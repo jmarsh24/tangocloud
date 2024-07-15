@@ -17,11 +17,11 @@ FactoryBot.define do
     format { File.extname(filename).delete_prefix(".") }
 
     trait :flac do
-      filename { "19401008__volver_a_sonar__roberto_rufino__tango.flac" }
+      filename { "19530101__anibal_troilo__vuelve_la_serenata__jorge_casal_y_raul_beron__vals__TC7514_FREE.flac" }
       after(:build) do |audio_file|
         audio_file.file.attach(
-          io: File.open(Rails.root.join("spec/fixtures/files/audio/19401008__volver_a_sonar__roberto_rufino__tango.flac")),
-          filename: "19401008__volver_a_sonar__roberto_rufino__tango.flac",
+          io: File.open(Rails.root.join("spec/fixtures/files/audio/raw/19530101__anibal_troilo__vuelve_la_serenata__jorge_casal_y_raul_beron__vals__TC7514_FREE.flac")),
+          filename: "19530101__anibal_troilo__vuelve_la_serenata__jorge_casal_y_raul_beron__vals__TC7514_FREE.flac",
           content_type: "audio/flac"
         )
       end

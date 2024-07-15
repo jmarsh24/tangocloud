@@ -67,9 +67,9 @@ module Import
       end
 
       def find_or_initialize_remaster_agent(metadata:)
-        return if metadata.publisher.blank?
+        return if metadata.organization.blank?
 
-        RemasterAgent.find_or_initialize_by(name: metadata.grouping)
+        RemasterAgent.find_or_initialize_by(name: metadata.organization)
       end
 
       def find_or_initialize_orchestra(metadata:)
@@ -83,7 +83,7 @@ module Import
       def find_or_initialize_singers(metadata:)
         return if metadata.artist.blank?
 
-        metadata.artist.split(",").filter_map do |singer_name|
+        metadata.artist.split(",").map(&:strip).filter_map do |singer_name|
           next if singer_name.casecmp("instrumental").zero?
 
           if singer_name.start_with?("Dir. ")
@@ -142,9 +142,9 @@ module Import
       end
 
       def find_or_initialize_record_label(metadata:)
-        return if metadata.publisher.blank?
+        return if metadata.organization.blank?
 
-        RecordLabel.find_or_initialize_by(name: metadata.publisher)
+        RecordLabel.find_or_initialize_by(name: metadata.organization)
       end
 
       def build_digital_remaster(audio_file:, metadata:, waveform:, waveform_image:, album_art:, compressed_audio:)
@@ -155,7 +155,8 @@ module Import
         audio_variant = build_audio_variant(metadata:)
         waveform = build_waveform(waveform:)
         @digital_remaster.duration = metadata.duration
-        @digital_remaster.replay_gain = metadata.replay_gain
+        @digital_remaster.replay_gain = metadata.replaygain_track_gain.to_f
+        @digital_remaster.peak_value = metadata.replaygain_track_peak.to_f
         @digital_remaster.tango_cloud_id = metadata.catalog_number&.split("TC")&.last.to_i
         @digital_remaster.album = album
         @digital_remaster.remaster_agent = remaster_agent
