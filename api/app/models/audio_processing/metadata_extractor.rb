@@ -3,29 +3,30 @@ module AudioProcessing
     attr_reader :file, :movie
 
     Metadata = Data.define(
-      :duration,
-      :bit_rate,
-      :bit_depth,
-      :codec_name,
-      :codec_long_name,
-      :sample_rate,
-      :channels,
       :title,
       :artist,
       :album,
-      :date,
+      :year,
       :genre,
       :album_artist,
-      :catalog_number,
-      :composer,
-      :publisher,
-      :grouping,
-      :lyrics,
-      :format,
-      :ert_number,
-      :lyricist,
       :album_artist_sort,
-      :replay_gain
+      :composer,
+      :grouping,
+      :catalog_number,
+      :lyricist,
+      :barcode,
+      :date,
+      :duration,
+      :bit_rate,
+      :codec_name,
+      :sample_rate,
+      :channels,
+      :bit_depth,
+      :format,
+      :organization,
+      :replaygain_track_gain,
+      :replaygain_track_peak,
+      :lyrics
     ).freeze
 
     def initialize(file:)
@@ -39,13 +40,13 @@ module AudioProcessing
       format = metadata.dig(:format)
       tags = format&.dig(:tags)&.transform_keys(&:downcase) || {}
       audio_stream = streams.find { |stream| stream.dig(:codec_type) == "audio" }
+
       Metadata.new(
         duration: format.dig(:duration).to_f,
         bit_rate: format.dig(:bit_rate).to_i,
         bit_depth: audio_stream.dig(:bits_per_raw_sample).to_i,
         format: format.dig(:format_name),
         codec_name: audio_stream.dig(:codec_name),
-        codec_long_name: audio_stream.dig(:codec_long_name),
         sample_rate: audio_stream.dig(:sample_rate).to_i,
         channels: audio_stream.dig(:channels),
         title: tags.dig(:title),
@@ -55,14 +56,16 @@ module AudioProcessing
         genre: tags.dig(:genre),
         album_artist: tags.dig(:album_artist),
         catalog_number: tags.dig(:catalognumber),
-        lyrics: tags.dig(:"lyrics-eng") || tags.dig(:lyrics) || tags.dig(:unsyncedlyrics),
-        publisher: tags.dig(:publisher),
-        ert_number: tags.dig(:barcode),
-        lyricist: tags.dig(:lyricist),
+        lyrics: tags.dig(:"lyrics-eng") || tags.dig(:lyrics) || tags.dig(:unsyncedlyrics) || tags.dig(:"lyrics-xxx"),
+        organization: tags.dig(:organization),
+        barcode: tags.dig(:barcode),
+        lyricist: tags.dig(:lyricist) || tags.dig(:text),
         composer: tags.dig(:composer),
         album_artist_sort: tags.dig(:albumartistsort),
         grouping: tags.dig(:grouping),
-        replay_gain: tags.dig(:replaygain)
+        replaygain_track_gain: tags.dig(:replaygain_track_gain),
+        replaygain_track_peak: tags.dig(:replaygain_track_peak),
+        year: tags.dig(:year)
       )
     end
   end
