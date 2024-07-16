@@ -23,15 +23,17 @@ module ExternalCatalog
         :page_updated_at
       ).freeze
 
-      def initialize(music_id:)
-        @music_id = music_id
+      def initialize(email:, password:)
+        @cookie = login(email:, password:)
       end
 
-      def metadata
+      def fetch(music_id:)
+        @music_id = music_id
+        binding.irb
         Metadata.new(
           date:,
           ert_number:,
-          music_id: @music_id,
+          music_id:,
           title:,
           style:,
           orchestra:,
@@ -49,9 +51,29 @@ module ExternalCatalog
 
       private
 
+      def login(email:, password:)
+        response = Faraday.post("https://www.el-recodo.com/connect?lang=en") do |req|
+          req.headers["User-Agent"] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15"
+          req.headers["Content-Type"] = "application/x-www-form-urlencoded"
+          req.headers["Accept"] = "*/*"
+          req.headers["Connection"] = "keep-alive"
+
+          req.body = {
+            "wish" => "logged",
+            "email" => email,
+            "pwd" => password,
+            "autologin" => "1",
+            "backurl" => ""
+          }
+        end
+
+        response.headers["Set-Cookie"]
+      end
+
       def faraday
         @faraday ||= Faraday.new do |conn|
           conn.headers["User-Agent"] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15"
+          conn.headers["Cookie"] = @cookie if @cookie
         end
       end
 
@@ -136,24 +158,21 @@ module ExternalCatalog
       end
 
       def parse_html
-        @parsed_html ||= Nokogiri::HTML(fetch_page.body)
+        page = faraday.get("https://www.el-recodo.com/music?id=#{@music_id}&lang=en")
+        @parsed_html ||= Nokogiri::HTML(page.body)
       end
 
-      def fetch_page
-        begin
-          response = faraday.get("https://www.el-recodo.com/music?id=#{@music_id}&lang=en")
-          if response.status == 429
-            Rails.logger.error("El Recodo Song Scraper: Too Many Requests")
-            raise TooManyRequestsError
-          elsif response.status != 200
-            Rails.logger.error("El Recodo Song Scraper: Page Not Found")
-            raise PageNotFoundError
-          end
-        rescue Faraday::Error => e
-          Rails.logger.error("El Recodo Song Scraper: #{e.message}")
-          raise
+      def extract_musicians
+        musicians = {}
+        instruments = ["PIANO", "DOUBLEBASS", "BANDONEON", "VIOLIN", "ARRANGER"]
+
+        instruments.each do |instrument|
+          instrument_data = parse_html.at_xpath("//text()[contains(.,'#{instrument}')]").parent
+          musician_links = instrument_data.css("a")
+          musicians[instrument.downcase.to_sym] = musician_links.map { |link| {name: link.text, url: link["href"]} }
         end
-        response
+
+        musicians
       end
     end
   end

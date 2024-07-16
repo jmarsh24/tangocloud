@@ -15,7 +15,10 @@ class CreateElRecodoSongs < ActiveRecord::Migration[7.1]
       t.string :label
       t.jsonb :members, null: false, default: "{}"
       t.text :lyrics
+      t.integer :lyrics_year
       t.string :search_data
+      t.string :matrix
+      t.string :disk
       t.index :ert_number
       t.index :music_id, unique: true
       t.index :synced_at

@@ -25,9 +25,9 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!
 
-  config.before(:suite) do
-    WebMock.disable_net_connect!(allow: ["elasticsearch", "localhost"])
-  end
+  # config.before(:suite) do
+  #   WebMock.disable_net_connect!(allow: ["elasticsearch", "localhost"])
+  # end
 
   config.before(:each) do
     ActiveStorage::Current.url_options = {host: "example.com"}

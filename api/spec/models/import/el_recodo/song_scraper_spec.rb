@@ -4,13 +4,13 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
   describe "#metadata" do
     context "for normal songs" do
       before do
-        music_1_html = Rails.root.join("spec/fixtures/html/el_recodo_music_id_1.html")
-        stub_request(:get, "https://www.el-recodo.com/music?id=1&lang=en")
-          .to_return(status: 200, body: File.read(music_1_html))
+        # music_1_html = Rails.root.join("spec/fixtures/html/el_recodo_music_id_1.html")
+        # stub_request(:get, "https://www.el-recodo.com/music?id=1&lang=en")
+        #   .to_return(status: 200, body: File.read(music_1_html))
       end
 
       it "fetches and parses song metadata correctly" do
-        metadata = described_class.new(music_id: 1).metadata
+        metadata = Import::ElRecodo::SongScraper.new(email: "dogacozen87@gmail.com", password: "myNewPass123").fetch(music_id: 3573)
 
         expect(metadata.ert_number).to eq(1)
         expect(metadata.title).to eq("Te burlas tristeza")
