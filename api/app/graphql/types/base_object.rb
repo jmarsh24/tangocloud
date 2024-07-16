@@ -1,5 +1,6 @@
 module Types
   class BaseObject < GraphQL::Schema::Object
+    include ActionPolicy::GraphQL::Behaviour
     include Authenticating
 
     edge_type_class(Types::BaseEdge)
