@@ -50,6 +50,8 @@ gem "imgproxy-rails"
 gem "active_storage_validations"
 gem "devise"
 gem "jwt_sessions"
+gem "action_policy"
+gem "action_policy-graphql"
 
 # Assets
 gem "stimulus-rails"
