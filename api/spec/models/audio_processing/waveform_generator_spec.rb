@@ -4,18 +4,18 @@ RSpec.describe AudioProcessing::WaveformGenerator do
   fixtures :all
   describe "#generate" do
     it "creates a waveform a flac file" do
-      file = File.open(file_fixture("audio/19401008__volver_a_sonar__roberto_rufino__tango.flac"))
+      file = File.open(file_fixture("audio/raw/19390201__enrique_rodriguez__te_quiero_ver_escopeta__roberto_flores__tango__TC6612_TT.flac"))
 
       waveform = AudioProcessing::WaveformGenerator.new(file:).generate
 
       expect(waveform.version).to eq(2)
       expect(waveform.channels).to eq(1)
-      expect(waveform.sample_rate).to eq(48000)
+      expect(waveform.sample_rate).to eq(44100)
       expect(waveform.samples_per_pixel).to eq(1024)
       expect(waveform.bits).to eq(16)
-      expect(waveform.length).to eq(7743)
+      expect(waveform.length).to eq(6631)
       expect(waveform.data).to be_a(Array)
-      expect(waveform.data.length).to eq(15486)
+      expect(waveform.data.length).to eq(13262)
       expect(waveform.data.first).to be_a(Float)
       expect(waveform.data.first).to be_between(-1, 1)
     end

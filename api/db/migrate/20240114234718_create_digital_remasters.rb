@@ -4,7 +4,8 @@ class CreateDigitalRemasters < ActiveRecord::Migration[7.1]
       t.integer :duration, null: false, default: 0
       t.integer :bpm
       t.string :external_id
-      t.float :replay_gain, null: true
+      t.decimal :replay_gain, precision: 5, scale: 2
+      t.decimal :peak_value, precision: 8, scale: 6
       t.integer :tango_cloud_id, null: false
       t.belongs_to :album, foreign_key: true, type: :uuid, null: false
       t.belongs_to :remaster_agent, foreign_key: true, type: :uuid
