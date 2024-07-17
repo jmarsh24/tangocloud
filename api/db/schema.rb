@@ -129,6 +129,30 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.index ["tango_cloud_id"], name: "index_digital_remasters_on_tango_cloud_id", unique: true
   end
 
+  create_table "el_recodo_people", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.date "birth_date"
+    t.date "death_date"
+    t.string "real_name"
+    t.string "nicknames", array: true
+    t.string "place_of_birth"
+    t.string "url"
+    t.string "image_url"
+    t.datetime "synced_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "page_updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "el_recodo_person_roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "el_recodo_person_id", null: false
+    t.uuid "el_recodo_song_id", null: false
+    t.string "role", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["el_recodo_person_id"], name: "index_el_recodo_person_roles_on_el_recodo_person_id"
+    t.index ["el_recodo_song_id"], name: "index_el_recodo_person_roles_on_el_recodo_song_id"
+  end
+
   create_table "el_recodo_songs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.date "date", null: false
     t.integer "ert_number", default: 0, null: false
@@ -144,7 +168,11 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.string "label"
     t.jsonb "members", default: "{}", null: false
     t.text "lyrics"
+    t.integer "lyrics_year"
     t.string "search_data"
+    t.string "matrix"
+    t.string "disk"
+    t.integer "duration"
     t.datetime "synced_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "page_updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "created_at", null: false
@@ -574,6 +602,8 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
   add_foreign_key "digital_remasters", "audio_files"
   add_foreign_key "digital_remasters", "recordings"
   add_foreign_key "digital_remasters", "remaster_agents"
+  add_foreign_key "el_recodo_person_roles", "el_recodo_people"
+  add_foreign_key "el_recodo_person_roles", "el_recodo_songs"
   add_foreign_key "likes", "users"
   add_foreign_key "lyrics", "compositions"
   add_foreign_key "lyrics", "languages"

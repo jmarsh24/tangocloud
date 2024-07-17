@@ -1,6 +1,6 @@
 class CreateElRecodoPersons < ActiveRecord::Migration[7.1]
   def change
-    create_table :el_recodo_persons, id: :uuid do |t|
+    create_table :el_recodo_people, id: :uuid do |t|
       t.date :birth_date
       t.date :death_date
       t.string :real_name
