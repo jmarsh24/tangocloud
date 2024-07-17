@@ -19,6 +19,7 @@ class CreateElRecodoSongs < ActiveRecord::Migration[7.1]
       t.string :search_data
       t.string :matrix
       t.string :disk
+      t.integer :duration
       t.index :ert_number
       t.index :music_id, unique: true
       t.index :synced_at
