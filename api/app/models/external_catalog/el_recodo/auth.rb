@@ -1,10 +1,8 @@
 module ExternalCatalog
   module ElRecodo
-    class Connection
+    class Auth
       BASE_URL = "https://www.el-recodo.com".freeze
       LOGIN_PATH = "/connect?lang=en".freeze
-
-      attr_reader :connection
 
       def initialize(email: nil, password: nil)
         @email = email || Config.el_recodo_email
@@ -16,22 +14,21 @@ module ExternalCatalog
           conn.headers["Accept"] = "*/*"
           conn.headers["Connection"] = "keep-alive"
         end
-        @cookies = login(email:, password:)
       end
 
-      private
-
-      def login(email:, password:)
-        response = @connection.post(LOGIN_PATH) do |req|
-          req.body = URI.encode_www_form(
-            "wish" => "logged",
-            "email" => email,
-            "pwd" => password,
-            "autologin" => "1",
-            "backurl" => ""
-          )
+      def cookies
+        Rails.cache.fetch("el_recodo_cookies", expires_in: 24.hour) do
+          response = @connection.post(LOGIN_PATH) do |req|
+            req.body = URI.encode_www_form(
+              "wish" => "logged",
+              "email" => @email,
+              "pwd" => @password,
+              "autologin" => "1",
+              "backurl" => ""
+            )
+          end
+          response.headers["set-cookie"]
         end
-        @connection.headers["Cookie"] = response.headers["set-cookie"]
       end
     end
   end
