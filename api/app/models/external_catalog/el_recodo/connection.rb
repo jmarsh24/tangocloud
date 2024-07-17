@@ -1,0 +1,38 @@
+module ExternalCatalog
+  module ElRecodo
+    class Connection
+      BASE_URL = "https://www.el-recodo.com".freeze
+      LOGIN_PATH = "/connect?lang=en".freeze
+
+      attr_reader :connection
+
+      def initialize(email: nil, password: nil)
+        @email = email || Config.el_recodo_email
+        @password = password || Config.el_recodo_password
+        @connection = Faraday.new(url: BASE_URL) do |conn|
+          conn.response :raise_error
+          conn.headers["User-Agent"] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15"
+          conn.headers["Content-Type"] = "application/x-www-form-urlencoded"
+          conn.headers["Accept"] = "*/*"
+          conn.headers["Connection"] = "keep-alive"
+        end
+        @cookies = login(email:, password:)
+      end
+
+      private
+
+      def login(email:, password:)
+        response = @connection.post(LOGIN_PATH) do |req|
+          req.body = URI.encode_www_form(
+            "wish" => "logged",
+            "email" => email,
+            "pwd" => password,
+            "autologin" => "1",
+            "backurl" => ""
+          )
+        end
+        @connection.headers["Cookie"] = response.headers["set-cookie"]
+      end
+    end
+  end
+end

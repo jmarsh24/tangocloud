@@ -9,7 +9,6 @@ class CreateElRecodoPersons < ActiveRecord::Migration[7.1]
       t.string :url
       t.string :image_url
       t.datetime :synced_at, null: false, default: -> { "CURRENT_TIMESTAMP" }
-      t.datetime :page_updated_at, null: false, default: -> { "CURRENT_TIMESTAMP" }
 
       t.timestamps
     end

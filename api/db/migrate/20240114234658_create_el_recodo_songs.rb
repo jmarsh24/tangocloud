@@ -3,7 +3,6 @@ class CreateElRecodoSongs < ActiveRecord::Migration[7.1]
     create_table :el_recodo_songs, id: :uuid do |t|
       t.date :date, null: false
       t.integer :ert_number, null: false, default: 0
-      t.integer :music_id, null: false, default: 0
       t.string :title, null: false
       t.string :style
       t.string :orchestra
