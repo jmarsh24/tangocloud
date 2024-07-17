@@ -2,13 +2,6 @@ require "rails_helper"
 
 RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
   describe "#fetch" do
-    let(:connection) { ExternalCatalog::ElRecodo::Connection.new(email: "email", password: "password") }
-
-    before do
-      stub_request(:post, "https://www.el-recodo.com/connect?lang=en")
-        .to_return(status: 302, headers: {"Set-Cookie" => "some_cookie"})
-    end
-
     context "for normal songs" do
       before do
         stub_request(:get, "https://www.el-recodo.com/music?id=3495&lang=en")
@@ -16,7 +9,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
       end
 
       it "fetches and parses song metadata correctly" do
-        scraper = ExternalCatalog::ElRecodo::SongScraper.new(connection)
+        scraper = ExternalCatalog::ElRecodo::SongScraper.new(cookies: "some_cookie")
         result = scraper.fetch(ert_number: 3495)
 
         metadata = result.metadata
@@ -81,7 +74,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
       end
 
       it "fetches and parses song metadata correctly" do
-        scraper = ExternalCatalog::ElRecodo::SongScraper.new(connection)
+        scraper = ExternalCatalog::ElRecodo::SongScraper.new(cookies: "some_cookie")
         result = scraper.fetch(ert_number: 6417)
         metadata = result.metadata
 
@@ -118,7 +111,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
       end
 
       it "converts the date to the first day of the month or day" do
-        result = ExternalCatalog::ElRecodo::SongScraper.new(connection).fetch(ert_number: 2896)
+        result = ExternalCatalog::ElRecodo::SongScraper.new(cookies: "some_cookie").fetch(ert_number: 2896)
 
         expect(result.metadata.date).to eq(Date.new(1950, 11, 1))
       end
@@ -131,7 +124,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
       end
 
       it "raises a TooManyRequestsError" do
-        expect { ExternalCatalog::ElRecodo::SongScraper.new(connection).fetch(ert_number: 1) }.to raise_error(ExternalCatalog::ElRecodo::SongScraper::TooManyRequestsError)
+        expect { ExternalCatalog::ElRecodo::SongScraper.new(cookies: "some_cookie").fetch(ert_number: 1) }.to raise_error(ExternalCatalog::ElRecodo::SongScraper::TooManyRequestsError)
       end
     end
 
@@ -142,7 +135,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
       end
 
       it "raises a PageNotFoundError" do
-        expect { ExternalCatalog::ElRecodo::SongScraper.new(connection).fetch(ert_number: 1) }.to raise_error(ExternalCatalog::ElRecodo::SongScraper::PageNotFoundError)
+        expect { ExternalCatalog::ElRecodo::SongScraper.new(cookies: "some_cookie").fetch(ert_number: 1) }.to raise_error(ExternalCatalog::ElRecodo::SongScraper::PageNotFoundError)
       end
     end
 
@@ -153,7 +146,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
       end
 
       it "raises a EmptyPageError" do
-        expect { ExternalCatalog::ElRecodo::SongScraper.new(connection).fetch(ert_number: 1) }.to raise_error(ExternalCatalog::ElRecodo::SongScraper::EmptyPageError)
+        expect { ExternalCatalog::ElRecodo::SongScraper.new(cookies: "some_cookie").fetch(ert_number: 1) }.to raise_error(ExternalCatalog::ElRecodo::SongScraper::EmptyPageError)
       end
     end
   end

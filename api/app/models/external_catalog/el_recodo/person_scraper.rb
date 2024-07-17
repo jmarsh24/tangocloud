@@ -18,6 +18,7 @@ module ExternalCatalog
         @cookies = cookies
         @connection = Faraday.new(url: BASE_URL) do |faraday|
           faraday.headers["Cookie"] = cookies
+          faraday.use Faraday::Response::RaiseError
         end
       end
 

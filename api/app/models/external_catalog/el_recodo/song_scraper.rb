@@ -3,6 +3,8 @@ require "active_support/core_ext/string/inflections"
 module ExternalCatalog
   module ElRecodo
     class SongScraper
+      BASE_URL = "https://www.el-recodo.com".freeze
+
       class TooManyRequestsError < StandardError; end
 
       class PageNotFoundError < StandardError; end
@@ -45,8 +47,12 @@ module ExternalCatalog
         :tags
       ).freeze
 
-      def initialize(connection)
-        @connection = connection.connection
+      def initialize(cookies:)
+        @cookies = cookies
+        @connection = Faraday.new(url: BASE_URL) do |faraday|
+          faraday.headers["Cookie"] = cookies
+          faraday.use Faraday::Response::RaiseError
+        end
       end
 
       def fetch(ert_number:)
