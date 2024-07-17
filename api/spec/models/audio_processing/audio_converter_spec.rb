@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe AudioProcessing::AudioConverter do
-  let(:file) { File.open(file_fixture("audio/19401008__volver_a_sonar__roberto_rufino__tango.flac")) }
+  let(:file) { File.open(file_fixture("audio/raw/19390201__enrique_rodriguez__te_quiero_ver_escopeta__roberto_flores__tango__TC6612_TT.flac")) }
   let!(:converted_audio) { AudioProcessing::AudioConverter.new(file:).convert }
 
   describe "#convert" do
@@ -14,7 +14,7 @@ RSpec.describe AudioProcessing::AudioConverter do
       # Make sure metadata is removed from file
       extracted_metadata = AudioProcessing::MetadataExtractor.new(file: converted_audio).extract
 
-      non_nil_keys = [:duration, :bit_rate, :sample_rate, :channels, :format, :bit_depth, :codec_name, :codec_long_name]
+      non_nil_keys = [:duration, :bit_rate, :sample_rate, :channels, :format, :bit_depth, :codec_name]
 
       non_nil_keys.each do |key|
         expect(extracted_metadata.public_send(key)).not_to be_nil

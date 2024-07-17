@@ -93,7 +93,6 @@ group :development do
   gem "rb-fsevent"
   gem "web-console"
   gem "brakeman"
-  gem "error_highlight"
   gem "database_validations"
   gem "database_consistency", require: false
 end

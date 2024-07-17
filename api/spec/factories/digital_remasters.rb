@@ -6,7 +6,8 @@
 #  duration          :integer          default(0), not null
 #  bpm               :integer
 #  external_id       :string
-#  replay_gain       :float
+#  replay_gain       :decimal(5, 2)
+#  peak_value        :decimal(8, 6)
 #  tango_cloud_id    :integer          not null
 #  album_id          :uuid             not null
 #  remaster_agent_id :uuid

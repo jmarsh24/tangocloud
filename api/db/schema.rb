@@ -113,7 +113,8 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.integer "duration", default: 0, null: false
     t.integer "bpm"
     t.string "external_id"
-    t.float "replay_gain"
+    t.decimal "replay_gain", precision: 5, scale: 2
+    t.decimal "peak_value", precision: 8, scale: 6
     t.integer "tango_cloud_id", null: false
     t.uuid "album_id", null: false
     t.uuid "remaster_agent_id"
