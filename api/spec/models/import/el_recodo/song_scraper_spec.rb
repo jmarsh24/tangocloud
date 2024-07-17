@@ -10,8 +10,8 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
       end
 
       it "fetches and parses song metadata correctly" do
-        metadata = Import::ElRecodo::SongScraper.new(email: "dogacozen87@gmail.com", password: "myNewPass123").fetch(music_id: 3573)
-
+        metadata = Import::ElRecodo::SongScraper.new(email: "fake_email@gmail.com", password: "fake_password").fetch(music_id: 3573)
+        binding.irb
         expect(metadata.ert_number).to eq(1)
         expect(metadata.title).to eq("Te burlas tristeza")
         expect(metadata.date).to eq(Date.new(1960, 7, 28))

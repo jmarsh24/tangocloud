@@ -24,12 +24,14 @@ module ExternalCatalog
       ).freeze
 
       def initialize(email:, password:)
+        email ||= Config.el_recodo_email
+        password ||= Config.el_recodo_password
         @cookie = login(email:, password:)
       end
 
       def fetch(music_id:)
         @music_id = music_id
-        binding.irb
+
         Metadata.new(
           date:,
           ert_number:,
