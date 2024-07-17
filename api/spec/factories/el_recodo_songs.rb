@@ -37,7 +37,11 @@ end
 #  label           :string
 #  members         :jsonb            not null
 #  lyrics          :text
+#  lyrics_year     :integer
 #  search_data     :string
+#  matrix          :string
+#  disk            :string
+#  duration        :integer
 #  synced_at       :datetime         not null
 #  page_updated_at :datetime         not null
 #  created_at      :datetime         not null
