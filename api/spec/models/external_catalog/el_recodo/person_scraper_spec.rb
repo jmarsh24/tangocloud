@@ -1,13 +1,6 @@
 require "rails_helper"
 
 RSpec.describe ExternalCatalog::ElRecodo::PersonScraper do
-  let(:connection) { ExternalCatalog::ElRecodo::Connection.new(email: "email", password: "password") }
-
-  before do
-    stub_request(:post, "https://www.el-recodo.com/connect?lang=en")
-      .to_return(status: 302, headers: {"Set-Cookie" => "some_cookie"})
-  end
-
   describe "#fetch" do
     before do
       stub_request(:get, "https://www.el-recodo.com/music?O=Juan%20D'ARIENZO&lang=en")
@@ -15,7 +8,8 @@ RSpec.describe ExternalCatalog::ElRecodo::PersonScraper do
     end
 
     it "returns a person object with the parsed data" do
-      result = ExternalCatalog::ElRecodo::PersonScraper.new(connection).fetch(path: "music?O=Juan D'ARIENZO&lang=en")
+      person_scraper = ExternalCatalog::ElRecodo::PersonScraper.new(cookies: "some_cookie")
+      result = person_scraper.fetch(path: "music?O=Juan D'ARIENZO&lang=en")
 
       expect(result.name).to eq("Juan D'Arienzo")
       expect(result.birth_date).to eq(Date.new(1900, 12, 14))

@@ -1,6 +1,8 @@
 module ExternalCatalog
   module ElRecodo
     class PersonScraper
+      BASE_URL = "https://www.el-recodo.com".freeze
+
       Person = Data.define(
         :name,
         :birth_date,
@@ -12,8 +14,11 @@ module ExternalCatalog
         :image_path
       ).freeze
 
-      def initialize(connection)
-        @connection = connection.connection
+      def initialize(cookies:)
+        @cookies = cookies
+        @connection = Faraday.new(url: BASE_URL) do |faraday|
+          faraday.headers["Cookie"] = cookies
+        end
       end
 
       def fetch(path:)
