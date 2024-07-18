@@ -218,6 +218,8 @@ module ExternalCatalog
             person_name.gsub!(/^Dir\.\s*/i, "")
 
             person_name.split(" y ").each do |name|
+              next if name == "Instrumental"
+
               people << Person.new(
                 name: format_name(person_name),
                 url: URI::DEFAULT_PARSER.escape(person_url),

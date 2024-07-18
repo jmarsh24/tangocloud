@@ -146,6 +146,55 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
       end
     end
 
+    context "for instrumental songs" do
+      before do
+        music_3_html = Rails.root.join("spec/fixtures/html/el_recodo_music_id_3.html")
+        stub_request(:get, "https://www.el-recodo.com/music?id=3&lang=en")
+          .to_return(status: 200, body: File.read(music_3_html))
+      end
+
+      it "does not return instrumental as person" do
+        scraper = ExternalCatalog::ElRecodo::SongScraper.new(cookies: "some_cookie")
+        result = scraper.fetch(ert_number: 3)
+        metadata = result.metadata
+
+        expect(metadata.ert_number).to eq(3)
+        expect(metadata.title).to eq("La maleva")
+        expect(metadata.date).to eq(Date.new(1939, 3, 24))
+        expect(metadata.style).to eq("Tango")
+        expect(metadata.label).to eq("Odeon")
+        expect(metadata.matrix).to be_nil
+        expect(metadata.disk).to be_nil
+        expect(metadata.instrumental).to be_truthy
+        expect(metadata.speed).to eq("67")
+        expect(metadata.duration).to eq(154)
+        expect(metadata.lyrics).to include("Maleva que has vuelto al nido")
+        expect(metadata.synced_at).to be_within(1.second).of(Time.zone.now)
+        expect(metadata.page_updated_at).to eq(DateTime.parse("2013-05-28 00:58:00"))
+
+        expect(result.musicians).to be_empty
+
+        people = result.people
+
+        expect(people).not_to include(have_attributes(name: "Instrumental", role: "singer", url: "%23"))
+
+        expect(people).to include(
+          have_attributes(name: "Rodolfo Biagi", role: "orchestra", url: "music?O=Rodolfo%20BIAGI&lang=en"),
+          have_attributes(name: "Antonio Buglione", role: "composer", url: "music?Cr=Antonio%20Buglione&lang=en"),
+          have_attributes(name: "Mario Pardo", role: "author", url: "music?Ar=Mario%20Pardo&lang=en")
+        )
+
+        expect(result.lyricist).to be_nil
+
+        tags = result.tags
+        expect(tags).to include(
+          have_attributes(name: "Playful Rhythm", url: "music?t1=Rj&lang=en"),
+          have_attributes(name: "Bandoneon Variation", url: "music?t1=Sbv&lang=en"),
+          have_attributes(name: "Piano Solo", url: "music?t1=Sps&lang=en")
+        )
+      end
+    end
+
     context "when date is not valid" do
       before do
         music_2896_html = Rails.root.join("spec/fixtures/html/el_recodo_music_id_2896.html")
