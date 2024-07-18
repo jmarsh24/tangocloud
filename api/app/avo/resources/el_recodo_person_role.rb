@@ -6,7 +6,7 @@ class Avo::Resources::ElRecodoPersonRole < Avo::BaseResource
   # }
 
   def fields
-    field :id, as: :idlo
+    field :id, as: :id
     field :el_recodo_person_id, as: :text
     field :el_recodo_song_id, as: :text
     field :role, as: :text

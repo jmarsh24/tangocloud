@@ -6,7 +6,7 @@ class Avo::Resources::ElRecodoPerson < Avo::BaseResource
   # }
 
   def fields
-    field :id, as: :idlo
+    field :id, as: :id
     field :name, as: :text
     field :birth_date, as: :date
     field :death_date, as: :date
