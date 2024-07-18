@@ -44,9 +44,14 @@ module ExternalCatalog
         response = @connection.get(scraped_person_data.image_path)
 
         io = StringIO.new(response.body)
-        content_type = response.headers["content-type"]
 
-        person.image.attach(io:, filename: File.basename(scraped_person_data.image_path), content_type:)
+        content_type = response.headers["content-type"]
+        file_extension = Mime::Type.lookup(content_type).symbol.to_s
+        filename = "#{scraped_person_data.name.parameterize}.#{file_extension}"
+
+        person.image.attach(io:, filename:, content_type:)
+
+        # person.image.attach(io:, filename: File.basename(scraped_person_data.image_path), content_type:)
 
         person
       end
