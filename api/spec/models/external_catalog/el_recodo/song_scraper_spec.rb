@@ -104,6 +104,48 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
       end
     end
 
+    context "for biagi song" do
+      before do
+        music_1_html = Rails.root.join("spec/fixtures/html/el_recodo_music_id_1.html")
+        stub_request(:get, "https://www.el-recodo.com/music?id=1&lang=en")
+          .to_return(status: 200, body: File.read(music_1_html))
+      end
+
+      it "fetches and parses song metadata correctly" do
+        scraper = ExternalCatalog::ElRecodo::SongScraper.new(cookies: "some_cookie")
+        result = scraper.fetch(ert_number: 1)
+        metadata = result.metadata
+
+        expect(metadata.ert_number).to eq(1)
+        expect(metadata.title).to eq("Te burlas tristeza")
+        expect(metadata.date).to eq(Date.new(1960, 7, 28))
+        expect(metadata.style).to eq("Tango")
+        expect(metadata.label).to eq("Columbia")
+        expect(metadata.matrix).to be_nil
+        expect(metadata.disk).to be_nil
+        expect(metadata.instrumental).to be_falsey
+        expect(metadata.speed).to be_nil
+        expect(metadata.duration).to eq(144)
+        expect(metadata.lyrics).to include("Tristeza...\nCon el vino de mi mesa")
+        expect(metadata.synced_at).to be_within(1.second).of(Time.zone.now)
+        expect(metadata.page_updated_at).to eq(DateTime.parse("2018-10-14 22:04:00"))
+
+        expect(result.musicians).to be_empty
+
+        people = result.people
+
+        expect(people).to include(
+          have_attributes(name: "Rodolfo Biagi", role: "orchestra", url: "music?O=Rodolfo%20BIAGI&lang=en"),
+          have_attributes(name: "Hugo Duval", role: "singer", url: "music?C=Hugo%20Duval&lang=en"),
+          have_attributes(name: "Edmundo Baya", role: "composer", url: "music?Cr=Edmundo%20Baya&lang=en"),
+          have_attributes(name: "Julio César Curi", role: "author", url: "music?Ar=Julio%20C%C3%A9sar%20Curi&lang=en")
+        )
+
+        expect(result.lyricist).to be_nil
+        expect(result.tags).to be_empty
+      end
+    end
+
     context "when date is not valid" do
       before do
         music_2896_html = Rails.root.join("spec/fixtures/html/el_recodo_music_id_2896.html")
