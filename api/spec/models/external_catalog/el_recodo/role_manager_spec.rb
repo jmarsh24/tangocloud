@@ -21,7 +21,7 @@ RSpec.describe ExternalCatalog::ElRecodo::RoleManager do
       person = ExternalCatalog::ElRecodo::SongScraper::Person.new(
         name: "Juan D'Arienzo",
         role: "orchestra",
-        url: "music?O=Juan D'ARIENZO&lang=en"
+        url: "music?O=Juan%20D'ARIENZO&lang=en"
       )
 
       role_manager = ExternalCatalog::ElRecodo::RoleManager.new(cookies: "some_cookie")

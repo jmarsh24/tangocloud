@@ -46,7 +46,7 @@ module ExternalCatalog
         io = StringIO.new(response.body)
         content_type = response.headers["content-type"]
 
-        person.image.attach(io:, filename: File.basename(image_url), content_type:)
+        person.image.attach(io:, filename: File.basename(scraped_person_data.image_path), content_type:)
 
         person
       end
