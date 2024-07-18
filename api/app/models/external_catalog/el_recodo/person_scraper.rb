@@ -80,7 +80,7 @@ module ExternalCatalog
         return [] unless children
 
         nicknames_node = children.find { |node| node.text? && node.text.include?("Nickname(s):") }
-        nicknames = nicknames_node&.text&.split("Nickname(s):")&.last&.strip&.split(",")&.map(&:strip)
+        nicknames = nicknames_node&.text&.split("Nickname(s):")&.last&.strip&.split(" y ")&.map(&:strip)
         nicknames || []
       end
 
