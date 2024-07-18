@@ -1,6 +1,27 @@
 class ElRecodoPersonRole < ApplicationRecord
   belongs_to :el_recodo_person
-  belongs_to :role
+  belongs_to :el_recodo_song
+
+  validates :el_recodo_person, presence: true
+  validates :role, presence: true
+
+  ROLES = [
+    "orchestra",
+    "lyricist",
+    "pianist",
+    "arranger",
+    "doublebassist",
+    "bandoneonist",
+    "violinist",
+    "singer"
+  ].freeze
+
+  validates :role, inclusion: {in: ROLES}
+
+  alias_attribute :person, :el_recodo_person
+  alias_attribute :song, :el_recodo_song
+
+  normalizes :role, with: ->(value) { value.to_s.downcase }
 end
 
 # == Schema Information

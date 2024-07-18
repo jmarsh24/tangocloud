@@ -131,17 +131,17 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
   end
 
   create_table "el_recodo_people", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", default: "", null: false
     t.date "birth_date"
     t.date "death_date"
     t.string "real_name"
     t.string "nicknames", array: true
     t.string "place_of_birth"
-    t.string "url"
-    t.string "image_url"
+    t.string "path"
     t.datetime "synced_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "page_updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_el_recodo_people_on_name", unique: true
   end
 
   create_table "el_recodo_person_roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -157,17 +157,9 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
   create_table "el_recodo_songs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.date "date", null: false
     t.integer "ert_number", default: 0, null: false
-    t.integer "music_id", default: 0, null: false
     t.string "title", null: false
     t.string "style"
-    t.string "orchestra"
-    t.string "singer"
-    t.string "soloist"
-    t.string "director"
-    t.string "composer"
-    t.string "author"
     t.string "label"
-    t.jsonb "members", default: "{}", null: false
     t.text "lyrics"
     t.integer "lyrics_year"
     t.string "search_data"
@@ -179,8 +171,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["date"], name: "index_el_recodo_songs_on_date"
-    t.index ["ert_number"], name: "index_el_recodo_songs_on_ert_number"
-    t.index ["music_id"], name: "index_el_recodo_songs_on_music_id", unique: true
+    t.index ["ert_number"], name: "index_el_recodo_songs_on_ert_number", unique: true
     t.index ["page_updated_at"], name: "index_el_recodo_songs_on_page_updated_at"
     t.index ["synced_at"], name: "index_el_recodo_songs_on_synced_at"
   end
