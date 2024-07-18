@@ -41,6 +41,8 @@ module ExternalCatalog
           path:,
           image_path: parse_image_path(image_element)
         )
+      rescue
+        binding.irb
       end
 
       private
