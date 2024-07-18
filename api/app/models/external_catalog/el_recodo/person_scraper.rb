@@ -21,7 +21,7 @@ module ExternalCatalog
           faraday.use(
             :throttler,
             rate: 20,
-            wait: 60,
+            wait: 60
           )
           faraday.use Faraday::Response::RaiseError
         end

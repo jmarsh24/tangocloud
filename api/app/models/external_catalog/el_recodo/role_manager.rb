@@ -11,7 +11,7 @@ module ExternalCatalog
           faraday.use(
             :throttler,
             rate: 20,
-            wait: 60,
+            wait: 60
           )
           faraday.use Faraday::Response::RaiseError
         end
@@ -47,15 +47,17 @@ module ExternalCatalog
           path: scraped_person_data.path
         )
 
-        response = @connection.get(scraped_person_data.image_path)
+        if scraped_person_data.image_path.present?
+          response = @connection.get(scraped_person_data.image_path)
 
-        io = StringIO.new(response.body)
+          io = StringIO.new(response.body)
 
-        content_type = response.headers["content-type"]
-        file_extension = Mime::Type.lookup(content_type).symbol.to_s
-        filename = "#{scraped_person_data.name.parameterize}.#{file_extension}"
+          content_type = response.headers["content-type"]
+          file_extension = Mime::Type.lookup(content_type).symbol.to_s
+          filename = "#{scraped_person_data.name.parameterize}.#{file_extension}"
 
-        person.image.attach(io:, filename:, content_type:)
+          person.image.attach(io:, filename:, content_type:)
+        end
 
         person
       end
