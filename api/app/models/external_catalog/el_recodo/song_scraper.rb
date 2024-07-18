@@ -127,7 +127,7 @@ module ExternalCatalog
 
         Person.new(
           name: cite_element.text.strip.gsub(/\s+/, " ")&.titleize,
-          url: cite_element["href"],
+          url: URI::DEFAULT_PARSER.escape(cite_element["href"]),
           role: "lyricist"
         )
       end
@@ -173,7 +173,11 @@ module ExternalCatalog
               musician_names.each do |link|
                 musician_name = link.text.strip.gsub(/\s+/, " ")&.titleize
                 musician_url = link["href"]
-                musicians << Person.new(name: musician_name, url: musician_url, role: current_role.downcase)
+                musicians << Person.new(
+                  name: musician_name,
+                  url: URI::DEFAULT_PARSER.escape(musician_url),
+                  role: current_role.downcase
+                )
               end
             end
             current_role = nil
@@ -188,7 +192,11 @@ module ExternalCatalog
           musician_names.each do |link|
             musician_name = link.text.strip.gsub(/\s+/, " ")&.titleize
             musician_url = link["href"]
-            musicians << Person.new(name: musician_name, url: musician_url, role: current_role.downcase)
+            musicians << Person.new(
+              name: musician_name,
+              url: URI::DEFAULT_PARSER.escape(musician_url),
+              role: current_role.downcase
+            )
           end
         end
 
@@ -210,7 +218,11 @@ module ExternalCatalog
             person_name.gsub!(/^Dir\.\s*/i, "")
 
             person_name.split(" y ").each do |name|
-              people << Person.new(name: format_name(person_name), url: person_url, role: role.downcase)
+              people << Person.new(
+                name: format_name(person_name),
+                url: URI::DEFAULT_PARSER.escape(person_url),
+                role: role.downcase
+              )
             end
           end
         end
@@ -223,7 +235,10 @@ module ExternalCatalog
         parsed_page.css(".list-group-item.mb-0 li.list-inline-item a").each do |tag_link|
           tag_name = tag_link.text.strip.gsub(/\s+/, " ")&.titleize
           tag_url = tag_link["href"]
-          tags << Tag.new(name: tag_name, url: tag_url)
+          tags << Tag.new(
+            name: tag_name,
+            url: URI::DEFAULT_PARSER.escape(tag_url)
+          )
         end
         tags
       end

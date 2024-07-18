@@ -29,7 +29,9 @@ module ExternalCatalog
         person = ElRecodoPerson.find_by(name: person_data.name)
         return person if person
 
-        scraped_person_data = @person_scraper.fetch(path: person_data.url)
+        encoded_url = URI::DEFAULT_PARSER.escape(person_data.url)
+
+        scraped_person_data = @person_scraper.fetch(path: encoded_url)
 
         person = ElRecodoPerson.create!(
           name: scraped_person_data.name,

@@ -38,7 +38,7 @@ RSpec.describe ExternalCatalog::ElRecodo::RoleManager do
       expect(el_recodo_song.people_roles.first.person.real_name).to eq("D'Arienzo, Juan")
       expect(el_recodo_song.people_roles.first.person.nicknames).to eq(["El Rey del compás"])
       expect(el_recodo_song.people_roles.first.person.place_of_birth).to eq("Buenos Aires Argentina")
-      expect(el_recodo_song.people_roles.first.person.path).to eq("music?O=Juan D'ARIENZO&lang=en")
+      expect(el_recodo_song.people_roles.first.person.path).to eq("music?O=Juan%20D'ARIENZO&lang=en")
       expect(el_recodo_song.people_roles.first.person.image.attached?).to be(true)
     end
   end
