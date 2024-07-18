@@ -1,47 +1,51 @@
 class Avo::Resources::ElRecodoSong < Avo::BaseResource
-  self.title = "El Recodo Songs"
-  self.includes = [:recording]
-  # self.index_query = -> {
-  #   query.order(music_id: :asc)
+  # self.includes = []
+  # self.attachments = []
+  # self.search = {
+  #   query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
   # }
-  self.search = {
-    query: -> { query.search(params[:q]).results },
-    item: -> do
-      {
-        title: "#{record.title} - #{record&.orchestra&.titleize_name} - #{record&.singer} - #{record&.style&.titleize_name}"
-      }
-    end
-  }
 
   def fields
-    field :id, as: :id, readonly: true, only_on: :show
-    field :ert_number, as: :number, readonly: true, sortable: true, only_on: :show
-    field :music_id, as: :number, readonly: true, sortable: true
-    field :external, as: :text do
-      link_to "Link", "https://www.el-recodo.com/music?id=#{record.music_id}", target: "_blank", rel: "noopener"
-    end
-    field :title, as: :text, readonly: true, format_using: -> { value&.truncate 28 }
-    field :recording, as: :belongs_to, only_on: :show
-    field :orchestra, as: :text, readonly: true, format_using: -> { value&.titleize_name }
-    field :date, as: :date, readonly: true, sortable: true
-    field :style, as: :text, readonly: true, format_using: -> { value&.titleize&.truncate 8 }
-    field :singer, as: :text, readonly: true, format_using: -> { value&.truncate 24 }
-    field :author, as: :text, readonly: true, format_using: -> { value&.truncate 24 }
-    field :composer, as: :text, readonly: true, format_using: -> { value&.titleize_name }
-    field :soloist, as: :text, readonly: true, format_using: -> { value&.titleize_name }
-    field :director, as: :text, readonly: true, format_using: -> { value&.titleize_name }
-    field :members, as: :code, readonly: true, format_using: -> { value&.titleize_name }
-    field :record_label, as: :text, readonly: true, only_on: :show
-    field :lyrics, as: :textarea, readonly: true, only_on: :show, format_using: -> { simple_format value }
-    field :synced_at, as: :date_time, readonly: true, only_on: :show
-    field :page_updated_at, as: :date_time, readonly: true, only_on: :show
-  end
-
-  def actions
-    action Avo::Actions::ExportCsv
-  end
-
-  def filters
-    filter Avo::Filters::ErtNumber
+    field :id, as: :id
+    field :date, as: :date
+    field :ert_number, as: :number
+    field :title, as: :text
+    field :style, as: :text
+    field :label, as: :text
+    field :instrumental, as: :boolean
+    field :lyrics, as: :textarea
+    field :lyrics_year, as: :number
+    field :search_data, as: :text
+    field :matrix, as: :text
+    field :disk, as: :text
+    field :speed, as: :number
+    field :duration, as: :number
+    field :synced_at, as: :date_time
+    field :page_updated_at, as: :date_time
+    field :el_recodo_person_roles, as: :has_many
+    field :el_recodo_people, as: :has_many, through: :el_recodo_person_roles
+    field :orchestra_roles, as: :has_one
+    field :orchestra, as: :has_one
+    field :lyricist_roles, as: :has_many
+    field :lyricists, as: :has_many, through: :lyricist_roles
+    field :pianist_roles, as: :has_many
+    field :pianists, as: :has_many, through: :pianist_roles
+    field :arranger_roles, as: :has_many
+    field :arrangers, as: :has_many, through: :arranger_roles
+    field :doublebassist_roles, as: :has_many
+    field :doublebassists, as: :has_many, through: :doublebassist_roles
+    field :bandoneonist_roles, as: :has_many
+    field :bandoneonists, as: :has_many, through: :bandoneonist_roles
+    field :violinist_roles, as: :has_many
+    field :violinists, as: :has_many, through: :violinist_roles
+    field :singer_roles, as: :has_many
+    field :singers, as: :has_many, through: :singer_roles
+    field :composer_roles, as: :has_many
+    field :composers, as: :has_many, through: :composer_roles
+    field :director_roles, as: :has_one
+    field :director, as: :has_one
+    field :soloist_roles, as: :has_one
+    field :soloist, as: :has_one
+    field :recording, as: :has_one
   end
 end

@@ -51,8 +51,6 @@ module ExternalCatalog
 
         person.image.attach(io:, filename:, content_type:)
 
-        # person.image.attach(io:, filename: File.basename(scraped_person_data.image_path), content_type:)
-
         person
       end
     end
