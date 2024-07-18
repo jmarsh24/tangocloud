@@ -26,8 +26,8 @@ class ElRecodoSong < ApplicationRecord
 
   has_many :el_recodo_person_roles, dependent: :destroy
   has_many :el_recodo_people, through: :el_recodo_person_roles
-  alias_attribute :people, :el_recodo_people
-  alias_attribute :people_roles, :el_recodo_person_roles
+  alias_method :people, :el_recodo_people
+  alias_method :people_roles, :el_recodo_person_roles
 
   has_one :orchestra_roles, -> { where(role: "orchestra") }, class_name: "ElRecodoPersonRole", dependent: :destroy, inverse_of: :el_recodo_song
   has_one :orchestra, through: :orchestra_roles, source: :el_recodo_person
