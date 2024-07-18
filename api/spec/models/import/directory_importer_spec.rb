@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe Import::DirectoryImporter do
   describe "#sync" do
-    it "creates 6 AudioTransfers and enqueues AudioTransferImportJob 5 times for supported files" do
+    it "creates 6 DigitalRemasters and enqueues AudioFileImportJob 5 times for supported files" do
       directory_path = Rails.root.join("spec/fixtures/files/audio")
 
       Import::DirectoryImporter.new(directory_path).sync

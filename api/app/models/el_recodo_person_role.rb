@@ -20,8 +20,8 @@ class ElRecodoPersonRole < ApplicationRecord
 
   validates :role, inclusion: {in: ROLES}
 
-  alias_attribute :person, :el_recodo_person
-  alias_attribute :song, :el_recodo_song
+  alias_method :person, :el_recodo_person
+  alias_method :song, :el_recodo_song
 
   normalizes :role, with: ->(value) { value.to_s.downcase }
 end
