@@ -9,7 +9,6 @@ module Types
     field :id, ID, null: true
     field :label, String, null: true
     field :lyrics, String, null: true
-    field :music_id, Integer, null: true
     field :orchestra, String, null: true
     field :singer, String, null: true
     field :style, String, null: true

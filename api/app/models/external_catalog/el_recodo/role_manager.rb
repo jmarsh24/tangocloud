@@ -12,7 +12,7 @@ module ExternalCatalog
       end
 
       def sync_people(el_recodo_song:, people:)
-        people.each do |person_data|
+        people.map do |person_data|
           person = find_or_scrape_person(person_data)
 
           ElRecodoPersonRole.find_or_create_by!(

@@ -160,11 +160,13 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.string "title", null: false
     t.string "style"
     t.string "label"
+    t.boolean "instrumental", default: true, null: false
     t.text "lyrics"
     t.integer "lyrics_year"
     t.string "search_data"
     t.string "matrix"
     t.string "disk"
+    t.integer "speed"
     t.integer "duration"
     t.datetime "synced_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "page_updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false

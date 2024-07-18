@@ -4,14 +4,14 @@ RSpec.describe ExternalCatalog::ElRecodo::SongSynchronizer do
   describe "#sync_songs" do
     it "enqueues jobs for the specified range of music IDs" do
       ElRecodoSong.destroy_all
-      ElRecodoSong.create!(title: "random song", music_id: 1, date: Date.today, page_updated_at: Time.now)
-      ElRecodoSong.create!(title: "random song 2", music_id: 2, date: Date.today, page_updated_at: Time.now)
+      ElRecodoSong.create!(title: "random song", ert_number: 1, date: Date.today, page_updated_at: Time.now)
+      ElRecodoSong.create!(title: "random song 2", ert_number: 2, date: Date.today, page_updated_at: Time.now)
       expect do
-        ExternalCatalog::ElRecodo::SongSynchronizer.new.sync_songs(interval: 20)
+        ExternalCatalog::ElRecodo::SongSynchronizer.new.sync_songs
       end.to have_enqueued_job(ExternalCatalog::ElRecodo::SyncSongJob).exactly(2).times
 
-      expect(ExternalCatalog::ElRecodo::SyncSongJob).to have_been_enqueued.with(music_id: 1, interval: 20)
-      expect(ExternalCatalog::ElRecodo::SyncSongJob).to have_been_enqueued.with(music_id: 2, interval: 20)
+      expect(ExternalCatalog::ElRecodo::SyncSongJob).to have_been_enqueued.with(ert_number: 1)
+      expect(ExternalCatalog::ElRecodo::SyncSongJob).to have_been_enqueued.with(ert_number: 2)
     end
   end
 
@@ -23,27 +23,68 @@ RSpec.describe ExternalCatalog::ElRecodo::SongSynchronizer do
     context "when the song does not exist" do
       it "creates a new song" do
         freeze_time
-        expect { ExternalCatalog::ElRecodo::SongSynchronizer.new.sync_song(music_id: 1) }.to change(ElRecodoSong, :count).by(1)
-        song = ElRecodoSong.find_by(music_id: 1)
-
-        expect(song.ert_number).to eq(1)
-        expect(song.title).to eq("Te burlas tristeza")
-        expect(song.date).to eq(Date.new(1960, 7, 28))
-        expect(song.style).to eq("TANGO")
-        expect(song.orchestra).to eq("Rodolfo BIAGI")
-        expect(song.singer).to eq("Hugo Duval")
-        expect(song.composer).to eq("Edmundo Baya")
-        expect(song.author).to eq("Julio César Curi")
-        expect(song.label).to eq("Columbia")
-        expect(song.music_id).to eq(1)
-        expect(song.page_updated_at).to eq(Time.zone.parse("2018-10-14 02:00:00.000000000 +0200"))
-        expect(song.synced_at).to eq(Time.zone.now)
+        role_manager = ExternalCatalog::ElRecodo::RoleManager.new(cookies: "some_cookie")
+        song_scraper = ExternalCatalog::ElRecodo::SongScraper.new(cookies: "some_cookie")
+        allow(song_scraper).to receive(:fetch).and_return(
+          ExternalCatalog::ElRecodo::SongScraper::Result.new(
+            metadata: ExternalCatalog::ElRecodo::SongScraper::Metadata.new(
+              ert_number: 1,
+              title: "Te burlas tristeza",
+              date: Date.new(1960, 7, 28),
+              style: "Tango",
+              label: "Odeon",
+              matrix: "Odeon 18307",
+              lyrics: nil,
+              lyrics_year: nil,
+              disk: nil,
+              instrumental: true,
+              speed: nil,
+              duration: 60,
+              synced_at: Time.now,
+              page_updated_at: Time.now
+            ),
+            people: [
+              ExternalCatalog::ElRecodo::SongScraper::Person.new(
+                name: "Hugo Duval",
+                role: "singer",
+                url: "https://www.el-recodo.com/musician/1/hugo-duval"
+              ),
+              ExternalCatalog::ElRecodo::SongScraper::Person.new(
+                name: "Edmundo Baya",
+                role: "composer",
+                url: "https://www.el-recodo.com/musician/2/edmundo-baya"
+              ),
+              ExternalCatalog::ElRecodo::SongScraper::Person.new(
+                name: "Julio César Curi",
+                role: "author",
+                url: "https://www.el-recodo.com/musician/3/julio-cesar-curi"
+              ),
+              ExternalCatalog::ElRecodo::SongScraper::Person.new(
+                name: "Rodolfo BIAGI",
+                role: "orchestra",
+                url: "https://www.el-recodo.com/musician/4/rodolfo-biagi"
+              )
+            ],
+            musicians: [],
+            lyricist: nil,
+            tags: []
+          )
+        )
+        expect(role_manager).to receive(:sync_people).with(
+          el_recodo_song: an_instance_of(ElRecodoSong),
+          people: [
+            an_instance_of(ExternalCatalog::ElRecodo::SongScraper::Person),
+            an_instance_of(ExternalCatalog::ElRecodo::SongScraper::Person),
+            an_instance_of(ExternalCatalog::ElRecodo::SongScraper::Person),
+            an_instance_of(ExternalCatalog::ElRecodo::SongScraper::Person)
+          ]
+        )
+        ExternalCatalog::ElRecodo::SongSynchronizer.new(cookies: "some_cookie", song_scraper:, role_manager:).sync_song(ert_number: 1)
       end
 
       it "updates an existing song" do
         ElRecodoSong.create!(
-          ert_number: 0,
-          music_id: 1,
+          ert_number: 1,
           title: "foo",
           date: Date.today,
           page_updated_at: Time.now,
@@ -56,22 +97,21 @@ RSpec.describe ExternalCatalog::ElRecodo::SongSynchronizer do
           lyrics: "foo"
         )
 
-        expect { ExternalCatalog::ElRecodo::SongSynchronizer.new.sync_song(music_id: 1) }.to change { ElRecodoSong.find_by(music_id: 1).title }.from("foo").to("Te burlas tristeza")
-        expect { ExternalCatalog::ElRecodo::SongSynchronizer.new.sync_song(music_id: 1) }.not_to change { ElRecodoSong.all.count }
+        expect { ExternalCatalog::ElRecodo::SongSynchronizer.new(cookies: "some_cookie").sync_song(ert_number: 1) }.to change { ElRecodoSong.find_by(ert_number: 1).title }.from("foo").to("Te burlas tristeza")
+        expect { ExternalCatalog::ElRecodo::SongSynchronizer.new(cookies: "some_cookie").sync_song(ert_number: 1) }.not_to change { ElRecodoSong.all.count }
       end
     end
 
     context "when the song already exists" do
       it "updates the existing song with the new attributes" do
         existing_song = ElRecodoSong.create!(
-          music_id: 1,
           ert_number: 1,
           title: "Old Title",
           date: Date.new(1960, 7, 28),
           page_updated_at: 1.week.ago
         )
 
-        expect { ExternalCatalog::ElRecodo::SongSynchronizer.new.sync_song(music_id: 1) }.not_to change(ElRecodoSong, :count)
+        expect { ExternalCatalog::ElRecodo::SongSynchronizer.new(cookies: "some_cookie").sync_song(ert_number: 1) }.not_to change(ElRecodoSong, :count)
         existing_song.reload
 
         expect(existing_song.title).to eq("Te burlas tristeza")

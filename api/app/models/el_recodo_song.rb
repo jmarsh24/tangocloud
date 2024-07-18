@@ -8,11 +8,13 @@
 #  title           :string           not null
 #  style           :string
 #  label           :string
+#  instrumental    :boolean          default(TRUE), not null
 #  lyrics          :text
 #  lyrics_year     :integer
 #  search_data     :string
 #  matrix          :string
 #  disk            :string
+#  speed           :integer
 #  duration        :integer
 #  synced_at       :datetime         not null
 #  page_updated_at :datetime         not null
@@ -50,6 +52,16 @@ class ElRecodoSong < ApplicationRecord
 
   has_many :singer_roles, -> { where(role: "singer") }, class_name: "ElRecodoPersonRole", dependent: :destroy, inverse_of: :el_recodo_song
   has_many :singers, through: :singer_roles, source: :el_recodo_person
+
+  has_many :composer_roles, -> { where(role: "composer") }, class_name: "ElRecodoPersonRole", dependent: :destroy, inverse_of: :el_recodo_song
+  has_many :composers, through: :composer_roles, source: :el_recodo_person
+
+  has_one :director_roles, -> { where(role: "director") }, class_name: "ElRecodoPersonRole", dependent: :destroy, inverse_of: :el_recodo_song
+  has_one :director, through: :director_roles, source: :el_recodo_person
+
+  has_one :soloist_roles, -> { where(role: "soloist") }, class_name: "ElRecodoPersonRole", dependent: :destroy, inverse_of: :el_recodo_song
+  has_one :soloist, through: :soloist_roles, source: :el_recodo_person
+
   has_one :recording, dependent: :nullify
 
   validates :date, presence: true
@@ -64,13 +76,13 @@ class ElRecodoSong < ApplicationRecord
       title:,
       style:,
       orchestra:,
-      singer:,
-      composer:,
-      author:,
+      singers: singers.map(&:name),
+      composers: composers.map(&:name),
+      lyricists: lyricists.map(&:name),
       label:,
       lyrics:,
-      soloist:,
-      director:
+      director: director&.name,
+      soloist: soloist&.name
     }
   end
 end

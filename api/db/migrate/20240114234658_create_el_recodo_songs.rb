@@ -6,11 +6,13 @@ class CreateElRecodoSongs < ActiveRecord::Migration[7.1]
       t.string :title, null: false
       t.string :style
       t.string :label
+      t.boolean :instrumental, null: false, default: true
       t.text :lyrics
       t.integer :lyrics_year
       t.string :search_data
       t.string :matrix
       t.string :disk
+      t.integer :speed
       t.integer :duration
       t.datetime :synced_at, null: false, default: -> { "CURRENT_TIMESTAMP" }, index: true
       t.datetime :page_updated_at, null: false, default: -> { "CURRENT_TIMESTAMP" }, index: true

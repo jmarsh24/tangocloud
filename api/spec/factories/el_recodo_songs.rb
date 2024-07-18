@@ -22,11 +22,13 @@ end
 #  title           :string           not null
 #  style           :string
 #  label           :string
+#  instrumental    :boolean          default(TRUE), not null
 #  lyrics          :text
 #  lyrics_year     :integer
 #  search_data     :string
 #  matrix          :string
 #  disk            :string
+#  speed           :integer
 #  duration        :integer
 #  synced_at       :datetime         not null
 #  page_updated_at :datetime         not null
