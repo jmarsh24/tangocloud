@@ -27,31 +27,33 @@ module ExternalCatalog
         doc = Nokogiri::HTML(response.body)
 
         person_details_section = doc.css(".row.mb-3").first
-        person_details = person_details_section.css(".col").first
-        header = doc.css("h1").first
-        image_element = person_details_section.css("img.rounded.img-fluid").first
+        header = person_details_section&.css("h1")&.first
+        person_details = person_details_section&.css(".col")&.first&.children
+        image_element = person_details_section&.css("img.rounded.img-fluid")&.first
 
         Person.new(
           name: parse_name(header),
-          birth_date: parse_birth_date(person_details.children),
-          death_date: parse_death_date(person_details.children),
-          real_name: parse_real_name(person_details.children),
-          nicknames: parse_nicknames(person_details.children) || [],
-          place_of_birth: parse_place_of_birth(person_details.children),
+          birth_date: parse_birth_date(person_details),
+          death_date: parse_death_date(person_details),
+          real_name: parse_real_name(person_details),
+          nicknames: parse_nicknames(person_details),
+          place_of_birth: parse_place_of_birth(person_details),
           path:,
           image_path: parse_image_path(image_element)
         )
-      rescue
-        binding.irb
       end
 
       private
 
       def parse_name(header)
+        return unless header
+
         format_name(header.children.last.text.strip)
       end
 
       def parse_birth_date(children)
+        return unless children
+
         date_node = children.find { |node| node.text? && node.text.strip.match(/^\(\d{4}-\d{2}-\d{2}/) }
         date_str = date_node&.text&.match(/^\((\d{4}-\d{2}-\d{2}) -/)&.captures&.first
 
@@ -59,6 +61,8 @@ module ExternalCatalog
       end
 
       def parse_death_date(children)
+        return unless children
+
         date_text_node = children.find { |node| node.text? && node.text.strip.gsub(/\s+/, " ").match(/^\(\d{4}-\d{2}-\d{2}/) }
         death_date_text = date_text_node&.text&.split("\n")&.last&.strip&.delete(")")
 
@@ -66,17 +70,23 @@ module ExternalCatalog
       end
 
       def parse_real_name(children)
+        return unless children
+
         real_name_node = children.find { |node| node.text? && node.text.include?("Real name:") }
         real_name_node&.text&.split("Real name:")&.last&.strip
       end
 
       def parse_nicknames(children)
+        return [] unless children
+
         nicknames_node = children.find { |node| node.text? && node.text.include?("Nickname(s):") }
         nicknames = nicknames_node&.text&.split("Nickname(s):")&.last&.strip&.split(",")&.map(&:strip)
         nicknames || []
       end
 
       def parse_place_of_birth(children)
+        return unless children
+
         place_of_birth_node = children.find { |node| node.text? && node.text.include?("Place of birth:") }
         place_of_birth_node&.text&.split("Place of birth:")&.last&.strip
       end
@@ -87,7 +97,7 @@ module ExternalCatalog
 
       def format_name(name)
         # Juan D'ARIENZO => Juan D'Arienzo
-        name.split(/(\s|')/).map(&:capitalize).join
+        name.split(/(\s|')/).map(&:capitalize).join if name
       end
     end
   end

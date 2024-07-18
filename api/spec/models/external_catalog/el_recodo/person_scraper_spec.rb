@@ -7,6 +7,8 @@ RSpec.describe ExternalCatalog::ElRecodo::PersonScraper do
         .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/html/el_recodo_person_juan_darienzo.html")))
       stub_request(:get, "https://www.el-recodo.com/music?Ar=Julio%20C%C3%A9sar%20Curi&lang=en")
         .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/html/el_recodo_person_julio_cesar_curi.html")))
+      stub_request(:get, "https://www.el-recodo.com/music?Cr=Roberto%20Luratti&lang=en")
+        .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/html/el_recodo_person_roberto_luratti.html")))
     end
 
     it "returns a person object with the parsed data" do
@@ -34,6 +36,20 @@ RSpec.describe ExternalCatalog::ElRecodo::PersonScraper do
       expect(result.nicknames).to eq([])
       expect(result.place_of_birth).to be_nil
       expect(result.path).to eq("music?Ar=Julio%20C%C3%A9sar%20Curi&lang=en")
+      expect(result.image_path).to be_nil
+    end
+
+    it "does not fail only the name is present" do
+      person_scraper = ExternalCatalog::ElRecodo::PersonScraper.new(cookies: "some_cookie")
+      result = person_scraper.fetch(path: "music?Cr=Roberto%20Luratti&lang=en")
+
+      expect(result.name).to eq("Roberto Luratti")
+      expect(result.birth_date).to be_nil
+      expect(result.death_date).to be_nil
+      expect(result.real_name).to be_nil
+      expect(result.nicknames).to eq([])
+      expect(result.place_of_birth).to be_nil
+      expect(result.path).to eq("music?Cr=Roberto%20Luratti&lang=en")
       expect(result.image_path).to be_nil
     end
   end
