@@ -26,18 +26,20 @@ module ExternalCatalog
         response = @connection.get(path)
         doc = Nokogiri::HTML(response.body)
 
-        person_details = doc.css(".col").first
+        person_details_section = doc.css(".row.mb-3").first
+        person_details = person_details_section.css(".col").first
         header = doc.css("h1").first
+        image_element = person_details_section.css("img.rounded.img-fluid").first
 
         Person.new(
           name: parse_name(header),
           birth_date: parse_birth_date(person_details.children),
           death_date: parse_death_date(person_details.children),
           real_name: parse_real_name(person_details.children),
-          nicknames: parse_nicknames(person_details.children),
+          nicknames: parse_nicknames(person_details.children) || [],
           place_of_birth: parse_place_of_birth(person_details.children),
           path:,
-          image_path: parse_image_path(doc)
+          image_path: parse_image_path(image_element)
         )
       end
 
@@ -56,7 +58,7 @@ module ExternalCatalog
 
       def parse_death_date(children)
         date_text_node = children.find { |node| node.text? && node.text.strip.gsub(/\s+/, " ").match(/^\(\d{4}-\d{2}-\d{2}/) }
-        death_date_text = date_text_node.text.split("\n").last.strip.delete(")")
+        death_date_text = date_text_node&.text&.split("\n")&.last&.strip&.delete(")")
 
         Date.parse(death_date_text) if death_date_text
       end
@@ -68,7 +70,8 @@ module ExternalCatalog
 
       def parse_nicknames(children)
         nicknames_node = children.find { |node| node.text? && node.text.include?("Nickname(s):") }
-        nicknames_node&.text&.split("Nickname(s):")&.last&.strip&.split(",")&.map(&:strip)
+        nicknames = nicknames_node&.text&.split("Nickname(s):")&.last&.strip&.split(",")&.map(&:strip)
+        nicknames || []
       end
 
       def parse_place_of_birth(children)
@@ -76,9 +79,8 @@ module ExternalCatalog
         place_of_birth_node&.text&.split("Place of birth:")&.last&.strip
       end
 
-      def parse_image_path(doc)
-        img_element = doc.css("img.rounded.img-fluid").first
-        img_element&.attr("src")
+      def parse_image_path(image_element)
+        image_element&.attr("src")
       end
 
       def format_name(name)

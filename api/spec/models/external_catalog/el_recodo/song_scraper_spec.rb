@@ -30,30 +30,30 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
         musicians = result.musicians
 
         expect(musicians).to include(
-          have_attributes(name: "Hector Varela", role: "arranger", url: "music?M=Hector Varela&lang=en"),
-          have_attributes(name: "Fulvio Salamanca", role: "piano", url: "music?M=Fulvio Salamanca&lang=en"),
-          have_attributes(name: "Rodolfo Velo", role: "piano", url: "music?M=Rodolfo Velo&lang=en"),
-          have_attributes(name: "Juancito Diaz", role: "piano", url: "music?M=Juancito Diaz&lang=en"),
-          have_attributes(name: "Olindo Sinibaldi", role: "doublebass", url: "music?M=Olindo Sinibaldi&lang=en"),
-          have_attributes(name: "Hector Varela", role: "bandoneon", url: "music?M=Hector Varela&lang=en"),
-          have_attributes(name: "Eladio Blanco", role: "bandoneon", url: "music?M=Eladio Blanco&lang=en"),
-          have_attributes(name: "José Di Pilato", role: "bandoneon", url: "music?M=José di Pilato&lang=en"),
-          have_attributes(name: "Alberto San Miguel", role: "bandoneon", url: "music?M=Alberto San Miguel&lang=en"),
-          have_attributes(name: "Salvador Alonso", role: "bandoneon", url: "music?M=Salvador Alonso&lang=en"),
-          have_attributes(name: "Luis Pinotti", role: "bandoneon", url: "music?M=Luis Pinotti&lang=en"),
-          have_attributes(name: "Cayetano Puglisi", role: "violin", url: "music?M=Cayetano Puglisi&lang=en"),
-          have_attributes(name: "Blas Pensato", role: "violin", url: "music?M=Blas Pensato&lang=en"),
-          have_attributes(name: "Jaime Ferrer", role: "violin", url: "music?M=Jaime Ferrer&lang=en"),
-          have_attributes(name: "Clemente Arnaiz", role: "violin", url: "music?M=Clemente Arnaiz&lang=en")
+          have_attributes(name: "Hector Varela", role: "arranger", url: "music?M=Hector%20Varela&lang=en"),
+          have_attributes(name: "Fulvio Salamanca", role: "piano", url: "music?M=Fulvio%20Salamanca&lang=en"),
+          have_attributes(name: "Rodolfo Velo", role: "piano", url: "music?M=Rodolfo%20Velo&lang=en"),
+          have_attributes(name: "Juancito Diaz", role: "piano", url: "music?M=Juancito%20Diaz&lang=en"),
+          have_attributes(name: "Olindo Sinibaldi", role: "doublebass", url: "music?M=Olindo%20Sinibaldi&lang=en"),
+          have_attributes(name: "Hector Varela", role: "bandoneon", url: "music?M=Hector%20Varela&lang=en"),
+          have_attributes(name: "Eladio Blanco", role: "bandoneon", url: "music?M=Eladio%20Blanco&lang=en"),
+          have_attributes(name: "José Di Pilato", role: "bandoneon", url: "music?M=Jos%C3%A9%20di%20Pilato&lang=en"),
+          have_attributes(name: "Alberto San Miguel", role: "bandoneon", url: "music?M=Alberto%20San%20Miguel&lang=en"),
+          have_attributes(name: "Salvador Alonso", role: "bandoneon", url: "music?M=Salvador%20Alonso&lang=en"),
+          have_attributes(name: "Luis Pinotti", role: "bandoneon", url: "music?M=Luis%20Pinotti&lang=en"),
+          have_attributes(name: "Cayetano Puglisi", role: "violin", url: "music?M=Cayetano%20Puglisi&lang=en"),
+          have_attributes(name: "Blas Pensato", role: "violin", url: "music?M=Blas%20Pensato&lang=en"),
+          have_attributes(name: "Jaime Ferrer", role: "violin", url: "music?M=Jaime%20Ferrer&lang=en"),
+          have_attributes(name: "Clemente Arnaiz", role: "violin", url: "music?M=Clemente%20Arnaiz&lang=en")
         )
 
         people = result.people
 
         expect(people).to include(
-          have_attributes(name: "Juan D'Arienzo", role: "orchestra", url: "music?O=Juan D'ARIENZO&lang=en"),
-          have_attributes(name: "Héctor Mauré", role: "singer", url: "music?C=Héctor Mauré&lang=en"),
-          have_attributes(name: "Juan D'Arienzo", role: "composer", url: "music?Cr=Juan D'Arienzo&lang=en"),
-          have_attributes(name: "Luis Rubistein", role: "author", url: "music?Ar=Luis Rubistein&lang=en")
+          have_attributes(name: "Juan D'Arienzo", role: "orchestra", url: "music?O=Juan%20D'ARIENZO&lang=en"),
+          have_attributes(name: "Héctor Mauré", role: "singer", url: "music?C=H%C3%A9ctor%20Maur%C3%A9&lang=en"),
+          have_attributes(name: "Juan D'Arienzo", role: "composer", url: "music?Cr=Juan%20D'Arienzo&lang=en"),
+          have_attributes(name: "Luis Rubistein", role: "author", url: "music?Ar=Luis%20Rubistein&lang=en")
         )
 
         expect(result.lyricist).to be_nil
@@ -85,6 +85,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
         expect(metadata.label).to be_nil
         expect(metadata.matrix).to be_nil
         expect(metadata.disk).to be_nil
+        expect(metadata.instrumental).to be_falsey
         expect(metadata.duration).to eq(184) # assuming duration is converted to seconds
         expect(metadata.lyrics).not_to be_empty
         expect(metadata.page_updated_at).to eq(DateTime.parse("2013-08-15 03:47:00"))
@@ -92,10 +93,10 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
         expect(result.musicians).to be_empty
 
         expect(result.people).to include(
-          have_attributes(name: "Rodolfo Sciammarella", role: "composer", url: "music?Cr=Rodolfo Sciammarella&lang=en"),
-          have_attributes(name: "Rodolfo Sciammarella", role: "author", url: "music?Ar=Rodolfo Sciammarella&lang=en"),
-          have_attributes(name: "Alberto Castillo", role: "soloist", url: "music?O=Alberto CASTILLO&lang=en"),
-          have_attributes(name: "Emilio Balcarce", role: "director", url: "music?C=Dir. Emilio Balcarce&lang=en")
+          have_attributes(name: "Rodolfo Sciammarella", role: "composer", url: "music?Cr=Rodolfo%20Sciammarella&lang=en"),
+          have_attributes(name: "Rodolfo Sciammarella", role: "author", url: "music?Ar=Rodolfo%20Sciammarella&lang=en"),
+          have_attributes(name: "Alberto Castillo", role: "soloist", url: "music?O=Alberto%20CASTILLO&lang=en"),
+          have_attributes(name: "Emilio Balcarce", role: "director", url: "music?C=Dir.%20Emilio%20Balcarce&lang=en")
         )
 
         expect(result.lyricist).to be_nil
