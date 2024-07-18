@@ -42,15 +42,11 @@ module ExternalCatalog
         )
 
         response = @connection.get(scraped_person_data.image_path)
-        content_type = response.headers["Content-Type"]
-        extension = Mime::Type.lookup(content_type).symbol.to_s.split("/").last
 
-        Tempfile.create([person.name, ".#{extension}"]) do |file|
-          file.binmode
-          file.write(response.body)
-          file.rewind
-          person.image.attach(io: file, filename: "#{person.name}.#{extension}", content_type:)
-        end
+        io = StringIO.new(response.body)
+        content_type = response.headers["content-type"]
+
+        person.image.attach(io:, filename: File.basename(image_url), content_type:)
 
         person
       end
