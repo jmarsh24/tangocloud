@@ -7,6 +7,12 @@ module ExternalCatalog
         @cookies = cookies
         @person_scraper = PersonScraper.new(cookies: @cookies)
         @connection = Faraday.new(url: BASE_URL) do |faraday|
+          faraday.headers["Cookie"] = cookies
+          faraday.use(
+            :throttler,
+            rate: 20,
+            wait: 60,
+          )
           faraday.use Faraday::Response::RaiseError
         end
       end
