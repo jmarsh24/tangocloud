@@ -3,7 +3,7 @@ namespace :scrape do
   task sync: :environment do
     total_songs = 18_502
 
-    (1..total_songs).each do |batch|
+    (1..total_songs).to_a.shuffle.each_slice(1000) do |batch|
       batch.each do |ert_number|
         ExternalCatalog::ElRecodo::SyncSongJob.perform_later(ert_number:)
       end

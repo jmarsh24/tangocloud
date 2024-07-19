@@ -8,11 +8,6 @@ module ExternalCatalog
         @email = email || Config.el_recodo_email
         @password = password || Config.el_recodo_password
         @connection = Faraday.new(url: BASE_URL) do |faraday|
-          faraday.use(
-            :throttler,
-            rate: 20,
-            wait: 60,
-          )
           faraday.use Faraday::Response::RaiseError
           faraday.headers["User-Agent"] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15"
           faraday.headers["Content-Type"] = "application/x-www-form-urlencoded"

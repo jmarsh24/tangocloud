@@ -18,16 +18,14 @@ module ExternalCatalog
         @cookies = cookies
         @connection = Faraday.new(url: BASE_URL) do |faraday|
           faraday.headers["Cookie"] = cookies
-          faraday.use(
-            :throttler,
-            rate: 20,
-            wait: 60
-          )
+
           faraday.use Faraday::Response::RaiseError
         end
       end
 
       def fetch(path:)
+        sleep Config.el_recodo_request_delay
+
         response = @connection.get(path)
         doc = Nokogiri::HTML(response.body)
 

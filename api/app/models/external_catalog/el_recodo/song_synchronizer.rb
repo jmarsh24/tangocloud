@@ -17,7 +17,7 @@ module ExternalCatalog
           people = [result.people, result.musicians, result.lyricist]
           people.flatten!
           people.compact!
-          binding.irb
+
           @role_manager.sync_people(
             el_recodo_song:,
             people:

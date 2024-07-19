@@ -51,16 +51,14 @@ module ExternalCatalog
         @cookies = cookies
         @connection = Faraday.new(url: BASE_URL) do |faraday|
           faraday.headers["Cookie"] = cookies
-          faraday.use(
-            :throttler,
-            rate: 20,
-            wait: 60
-          )
+
           faraday.use Faraday::Response::RaiseError
         end
       end
 
       def fetch(ert_number:)
+        sleep Config.el_recodo_request_delay
+
         response = @connection.get("https://www.el-recodo.com/music?id=#{ert_number}&lang=en")
 
         # If the page is empty, it means the song doesn't exist for that ert_number

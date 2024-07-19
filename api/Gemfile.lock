@@ -219,8 +219,6 @@ GEM
       multipart-post (~> 2)
     faraday-net_http (3.1.0)
       net-http
-    faraday_throttler (0.0.3)
-      faraday (>= 0.9.1)
     ffi (1.17.0-aarch64-linux-gnu)
     ffi (1.17.0-aarch64-linux-musl)
     ffi (1.17.0-arm-linux-gnu)
@@ -736,7 +734,6 @@ DEPENDENCIES
   factory_bot_rails
   faker
   faraday
-  faraday_throttler
   friendly_id
   googleauth
   graphiql-rails
