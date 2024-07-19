@@ -9,6 +9,8 @@ RSpec.describe ExternalCatalog::ElRecodo::PersonScraper do
         .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/html/el_recodo_person_julio_cesar_curi.html")))
       stub_request(:get, "https://www.el-recodo.com/music?Cr=Roberto%20Luratti&lang=en")
         .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/html/el_recodo_person_roberto_luratti.html")))
+      stub_request(:get, "https://www.el-recodo.com/music?C=Dir.%20H%C3%A9ctor%20Mar%C3%ADa%20Artola&lang=en")
+        .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/html/el_recodo_person_dir_hector_maria_artola.html")))
     end
 
     it "returns a person object with the parsed data" do
@@ -51,6 +53,13 @@ RSpec.describe ExternalCatalog::ElRecodo::PersonScraper do
       expect(result.place_of_birth).to be_nil
       expect(result.path).to eq("music?Cr=Roberto%20Luratti&lang=en")
       expect(result.image_path).to be_nil
+    end
+
+    it "removes 'Dir. ' from the name" do
+      person_scraper = ExternalCatalog::ElRecodo::PersonScraper.new(cookies: "some_cookie")
+      result = person_scraper.fetch(path: "music?C=Dir.%20H%C3%A9ctor%20Mar%C3%ADa%20Artola&lang=en")
+
+      expect(result.name).to eq("Héctor María Artola")
     end
   end
 end

@@ -85,7 +85,7 @@ module ExternalCatalog
         return [] unless children
 
         nicknames_node = children.find { |node| node.text? && node.text.include?("Nickname(s):") }
-        nicknames = nicknames_node&.text&.split("Nickname(s):")&.last&.strip&.split(" y ")&.map(&:strip)
+        nicknames = nicknames_node&.text&.split("Nickname(s):")&.last&.strip&.split(/ y |,|\//)&.map(&:strip)
         nicknames || []
       end
 
@@ -101,6 +101,8 @@ module ExternalCatalog
       end
 
       def format_name(name)
+        # Remove "Dir. " if it exists
+        name.gsub!("Dir. ", "")
         # Juan D'ARIENZO => Juan D'Arienzo
         name.split(/(\s|')/).map(&:capitalize).join if name
       end

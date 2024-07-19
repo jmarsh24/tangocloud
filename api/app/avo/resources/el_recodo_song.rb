@@ -6,16 +6,17 @@ class Avo::Resources::ElRecodoSong < Avo::BaseResource
   # }
 
   def fields
-    field :id, as: :id
+    field :id, as: :id, hide_on: [:index]
     field :date, as: :date
-    field :ert_number, as: :number
+    field :ert_number, as: :number do
+      link_to record.ert_number, "https://el-recodo.com/music?id=#{record.ert_number}&lang=en", target: "_blank"
+    end
     field :title, as: :text
     field :style, as: :text
     field :label, as: :text
     field :instrumental, as: :boolean
     field :lyrics, as: :textarea
     field :lyrics_year, as: :number
-    field :search_data, as: :text
     field :matrix, as: :text
     field :disk, as: :text
     field :speed, as: :number

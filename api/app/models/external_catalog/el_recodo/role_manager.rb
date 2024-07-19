@@ -20,7 +20,6 @@ module ExternalCatalog
       def sync_people(el_recodo_song:, people:)
         people.map do |person_data|
           person = find_or_scrape_person(person_data)
-
           ElRecodoPersonRole.find_or_create_by!(
             el_recodo_song:,
             el_recodo_person: person,
