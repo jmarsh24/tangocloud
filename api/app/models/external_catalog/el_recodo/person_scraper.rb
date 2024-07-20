@@ -24,7 +24,7 @@ module ExternalCatalog
       end
 
       def fetch(path:)
-        sleep Config.el_recodo_request_delay
+        sleep Config.el_recodo_request_delay.to_i
 
         response = @connection.get(path)
         doc = Nokogiri::HTML(response.body)
