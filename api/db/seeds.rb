@@ -22,29 +22,29 @@ normal_user = create_user("user@tangocloud.app", "tangocloud123")
   Genre.find_or_create_by!(name:)
 end
 
-records = []
+# records = []
 
-CSV.parse(File.read(Rails.root.join("spec/fixtures/files/el_recodo_songs.csv")),
-  headers: true, quote_char: '"', col_sep: ";", liberal_parsing: true) do |row|
-  records << {
-    id: row["id"].presence || "",
-    date: row["date"].presence || "",
-    ert_number: row["ert_number"].presence || "",
-    title: row["title"].presence || "",
-    style: row["style"].presence || "",
-    label: row["label"].presence || "",
-    lyrics: row["lyrics"].presence || "",
-    search_data: row["search_data"].presence || "",
-    synced_at: row["synced_at"].presence || "",
-    page_updated_at: row["page_updated_at"].presence || "",
-    created_at: row["created_at"].presence || "",
-    updated_at: row["updated_at"].presence || ""
-  }
-end
+# CSV.parse(File.read(Rails.root.join("spec/fixtures/files/el_recodo_songs.csv")),
+#   headers: true, quote_char: '"', col_sep: ";", liberal_parsing: true) do |row|
+#   records << {
+#     id: row["id"].presence || "",
+#     date: row["date"].presence || "",
+#     ert_number: row["ert_number"].presence || "",
+#     title: row["title"].presence || "",
+#     style: row["style"].presence || "",
+#     label: row["label"].presence || "",
+#     lyrics: row["lyrics"].presence || "",
+#     search_data: row["search_data"].presence || "",
+#     synced_at: row["synced_at"].presence || "",
+#     page_updated_at: row["page_updated_at"].presence || "",
+#     created_at: row["created_at"].presence || "",
+#     updated_at: row["updated_at"].presence || ""
+#   }
+# end
 
-ElRecodoSong.insert_all(records)
+# ElRecodoSong.insert_all(records)
 
-Import::DirectoryImporter.new(Rails.root.join("spec/fixtures/files/audio/")).sync(async: false)
+# Import::DirectoryImporter.new(Rails.root.join("spec/fixtures/files/audio/")).sync(async: false)
 
 # # Attach images to orchestras if they exist
 # orchestra_name = row["orchestra"]

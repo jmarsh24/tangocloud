@@ -4,7 +4,7 @@ module ExternalCatalog
       BASE_URL = "https://www.el-recodo.com".freeze
 
       def initialize(cookies:, person_scraper: nil)
-        @cookies = cookies
+        @cookies = cookies || Auth.new.cookies
         @person_scraper = person_scraper || PersonScraper.new(cookies: @cookies)
         @connection = Faraday.new(url: BASE_URL) do |faraday|
           faraday.headers["Cookie"] = cookies
