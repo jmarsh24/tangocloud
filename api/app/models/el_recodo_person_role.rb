@@ -16,7 +16,8 @@ class ElRecodoPersonRole < ApplicationRecord
     "soloist",
     "director",
     "composer",
-    "author"
+    "author",
+    "cello"
   ].freeze
 
   validates :role, inclusion: {in: ROLES}
