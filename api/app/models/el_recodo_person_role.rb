@@ -7,12 +7,11 @@ class ElRecodoPersonRole < ApplicationRecord
 
   ROLES = [
     "orchestra",
-    "lyricist",
-    "pianist",
+    "piano",
     "arranger",
-    "doublebassist",
-    "bandoneonist",
-    "violinist",
+    "doublebass",
+    "bandoneon",
+    "violin",
     "singer",
     "soloist",
     "director",
