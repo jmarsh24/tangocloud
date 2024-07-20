@@ -3,9 +3,9 @@ module ExternalCatalog
     class RoleManager
       BASE_URL = "https://www.el-recodo.com".freeze
 
-      def initialize(cookies:)
+      def initialize(cookies:, person_scraper: nil)
         @cookies = cookies
-        @person_scraper = PersonScraper.new(cookies: @cookies)
+        @person_scraper = person_scraper || PersonScraper.new(cookies: @cookies)
         @connection = Faraday.new(url: BASE_URL) do |faraday|
           faraday.headers["Cookie"] = cookies
 
