@@ -9,8 +9,9 @@ class Avo::Resources::ElRecodoSong < Avo::BaseResource
     field :id, as: :id, hide_on: [:index]
     field :date, as: :date
     field :ert_number, as: :number do
-      link_to record.ert_number, "https://el-recodo.com/music?id=#{record.ert_number}&lang=en", target: "_blank"
+      link_to record.ert_number, "https://www.el-recodo.com/music?id=#{record.ert_number}&lang=en", target: "_blank"
     end
+    # https://www.el-recodo.com/music?id=16711&lang=en
     field :title, as: :text
     field :style, as: :text
     field :label, as: :text
