@@ -28,9 +28,9 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
         expect(metadata.synced_at).to be_within(1.second).of(Time.zone.now)
         expect(metadata.page_updated_at).to eq(DateTime.parse("2013-07-10 00:52"))
 
-        musicians = result.musicians
+        members = result.members
 
-        expect(musicians).to include(
+        expect(members).to include(
           have_attributes(name: "Hector Varela", role: "arranger", url: "music?M=Hector%20Varela&lang=en"),
           have_attributes(name: "Fulvio Salamanca", role: "piano", url: "music?M=Fulvio%20Salamanca&lang=en"),
           have_attributes(name: "Rodolfo Velo", role: "piano", url: "music?M=Rodolfo%20Velo&lang=en"),
@@ -45,19 +45,11 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
           have_attributes(name: "Cayetano Puglisi", role: "violin", url: "music?M=Cayetano%20Puglisi&lang=en"),
           have_attributes(name: "Blas Pensato", role: "violin", url: "music?M=Blas%20Pensato&lang=en"),
           have_attributes(name: "Jaime Ferrer", role: "violin", url: "music?M=Jaime%20Ferrer&lang=en"),
-          have_attributes(name: "Clemente Arnaiz", role: "violin", url: "music?M=Clemente%20Arnaiz&lang=en")
-        )
-
-        people = result.people
-
-        expect(people).to include(
-          have_attributes(name: "Juan D'Arienzo", role: "orchestra", url: "music?O=Juan%20D'ARIENZO&lang=en"),
+          have_attributes(name: "Clemente Arnaiz", role: "violin", url: "music?M=Clemente%20Arnaiz&lang=en"),
           have_attributes(name: "Héctor Mauré", role: "singer", url: "music?C=H%C3%A9ctor%20Maur%C3%A9&lang=en"),
           have_attributes(name: "Juan D'Arienzo", role: "composer", url: "music?Cr=Juan%20D'Arienzo&lang=en"),
           have_attributes(name: "Luis Rubistein", role: "author", url: "music?Ar=Luis%20Rubistein&lang=en")
         )
-
-        expect(result.lyricist).to be_nil
 
         tags = result.tags
         expect(tags).to include(
@@ -117,6 +109,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
         metadata = result.metadata
 
         expect(metadata.ert_number).to eq(1)
+        expect(metadata.orchestra).to eq("Rodolfo BIAGI")
         expect(metadata.title).to eq("Te burlas tristeza")
         expect(metadata.date).to eq(Date.new(1960, 7, 28))
         expect(metadata.style).to eq("Tango")
@@ -130,18 +123,14 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
         expect(metadata.synced_at).to be_within(1.second).of(Time.zone.now)
         expect(metadata.page_updated_at).to eq(DateTime.parse("2018-10-14 22:04:00"))
 
-        expect(result.musicians).to be_empty
+        members = result.members
 
-        people = result.people
-
-        expect(people).to include(
-          have_attributes(name: "Rodolfo Biagi", role: "orchestra", url: "music?O=Rodolfo%20BIAGI&lang=en"),
+        expect(members).to include(
           have_attributes(name: "Hugo Duval", role: "singer", url: "music?C=Hugo%20Duval&lang=en"),
           have_attributes(name: "Edmundo Baya", role: "composer", url: "music?Cr=Edmundo%20Baya&lang=en"),
           have_attributes(name: "Julio César Curi", role: "author", url: "music?Ar=Julio%20C%C3%A9sar%20Curi&lang=en")
         )
 
-        expect(result.lyricist).to be_nil
         expect(result.tags).to be_empty
       end
     end
@@ -173,19 +162,14 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
         expect(metadata.synced_at).to be_within(1.second).of(Time.zone.now)
         expect(metadata.page_updated_at).to eq(DateTime.parse("2013-05-28 00:58:00"))
 
-        expect(result.musicians).to be_empty
+        members = result.members
 
-        people = result.people
+        expect(members).not_to include(have_attributes(name: "Instrumental", role: "singer", url: "%23"))
 
-        expect(people).not_to include(have_attributes(name: "Instrumental", role: "singer", url: "%23"))
-
-        expect(people).to include(
-          have_attributes(name: "Rodolfo Biagi", role: "orchestra", url: "music?O=Rodolfo%20BIAGI&lang=en"),
+        expect(members).to include(
           have_attributes(name: "Antonio Buglione", role: "composer", url: "music?Cr=Antonio%20Buglione&lang=en"),
           have_attributes(name: "Mario Pardo", role: "author", url: "music?Ar=Mario%20Pardo&lang=en")
         )
-
-        expect(result.lyricist).to be_nil
 
         tags = result.tags
         expect(tags).to include(
