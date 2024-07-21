@@ -61,7 +61,7 @@ module ExternalCatalog
         # If the page is empty, it means the song doesn't exist for that ert_number
         if response.status == 302
           ElRecodoEmptyPage.create!(ert_number:)
-          return nil
+          return
         end
 
         parsed_page = Nokogiri::HTML(response.body)
