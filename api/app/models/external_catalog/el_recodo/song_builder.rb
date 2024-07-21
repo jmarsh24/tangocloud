@@ -32,9 +32,12 @@ module ExternalCatalog
           end
 
           people.each do |person_data|
-            person = find_or_build_person(person_data)
-            ElRecodoPersonRole.find_or_create_by!(el_recodo_song:, el_recodo_person: person) do |role|
-              role.role = person_data.role.downcase
+            persons = find_or_build_people(person_data)
+
+            persons.each do |person|
+              ElRecodoPersonRole.find_or_create_by!(el_recodo_song:, el_recodo_person: person) do |role|
+                role.role = person_data.role.downcase
+              end
             end
           end
 
@@ -42,29 +45,33 @@ module ExternalCatalog
         end
       end
 
-      def find_or_build_person(person_data)
-        person = ElRecodoPerson.find_by(name: person_data.name)
-        return person if person
+      def find_or_build_people(person_data)
+        names = person_data.name.split(/ y | Y /).map(&:strip)
+        persons = names.map do |name|
+          person = ElRecodoPerson.find_by(name:)
+          next person if person
 
-        scraped_person_data = @person_scraper.fetch(path: person_data.url)
+          scraped_person_data = @person_scraper.fetch(path: person_data.url)
 
-        person = ElRecodoPerson.find_by(path: scraped_person_data.name)
-        return person if person
+          person = ElRecodoPerson.find_by(name: scraped_person_data.name)
+          next person if person
 
-        person = ElRecodoPerson.new(
-          name: scraped_person_data.name,
-          birth_date: scraped_person_data.birth_date,
-          death_date: scraped_person_data.death_date,
-          real_name: scraped_person_data.real_name,
-          nicknames: scraped_person_data.nicknames,
-          place_of_birth: scraped_person_data.place_of_birth,
-          path: scraped_person_data.path
-        )
-        if scraped_person_data.image_path.present?
-          attach_image(person, scraped_person_data.image_path)
+          person = ElRecodoPerson.new(
+            name: scraped_person_data.name,
+            birth_date: scraped_person_data.birth_date,
+            death_date: scraped_person_data.death_date,
+            real_name: scraped_person_data.real_name,
+            nicknames: scraped_person_data.nicknames,
+            place_of_birth: scraped_person_data.place_of_birth,
+            path: scraped_person_data.path
+          )
+          if scraped_person_data.image_path.present?
+            attach_image(person, scraped_person_data.image_path)
+          end
+
+          person
         end
-
-        person
+        persons.compact
       end
 
       def attach_image(person, image_path)

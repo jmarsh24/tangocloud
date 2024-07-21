@@ -9,8 +9,6 @@ module ExternalCatalog
 
       class PageNotFoundError < StandardError; end
 
-      class EmptyPageError < StandardError; end
-
       Metadata = Data.define(
         :ert_number,
         :date,
@@ -63,7 +61,6 @@ module ExternalCatalog
         # If the page is empty, it means the song doesn't exist for that ert_number
         if response.status == 302
           ElRecodoEmptyPage.create!(ert_number:)
-          raise EmptyPageError
         end
 
         parsed_page = Nokogiri::HTML(response.body)
@@ -224,7 +221,7 @@ module ExternalCatalog
             person_name.gsub!(/^Dir\.\s*/i, "")
 
             # Split the name if it contains "y" or "Y"
-            person_name.split(/\s*[yY]\s*/).each do |name|
+            person_name.split(/ y | Y /).map(&:strip).each do |name|
               next if name == "Instrumental"
 
               people << Person.new(

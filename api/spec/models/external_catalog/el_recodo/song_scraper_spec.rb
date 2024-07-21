@@ -226,8 +226,9 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
         stub_config(el_recodo_request_delay: 0)
       end
 
-      it "raises a EmptyPageError" do
-        expect { ExternalCatalog::ElRecodo::SongScraper.new(cookies: "some_cookie").fetch(ert_number: 1) }.to raise_error(ExternalCatalog::ElRecodo::SongScraper::EmptyPageError)
+      it "creates an ElRecodoEmptyPage" do
+        ExternalCatalog::ElRecodo::SongScraper.new(cookies: "some_cookie").fetch(ert_number: 1)
+        expect(::ElRecodoEmptyPage.find_by(ert_number: 1)).to be_present
       end
     end
   end
