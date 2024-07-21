@@ -8,6 +8,7 @@
 #  title           :string           not null
 #  style           :string
 #  label           :string
+#  orchestra       :string
 #  instrumental    :boolean          default(TRUE), not null
 #  lyrics          :text
 #  lyrics_year     :integer
@@ -52,6 +53,9 @@ class ElRecodoSong < ApplicationRecord
 
   has_many :composer_roles, -> { where(role: "composer") }, class_name: "ElRecodoPersonRole", dependent: :destroy, inverse_of: :el_recodo_song
   has_many :composers, through: :composer_roles, source: :el_recodo_person
+
+  has_many :celloist_roles, -> { where(role: "cello") }, class_name: "ElRecodoPersonRole", dependent: :destroy, inverse_of: :el_recodo_song
+  has_many :celloists, through: :celloist_roles, source: :el_recodo_person
 
   has_one :director_roles, -> { where(role: "director") }, class_name: "ElRecodoPersonRole", dependent: :destroy, inverse_of: :el_recodo_song
   has_one :director, through: :director_roles, source: :el_recodo_person

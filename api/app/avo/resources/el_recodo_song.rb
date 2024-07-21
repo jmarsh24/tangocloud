@@ -25,8 +25,7 @@ class Avo::Resources::ElRecodoSong < Avo::BaseResource
     field :page_updated_at, as: :date_time
     field :el_recodo_person_roles, as: :has_many
     field :el_recodo_people, as: :has_many, through: :el_recodo_person_roles
-    field :orchestra_roles, as: :has_one
-    field :orchestra, as: :has_one
+    field :orchestra, as: :text
     field :lyricist_roles, as: :has_many
     field :lyricists, as: :has_many, through: :lyricist_roles
     field :pianist_roles, as: :has_many
@@ -43,6 +42,8 @@ class Avo::Resources::ElRecodoSong < Avo::BaseResource
     field :singers, as: :has_many, through: :singer_roles
     field :composer_roles, as: :has_many
     field :composers, as: :has_many, through: :composer_roles
+    field :celloist_roles, as: :has_many
+    field :celloists, as: :has_many, through: :celloist_roles
     field :director_roles, as: :has_one
     field :director, as: :has_one
     field :soloist_roles, as: :has_one

@@ -7,8 +7,6 @@ class Avo::Resources::ElRecodoPersonRole < Avo::BaseResource
 
   def fields
     field :id, as: :id, hide_on: [:index]
-    field :el_recodo_person_id, as: :text
-    field :el_recodo_song_id, as: :text
     field :role, as: :text
     field :el_recodo_person, as: :belongs_to
     field :el_recodo_song, as: :belongs_to
