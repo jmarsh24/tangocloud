@@ -209,7 +209,7 @@ module ExternalCatalog
       end
 
       def extract_people(parsed_page)
-        roles = ["ORCHESTRA", "SINGER", "COMPOSER", "AUTHOR", "SOLOIST", "DIRECTOR"]
+        roles = ["SINGER", "COMPOSER", "AUTHOR", "SOLOIST", "DIRECTOR"]
         people = []
 
         roles.each do |role|

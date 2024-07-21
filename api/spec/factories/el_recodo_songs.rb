@@ -22,6 +22,7 @@ end
 #  title           :string           not null
 #  style           :string
 #  label           :string
+#  orchestra       :string
 #  instrumental    :boolean          default(TRUE), not null
 #  lyrics          :text
 #  lyrics_year     :integer

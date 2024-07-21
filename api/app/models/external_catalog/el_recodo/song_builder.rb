@@ -37,6 +37,8 @@ module ExternalCatalog
             ElRecodoPersonRole.find_or_create_by!(el_recodo_song:, el_recodo_person: person) do |role|
               role.role = person_data.role.downcase
             end
+          rescue
+            binding.irb
           end
 
           el_recodo_song
