@@ -15,7 +15,7 @@ module ExternalCatalog
           metadata:,
           people: result.people
         )
-        binding.irb
+
         song.save!
         song
       end
