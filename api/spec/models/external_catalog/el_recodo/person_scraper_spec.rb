@@ -11,6 +11,8 @@ RSpec.describe ExternalCatalog::ElRecodo::PersonScraper do
         .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/html/el_recodo_person_roberto_luratti.html")))
       stub_request(:get, "https://www.el-recodo.com/music?C=Dir.%20H%C3%A9ctor%20Mar%C3%ADa%20Artola&lang=en")
         .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/html/el_recodo_person_dir_hector_maria_artola.html")))
+      stub_request(:get, "https://www.el-recodo.com/music?Cr=Jos%C3%A9%20Martinez&lang=en")
+        .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/html/el_recodo_person_jose_martinez.html")))
       stub_config(el_recodo_request_delay: 0)
     end
 
@@ -61,6 +63,13 @@ RSpec.describe ExternalCatalog::ElRecodo::PersonScraper do
       result = person_scraper.fetch(path: "music?C=Dir.%20H%C3%A9ctor%20Mar%C3%ADa%20Artola&lang=en")
 
       expect(result.name).to eq("Héctor María Artola")
+    end
+
+    it "testing" do
+      person_scraper = ExternalCatalog::ElRecodo::PersonScraper.new(cookies: "some_cookie")
+      result = person_scraper.fetch(path: "music?Cr=Jos%C3%A9%20Martinez&lang=en")
+
+      binding.irb
     end
   end
 end

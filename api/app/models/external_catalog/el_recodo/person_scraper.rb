@@ -27,13 +27,14 @@ module ExternalCatalog
         sleep Config.el_recodo_request_delay.to_i
 
         response = @connection.get(path)
-        doc = Nokogiri::HTML(response.body)
+        body = response.body.force_encoding("UTF-8")
+        doc = Nokogiri::HTML(body)
 
-        person_details_section = doc.css(".row.mb-3").first
+        person_details_section = doc.css(".row.mb-3")
         header = person_details_section&.css("h1")&.first
         person_details = person_details_section&.css(".col")&.first&.children
         image_element = person_details_section&.css("img.rounded.img-fluid")&.first
-
+        binding.irb
         Person.new(
           name: parse_name(header),
           birth_date: parse_birth_date(person_details),
