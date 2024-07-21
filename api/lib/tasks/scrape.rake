@@ -2,15 +2,15 @@ namespace :scrape do
   desc "Enqueue scraping jobs for a range of ERT numbers"
   task sync: :environment do
     total_songs = 18_502
+    ert_numbers = (1..total_songs).to_a.shuffle
 
-    (1..total_songs).to_a.shuffle.each_slice(1000) do |batch|
-      batch.each do |ert_number|
-        ExternalCatalog::ElRecodo::SyncSongJob.perform_later(ert_number:)
-      end
-      puts "Enqueued batch of #{batch.size} jobs..."
+    sync_song_jobs = ert_numbers.map do
+      ExternalCatalog::ElRecodo::SyncSongJob.new(ert_number: _1)
     end
 
-    puts "All #{total_songs} jobs have been enqueued."
+    ActiveJob.perform_all_later(sync_song_jobs)
+
+    puts "All #{total_songs.size} jobs have been enqueued."
   end
 
   desc "Enqueue scraping jobs for existing ERT numbers"
