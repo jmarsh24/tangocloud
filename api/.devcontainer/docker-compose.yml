@@ -5,6 +5,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ../..:/workspaces:cached
+      - ~/.netrc:/root/.netrc:ro
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
