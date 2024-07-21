@@ -46,7 +46,7 @@ module ExternalCatalog
         :tags
       ).freeze
 
-      def initialize(cookies:)
+      def initialize(cookies: nil)
         @cookies = cookies || Auth.new.cookies
         @connection = Faraday.new(url: BASE_URL) do |faraday|
           faraday.headers["Cookie"] = @cookies
