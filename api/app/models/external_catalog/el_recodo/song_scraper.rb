@@ -93,10 +93,13 @@ module ExternalCatalog
 
         Result.new(metadata:, members:, tags:)
       rescue Faraday::ResourceNotFound
+        sleep Config.el_recodo_request_delay.to_i
         raise PageNotFoundError
       rescue Faraday::TooManyRequestsError
+        sleep Config.el_recodo_request_delay.to_i
         raise TooManyRequestsError
       rescue Faraday::ServerError
+        sleep Config.el_recodo_request_delay.to_i
         nil
       end
 
