@@ -48,7 +48,7 @@ module ExternalCatalog
 
         scraped_person_data = @person_scraper.fetch(path: person_data.url)
 
-        person = ElRecodoPerson.find_by(path: scraped_person.name)
+        person = ElRecodoPerson.find_by(path: scraped_person_data.name)
         return person if person
 
         person = ElRecodoPerson.new(
