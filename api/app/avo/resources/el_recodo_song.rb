@@ -21,11 +21,12 @@ class Avo::Resources::ElRecodoSong < Avo::BaseResource
     field :disk, as: :text
     field :speed, as: :number
     field :duration, as: :number
-    field :synced_at, as: :date_time
-    field :page_updated_at, as: :date_time
+    field :synced_at, as: :date_time, hide_on: [:index]
+    field :page_updated_at, as: :date_time, hide_on: [:index]
+    field :orchestra, as: :text
+
     field :el_recodo_person_roles, as: :has_many
     field :el_recodo_people, as: :has_many, through: :el_recodo_person_roles
-    field :orchestra, as: :text
     field :lyricist_roles, as: :has_many
     field :lyricists, as: :has_many, through: :lyricist_roles
     field :pianist_roles, as: :has_many
@@ -44,9 +45,9 @@ class Avo::Resources::ElRecodoSong < Avo::BaseResource
     field :composers, as: :has_many, through: :composer_roles
     field :celloist_roles, as: :has_many
     field :celloists, as: :has_many, through: :celloist_roles
-    field :director_roles, as: :has_one
+    field :director_roles, as: :has_many, through: :director
     field :director, as: :has_one
-    field :soloist_roles, as: :has_one
+    field :soloist_roles, as: :has_many, through: :soloist
     field :soloist, as: :has_one
     field :recording, as: :has_one
   end
