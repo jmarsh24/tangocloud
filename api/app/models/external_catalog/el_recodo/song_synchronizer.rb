@@ -8,6 +8,8 @@ module ExternalCatalog
 
       def sync_song(ert_number:)
         result = @song_scraper.fetch(ert_number:)
+        return if result.nil?
+
         metadata = result.metadata
 
         song = ExternalCatalog::ElRecodo::SongBuilder.new(cookies: @cookies).build_song(
