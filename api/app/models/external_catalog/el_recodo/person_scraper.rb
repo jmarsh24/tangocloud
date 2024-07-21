@@ -18,7 +18,8 @@ module ExternalCatalog
         @cookies = cookies || Auth.new.cookies
         @connection = Faraday.new(url: BASE_URL) do |faraday|
           faraday.headers["Cookie"] = @cookies
-
+          faraday.response :follow_redirects
+          faraday.use :cookie_jar
           faraday.response :raise_error
         end
       end
@@ -34,7 +35,7 @@ module ExternalCatalog
         header = person_details_section&.css("h1")&.first
         person_details = person_details_section&.css(".col")&.first&.children
         image_element = person_details_section&.css("img.rounded.img-fluid")&.first
-        binding.irb
+
         Person.new(
           name: parse_name(header),
           birth_date: parse_birth_date(person_details),

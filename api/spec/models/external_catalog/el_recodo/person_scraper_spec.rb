@@ -70,6 +70,8 @@ RSpec.describe ExternalCatalog::ElRecodo::PersonScraper do
       result = person_scraper.fetch(path: "music?Cr=Jos%C3%A9%20Martinez&lang=en")
 
       binding.irb
+
+      expect(result.name).to eq("José Martinez")
     end
   end
 end
