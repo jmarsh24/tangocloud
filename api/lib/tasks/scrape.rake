@@ -10,7 +10,7 @@ namespace :scrape do
 
     ActiveJob.perform_all_later(sync_song_jobs)
 
-    puts "All #{total_songs.size} jobs have been enqueued."
+    puts "All #{total_songs} jobs have been enqueued."
   end
 
   desc "Enqueue scraping jobs for existing ERT numbers"
