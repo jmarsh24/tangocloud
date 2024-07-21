@@ -2,11 +2,12 @@ namespace :scrape do
   desc "Enqueue scraping jobs for a range of ERT numbers"
   task sync: :environment do
     total_songs = 18_502
-    ert_numbers = (1..total_songs).to_a.shuffle
+    excluded_ert_numbers = ElRecodoEmptyPage.pluck(:ert_number)
+    ert_numbers = (1..total_songs).to_a.shuffle - excluded_ert_numbers
 
     progressbar = ProgressBar.create(
       title: "Enqueuing Jobs",
-      total: total_songs,
+      total: ert_numbers.size,
       format: "%t: |%B| %p%% %a",
       throttle_rate: 0.1
     )
@@ -19,12 +20,12 @@ namespace :scrape do
       ActiveJob.perform_all_later(sync_song_jobs)
       progressbar.progress += batch.size
 
-      puts "Enqueued batch #{index + 1} of #{(total_songs / 1000.0).ceil}"
+      puts "Enqueued batch #{index + 1} of #{(ert_numbers.size / 1000.0).ceil}"
     end
 
     progressbar.finish
 
-    puts "All #{total_songs} jobs have been enqueued."
+    puts "All #{ert_numbers.size} jobs have been enqueued."
   end
 
   desc "Enqueue scraping jobs for existing ERT numbers"
