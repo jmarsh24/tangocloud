@@ -56,13 +56,26 @@ module ExternalCatalog
         format_name(header.children.last.text.strip)
       end
 
+      def safe_parse_date(date_string)
+        return nil unless date_string
+
+        year, month, day = date_string.split("-")
+        month = "01" if month == "00"
+        day = "01" if day == "00"
+
+        Date.new(year.to_i, month.to_i, day.to_i)
+      rescue ArgumentError => e
+        Rails.logger.error("El Recodo Song Scraper: #{e.message}")
+        raise e
+      end
+
       def parse_birth_date(children)
         return unless children
 
         date_node = children.find { |node| node.text? && node.text.strip.match(/^\(\d{4}-\d{2}-\d{2}/) }
         date_str = date_node&.text&.match(/^\((\d{4}-\d{2}-\d{2}) -/)&.captures&.first
 
-        Date.parse(date_str) if date_str
+        safe_parse_date(date_str) if date_str
       end
 
       def parse_death_date(children)
@@ -76,7 +89,7 @@ module ExternalCatalog
 
         death_date_text = date_range_text[2]
 
-        Date.parse(death_date_text) if death_date_text
+        safe_parse_date(death_date_text) if death_date_text
       end
 
       def parse_real_name(children)

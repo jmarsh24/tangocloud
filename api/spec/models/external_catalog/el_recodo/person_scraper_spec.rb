@@ -12,7 +12,7 @@ RSpec.describe ExternalCatalog::ElRecodo::PersonScraper do
       stub_request(:get, "https://www.el-recodo.com/music?C=Dir.%20H%C3%A9ctor%20Mar%C3%ADa%20Artola&lang=en")
         .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/html/el_recodo_person_dir_hector_maria_artola.html")))
       stub_request(:get, "https://www.el-recodo.com/music?Cr=Jos%C3%A9%20Martinez&lang=en")
-        .to_return(status: 301, headers: { "Location" => "https://www.el-recodo.com/music?Cr=Jos%C3%A9%20Mart%C3%ADnez&lang=en" })
+        .to_return(status: 301, headers: {"Location" => "https://www.el-recodo.com/music?Cr=Jos%C3%A9%20Mart%C3%ADnez&lang=en"})
       stub_request(:get, "https://www.el-recodo.com/music?Cr=Jos%C3%A9%20Mart%C3%ADnez&lang=en")
         .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/html/el_recodo_person_jose_martinez.html")))
       stub_config(el_recodo_request_delay: 0)
@@ -70,10 +70,11 @@ RSpec.describe ExternalCatalog::ElRecodo::PersonScraper do
     context "when the person already exists in the database" do
       before do
         stub_request(:get, "https://www.el-recodo.com/music?Cr=Jos%C3%A9%20Martinez&lang=en")
-          .to_return(status: 301, headers: { "Location" => "https://www.el-recodo.com/music?Cr=Jos%C3%A9%20Mart%C3%ADnez&lang=en" })
+          .to_return(status: 301, headers: {"Location" => "https://www.el-recodo.com/music?Cr=Jos%C3%A9%20Mart%C3%ADnez&lang=en"})
         stub_request(:get, "https://www.el-recodo.com/music?Cr=Jos%C3%A9%20Mart%C3%ADnez&lang=en")
           .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/html/el_recodo_person_jose_martinez.html")))
       end
+
       it "fetches the person data and does not create a duplicate" do
         ElRecodoPerson.create!(name: "José Martínez")
         person_scraper = ExternalCatalog::ElRecodo::PersonScraper.new(cookies: "some_cookie")
@@ -87,6 +88,21 @@ RSpec.describe ExternalCatalog::ElRecodo::PersonScraper do
         expect(result.place_of_birth).to eq("Buenos Aires Argentina")
         expect(result.path).to eq("music?Cr=Jos%C3%A9%20Martinez&lang=en")
         expect(result.image_path).to be_nil
+      end
+    end
+
+    context "when a date is not valid" do
+      before do
+        stub_request(:get, "https://www.el-recodo.com/music?Cr=N%C3%A9stor%20Portocarrero%20Vargas&lang=en")
+          .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/html/el_recodo_person_nestor_portocarrero_vargas.html")))
+      end
+
+      it "does not fail" do
+        person_scraper = ExternalCatalog::ElRecodo::PersonScraper.new(cookies: "some_cookie")
+        result = person_scraper.fetch(path: "music?Cr=N%C3%A9stor%20Portocarrero%20Vargas&lang=en")
+
+        expect(result.birth_date).to eq(Date.new(1905, 1, 1))
+        expect(result.death_date).to eq(Date.new(1948, 11, 3))
       end
     end
   end
