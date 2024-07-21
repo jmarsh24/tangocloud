@@ -71,11 +71,9 @@ module ExternalCatalog
         date_text_node = children.find { |node| node.text? && node.text.strip.gsub(/\s+/, " ").match(/^\(\d{4}-\d{2}-\d{2}/) }
         return unless date_text_node
 
-        # Extracting the text within parentheses and splitting by the dash
         date_range_text = date_text_node.text.strip.match(/^\((\d{4}-\d{2}-\d{2})\s*-\s*(\d{4}-\d{2}-\d{2})\)$/)
         return unless date_range_text
 
-        # Extracting the death date
         death_date_text = date_range_text[2]
 
         Date.parse(death_date_text) if death_date_text
