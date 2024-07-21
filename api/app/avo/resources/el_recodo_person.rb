@@ -17,7 +17,7 @@ class Avo::Resources::ElRecodoPerson < Avo::BaseResource
     field :path, as: :text do
       link_to record.name, "https://el-recodo.com/#{record.path}", target: "_blank"
     end
-    field :synced_at, as: :date_time
+    field :synced_at, as: :date_time, hide_on: [:index]
     field :el_recodo_person_roles, as: :has_many
     field :el_recodo_songs, as: :has_many, through: :el_recodo_person_roles
   end
