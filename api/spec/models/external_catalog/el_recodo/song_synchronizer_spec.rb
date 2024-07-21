@@ -27,15 +27,13 @@ RSpec.describe ExternalCatalog::ElRecodo::SongSynchronizer do
     let(:result) do
       ExternalCatalog::ElRecodo::SongScraper::Result.new(
         metadata:,
-        people: [
+        members: [
           ExternalCatalog::ElRecodo::SongScraper::Person.new(
             name: "Hugo Duval",
             role: "singer",
             url: "https://www.el-recodo.com/music?Ar=Julio%20C%C3%A9sar%20Curi&lang=en"
           )
         ],
-        musicians: [],
-        lyricist: nil,
         tags: []
       )
     end
