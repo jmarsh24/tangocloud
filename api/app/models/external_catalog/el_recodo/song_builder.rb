@@ -42,7 +42,7 @@ module ExternalCatalog
         end
       end
 
-      def find_or_build_person(person_data)e
+      def find_or_build_person(person_data)
         person = ElRecodoPerson.find_by(name: person_data.name)
         return person if person
 
