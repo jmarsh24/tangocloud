@@ -96,6 +96,8 @@ module ExternalCatalog
         raise PageNotFoundError
       rescue Faraday::TooManyRequestsError
         raise TooManyRequestsError
+      rescue Faraday::ServerError
+        nil
       end
 
       private
