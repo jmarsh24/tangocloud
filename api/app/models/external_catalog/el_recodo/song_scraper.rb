@@ -15,6 +15,7 @@ module ExternalCatalog
         :ert_number,
         :date,
         :title,
+        :orchestra,
         :style,
         :label,
         :matrix,
@@ -52,7 +53,7 @@ module ExternalCatalog
         @connection = Faraday.new(url: BASE_URL) do |faraday|
           faraday.headers["Cookie"] = @cookies
 
-          faraday.use Faraday::Response::RaiseError
+          faraday.response :raise_error
         end
       end
 
@@ -72,6 +73,7 @@ module ExternalCatalog
           ert_number: extract_ert_number(parsed_page),
           date: safe_parse_date(extract_text(parsed_page, "DATE")),
           title: extract_text(parsed_page, "TITLE"),
+          orchestra: extract_text(parsed_page, "ORCHESTRA"),
           style: extract_text(parsed_page, "STYLE")&.titleize,
           label: extract_text(parsed_page, "LABEL"),
           matrix: extract_text(parsed_page, "MATRIX"),
@@ -162,7 +164,7 @@ module ExternalCatalog
 
         musicians = []
 
-        possible_instruments = ["PIANO", "DOUBLEBASS", "BANDONEON", "VIOLIN", "ARRANGER"]
+        possible_instruments = ["PIANO", "DOUBLEBASS", "BANDONEON", "VIOLIN", "ARRANGER", "CELLO"]
         current_role = nil
         collecting_musicians = false
         musician_names = []

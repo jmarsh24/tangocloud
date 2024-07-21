@@ -6,7 +6,6 @@ class ElRecodoPersonRole < ApplicationRecord
   validates :role, presence: true
 
   ROLES = [
-    "orchestra",
     "piano",
     "arranger",
     "doublebass",

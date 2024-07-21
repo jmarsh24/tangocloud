@@ -6,6 +6,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
       before do
         stub_request(:get, "https://www.el-recodo.com/music?id=3495&lang=en")
           .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/html/el_recodo_music_id_3495.html")))
+        stub_config(el_recodo_request_delay: 0)
       end
 
       it "fetches and parses song metadata correctly" do
@@ -71,6 +72,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
         music_6417_html = Rails.root.join("spec/fixtures/html/el_recodo_music_id_6417.html")
         stub_request(:get, "https://www.el-recodo.com/music?id=6417&lang=en")
           .to_return(status: 200, body: File.read(music_6417_html))
+        stub_config(el_recodo_request_delay: 0)
       end
 
       it "fetches and parses song metadata correctly" do
@@ -109,6 +111,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
         music_1_html = Rails.root.join("spec/fixtures/html/el_recodo_music_id_1.html")
         stub_request(:get, "https://www.el-recodo.com/music?id=1&lang=en")
           .to_return(status: 200, body: File.read(music_1_html))
+        stub_config(el_recodo_request_delay: 0)
       end
 
       it "fetches and parses song metadata correctly" do
@@ -151,6 +154,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
         music_3_html = Rails.root.join("spec/fixtures/html/el_recodo_music_id_3.html")
         stub_request(:get, "https://www.el-recodo.com/music?id=3&lang=en")
           .to_return(status: 200, body: File.read(music_3_html))
+        stub_config(el_recodo_request_delay: 0)
       end
 
       it "does not return instrumental as person" do
@@ -200,6 +204,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
         music_2896_html = Rails.root.join("spec/fixtures/html/el_recodo_music_id_2896.html")
         stub_request(:get, "https://www.el-recodo.com/music?id=2896&lang=en")
           .to_return(status: 200, body: File.read(music_2896_html))
+        stub_config(el_recodo_request_delay: 0)
       end
 
       it "converts the date to the first day of the month or day" do
@@ -213,6 +218,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
       before do
         stub_request(:get, "https://www.el-recodo.com/music?id=1&lang=en")
           .to_return(status: 429)
+        stub_config(el_recodo_request_delay: 0)
       end
 
       it "raises a TooManyRequestsError" do
@@ -224,6 +230,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
       before do
         stub_request(:get, "https://www.el-recodo.com/music?id=1&lang=en")
           .to_return(status: 404)
+        stub_config(el_recodo_request_delay: 0)
       end
 
       it "raises a PageNotFoundError" do
@@ -235,6 +242,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
       before do
         stub_request(:get, "https://www.el-recodo.com/music?id=1&lang=en")
           .to_return(status: 302)
+        stub_config(el_recodo_request_delay: 0)
       end
 
       it "raises a EmptyPageError" do

@@ -11,6 +11,7 @@ RSpec.describe ExternalCatalog::ElRecodo::PersonScraper do
         .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/html/el_recodo_person_roberto_luratti.html")))
       stub_request(:get, "https://www.el-recodo.com/music?C=Dir.%20H%C3%A9ctor%20Mar%C3%ADa%20Artola&lang=en")
         .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/html/el_recodo_person_dir_hector_maria_artola.html")))
+      stub_config(el_recodo_request_delay: 0)
     end
 
     it "returns a person object with the parsed data" do

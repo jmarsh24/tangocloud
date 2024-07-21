@@ -160,6 +160,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.string "title", null: false
     t.string "style"
     t.string "label"
+    t.string "orchestra"
     t.boolean "instrumental", default: true, null: false
     t.text "lyrics"
     t.integer "lyrics_year"

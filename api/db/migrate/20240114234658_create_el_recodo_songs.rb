@@ -6,6 +6,7 @@ class CreateElRecodoSongs < ActiveRecord::Migration[7.1]
       t.string :title, null: false
       t.string :style
       t.string :label
+      t.string :orchestra
       t.boolean :instrumental, null: false, default: true
       t.text :lyrics
       t.integer :lyrics_year
