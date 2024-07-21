@@ -42,9 +42,7 @@ module ExternalCatalog
 
       Result = Data.define(
         :metadata,
-        :musicians,
-        :people,
-        :lyricist,
+        :members,
         :tags
       ).freeze
 
@@ -92,7 +90,9 @@ module ExternalCatalog
         lyricist = extract_lyricist(parsed_page)
         tags = extract_tags(parsed_page)
 
-        Result.new(metadata:, musicians:, people:, lyricist:, tags:)
+        members = [people, musicians, lyricist].flatten.compact
+
+        Result.new(metadata:, members:, tags:)
       rescue Faraday::ResourceNotFound
         raise PageNotFoundError
       rescue Faraday::TooManyRequestsError

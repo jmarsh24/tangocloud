@@ -92,16 +92,13 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
         expect(metadata.lyrics).not_to be_empty
         expect(metadata.page_updated_at).to eq(DateTime.parse("2013-08-15 03:47:00"))
 
-        expect(result.musicians).to be_empty
-
-        expect(result.people).to include(
+        expect(result.members).to include(
           have_attributes(name: "Rodolfo Sciammarella", role: "composer", url: "music?Cr=Rodolfo%20Sciammarella&lang=en"),
           have_attributes(name: "Rodolfo Sciammarella", role: "author", url: "music?Ar=Rodolfo%20Sciammarella&lang=en"),
           have_attributes(name: "Alberto Castillo", role: "soloist", url: "music?O=Alberto%20CASTILLO&lang=en"),
           have_attributes(name: "Emilio Balcarce", role: "director", url: "music?C=Dir.%20Emilio%20Balcarce&lang=en")
         )
 
-        expect(result.lyricist).to be_nil
         expect(result.tags).to be_empty
       end
     end

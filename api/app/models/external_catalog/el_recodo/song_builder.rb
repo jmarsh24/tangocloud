@@ -30,7 +30,6 @@ module ExternalCatalog
             song.synced_at = metadata.synced_at
             song.page_updated_at = metadata.page_updated_at
           end
-          people = people.flatten.compact
 
           people.each do |person_data|
             person = find_or_build_person(person_data)

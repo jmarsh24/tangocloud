@@ -13,7 +13,7 @@ module ExternalCatalog
         song = ExternalCatalog::ElRecodo::SongBuilder.new(cookies: @cookies).build_song(
           ert_number:,
           metadata:,
-          people: result.people
+          people: result.members
         )
 
         song.save!
