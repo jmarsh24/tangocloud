@@ -29,7 +29,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongSynchronizer do
         metadata:,
         members: [
           ExternalCatalog::ElRecodo::SongScraper::Person.new(
-            name: "Julio César Curi",
+            name: "Hugo Duval",
             role: "singer",
             url: "https://www.el-recodo.com/music?Ar=Julio%20C%C3%A9sar%20Curi&lang=en"
           )
