@@ -222,11 +222,12 @@ module ExternalCatalog
             # Remove "Dir." if it exists and titleize the name
             person_name.gsub!(/^Dir\.\s*/i, "")
 
-            person_name.split(" y ").each do |name|
+            # Split the name if it contains "y" or "Y"
+            person_name.split(/\s*[yY]\s*/).each do |name|
               next if name == "Instrumental"
 
               people << Person.new(
-                name: format_name(person_name),
+                name: format_name(name),
                 url: URI::DEFAULT_PARSER.escape(person_url),
                 role: role.downcase
               )
