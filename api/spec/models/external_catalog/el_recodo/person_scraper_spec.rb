@@ -12,6 +12,8 @@ RSpec.describe ExternalCatalog::ElRecodo::PersonScraper do
       stub_request(:get, "https://www.el-recodo.com/music?C=Dir.%20H%C3%A9ctor%20Mar%C3%ADa%20Artola&lang=en")
         .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/html/el_recodo_person_dir_hector_maria_artola.html")))
       stub_request(:get, "https://www.el-recodo.com/music?Cr=Jos%C3%A9%20Martinez&lang=en")
+        .to_return(status: 301, headers: { "Location" => "https://www.el-recodo.com/music?Cr=Jos%C3%A9%20Mart%C3%ADnez&lang=en" })
+      stub_request(:get, "https://www.el-recodo.com/music?Cr=Jos%C3%A9%20Mart%C3%ADnez&lang=en")
         .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/html/el_recodo_person_jose_martinez.html")))
       stub_config(el_recodo_request_delay: 0)
     end
@@ -65,13 +67,27 @@ RSpec.describe ExternalCatalog::ElRecodo::PersonScraper do
       expect(result.name).to eq("Héctor María Artola")
     end
 
-    it "testing" do
-      person_scraper = ExternalCatalog::ElRecodo::PersonScraper.new(cookies: "some_cookie")
-      result = person_scraper.fetch(path: "music?Cr=Jos%C3%A9%20Martinez&lang=en")
+    context "when the person already exists in the database" do
+      before do
+        stub_request(:get, "https://www.el-recodo.com/music?Cr=Jos%C3%A9%20Martinez&lang=en")
+          .to_return(status: 301, headers: { "Location" => "https://www.el-recodo.com/music?Cr=Jos%C3%A9%20Mart%C3%ADnez&lang=en" })
+        stub_request(:get, "https://www.el-recodo.com/music?Cr=Jos%C3%A9%20Mart%C3%ADnez&lang=en")
+          .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/html/el_recodo_person_jose_martinez.html")))
+      end
+      it "fetches the person data and does not create a duplicate" do
+        ElRecodoPerson.create!(name: "José Martínez")
+        person_scraper = ExternalCatalog::ElRecodo::PersonScraper.new(cookies: "some_cookie")
+        result = person_scraper.fetch(path: "music?Cr=Jos%C3%A9%20Martinez&lang=en")
 
-      binding.irb
-
-      expect(result.name).to eq("José Martinez")
+        expect(result.name).to eq("José Martínez")
+        expect(result.birth_date).to eq(Date.new(1890, 1, 28))
+        expect(result.death_date).to eq(Date.new(1939, 7, 27))
+        expect(result.real_name).to eq("Martínez, José Julián")
+        expect(result.nicknames).to eq(["Gallego"])
+        expect(result.place_of_birth).to eq("Buenos Aires Argentina")
+        expect(result.path).to eq("music?Cr=Jos%C3%A9%20Martinez&lang=en")
+        expect(result.image_path).to be_nil
+      end
     end
   end
 end

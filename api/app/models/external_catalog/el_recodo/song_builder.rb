@@ -42,11 +42,14 @@ module ExternalCatalog
         end
       end
 
-      def find_or_build_person(person_data)
+      def find_or_build_person(person_data)e
         person = ElRecodoPerson.find_by(name: person_data.name)
         return person if person
 
         scraped_person_data = @person_scraper.fetch(path: person_data.url)
+
+        person = ElRecodoPerson.find_by(path: scraped_person.name)
+        return person if person
 
         person = ElRecodoPerson.new(
           name: scraped_person_data.name,
