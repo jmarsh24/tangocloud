@@ -69,7 +69,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongBuilder do
       expect(song.label).to eq("RCA Victor")
       expect(song.matrix).to eq("Bb 8")
       expect(song.disk).to eq("RCA Victor 60-1001")
-      expect(song.instrumental).to eq(false)
+      expect(song.instrumental).to be(false)
       expect(song.speed).to eq(78)
       expect(song.duration).to eq(90)
       expect(song.lyrics).to eq("Some lyrics")
