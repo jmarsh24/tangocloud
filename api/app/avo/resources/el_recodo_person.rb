@@ -1,9 +1,13 @@
 class Avo::Resources::ElRecodoPerson < Avo::BaseResource
-  # self.includes = []
-  # self.attachments = []
-  # self.search = {
-  #   query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
-  # }
+  self.includes = [:el_recodo_person_roles, :el_recodo_songs, [image_attachment: :blob]]
+  self.search = {
+    query: -> {
+             query.search(params[:q],
+               fields: [:name],
+               match: :word_start,
+               misspellings: {below: 5})
+           }
+  }
 
   def fields
     field :id, as: :id, hide_on: [:index]

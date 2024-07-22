@@ -1,7 +1,12 @@
 class Avo::Resources::Person < Avo::BaseResource
   self.includes = [:composition_roles, :orchestra_roles, :recording_singers]
   self.search = {
-    query: -> { query.search(params[:q]).results }
+    query: -> {
+             query.search(params[:q],
+               fields: [:name],
+               match: :word_start,
+               misspellings: {below: 5})
+           }
   }
 
   def fields
