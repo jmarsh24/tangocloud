@@ -1,4 +1,4 @@
-namespace :scrape do
+namespace :el_recodo do
   desc "Enqueue scraping jobs for a range of ERT numbers"
   task sync: :environment do
     total_songs = 18_502
