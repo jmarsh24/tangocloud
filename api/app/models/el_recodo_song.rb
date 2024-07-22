@@ -50,13 +50,8 @@ class ElRecodoSong < ApplicationRecord
       ert_number:,
       title:,
       style:,
-      singers: singers.map(&:name),
-      composers: composers.map(&:name),
-      lyricists: lyricists.map(&:name),
       label:,
       lyrics:,
-      director: director&.name,
-      soloist: soloist&.name
     }
   end
 end
