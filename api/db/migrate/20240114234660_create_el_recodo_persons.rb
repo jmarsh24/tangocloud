@@ -7,7 +7,7 @@ class CreateElRecodoPersons < ActiveRecord::Migration[7.1]
       t.string :real_name
       t.string :nicknames, array: true
       t.string :place_of_birth
-      t.string :path
+      t.string :path, null: false, default: "", index: {unique: true}
       t.datetime :synced_at, null: false, default: -> { "CURRENT_TIMESTAMP" }
 
       t.timestamps

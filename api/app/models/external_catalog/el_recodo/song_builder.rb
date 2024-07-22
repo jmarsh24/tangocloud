@@ -61,7 +61,7 @@ module ExternalCatalog
           next person if person
 
           person = ElRecodoPerson.new(
-            name: scraped_person_data.name,
+            name:,
             birth_date: scraped_person_data.birth_date,
             death_date: scraped_person_data.death_date,
             real_name: scraped_person_data.real_name,
