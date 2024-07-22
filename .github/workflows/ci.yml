@@ -116,12 +116,20 @@ jobs:
       - name: Checkout LFS objects
         run: git lfs pull
 
+      - name: Ensure Clean State Before Database Setup
+        run: |
+          if [ -f tmp/pids/server.pid ]; then rm tmp/pids/server.pid; fi
+          sudo -u postgres psql -c "DROP DATABASE IF EXISTS test;"
+          sudo -u postgres psql -c "CREATE DATABASE test;"
+        env:
+          RAILS_ENV: test
+        working-directory: ./api
+
       - name: Set up database
         env:
           DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/test
           RAILS_ENV: test
         run: |
-          bin/rails db:drop
           bin/rails db:create
           bin/rails db:schema:load
           bin/rails db:migrate
