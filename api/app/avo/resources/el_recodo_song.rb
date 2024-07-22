@@ -12,12 +12,6 @@ class Avo::Resources::ElRecodoSong < Avo::BaseResource
         fields: [:title, :style, :label, :orchestra, :singer],
         match: :word_start, misspellings: {below: 5}
       )
-    },
-    item: -> {
-      {
-        title: record.formatted_title,
-        description: "hello"
-      }
     }
   }
 
