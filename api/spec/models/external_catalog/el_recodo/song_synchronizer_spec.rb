@@ -9,7 +9,8 @@ RSpec.describe ExternalCatalog::ElRecodo::SongSynchronizer do
       ExternalCatalog::ElRecodo::SongScraper::Metadata.new(
         ert_number: 1,
         title: "Te burlas tristeza",
-        orchestra: "Rodoflo Biagi",
+        orchestra_name: "Rodoflo Biagi",
+        orchestra_image_path: "w_pict/maestros/rodolfo%20biagi",
         date: Date.new(1960, 7, 28),
         style: "Tango",
         label: "Odeon",
@@ -42,6 +43,8 @@ RSpec.describe ExternalCatalog::ElRecodo::SongSynchronizer do
       allow(song_scraper).to receive(:fetch).and_return(result)
       stub_request(:get, "https://www.el-recodo.com/music?Ar=Julio%20C%C3%A9sar%20Curi&lang=en")
         .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/html/el_recodo_person_julio_cesar_curi.html")))
+      stub_request(:get, "https://www.el-recodo.com/w_pict/maestros/rodolfo%20biagi")
+        .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/files/di_sarli.jpg")), headers: {"Content-Type" => "image/jpeg"})
     end
 
     it "fetches the song data and builds a new el recodo song" do
@@ -53,7 +56,6 @@ RSpec.describe ExternalCatalog::ElRecodo::SongSynchronizer do
         song = ElRecodoSong.find_by(ert_number: 1)
         expect(song).to be_present
         expect(song.title).to eq("Te burlas tristeza")
-        expect(song.orchestra).to eq("Rodoflo Biagi")
         expect(song.date).to eq(Date.new(1960, 7, 28))
         expect(song.style).to eq("Tango")
         expect(song.label).to eq("Odeon")
@@ -68,6 +70,8 @@ RSpec.describe ExternalCatalog::ElRecodo::SongSynchronizer do
         expect(song.page_updated_at).to be_within(1.second).of(Time.now)
         expect(song.people.count).to eq(1)
         expect(song.people.first.name).to eq("Julio César Curi")
+        expect(song.el_recodo_orchestra.name).to eq("Rodoflo Biagi")
+        expect(song.el_recodo_orchestra.image.attached?).to be_truthy
       end
     end
   end

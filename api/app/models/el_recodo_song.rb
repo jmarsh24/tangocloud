@@ -2,28 +2,30 @@
 #
 # Table name: el_recodo_songs
 #
-#  id              :uuid             not null, primary key
-#  date            :date             not null
-#  ert_number      :integer          default(0), not null
-#  title           :string           not null
-#  style           :string
-#  label           :string
-#  orchestra       :string
-#  instrumental    :boolean          default(TRUE), not null
-#  lyrics          :text
-#  lyrics_year     :integer
-#  search_data     :string
-#  matrix          :string
-#  disk            :string
-#  speed           :integer
-#  duration        :integer
-#  synced_at       :datetime         not null
-#  page_updated_at :datetime         not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  id                     :uuid             not null, primary key
+#  date                   :date             not null
+#  ert_number             :integer          default(0), not null
+#  title                  :string           not null
+#  style                  :string
+#  label                  :string
+#  instrumental           :boolean          default(TRUE), not null
+#  lyrics                 :text
+#  lyrics_year            :integer
+#  search_data            :string
+#  matrix                 :string
+#  disk                   :string
+#  speed                  :integer
+#  duration               :integer
+#  synced_at              :datetime         not null
+#  page_updated_at        :datetime         not null
+#  el_recodo_orchestra_id :uuid
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
 #
 class ElRecodoSong < ApplicationRecord
   searchkick word_start: [:title, :composer, :author, :lyrics, :orchestra, :singer], callbacks: :async
+
+  belongs_to :el_recodo_orchestra, optional: true
 
   has_many :el_recodo_person_roles, dependent: :destroy
   has_many :el_recodo_people, through: :el_recodo_person_roles
@@ -76,7 +78,6 @@ class ElRecodoSong < ApplicationRecord
       ert_number:,
       title:,
       style:,
-      orchestra:,
       singers: singers.map(&:name),
       composers: composers.map(&:name),
       lyricists: lyricists.map(&:name),

@@ -6,7 +6,6 @@ class CreateElRecodoSongs < ActiveRecord::Migration[7.1]
       t.string :title, null: false
       t.string :style
       t.string :label
-      t.string :orchestra
       t.boolean :instrumental, null: false, default: true
       t.text :lyrics
       t.integer :lyrics_year
@@ -17,6 +16,7 @@ class CreateElRecodoSongs < ActiveRecord::Migration[7.1]
       t.integer :duration
       t.datetime :synced_at, null: false, default: -> { "CURRENT_TIMESTAMP" }, index: true
       t.datetime :page_updated_at, null: false, default: -> { "CURRENT_TIMESTAMP" }, index: true
+      t.belongs_to :el_recodo_orchestra, type: :uuid, index: true, foreign_key: true, null: true
 
       t.timestamps
     end

@@ -137,6 +137,13 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.index ["ert_number"], name: "index_el_recodo_empty_pages_on_ert_number", unique: true
   end
 
+  create_table "el_recodo_orchestras", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_el_recodo_orchestras_on_name", unique: true
+  end
+
   create_table "el_recodo_people", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", default: "", null: false
     t.date "birth_date"
@@ -167,7 +174,6 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.string "title", null: false
     t.string "style"
     t.string "label"
-    t.string "orchestra"
     t.boolean "instrumental", default: true, null: false
     t.text "lyrics"
     t.integer "lyrics_year"
@@ -178,9 +184,11 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.integer "duration"
     t.datetime "synced_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "page_updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.uuid "el_recodo_orchestra_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["date"], name: "index_el_recodo_songs_on_date"
+    t.index ["el_recodo_orchestra_id"], name: "index_el_recodo_songs_on_el_recodo_orchestra_id"
     t.index ["ert_number"], name: "index_el_recodo_songs_on_ert_number", unique: true
     t.index ["page_updated_at"], name: "index_el_recodo_songs_on_page_updated_at"
     t.index ["synced_at"], name: "index_el_recodo_songs_on_synced_at"
@@ -615,6 +623,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
   add_foreign_key "digital_remasters", "remaster_agents"
   add_foreign_key "el_recodo_person_roles", "el_recodo_people"
   add_foreign_key "el_recodo_person_roles", "el_recodo_songs"
+  add_foreign_key "el_recodo_songs", "el_recodo_orchestras"
   add_foreign_key "likes", "users"
   add_foreign_key "lyrics", "compositions"
   add_foreign_key "lyrics", "languages"

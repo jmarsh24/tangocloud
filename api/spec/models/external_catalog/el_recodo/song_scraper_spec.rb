@@ -27,6 +27,8 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
         expect(metadata.lyrics).to include("La vida es tan extraña y es tan compleja")
         expect(metadata.synced_at).to be_within(1.second).of(Time.zone.now)
         expect(metadata.page_updated_at).to eq(DateTime.parse("2013-07-10 00:52"))
+        expect(metadata.orchestra_name).to eq("Juan D'Arienzo")
+        expect(metadata.orchestra_image_path).to eq("w_pict/maestros/juan%2520d'arienzo")
 
         members = result.members
 
@@ -109,7 +111,6 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
         metadata = result.metadata
 
         expect(metadata.ert_number).to eq(1)
-        expect(metadata.orchestra).to eq("Rodolfo BIAGI")
         expect(metadata.title).to eq("Te burlas tristeza")
         expect(metadata.date).to eq(Date.new(1960, 7, 28))
         expect(metadata.style).to eq("Tango")
@@ -122,6 +123,8 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
         expect(metadata.lyrics).to include("Tristeza...\nCon el vino de mi mesa")
         expect(metadata.synced_at).to be_within(1.second).of(Time.zone.now)
         expect(metadata.page_updated_at).to eq(DateTime.parse("2018-10-14 22:04:00"))
+        expect(metadata.orchestra_name).to eq("Rodolfo Biagi")
+        expect(metadata.orchestra_image_path).to eq("w_pict/maestros/rodolfo%2520biagi")
 
         members = result.members
 

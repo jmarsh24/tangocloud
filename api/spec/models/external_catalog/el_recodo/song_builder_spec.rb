@@ -9,6 +9,12 @@ RSpec.describe ExternalCatalog::ElRecodo::SongBuilder do
           body: File.read(Rails.root.join("spec/fixtures/files/di_sarli.jpg")),
           headers: {"Content-Type" => "image/jpeg"}
         )
+      stub_request(:get, "https://www.el-recodo.com/w_pict/maestros/di%20sarli")
+        .to_return(
+          status: 200,
+          body: File.read(Rails.root.join("spec/fixtures/files/di_sarli.jpg")),
+          headers: {"Content-Type" => "image/jpeg"}
+        )
     end
 
     it "creates a song with the given metadata and people" do
@@ -42,7 +48,8 @@ RSpec.describe ExternalCatalog::ElRecodo::SongBuilder do
         ert_number: el_recodo_song.ert_number,
         date: Date.new(1942, 1, 1),
         title: "La cumparsita",
-        orchestra: "Carlos Di Sarli",
+        orchestra_name: "Carlos Di Sarli",
+        orchestra_image_path: "w_pict/maestros/di%20sarli",
         style: "Tango",
         label: "RCA Victor",
         matrix: "Bb 8",
@@ -63,7 +70,8 @@ RSpec.describe ExternalCatalog::ElRecodo::SongBuilder do
       )
 
       expect(song.title).to eq("La cumparsita")
-      expect(song.orchestra).to eq("Carlos Di Sarli")
+      expect(song.el_recodo_orchestra.name).to eq("Carlos Di Sarli")
+      expect(song.el_recodo_orchestra.image.attached?).to be(true)
       expect(song.date).to eq(Date.new(1942, 1, 1))
       expect(song.style).to eq("Tango")
       expect(song.label).to eq("RCA Victor")

@@ -13,7 +13,8 @@ module ExternalCatalog
         :ert_number,
         :date,
         :title,
-        :orchestra,
+        :orchestra_name,
+        :orchestra_image_path,
         :style,
         :label,
         :matrix,
@@ -70,7 +71,8 @@ module ExternalCatalog
           ert_number: extract_ert_number(parsed_page),
           date: safe_parse_date(extract_text(parsed_page, "DATE")),
           title: extract_text(parsed_page, "TITLE"),
-          orchestra: extract_text(parsed_page, "ORCHESTRA"),
+          orchestra_name: format_name(extract_text(parsed_page, "ORCHESTRA")),
+          orchestra_image_path: extract_orchestra_image_path(parsed_page),
           style: extract_text(parsed_page, "STYLE")&.titleize,
           label: extract_text(parsed_page, "LABEL"),
           matrix: extract_text(parsed_page, "MATRIX"),
@@ -255,6 +257,13 @@ module ExternalCatalog
         tags
       end
 
+      def extract_orchestra_image_path(parsed_page)
+        image_element = parsed_page.css("img.rounded.img-fluid").first
+        return nil unless image_element
+
+        URI::DEFAULT_PARSER.escape(image_element["src"])
+      end
+
       def convert_duration_to_seconds(duration_str)
         return nil unless duration_str
 
@@ -263,6 +272,7 @@ module ExternalCatalog
       end
 
       def format_name(name)
+        return nil unless name
         # Juan D'ARIENZO => Juan D'Arienzo
         name.split(/(\s|')/).map(&:capitalize).join
       end

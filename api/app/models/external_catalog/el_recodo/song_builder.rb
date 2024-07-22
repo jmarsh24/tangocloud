@@ -13,10 +13,12 @@ module ExternalCatalog
       end
 
       def build_song(ert_number:, metadata:, people:)
+        orchestra = find_or_create_orchestra(name: metadata.orchestra_name, image_path: metadata.orchestra_image_path)
+
         ActiveRecord::Base.transaction do
           el_recodo_song = ElRecodoSong.find_or_initialize_by(ert_number:).tap do |song|
             song.title = metadata.title
-            song.orchestra = metadata.orchestra
+            song.el_recodo_orchestra = orchestra
             song.date = metadata.date
             song.style = metadata.style
             song.label = metadata.label
@@ -66,7 +68,7 @@ module ExternalCatalog
             path: scraped_person_data.path
           )
           if scraped_person_data.image_path.present?
-            attach_image(person, scraped_person_data.image_path)
+            attach_image(record: person, image_path: scraped_person_data.image_path)
           end
 
           person
@@ -74,13 +76,26 @@ module ExternalCatalog
         persons.compact
       end
 
-      def attach_image(person, image_path)
+      def find_or_create_orchestra(name:, image_path: nil)
+        orchestra = ElRecodoOrchestra.find_or_initialize_by(name:)
+
+        if orchestra.new_record? && image_path.present?
+          attach_image(record: orchestra, image_path:)
+        end
+
+        orchestra.save! if orchestra.new_record?
+        orchestra
+      end
+
+      def attach_image(record:, image_path:)
         response = @connection.get(image_path)
-        io = StringIO.new(response.body)
-        content_type = response.headers["content-type"]
-        file_extension = Mime::Type.lookup(content_type).symbol.to_s
-        filename = "#{person.name.parameterize}.#{file_extension}"
-        person.image.attach(io:, filename:, content_type:)
+        if response.success?
+          io = StringIO.new(response.body)
+          content_type = response.headers["content-type"]
+          file_extension = Mime::Type.lookup(content_type).symbol.to_s
+          filename = "#{record.name.parameterize}.#{file_extension}"
+          record.image.attach(io:, filename:, content_type:)
+        end
       end
     end
   end

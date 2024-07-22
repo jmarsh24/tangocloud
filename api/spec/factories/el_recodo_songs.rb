@@ -16,23 +16,23 @@ end
 #
 # Table name: el_recodo_songs
 #
-#  id              :uuid             not null, primary key
-#  date            :date             not null
-#  ert_number      :integer          default(0), not null
-#  title           :string           not null
-#  style           :string
-#  label           :string
-#  orchestra       :string
-#  instrumental    :boolean          default(TRUE), not null
-#  lyrics          :text
-#  lyrics_year     :integer
-#  search_data     :string
-#  matrix          :string
-#  disk            :string
-#  speed           :integer
-#  duration        :integer
-#  synced_at       :datetime         not null
-#  page_updated_at :datetime         not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  id                     :uuid             not null, primary key
+#  date                   :date             not null
+#  ert_number             :integer          default(0), not null
+#  title                  :string           not null
+#  style                  :string
+#  label                  :string
+#  instrumental           :boolean          default(TRUE), not null
+#  lyrics                 :text
+#  lyrics_year            :integer
+#  search_data            :string
+#  matrix                 :string
+#  disk                   :string
+#  speed                  :integer
+#  duration               :integer
+#  synced_at              :datetime         not null
+#  page_updated_at        :datetime         not null
+#  el_recodo_orchestra_id :uuid
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
 #
