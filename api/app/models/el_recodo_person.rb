@@ -29,7 +29,7 @@ end
 #  real_name      :string
 #  nicknames      :string           is an Array
 #  place_of_birth :string
-#  path           :string           default(""), not null
+#  path           :string
 #  synced_at      :datetime         not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
