@@ -225,6 +225,8 @@ GEM
       multipart-post (~> 2)
     faraday-net_http (3.1.0)
       net-http
+    faraday-retry (2.2.1)
+      faraday (~> 2.0)
     ffi (1.17.0-aarch64-linux-gnu)
     ffi (1.17.0-aarch64-linux-musl)
     ffi (1.17.0-arm-linux-gnu)
@@ -740,6 +742,7 @@ DEPENDENCIES
   faraday
   faraday-cookie_jar
   faraday-follow_redirects
+  faraday-retry
   friendly_id
   googleauth
   graphiql-rails
