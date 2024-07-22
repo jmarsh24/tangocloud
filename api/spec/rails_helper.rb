@@ -26,7 +26,7 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
 
   config.before(:suite) do
-    WebMock.disable_net_connect!(allow: ["elasticsearch", "localhost"])
+    WebMock.disable_net_connect!(allow: ["elasticsearch", "localhost", "127.0.0.0.1"])
   end
 
   config.before(:each) do
