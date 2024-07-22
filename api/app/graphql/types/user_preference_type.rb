@@ -5,7 +5,6 @@ module Types
     field :last_name, String, null: true
     field :name, String, null: true
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
-    field :user_id, ID, null: false
 
     belongs_to :user
     has_one_attached :avatar
