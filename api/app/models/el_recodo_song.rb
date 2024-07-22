@@ -32,38 +32,14 @@ class ElRecodoSong < ApplicationRecord
   alias_method :people, :el_recodo_people
   alias_method :people_roles, :el_recodo_person_roles
 
-  has_many :lyricist_roles, -> { where(role: "lyricist") }, class_name: "ElRecodoPersonRole", dependent: :destroy, inverse_of: :el_recodo_song
-  has_many :lyricists, through: :lyricist_roles, source: :el_recodo_person
+  ROLE_NAMES = [
+    "lyricist", "piano", "arranger", "doublebass", "bandoneon", "violin", "singer", "composer", "cello", "director", "soloist"
+  ].freeze
 
-  has_many :pianist_roles, -> { where(role: "piano") }, class_name: "ElRecodoPersonRole", dependent: :destroy, inverse_of: :el_recodo_song
-  has_many :pianists, through: :pianist_roles, source: :el_recodo_person
-
-  has_many :arranger_roles, -> { where(role: "arranger") }, class_name: "ElRecodoPersonRole", dependent: :destroy, inverse_of: :el_recodo_song
-  has_many :arrangers, through: :arranger_roles, source: :el_recodo_person
-
-  has_many :doublebassist_roles, -> { where(role: "doublebass") }, class_name: "ElRecodoPersonRole", dependent: :destroy, inverse_of: :el_recodo_song
-  has_many :doublebassists, through: :doublebassist_roles, source: :el_recodo_person
-
-  has_many :bandoneonist_roles, -> { where(role: "bandoneon") }, class_name: "ElRecodoPersonRole", dependent: :destroy, inverse_of: :el_recodo_song
-  has_many :bandoneonists, through: :bandoneonist_roles, source: :el_recodo_person
-
-  has_many :violinist_roles, -> { where(role: "violin") }, class_name: "ElRecodoPersonRole", dependent: :destroy, inverse_of: :el_recodo_song
-  has_many :violinists, through: :violinist_roles, source: :el_recodo_person
-
-  has_many :singer_roles, -> { where(role: "singer") }, class_name: "ElRecodoPersonRole", dependent: :destroy, inverse_of: :el_recodo_song
-  has_many :singers, through: :singer_roles, source: :el_recodo_person
-
-  has_many :composer_roles, -> { where(role: "composer") }, class_name: "ElRecodoPersonRole", dependent: :destroy, inverse_of: :el_recodo_song
-  has_many :composers, through: :composer_roles, source: :el_recodo_person
-
-  has_many :celloist_roles, -> { where(role: "cello") }, class_name: "ElRecodoPersonRole", dependent: :destroy, inverse_of: :el_recodo_song
-  has_many :celloists, through: :celloist_roles, source: :el_recodo_person
-
-  has_one :director_roles, -> { where(role: "director") }, class_name: "ElRecodoPersonRole", dependent: :destroy, inverse_of: :el_recodo_song
-  has_one :director, through: :director_roles, source: :el_recodo_person
-
-  has_one :soloist_roles, -> { where(role: "soloist") }, class_name: "ElRecodoPersonRole", dependent: :destroy, inverse_of: :el_recodo_song
-  has_one :soloist, through: :soloist_roles, source: :el_recodo_person
+  ROLE_NAMES.each do |role|
+    has_many :"#{role}_roles", -> { where(role:) }, class_name: "ElRecodoPersonRole", dependent: :destroy, inverse_of: :el_recodo_song
+    has_many role.pluralize.to_sym, through: :"#{role}_roles", source: :el_recodo_person
+  end
 
   has_one :recording, dependent: :nullify
 
