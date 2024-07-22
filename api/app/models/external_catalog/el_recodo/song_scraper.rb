@@ -148,7 +148,7 @@ module ExternalCatalog
 
         return nil unless date_string
 
-        DateTime.parse(date_string)
+        DateTime.parse(date_string) || nil
       end
 
       def safe_parse_date(date_string)
