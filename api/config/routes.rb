@@ -7,7 +7,9 @@ Rails.application.routes.draw do
   mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "api/graphql"
 
   mount MissionControl::Jobs::Engine, at: "/jobs"
-  mount Avo::Engine => "admin"
+  authenticate :user, ->(user) { user.admin? } do
+    mount Avo::Engine => "/admin"
+  end
   resources :digital_remaster, only: [:new, :create]
 
   namespace :api do

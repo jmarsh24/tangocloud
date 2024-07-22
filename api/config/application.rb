@@ -51,5 +51,6 @@ module Tangocloud
     config.action_mailer.default_url_options = {host:}
 
     config.active_storage.variant_processor = :vips
+    config.mission_control.jobs.base_controller_class = "AdminController"
   end
 end
