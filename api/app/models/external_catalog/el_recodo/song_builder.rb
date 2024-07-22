@@ -51,31 +51,32 @@ module ExternalCatalog
 
       def find_or_build_people(person_data)
         names = person_data.name.split(/ y | Y /).map(&:strip)
-        persons = names.map do |name|
+        names.flat_map do |name|
           person = ElRecodoPerson.find_by(name:)
           next person if person
 
           scraped_person_data = @person_scraper.fetch(path: person_data.url)
 
-          person = ElRecodoPerson.find_by(name: scraped_person_data.name)
-          next person if person
+          single_names = scraped_person_data.name.split(/ y | Y /).map(&:strip)
+          single_names.map do |single_name|
+            person = ElRecodoPerson.find_or_initialize_by(name: single_name)
+            next person if person.persisted?
 
-          person = ElRecodoPerson.new(
-            name:,
-            birth_date: scraped_person_data.birth_date,
-            death_date: scraped_person_data.death_date,
-            real_name: scraped_person_data.real_name,
-            nicknames: scraped_person_data.nicknames,
-            place_of_birth: scraped_person_data.place_of_birth,
-            path: scraped_person_data.path
-          )
-          if scraped_person_data.image_path.present?
-            attach_image(record: person, image_path: scraped_person_data.image_path)
+            person.assign_attributes(
+              birth_date: scraped_person_data.birth_date,
+              death_date: scraped_person_data.death_date,
+              real_name: scraped_person_data.real_name,
+              nicknames: scraped_person_data.nicknames,
+              place_of_birth: scraped_person_data.place_of_birth,
+              path: scraped_person_data.path
+            )
+            if scraped_person_data.image_path.present?
+              attach_image(record: person, image_path: scraped_person_data.image_path)
+            end
+            person.save!
+            person
           end
-
-          person
-        end
-        persons.compact
+        end.compact
       end
 
       def find_or_create_orchestra(name:, image_path: nil)

@@ -30,9 +30,14 @@ RSpec.describe ExternalCatalog::ElRecodo::SongSynchronizer do
         metadata:,
         members: [
           ExternalCatalog::ElRecodo::SongScraper::Person.new(
-            name: "Hugo Duval",
+            name: "Julio César Curi",
             role: "singer",
             url: "https://www.el-recodo.com/music?Ar=Julio%20C%C3%A9sar%20Curi&lang=en"
+          ),
+          ExternalCatalog::ElRecodo::SongScraper::Person.new(
+            name: "Francisco Canaro Y Juan Canaro",
+            role: "composer",
+            url: "https://www.el-recodo.com/music?Cr=Francisco%20Canaro%20y%20Juan%20Canaro&lang=en"
           )
         ],
         tags: []
@@ -43,6 +48,8 @@ RSpec.describe ExternalCatalog::ElRecodo::SongSynchronizer do
       allow(song_scraper).to receive(:fetch).and_return(result)
       stub_request(:get, "https://www.el-recodo.com/music?Ar=Julio%20C%C3%A9sar%20Curi&lang=en")
         .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/html/el_recodo_person_julio_cesar_curi.html")))
+      stub_request(:get, "https://www.el-recodo.com/music?Cr=Francisco%20Canaro%20y%20Juan%20Canaro&lang=en")
+        .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/html/el_recodo_person_francisco_canaro_y_juan_canaro.html")))
       stub_request(:get, "https://www.el-recodo.com/w_pict/maestros/rodolfo%20biagi")
         .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/files/di_sarli.jpg")), headers: {"Content-Type" => "image/jpeg"})
     end
@@ -68,8 +75,11 @@ RSpec.describe ExternalCatalog::ElRecodo::SongSynchronizer do
         expect(song.duration).to eq(60)
         expect(song.synced_at).to be_within(1.second).of(Time.now)
         expect(song.page_updated_at).to be_within(1.second).of(Time.now)
-        expect(song.people.count).to eq(1)
-        expect(song.people.first.name).to eq("Julio César Curi")
+        expect(song.people_roles).to include(
+          have_attributes(role: "singer", el_recodo_person: have_attributes(name: "Julio César Curi")),
+          have_attributes(role: "composer", el_recodo_person: have_attributes(name: "Francisco Canaro")),
+          have_attributes(role: "composer", el_recodo_person: have_attributes(name: "Juan Canaro"))
+        )
         expect(song.el_recodo_orchestra.name).to eq("Rodoflo Biagi")
         expect(song.el_recodo_orchestra.image.attached?).to be_truthy
       end
