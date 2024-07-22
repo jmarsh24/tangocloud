@@ -63,7 +63,7 @@ jobs:
           node-version: "20.x"
           cache: yarn
       - name: Install yarn
-        run: yarn install && cd native && yarn install
+        run: yarn install
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
