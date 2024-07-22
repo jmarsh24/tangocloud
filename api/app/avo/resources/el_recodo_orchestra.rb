@@ -10,8 +10,8 @@ class Avo::Resources::ElRecodoOrchestra < Avo::BaseResource
 
   def fields
     field :id, as: :id, hide_on: [:index]
-    field :name, as: :text
     field :image, as: :file, is_image: true
+    field :name, as: :text
     field :el_recodo_songs, as: :has_many
   end
 end

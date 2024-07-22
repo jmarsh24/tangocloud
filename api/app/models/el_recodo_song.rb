@@ -8,12 +8,9 @@ class ElRecodoSong < ApplicationRecord
   alias_method :people, :el_recodo_people
   alias_method :people_roles, :el_recodo_person_roles
 
-  ElRecodoPersonRole::ROLES.each do |role|
-    has_many :"#{role}_roles", -> { where(role:) }, class_name: "ElRecodoPersonRole", dependent: :destroy, inverse_of: :el_recodo_song
-    has_many role.pluralize.to_sym, through: :"#{role}_roles", source: :el_recodo_person
-  end
-
   has_one :recording, dependent: :nullify
+
+  has_many :singers, -> { where(el_recodo_person_roles: {role: "singer"}) }, through: :el_recodo_person_roles, source: :el_recodo_person
 
   validates :date, presence: true
   validates :ert_number, presence: true, uniqueness: true

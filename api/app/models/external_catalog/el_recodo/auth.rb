@@ -28,7 +28,7 @@ module ExternalCatalog
               "backurl" => ""
             )
           end
-          response.headers["set-cookie"]
+          response.headers["set-cookie"].to_s
         end
       end
     end
