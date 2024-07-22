@@ -28,7 +28,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
         expect(metadata.synced_at).to be_within(1.second).of(Time.zone.now)
         expect(metadata.page_updated_at).to eq(DateTime.parse("2013-07-10 00:52"))
         expect(metadata.orchestra_name).to eq("Juan D'Arienzo")
-        expect(metadata.orchestra_image_path).to eq("w_pict/maestros/juan%2520d'arienzo")
+        expect(metadata.orchestra_image_path).to eq("w_pict/maestros/juan%20d'arienzo")
 
         members = result.members
 
@@ -124,7 +124,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
         expect(metadata.synced_at).to be_within(1.second).of(Time.zone.now)
         expect(metadata.page_updated_at).to eq(DateTime.parse("2018-10-14 22:04:00"))
         expect(metadata.orchestra_name).to eq("Rodolfo Biagi")
-        expect(metadata.orchestra_image_path).to eq("w_pict/maestros/rodolfo%2520biagi")
+        expect(metadata.orchestra_image_path).to eq("w_pict/maestros/rodolfo%20biagi")
 
         members = result.members
 

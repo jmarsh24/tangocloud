@@ -13,7 +13,9 @@ module ExternalCatalog
       end
 
       def build_song(ert_number:, metadata:, people:)
-        orchestra = find_or_create_orchestra(name: metadata.orchestra_name, image_path: metadata.orchestra_image_path)
+        orchestra = if metadata.orchestra_name.present?
+          find_or_create_orchestra(name: metadata.orchestra_name, image_path: metadata.orchestra_image_path)
+        end
 
         ActiveRecord::Base.transaction do
           el_recodo_song = ElRecodoSong.find_or_initialize_by(ert_number:).tap do |song|
@@ -83,7 +85,6 @@ module ExternalCatalog
           attach_image(record: orchestra, image_path:)
         end
 
-        orchestra.save! if orchestra.new_record?
         orchestra
       end
 
@@ -96,6 +97,7 @@ module ExternalCatalog
           filename = "#{record.name.parameterize}.#{file_extension}"
           record.image.attach(io:, filename:, content_type:)
         end
+        record.image
       end
     end
   end

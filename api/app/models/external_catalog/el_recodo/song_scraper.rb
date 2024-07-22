@@ -261,7 +261,7 @@ module ExternalCatalog
         image_element = parsed_page.css("img.rounded.img-fluid").first
         return nil unless image_element
 
-        URI::DEFAULT_PARSER.escape(image_element["src"])
+        image_element["src"]
       end
 
       def convert_duration_to_seconds(duration_str)

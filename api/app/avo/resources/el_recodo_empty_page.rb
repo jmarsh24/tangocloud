@@ -6,7 +6,7 @@ class Avo::Resources::ElRecodoEmptyPage < Avo::BaseResource
   # }
 
   def fields
-    field :id, as: :idlo
+    field :id, hide_on: [:index]
     field :ert_number, as: :number
   end
 end
