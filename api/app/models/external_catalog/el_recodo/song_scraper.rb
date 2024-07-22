@@ -152,7 +152,7 @@ module ExternalCatalog
       end
 
       def safe_parse_date(date_string)
-        return nil unless date_string
+        return nil if date_string.blank?
 
         year, month, day = date_string.split("-")
         month = "01" if month == "00"
