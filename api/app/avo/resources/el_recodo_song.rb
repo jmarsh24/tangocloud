@@ -37,7 +37,7 @@ class Avo::Resources::ElRecodoSong < Avo::BaseResource
     field :matrix, as: :text, hide_on: [:index]
     field :disk, as: :text, hide_on: [:index]
     field :speed, as: :number, hide_on: [:index]
-    field :duration, as: :number
+    field :duration, as: :number, hide_on: [:index]
     field :synced_at, as: :date_time, hide_on: [:index]
     field :page_updated_at, as: :date_time, hide_on: [:index]
 
