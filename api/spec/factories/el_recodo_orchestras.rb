@@ -1,6 +1,5 @@
 FactoryBot.define do
   factory :el_recodo_orchestra do
-    
   end
 end
 

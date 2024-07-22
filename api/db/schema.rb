@@ -395,13 +395,6 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.index ["user_id"], name: "index_shares_on_user_id"
   end
 
-  create_table "solid_cache_entries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.binary "key", null: false
-    t.binary "value", null: false
-    t.datetime "created_at", null: false
-    t.index ["key"], name: "index_solid_cache_entries_on_key", unique: true
-  end
-
   create_table "solid_queue_blocked_executions", force: :cascade do |t|
     t.bigint "job_id", null: false
     t.string "queue_name", null: false
