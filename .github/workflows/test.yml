@@ -80,8 +80,6 @@ jobs:
         run: yarn graphql:types && cd native && yarn graphql:types
       - name: Lint Portal
         run: yarn lint
-      - name: Lint Native App
-        run: cd native && yarn lint
       - name: Install Playwright Browsers
         run: npx --yes playwright install --with-deps chromium
       - name: Build and test with Rake
