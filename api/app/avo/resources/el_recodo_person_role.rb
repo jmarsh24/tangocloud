@@ -7,7 +7,9 @@ class Avo::Resources::ElRecodoPersonRole < Avo::BaseResource
 
   def fields
     field :id, as: :id, hide_on: [:index]
-    field :role, as: :text
+    field :role, as: :text do
+      record.role.capitalize
+    end
     field :image, as: :file, is_image: true do
       record.el_recodo_person.image
     end
