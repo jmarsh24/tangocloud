@@ -61,7 +61,7 @@ end
 #  speed                  :integer
 #  duration               :integer
 #  synced_at              :datetime         not null
-#  page_updated_at        :datetime         not null
+#  page_updated_at        :datetime
 #  el_recodo_orchestra_id :uuid
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null

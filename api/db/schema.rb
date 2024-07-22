@@ -151,11 +151,12 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.string "real_name"
     t.string "nicknames", array: true
     t.string "place_of_birth"
-    t.string "path"
+    t.string "path", default: "", null: false
     t.datetime "synced_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_el_recodo_people_on_name", unique: true
+    t.index ["path"], name: "index_el_recodo_people_on_path", unique: true
   end
 
   create_table "el_recodo_person_roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -183,7 +184,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.integer "speed"
     t.integer "duration"
     t.datetime "synced_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "page_updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "page_updated_at"
     t.uuid "el_recodo_orchestra_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
