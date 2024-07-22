@@ -4,7 +4,9 @@
     "lint": "yarn lint:types && yarn lint:style && yarn lint:format",
     "lint:types": "tsc --noEmit -p tsconfig.json",
     "lint:style": "eslint app/**/*.ts --max-warnings 0",
-    "lint:format": "prettier --list-different \"app/**/*.{ts,scss,json}\""
+    "lint:format": "prettier --list-different \"app/**/*.{ts,scss,json}\"",
+    "graphql:schema": "rover graph introspect http://localhost:3000/graphql --output schema.gql",
+    "graphql:types": "graphql-codegen"
   },
   "license": "MIT",
   "dependencies": {
@@ -27,6 +29,7 @@
     "vite-plugin-sass-glob-import": "^2.0.0"
   },
   "devDependencies": {
+    "@apollo/rover": "^0.21.0",
     "@typescript-eslint/eslint-plugin": "^6.11.0",
     "@typescript-eslint/parser": "^6.11.0",
     "eslint": "^8.53.0",
