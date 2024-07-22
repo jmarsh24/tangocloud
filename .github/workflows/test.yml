@@ -9,6 +9,7 @@ env:
   DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/app
   REDIS_URL: redis://127.0.0.1:6379
   RSPEC_RETRY_RETRY_COUNT: 3
+  ELASTICSEARCH_URL: 127.0.0.1:9200
 
 jobs:
   build:
