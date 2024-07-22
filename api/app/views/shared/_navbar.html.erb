@@ -10,8 +10,8 @@
             <%= image_tag "new-user.svg", alt: "User Avatar", class: "w-8 h-8" %>
           <% end %>
         </button>
-        <div data-hidden-target="toggleable" class="dropdown-menu hidden absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-          <%= link_to avo.root_path, class: "block px-4 py-2 text-gray-800 hover:bg-gray-100" do %>
+        <div data-hidden-target="toggleable" class="dropdown-menu hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-50 overflow-hidden">
+          <%= link_to avo.root_path, class: "block px-4 py-2 text-gray-800 hover:bg-gray-100 rounded-t-lg" do %>
             Admin
           <% end %>
           <%= link_to mission_control_jobs_path, class: "block px-4 py-2 text-gray-800 hover:bg-gray-100" do %>
@@ -20,7 +20,7 @@
           <%= link_to edit_user_registration_path, class: "block px-4 py-2 text-gray-800 hover:bg-gray-100" do %>
             Edit Profile
           <% end %>
-          <%= button_to destroy_user_session_path, method: :delete, class: "block w-full text-left px-4 py-2 text-red-400 hover:bg-red-100" do %>
+          <%= link_to destroy_user_session_path, 'data-turbo-method': :delete, class: "block px-4 py-2 text-red-400 hover:bg-red-100 rounded-b-lg" do %>
             Sign Out
           <% end %>
         </div>
