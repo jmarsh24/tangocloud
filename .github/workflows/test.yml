@@ -13,7 +13,7 @@ env:
 
 jobs:
   build:
-    name: Build
+    name: Test
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -69,6 +69,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+          working-directory: ./api
       - name: Lint Ruby
         run: bundle exec rubocop
       - name: Create PG Database
