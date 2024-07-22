@@ -27,6 +27,7 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -114,6 +115,17 @@ jobs:
 
       - name: Checkout LFS objects
         run: git lfs pull
+
+      - name: Set up database
+        env:
+          DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/test
+          RAILS_ENV: test
+        run: |
+          bin/rails db:create
+          bin/rails db:schema:load
+          bin/rails db:migrate
+          bin/rails db:environment:set RAILS_ENV=test
+        working-directory: ./api
 
       - name: Run Tests
         env:
