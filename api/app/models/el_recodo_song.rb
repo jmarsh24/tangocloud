@@ -26,11 +26,6 @@ class ElRecodoSong < ApplicationRecord
       label:,
       lyrics:,
       orchestra: el_recodo_orchestra&.name,
-      singers: singers.map(&:name),
-      composers: composers.map(&:name),
-      authors: authors.map(&:name),
-      directors: directors.map(&:name),
-      soloists: soloists.map(&:name),
       people: people.map(&:name)
     }
   end
