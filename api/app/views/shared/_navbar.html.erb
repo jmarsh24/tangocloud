@@ -1,16 +1,16 @@
-<nav class="navbar bg-gray-200 p-4 flex justify-between items-center relative" data-controller="menu">
+<nav class="navbar bg-gray-200 p-4 flex justify-between items-center relative" data-controller="hidden">
   <%= nav_link_to "TangoCloud", root_path, class: "text-xl font-extrabold text-gray-800 hover:text-gray-400" %>
   <ul class="menu flex space-x-4 items-center">
     <% if user_signed_in? %>
       <li class="relative">
-        <button class="flex items-center space-x-2 focus:outline-none" data-action="click->menu#toggle" data-menu-target="button">
+        <button class="flex items-center space-x-2 focus:outline-none" data-action="click->hidden#toggle" data-hidden-target="button">
           <% if current_user.avatar.present? %>
             <%= image_tag current_user.avatar, alt: "User Avatar", class: "w-8 h-8 rounded-full" %>
           <% else %>
             <%= image_tag "new-user.svg", alt: "User Avatar", class: "w-8 h-8" %>
           <% end %>
         </button>
-        <div data-menu-target="toggleable" class="dropdown-menu hidden absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+        <div data-hidden-target="toggleable" class="dropdown-menu hidden absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
           <%= link_to avo.root_path, class: "block px-4 py-2 text-gray-800 hover:bg-gray-100" do %>
             Admin
           <% end %>
