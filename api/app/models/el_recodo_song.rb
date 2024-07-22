@@ -32,11 +32,7 @@ class ElRecodoSong < ApplicationRecord
   alias_method :people, :el_recodo_people
   alias_method :people_roles, :el_recodo_person_roles
 
-  ROLE_NAMES = [
-    "lyricist", "piano", "arranger", "doublebass", "bandoneon", "violin", "singer", "composer", "cello", "director", "soloist"
-  ].freeze
-
-  ROLE_NAMES.each do |role|
+  ElRecodoPersonRole::ROLES.each do |role|
     has_many :"#{role}_roles", -> { where(role:) }, class_name: "ElRecodoPersonRole", dependent: :destroy, inverse_of: :el_recodo_song
     has_many role.pluralize.to_sym, through: :"#{role}_roles", source: :el_recodo_person
   end
