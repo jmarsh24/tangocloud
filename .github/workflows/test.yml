@@ -15,9 +15,6 @@ jobs:
   build:
     name: Test
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./api
     services:
       postgres:
         image: postgres:15
@@ -69,7 +66,6 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-          working-directory: ./api
       - name: Lint Ruby
         run: bundle exec rubocop
       - name: Create PG Database
