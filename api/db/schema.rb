@@ -130,29 +130,66 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.index ["tango_cloud_id"], name: "index_digital_remasters_on_tango_cloud_id", unique: true
   end
 
+  create_table "el_recodo_empty_pages", force: :cascade do |t|
+    t.integer "ert_number", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ert_number"], name: "index_el_recodo_empty_pages_on_ert_number", unique: true
+  end
+
+  create_table "el_recodo_orchestras", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_el_recodo_orchestras_on_name", unique: true
+  end
+
+  create_table "el_recodo_people", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", default: "", null: false
+    t.date "birth_date"
+    t.date "death_date"
+    t.string "real_name"
+    t.string "nicknames", array: true
+    t.string "place_of_birth"
+    t.string "path"
+    t.datetime "synced_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_el_recodo_people_on_name", unique: true
+  end
+
+  create_table "el_recodo_person_roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "el_recodo_person_id", null: false
+    t.uuid "el_recodo_song_id", null: false
+    t.string "role", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["el_recodo_person_id"], name: "index_el_recodo_person_roles_on_el_recodo_person_id"
+    t.index ["el_recodo_song_id"], name: "index_el_recodo_person_roles_on_el_recodo_song_id"
+  end
+
   create_table "el_recodo_songs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.date "date", null: false
     t.integer "ert_number", default: 0, null: false
-    t.integer "music_id", default: 0, null: false
     t.string "title", null: false
     t.string "style"
-    t.string "orchestra"
-    t.string "singer"
-    t.string "soloist"
-    t.string "director"
-    t.string "composer"
-    t.string "author"
     t.string "label"
-    t.jsonb "members", default: "{}", null: false
+    t.boolean "instrumental", default: true, null: false
     t.text "lyrics"
+    t.integer "lyrics_year"
     t.string "search_data"
+    t.string "matrix"
+    t.string "disk"
+    t.integer "speed"
+    t.integer "duration"
     t.datetime "synced_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "page_updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "page_updated_at"
+    t.uuid "el_recodo_orchestra_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["date"], name: "index_el_recodo_songs_on_date"
-    t.index ["ert_number"], name: "index_el_recodo_songs_on_ert_number"
-    t.index ["music_id"], name: "index_el_recodo_songs_on_music_id", unique: true
+    t.index ["el_recodo_orchestra_id"], name: "index_el_recodo_songs_on_el_recodo_orchestra_id"
+    t.index ["ert_number"], name: "index_el_recodo_songs_on_ert_number", unique: true
     t.index ["page_updated_at"], name: "index_el_recodo_songs_on_page_updated_at"
     t.index ["synced_at"], name: "index_el_recodo_songs_on_synced_at"
   end
@@ -358,11 +395,15 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.index ["user_id"], name: "index_shares_on_user_id"
   end
 
-  create_table "solid_cache_entries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "solid_cache_entries", force: :cascade do |t|
     t.binary "key", null: false
     t.binary "value", null: false
     t.datetime "created_at", null: false
-    t.index ["key"], name: "index_solid_cache_entries_on_key", unique: true
+    t.bigint "key_hash", null: false
+    t.integer "byte_size", null: false
+    t.index ["byte_size"], name: "index_solid_cache_entries_on_byte_size"
+    t.index ["key_hash", "byte_size"], name: "index_solid_cache_entries_on_key_hash_and_byte_size"
+    t.index ["key_hash"], name: "index_solid_cache_entries_on_key_hash", unique: true
   end
 
   create_table "solid_queue_blocked_executions", force: :cascade do |t|
@@ -436,6 +477,15 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.index ["job_id"], name: "index_solid_queue_ready_executions_on_job_id", unique: true
     t.index ["priority", "job_id"], name: "index_solid_queue_poll_all"
     t.index ["queue_name", "priority", "job_id"], name: "index_solid_queue_poll_by_queue"
+  end
+
+  create_table "solid_queue_recurring_executions", force: :cascade do |t|
+    t.bigint "job_id", null: false
+    t.string "task_key", null: false
+    t.datetime "run_at", null: false
+    t.datetime "created_at", null: false
+    t.index ["job_id"], name: "index_solid_queue_recurring_executions_on_job_id", unique: true
+    t.index ["task_key", "run_at"], name: "index_solid_queue_recurring_executions_on_task_key_and_run_at", unique: true
   end
 
   create_table "solid_queue_scheduled_executions", force: :cascade do |t|
@@ -575,6 +625,9 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
   add_foreign_key "digital_remasters", "audio_files"
   add_foreign_key "digital_remasters", "recordings"
   add_foreign_key "digital_remasters", "remaster_agents"
+  add_foreign_key "el_recodo_person_roles", "el_recodo_people"
+  add_foreign_key "el_recodo_person_roles", "el_recodo_songs"
+  add_foreign_key "el_recodo_songs", "el_recodo_orchestras"
   add_foreign_key "likes", "users"
   add_foreign_key "lyrics", "compositions"
   add_foreign_key "lyrics", "languages"
@@ -599,6 +652,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_failed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_ready_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
+  add_foreign_key "solid_queue_recurring_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "taggings", "tags"
   add_foreign_key "taggings", "users"

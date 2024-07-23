@@ -14,9 +14,7 @@
 This is a music streaming platform for tango.
 
 ## Release
-[![CD](https://github.com/jmarsh24/tangocloud/actions/workflows/app.yml/badge.svg?branch=main)](https://github.com/jmarsh24/tangocloud/actions/workflows/app.yml)
-[![CD](https://github.com/jmarsh24/tangocloud/actions/workflows/api.yml/badge.svg?branch=main)](https://github.com/jmarsh24/tangocloud/actions/workflows/api.yml)
-[![CI](https://github.com/jmarsh24/tangocloud/actions/workflows/ci.yml/badge.svg)](https://github.com/jmarsh24/tangocloud/actions/workflows/ci.yml)
+[![api](https://github.com/jmarsh24/tangocloud/actions/workflows/test.yml/badge.svg?branch=main&event=status)](https://github.com/jmarsh24/tangocloud/actions/workflows/test.yml)
 
 ## Description
 

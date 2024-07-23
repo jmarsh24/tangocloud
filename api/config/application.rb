@@ -14,6 +14,8 @@ require "action_view/railtie"
 require "action_cable/engine"
 # require "rails/test_unit/railtie"
 require "mime/types"
+require "faraday"
+require "faraday/retry"
 
 require_relative "../lib/middleware/silent_logger_middleware"
 
@@ -51,5 +53,6 @@ module Tangocloud
     config.action_mailer.default_url_options = {host:}
 
     config.active_storage.variant_processor = :vips
+    config.mission_control.jobs.base_controller_class = "AdminController"
   end
 end

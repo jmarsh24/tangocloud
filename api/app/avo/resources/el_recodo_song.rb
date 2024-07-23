@@ -1,47 +1,49 @@
 class Avo::Resources::ElRecodoSong < Avo::BaseResource
-  self.title = "El Recodo Songs"
-  self.includes = [:recording]
-  # self.index_query = -> {
-  #   query.order(music_id: :asc)
-  # }
+  self.includes = [
+    :recording,
+    :el_recodo_person_roles,
+    el_recodo_people: [image_attachment: :blob],
+    el_recodo_orchestra: [image_attachment: :blob]
+  ]
   self.search = {
-    query: -> { query.search(params[:q]).results },
-    item: -> do
-      {
-        title: "#{record.title} - #{record&.orchestra&.titleize_name} - #{record&.singer} - #{record&.style&.titleize_name}"
-      }
-    end
+    query: -> {
+      query.search(
+        params[:q],
+        fields: [:title, :style, :label, :orchestra, :singer],
+        match: :word_start, misspellings: {below: 5}
+      )
+    }
   }
 
+  self.title = :formatted_title
+
   def fields
-    field :id, as: :id, readonly: true, only_on: :show
-    field :ert_number, as: :number, readonly: true, sortable: true, only_on: :show
-    field :music_id, as: :number, readonly: true, sortable: true
-    field :external, as: :text do
-      link_to "Link", "https://www.el-recodo.com/music?id=#{record.music_id}", target: "_blank", rel: "noopener"
+    field :id, as: :id, hide_on: [:index]
+    field :title, as: :text
+    field :image, as: :file, is_image: true do
+      record&.el_recodo_orchestra&.image || record.el_recodo_people.find { |person| person.image.attached? }&.image
     end
-    field :title, as: :text, readonly: true, format_using: -> { value&.truncate 28 }
-    field :recording, as: :belongs_to, only_on: :show
-    field :orchestra, as: :text, readonly: true, format_using: -> { value&.titleize_name }
-    field :date, as: :date, readonly: true, sortable: true
-    field :style, as: :text, readonly: true, format_using: -> { value&.titleize&.truncate 8 }
-    field :singer, as: :text, readonly: true, format_using: -> { value&.truncate 24 }
-    field :author, as: :text, readonly: true, format_using: -> { value&.truncate 24 }
-    field :composer, as: :text, readonly: true, format_using: -> { value&.titleize_name }
-    field :soloist, as: :text, readonly: true, format_using: -> { value&.titleize_name }
-    field :director, as: :text, readonly: true, format_using: -> { value&.titleize_name }
-    field :members, as: :code, readonly: true, format_using: -> { value&.titleize_name }
-    field :record_label, as: :text, readonly: true, only_on: :show
-    field :lyrics, as: :textarea, readonly: true, only_on: :show, format_using: -> { simple_format value }
-    field :synced_at, as: :date_time, readonly: true, only_on: :show
-    field :page_updated_at, as: :date_time, readonly: true, only_on: :show
-  end
+    field :ert_number
+    field :external_link, as: :text do
+      link_to "Link", "https://www.el-recodo.com/music?id=#{record.ert_number}&lang=en", target: "_blank"
+    end
+    field :date, as: :date
+    field :el_recodo_orchestra, as: :belongs_to
+    field :style, as: :text
+    field :label, as: :text
+    field :instrumental, as: :boolean
+    field :lyrics, as: :textarea, hide_on: [:index]
+    field :lyrics_year, as: :number, hide_on: [:index]
+    field :matrix, as: :text, hide_on: [:index]
+    field :disk, as: :text, hide_on: [:index]
+    field :speed, as: :number, hide_on: [:index]
+    field :duration, as: :number, hide_on: [:index]
+    field :synced_at, as: :date_time, hide_on: [:index]
+    field :page_updated_at, as: :date_time, hide_on: [:index]
 
-  def actions
-    action Avo::Actions::ExportCsv
-  end
+    field :el_recodo_person_roles, as: :has_many
+    field :el_recodo_people, as: :has_many, through: :el_recodo_person_roles, hide_on: [:show]
 
-  def filters
-    filter Avo::Filters::ErtNumber
+    field :recording, as: :has_one
   end
 end

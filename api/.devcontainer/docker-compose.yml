@@ -5,6 +5,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ../..:/workspaces:cached
+      - ~/.netrc:/root/.netrc:ro
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
@@ -22,6 +23,11 @@ services:
       - postgres:/var/lib/postgresql/data
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
+  redis:
+    image: redis
+    restart: unless-stopped
+    volumes:
+      - redis:/data
   elasticsearch:
     image: elasticsearch:8.11.1
     restart: always
@@ -33,7 +39,8 @@ services:
       - discovery.type=single-node
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - xpack.security.enabled=false
-
 volumes:
   postgres:
   elasticsearch:
+  redis:
+version: "3"
