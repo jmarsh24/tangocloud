@@ -72,9 +72,8 @@ jobs:
         run: bundle exec rake db:create db:migrate
       - name: Check Model Annotations
         run: bundle exec annotate --models && bin/git_tracked_are_unmodified
-      # not working yet
-      # - name: Generate GraphQL Types
-      #   run: yarn graphql:types
+      - name: Generate GraphQL Types
+        run: yarn graphql:types
       - name: Lint Portal
         run: yarn lint
       - name: Install Playwright Browsers
