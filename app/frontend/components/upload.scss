@@ -1,0 +1,11 @@
+.upload-icon {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  object-position: center;
+  background-color: var(--color-gray-200);
+  background-image: url("../images/icons/waveform.circle.svg");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
