@@ -16,6 +16,5 @@ module Types
     field :audio_file, AudioFileType, null: false
 
     has_many :audio_variants
-    has_one :waveform
   end
 end

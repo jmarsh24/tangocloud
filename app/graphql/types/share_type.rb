@@ -4,6 +4,6 @@ module Types
     field :id, ID, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
-    belongs_to :user
+    field :user, Types::UserType, null: false
   end
 end
