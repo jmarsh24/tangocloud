@@ -18,10 +18,10 @@ module Types
     has_many :taggings
     has_many :tags
     has_many :shares
-    has_many :shared_recordings
-    has_many :shared_playlists
-    has_many :shared_orchestras
-    has_many :shared_tandas
+    has_many :shared_recordings, type: Types::ShareType
+    has_many :shared_playlists, type: Types::ShareType
+    has_many :shared_orchestras, type: Types::ShareType
+    has_many :shared_tandas, type: Types::ShareType
     has_many :playbacks, -> { most_recent.limit(100) }
   end
 end
