@@ -10,11 +10,11 @@ module Types
     field :waveform, WaveformType, null: true
     field :created_at, GraphQL::Types::ISO8601Date, null: true
     field :updated_at, GraphQL::Types::ISO8601Date, null: true
+    field :album, AlbumType, null: true
+    field :remaster_agent, RemasterAgentType, null: true
+    field :recording, RecordingType, null: false
+    field :audio_file, AudioFileType, null: false
 
-    belongs_to :album, null: true
-    belongs_to :remaster_agent, null: true
-    belongs_to :recording, null: false
-    belongs_to :audio_file
     has_many :audio_variants
     has_one :waveform
   end

@@ -7,8 +7,7 @@ module Types
   class CompositionRoleType < Types::BaseObject
     field :id, ID, null: true
     field :role, CompositionTypeEnum, null: true
-
-    belongs_to :composition
-    belongs_to :person
+    field :composition, Types::CompositionType, null: true
+    field :person, Types::PersonType, null: true
   end
 end

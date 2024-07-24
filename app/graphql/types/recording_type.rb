@@ -10,13 +10,12 @@ module Types
     field :recording_type, Types::RecordingTypeEnum, null: false
     field :slug, String, null: false
     field :playbacks_count, Integer, null: false
-
-    belongs_to :el_recodo_song
-    belongs_to :orchestra
-    belongs_to :composition
-    belongs_to :record_label
-    belongs_to :genre
-    belongs_to :time_period
+    field :el_recodo_song, Types::ElRecodoSongType, null: true
+    field :orchestra, Types::OrchestraType, null: true
+    field :composition, Types::CompositionType, null: true
+    field :record_label, Types::RecordLabelType, null: true
+    field :genre, Types::GenreType, null: true
+    field :time_period, Types::TimePeriodType, null: true
 
     has_many :recording_singers
     has_many :singers

@@ -6,11 +6,11 @@ module Types
     field :provider, String
     field :uid, String
     field :email, String, null: false
+    field :user_preference, UserPreferenceType, null: true
 
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
-    has_one :user_preference
     has_many :likes, -> { most_recent }
     has_many :tandas
     has_many :playlists

@@ -9,8 +9,7 @@ module Types
     field :public, Boolean, null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
-
-    belongs_to :user
+    field :user, Types::UserType, null: false
 
     has_many :tanda_recordings
     has_many :recordings

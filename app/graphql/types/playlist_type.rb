@@ -9,8 +9,8 @@ module Types
     field :system, Boolean, null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
+    field :user, Types::UserType, null: false
 
-    belongs_to :user
     has_many :playlist_items
     has_many :shares
     has_many :likes
