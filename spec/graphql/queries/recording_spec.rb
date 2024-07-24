@@ -6,7 +6,8 @@ RSpec.describe "Recording", type: :graph do
     let!(:singer) { create(:person, name: "Roberto Rufino") }
     let!(:orchestra) { create(:orchestra, name: "Carlos Di Sarli") }
     let!(:genre) { create(:genre, name: "Tango") }
-    let!(:recording) { create(:recording, composition_title: "Volver a soñar", singers: [singer], orchestra:, genre:) }
+    let!(:composition) { create(:composition, title: "Volver a soñar") }
+    let!(:recording) { create(:recording, composition:, singers: [singer], orchestra:, genre:) }
     let!(:digital_remaster) { create(:digital_remaster, recording:) }
     let!(:waveform) { create(:waveform, digital_remaster:) }
     let(:query) do
@@ -14,7 +15,9 @@ RSpec.describe "Recording", type: :graph do
         query Recording($id: ID!) {
           recording(id: $id) {
             id
-            title
+            composition {
+              title
+            }
             recordingSingers {
               edges {
                 node {
@@ -62,7 +65,7 @@ RSpec.describe "Recording", type: :graph do
       recording_data = data.recording
 
       expect(recording_data.id).to eq(recording.id.to_s)
-      expect(recording_data.title).to eq("Volver a soñar")
+      expect(recording_data.composition.title).to eq("Volver a soñar")
       expect(recording_data.recording_singers.edges.first.node.person.name).to eq("Roberto Rufino")
       expect(recording_data.orchestra.name).to eq("Carlos Di Sarli")
       expect(recording_data.genre.name).to eq("Tango")

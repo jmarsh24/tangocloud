@@ -8,11 +8,8 @@ RSpec.describe "user", type: :graph do
         query User($id: ID!) {
           user(id: $id) {
             id
-            name
             email
             username
-            firstName
-            lastName
             admin
           }
         }
@@ -26,9 +23,6 @@ RSpec.describe "user", type: :graph do
       expect(user_data.id).to eq(user.id)
       expect(user_data.username).to eq(user.username)
       expect(user_data.email).to eq(user.email)
-      expect(user_data.name).to eq(user.name)
-      expect(user_data.first_name).to eq(user.first_name)
-      expect(user_data.last_name).to eq(user.last_name)
       expect(user_data.admin).to be(false)
     end
   end

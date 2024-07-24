@@ -5,7 +5,8 @@ require "rails_helper"
 RSpec.describe "AddPlaylistRecording", type: :graph do
   let!(:user) { create(:user) }
   let!(:playlist) { create(:playlist, title: "Awesome Playlist", user:) }
-  let!(:volver_a_sonar) { create(:recording, composition_title: "Volver a soñar") }
+  let!(:composition) { create(:composition, title: "Volver a soñar") }
+  let!(:recording) { create(:recording, composition:) }
 
   let!(:mutation) do
     <<~GQL
@@ -21,7 +22,9 @@ RSpec.describe "AddPlaylistRecording", type: :graph do
             item {
               ... on Recording {
                 id
-                title
+                composition {
+                  title
+                }
               }
             }
           }
@@ -33,10 +36,10 @@ RSpec.describe "AddPlaylistRecording", type: :graph do
 
   describe "add playlist recording" do
     it "successfully adds a recording to a playlist" do
-      gql(mutation, variables: {playlistId: playlist.id, recordingId: volver_a_sonar.id}, user:)
+      gql(mutation, variables: {playlistId: playlist.id, recordingId: recording.id}, user:)
 
       playlist_title = result.data.add_playlist_recording.playlist_item.playlist.title
-      item_title = result.data.add_playlist_recording.playlist_item.item.title
+      item_title = result.data.add_playlist_recording.playlist_item.item.composition.title
       position = result.data.add_playlist_recording.playlist_item.position
       expect(playlist_title).to eq("Awesome Playlist")
       expect(item_title).to eq("Volver a soñar")
@@ -45,7 +48,7 @@ RSpec.describe "AddPlaylistRecording", type: :graph do
     end
 
     it "returns an error when the playlist does not exist" do
-      gql(mutation, variables: {playlistId: "non-existent-id", recordingId: volver_a_sonar.id}, user:)
+      gql(mutation, variables: {playlistId: "non-existent-id", recordingId: recording.id}, user:)
 
       expect(result.data.add_playlist_recording.errors).not_to be_empty
     end
