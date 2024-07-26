@@ -7,16 +7,16 @@ module ExternalCatalog
 
       has_many :songs,
         dependent: :destroy,
-        inverse_of: :el_recodo_orchestra, class_name: "ExternalCatalog::ElRecodo::Song"
+        inverse_of: :orchestra,
+        class_name: "ExternalCatalog::ElRecodo::Song"
 
       has_many :person_roles,
-        through: :el_recodo_songs,
-        source: :el_recodo_person_roles, class_name: "ExternalCatalog::ElRecodo::PersonRole"
+        through: :songs,
+        class_name: "ExternalCatalog::ElRecodo::PersonRole"
 
       has_many :people,
-        through: :el_recodo_person_roles,
-        source: :el_recodo_person,
-        as: :members, class_name: "ExternalCatalog::ElRecodo::Person"
+        through: :person_roles,
+        class_name: "ExternalCatalog::ElRecodo::Person"
 
       has_one_attached :image
 
@@ -26,15 +26,17 @@ module ExternalCatalog
         }
       end
     end
-
-    # == Schema Information
-    #
-    # Table name: el_recodo_orchestras
-    #
-    #  id         :uuid             not null, primary key
-    #  name       :string           default(""), not null
-    #  created_at :datetime         not null
-    #  updated_at :datetime         not null
-    #
   end
 end
+
+# == Schema Information
+#
+# Table name: orchestras
+#
+#  id         :uuid             not null, primary key
+#  name       :string           not null
+#  sort_name  :string
+#  slug       :string           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#

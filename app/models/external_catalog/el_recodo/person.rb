@@ -23,17 +23,15 @@ module ExternalCatalog
 end
 # == Schema Information
 #
-# Table name: el_recodo_people
+# Table name: people
 #
-#  id             :uuid             not null, primary key
-#  name           :string           default(""), not null
-#  birth_date     :date
-#  death_date     :date
-#  real_name      :string
-#  nicknames      :string           is an Array
-#  place_of_birth :string
-#  path           :string
-#  synced_at      :datetime         not null
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
+#  id         :uuid             not null, primary key
+#  name       :string           not null
+#  slug       :string           not null
+#  sort_name  :string
+#  bio        :text
+#  birth_date :date
+#  death_date :date
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #

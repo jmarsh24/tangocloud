@@ -10,7 +10,7 @@ module ExternalCatalog
 
       has_one :recording, dependent: :nullify
 
-      has_many :singers, -> { where(el_recodo_person_roles: {role: "singer"}) }, through: :el_recodo_person_roles, source: :el_recodo_person
+      has_many :singers, -> { where(el_recodo_person_roles: {role: "singer"}) }, through: :el_recodo_person_roles, source: :el_recodo_person, class_name: "ExternalCatalog::ElRecodo::Person"
 
       validates :date, presence: true
       validates :ert_number, presence: true, uniqueness: true
@@ -41,30 +41,30 @@ module ExternalCatalog
         elements.join(" • ")
       end
     end
-
-    # == Schema Information
-    #
-    # Table name: el_recodo_songs
-    #
-    #  id                     :uuid             not null, primary key
-    #  date                   :date             not null
-    #  ert_number             :integer          default(0), not null
-    #  title                  :string           not null
-    #  style                  :string
-    #  label                  :string
-    #  instrumental           :boolean          default(TRUE), not null
-    #  lyrics                 :text
-    #  lyrics_year            :integer
-    #  search_data            :string
-    #  matrix                 :string
-    #  disk                   :string
-    #  speed                  :integer
-    #  duration               :integer
-    #  synced_at              :datetime         not null
-    #  page_updated_at        :datetime
-    #  el_recodo_orchestra_id :uuid
-    #  created_at             :datetime         not null
-    #  updated_at             :datetime         not null
-    #
   end
 end
+
+# == Schema Information
+#
+# Table name: external_catalog_el_recodo_songs
+#
+#  id                                      :uuid             not null, primary key
+#  date                                    :date             not null
+#  ert_number                              :integer          default(0), not null
+#  title                                   :string           not null
+#  style                                   :string
+#  label                                   :string
+#  instrumental                            :boolean          default(TRUE), not null
+#  lyrics                                  :text
+#  lyrics_year                             :integer
+#  search_data                             :string
+#  matrix                                  :string
+#  disk                                    :string
+#  speed                                   :integer
+#  duration                                :integer
+#  synced_at                               :datetime         not null
+#  page_updated_at                         :datetime
+#  external_catalog_el_recodo_orchestra_id :uuid
+#  created_at                              :datetime         not null
+#  updated_at                              :datetime         not null
+#
