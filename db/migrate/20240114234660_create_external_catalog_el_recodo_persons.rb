@@ -1,6 +1,6 @@
-class CreateElRecodoPersons < ActiveRecord::Migration[7.1]
+class CreateExternalCatalogElRecodoPersons < ActiveRecord::Migration[7.1]
   def change
-    create_table :el_recodo_people, id: :uuid do |t|
+    create_table :external_catalog_el_recodo_people, id: :uuid do |t|
       t.string :name, null: false, default: "", index: {unique: true}
       t.date :birth_date
       t.date :death_date

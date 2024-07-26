@@ -1,5 +1,9 @@
-class ElRecodoEmptyPage < ApplicationRecord
-  validates :ert_number, presence: true, uniqueness: true
+module ExternalCatalog
+  module ElRecodo
+    class EmptyPage < ApplicationRecord
+      validates :ert_number, presence: true, uniqueness: true
+    end
+  end
 end
 
 # == Schema Information

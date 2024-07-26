@@ -20,7 +20,7 @@ RSpec.describe "elRecodoSongs", type: :graph do
     end
 
     it "returns the correct el_recodo_song details" do
-      ElRecodoSong.reindex
+      ExternalCatalog::ElRecodo::Song.reindex
       gql(query, variables: {query: "Volver a sonar"}, user:)
 
       expect(data.el_recodo_songs.edges.first.node.id).to eq(volver_a_sonar.id.to_s)
