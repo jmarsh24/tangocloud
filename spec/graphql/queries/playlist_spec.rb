@@ -25,7 +25,9 @@ RSpec.describe "Playlist", type: :graph do
                   item {
                     ... on Recording {
                       id
-                      title
+                      composition {
+                        title
+                      }
                       digitalRemasters {
                         edges {
                           node {
@@ -70,7 +72,7 @@ RSpec.describe "Playlist", type: :graph do
 
       recording_data = item_data
       expect(recording_data.id).to eq(recording.id.to_s)
-      expect(recording_data.title).to eq(recording.title)
+      expect(recording_data.composition.title).to eq(recording.title)
       first_digital_remaster_data = recording_data.digital_remasters.edges.first.node
       expect(first_digital_remaster_data).not_to be_nil
 

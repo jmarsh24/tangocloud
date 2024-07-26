@@ -19,7 +19,9 @@ RSpec.describe "Orchestras", type: :graph do
               edges {
                 node {
                   id
-                  title
+                  composition {
+                    title
+                  }
                 }
               }
             }
@@ -57,7 +59,7 @@ RSpec.describe "Orchestras", type: :graph do
 
       expect(recordings.edges.size).to eq(1)
       expect(recordings.edges.first.node.id).to eq(recording.id)
-      expect(recordings.edges.first.node.title).to eq(recording.title)
+      expect(recordings.edges.first.node.composition.title).to eq(recording.title)
 
       expect(aggregations.orchestra_periods[0].key).to eq("42-44")
       expect(aggregations.orchestra_periods[0].doc_count).to eq(1)
