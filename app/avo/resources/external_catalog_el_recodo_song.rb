@@ -31,10 +31,10 @@ class Avo::Resources::ExternalCatalogElRecodoSong < Avo::BaseResource
     field :duration, as: :number, hide_on: [:index]
     field :synced_at, as: :date_time, hide_on: [:index]
     field :page_updated_at, as: :date_time, hide_on: [:index]
-    field :orchestra, as: :belongs_to
-    field :person_roles, as: :has_many
-    field :people, as: :has_many, through: :person_roles
+    field :orchestra, as: :belongs_to, use_resource: Avo::Resources::ExternalCatalogElRecodoOrchestra
+    field :person_roles, as: :has_many, use_resource: Avo::Resources::ExternalCatalogElRecodoPersonRole
+    field :people, as: :has_many, through: :person_roles, use_resource: Avo::Resources::ExternalCatalogElRecodoPerson
     field :recording, as: :has_many
-    field :singers, as: :has_many, through: :person_roles
+    field :singers, as: :has_many, through: :person_roles, use_resource: Avo::Resources::ExternalCatalogElRecodoPerson
   end
 end

@@ -8,7 +8,7 @@ class Recording < ApplicationRecord
   belongs_to :composition
   belongs_to :record_label, optional: true
   belongs_to :genre
-  belongs_to :el_recodo_song, class_name: "ExternalCatalog::ElRecodo::Song", optional: true, foreign_key: :external_catalog_el_recodo_song_id
+  belongs_to :el_recodo_song, class_name: "ExternalCatalog::ElRecodo::Song", optional: true, inverse_of: :recordings
   belongs_to :time_period, optional: true
   has_many :recording_singers, dependent: :destroy
   has_many :singers, through: :recording_singers, source: :person
