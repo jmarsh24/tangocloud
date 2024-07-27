@@ -110,7 +110,6 @@ playlists.each do |playlist|
 end
 
 # Reindexing models
-binding.irb
 ExternalCatalog::ElRecodo::Song.reindex
 Recording.reindex
 Playlist.reindex

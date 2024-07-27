@@ -625,8 +625,6 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
   add_foreign_key "digital_remasters", "audio_files"
   add_foreign_key "digital_remasters", "recordings"
   add_foreign_key "digital_remasters", "remaster_agents"
-  add_foreign_key "external_catalog_el_recodo_person_roles", "external_catalog_el_recodo_people"
-  add_foreign_key "external_catalog_el_recodo_person_roles", "external_catalog_el_recodo_songs"
   add_foreign_key "external_catalog_el_recodo_songs", "external_catalog_el_recodo_orchestras"
   add_foreign_key "likes", "users"
   add_foreign_key "lyrics", "compositions"
