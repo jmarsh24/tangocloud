@@ -3,3 +3,13 @@ FactoryBot.define do
     ert_number { 1 }
   end
 end
+
+# == Schema Information
+#
+# Table name: external_catalog_el_recodo_empty_pages
+#
+#  id         :bigint           not null, primary key
+#  ert_number :integer          not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#

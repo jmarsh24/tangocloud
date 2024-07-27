@@ -11,3 +11,20 @@ FactoryBot.define do
     synced_at { Faker::Date.birthday(min_age: 1, max_age: 5) }
   end
 end
+
+# == Schema Information
+#
+# Table name: external_catalog_el_recodo_people
+#
+#  id             :uuid             not null, primary key
+#  name           :string           default(""), not null
+#  birth_date     :date
+#  death_date     :date
+#  real_name      :string
+#  nicknames      :string           is an Array
+#  place_of_birth :string
+#  path           :string
+#  synced_at      :datetime         not null
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#
