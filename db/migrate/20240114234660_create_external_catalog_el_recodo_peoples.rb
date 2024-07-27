@@ -1,4 +1,4 @@
-class CreateExternalCatalogElRecodoPersons < ActiveRecord::Migration[7.1]
+class CreateExternalCatalogElRecodoPeople < ActiveRecord::Migration[7.1]
   def change
     create_table :external_catalog_el_recodo_people, id: :uuid do |t|
       t.string :name, null: false, default: "", index: {unique: true}

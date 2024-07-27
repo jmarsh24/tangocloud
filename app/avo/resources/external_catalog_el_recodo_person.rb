@@ -1,4 +1,5 @@
-class Avo::Resources::ElRecodoPerson < Avo::BaseResource
+class Avo::Resources::ExternalCatalogElRecodoPerson < Avo::BaseResource
+  self.model_class = ::ExternalCatalog::ElRecodo::Person
   self.includes = [:el_recodo_person_roles, :el_recodo_songs, [image_attachment: :blob]]
   self.search = {
     query: -> {
