@@ -34,7 +34,7 @@ class Avo::Resources::ExternalCatalogElRecodoSong < Avo::BaseResource
     field :orchestra, as: :belongs_to
     field :person_roles, as: :has_many
     field :people, as: :has_many, through: :person_roles
-    # field :recording, as: :has_one
+    field :recording, as: :has_many
     field :singers, as: :has_many, through: :person_roles
   end
 end
