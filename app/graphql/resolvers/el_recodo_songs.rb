@@ -7,7 +7,7 @@ module Resolvers
     def resolve(query: "*")
       check_authentication!
 
-      ElRecodoSong.search(query,
+      ExternalCatalog::ElRecodo::Song.search(query,
         fields: ["title^5", "composer", "author", "lyrics", "orchestra", "singer"],
         match: :word_start,
         misspellings: {below: 5}).results

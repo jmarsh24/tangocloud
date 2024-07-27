@@ -16,7 +16,7 @@ class CreateExternalCatalogElRecodoSongs < ActiveRecord::Migration[7.1]
       t.integer :duration
       t.datetime :synced_at, null: false, default: -> { "CURRENT_TIMESTAMP" }, index: true
       t.datetime :page_updated_at, index: true
-      t.belongs_to :orchestra, type: :uuid, index: true, foreign_key: true, null: true
+      t.belongs_to :orchestra, type: :uuid, foreign_key: {to_table: :external_catalog_el_recodo_orchestras}
 
       t.timestamps
     end

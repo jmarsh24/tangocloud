@@ -76,9 +76,9 @@ RSpec.describe ExternalCatalog::ElRecodo::SongSynchronizer do
         expect(song.synced_at).to be_within(1.second).of(Time.now)
         expect(song.page_updated_at).to be_within(1.second).of(Time.now)
         expect(song.person_roles).to include(
-          have_attributes(role: "singer", el_recodo_person: have_attributes(name: "Julio César Curi")),
-          have_attributes(role: "composer", el_recodo_person: have_attributes(name: "Francisco Canaro")),
-          have_attributes(role: "composer", el_recodo_person: have_attributes(name: "Juan Canaro"))
+          have_attributes(role: "singer", person: have_attributes(name: "Julio César Curi")),
+          have_attributes(role: "composer", person: have_attributes(name: "Francisco Canaro")),
+          have_attributes(role: "composer", person: have_attributes(name: "Juan Canaro"))
         )
         expect(song.orchestra.name).to eq("Rodoflo Biagi")
         expect(song.orchestra.image.attached?).to be_truthy

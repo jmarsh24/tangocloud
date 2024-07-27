@@ -1,9 +1,9 @@
 class ExternalCatalog::ElRecodo::Song < ApplicationRecord
   searchkick word_start: [:title, :composer, :author, :lyrics, :orchestra, :singer], callbacks: :async
 
-  belongs_to :orchestra, optional: true, class_name: "ExternalCatalog::ElRecodo::Orchestra", inverse_of: :songs
+  belongs_to :orchestra, class_name: "ExternalCatalog::ElRecodo::Orchestra", optional: true
 
-  has_many :person_roles, dependent: :destroy, class_name: "ExternalCatalog::ElRecodo::PersonRole", inverse_of: :song
+  has_many :person_roles, class_name: "ExternalCatalog::ElRecodo::PersonRole", inverse_of: :song, dependent: :destroy
   has_many :people, through: :person_roles, source: :person, class_name: "ExternalCatalog::ElRecodo::Person"
 
   has_one :recording, dependent: :nullify
