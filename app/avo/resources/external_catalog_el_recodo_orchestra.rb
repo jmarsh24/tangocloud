@@ -1,5 +1,7 @@
-class Avo::Resources::ElRecodoOrchestra < Avo::BaseResource
+class Avo::Resources::ExternalCatalogElRecodoOrchestra < Avo::BaseResource
   self.includes = [:el_recodo_songs, :el_recodo_person_roles, [image_attachment: :blob]]
+  # self.attachments = []
+  self.model_class = ::ExternalCatalog::ElRecodo::Orchestra
   self.search = {
     query: -> {
              query.search(params[:q],
