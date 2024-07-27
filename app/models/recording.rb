@@ -8,7 +8,7 @@ class Recording < ApplicationRecord
   belongs_to :composition
   belongs_to :record_label, optional: true
   belongs_to :genre
-  belongs_to :el_recodo_song, class_name: "ExternalCatalog::ElRecodo::Song", optional: true, inverse_of: :recordings
+  belongs_to :el_recodo_song, class_name: "ExternalCatalog::ElRecodo::Song", optional: true, inverse_of: :recording
   belongs_to :time_period, optional: true
   has_many :recording_singers, dependent: :destroy
   has_many :singers, through: :recording_singers, source: :person
@@ -61,17 +61,17 @@ end
 #
 # Table name: recordings
 #
-#  id                                 :uuid             not null, primary key
-#  recorded_date                      :date
-#  slug                               :string           not null
-#  recording_type                     :enum             default("studio"), not null
-#  playbacks_count                    :integer          default(0), not null
-#  external_catalog_el_recodo_song_id :uuid
-#  orchestra_id                       :uuid             not null
-#  composition_id                     :uuid             not null
-#  genre_id                           :uuid             not null
-#  record_label_id                    :uuid
-#  time_period_id                     :uuid
-#  created_at                         :datetime         not null
-#  updated_at                         :datetime         not null
+#  id                :uuid             not null, primary key
+#  recorded_date     :date
+#  slug              :string           not null
+#  recording_type    :enum             default("studio"), not null
+#  playbacks_count   :integer          default(0), not null
+#  el_recodo_song_id :uuid
+#  orchestra_id      :uuid             not null
+#  composition_id    :uuid             not null
+#  genre_id          :uuid             not null
+#  record_label_id   :uuid
+#  time_period_id    :uuid
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
 #

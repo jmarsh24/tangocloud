@@ -359,7 +359,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.string "slug", null: false
     t.enum "recording_type", default: "studio", null: false, enum_type: "recording_type"
     t.integer "playbacks_count", default: 0, null: false
-    t.uuid "external_catalog_el_recodo_song_id"
+    t.uuid "el_recodo_song_id"
     t.uuid "orchestra_id", null: false
     t.uuid "composition_id", null: false
     t.uuid "genre_id", null: false
@@ -368,7 +368,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["composition_id"], name: "index_recordings_on_composition_id"
-    t.index ["external_catalog_el_recodo_song_id"], name: "index_recordings_on_external_catalog_el_recodo_song_id"
+    t.index ["el_recodo_song_id"], name: "index_recordings_on_el_recodo_song_id"
     t.index ["genre_id"], name: "index_recordings_on_genre_id"
     t.index ["orchestra_id"], name: "index_recordings_on_orchestra_id"
     t.index ["record_label_id"], name: "index_recordings_on_record_label_id"
@@ -642,7 +642,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
   add_foreign_key "recording_singers", "people"
   add_foreign_key "recording_singers", "recordings"
   add_foreign_key "recordings", "compositions"
-  add_foreign_key "recordings", "external_catalog_el_recodo_songs"
+  add_foreign_key "recordings", "external_catalog_el_recodo_songs", column: "el_recodo_song_id"
   add_foreign_key "recordings", "genres"
   add_foreign_key "recordings", "orchestras"
   add_foreign_key "recordings", "record_labels"

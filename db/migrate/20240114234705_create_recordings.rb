@@ -7,7 +7,7 @@ class CreateRecordings < ActiveRecord::Migration[7.1]
       t.enum :recording_type, null: false, default: "studio", enum_type: :recording_type
       t.integer :playbacks_count, null: false, default: 0
 
-      t.belongs_to :external_catalog_el_recodo_song, type: :uuid, foreign_key: true
+      t.belongs_to :el_recodo_song, type: :uuid, foreign_key: {to_table: :external_catalog_el_recodo_songs}
       t.belongs_to :orchestra, foreign_key: true, type: :uuid, null: false
       t.belongs_to :composition, foreign_key: true, type: :uuid, null: false
       t.belongs_to :genre, foreign_key: true, type: :uuid, null: false
