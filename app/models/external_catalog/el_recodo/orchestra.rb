@@ -3,18 +3,10 @@ class ExternalCatalog::ElRecodo::Orchestra < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
 
-  has_many :songs,
-    dependent: :destroy,
-    inverse_of: :orchestra,
-    class_name: "ExternalCatalog::ElRecodo::Song"
+  has_many :songs, dependent: :destroy, inverse_of: :orchestra, class_name: "ExternalCatalog::ElRecodo::Song"
 
-  has_many :person_roles,
-    through: :songs,
-    class_name: "ExternalCatalog::ElRecodo::PersonRole"
-
-  has_many :people,
-    through: :person_roles,
-    class_name: "ExternalCatalog::ElRecodo::Person"
+  has_many :person_roles, through: :songs, source: :person_roles, class_name: "ExternalCatalog::ElRecodo::PersonRole"
+  has_many :people, through: :person_roles, source: :person, class_name: "ExternalCatalog::ElRecodo::Person"
 
   has_one_attached :image
 

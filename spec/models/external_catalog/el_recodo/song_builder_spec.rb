@@ -18,7 +18,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongBuilder do
     end
 
     it "creates a song with the given metadata and people" do
-      el_recodo_song = create(:el_recodo_song)
+      el_recodo_song = create(:external_catalog_el_recodo_song)
       person = ExternalCatalog::ElRecodo::SongScraper::Person.new(
         name: "Julio César Curi",
         role: "author",
@@ -70,8 +70,8 @@ RSpec.describe ExternalCatalog::ElRecodo::SongBuilder do
       )
 
       expect(song.title).to eq("La cumparsita")
-      expect(song.el_recodo_orchestra.name).to eq("Carlos Di Sarli")
-      expect(song.el_recodo_orchestra.image.attached?).to be(true)
+      expect(song.orchestra.name).to eq("Carlos Di Sarli")
+      expect(song.orchestra.image.attached?).to be(true)
       expect(song.date).to eq(Date.new(1942, 1, 1))
       expect(song.style).to eq("Tango")
       expect(song.label).to eq("RCA Victor")

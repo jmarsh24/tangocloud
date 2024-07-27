@@ -159,13 +159,13 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
   end
 
   create_table "external_catalog_el_recodo_person_roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "external_catalog_el_recodo_person_id", null: false
-    t.uuid "external_catalog_el_recodo_song_id", null: false
+    t.uuid "person_id", null: false
+    t.uuid "song_id", null: false
     t.string "role", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["external_catalog_el_recodo_person_id"], name: "idx_on_external_catalog_el_recodo_person_id_0bae71b898"
-    t.index ["external_catalog_el_recodo_song_id"], name: "idx_on_external_catalog_el_recodo_song_id_4c2343653a"
+    t.index ["person_id"], name: "index_external_catalog_el_recodo_person_roles_on_person_id"
+    t.index ["song_id"], name: "index_external_catalog_el_recodo_person_roles_on_song_id"
   end
 
   create_table "external_catalog_el_recodo_songs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -184,12 +184,12 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.integer "duration"
     t.datetime "synced_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "page_updated_at"
-    t.uuid "external_catalog_el_recodo_orchestra_id"
+    t.uuid "orchestra_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["date"], name: "index_external_catalog_el_recodo_songs_on_date"
     t.index ["ert_number"], name: "index_external_catalog_el_recodo_songs_on_ert_number", unique: true
-    t.index ["external_catalog_el_recodo_orchestra_id"], name: "idx_on_external_catalog_el_recodo_orchestra_id_662246d37c"
+    t.index ["orchestra_id"], name: "index_external_catalog_el_recodo_songs_on_orchestra_id"
     t.index ["page_updated_at"], name: "index_external_catalog_el_recodo_songs_on_page_updated_at"
     t.index ["synced_at"], name: "index_external_catalog_el_recodo_songs_on_synced_at"
   end
@@ -625,7 +625,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
   add_foreign_key "digital_remasters", "audio_files"
   add_foreign_key "digital_remasters", "recordings"
   add_foreign_key "digital_remasters", "remaster_agents"
-  add_foreign_key "external_catalog_el_recodo_songs", "external_catalog_el_recodo_orchestras"
+  add_foreign_key "external_catalog_el_recodo_songs", "orchestras"
   add_foreign_key "likes", "users"
   add_foreign_key "lyrics", "compositions"
   add_foreign_key "lyrics", "languages"

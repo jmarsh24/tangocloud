@@ -60,7 +60,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongSynchronizer do
 
         song_synchronizer.sync_song(ert_number: 1)
 
-        song = ElRecodoSong.find_by(ert_number: 1)
+        song = ExternalCatalog::ElRecodo::Song.find_by(ert_number: 1)
         expect(song).to be_present
         expect(song.title).to eq("Te burlas tristeza")
         expect(song.date).to eq(Date.new(1960, 7, 28))
@@ -75,13 +75,13 @@ RSpec.describe ExternalCatalog::ElRecodo::SongSynchronizer do
         expect(song.duration).to eq(60)
         expect(song.synced_at).to be_within(1.second).of(Time.now)
         expect(song.page_updated_at).to be_within(1.second).of(Time.now)
-        expect(song.people_roles).to include(
+        expect(song.person_roles).to include(
           have_attributes(role: "singer", el_recodo_person: have_attributes(name: "Julio César Curi")),
           have_attributes(role: "composer", el_recodo_person: have_attributes(name: "Francisco Canaro")),
           have_attributes(role: "composer", el_recodo_person: have_attributes(name: "Juan Canaro"))
         )
-        expect(song.el_recodo_orchestra.name).to eq("Rodoflo Biagi")
-        expect(song.el_recodo_orchestra.image.attached?).to be_truthy
+        expect(song.orchestra.name).to eq("Rodoflo Biagi")
+        expect(song.orchestra.image.attached?).to be_truthy
       end
     end
   end

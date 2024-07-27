@@ -2,7 +2,7 @@ namespace :el_recodo do
   desc "Enqueue scraping jobs for a range of ERT numbers"
   task sync: :environment do
     total_songs = 18_502
-    excluded_ert_numbers = ElRecodoEmptyPage.pluck(:ert_number)
+    excluded_ert_numbers = ExternalCatalog::ElRecodo::EmptyPage.pluck(:ert_number)
     ert_numbers = (1..total_songs).to_a.shuffle - excluded_ert_numbers
 
     progressbar = ProgressBar.create(

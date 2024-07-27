@@ -18,9 +18,9 @@ module ExternalCatalog
         end
 
         ActiveRecord::Base.transaction do
-          el_recodo_song = ElRecodoSong.find_or_initialize_by(ert_number:).tap do |song|
+          song = Song.find_or_initialize_by(ert_number:).tap do |song|
             song.title = metadata.title
-            song.el_recodo_orchestra = orchestra
+            song.orchestra = orchestra
             song.date = metadata.date
             song.style = metadata.style
             song.label = metadata.label
@@ -39,27 +39,27 @@ module ExternalCatalog
             persons = find_or_build_people(person_data)
 
             persons.each do |person|
-              ElRecodoPersonRole.find_or_create_by!(el_recodo_song:, el_recodo_person: person) do |role|
+              PersonRole.find_or_create_by!(song:, person:) do |role|
                 role.role = person_data.role.downcase
               end
             end
           end
 
-          el_recodo_song
+          song
         end
       end
 
       def find_or_build_people(person_data)
         names = person_data.name.split(/ y | Y /).map(&:strip)
         names.flat_map do |name|
-          person = ElRecodoPerson.find_by(name:)
+          person = Person.find_by(name:)
           next person if person
 
           scraped_person_data = @person_scraper.fetch(path: person_data.url)
 
           single_names = scraped_person_data.name.split(/ y | Y /).map(&:strip)
           single_names.map do |single_name|
-            person = ElRecodoPerson.find_or_initialize_by(name: single_name)
+            person = Person.find_or_initialize_by(name: single_name)
             next person if person.persisted?
 
             person.assign_attributes(
@@ -80,7 +80,7 @@ module ExternalCatalog
       end
 
       def find_or_create_orchestra(name:, image_path: nil)
-        orchestra = ElRecodoOrchestra.find_or_initialize_by(name:)
+        orchestra = Orchestra.find_or_initialize_by(name:)
 
         if orchestra.new_record? && image_path.present?
           attach_image(record: orchestra, image_path:)

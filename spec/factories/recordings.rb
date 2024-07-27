@@ -8,7 +8,7 @@ FactoryBot.define do
     association :composition
     association :time_period
     association :record_label
-    association :el_recodo_song
+    association :external_catalog_el_recodo_song
 
     transient do
       composition_title { nil }

@@ -61,7 +61,7 @@ module ExternalCatalog
 
         # If the page is empty, it means the song doesn't exist for that ert_number
         if response.status == 302
-          ElRecodoEmptyPage.find_or_create_by!(ert_number:)
+          EmptyPage.find_or_create_by!(ert_number:)
           return
         end
 
