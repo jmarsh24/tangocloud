@@ -35,4 +35,5 @@ end
 #  orchestra_id    :uuid
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  formatted_title :string
 #

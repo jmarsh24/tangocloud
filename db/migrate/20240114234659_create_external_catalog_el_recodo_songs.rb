@@ -4,6 +4,7 @@ class CreateExternalCatalogElRecodoSongs < ActiveRecord::Migration[7.1]
       t.date :date, null: false, index: true
       t.integer :ert_number, null: false, default: 0, index: {unique: true}
       t.string :title, null: false
+      t.string :formatted_title
       t.string :style
       t.string :label
       t.boolean :instrumental, null: false, default: true

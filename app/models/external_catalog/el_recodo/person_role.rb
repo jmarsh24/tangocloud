@@ -5,8 +5,6 @@ class ExternalCatalog::ElRecodo::PersonRole < ApplicationRecord
   validates :person, presence: true
   validates :role, presence: true
 
-  scope :singers, -> { where(role: "singer") }
-
   ROLES = [
     "piano",
     "arranger",
@@ -24,6 +22,8 @@ class ExternalCatalog::ElRecodo::PersonRole < ApplicationRecord
   validates :role, inclusion: {in: ROLES}
 
   normalizes :role, with: ->(value) { value.to_s.downcase }
+
+  scope :singers, -> { where(role: 'singer').distinct }
 end
 
 # == Schema Information

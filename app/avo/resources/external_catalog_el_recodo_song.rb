@@ -1,5 +1,5 @@
 class Avo::Resources::ExternalCatalogElRecodoSong < Avo::BaseResource
-  self.includes = [:person_roles, people: [image_attachment: :blob], orchestra: [image_attachment: :blob]]
+  self.includes = [:recording, :person_roles, :people, orchestra: [image_attachment: :blob], people: [image_attachment: :blob]]
   # self.attachments = []
   self.model_class = ::ExternalCatalog::ElRecodo::Song
   self.search = {
@@ -37,7 +37,6 @@ class Avo::Resources::ExternalCatalogElRecodoSong < Avo::BaseResource
     field :orchestra, as: :belongs_to
     field :person_roles, as: :has_many
     field :people, as: :has_many, through: :person_roles
-    field :recordings, as: :has_many
-    field :singers, as: :has_many, through: :person_roles
+    field :recording, as: :has_one
   end
 end

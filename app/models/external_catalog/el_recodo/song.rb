@@ -6,17 +6,14 @@ class ExternalCatalog::ElRecodo::Song < ApplicationRecord
   has_many :person_roles, class_name: "ExternalCatalog::ElRecodo::PersonRole", dependent: :destroy
   has_many :people, through: :person_roles, source: :person, class_name: "ExternalCatalog::ElRecodo::Person"
 
-  has_one :recording, dependent: :nullify
-
-  # has_many :singers, -> { where(person_roles: {role: "singer"}) }, through: :person_roles, source: :person, class_name: "ExternalCatalog::ElRecodo::Person"
-
-  has_many :singer_roles, -> { singers }, class_name: "ExternalCatalog::ElRecodo::PersonRole"
-  has_many :singers, through: :singer_roles, source: :person, class_name: "ExternalCatalog::ElRecodo::Person"
+  has_one :recording, class_name: "Recording", foreign_key: "el_recodo_song_id", inverse_of: :el_recodo_song, dependent: :nullify
 
   validates :date, presence: true
   validates :ert_number, presence: true, uniqueness: true
   validates :title, presence: true
   validates :page_updated_at, presence: true
+
+  before_save :set_formatted_title
 
   def search_data
     {
@@ -27,12 +24,19 @@ class ExternalCatalog::ElRecodo::Song < ApplicationRecord
       label:,
       lyrics:,
       orchestra: orchestra&.name,
-      people: people.map(&:name)
+      people: people&.map(&:name)
     }
   end
 
-  def formatted_title
-    singers_text = singers.map(&:name).presence&.join(", ") || "Instrumental"
+  def singers
+    people.joins(:person_roles).merge(ExternalCatalog::ElRecodo::PersonRole.singers)
+  end
+
+  private
+
+  def set_formatted_title
+    singer_names = singers.map(&:name)
+    singers_text = singer_names.presence&.join(", ") || "Instrumental"
 
     elements = [
       title,
@@ -41,7 +45,8 @@ class ExternalCatalog::ElRecodo::Song < ApplicationRecord
       date&.year,
       style
     ].reject(&:blank?)
-    elements.join(" • ")
+
+    self.formatted_title = elements.join(" • ")
   end
 end
 
@@ -68,4 +73,5 @@ end
 #  orchestra_id    :uuid
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  formatted_title :string
 #
