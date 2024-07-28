@@ -5,8 +5,12 @@ require "rails_helper"
 RSpec.describe "ChangePlaylistItemPosition", type: :graph do
   let!(:user) { create(:user) }
   let!(:playlist) { create(:playlist, title: "Awesome Playlist", user:) }
-  let!(:volver_a_sonar) { create(:recording, composition_title: "Volver a soñar") }
-  let!(:milonga_vieja) { create(:recording, composition_title: "Milonga vieja") }
+
+  let!(:composition1) { create(:composition, title: "Volver a soñar") }
+  let!(:volver_a_sonar) { create(:recording, composition: composition1) }
+
+  let!(:composition2) { create(:composition, title: "Milonga vieja") }
+  let!(:milonga_vieja) { create(:recording, composition: composition2) }
   let!(:volver_a_sonar_item) { create(:playlist_item, playlist:, item: volver_a_sonar, position: 1) }
   let!(:milonga_vieja_item) { create(:playlist_item, playlist:, item: milonga_vieja, position: 2) }
   let!(:mutation) do
@@ -23,7 +27,9 @@ RSpec.describe "ChangePlaylistItemPosition", type: :graph do
             item {
               ... on Recording {
                 id
-                title
+                composition {
+                  title
+                }
               }
             }
           }
@@ -38,7 +44,7 @@ RSpec.describe "ChangePlaylistItemPosition", type: :graph do
       gql(mutation, variables: {playlistItemId: volver_a_sonar_item.id, position: 2}, user:)
 
       playlist_title = result.data.change_playlist_item_position.playlist_item.playlist.title
-      item_title = result.data.change_playlist_item_position.playlist_item.item.title
+      item_title = result.data.change_playlist_item_position.playlist_item.item.composition.title
       position = result.data.change_playlist_item_position.playlist_item.position
 
       expect(playlist_title).to eq("Awesome Playlist")

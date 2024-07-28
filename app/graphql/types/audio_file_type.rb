@@ -12,8 +12,8 @@ module Types
     field :format, String, null: false
     field :id, ID, null: false
     field :status, AudioFileStatusEnum, null: false
+    field :digital_remaster, Types::DigitalRemasterType, null: true
 
-    has_one :digital_remaster
     has_one_attached :file
   end
 end
