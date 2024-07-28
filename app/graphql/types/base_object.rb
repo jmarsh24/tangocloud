@@ -25,22 +25,6 @@ module Types
         end
       end
 
-      def belongs_to(name, type: infer_type_from_association_name(name), null: false, association: name)
-        id_field = :"#{name}_id"
-        field(name, type, null:)
-        field(id_field, String, null:)
-        define_method name do
-          dataloader.with(Sources::Association, object.class, association, nil).load(object)
-        end
-      end
-
-      def has_one(name, type: infer_type_from_association_name(name), null: false, association: name)
-        field(name, type, null:)
-        define_method name do
-          dataloader.with(Sources::Association, object.class, association, nil).load(object)
-        end
-      end
-
       def has_one_attached(name)
         field name, Types::AttachmentType, null: true
 

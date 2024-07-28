@@ -6,7 +6,6 @@ module Types
     field :filename, String, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
     field :url, String, null: false
-
-    belongs_to :blob
+    field :blob, Types::BlobType, null: false
   end
 end

@@ -10,7 +10,6 @@ RSpec.describe "CurrentUser", type: :graph do
             id
             username
             email
-            name
           }
         }
       GQL
@@ -24,7 +23,6 @@ RSpec.describe "CurrentUser", type: :graph do
       expect(user_data.id).to eq(user.id)
       expect(user_data.username).to eq(user.username)
       expect(user_data.email).to eq(user.email)
-      expect(user_data.name).to eq(user.name)
     end
   end
 end

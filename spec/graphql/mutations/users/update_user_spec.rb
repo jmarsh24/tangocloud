@@ -15,20 +15,24 @@ RSpec.describe "UpdateUser", type: :graph do
   let(:mutation) do
     <<-GQL
       mutation UpdateUser(
+        $username: String,
+        $password: String,
         $firstName: String,
         $lastName: String,
-        $password: String,
         $avatar: Upload
       ) {
         updateUser(input: {
+          username: $username,
           firstName: $firstName,
           lastName: $lastName,
           password: $password,
           avatar: $avatar
         }) {
           ... on User {
-            name
+            username
             userPreference {
+              firstName
+              lastName
               avatar {
                 url
               }
@@ -54,13 +58,16 @@ RSpec.describe "UpdateUser", type: :graph do
     variables = {
       firstName: "Updated",
       lastName: "Updated",
+      username: "Updated",
       password: "tangocloud!9082",
       avatar:
     }
 
     gql(mutation, variables:, user:)
 
-    expect(data.update_user.name).to eq("Updated Updated")
+    expect(data.update_user.username).to eq("Updated")
+    expect(data.update_user.user_preference.first_name).to eq("Updated")
+    expect(data.update_user.user_preference.last_name).to eq("Updated")
     expect(data.update_user.user_preference.avatar.url).to be_present
   end
 end

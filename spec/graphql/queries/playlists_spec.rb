@@ -4,7 +4,8 @@ RSpec.describe "Playlists", type: :graph do
   describe "Fetching playlists" do
     let!(:user) { create(:user) }
     let!(:playlist) { create(:playlist, :public, title: "Awesome Playlist", user:) }
-    let!(:recording) { create(:recording, composition_title: "Awesome Recording") }
+    let!(:composition) { create(:composition, title: "Awesome Recording") }
+    let!(:recording) { create(:recording, composition:) }
     let!(:playlist_item) { create(:playlist_item, playlist:, item: recording) }
     let!(:digital_remaster) { create(:digital_remaster, recording:) }
     let!(:audio_variant) { create(:audio_variant, digital_remaster:) }
@@ -24,7 +25,9 @@ RSpec.describe "Playlists", type: :graph do
                       item {
                         ... on Recording {
                           id
-                          title
+                          composition {
+                            title
+                          }
                           digitalRemasters {
                             edges {
                               node {
@@ -76,7 +79,7 @@ RSpec.describe "Playlists", type: :graph do
       first_playlist_item = playlist_items.first.node
       first_item = first_playlist_item.item
       expect(first_item.id).to eq(recording.id)
-      expect(first_item.title).to eq(recording.title)
+      expect(first_item.composition.title).to eq(recording.title)
 
       first_digital_remaster = first_item.digital_remasters.edges.first.node
       expect(first_digital_remaster.id).to eq(audio_variant.digital_remaster.id)
