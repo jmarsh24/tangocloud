@@ -23,7 +23,7 @@ class ExternalCatalog::ElRecodo::PersonRole < ApplicationRecord
 
   normalizes :role, with: ->(value) { value.to_s.downcase }
 
-  scope :singers, -> { where(role: 'singer').distinct }
+  scope :singers, -> { where(role: "singer").distinct }
 end
 
 # == Schema Information
