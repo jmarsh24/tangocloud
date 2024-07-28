@@ -7,8 +7,9 @@ export const ORCHESTRAS = gql`
 				node {
 					id
 					name
-					photoUrl
-					recordingsCount
+					photo {
+						url
+					}
 				}
 			}
 		}
