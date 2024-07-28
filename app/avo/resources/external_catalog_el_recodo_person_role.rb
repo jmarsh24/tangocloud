@@ -1,10 +1,7 @@
 class Avo::Resources::ExternalCatalogElRecodoPersonRole < Avo::BaseResource
   self.includes = [:person, :song, {person: [image_attachment: :blob]}]
-  # self.attachments = []
   self.model_class = ::ExternalCatalog::ElRecodo::PersonRole
-  # self.search = {
-  #   query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
-  # }
+  self.visible_on_sidebar = false
 
   def fields
     field :id, as: :id, hide_on: [:index]
