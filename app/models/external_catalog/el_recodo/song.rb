@@ -3,12 +3,15 @@ class ExternalCatalog::ElRecodo::Song < ApplicationRecord
 
   belongs_to :orchestra, class_name: "ExternalCatalog::ElRecodo::Orchestra", optional: true
 
-  has_many :person_roles, class_name: "ExternalCatalog::ElRecodo::PersonRole", inverse_of: :song, dependent: :destroy
+  has_many :person_roles, class_name: "ExternalCatalog::ElRecodo::PersonRole", dependent: :destroy
   has_many :people, through: :person_roles, source: :person, class_name: "ExternalCatalog::ElRecodo::Person"
 
   has_one :recording, dependent: :nullify
 
-  has_many :singers, -> { where(person_roles: {role: "singer"}) }, through: :person_roles, source: :person, class_name: "ExternalCatalog::ElRecodo::Person"
+  # has_many :singers, -> { where(person_roles: {role: "singer"}) }, through: :person_roles, source: :person, class_name: "ExternalCatalog::ElRecodo::Person"
+
+  has_many :singer_roles, -> { singers }, class_name: "ExternalCatalog::ElRecodo::PersonRole"
+  has_many :singers, through: :singer_roles, source: :person, class_name: "ExternalCatalog::ElRecodo::Person"
 
   validates :date, presence: true
   validates :ert_number, presence: true, uniqueness: true
@@ -29,10 +32,12 @@ class ExternalCatalog::ElRecodo::Song < ApplicationRecord
   end
 
   def formatted_title
+    singers_text = singers.map(&:name).presence&.join(", ") || "Instrumental"
+
     elements = [
       title,
       orchestra&.name,
-      singers.map(&:name).join(", "),
+      singers_text,
       date&.year,
       style
     ].reject(&:blank?)

@@ -1,9 +1,11 @@
 class ExternalCatalog::ElRecodo::PersonRole < ApplicationRecord
-  belongs_to :person, class_name: "ExternalCatalog::ElRecodo::Person", inverse_of: :person_roles
-  belongs_to :song, class_name: "ExternalCatalog::ElRecodo::Song", inverse_of: :person_roles
+  belongs_to :person, class_name: "ExternalCatalog::ElRecodo::Person"
+  belongs_to :song, class_name: "ExternalCatalog::ElRecodo::Song"
 
   validates :person, presence: true
   validates :role, presence: true
+
+  scope :singers, -> { where(role: "singer") }
 
   ROLES = [
     "piano",

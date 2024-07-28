@@ -1,7 +1,7 @@
 class ExternalCatalog::ElRecodo::Person < ApplicationRecord
   searchkick word_start: [:name, :real_name, :nicknames, :place_of_birth], callbacks: :async
 
-  has_many :person_roles, dependent: :destroy, class_name: "ExternalCatalog::ElRecodo::PersonRole", inverse_of: :person
+  has_many :person_roles, class_name: "ExternalCatalog::ElRecodo::PersonRole", dependent: :destroy
   has_many :songs, through: :person_roles, source: :song, class_name: "ExternalCatalog::ElRecodo::Song"
 
   has_one_attached :image

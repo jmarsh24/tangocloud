@@ -1,5 +1,5 @@
 class Avo::Resources::ExternalCatalogElRecodoSong < Avo::BaseResource
-  self.includes = [:orchestra, :person_roles, :people, :singers]
+  self.includes = [:person_roles, people: [image_attachment: :blob], orchestra: [image_attachment: :blob]]
   # self.attachments = []
   self.model_class = ::ExternalCatalog::ElRecodo::Song
   self.search = {
@@ -16,6 +16,9 @@ class Avo::Resources::ExternalCatalogElRecodoSong < Avo::BaseResource
 
   def fields
     field :id, as: :id, hide_on: [:index]
+    field :image, as: :file, is_image: true do
+      record&.orchestra&.image || record.people.find { _1.image.attached? }&.image
+    end
     field :date, as: :date
     field :ert_number, as: :number
     field :title, as: :text
@@ -31,10 +34,10 @@ class Avo::Resources::ExternalCatalogElRecodoSong < Avo::BaseResource
     field :duration, as: :number, hide_on: [:index]
     field :synced_at, as: :date_time, hide_on: [:index]
     field :page_updated_at, as: :date_time, hide_on: [:index]
-    field :orchestra, as: :belongs_to, use_resource: Avo::Resources::ExternalCatalogElRecodoOrchestra
-    field :person_roles, as: :has_many, use_resource: Avo::Resources::ExternalCatalogElRecodoPersonRole
-    field :people, as: :has_many, through: :person_roles, use_resource: Avo::Resources::ExternalCatalogElRecodoPerson
-    field :recording, as: :has_many
-    field :singers, as: :has_many, through: :person_roles, use_resource: Avo::Resources::ExternalCatalogElRecodoPerson
+    field :orchestra, as: :belongs_to
+    field :person_roles, as: :has_many
+    field :people, as: :has_many, through: :person_roles
+    field :recordings, as: :has_many
+    field :singers, as: :has_many, through: :person_roles
   end
 end

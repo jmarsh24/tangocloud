@@ -1,5 +1,5 @@
 class Avo::Resources::ExternalCatalogElRecodoPersonRole < Avo::BaseResource
-  self.includes = [:person, :song]
+  self.includes = [:song, person: [image_attachment: :blob]]
   # self.attachments = []
   self.model_class = ::ExternalCatalog::ElRecodo::PersonRole
   # self.search = {
@@ -8,6 +8,7 @@ class Avo::Resources::ExternalCatalogElRecodoPersonRole < Avo::BaseResource
 
   def fields
     field :id, as: :id, hide_on: [:index]
+    field :role, as: :text
     field :image, as: :file, is_image: true do
       record.person.image
     end
@@ -17,7 +18,7 @@ class Avo::Resources::ExternalCatalogElRecodoPersonRole < Avo::BaseResource
     field :external_link, as: :text do
       link_to "Link", "https://el-recodo.com/#{record.person.path}", target: "_blank"
     end
-    field :person, as: :belongs_to, use_resource: Avo::Resources::ExternalCatalogElRecodoPerson
-    field :song, as: :belongs_to, use_resource: Avo::Resources::ExternalCatalogElRecodoSong
+    field :person, as: :belongs_to
+    field :song, as: :belongs_to
   end
 end
