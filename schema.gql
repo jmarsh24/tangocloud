@@ -169,6 +169,7 @@ type Composer {
     "Returns the last _n_ elements from the list."
     last: Int
   ): OrchestraConnection!
+  photo: Attachment
   recording(id: ID!): Recording!
   recordingSinger(id: ID!): RecordingSinger!
   recordingSingers(
@@ -577,6 +578,7 @@ type Lyricist {
     "Returns the last _n_ elements from the list."
     last: Int
   ): OrchestraConnection!
+  photo: Attachment
   recording(id: ID!): Recording!
   recordingSinger(id: ID!): RecordingSinger!
   recordingSingers(
@@ -906,6 +908,7 @@ type Person {
     "Returns the last _n_ elements from the list."
     last: Int
   ): OrchestraConnection!
+  photo: Attachment
   recording(id: ID!): Recording!
   recordingSinger(id: ID!): RecordingSinger!
   recordingSingers(
@@ -1575,6 +1578,7 @@ type Singer {
     "Returns the last _n_ elements from the list."
     last: Int
   ): OrchestraConnection!
+  photo: Attachment
   recording(id: ID!): Recording!
   recordingSinger(id: ID!): RecordingSinger!
   recordingSingers(
