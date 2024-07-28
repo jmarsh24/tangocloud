@@ -14,11 +14,11 @@ class Avo::Resources::ExternalCatalogElRecodoOrchestra < Avo::BaseResource
     field :id, as: :id, hide_on: [:index]
     field :image, as: :file, is_image: true
     field :name, as: :text
-    field :songs, as: :has_many
-    field :person_roles, as: :has_many, through: :songs
-    field :people, as: :has_many, through: :person_roles
     field :el_recodo, as: :text do
       link_to "Link", "https://el-recodo.com/#{record.path}", target: "_blank"
     end
+    field :songs, as: :has_many
+    field :person_roles, as: :has_many, through: :songs
+    field :people, as: :has_many, through: :person_roles
   end
 end
