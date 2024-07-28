@@ -130,21 +130,22 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.index ["tango_cloud_id"], name: "index_digital_remasters_on_tango_cloud_id", unique: true
   end
 
-  create_table "el_recodo_empty_pages", force: :cascade do |t|
+  create_table "external_catalog_el_recodo_empty_pages", force: :cascade do |t|
     t.integer "ert_number", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["ert_number"], name: "index_el_recodo_empty_pages_on_ert_number", unique: true
+    t.index ["ert_number"], name: "index_external_catalog_el_recodo_empty_pages_on_ert_number", unique: true
   end
 
-  create_table "el_recodo_orchestras", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "external_catalog_el_recodo_orchestras", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_el_recodo_orchestras_on_name", unique: true
+    t.string "path", default: "", null: false
+    t.index ["name"], name: "index_external_catalog_el_recodo_orchestras_on_name", unique: true
   end
 
-  create_table "el_recodo_people", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "external_catalog_el_recodo_people", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", default: "", null: false
     t.date "birth_date"
     t.date "death_date"
@@ -155,23 +156,24 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.datetime "synced_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_el_recodo_people_on_name", unique: true
+    t.index ["name"], name: "index_external_catalog_el_recodo_people_on_name", unique: true
   end
 
-  create_table "el_recodo_person_roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "el_recodo_person_id", null: false
-    t.uuid "el_recodo_song_id", null: false
+  create_table "external_catalog_el_recodo_person_roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "person_id", null: false
+    t.uuid "song_id", null: false
     t.string "role", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["el_recodo_person_id"], name: "index_el_recodo_person_roles_on_el_recodo_person_id"
-    t.index ["el_recodo_song_id"], name: "index_el_recodo_person_roles_on_el_recodo_song_id"
+    t.index ["person_id"], name: "index_external_catalog_el_recodo_person_roles_on_person_id"
+    t.index ["song_id"], name: "index_external_catalog_el_recodo_person_roles_on_song_id"
   end
 
-  create_table "el_recodo_songs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "external_catalog_el_recodo_songs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.date "date", null: false
     t.integer "ert_number", default: 0, null: false
     t.string "title", null: false
+    t.string "formatted_title"
     t.string "style"
     t.string "label"
     t.boolean "instrumental", default: true, null: false
@@ -184,14 +186,14 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.integer "duration"
     t.datetime "synced_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "page_updated_at"
-    t.uuid "el_recodo_orchestra_id"
+    t.uuid "orchestra_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["date"], name: "index_el_recodo_songs_on_date"
-    t.index ["el_recodo_orchestra_id"], name: "index_el_recodo_songs_on_el_recodo_orchestra_id"
-    t.index ["ert_number"], name: "index_el_recodo_songs_on_ert_number", unique: true
-    t.index ["page_updated_at"], name: "index_el_recodo_songs_on_page_updated_at"
-    t.index ["synced_at"], name: "index_el_recodo_songs_on_synced_at"
+    t.index ["date"], name: "index_external_catalog_el_recodo_songs_on_date"
+    t.index ["ert_number"], name: "index_external_catalog_el_recodo_songs_on_ert_number", unique: true
+    t.index ["orchestra_id"], name: "index_external_catalog_el_recodo_songs_on_orchestra_id"
+    t.index ["page_updated_at"], name: "index_external_catalog_el_recodo_songs_on_page_updated_at"
+    t.index ["synced_at"], name: "index_external_catalog_el_recodo_songs_on_synced_at"
   end
 
   create_table "friendly_id_slugs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -625,9 +627,9 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
   add_foreign_key "digital_remasters", "audio_files"
   add_foreign_key "digital_remasters", "recordings"
   add_foreign_key "digital_remasters", "remaster_agents"
-  add_foreign_key "el_recodo_person_roles", "el_recodo_people"
-  add_foreign_key "el_recodo_person_roles", "el_recodo_songs"
-  add_foreign_key "el_recodo_songs", "el_recodo_orchestras"
+  add_foreign_key "external_catalog_el_recodo_person_roles", "external_catalog_el_recodo_people", column: "person_id"
+  add_foreign_key "external_catalog_el_recodo_person_roles", "external_catalog_el_recodo_songs", column: "song_id"
+  add_foreign_key "external_catalog_el_recodo_songs", "external_catalog_el_recodo_orchestras", column: "orchestra_id"
   add_foreign_key "likes", "users"
   add_foreign_key "lyrics", "compositions"
   add_foreign_key "lyrics", "languages"
@@ -642,7 +644,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
   add_foreign_key "recording_singers", "people"
   add_foreign_key "recording_singers", "recordings"
   add_foreign_key "recordings", "compositions"
-  add_foreign_key "recordings", "el_recodo_songs"
+  add_foreign_key "recordings", "external_catalog_el_recodo_songs", column: "el_recodo_song_id"
   add_foreign_key "recordings", "genres"
   add_foreign_key "recordings", "orchestras"
   add_foreign_key "recordings", "record_labels"

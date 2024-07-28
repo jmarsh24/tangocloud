@@ -110,7 +110,7 @@ playlists.each do |playlist|
 end
 
 # Reindexing models
-ElRecodoSong.reindex
+ExternalCatalog::ElRecodo::Song.reindex
 Recording.reindex
 Playlist.reindex
 Person.reindex

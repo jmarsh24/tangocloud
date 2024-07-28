@@ -29,6 +29,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
         expect(metadata.page_updated_at).to eq(DateTime.parse("2013-07-10 00:52"))
         expect(metadata.orchestra_name).to eq("Juan D'Arienzo")
         expect(metadata.orchestra_image_path).to eq("w_pict/maestros/juan%20d'arienzo")
+        expect(metadata.orchestra_path).to eq("music?O=Juan%20D'ARIENZO&lang=en")
 
         members = result.members
 
@@ -198,6 +199,20 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
       end
     end
 
+    context "when there is no image" do
+      before do
+        stub_request(:get, "https://www.el-recodo.com/music?id=5794&lang=en")
+          .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/html/el_recodo_music_id_5794.html")))
+      end
+
+      it "does not save the image path" do
+        song_scraper = ExternalCatalog::ElRecodo::SongScraper.new(cookies: "some_cookie")
+        result = song_scraper.fetch(ert_number: 5794)
+
+        expect(result.metadata.orchestra_image_path).to be_nil
+      end
+    end
+
     context "when the server returns Too Many Requests (429)" do
       before do
         stub_request(:get, "https://www.el-recodo.com/music?id=1&lang=en")
@@ -231,7 +246,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
 
       it "creates an ElRecodoEmptyPage" do
         ExternalCatalog::ElRecodo::SongScraper.new(cookies: "some_cookie").fetch(ert_number: 1)
-        expect(::ElRecodoEmptyPage.find_by(ert_number: 1)).to be_present
+        expect(ExternalCatalog::ElRecodo::EmptyPage.find_by(ert_number: 1)).to be_present
       end
     end
   end

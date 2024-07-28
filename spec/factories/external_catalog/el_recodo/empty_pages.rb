@@ -1,10 +1,12 @@
-class ElRecodoEmptyPage < ApplicationRecord
-  validates :ert_number, presence: true, uniqueness: true
+FactoryBot.define do
+  factory :external_catalog_el_recodo_empty_page, class: "ExternalCatalog::ElRecodo::EmptyPage" do
+    ert_number { 1 }
+  end
 end
 
 # == Schema Information
 #
-# Table name: el_recodo_empty_pages
+# Table name: external_catalog_el_recodo_empty_pages
 #
 #  id         :bigint           not null, primary key
 #  ert_number :integer          not null

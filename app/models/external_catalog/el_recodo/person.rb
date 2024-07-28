@@ -1,8 +1,8 @@
-class ElRecodoPerson < ApplicationRecord
+class ExternalCatalog::ElRecodo::Person < ApplicationRecord
   searchkick word_start: [:name, :real_name, :nicknames, :place_of_birth], callbacks: :async
 
-  has_many :el_recodo_person_roles, dependent: :destroy
-  has_many :el_recodo_songs, through: :el_recodo_person_roles
+  has_many :person_roles, class_name: "ExternalCatalog::ElRecodo::PersonRole", dependent: :destroy
+  has_many :songs, through: :person_roles, source: :song, class_name: "ExternalCatalog::ElRecodo::Song", inverse_of: :people
 
   has_one_attached :image
 
@@ -20,7 +20,7 @@ end
 
 # == Schema Information
 #
-# Table name: el_recodo_people
+# Table name: external_catalog_el_recodo_people
 #
 #  id             :uuid             not null, primary key
 #  name           :string           default(""), not null

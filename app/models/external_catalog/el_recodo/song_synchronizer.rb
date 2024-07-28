@@ -3,7 +3,7 @@ module ExternalCatalog
     class SongSynchronizer
       def initialize(cookies: nil, song_scraper: nil)
         @cookies = cookies || Auth.new.cookies
-        @song_scraper = song_scraper || ExternalCatalog::ElRecodo::SongScraper.new(cookies: @cookies)
+        @song_scraper = song_scraper || SongScraper.new(cookies: @cookies)
       end
 
       def sync_song(ert_number:)
@@ -12,7 +12,7 @@ module ExternalCatalog
 
         metadata = result.metadata
 
-        song = ExternalCatalog::ElRecodo::SongBuilder.new(cookies: @cookies).build_song(
+        song = SongBuilder.new(cookies: @cookies).build_song(
           ert_number:,
           metadata:,
           people: result.members

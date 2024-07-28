@@ -76,7 +76,7 @@ RSpec.describe ExternalCatalog::ElRecodo::PersonScraper do
       end
 
       it "fetches the person data and does not create a duplicate" do
-        ElRecodoPerson.create!(name: "José Martínez")
+        ExternalCatalog::ElRecodo::Person.create!(name: "José Martínez")
         person_scraper = ExternalCatalog::ElRecodo::PersonScraper.new(cookies: "some_cookie")
         result = person_scraper.fetch(path: "music?Cr=Jos%C3%A9%20Martinez&lang=en")
 
