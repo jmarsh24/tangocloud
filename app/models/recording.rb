@@ -50,7 +50,9 @@ class Recording < ApplicationRecord
 
   enum recording_type: {studio: "studio", live: "live"}
 
-  delegate :title, to: :composition, prefix: true
+  def title
+    composition.title
+  end
 
   def year
     recorded_date&.year
