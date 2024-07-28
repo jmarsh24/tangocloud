@@ -1387,6 +1387,7 @@ type Recording {
     last: Int
   ): TandaConnection!
   timePeriod: TimePeriod
+  title: String!
   waveform(id: ID!): Waveform!
   waveforms(
     "Returns the elements in the list that come after the specified cursor."
@@ -1398,6 +1399,7 @@ type Recording {
     "Returns the last _n_ elements from the list."
     last: Int
   ): WaveformConnection!
+  year: Int
 }
 type RecordingAggregations {
   genre: [Aggregate!]!
