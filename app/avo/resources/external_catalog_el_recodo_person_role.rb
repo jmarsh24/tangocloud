@@ -1,8 +1,5 @@
 class Avo::Resources::ExternalCatalogElRecodoPersonRole < Avo::BaseResource
-    self.includes = [ :person, :song,
-    { person: [image_attachment: :blob] },
-    { song: [:orchestra] }
-  ]
+  self.includes = [ :person, :song, { person: [image_attachment: :blob] }]
   # self.attachments = []
   self.model_class = ::ExternalCatalog::ElRecodo::PersonRole
   # self.search = {

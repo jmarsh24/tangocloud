@@ -198,6 +198,20 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
       end
     end
 
+    context "when there is no image" do
+      before do
+        stub_request(:get, "https://www.el-recodo.com/music?id=5794&lang=en")
+          .to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/html/el_recodo_music_id_5794.html")))
+      end
+
+      it "does not save the image path" do
+        song_scraper = ExternalCatalog::ElRecodo::SongScraper.new(cookies: "some_cookie")
+        result = song_scraper.fetch(ert_number: 5794)
+
+        expect(result.metadata.orchestra_image_path).to be_nil
+      end
+    end
+
     context "when the server returns Too Many Requests (429)" do
       before do
         stub_request(:get, "https://www.el-recodo.com/music?id=1&lang=en")

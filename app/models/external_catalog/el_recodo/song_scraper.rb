@@ -258,7 +258,8 @@ module ExternalCatalog
       end
 
       def extract_orchestra_image_path(parsed_page)
-        image_element = parsed_page.css("img.rounded.img-fluid").first
+        main_metadata = parsed_page.at_css("h1").next_element
+        image_element = main_metadata.css("img.rounded.img-fluid").first
         return nil unless image_element
 
         image_element["src"]
