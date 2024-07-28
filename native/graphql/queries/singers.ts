@@ -7,7 +7,9 @@ export const SINGERS = gql`
 				node {
 					id
 					name
-					photoUrl
+					photo {
+						url
+					}
 				}
 			}
 		}

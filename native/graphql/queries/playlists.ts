@@ -8,7 +8,9 @@ export const PLAYLISTS = gql`
 					id
 					title
 					description
-					imageUrl
+					image {
+						url
+					}
 				}
 			}
 			pageInfo {

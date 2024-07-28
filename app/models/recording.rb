@@ -50,6 +50,14 @@ class Recording < ApplicationRecord
 
   enum recording_type: {studio: "studio", live: "live"}
 
+  def title
+    composition.title
+  end
+
+  def year
+    recorded_date&.year
+  end
+
   def search_data
     {
       title: composition.title,
@@ -60,16 +68,12 @@ class Recording < ApplicationRecord
       singers: singers.map(&:name).join(" "),
       genre: genre&.name,
       playbacks_count:,
-      year: recorded_date.year,
+      year:,
       created_at:,
       updated_at:,
       time_period: time_period&.name,
       record_label: record_label&.name,
       slug:
     }
-  end
-
-  def title
-    composition.title
   end
 end

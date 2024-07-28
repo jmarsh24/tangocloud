@@ -25,26 +25,32 @@ export const LIKED_RECORDINGS = gql`
 						lyrics {
 							edges {
 								node {
-									locale
-									content
+									language {
+										name
+									}
+									text
 								}
 							}
 						}
 					}
-					audioTransfers {
+					digitalRemasters {
 						edges {
 							node {
 								id
 								album {
 									id
-									albumArtUrl
+									albumArt {
+										url
+									}
 								}
+								duration
 								audioVariants {
 									edges {
 										node {
 											id
-											audioFileUrl
-											duration
+											audioFile {
+												url
+											}
 										}
 									}
 								}

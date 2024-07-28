@@ -3,14 +3,16 @@ import { gql } from '@apollo/client'
 export const RECORDING = gql`
 	query Recording($id: ID!) {
 		recording(id: $id) {
-			audioTransfers {
+			digitalRemasters {
 				edges {
 					node {
+						duration
 						audioVariants {
 							edges {
 								node {
-									audioFileUrl
-									duration
+									audioFile {
+										url
+									}
 								}
 							}
 						}

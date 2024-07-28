@@ -17,5 +17,7 @@ module Types
     has_many :orchestras
     has_many :recording_singers
     has_many :recordings
+
+    has_one_attached :photo
   end
 end

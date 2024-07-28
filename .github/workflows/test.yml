@@ -61,7 +61,7 @@ jobs:
           node-version: "20.x"
           cache: yarn
       - name: Install yarn
-        run: yarn install
+        run: yarn install && cd native && yarn install
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -72,11 +72,13 @@ jobs:
         run: bundle exec rake db:create db:migrate
       - name: Check Model Annotations
         run: bundle exec annotate --models && bin/git_tracked_are_unmodified
-      # not working yet
-      # - name: Generate GraphQL Types
-      #   run: yarn graphql:types
-      - name: Lint Portal
+      - name: Generate GraphQL Types
+        run: yarn graphql:types && cd native && yarn graphql:types
+      - name: Lint Api
         run: yarn lint
+      # - name: Lint Native App
+      # add this once we are ready to lint the native app
+      # run: cd native && yarn lint
       - name: Install Playwright Browsers
         run: npx --yes playwright install --with-deps chromium
       - name: Build and test with Rake
