@@ -172,6 +172,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.date "date", null: false
     t.integer "ert_number", default: 0, null: false
     t.string "title", null: false
+    t.string "formatted_title"
     t.string "style"
     t.string "label"
     t.boolean "instrumental", default: true, null: false
@@ -187,7 +188,6 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.uuid "orchestra_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "formatted_title"
     t.index ["date"], name: "index_external_catalog_el_recodo_songs_on_date"
     t.index ["ert_number"], name: "index_external_catalog_el_recodo_songs_on_ert_number", unique: true
     t.index ["orchestra_id"], name: "index_external_catalog_el_recodo_songs_on_orchestra_id"
