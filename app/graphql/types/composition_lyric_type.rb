@@ -5,8 +5,7 @@ module Types
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :id, ID, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
-
-    belongs_to :composition
-    belongs_to :lyric
+    field :composition, Types::CompositionType, null: false
+    field :lyric, Types::LyricType, null: false
   end
 end

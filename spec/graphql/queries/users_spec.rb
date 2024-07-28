@@ -10,7 +10,7 @@ RSpec.describe "users", type: :graph do
             edges {
               node {
                 id
-                name
+                username
               }
             }
           }

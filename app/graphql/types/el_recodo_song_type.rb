@@ -13,6 +13,6 @@ module Types
     field :style, String, null: true
     field :title, String, null: true
 
-    belongs_to :recording
+    field :recording, RecordingType, null: true
   end
 end

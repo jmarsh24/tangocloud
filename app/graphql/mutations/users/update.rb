@@ -4,11 +4,12 @@ module Mutations
     type Types::UserResultType, null: false
 
     argument :avatar, ApolloUploadServer::Upload, required: false
+    argument :username, String, required: false
     argument :first_name, String, required: false
     argument :last_name, String, required: false
     argument :password, String, required: false
 
-    def resolve(avatar: nil, password: nil, first_name: nil, last_name: nil)
+    def resolve(avatar: nil, username: nil, password: nil, first_name: nil, last_name: nil)
       check_authentication!
 
       user = current_user
@@ -21,6 +22,7 @@ module Mutations
         )
       end
       user.password = password if password
+      user.username = username if username
       user.user_preference.first_name = first_name if first_name
       user.user_preference.last_name = last_name if last_name
 
