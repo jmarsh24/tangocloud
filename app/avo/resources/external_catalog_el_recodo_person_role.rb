@@ -15,7 +15,7 @@ class Avo::Resources::ExternalCatalogElRecodoPersonRole < Avo::BaseResource
     field :role, as: :text do
       record.role.capitalize
     end
-    field :external_link, as: :text do
+    field :el_recodo, as: :text do
       link_to "Link", "https://el-recodo.com/#{record.person.path}", target: "_blank"
     end
     field :person, as: :belongs_to

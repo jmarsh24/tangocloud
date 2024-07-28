@@ -14,7 +14,7 @@ module ExternalCatalog
 
       def build_song(ert_number:, metadata:, people:)
         orchestra = if metadata.orchestra_name.present?
-          find_or_build_orchestra(name: metadata.orchestra_name, image_path: metadata.orchestra_image_path)
+          find_or_build_orchestra(name: metadata.orchestra_name, image_path: metadata.orchestra_image_path, path: metadata.orchestra_path)
         end
 
         song = Song.find_or_initialize_by(ert_number:).tap do |song|
@@ -74,8 +74,10 @@ module ExternalCatalog
         end.compact
       end
 
-      def find_or_build_orchestra(name:, image_path: nil)
-        orchestra = Orchestra.find_or_initialize_by(name:)
+      def find_or_build_orchestra(name:, path:, image_path: nil)
+        orchestra = Orchestra.find_or_initialize_by(name:) do |o|
+          o.path = path
+        end
 
         if orchestra.new_record? && image_path.present?
           attach_image(record: orchestra, image_path:)

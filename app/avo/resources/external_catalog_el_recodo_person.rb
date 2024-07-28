@@ -20,8 +20,8 @@ class Avo::Resources::ExternalCatalogElRecodoPerson < Avo::BaseResource
     field :real_name, as: :text
     field :nicknames, as: :text
     field :place_of_birth, as: :text
-    field :path, as: :text do
-      link_to record.name, "https://el-recodo.com/#{record.path}", target: "_blank"
+    field :el_recodo, as: :text do
+      link_to "Link", "https://el-recodo.com/#{record.path}", target: "_blank"
     end
     field :synced_at, as: :date_time, hide_on: [:index]
     field :person_roles, as: :has_many

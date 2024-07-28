@@ -17,5 +17,8 @@ class Avo::Resources::ExternalCatalogElRecodoOrchestra < Avo::BaseResource
     field :songs, as: :has_many
     field :person_roles, as: :has_many, through: :songs
     field :people, as: :has_many, through: :person_roles
+    field :el_recodo, as: :text do
+      link_to "Link", "https://el-recodo.com/#{record.path}", target: "_blank"
+    end
   end
 end

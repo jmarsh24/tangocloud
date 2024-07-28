@@ -21,6 +21,9 @@ class Avo::Resources::ExternalCatalogElRecodoSong < Avo::BaseResource
     end
     field :date, as: :date
     field :ert_number, as: :number
+    field :el_recodo do
+      link_to "Link", "https://www.el-recodo.com/music?id=#{record.ert_number}&lang=en", target: "_blank"
+    end
     field :title, as: :text
     field :style, as: :text
     field :label, as: :text

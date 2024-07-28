@@ -11,6 +11,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongSynchronizer do
         title: "Te burlas tristeza",
         orchestra_name: "Rodoflo Biagi",
         orchestra_image_path: "w_pict/maestros/rodolfo%20biagi",
+        orchestra_path: "music?O=rodolfo%20biagi&lang=en",
         date: Date.new(1960, 7, 28),
         style: "Tango",
         label: "Odeon",
@@ -82,6 +83,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongSynchronizer do
         )
         expect(song.orchestra.name).to eq("Rodoflo Biagi")
         expect(song.orchestra.image.attached?).to be_truthy
+        expect(song.orchestra.path).to eq("music?O=rodolfo%20biagi&lang=en")
       end
     end
   end

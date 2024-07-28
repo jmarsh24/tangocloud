@@ -141,6 +141,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.string "name", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "path", default: "", null: false
     t.index ["name"], name: "index_external_catalog_el_recodo_orchestras_on_name", unique: true
   end
 

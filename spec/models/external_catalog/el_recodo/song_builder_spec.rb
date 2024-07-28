@@ -50,6 +50,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongBuilder do
         title: "La cumparsita",
         orchestra_name: "Carlos Di Sarli",
         orchestra_image_path: "w_pict/maestros/di%20sarli",
+        orchestra_path: "music?O=Carlos%20Di%20Sarli&lang=en",
         style: "Tango",
         label: "RCA Victor",
         matrix: "Bb 8",
@@ -71,6 +72,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongBuilder do
 
       expect(song.title).to eq("La cumparsita")
       expect(song.orchestra.name).to eq("Carlos Di Sarli")
+      expect(song.orchestra.path).to eq("music?O=Carlos%20Di%20Sarli&lang=en")
       expect(song.orchestra.image.attached?).to be(true)
       expect(song.date).to eq(Date.new(1942, 1, 1))
       expect(song.style).to eq("Tango")

@@ -15,6 +15,7 @@ module ExternalCatalog
         :title,
         :orchestra_name,
         :orchestra_image_path,
+        :orchestra_path,
         :style,
         :label,
         :matrix,
@@ -73,6 +74,7 @@ module ExternalCatalog
           title: extract_text(parsed_page, "TITLE"),
           orchestra_name: format_name(extract_text(parsed_page, "ORCHESTRA")),
           orchestra_image_path: extract_orchestra_image_path(parsed_page),
+          orchestra_path: extract_link(parsed_page, "ORCHESTRA"),
           style: extract_text(parsed_page, "STYLE")&.titleize,
           label: extract_text(parsed_page, "LABEL"),
           matrix: extract_text(parsed_page, "MATRIX"),
@@ -110,6 +112,14 @@ module ExternalCatalog
       def extract_text(parsed_page, keyword)
         element = parsed_page.css(".list-group.lead a:contains('#{keyword}')").first
         element&.children&.last&.text&.strip
+      end
+
+      def extract_link(parsed_page, keyword)
+        element = parsed_page.css(".list-group.lead a:contains('#{keyword}')").first
+        href = element&.attributes&.[]("href")&.value
+        if href
+          URI::DEFAULT_PARSER.escape(href)
+        end
       end
 
       def extract_ert_number(parsed_page)

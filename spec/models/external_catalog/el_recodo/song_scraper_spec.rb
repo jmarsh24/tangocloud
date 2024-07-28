@@ -29,6 +29,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
         expect(metadata.page_updated_at).to eq(DateTime.parse("2013-07-10 00:52"))
         expect(metadata.orchestra_name).to eq("Juan D'Arienzo")
         expect(metadata.orchestra_image_path).to eq("w_pict/maestros/juan%20d'arienzo")
+        expect(metadata.orchestra_path).to eq("music?O=Juan%20D'ARIENZO&lang=en")
 
         members = result.members
 
