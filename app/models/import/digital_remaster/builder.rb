@@ -103,8 +103,8 @@ module Import
           orchestra.sort_name = metadata.album_artist_sort
         end
 
-        if el_recodo_song && orchestra.image.blank? && el_recodo_song.orchestra.image.present?
-          orchestra.image = el_recodo_song.orchestra.image
+        if el_recodo_song && orchestra.image.blank? && el_recodo_song&.orchestra&.image.present?
+          orchestra.image = el_recodo_song&.orchestra&.image
         end
 
         return orchestra if el_recodo_song.blank?
@@ -122,8 +122,8 @@ module Import
             birth_place: person_role.person.place_of_birth
           )
 
-          if person.image.blank? && person_role.person.image.present?
-            person.image = person_role.person.image
+          if person.image.blank? && person_role&.person&.image.present?
+            person.image = person_role&.person&.image
           end
 
           orchestra_role = OrchestraRole.find_or_initialize_by(name: ROLE_TRANSLATION[person_role.role])

@@ -10,7 +10,7 @@ RSpec.describe "Orchestras", type: :graph do
           orchestra(id: $id) {
             id
             name
-            photo {
+            image {
               blob {
                 url
               }
