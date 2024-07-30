@@ -9,6 +9,8 @@ module ExternalCatalog
 
       class PageNotFoundError < StandardError; end
 
+      class ServerError < StandardError; end
+
       Metadata = Data.define(
         :ert_number,
         :date,
@@ -60,7 +62,6 @@ module ExternalCatalog
 
         response = @connection.get("https://www.el-recodo.com/music?id=#{ert_number}&lang=en")
 
-        # If the page is empty, it means the song doesn't exist for that ert_number
         if response.status == 302
           EmptyPage.find_or_create_by!(ert_number:)
           return
@@ -97,14 +98,11 @@ module ExternalCatalog
 
         Result.new(metadata:, members:, tags:)
       rescue Faraday::ResourceNotFound
-        sleep Config.el_recodo_request_delay.to_i
         raise PageNotFoundError
       rescue Faraday::TooManyRequestsError
-        sleep Config.el_recodo_request_delay.to_i
         raise TooManyRequestsError
       rescue Faraday::ServerError
-        sleep Config.el_recodo_request_delay.to_i
-        nil
+        raise ServerError
       end
 
       private

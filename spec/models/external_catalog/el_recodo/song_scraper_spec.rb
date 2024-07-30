@@ -249,5 +249,15 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
         expect(ExternalCatalog::ElRecodo::EmptyPage.find_by(ert_number: 1)).to be_present
       end
     end
+
+    context "when the page is not found (503)" do
+      it "raises a ServerError" do
+        stub_request(:get, "https://www.el-recodo.com/music?id=1&lang=en")
+          .to_return(status: 503)
+        stub_config(el_recodo_request_delay: 0)
+
+        expect { ExternalCatalog::ElRecodo::SongScraper.new(cookies: "some_cookie").fetch(ert_number: 1) }.to raise_error(ExternalCatalog::ElRecodo::SongScraper::ServerError)
+      end
+    end
   end
 end
