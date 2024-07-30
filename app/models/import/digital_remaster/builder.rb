@@ -103,6 +103,10 @@ module Import
           orchestra.sort_name = metadata.album_artist_sort
         end
 
+        if el_recodo_song && orchestra.image.blank?
+          orchestra.image = el_recodo_song.orchestra.image
+        end
+
         return orchestra if el_recodo_song.blank?
 
         roles_to_include = ["piano", "doublebass", "violin", "viola", "cello"]
@@ -117,6 +121,11 @@ module Import
             nickname: person_role.person.nicknames.first,
             birth_place: person_role.person.place_of_birth
           )
+
+          if person.image.blank?
+            person.image = person_role.person.image
+          end
+
           orchestra_role = OrchestraRole.find_or_initialize_by(name: ROLE_TRANSLATION[person_role.role])
           orchestra.orchestra_positions.build(
             person:,
