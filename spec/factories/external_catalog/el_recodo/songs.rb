@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :external_catalog_el_recodo_song, class: "ExternalCatalog::ElRecodo::Song" do
     date { Faker::Date.between(from: "1900-01-01", to: "2020-12-31") }
     ert_number { Faker::Number.number(digits: 4) }
-    title { Faker::Music.album }
+    title { Faker::Music::Opera.verdi }
     style { Faker::Music.genre }
     label { Faker::Music.band }
     lyrics { Faker::Lorem.paragraph }
