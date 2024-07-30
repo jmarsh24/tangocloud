@@ -186,9 +186,10 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
 
     context "when date is not valid" do
       before do
-        music_2896_html = Rails.root.join("spec/fixtures/html/el_recodo_music_id_2896.html")
         stub_request(:get, "https://www.el-recodo.com/music?id=2896&lang=en")
-          .to_return(status: 200, body: File.read(music_2896_html))
+          .to_return(status: 200, body: Rails.root.join("spec/fixtures/html/el_recodo_music_id_2896.html"))
+        stub_request(:get, "https://www.el-recodo.com/music?id=4975&lang=en")
+          .to_return(status: 200, body: Rails.root.join("spec/fixtures/html/el_recodo_music_id_4975.html"))
         stub_config(el_recodo_request_delay: 0)
       end
 
@@ -196,6 +197,12 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
         result = ExternalCatalog::ElRecodo::SongScraper.new(cookies: "some_cookie").fetch(ert_number: 2896)
 
         expect(result.metadata.date).to eq(Date.new(1950, 11, 1))
+      end
+
+      it "returns nil when the date is not valid" do
+        result = ExternalCatalog::ElRecodo::SongScraper.new(cookies: "some_cookie").fetch(ert_number: 4975)
+
+        expect(result.metadata.page_updated_at).to be_nil
       end
     end
 

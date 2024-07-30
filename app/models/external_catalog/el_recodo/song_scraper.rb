@@ -153,10 +153,13 @@ module ExternalCatalog
 
       def extract_page_updated_at(parsed_page)
         date_string = parsed_page.css("p.text-muted.small.mb-0")&.text&.split(": ")&.last
-
         return nil unless date_string
 
-        DateTime.parse(date_string) || nil
+        begin
+          DateTime.parse(date_string)
+        rescue Date::Error
+          nil
+        end
       end
 
       def safe_parse_date(date_string)
