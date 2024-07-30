@@ -7,13 +7,14 @@ module Types
     field :replay_gain, Float, null: true
     field :peak_value, Float, null: true
     field :tango_cloud_id, String, null: false
-    field :waveform, WaveformType, null: true
     field :created_at, GraphQL::Types::ISO8601Date, null: true
     field :updated_at, GraphQL::Types::ISO8601Date, null: true
-    field :album, AlbumType, null: true
-    field :remaster_agent, RemasterAgentType, null: true
-    field :recording, RecordingType, null: false
-    field :audio_file, AudioFileType, null: false
+
+    belongs_to :album
+    belongs_to :remaster_agent, null: true
+    belongs_to :recording
+    belongs_to :audio_file
+    has_one :waveform
 
     has_many :audio_variants
   end

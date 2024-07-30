@@ -5,8 +5,8 @@ module Types
     field :format, String, null: false
     field :id, ID, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
-    field :digital_remaster, Types::DigitalRemasterType, null: true
 
+    belongs_to :digital_remaster
     has_one_attached :audio_file
   end
 end
