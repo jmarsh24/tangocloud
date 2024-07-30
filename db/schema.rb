@@ -297,6 +297,10 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.date "death_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "nickname"
+    t.string "birth_place"
+    t.uuid "el_recodo_person_id"
+    t.index ["el_recodo_person_id"], name: "index_people_on_el_recodo_person_id"
     t.index ["slug"], name: "index_people_on_slug", unique: true
     t.index ["sort_name"], name: "index_people_on_sort_name"
   end
@@ -638,6 +642,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
   add_foreign_key "orchestra_positions", "orchestras"
   add_foreign_key "orchestra_positions", "people"
   add_foreign_key "orchestra_roles", "orchestras"
+  add_foreign_key "people", "external_catalog_el_recodo_people", column: "el_recodo_person_id"
   add_foreign_key "playbacks", "recordings"
   add_foreign_key "playbacks", "users"
   add_foreign_key "playlist_items", "playlists"

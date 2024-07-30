@@ -15,7 +15,7 @@ class Orchestra < ApplicationRecord
   validates :name, presence: true, uniqueness: true
   validates :slug, presence: true, uniqueness: true
 
-  has_one_attached :photo
+  has_one_attached :image
 
   def search_data
     {

@@ -32,13 +32,16 @@ end
 #
 # Table name: people
 #
-#  id         :uuid             not null, primary key
-#  name       :string           not null
-#  slug       :string           not null
-#  sort_name  :string
-#  bio        :text
-#  birth_date :date
-#  death_date :date
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                  :uuid             not null, primary key
+#  name                :string           not null
+#  slug                :string           not null
+#  sort_name           :string
+#  bio                 :text
+#  birth_date          :date
+#  death_date          :date
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  nickname            :string
+#  birth_place         :string
+#  el_recodo_person_id :uuid
 #

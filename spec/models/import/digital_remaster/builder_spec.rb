@@ -180,12 +180,13 @@ RSpec.describe Import::DigitalRemaster::Builder do
 
       it "associates the orchestra with relevant roles" do
         orchestra = Import::DigitalRemaster::Builder.new.find_or_initialize_orchestra(metadata:, el_recodo_song:)
-        expect(orchestra.orchestra_positions.map { |op| op.orchestra_role.name }).to contain_exactly(
-          "Pianist", "Double Bassist", "Violinist", "Cellist"
-        )
-        expect(orchestra.orchestra_positions.map { |op| op.person.name }).to contain_exactly(
-          "Carlos Figari", "Kicho Díaz", "David Díaz", "Alfredo Citro"
-        )
+
+        expect(orchestra.orchestra_positions.map { _1.person.name }).to contain_exactly("Carlos Figari", "Kicho Díaz", "David Díaz", "Alfredo Citro")
+        expect(orchestra.orchestra_positions.map { _1.orchestra_role.name }).to contain_exactly("Pianist", "Double Bassist", "Violinist", "Cellist")
+        expect(orchestra.orchestra_positions.map { _1.person.birth_date }).to contain_exactly("1913-08-03".to_date, "1918-01-21".to_date, "1906-05-17".to_date, nil)
+        expect(orchestra.orchestra_positions.map { _1.person.death_date }).to contain_exactly("1994-10-22".to_date, "1992-10-05".to_date, "1977-05-08".to_date, nil)
+        expect(orchestra.orchestra_positions.map { _1.person.birth_place }).to contain_exactly("Buenos Aires Argentina", "Buenos Aires Argentina", "Tandil (Buenos Aires) Argentina", nil)
+        expect(orchestra.orchestra_positions.map { _1.person.el_recodo_person.present? }).to contain_exactly(true, true, true, true)
       end
     end
 

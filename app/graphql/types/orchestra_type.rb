@@ -11,6 +11,6 @@ module Types
     has_many :genres
     has_many :compositions
     has_many :recordings
-    has_one_attached :photo
+    has_one_attached :image
   end
 end

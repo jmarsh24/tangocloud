@@ -109,7 +109,14 @@ module Import
         el_recodo_song.person_roles.each do |person_role|
           next unless roles_to_include.include?(person_role.role.downcase)
 
-          person = Person.find_or_initialize_by(name: person_role.person.name)
+          person = Person.find_or_initialize_by(
+            name: person_role.person.name,
+            birth_date: person_role.person.birth_date,
+            death_date: person_role.person.death_date,
+            el_recodo_person: person_role.person,
+            nickname: person_role.person.nicknames.first,
+            birth_place: person_role.person.place_of_birth
+          )
           orchestra_role = OrchestraRole.find_or_initialize_by(name: ROLE_TRANSLATION[person_role.role])
           orchestra.orchestra_positions.build(
             person:,
