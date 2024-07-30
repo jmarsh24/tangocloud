@@ -5,7 +5,7 @@ FactoryBot.define do
     death_date { Faker::Date.between(from: "1900-01-01", to: "2000-12-31") }
 
     after(:build) do |person|
-      person.photo.attach(io: File.open(Rails.root.join("spec/support/assets/orchestra.jpg")), filename: "orchestra.jpg", content_type: "image/jpg")
+      person.image.attach(io: File.open(Rails.root.join("spec/support/assets/orchestra.jpg")), filename: "orchestra.jpg", content_type: "image/jpg")
     end
 
     trait :composer do
