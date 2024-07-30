@@ -9,7 +9,7 @@ FactoryBot.define do
     lyrics_year { Faker::Number.number(digits: 4) }
     synced_at { Faker::Time.backward(days: 14, period: :evening) }
     page_updated_at { Faker::Time.backward(days: 7, period: :evening) }
-    association :orchestra, factory: :orchestra
+    association :orchestra, factory: :external_catalog_el_recodo_orchestra
 
     transient do
       person_roles_count { 5 }
