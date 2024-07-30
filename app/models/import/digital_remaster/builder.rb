@@ -63,8 +63,10 @@ module Import
       end
 
       def build_recording(metadata:)
+        el_recodo_song = find_el_recodo_song(metadata:)
+
         Recording.new(
-          el_recodo_song: find_el_recodo_song(metadata:),
+          el_recodo_song:,
           composition: find_or_initialize_composition(metadata:),
           recorded_date: metadata.date,
           orchestra: find_or_initialize_orchestra(metadata:, el_recodo_song:),
@@ -79,7 +81,7 @@ module Import
         return if metadata.barcode.blank?
 
         ert_number = metadata.barcode.split("-")[1]
-        ExternalCatalog::ElRecodo::Song.find_by(ert_number:).includes(:people, :person_roles)
+        ExternalCatalog::ElRecodo::Song.includes(:people, :person_roles).find_by(ert_number:)
       end
 
       def find_or_initialize_album(metadata:)
@@ -103,7 +105,7 @@ module Import
 
         return orchestra if el_recodo_song.blank?
 
-        roles_to_include = ["piano", "doublebass", "violin", "cello"]
+        roles_to_include = ["piano", "doublebass", "violin", "viola", "cello"]
         el_recodo_song.person_roles.each do |person_role|
           next unless roles_to_include.include?(person_role.role.downcase)
 

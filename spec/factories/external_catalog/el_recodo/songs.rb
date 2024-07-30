@@ -2,13 +2,22 @@ FactoryBot.define do
   factory :external_catalog_el_recodo_song, class: "ExternalCatalog::ElRecodo::Song" do
     date { Faker::Date.between(from: "1900-01-01", to: "2020-12-31") }
     ert_number { Faker::Number.number(digits: 4) }
-    title { Faker::Music::Opera.verdi }
+    title { Faker::Music.album }
     style { Faker::Music.genre }
-    label { Faker::Music.album }
+    label { Faker::Music.band }
     lyrics { Faker::Lorem.paragraph }
     lyrics_year { Faker::Number.number(digits: 4) }
     synced_at { Faker::Time.backward(days: 14, period: :evening) }
     page_updated_at { Faker::Time.backward(days: 7, period: :evening) }
+    association :orchestra, factory: :orchestra
+
+    transient do
+      person_roles_count { 5 }
+    end
+
+    after(:create) do |song, evaluator|
+      create_list(:external_catalog_el_recodo_person_role, evaluator.person_roles_count, song:)
+    end
   end
 end
 
