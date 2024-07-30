@@ -199,7 +199,7 @@ RSpec.describe ExternalCatalog::ElRecodo::SongScraper do
         expect(result.metadata.date).to eq(Date.new(1950, 11, 1))
       end
 
-      it "returns nil when the date is not valid" do
+      it "returns nil for page_updated_at when the date is not valid" do
         result = ExternalCatalog::ElRecodo::SongScraper.new(cookies: "some_cookie").fetch(ert_number: 4975)
 
         expect(result.metadata.page_updated_at).to be_nil
