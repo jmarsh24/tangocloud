@@ -25,7 +25,7 @@ RSpec.describe AudioFile, type: :model do
     it "enqueues an AudioFileImportJob" do
       audio_file.import
 
-      expect(AudioFileImportJob).to have_been_enqueued.with(audio_file)
+      expect(Import::AudioFile::ImportJob).to have_been_enqueued.with(audio_file)
     end
   end
 end
