@@ -1,6 +1,12 @@
 module ExternalCatalog
   module ElRecodo
     class PersonScraper
+      class TooManyRequestsError < StandardError; end
+
+      class PageNotFoundError < StandardError; end
+
+      class ServerError < StandardError; end
+
       BASE_URL = "https://www.el-recodo.com".freeze
 
       Person = Data.define(
@@ -28,6 +34,15 @@ module ExternalCatalog
         sleep Config.el_recodo_request_delay.to_i
 
         response = @connection.get(path)
+
+        if response.status == 404
+          raise PageNotFoundError, "Page not found: #{path}"
+        elsif response.status == 429
+          raise TooManyRequestsError, "Too many requests"
+        elsif response.status >= 500
+          raise ServerError, "Server error: #{response.status}"
+        end
+
         body = response.body.force_encoding("UTF-8")
         doc = Nokogiri::HTML(body)
 
