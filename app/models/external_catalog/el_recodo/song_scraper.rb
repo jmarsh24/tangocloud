@@ -64,14 +64,13 @@ module ExternalCatalog
 
         if response.status == 429
           raise TooManyRequestsError
-          elsif response.status == 404
-            raise PageNotFoundError
-          elsif response.status >= 500
-            raise ServerError
-          elsif response.status == 302
-            EmptyPage.find_or_create_by!(ert_number:)
-            return
-          end
+        elsif response.status == 404
+          raise PageNotFoundError
+        elsif response.status >= 500
+          raise ServerError
+        elsif response.status == 302
+          EmptyPage.find_or_create_by!(ert_number:)
+          return
         end
 
         parsed_page = Nokogiri::HTML(response.body)
