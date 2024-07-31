@@ -98,6 +98,7 @@ module ExternalCatalog
 
         Result.new(metadata:, members:, tags:)
       rescue Faraday::ResourceNotFound
+        EmptyPage.find_or_create_by!(ert_number:)
         raise PageNotFoundError
       rescue Faraday::TooManyRequestsError
         raise TooManyRequestsError
