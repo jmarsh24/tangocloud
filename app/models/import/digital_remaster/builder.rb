@@ -142,14 +142,8 @@ module Import
         metadata.artist.split(",").map(&:strip).filter_map do |singer_name|
           next if singer_name.casecmp("instrumental").zero?
 
-          if singer_name.start_with?("Dir. ")
-            singer_name = singer_name.sub("Dir. ", "").strip
-            singer = Person.find_or_initialize_by(name: singer_name)
-            singer.recording_singers << RecordingSinger.new(recording: @digital_remaster.recording, person: singer, soloist: true)
-            singer
-          else
-            Person.find_or_initialize_by(name: singer_name)
-          end
+          singer_name = singer_name.sub("Dir. ", "").strip if singer_name.start_with?("Dir. ")
+          Person.find_or_initialize_by(name: singer_name)
         end
       end
 
