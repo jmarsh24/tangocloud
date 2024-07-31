@@ -29,13 +29,13 @@ module Import
             )
 
             if @digital_remaster.save!
-              audio_file.update!(status: :completed)
+              audio_file.update!(status: :completed, error_message: nil)
             end
           end
         rescue ActiveRecord::RecordInvalid => e
           Rails.logger.error("Digital Remaster Importer Error: #{e.message}")
           e.backtrace.each { |line| Rails.logger.error(line) }
-          audio_file.update_colums(status: :failed, error_message: e.message)
+          audio_file.update_columns(status: :failed, error_message: e.message)
         rescue => e
           Rails.logger.error("Digital Remaster Importer Error: #{e.message}")
           e.backtrace.each { |line| Rails.logger.error(line) }

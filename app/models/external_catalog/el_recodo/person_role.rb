@@ -1,10 +1,4 @@
 class ExternalCatalog::ElRecodo::PersonRole < ApplicationRecord
-  belongs_to :person, class_name: "ExternalCatalog::ElRecodo::Person"
-  belongs_to :song, class_name: "ExternalCatalog::ElRecodo::Song"
-
-  validates :person, presence: true
-  validates :role, presence: true
-
   ROLES = [
     "piano",
     "arranger",
@@ -19,6 +13,9 @@ class ExternalCatalog::ElRecodo::PersonRole < ApplicationRecord
     "cello",
     "viola"
   ].freeze
+
+  belongs_to :person, class_name: "ExternalCatalog::ElRecodo::Person"
+  belongs_to :song, class_name: "ExternalCatalog::ElRecodo::Song"
 
   validates :role, inclusion: {in: ROLES}
 

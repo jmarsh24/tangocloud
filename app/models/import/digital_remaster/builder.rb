@@ -126,7 +126,8 @@ module Import
             person.image.attach(person_role.person.image.blob)
           end
 
-          orchestra_role = OrchestraRole.find_or_initialize_by(name: ROLE_TRANSLATION[person_role.role])
+          orchestra_role = OrchestraRole.find_or_initialize_by(orchestra:, name: ROLE_TRANSLATION[person_role.role])
+
           orchestra.orchestra_positions.build(
             person:,
             orchestra_role:
@@ -166,10 +167,10 @@ module Import
       end
 
       def find_or_initialize_composition(metadata:)
-        composition = Composition.find_or_initialize_by(title: metadata.title) do |comp|
-          comp.composers << find_or_initialize_composer(metadata:) if metadata.composer.present?
-          comp.lyricists << find_or_initialize_lyricist(metadata:) if metadata.lyricist.present?
-        end
+        composition = Composition.find_or_initialize_by(title: metadata.title)
+        composition.composition_roles << CompositionRole.find_or_initialize_by(composition:, role: "composer") if metadata.composer.present?
+        composition.composition_roles << CompositionRole.find_or_initialize_by(composition:, role: "lyricist") if metadata.lyricist.present?
+
         find_or_initialize_lyrics(metadata:, composition:)
 
         composition

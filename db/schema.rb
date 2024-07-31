@@ -366,7 +366,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347013) do
     t.enum "recording_type", default: "studio", null: false, enum_type: "recording_type"
     t.integer "playbacks_count", default: 0, null: false
     t.uuid "el_recodo_song_id"
-    t.uuid "orchestra_id", null: false
+    t.uuid "orchestra_id"
     t.uuid "composition_id", null: false
     t.uuid "genre_id", null: false
     t.uuid "record_label_id"
