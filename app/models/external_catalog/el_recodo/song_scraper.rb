@@ -7,8 +7,6 @@ module ExternalCatalog
 
       class TooManyRequestsError < StandardError; end
 
-      class PageNotFoundError < StandardError; end
-
       class ServerError < StandardError; end
 
       Metadata = Data.define(
@@ -99,7 +97,6 @@ module ExternalCatalog
         Result.new(metadata:, members:, tags:)
       rescue Faraday::ResourceNotFound
         EmptyPage.find_or_create_by!(ert_number:)
-        raise PageNotFoundError
       rescue Faraday::TooManyRequestsError
         raise TooManyRequestsError
       rescue Faraday::ServerError
