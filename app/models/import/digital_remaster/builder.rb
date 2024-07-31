@@ -64,17 +64,21 @@ module Import
 
       def build_recording(metadata:)
         el_recodo_song = find_el_recodo_song(metadata:)
-
-        Recording.new(
+        recording = Recording.new(
           el_recodo_song:,
           composition: find_or_initialize_composition(metadata:),
           recorded_date: metadata.date,
           orchestra: find_or_initialize_orchestra(metadata:, el_recodo_song:),
           genre: find_or_initialize_genre(metadata:),
-          singers: find_or_initialize_singers(metadata:),
           time_period: find_existing_time_period(metadata:),
           record_label: find_or_initialize_record_label(metadata:)
         )
+
+        singers = find_or_initialize_singers(metadata:, recording:)
+
+        recording.singers = singers
+
+        recording
       end
 
       def find_el_recodo_song(metadata:)
@@ -137,7 +141,7 @@ module Import
         orchestra
       end
 
-      def find_or_initialize_singers(metadata:)
+      def find_or_initialize_singers(metadata:, recording:)
         return if metadata.artist.blank?
 
         metadata.artist.split(",").map(&:strip).filter_map do |singer_name|
@@ -146,7 +150,7 @@ module Import
           if singer_name.start_with?("Dir. ")
             singer_name = singer_name.sub("Dir. ", "").strip
             singer = Person.find_or_initialize_by(name: singer_name)
-            singer.recording_singers << RecordingSinger.new(recording: @digital_remaster.recording, person: singer, soloist: true)
+            singer.recording_singers << RecordingSinger.new(recording:, person: singer, soloist: true)
             singer
           else
             Person.find_or_initialize_by(name: singer_name)
