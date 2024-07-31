@@ -143,8 +143,14 @@ module Import
         metadata.artist.split(",").map(&:strip).filter_map do |singer_name|
           next if singer_name.casecmp("instrumental").zero?
 
-          singer_name = singer_name.sub("Dir. ", "").strip if singer_name.start_with?("Dir. ")
-          Person.find_or_initialize_by(name: singer_name)
+          if singer_name.start_with?("Dir. ")
+            singer_name = singer_name.sub("Dir. ", "").strip
+            singer = Person.find_or_initialize_by(name: singer_name)
+            singer.recording_singers << RecordingSinger.new(recording: @digital_remaster.recording, person: singer, soloist: true)
+            singer
+          else
+            Person.find_or_initialize_by(name: singer_name)
+          end
         end
       end
 
@@ -171,12 +177,12 @@ module Import
 
         if metadata.composer.present?
           composer_person = Person.find_or_initialize_by(name: metadata.composer)
-          composer_role = CompositionRole.find_or_initialize_by(composition:, person: composer_person, role: "composer")
+          composer_role = composition.composition_roles.find_or_initialize_by(composition:, person: composer_person, role: "composer")
         end
 
         if metadata.lyricist.present?
           lyricist_person = Person.find_or_initialize_by(name: metadata.lyricist)
-          lyricist_role = CompositionRole.find_or_initialize_by(composition:, person: lyricist_person, role: "lyricist")
+          lyricist_role = composition.composition_roles.find_or_initialize_by(composition:, person: lyricist_person, role: "lyricist")
         end
 
         composition.composition_roles = [composer_role, lyricist_role].compact

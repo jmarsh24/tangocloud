@@ -73,8 +73,8 @@ RSpec.describe Import::DigitalRemaster::Builder do
       expect(recording.orchestra.name).to eq("Aníbal Troilo")
       expect(recording.genre.name).to eq("Vals")
       expect(recording.composition.title).to eq("Vuelve la serenata")
-      expect(recording.composition.composers.first.name).to eq("Aníbal Troilo")
-      expect(recording.composition.lyricists.first.name).to eq("Cátulo Castillo")
+      expect(recording.composition.composition_roles.find { _1.role == "composer" }.person.name).to eq("Aníbal Troilo")
+      expect(recording.composition.composition_roles.find { _1.role == "lyricist" }.person.name).to eq("Cátulo Castillo")
       expect(recording.singers.map(&:name)).to include("Jorge Casal", "Raúl Berón")
       expect(recording.record_label.name).to eq("Tk")
     end
@@ -285,8 +285,8 @@ RSpec.describe Import::DigitalRemaster::Builder do
       composition = Import::DigitalRemaster::Builder.new.find_or_initialize_composition(metadata:)
       expect(composition).to be_a_new(Composition)
       expect(composition.title).to eq("Vuelve la serenata")
-      expect(composition.composers.first.name).to eq("Aníbal Troilo")
-      expect(composition.lyricists.first.name).to eq("Cátulo Castillo")
+      expect(composition.composition_roles.find { _1.role == "composer" }.person.name).to eq("Aníbal Troilo")
+      expect(composition.composition_roles.find { _1.role == "lyricist" }.person.name).to eq("Cátulo Castillo")
     end
     it "finds an existing composition if it exists" do
       create(:composition, title: "Vuelve la serenata")
@@ -375,8 +375,8 @@ RSpec.describe Import::DigitalRemaster::Builder do
       expect(digital_remaster.waveform.image).to be_attached
       expect(digital_remaster.recording.singers.map(&:name)).to contain_exactly("Jorge Casal", "Raúl Berón")
       expect(digital_remaster.recording.composition.title).to eq("Vuelve la serenata")
-      expect(digital_remaster.recording.composition.composers.first.name).to eq("Aníbal Troilo")
-      expect(digital_remaster.recording.composition.lyricists.first.name).to eq("Cátulo Castillo")
+      expect(digital_remaster.recording.composition.composition_roles.find { _1.role == "composer" }.person.name).to eq("Aníbal Troilo")
+      expect(digital_remaster.recording.composition.composition_roles.find { _1.role == "lyricist" }.person.name).to eq("Cátulo Castillo")
       expect(digital_remaster.recording.orchestra.name).to eq("Aníbal Troilo")
       expect(digital_remaster.recording.genre.name).to eq("Vals")
       expect(digital_remaster.album.title).to eq("Troilo - Su Obra Completa (Soulseek)")
