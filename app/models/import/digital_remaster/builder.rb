@@ -168,8 +168,18 @@ module Import
 
       def find_or_initialize_composition(metadata:)
         composition = Composition.find_or_initialize_by(title: metadata.title)
-        composition.composition_roles << CompositionRole.find_or_initialize_by(composition:, role: "composer") if metadata.composer.present?
-        composition.composition_roles << CompositionRole.find_or_initialize_by(composition:, role: "lyricist") if metadata.lyricist.present?
+
+        if metadata.composer.present?
+          composer_person = Person.find_or_initialize_by(name: metadata.composer)
+          composer_role = CompositionRole.find_or_initialize_by(composition:, person: composer_person, role: "composer")
+        end
+
+        if metadata.lyricist.present?
+          lyricist_person = Person.find_or_initialize_by(name: metadata.lyricist)
+          lyricist_role = CompositionRole.find_or_initialize_by(composition:, person: lyricist_person, role: "lyricist")
+        end
+
+        composition.composition_roles = [composer_role, lyricist_role].compact
 
         find_or_initialize_lyrics(metadata:, composition:)
 
