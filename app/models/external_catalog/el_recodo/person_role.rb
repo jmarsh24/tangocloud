@@ -16,7 +16,8 @@ class ExternalCatalog::ElRecodo::PersonRole < ApplicationRecord
     "director",
     "composer",
     "author",
-    "cello"
+    "cello",
+    "viola"
   ].freeze
 
   validates :role, inclusion: {in: ROLES}

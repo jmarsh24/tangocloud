@@ -11,7 +11,6 @@ class ExternalCatalog::ElRecodo::Song < ApplicationRecord
   validates :date, presence: true
   validates :ert_number, presence: true, uniqueness: true
   validates :title, presence: true
-  validates :page_updated_at, presence: true
 
   before_save :set_formatted_title
 

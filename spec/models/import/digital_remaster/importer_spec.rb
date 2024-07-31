@@ -68,10 +68,11 @@ RSpec.describe Import::DigitalRemaster::Importer do
       expect(audio_file.reload.status).to eq("completed")
     end
 
-    it "updates the audio file status to failed on error" do
-      allow(builder).to receive(:build_digital_remaster).and_raise(StandardError.new("some error"))
-      expect { director.import(audio_file:) }.to raise_error(StandardError, "some error")
+    it "updates the audio file status to failed on failure" do
+      allow(builder).to receive(:extract_metadata).and_raise(StandardError)
+      director.import(audio_file:)
       expect(audio_file.reload.status).to eq("failed")
+      expect(audio_file.reload.error_message).to eq("StandardError")
     end
   end
 end

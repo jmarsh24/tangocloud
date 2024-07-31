@@ -105,5 +105,44 @@ RSpec.describe ExternalCatalog::ElRecodo::PersonScraper do
         expect(result.death_date).to eq(Date.new(1948, 11, 3))
       end
     end
+
+    context "when the page does not exist" do
+      before do
+        stub_request(:get, "https://www.el-recodo.com/music?Cr=Non%20existent%20person&lang=en")
+          .to_return(status: 404)
+      end
+
+      it "raises a PageNotFoundError" do
+        person_scraper = ExternalCatalog::ElRecodo::PersonScraper.new(cookies: "some_cookie")
+
+        expect { person_scraper.fetch(path: "music?Cr=Non%20existent%20person&lang=en") }.to raise_error(ExternalCatalog::ElRecodo::PersonScraper::PageNotFoundError)
+      end
+    end
+
+    context "when the request limit is reached" do
+      before do
+        stub_request(:get, "https://www.el-recodo.com/music?Cr=Jos%C3%A9%20Martinez&lang=en")
+          .to_return(status: 429)
+      end
+
+      it "raises a TooManyRequestsError" do
+        person_scraper = ExternalCatalog::ElRecodo::PersonScraper.new(cookies: "some_cookie")
+
+        expect { person_scraper.fetch(path: "music?Cr=Jos%C3%A9%20Martinez&lang=en") }.to raise_error(ExternalCatalog::ElRecodo::PersonScraper::TooManyRequestsError)
+      end
+    end
+
+    context "when the server returns an error" do
+      before do
+        stub_request(:get, "https://www.el-recodo.com/music?Cr=Jos%C3%A9%20Martinez&lang=en")
+          .to_return(status: 500)
+      end
+
+      it "raises a ServerError" do
+        person_scraper = ExternalCatalog::ElRecodo::PersonScraper.new(cookies: "some_cookie")
+
+        expect { person_scraper.fetch(path: "music?Cr=Jos%C3%A9%20Martinez&lang=en") }.to raise_error(ExternalCatalog::ElRecodo::PersonScraper::ServerError)
+      end
+    end
   end
 end

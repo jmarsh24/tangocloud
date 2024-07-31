@@ -34,18 +34,11 @@ module ExternalCatalog
           song.page_updated_at = metadata.page_updated_at
         end
 
-        ActiveRecord::Base.transaction do
-          people.each do |person_data|
-            persons = find_or_build_people(person_data)
+        people.each do |person_data|
+          persons = find_or_build_people(person_data)
 
-            next if persons.empty?
-
-            persons.each do |person|
-              person.save! unless person.persisted?
-              PersonRole.find_or_create_by!(song:, person:) do |role|
-                role.role = person_data.role.downcase
-              end
-            end
+          persons.each do |person|
+            song.person_roles.build(person:, role: person_data.role.downcase)
           end
         end
 

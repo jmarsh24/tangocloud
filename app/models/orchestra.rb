@@ -5,7 +5,8 @@ class Orchestra < ApplicationRecord
   searchkick word_start: [:name]
 
   has_many :orchestra_periods, dependent: :destroy
-  has_many :orchestra_roles, dependent: :destroy
+  has_many :orchestra_positions, dependent: :destroy
+  has_many :orchestra_roles, through: :orchestra_positions
   has_many :recordings, dependent: :destroy
   has_many :compositions, through: :recordings
   has_many :singers, through: :recordings
@@ -14,7 +15,7 @@ class Orchestra < ApplicationRecord
   validates :name, presence: true, uniqueness: true
   validates :slug, presence: true, uniqueness: true
 
-  has_one_attached :photo
+  has_one_attached :image
 
   def search_data
     {

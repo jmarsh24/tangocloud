@@ -1,6 +1,20 @@
 module Import
   module DigitalRemaster
     class Builder
+      ROLE_TRANSLATION = {
+        "piano" => "Pianist",
+        "arranger" => "Arranger",
+        "doublebass" => "Double Bassist",
+        "bandoneon" => "Bandoneonist",
+        "violin" => "Violinist",
+        "singer" => "Vocalist",
+        "soloist" => "Soloist",
+        "director" => "Conductor",
+        "composer" => "Composer",
+        "author" => "Lyricist",
+        "cello" => "Cellist"
+      }.freeze
+
       def initialize
         @digital_remaster = ::DigitalRemaster.new
       end
@@ -49,15 +63,25 @@ module Import
       end
 
       def build_recording(metadata:)
+        el_recodo_song = find_el_recodo_song(metadata:)
+
         Recording.new(
+          el_recodo_song:,
           composition: find_or_initialize_composition(metadata:),
           recorded_date: metadata.date,
-          orchestra: find_or_initialize_orchestra(metadata:),
+          orchestra: find_or_initialize_orchestra(metadata:, el_recodo_song:),
           genre: find_or_initialize_genre(metadata:),
           singers: find_or_initialize_singers(metadata:),
           time_period: find_existing_time_period(metadata:),
           record_label: find_or_initialize_record_label(metadata:)
         )
+      end
+
+      def find_el_recodo_song(metadata:)
+        return if metadata.barcode.blank?
+
+        ert_number = metadata.barcode.split("-")[1]
+        ExternalCatalog::ElRecodo::Song.includes(:people, :person_roles).find_by(ert_number:)
       end
 
       def find_or_initialize_album(metadata:)
@@ -72,12 +96,44 @@ module Import
         RemasterAgent.find_or_initialize_by(name: metadata.organization)
       end
 
-      def find_or_initialize_orchestra(metadata:)
+      def find_or_initialize_orchestra(metadata:, el_recodo_song: nil)
         return if metadata.album_artist.blank?
 
-        Orchestra.find_or_initialize_by(name: metadata.album_artist) do |orchestra|
+        orchestra = Orchestra.find_or_initialize_by(name: metadata.album_artist) do |orchestra|
           orchestra.sort_name = metadata.album_artist_sort
         end
+
+        if el_recodo_song && orchestra.image.blank? && el_recodo_song.orchestra&.image&.attached?
+          orchestra.image.attach(el_recodo_song.orchestra.image.blob)
+        end
+
+        return orchestra if el_recodo_song.blank?
+
+        roles_to_include = ["piano", "doublebass", "violin", "viola", "cello"]
+        el_recodo_song.person_roles.each do |person_role|
+          next unless roles_to_include.include?(person_role.role.downcase)
+
+          person = Person.find_or_initialize_by(
+            name: person_role.person.name,
+            birth_date: person_role.person.birth_date,
+            death_date: person_role.person.death_date,
+            el_recodo_person: person_role.person,
+            nickname: person_role.person.nicknames.first,
+            birth_place: person_role.person.place_of_birth
+          )
+
+          if person.image.blank? && person_role.person&.image&.attached?
+            person.image.attach(person_role.person.image.blob)
+          end
+
+          orchestra_role = OrchestraRole.find_or_initialize_by(name: ROLE_TRANSLATION[person_role.role])
+          orchestra.orchestra_positions.build(
+            person:,
+            orchestra_role:
+          )
+        end
+
+        orchestra
       end
 
       def find_or_initialize_singers(metadata:)

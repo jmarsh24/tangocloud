@@ -28,16 +28,18 @@ module Import
               compressed_audio:
             )
 
-            if @digital_remaster.save
+            if @digital_remaster.save!
               audio_file.update!(status: :completed)
-            else
-              audio_file.update!(status: :failed, error_message: @digital_remaster.errors.full_messages.join(", "))
-              raise ActiveRecord::Rollback
             end
           end
+        rescue ActiveRecord::RecordInvalid => e
+          Rails.logger.error("Digital Remaster Importer Error: #{e.message}")
+          e.backtrace.each { |line| Rails.logger.error(line) }
+          audio_file.update_colums(status: :failed, error_message: e.message)
         rescue => e
-          audio_file.update!(status: :failed, error_message: e.message)
-          raise e
+          Rails.logger.error("Digital Remaster Importer Error: #{e.message}")
+          e.backtrace.each { |line| Rails.logger.error(line) }
+          audio_file.update_columns(status: :failed, error_message: e.message)
         end
 
         @digital_remaster

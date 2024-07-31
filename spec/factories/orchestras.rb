@@ -4,7 +4,7 @@ FactoryBot.define do
     sort_name { name.split.last }
 
     after(:build) do |orchestra|
-      orchestra.photo.attach(io: File.open(Rails.root.join("spec/support/assets/orchestra.jpg")), filename: "orchestra.jpg", content_type: "image/jpg")
+      orchestra.image.attach(io: File.open(Rails.root.join("spec/support/assets/orchestra.jpg")), filename: "orchestra.jpg", content_type: "image/jpg")
     end
   end
 end

@@ -34,9 +34,13 @@ class AudioFile < ApplicationRecord
     failed: "failed"
   }
 
-  def import
+  def import(async: true)
     update(status: :processing)
 
-    AudioFileImportJob.perform_later(self)
+    if async
+      AudioFileImportJob.perform_later(self)
+    else
+      AudioFileImportJob.perform_now(self)
+    end
   end
 end

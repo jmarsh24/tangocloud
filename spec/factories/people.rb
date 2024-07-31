@@ -5,7 +5,7 @@ FactoryBot.define do
     death_date { Faker::Date.between(from: "1900-01-01", to: "2000-12-31") }
 
     after(:build) do |person|
-      person.photo.attach(io: File.open(Rails.root.join("spec/support/assets/orchestra.jpg")), filename: "orchestra.jpg", content_type: "image/jpg")
+      person.image.attach(io: File.open(Rails.root.join("spec/support/assets/orchestra.jpg")), filename: "orchestra.jpg", content_type: "image/jpg")
     end
 
     trait :composer do
@@ -32,13 +32,16 @@ end
 #
 # Table name: people
 #
-#  id         :uuid             not null, primary key
-#  name       :string           not null
-#  slug       :string           not null
-#  sort_name  :string
-#  bio        :text
-#  birth_date :date
-#  death_date :date
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                  :uuid             not null, primary key
+#  name                :string           not null
+#  slug                :string           not null
+#  sort_name           :string
+#  bio                 :text
+#  birth_date          :date
+#  death_date          :date
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  nickname            :string
+#  birth_place         :string
+#  el_recodo_person_id :uuid
 #

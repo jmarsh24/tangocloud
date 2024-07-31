@@ -18,6 +18,6 @@ module Types
     has_many :recording_singers
     has_many :recordings
 
-    has_one_attached :photo
+    has_one_attached :image
   end
 end

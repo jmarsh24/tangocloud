@@ -124,17 +124,85 @@ RSpec.describe Import::DigitalRemaster::Builder do
   end
 
   describe "#find_or_initialize_orchestra" do
-    it "creates a new orchestra if it doesn't exist" do
-      orchestra = Import::DigitalRemaster::Builder.new.find_or_initialize_orchestra(metadata:)
-      expect(orchestra).to be_a_new(Orchestra)
-      expect(orchestra.name).to eq("Aníbal Troilo")
-      expect(orchestra.sort_name).to eq("Troilo, Aníbal")
+    context "when el_recodo_song exists" do
+      let(:person_role_data) do
+        [
+          {name: "Jorge Casal", role: "singer", birth_date: "1924-01-14", death_date: "1996-06-25", nicknames: [], real_name: "Pappalardo, Salvador Carmelo", place_of_birth: "Buenos Aires Argentina"},
+          {name: "Carlos Figari", role: "piano", birth_date: "1913-08-03", death_date: "1994-10-22", nicknames: [], real_name: "Figari, Carlos Alberto", place_of_birth: "Buenos Aires Argentina"},
+          {name: "Kicho Díaz", role: "doublebass", birth_date: "1918-01-21", death_date: "1992-10-05", nicknames: [], real_name: "Díaz, Enrique", place_of_birth: "Buenos Aires Argentina"},
+          {name: "David Díaz", role: "violin", birth_date: "1906-05-17", death_date: "1977-05-08", nicknames: [], real_name: "Díaz, David José", place_of_birth: "Tandil (Buenos Aires) Argentina"},
+          {name: "Alfredo Citro", role: "cello", birth_date: nil, death_date: nil, nicknames: [], real_name: nil, place_of_birth: nil}
+        ]
+      end
+
+      let(:el_recodo_song) do
+        song = ::ExternalCatalog::ElRecodo::Song.create!(
+          ert_number: 2918,
+          title: "Vuelve la serenata",
+          date: "1953-01-01",
+          style: "Vals",
+          duration: 152,
+          synced_at: Time.now,
+          page_updated_at: "2013-07-03 18:18:00"
+        )
+
+        person_role_data.each do |person_data|
+          person = ::ExternalCatalog::ElRecodo::Person.create!(
+            name: person_data[:name],
+            birth_date: person_data[:birth_date],
+            death_date: person_data[:death_date],
+            real_name: person_data[:real_name],
+            place_of_birth: person_data[:place_of_birth],
+            nicknames: person_data[:nicknames],
+            synced_at: Time.now
+          )
+          ::ExternalCatalog::ElRecodo::PersonRole.create!(
+            person:,
+            song:,
+            role: person_data[:role]
+          )
+        end
+        song
+      end
+
+      it "creates a new orchestra if it doesn't exist" do
+        orchestra = Import::DigitalRemaster::Builder.new.find_or_initialize_orchestra(metadata:)
+        expect(orchestra).to be_a_new(Orchestra)
+        expect(orchestra.name).to eq("Aníbal Troilo")
+        expect(orchestra.sort_name).to eq("Troilo, Aníbal")
+      end
+
+      it "finds an existing orchestra if it exists" do
+        create(:orchestra, name: "Aníbal Troilo")
+        orchestra = Import::DigitalRemaster::Builder.new.find_or_initialize_orchestra(metadata:)
+        expect(orchestra).not_to be_a_new(Orchestra)
+      end
+
+      it "associates the orchestra with relevant roles" do
+        orchestra = Import::DigitalRemaster::Builder.new.find_or_initialize_orchestra(metadata:, el_recodo_song:)
+
+        expect(orchestra.orchestra_positions.map { _1.person.name }).to contain_exactly("Carlos Figari", "Kicho Díaz", "David Díaz", "Alfredo Citro")
+        expect(orchestra.orchestra_positions.map { _1.orchestra_role.name }).to contain_exactly("Pianist", "Double Bassist", "Violinist", "Cellist")
+        expect(orchestra.orchestra_positions.map { _1.person.birth_date }).to contain_exactly("1913-08-03".to_date, "1918-01-21".to_date, "1906-05-17".to_date, nil)
+        expect(orchestra.orchestra_positions.map { _1.person.death_date }).to contain_exactly("1994-10-22".to_date, "1992-10-05".to_date, "1977-05-08".to_date, nil)
+        expect(orchestra.orchestra_positions.map { _1.person.birth_place }).to contain_exactly("Buenos Aires Argentina", "Buenos Aires Argentina", "Tandil (Buenos Aires) Argentina", nil)
+        expect(orchestra.orchestra_positions.map { _1.person.el_recodo_person.present? }).to contain_exactly(true, true, true, true)
+      end
     end
 
-    it "finds an existing orchestra if it exists" do
-      create(:orchestra, name: "Aníbal Troilo")
-      orchestra = Import::DigitalRemaster::Builder.new.find_or_initialize_orchestra(metadata:)
-      expect(orchestra).not_to be_a_new(Orchestra)
+    context "when el_recodo_song does not exist" do
+      it "creates a new orchestra if it doesn't exist" do
+        orchestra = Import::DigitalRemaster::Builder.new.find_or_initialize_orchestra(metadata:)
+        expect(orchestra).to be_a_new(Orchestra)
+        expect(orchestra.name).to eq("Aníbal Troilo")
+        expect(orchestra.sort_name).to eq("Troilo, Aníbal")
+      end
+
+      it "finds an existing orchestra if it exists" do
+        create(:orchestra, name: "Aníbal Troilo")
+        orchestra = Import::DigitalRemaster::Builder.new.find_or_initialize_orchestra(metadata:)
+        expect(orchestra).not_to be_a_new(Orchestra)
+      end
     end
   end
 
@@ -169,7 +237,7 @@ RSpec.describe Import::DigitalRemaster::Builder do
     end
   end
 
-  describe "# find_or_initialize_genre" do
+  describe "#find_or_initialize_genre" do
     it "creates a new genre if it doesn’t exist" do
       genre = Import::DigitalRemaster::Builder.new.find_or_initialize_genre(metadata:)
       expect(genre).to be_a_new(Genre)
