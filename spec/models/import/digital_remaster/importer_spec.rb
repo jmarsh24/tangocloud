@@ -69,9 +69,17 @@ RSpec.describe Import::DigitalRemaster::Importer do
     end
 
     it "updates the audio file status to failed on error" do
-      allow(builder).to receive(:build_digital_remaster).and_raise(StandardError.new("some error"))
-      expect { director.import(audio_file:) }.to raise_error(StandardError, "some error")
+      allow(builder).to receive(:extract_metadata).and_raise(StandardError)
+      expect { director.import(audio_file:) }.to raise_error(StandardError)
       expect(audio_file.reload.status).to eq("failed")
+      expect(audio_file.error_message).to eq("StandardError")
+    end
+
+    it "logs the error message and backtrace" do
+      allow(builder).to receive(:extract_metadata).and_raise(StandardError)
+      expect(Rails.logger).to receive(:error).with("Digital Remaster Importer Error: StandardError")
+      expect(Rails.logger).to receive(:error).at_least(:once)
+      expect { director.import(audio_file:) }.to raise_error(StandardError)
     end
   end
 end
