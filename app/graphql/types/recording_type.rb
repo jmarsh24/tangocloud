@@ -12,13 +12,14 @@ module Types
     field :year, Integer, null: true
     field :slug, String, null: false
     field :playbacks_count, Integer, null: false
-    field :el_recodo_song, Types::ElRecodoSongType, null: true
-    field :orchestra, Types::OrchestraType, null: true
-    field :composition, Types::CompositionType, null: true
-    field :record_label, Types::RecordLabelType, null: true
-    field :genre, Types::GenreType, null: true
-    field :time_period, Types::TimePeriodType, null: true
 
+    belongs_to :person, null: true
+    belongs_to :record_label, null: true
+    belongs_to :time_period, null: true
+    belongs_to :genre, null: true
+    belongs_to :composition, null: true
+    belongs_to :orchestra, null: true
+    belongs_to :el_recodo_song, null: true
     has_many :recording_singers
     has_many :singers
     has_many :playbacks

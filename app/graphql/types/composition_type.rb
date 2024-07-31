@@ -3,8 +3,8 @@ module Types
     field :id, ID, null: true
     field :tangotube_slug, String, null: true
     field :title, String, null: true
-    field :person, Types::PersonType, null: true
 
+    belongs_to :person, null: true
     has_many :recordings
     has_many :lyrics
     has_many :composition_lyrics
