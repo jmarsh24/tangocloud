@@ -62,13 +62,7 @@ module ExternalCatalog
 
         response = @connection.get("https://www.el-recodo.com/music?id=#{ert_number}&lang=en")
 
-        if response.status == 429
-          raise TooManyRequestsError
-        elsif response.status == 404
-          raise PageNotFoundError
-        elsif response.status >= 500
-          raise ServerError
-        elsif response.status == 302
+        if response.status == 302
           EmptyPage.find_or_create_by!(ert_number:)
           return
         end
@@ -103,6 +97,12 @@ module ExternalCatalog
         members = [people, musicians, lyricist].flatten.compact
 
         Result.new(metadata:, members:, tags:)
+      rescue Faraday::ResourceNotFound
+        raise PageNotFoundError
+      rescue Faraday::TooManyRequestsError
+        raise TooManyRequestsError
+      rescue Faraday::ServerError
+        raise ServerError
       end
 
       private

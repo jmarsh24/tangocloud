@@ -35,14 +35,6 @@ module ExternalCatalog
 
         response = @connection.get(path)
 
-        if response.status == 404
-          raise PageNotFoundError, "Page not found: #{path}"
-        elsif response.status == 429
-          raise TooManyRequestsError, "Too many requests"
-        elsif response.status >= 500
-          raise ServerError, "Server error: #{response.status}"
-        end
-
         body = response.body.force_encoding("UTF-8")
         doc = Nokogiri::HTML(body)
 
@@ -61,6 +53,12 @@ module ExternalCatalog
           path:,
           image_path: parse_image_path(image_element)
         )
+      rescue Faraday::ResourceNotFound
+        raise PageNotFoundError
+      rescue Faraday::TooManyRequestsError
+        raise TooManyRequestsError
+      rescue Faraday::ServerError
+        raise ServerError
       end
 
       private
