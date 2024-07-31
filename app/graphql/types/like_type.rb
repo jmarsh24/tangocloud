@@ -6,6 +6,6 @@ module Types
     field :likeable_type, String, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
-    field :user, Types::UserType, null: false
+    belongs_to :user
   end
 end
