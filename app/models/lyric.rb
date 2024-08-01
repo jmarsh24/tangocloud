@@ -1,5 +1,6 @@
 class Lyric < ApplicationRecord
-  belongs_to :composition
+  has_many :composition_lyrics, dependent: :destroy
+  has_many :compositions, through: :composition_lyrics
   belongs_to :language
 
   validates :text, presence: true
@@ -9,10 +10,9 @@ end
 #
 # Table name: lyrics
 #
-#  id             :uuid             not null, primary key
-#  text           :text             not null
-#  composition_id :uuid             not null
-#  language_id    :uuid             not null
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
+#  id          :uuid             not null, primary key
+#  text        :text             not null
+#  language_id :uuid             not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
 #

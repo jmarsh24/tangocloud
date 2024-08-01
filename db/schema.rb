@@ -235,12 +235,9 @@ ActiveRecord::Schema[7.1].define(version: 202401142347013) do
 
   create_table "lyrics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "text", null: false
-    t.uuid "composition_id", null: false
     t.uuid "language_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["composition_id", "language_id"], name: "index_lyrics_on_composition_id_and_language_id", unique: true
-    t.index ["composition_id"], name: "index_lyrics_on_composition_id"
     t.index ["language_id"], name: "index_lyrics_on_language_id"
   end
 
@@ -635,7 +632,6 @@ ActiveRecord::Schema[7.1].define(version: 202401142347013) do
   add_foreign_key "external_catalog_el_recodo_person_roles", "external_catalog_el_recodo_songs", column: "song_id"
   add_foreign_key "external_catalog_el_recodo_songs", "external_catalog_el_recodo_orchestras", column: "orchestra_id"
   add_foreign_key "likes", "users"
-  add_foreign_key "lyrics", "compositions"
   add_foreign_key "lyrics", "languages"
   add_foreign_key "orchestra_periods", "orchestras"
   add_foreign_key "orchestra_positions", "orchestra_roles"
