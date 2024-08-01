@@ -88,6 +88,13 @@ module Import
         ExternalCatalog::ElRecodo::Song.includes(:people, :person_roles).find_by(ert_number:)
       end
 
+      def find_el_recodo_song(metadata:)
+        return if metadata.barcode.blank?
+
+        ert_number = metadata.barcode.split("-")[1]
+        ExternalCatalog::ElRecodo::Song.includes(:people, :person_roles).find_by(ert_number:)
+      end
+
       def find_or_initialize_album(metadata:)
         return if metadata.album.blank?
 
