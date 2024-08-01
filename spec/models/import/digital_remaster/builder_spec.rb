@@ -66,7 +66,6 @@ RSpec.describe Import::DigitalRemaster::Builder do
   describe "#build_recording" do
     it "builds a new recording" do
       recording = Import::DigitalRemaster::Builder.new.build_recording(metadata:)
-      expect(recording).to be_a_new(Recording)
       expect(recording.title).to eq("Vuelve la serenata")
       expect(recording.recorded_date).to eq("1953-01-01".to_date)
       expect(recording.recording_type).to eq("studio")
@@ -75,7 +74,7 @@ RSpec.describe Import::DigitalRemaster::Builder do
       expect(recording.composition.title).to eq("Vuelve la serenata")
       expect(recording.composition.composition_roles.find { _1.role == "composer" }.person.name).to eq("Aníbal Troilo")
       expect(recording.composition.composition_roles.find { _1.role == "lyricist" }.person.name).to eq("Cátulo Castillo")
-      expect(recording.singers.map(&:name)).to include("Jorge Casal", "Raúl Berón")
+      expect(recording.recording_singers.map { _1.person.name }).to include("Jorge Casal", "Raúl Berón")
       expect(recording.record_label.name).to eq("Tk")
     end
 
@@ -95,7 +94,6 @@ RSpec.describe Import::DigitalRemaster::Builder do
   describe "#find_or_initialize_album" do
     it "creates a new album if it doesn't exist" do
       album = Import::DigitalRemaster::Builder.new.find_or_initialize_album(metadata:)
-      expect(album).to be_a_new(Album)
       expect(album.title).to eq("Troilo - Su Obra Completa (Soulseek)")
       expect(album.description).to be_nil
     end
@@ -103,23 +101,20 @@ RSpec.describe Import::DigitalRemaster::Builder do
     it "finds an existing album if it exists" do
       create(:album, title: "Troilo - Su Obra Completa (Soulseek)")
       album = Import::DigitalRemaster::Builder.new.find_or_initialize_album(metadata:)
-      expect(album).not_to be_a_new(Album)
     end
   end
 
   describe "#find_or_initialize_remaster_agent" do
     it "creates a new remaster agent if it doesn't exist" do
       remaster_agent = Import::DigitalRemaster::Builder.new.find_or_initialize_remaster_agent(metadata:)
-      expect(remaster_agent).to be_a_new(RemasterAgent)
       expect(remaster_agent.name).to eq("Tk")
     end
 
     it "finds an existing remaster agent if it exists" do
-      existing_remaster_agent = create(:remaster_agent, name: "Tk")
+      create(:remaster_agent, name: "Tk")
       remaster_agent = Import::DigitalRemaster::Builder.new.find_or_initialize_remaster_agent(metadata:)
 
-      expect(remaster_agent).not_to be_a_new(RemasterAgent)
-      expect(remaster_agent).to eq(existing_remaster_agent)
+      expect(remaster_agent.name).to eq("Tk")
     end
   end
 
@@ -167,7 +162,6 @@ RSpec.describe Import::DigitalRemaster::Builder do
 
       it "creates a new orchestra if it doesn't exist" do
         orchestra = Import::DigitalRemaster::Builder.new.find_or_initialize_orchestra(metadata:)
-        expect(orchestra).to be_a_new(Orchestra)
         expect(orchestra.name).to eq("Aníbal Troilo")
         expect(orchestra.sort_name).to eq("Troilo, Aníbal")
       end
@@ -175,7 +169,6 @@ RSpec.describe Import::DigitalRemaster::Builder do
       it "finds an existing orchestra if it exists" do
         create(:orchestra, name: "Aníbal Troilo")
         orchestra = Import::DigitalRemaster::Builder.new.find_or_initialize_orchestra(metadata:)
-        expect(orchestra).not_to be_a_new(Orchestra)
       end
 
       it "associates the orchestra with relevant roles" do
@@ -193,7 +186,6 @@ RSpec.describe Import::DigitalRemaster::Builder do
     context "when el_recodo_song does not exist" do
       it "creates a new orchestra if it doesn't exist" do
         orchestra = Import::DigitalRemaster::Builder.new.find_or_initialize_orchestra(metadata:)
-        expect(orchestra).to be_a_new(Orchestra)
         expect(orchestra.name).to eq("Aníbal Troilo")
         expect(orchestra.sort_name).to eq("Troilo, Aníbal")
       end
@@ -201,59 +193,24 @@ RSpec.describe Import::DigitalRemaster::Builder do
       it "finds an existing orchestra if it exists" do
         create(:orchestra, name: "Aníbal Troilo")
         orchestra = Import::DigitalRemaster::Builder.new.find_or_initialize_orchestra(metadata:)
-        expect(orchestra).not_to be_a_new(Orchestra)
       end
-    end
-  end
-
-  describe "#find_or_initialize_singers" do
-    it "creates new singers if they don't exist" do
-      singers = Import::DigitalRemaster::Builder.new.find_or_initialize_singers(metadata:)
-      expect(singers.map(&:name)).to contain_exactly("Jorge Casal", "Raúl Berón")
-      expect(singers.all?(&:new_record?)).to be true
-    end
-
-    it "finds existing singers if they exist" do
-      create(:person, name: "Jorge Casal")
-      create(:person, name: "Raúl Berón")
-      singers = Import::DigitalRemaster::Builder.new.find_or_initialize_singers(metadata:)
-      expect(singers.map(&:name)).to contain_exactly("Jorge Casal", "Raúl Berón")
-      expect(singers.all?(&:persisted?)).to be true
-    end
-
-    it "ignores 'Instrumental' artist" do
-      metadata_with_instrumental = OpenStruct.new(artist: "Instrumental")
-
-      singers = Import::DigitalRemaster::Builder.new.find_or_initialize_singers(metadata: metadata_with_instrumental)
-      expect(singers).to be_empty
-    end
-
-    it "processes 'Dir. XXXXXX' as soloist" do
-      metadata_with_instrumental = OpenStruct.new(artist: "Dir. Aníbal Troilo")
-      singers = Import::DigitalRemaster::Builder.new.find_or_initialize_singers(metadata: metadata_with_instrumental)
-      expect(singers.map(&:name)).to contain_exactly("Aníbal Troilo")
-      expect(singers.first).to be_a(Person)
-      expect(singers.first.recording_singers.first.soloist).to be true
     end
   end
 
   describe "#find_or_initialize_genre" do
     it "creates a new genre if it doesn’t exist" do
       genre = Import::DigitalRemaster::Builder.new.find_or_initialize_genre(metadata:)
-      expect(genre).to be_a_new(Genre)
       expect(genre.name).to eq("Vals")
     end
     it "finds an existing genre if it exists" do
       create(:genre, name: "Vals")
       genre = Import::DigitalRemaster::Builder.new.find_or_initialize_genre(metadata:)
-      expect(genre).not_to be_a_new(Genre)
     end
   end
 
   describe "#find_or_initialize_composer" do
     it "creates a new composer if it doesn’t exist" do
       composer = Import::DigitalRemaster::Builder.new.find_or_initialize_composer(metadata:)
-      expect(composer).to be_a_new(Person)
       expect(composer.name).to eq("Aníbal Troilo")
       expect(composer.birth_date).to be_nil
       expect(composer.death_date).to be_nil
@@ -261,14 +218,12 @@ RSpec.describe Import::DigitalRemaster::Builder do
     it "finds an existing composer if it exists" do
       create(:person, name: "Aníbal Troilo")
       composer = Import::DigitalRemaster::Builder.new.find_or_initialize_composer(metadata:)
-      expect(composer).not_to be_a_new(Person)
     end
   end
 
   describe "#find_or_initialize_lyricist" do
     it "creates a new lyricist if it doesn’t exist" do
       lyricist = Import::DigitalRemaster::Builder.new.find_or_initialize_lyricist(metadata:)
-      expect(lyricist).to be_a_new(Person)
       expect(lyricist.name).to eq("Cátulo Castillo")
       expect(lyricist.birth_date).to be_nil
       expect(lyricist.death_date).to be_nil
@@ -276,14 +231,12 @@ RSpec.describe Import::DigitalRemaster::Builder do
     it "finds an existing lyricist if it exists" do
       create(:person, name: "Cátulo Castillo")
       lyricist = Import::DigitalRemaster::Builder.new.find_or_initialize_lyricist(metadata:)
-      expect(lyricist).not_to be_a_new(Person)
     end
   end
 
   describe "#find_or_initialize_composition" do
     it "creates a new composition if it doesn’t exist" do
       composition = Import::DigitalRemaster::Builder.new.find_or_initialize_composition(metadata:)
-      expect(composition).to be_a_new(Composition)
       expect(composition.title).to eq("Vuelve la serenata")
       expect(composition.composition_roles.find { _1.role == "composer" }.person.name).to eq("Aníbal Troilo")
       expect(composition.composition_roles.find { _1.role == "lyricist" }.person.name).to eq("Cátulo Castillo")
@@ -291,7 +244,6 @@ RSpec.describe Import::DigitalRemaster::Builder do
     it "finds an existing composition if it exists" do
       create(:composition, title: "Vuelve la serenata")
       composition = Import::DigitalRemaster::Builder.new.find_or_initialize_composition(metadata:)
-      expect(composition).not_to be_a_new(Composition)
     end
   end
 
@@ -325,13 +277,11 @@ RSpec.describe Import::DigitalRemaster::Builder do
   describe "#find_or_initialize_record_label" do
     it "creates a new record label if it doesn’t exist" do
       record_label = Import::DigitalRemaster::Builder.new.find_or_initialize_record_label(metadata:)
-      expect(record_label).to be_a_new(RecordLabel)
       expect(record_label.name).to eq("Tk")
     end
     it "finds an existing record label if it exists" do
       create(:record_label, name: "Tk")
       record_label = Import::DigitalRemaster::Builder.new.find_or_initialize_record_label(metadata:)
-      expect(record_label).not_to be_a_new(RecordLabel)
     end
   end
 

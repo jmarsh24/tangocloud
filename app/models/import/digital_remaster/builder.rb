@@ -74,18 +74,22 @@ module Import
           record_label: find_or_initialize_record_label(metadata:)
         )
 
-        singers = find_or_initialize_singers(metadata:, recording:)
+        unless metadata.artist.blank?
+          metadata.artist.split(",").map(&:strip).each do |singer_name|
+            next if singer_name.casecmp("instrumental").zero?
 
-        recording.singers = singers
+            soloist = false
+            if singer_name.start_with?("Dir. ")
+              singer_name = singer_name.sub("Dir. ", "").strip
+              soloist = true
+            end
 
+            person = Person.find_or_create_by(name: singer_name)
+            recording.recording_singers.build(person:, soloist:)
+          end
+        end
+        recording.save!
         recording
-      end
-
-      def find_el_recodo_song(metadata:)
-        return if metadata.barcode.blank?
-
-        ert_number = metadata.barcode.split("-")[1]
-        ExternalCatalog::ElRecodo::Song.includes(:people, :person_roles).find_by(ert_number:)
       end
 
       def find_el_recodo_song(metadata:)
@@ -98,19 +102,19 @@ module Import
       def find_or_initialize_album(metadata:)
         return if metadata.album.blank?
 
-        Album.find_or_initialize_by(title: metadata.album)
+        Album.create_or_find_by(title: metadata.album)
       end
 
       def find_or_initialize_remaster_agent(metadata:)
         return if metadata.organization.blank?
 
-        RemasterAgent.find_or_initialize_by(name: metadata.organization)
+        RemasterAgent.create_or_find_by(name: metadata.organization)
       end
 
       def find_or_initialize_orchestra(metadata:, el_recodo_song: nil)
         return if metadata.album_artist.blank?
 
-        orchestra = Orchestra.find_or_initialize_by(name: metadata.album_artist) do |orchestra|
+        orchestra = Orchestra.find_or_create_by!(name: metadata.album_artist) do |orchestra|
           orchestra.sort_name = metadata.album_artist_sort
         end
 
@@ -124,7 +128,7 @@ module Import
         el_recodo_song.person_roles.each do |person_role|
           next unless roles_to_include.include?(person_role.role.downcase)
 
-          person = Person.find_or_initialize_by(
+          person = Person.create_or_find_by(
             name: person_role.person.name,
             birth_date: person_role.person.birth_date,
             death_date: person_role.person.death_date,
@@ -137,9 +141,8 @@ module Import
             person.image.attach(person_role.person.image.blob)
           end
 
-          orchestra_role = OrchestraRole.find_or_initialize_by(orchestra:, name: ROLE_TRANSLATION[person_role.role])
-
-          orchestra.orchestra_positions.build(
+          orchestra_role = OrchestraRole.create_or_find_by(orchestra:, name: ROLE_TRANSLATION[person_role.role])
+          orchestra.orchestra_positions.create!(
             person:,
             orchestra_role:
           )
@@ -148,55 +151,36 @@ module Import
         orchestra
       end
 
-      def find_or_initialize_singers(metadata:, recording:)
-        return if metadata.artist.blank?
-
-        metadata.artist.split(",").map(&:strip).filter_map do |singer_name|
-          next if singer_name.casecmp("instrumental").zero?
-
-          if singer_name.start_with?("Dir. ")
-            singer_name = singer_name.sub("Dir. ", "").strip
-            singer = Person.find_or_initialize_by(name: singer_name)
-            singer.recording_singers << RecordingSinger.new(recording:, person: singer, soloist: true)
-            singer
-          else
-            Person.find_or_initialize_by(name: singer_name)
-          end
-        end
-      end
-
       def find_or_initialize_genre(metadata:)
         return if metadata.genre.blank?
 
-        Genre.find_or_initialize_by(name: metadata.genre)
+        Genre.create_or_find_by(name: metadata.genre)
       end
 
       def find_or_initialize_composer(metadata:)
         return if metadata.composer.blank?
 
-        Person.find_or_initialize_by(name: metadata.composer)
+        Person.create_or_find_by(name: metadata.composer)
       end
 
       def find_or_initialize_lyricist(metadata:)
         return if metadata.lyricist.blank?
 
-        Person.find_or_initialize_by(name: metadata.lyricist)
+        Person.create_or_find_by(name: metadata.lyricist)
       end
 
       def find_or_initialize_composition(metadata:)
-        composition = Composition.find_or_initialize_by(title: metadata.title)
+        composition = Composition.create_or_find_by(title: metadata.title)
 
         if metadata.composer.present?
-          composer_person = Person.find_or_initialize_by(name: metadata.composer)
-          composer_role = composition.composition_roles.find_or_initialize_by(composition:, person: composer_person, role: "composer")
+          composer_person = Person.create_or_find_by(name: metadata.composer)
+          composition.composition_roles.create_or_find_by(composition:, person: composer_person, role: "composer")
         end
 
         if metadata.lyricist.present?
-          lyricist_person = Person.find_or_initialize_by(name: metadata.lyricist)
-          lyricist_role = composition.composition_roles.find_or_initialize_by(composition:, person: lyricist_person, role: "lyricist")
+          lyricist_person = Person.create_or_find_by(name: metadata.lyricist)
+          composition.composition_roles.create_or_find_by(composition:, person: lyricist_person, role: "lyricist")
         end
-
-        composition.composition_roles = [composer_role, lyricist_role].compact
 
         find_or_initialize_lyrics(metadata:, composition:)
 
@@ -206,10 +190,10 @@ module Import
       def find_or_initialize_lyrics(metadata:, composition:)
         return if metadata.lyrics.blank?
 
-        composition.lyrics.find_or_initialize_by(text: metadata.lyrics) do |lyric|
-          lyric.language = Language.find_or_initialize_by(name: "spanish", code: "es")
-          lyric.composition = composition
-        end
+        language = Language.find_or_create_by!(name: "spanish", code: "es")
+
+        lyric = Lyric.create!(text: metadata.lyrics, language:)
+        composition.lyrics << lyric
       end
 
       def find_existing_time_period(metadata:)
@@ -222,13 +206,12 @@ module Import
       def find_or_initialize_record_label(metadata:)
         return if metadata.organization.blank?
 
-        RecordLabel.find_or_initialize_by(name: metadata.organization)
+        RecordLabel.create_or_find_by(name: metadata.organization)
       end
 
       def build_digital_remaster(audio_file:, metadata:, waveform:, waveform_image:, album_art:, compressed_audio:)
         album = find_or_initialize_album(metadata:)
         remaster_agent = find_or_initialize_remaster_agent(metadata:)
-        find_or_initialize_composition(metadata:)
         recording = build_recording(metadata:)
         audio_variant = build_audio_variant(metadata:)
         waveform = build_waveform(waveform:)
