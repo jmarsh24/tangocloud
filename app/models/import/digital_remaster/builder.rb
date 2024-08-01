@@ -102,13 +102,13 @@ module Import
       def find_or_initialize_album(metadata:)
         return if metadata.album.blank?
 
-        Album.create_or_find_by(title: metadata.album)
+        Album.find_or_create_by!(title: metadata.album)
       end
 
       def find_or_initialize_remaster_agent(metadata:)
         return if metadata.organization.blank?
 
-        RemasterAgent.create_or_find_by(name: metadata.organization)
+        RemasterAgent.find_or_create_by!(name: metadata.organization)
       end
 
       def find_or_initialize_orchestra(metadata:, el_recodo_song: nil)
@@ -128,7 +128,7 @@ module Import
         el_recodo_song.person_roles.each do |person_role|
           next unless roles_to_include.include?(person_role.role.downcase)
 
-          person = Person.create_or_find_by(
+          person = Person.find_or_create_by!(
             name: person_role.person.name,
             birth_date: person_role.person.birth_date,
             death_date: person_role.person.death_date,
@@ -141,7 +141,7 @@ module Import
             person.image.attach(person_role.person.image.blob)
           end
 
-          orchestra_role = OrchestraRole.create_or_find_by(orchestra:, name: ROLE_TRANSLATION[person_role.role])
+          orchestra_role = OrchestraRole.find_or_create_by!(orchestra:, name: ROLE_TRANSLATION[person_role.role])
           orchestra.orchestra_positions.create!(
             person:,
             orchestra_role:
@@ -154,32 +154,32 @@ module Import
       def find_or_initialize_genre(metadata:)
         return if metadata.genre.blank?
 
-        Genre.create_or_find_by(name: metadata.genre)
+        Genre.find_or_create_by!(name: metadata.genre)
       end
 
       def find_or_initialize_composer(metadata:)
         return if metadata.composer.blank?
 
-        Person.create_or_find_by(name: metadata.composer)
+        Person.find_or_create_by!(name: metadata.composer)
       end
 
       def find_or_initialize_lyricist(metadata:)
         return if metadata.lyricist.blank?
 
-        Person.create_or_find_by(name: metadata.lyricist)
+        Person.find_or_create_by!(name: metadata.lyricist)
       end
 
       def find_or_initialize_composition(metadata:)
-        composition = Composition.create_or_find_by(title: metadata.title)
+        composition = Composition.find_or_create_by!(title: metadata.title)
 
         if metadata.composer.present?
-          composer_person = Person.create_or_find_by(name: metadata.composer)
-          composition.composition_roles.create_or_find_by(composition:, person: composer_person, role: "composer")
+          composer_person = Person.find_or_create_by!(name: metadata.composer)
+          composition.composition_roles.find_or_create_by!(composition:, person: composer_person, role: "composer")
         end
 
         if metadata.lyricist.present?
-          lyricist_person = Person.create_or_find_by(name: metadata.lyricist)
-          composition.composition_roles.create_or_find_by(composition:, person: lyricist_person, role: "lyricist")
+          lyricist_person = Person.find_or_create_by!(name: metadata.lyricist)
+          composition.composition_roles.find_or_create_by!(composition:, person: lyricist_person, role: "lyricist")
         end
 
         find_or_initialize_lyrics(metadata:, composition:)
@@ -206,7 +206,7 @@ module Import
       def find_or_initialize_record_label(metadata:)
         return if metadata.organization.blank?
 
-        RecordLabel.create_or_find_by(name: metadata.organization)
+        RecordLabel.find_or_create_by!(name: metadata.organization)
       end
 
       def build_digital_remaster(audio_file:, metadata:, waveform:, waveform_image:, album_art:, compressed_audio:)

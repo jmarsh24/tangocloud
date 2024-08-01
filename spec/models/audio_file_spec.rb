@@ -13,17 +13,17 @@
 require "rails_helper"
 
 RSpec.describe AudioFile, type: :model do
-  let(:audio_file) { create(:audio_file) }
+  let(:audio_file) { create(:audio_file, :flac) }
 
   describe "#import" do
     it "sets the status to processing" do
-      audio_file.import
+      audio_file.import(async: true)
 
       expect(audio_file.reload.status).to eq("processing")
     end
 
     it "enqueues an AudioFileImportJob" do
-      audio_file.import
+      audio_file.import(async: true)
 
       expect(Import::AudioFile::ImportJob).to have_been_enqueued.with(audio_file)
     end
