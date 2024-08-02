@@ -100,7 +100,7 @@ RSpec.describe Import::DigitalRemaster::Builder do
 
     it "finds an existing album if it exists" do
       create(:album, title: "Troilo - Su Obra Completa (Soulseek)")
-      album = Import::DigitalRemaster::Builder.new.find_or_initialize_album(metadata:)
+      Import::DigitalRemaster::Builder.new.find_or_initialize_album(metadata:)
     end
   end
 
@@ -168,7 +168,7 @@ RSpec.describe Import::DigitalRemaster::Builder do
 
       it "finds an existing orchestra if it exists" do
         create(:orchestra, name: "Aníbal Troilo")
-        orchestra = Import::DigitalRemaster::Builder.new.find_or_initialize_orchestra(metadata:)
+        Import::DigitalRemaster::Builder.new.find_or_initialize_orchestra(metadata:)
       end
 
       it "associates the orchestra with relevant roles" do
@@ -192,7 +192,7 @@ RSpec.describe Import::DigitalRemaster::Builder do
 
       it "finds an existing orchestra if it exists" do
         create(:orchestra, name: "Aníbal Troilo")
-        orchestra = Import::DigitalRemaster::Builder.new.find_or_initialize_orchestra(metadata:)
+        Import::DigitalRemaster::Builder.new.find_or_initialize_orchestra(metadata:)
       end
     end
   end
@@ -204,7 +204,7 @@ RSpec.describe Import::DigitalRemaster::Builder do
     end
     it "finds an existing genre if it exists" do
       create(:genre, name: "Vals")
-      genre = Import::DigitalRemaster::Builder.new.find_or_initialize_genre(metadata:)
+      Import::DigitalRemaster::Builder.new.find_or_initialize_genre(metadata:)
     end
   end
 
@@ -217,7 +217,7 @@ RSpec.describe Import::DigitalRemaster::Builder do
     end
     it "finds an existing composer if it exists" do
       create(:person, name: "Aníbal Troilo")
-      composer = Import::DigitalRemaster::Builder.new.find_or_initialize_composer(metadata:)
+      Import::DigitalRemaster::Builder.new.find_or_initialize_composer(metadata:)
     end
   end
 
@@ -230,7 +230,7 @@ RSpec.describe Import::DigitalRemaster::Builder do
     end
     it "finds an existing lyricist if it exists" do
       create(:person, name: "Cátulo Castillo")
-      lyricist = Import::DigitalRemaster::Builder.new.find_or_initialize_lyricist(metadata:)
+      Import::DigitalRemaster::Builder.new.find_or_initialize_lyricist(metadata:)
     end
   end
 
@@ -243,7 +243,7 @@ RSpec.describe Import::DigitalRemaster::Builder do
     end
     it "finds an existing composition if it exists" do
       create(:composition, title: "Vuelve la serenata")
-      composition = Import::DigitalRemaster::Builder.new.find_or_initialize_composition(metadata:)
+      Import::DigitalRemaster::Builder.new.find_or_initialize_composition(metadata:)
     end
   end
 
@@ -281,7 +281,7 @@ RSpec.describe Import::DigitalRemaster::Builder do
     end
     it "finds an existing record label if it exists" do
       create(:record_label, name: "Tk")
-      record_label = Import::DigitalRemaster::Builder.new.find_or_initialize_record_label(metadata:)
+      Import::DigitalRemaster::Builder.new.find_or_initialize_record_label(metadata:)
     end
   end
 
