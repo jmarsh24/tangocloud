@@ -2,11 +2,11 @@ module Import
   module DigitalRemaster
     module Builders
       class CompositionBuilder
-        def initialize(composer_name:, lyricist_name:, title:, lyrics:)
+        def initialize(composer_name:, lyricist_name:, title:, lyric:)
           @composer_name = composer_name
           @lyricist_name = lyricist_name
           @title = title
-          @lyrics = lyrics
+          @lyric = lyric
         end
 
         def build
@@ -30,11 +30,11 @@ module Import
         private
 
         def build_lyric(composition)
-          return if @lyrics.blank?
+          return if @lyric.blank?
 
           language = Language.find_or_create_by!(name: "spanish", code: "es")
-          lyric = Lyric.create!(text: @lyrics, language:)
-          composition.lyrics << lyric
+          lyric = Lyric.create!(text: @lyric, language:)
+          composition.lyric << lyric
         end
       end
     end
