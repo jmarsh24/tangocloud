@@ -10,7 +10,7 @@ class CreateDigitalRemasters < ActiveRecord::Migration[7.1]
       t.belongs_to :album, foreign_key: true, type: :uuid, null: false
       t.belongs_to :remaster_agent, foreign_key: true, type: :uuid
       t.belongs_to :recording, foreign_key: true, type: :uuid, null: false
-      t.belongs_to :audio_file, foreign_key: true, type: :uuid, null: false
+      t.belongs_to :audio_file, foreign_key: {to_table: :import_audio_files}, type: :uuid, null: false
 
       t.timestamps
     end
