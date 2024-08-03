@@ -9,18 +9,18 @@ module Import
         end
 
         def build
-          return [] if @artist.blank?
+          return [] if @name.blank?
 
-          @artist.split(",").map(&:strip).filter_map do |singer_name|
-            next if singer_name.casecmp("instrumental").zero?
+          @name.split(",").map(&:strip).filter_map do |name|
+            next if name.casecmp("instrumental").zero?
 
-            if singer_name.start_with?("Dir. ")
-              singer_name = singer_name.sub("Dir. ", "").strip
-              singer = Person.find_or_initialize_by(name: singer_name)
-              Singer.new(person: singer, soloist: true)
+            if name.start_with?("Dir. ")
+              name = name.sub("Dir. ", "").strip
+              person = Person.find_or_create_by!(name:)
+              Singer.new(person:, soloist: true)
             else
-              singer = Person.find_or_initialize_by(name: singer_name)
-              Singer.new(person: singer, soloist: false)
+              person = Person.find_or_create_by!(name:)
+              Singer.new(person:, soloist: false)
             end
           end
         end
