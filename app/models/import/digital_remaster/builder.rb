@@ -101,7 +101,7 @@ module Import
       def build_remaster_agent(name:)
         return if name.blank?
 
-        RemasterAgent.find_or_create_by!(name: metadata.organization)
+        RemasterAgent.find_or_create_by!(name:)
       end
     end
   end
