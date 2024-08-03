@@ -1,23 +1,6 @@
 class ExternalCatalog::ElRecodo::PersonRole < ApplicationRecord
-  ROLES = [
-    "piano",
-    "arranger",
-    "doublebass",
-    "bandoneon",
-    "violin",
-    "singer",
-    "soloist",
-    "director",
-    "composer",
-    "author",
-    "cello",
-    "viola"
-  ].freeze
-
   belongs_to :person, class_name: "ExternalCatalog::ElRecodo::Person"
   belongs_to :song, class_name: "ExternalCatalog::ElRecodo::Song"
-
-  validates :role, inclusion: {in: ROLES}
 
   normalizes :role, with: ->(value) { value.to_s.downcase }
 

@@ -4,23 +4,18 @@ module Import
       class OrchestraBuilder
         class UnrecognizedRoleError < StandardError; end
 
-        EXCLUDE_ROLES = [
-          "arranger",
-          "author",
-          "composer",
-          "director"
-        ].freeze
+        EXCLUDE_ROLES = ["arranger", "author", "composer", "director"].freeze
 
         ROLE_TRANSLATION = {
-          "piano" => "Pianist",
-          "arranger" => "Arranger",
-          "doublebass" => "Double Bassist",
-          "bandoneon" => "Bandoneonist",
-          "violin" => "Violinist",
-          "singer" => "Vocalist",
-          "soloist" => "Soloist",
-          "cello" => "Cellist",
-          "viola" => "Violist"
+          "piano" => "pianist",
+          "arranger" => "arranger",
+          "doublebass" => "double-bassist",
+          "bandoneon" => "bandoneonist",
+          "violin" => "violinist",
+          "singer" => "vocalist",
+          "soloist" => "soloist",
+          "cello" => "cellist",
+          "viola" => "violist"
         }.freeze
 
         def initialize(orchestra_name:, el_recodo_song:)
@@ -29,29 +24,34 @@ module Import
         end
 
         def build
-          orchestra = Orchestra.new(name: @orchestra_name)
-          orchestra.musicians = build_musicians
+          orchestra = Orchestra.find_or_initialize_by(name: @orchestra_name)
           attach_image(orchestra)
+
+          return unless @el_recodo_song
+
+          @el_recodo_song.person_roles.each do |person_role|
+            role = person_role.role.downcase
+
+            next if EXCLUDE_ROLES.include?(role)
+
+            role_name = ROLE_TRANSLATION[role]
+            raise UnrecognizedRoleError, "Unrecognized role: #{person_role.role}" unless role_name
+
+            person = Person.find_or_create_by!(name: person_role.person.name)
+            orchestra_role = OrchestraRole.find_or_create_by!(name: role_name)
+
+            OrchestraPosition.find_or_create_by!(
+              orchestra:,
+              orchestra_role:,
+              person:
+            )
+          end
+
           orchestra.save!
           orchestra
         end
 
         private
-
-        def build_musicians
-          return [] unless @el_recodo_song
-
-          @el_recodo_song.person_roles.filter_map do |person_role|
-            role_key = person_role.role.downcase
-            next if EXCLUDE_ROLES.include?(role_key)
-
-            role = ROLE_TRANSLATION[role_key]
-            raise UnrecognizedRoleError, "Unrecognized role: #{person_role.role}" unless role
-
-            person = Person.find_or_create_by!(name: person_role.person.name)
-            Musician.new(person:, role:)
-          end
-        end
 
         def attach_image(orchestra)
           return unless @el_recodo_song&.orchestra&.image&.attached?

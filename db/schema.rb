@@ -268,10 +268,8 @@ ActiveRecord::Schema[7.1].define(version: 202401142347013) do
 
   create_table "orchestra_roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
-    t.uuid "orchestra_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["orchestra_id"], name: "index_orchestra_roles_on_orchestra_id"
   end
 
   create_table "orchestras", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -637,7 +635,6 @@ ActiveRecord::Schema[7.1].define(version: 202401142347013) do
   add_foreign_key "orchestra_positions", "orchestra_roles"
   add_foreign_key "orchestra_positions", "orchestras"
   add_foreign_key "orchestra_positions", "people"
-  add_foreign_key "orchestra_roles", "orchestras"
   add_foreign_key "people", "external_catalog_el_recodo_people", column: "el_recodo_person_id"
   add_foreign_key "playbacks", "recordings"
   add_foreign_key "playbacks", "users"
