@@ -2,14 +2,16 @@ module Import
   module DigitalRemaster
     module Builders
       class OrchestraBuilder
-        def initialize(metadata:, el_recodo_song:)
-          @metadata = metadata
+        def initialize(orchestra_name:, conductor:, musicians:, el_recodo_song:)
+          @orchestra_name = orchestra_name
+          @conductor = conductor
+          @musicians = musicians
           @el_recodo_song = el_recodo_song
         end
 
         def build
           orchestra = Orchestra.new(
-            name: @metadata.orchestra_name,
+            name: @orchestra_name,
             conductor: build_conductor,
             musicians: build_musicians
           )
@@ -20,9 +22,9 @@ module Import
         private
 
         def build_conductor
-          return if @metadata.conductor.blank?
+          return if @conductor.blank?
 
-          Person.find_or_create_by!(name: @metadata.conductor)
+          Person.find_or_create_by!(name: @conductor)
         end
 
         def build_musicians
@@ -33,8 +35,8 @@ module Import
             end
           end
 
-          unless @metadata.musicians.blank?
-            @metadata.musicians.split(",").map(&:strip).each do |musician_name|
+          unless @musicians.blank?
+            @musicians.split(",").map(&:strip).each do |musician_name|
               person = Person.find_or_create_by!(name: musician_name)
               musicians << Musician.new(person:, role: ROLE_TRANSLATION[musician_name.role])
             end

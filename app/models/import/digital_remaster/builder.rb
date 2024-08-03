@@ -1,6 +1,21 @@
 module Import
   module DigitalRemaster
     class Builder
+      RecordingMetadata = Data.define(
+        :date,
+        :barcode,
+        :artist,
+        :composer,
+        :lyricist,
+        :title,
+        :orchestra_name,
+        :conductor,
+        :musicians,
+        :genre,
+        :organization,
+        :lyrics
+      ).freeze
+
       ROLE_TRANSLATION = {
         "piano" => "Pianist",
         "arranger" => "Arranger",
@@ -21,45 +36,41 @@ module Import
       end
 
       def build(audio_file:, metadata:, waveform:, waveform_image:, album_art:, compressed_audio:)
-        album = build_album(metadata:)
-        remaster_agent = build_remaster_agent(metadata:)
-        recording = build_recording(metadata:)
-        audio_variant = build_audio_variant(metadata:)
-        waveform = build_waveform(waveform:)
         @digital_remaster.duration = metadata.duration
         @digital_remaster.replay_gain = metadata.replaygain_track_gain.to_f
         @digital_remaster.peak_value = metadata.replaygain_track_peak.to_f
         @digital_remaster.tango_cloud_id = metadata.catalog_number&.split("TC")&.last.to_i
-        @digital_remaster.album = album
-        @digital_remaster.remaster_agent = remaster_agent
-        @digital_remaster.recording = recording
-        @digital_remaster.waveform = waveform
+        @digital_remaster.album = build_album(metadata:, album_art:)
+        @digital_remaster.remaster_agent = build_remaster_agent(metadata:)
+        @digital_remaster.recording = build_recording(metadata:)
+        @digital_remaster.waveform = build_waveform(waveform:, waveform_image:)
         @digital_remaster.audio_file = audio_file
-
-        @digital_remaster.audio_variants << audio_variant
-
-        album.album_art.attach(io: File.open(album_art), filename: File.basename(album_art))
-        audio_variant.audio_file.attach(io: File.open(compressed_audio), filename: File.basename(compressed_audio))
-        waveform.image.attach(io: File.open(waveform_image), filename: File.basename(waveform_image))
-
+        @digital_remaster.audio_variants << build_audio_variant(format:, bit_rate:, compressed_audio:)
         @digital_remaster
       end
 
       private
 
-      def build_audio_variant(metadata:)
-        return if metadata.format.blank?
-
-        AudioVariant.new(
-          format: metadata.format,
-          bit_rate: metadata.bit_rate
+      def build_recording(metadata:)
+        recording_metadata = RecordingMetadata.new(
+          date: metadata.date,
+          barcode: metadata.barcode,
+          artist: metadata.artist,
+          composer: metadata.composer,
+          lyricist: metadata.lyricist,
+          title: metadata.title,
+          orchestra_name: metadata.orchestra_name,
+          conductor: metadata.conductor,
+          musicians: metadata.musicians,
+          genre: metadata.genre,
+          organization: metadata.organization,
+          lyrics: metadata.lyrics
         )
+        Builders::RecordingBuilder.new(recording_metadata:).build
       end
 
-      def build_waveform(waveform:)
-        return if waveform.blank?
-
-        Waveform.new(
+      def build_waveform(waveform:, waveform_image:)
+        waveform = Waveform.new(
           version: waveform.version,
           channels: waveform.channels,
           sample_rate: waveform.sample_rate,
@@ -68,20 +79,27 @@ module Import
           length: waveform.length,
           data: waveform.data
         )
+        waveform.image.attach(io: File.open(waveform_image), filename: File.basename(waveform_image))
       end
 
-      def build_recording(metadata:)
-        RecordingBuilder.new(metadata).build
+      def build_audio_variant(format:, bit_rate:, compressed_audio:)
+        audio_variant = AudioVariant.new(
+          format: metadata.format,
+          bit_rate: metadata.bit_rate
+        )
+        audio_variant.audio_file.attach(io: File.open(compressed_audio), filename: File.basename(compressed_audio))
+        audio_variant
       end
 
-      def build_album(metadata:)
-        return if metadata.album.blank?
+      def build_album(album_title:, album_art:)
+        return if album_title.blank?
 
         Album.find_or_create_by!(title: metadata.album)
+        album.album_art.attach(io: File.open(album_art), filename: File.basename(album_art))
       end
 
-      def build_remaster_agent(metadata:)
-        return if metadata.organization.blank?
+      def build_remaster_agent(name:)
+        return if name.blank?
 
         RemasterAgent.find_or_create_by!(name: metadata.organization)
       end

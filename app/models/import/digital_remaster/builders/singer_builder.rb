@@ -4,14 +4,14 @@ module Import
       class SingerBuilder
         Singer = Data.define(:person, :soloist).freeze
 
-        def initialize(metadata)
-          @metadata = metadata
+        def initialize(name:)
+          @name = name
         end
 
         def build
-          return [] if metadata.artist.blank?
+          return [] if @artist.blank?
 
-          metadata.artist.split(",").map(&:strip).filter_map do |singer_name|
+          @artist.split(",").map(&:strip).filter_map do |singer_name|
             next if singer_name.casecmp("instrumental").zero?
 
             if singer_name.start_with?("Dir. ")
