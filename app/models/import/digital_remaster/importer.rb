@@ -1,11 +1,9 @@
 module Import
   module DigitalRemaster
     class Importer
-      attr_reader :digital_remaster
-
       def initialize(builder:)
         @builder = builder
-        @digital_remaster = nil
+        @audio_file_processor = AudioFileProcessor.new
       end
 
       def import(audio_file:)
@@ -13,13 +11,13 @@ module Import
           ActiveRecord::Base.transaction do
             audio_file.update!(status: :processing)
 
-            metadata = @builder.extract_metadata(file: tempfile)
-            waveform = @builder.generate_waveform(file: tempfile)
-            waveform_image = @builder.generate_waveform_image(file: tempfile)
-            album_art = @builder.extract_album_art(file: tempfile)
-            compressed_audio = @builder.compress_audio(file: tempfile)
+            metadata = @audio_file_processor.extract_metadata(file: tempfile)
+            waveform = @audio_file_processor.generate_waveform(file: tempfile)
+            waveform_image = @audio_file_processor.generate_waveform_image(file: tempfile)
+            album_art = @audio_file_processor.extract_album_art(file: tempfile)
+            compressed_audio = @audio_file_processor.compress_audio(file: tempfile)
 
-            @digital_remaster = @builder.build_digital_remaster(
+            @digital_remaster = @builder.build(
               audio_file:,
               metadata:,
               waveform:,
@@ -31,6 +29,8 @@ module Import
             if @digital_remaster.save!
               audio_file.update!(status: :completed, error_message: nil)
             end
+
+            @digital_remaster
           end
         rescue ActiveRecord::RecordInvalid => e
           Rails.logger.error("Digital Remaster Importer Error: #{e.message}")
@@ -41,8 +41,6 @@ module Import
           e.backtrace.each { |line| Rails.logger.error(line) }
           audio_file.update_columns(status: :failed, error_message: e.message)
         end
-
-        @digital_remaster
       end
     end
   end
