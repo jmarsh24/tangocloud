@@ -14,27 +14,25 @@ module Import
 
           if @composer_name.present?
             composer_person = Person.find_or_create_by!(name: @composer_name)
-            composition.composition_roles.find_or_create_by!(composition:, person: composer_person, role: "composer")
+            composition.composition_roles.find_or_create_by!(person: composer_person, role: "composer")
           end
 
           if @lyricist_name.present?
             lyricist_person = Person.find_or_create_by!(name: @lyricist_name)
-            composition.composition_roles.find_or_create_by!(composition:, person: lyricist_person, role: "lyricist")
+            composition.composition_roles.find_or_create_by!(person: lyricist_person, role: "lyricist")
           end
 
-          build_lyric(composition)
+          if @lyrics.present?
+            language = Language.find_or_create_by!(name: "spanish", code: "es")
+            existing_lyric = composition.lyrics.find_by(text: @lyrics, language:)
+
+            unless existing_lyric
+              lyric = Lyric.create!(text: @lyrics, language:)
+              composition.lyrics << lyric
+            end
+          end
 
           composition
-        end
-
-        private
-
-        def build_lyric(composition)
-          return if @lyrics.blank?
-
-          language = Language.find_or_create_by!(name: "spanish", code: "es")
-          lyric = Lyric.create!(text: @lyrics, language:)
-          composition.lyrics << lyric
         end
       end
     end
