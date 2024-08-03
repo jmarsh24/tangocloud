@@ -12,7 +12,7 @@ module Import
             el_recodo_song:,
             composition: build_composition,
             recorded_date: @date,
-            orchestra: OrchestraBuilder.new(orchestra_name: @orchestra_name, conductor: @conductor, musicians: @musicians, el_recodo_song:).build,
+            orchestra: OrchestraBuilder.new(orchestra_name: @orchestra_name, orchestra_image:, musicians:).build,
             genre: build_genre,
             time_period: find_existing_time_period,
             record_label: build_record_label
