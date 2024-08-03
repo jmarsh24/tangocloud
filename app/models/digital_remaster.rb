@@ -2,7 +2,7 @@ class DigitalRemaster < ApplicationRecord
   belongs_to :album
   belongs_to :remaster_agent, optional: true
   belongs_to :recording
-  belongs_to :audio_file, class_name: "Import::AudioFile"
+  belongs_to :audio_file
 
   has_many :audio_variants, dependent: :destroy
   has_one :waveform, dependent: :destroy
