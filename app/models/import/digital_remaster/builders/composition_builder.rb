@@ -1,6 +1,6 @@
 module Import
   module DigitalRemaster
-    module Builder
+    module Builders
       class CompositionBuilder
         def initialize(metadata)
           @metadata = metadata

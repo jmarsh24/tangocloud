@@ -1,6 +1,6 @@
 module Import
   module DigitalRemaster
-    module Builder
+    module Builders
       class RecordingBuilder
         def initialize(metadata)
           @metadata = metadata
@@ -18,7 +18,9 @@ module Import
             record_label: build_record_label
           )
 
-          build_singers(recording) unless @metadata.artist.blank?
+          singers = SingerBuilder.new(@metadata).build
+          singers.each { |singer| recording.recording_singers.build(person: singer.person, soloist: singer.soloist) }
+
           recording.save!
           recording
         end
@@ -53,21 +55,6 @@ module Import
           return if @metadata.genre.blank?
 
           Genre.find_or_create_by!(name: @metadata.genre)
-        end
-
-        def build_singers(recording)
-          @metadata.artist.split(",").map(&:strip).each do |singer_name|
-            next if singer_name.casecmp("instrumental").zero?
-
-            soloist = false
-            if singer_name.start_with?("Dir. ")
-              singer_name = singer_name.sub("Dir. ", "").strip
-              soloist = true
-            end
-
-            person = Person.find_or_create_by(name: singer_name)
-            recording.recording_singers.build(person:, soloist:)
-          end
         end
       end
     end

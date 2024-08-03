@@ -1,6 +1,6 @@
 module Import
   module DigitalRemaster
-    module Builder
+    module Builders
       class OrchestraBuilder
         def initialize(metadata:, el_recodo_song:)
           @metadata = metadata

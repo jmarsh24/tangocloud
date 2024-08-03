@@ -1,46 +1,89 @@
 module Import
   module DigitalRemaster
-    class Importer
-      def initialize(builder:)
-        @builder = builder
+    class Builder
+      ROLE_TRANSLATION = {
+        "piano" => "Pianist",
+        "arranger" => "Arranger",
+        "doublebass" => "Double Bassist",
+        "bandoneon" => "Bandoneonist",
+        "violin" => "Violinist",
+        "singer" => "Vocalist",
+        "soloist" => "Soloist",
+        "director" => "Conductor",
+        "composer" => "Composer",
+        "author" => "Lyricist",
+        "cello" => "Cellist"
+      }.freeze
+
+      def initialize
+        @digital_remaster = ::DigitalRemaster.new
         @audio_file_processor = AudioFileProcessor.new
       end
 
-      def import(audio_file:)
-        audio_file.file.blob.open do |tempfile|
-          ActiveRecord::Base.transaction do
-            audio_file.update!(status: :processing)
+      def build(audio_file:, metadata:, waveform:, waveform_image:, album_art:, compressed_audio:)
+        album = build_album(metadata:)
+        remaster_agent = build_remaster_agent(metadata:)
+        recording = build_recording(metadata:)
+        audio_variant = build_audio_variant(metadata:)
+        waveform = build_waveform(waveform:)
+        @digital_remaster.duration = metadata.duration
+        @digital_remaster.replay_gain = metadata.replaygain_track_gain.to_f
+        @digital_remaster.peak_value = metadata.replaygain_track_peak.to_f
+        @digital_remaster.tango_cloud_id = metadata.catalog_number&.split("TC")&.last.to_i
+        @digital_remaster.album = album
+        @digital_remaster.remaster_agent = remaster_agent
+        @digital_remaster.recording = recording
+        @digital_remaster.waveform = waveform
+        @digital_remaster.audio_file = audio_file
 
-            metadata = @audio_file_processor.extract_metadata(file: tempfile)
-            waveform = @audio_file_processor.generate_waveform(file: tempfile)
-            waveform_image = @audio_file_processor.generate_waveform_image(file: tempfile)
-            album_art = @audio_file_processor.extract_album_art(file: tempfile)
-            compressed_audio = @audio_file_processor.compress_audio(file: tempfile)
+        @digital_remaster.audio_variants << audio_variant
 
-            @digital_remaster = @builder.build(
-              audio_file:,
-              metadata:,
-              waveform:,
-              waveform_image:,
-              album_art:,
-              compressed_audio:
-            )
+        album.album_art.attach(io: File.open(album_art), filename: File.basename(album_art))
+        audio_variant.audio_file.attach(io: File.open(compressed_audio), filename: File.basename(compressed_audio))
+        waveform.image.attach(io: File.open(waveform_image), filename: File.basename(waveform_image))
 
-            if @digital_remaster.save!
-              audio_file.update!(status: :completed, error_message: nil)
-            end
+        @digital_remaster
+      end
 
-            @digital_remaster
-          end
-        rescue ActiveRecord::RecordInvalid => e
-          Rails.logger.error("Digital Remaster Importer Error: #{e.message}")
-          e.backtrace.each { |line| Rails.logger.error(line) }
-          audio_file.update_columns(status: :failed, error_message: e.message)
-        rescue => e
-          Rails.logger.error("Digital Remaster Importer Error: #{e.message}")
-          e.backtrace.each { |line| Rails.logger.error(line) }
-          audio_file.update_columns(status: :failed, error_message: e.message)
-        end
+      private
+
+      def build_audio_variant(metadata:)
+        return if metadata.format.blank?
+
+        AudioVariant.new(
+          format: metadata.format,
+          bit_rate: metadata.bit_rate
+        )
+      end
+
+      def build_waveform(waveform:)
+        return if waveform.blank?
+
+        Waveform.new(
+          version: waveform.version,
+          channels: waveform.channels,
+          sample_rate: waveform.sample_rate,
+          samples_per_pixel: waveform.samples_per_pixel,
+          bits: waveform.bits,
+          length: waveform.length,
+          data: waveform.data
+        )
+      end
+
+      def build_recording(metadata:)
+        RecordingBuilder.new(metadata).build
+      end
+
+      def build_album(metadata:)
+        return if metadata.album.blank?
+
+        Album.find_or_create_by!(title: metadata.album)
+      end
+
+      def build_remaster_agent(metadata:)
+        return if metadata.organization.blank?
+
+        RemasterAgent.find_or_create_by!(name: metadata.organization)
       end
     end
   end
