@@ -119,5 +119,18 @@ RSpec.describe Import::DigitalRemaster::Builders::OrchestraBuilder do
         expect(orchestra.image).to be_attached
       end
     end
+
+    context "when no el_recodo_song is provided" do
+      it "creates an orchestra without positions and image" do
+        builder = described_class.new(
+          orchestra_name:
+        )
+        orchestra = builder.build
+
+        expect(orchestra.name).to eq(orchestra_name)
+        expect(orchestra.image).not_to be_attached
+        expect(orchestra.orchestra_positions).to be_empty
+      end
+    end
   end
 end

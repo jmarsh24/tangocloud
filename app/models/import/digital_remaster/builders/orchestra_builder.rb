@@ -18,7 +18,7 @@ module Import
           "viola" => "violist"
         }.freeze
 
-        def initialize(orchestra_name:, el_recodo_song:)
+        def initialize(orchestra_name:, el_recodo_song: nil)
           @orchestra_name = orchestra_name
           @el_recodo_song = el_recodo_song
         end
@@ -27,24 +27,24 @@ module Import
           orchestra = Orchestra.find_or_initialize_by(name: @orchestra_name)
           attach_image(orchestra)
 
-          return unless @el_recodo_song
+          if @el_recodo_song.present?
+            @el_recodo_song.person_roles.each do |person_role|
+              role = person_role.role.downcase
 
-          @el_recodo_song.person_roles.each do |person_role|
-            role = person_role.role.downcase
+              next if EXCLUDE_ROLES.include?(role)
 
-            next if EXCLUDE_ROLES.include?(role)
+              role_name = ROLE_TRANSLATION[role]
+              raise UnrecognizedRoleError, "Unrecognized role: #{person_role.role}" unless role_name
 
-            role_name = ROLE_TRANSLATION[role]
-            raise UnrecognizedRoleError, "Unrecognized role: #{person_role.role}" unless role_name
+              person = Person.find_or_create_by!(name: person_role.person.name)
+              orchestra_role = OrchestraRole.find_or_create_by!(name: role_name)
 
-            person = Person.find_or_create_by!(name: person_role.person.name)
-            orchestra_role = OrchestraRole.find_or_create_by!(name: role_name)
-
-            OrchestraPosition.find_or_create_by!(
-              orchestra:,
-              orchestra_role:,
-              person:
-            )
+              OrchestraPosition.find_or_create_by!(
+                orchestra:,
+                orchestra_role:,
+                person:
+              )
+            end
           end
 
           orchestra.save!
