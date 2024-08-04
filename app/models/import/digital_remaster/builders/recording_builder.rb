@@ -16,7 +16,7 @@ module Import
             orchestra: build_orchestra(el_recodo_song),
             genre: build_genre,
             time_period: find_existing_time_period,
-            record_label: build_record_label
+            record_label: build_record_label(el_recodo_song)
           )
 
           singers = SingerBuilder.new(name: @metadata.artist).build
@@ -58,10 +58,12 @@ module Import
           TimePeriod.covering_year(year).first
         end
 
-        def build_record_label
-          return if @metadata.organization.blank?
+        def build_record_label(el_recodo_song)
+          name = @metadata.organization || el_recodo_song.label
 
-          RecordLabel.find_or_create_by!(name: @metadata.organization)
+          return if name.blank?
+
+          RecordLabel.find_or_create_by!(name:)
         end
 
         def build_genre
