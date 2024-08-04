@@ -3,56 +3,63 @@ require "rails_helper"
 RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
   let(:recording_metadata) do
     Import::DigitalRemaster::Builder::RecordingMetadata.new(
-      title: "Te quiero ver escopeta",
-      artist: "Roberto Flores",
-      composer: "Enrique Rodríguez",
-      lyricist: "Alfredo Bigeschi",
+      date: "1950-09-22",
+      title: "Nunca te podré olvidar",
       genre: "Tango",
-      album_artist: "Enrique Rodríguez",
-      album_artist_sort: "Rodríguez, Enrique",
+      artist: "Carlos Dante",
+      composer: "Víctor Braña",
+      lyricist: "Enrique Gaudino",
+      album_artist: "Alfredo De Angelis",
+      album_artist_sort: "De Angelis, Alfredo",
       year: "1939",
       grouping: "Tango Tunes",
       catalog_number: "TC6612",
-      barcode: "ERT-4552",
-      date: "1939-02-01",
+      barcode: "ERT-9479",
       organization: nil,
-      lyrics: nil
+      lyrics: "Letra de la canción"
     )
   end
 
   let(:el_recodo_song) {
     build(:external_catalog_el_recodo_song,
-      title: "Te quiero ver escopeta",
-      ert_number: "4552",
-      label: "Odeon")
+      title: "Nunca te podré olvidar",
+      ert_number: 9479,
+      label: "Odeon",
+      duration: 179)
+  }
+
+  let(:el_recodo_orchestra) {
+    ExternalCatalog::ElRecodo::Orchestra.create!(
+      name: "Alfredo De Angelis",
+      song: el_recodo_song
+    )
   }
 
   let(:el_recodo_person) {
     ExternalCatalog::ElRecodo::Person.create!(
-      name: "Enrique Rodríguez",
-      birth_date: "1901-03-08",
-      death_date: "1971-09-04",
-      nicknames: ["Luis María Meca"],
-      place_of_birth: "Argentina"
+      name: "Carlos Dante",
+      birth_date: "1906-03-12",
+      death_date: "1985-04-28",
+      nicknames: ["Testori, Carlos Dante"],
+      place_of_birth: "Buenos Aires Argentina"
     )
   }
 
   let(:el_recodo_person2) {
     ExternalCatalog::ElRecodo::Person.create!(
-      name: "Alfredo Bigeschi",
-      birth_date: "1908-12-18",
-      death_date: "1981-03-25",
-      place_of_birth: "Portoferraio (Livorno) Italia"
+      name: "Victor Braña",
+      birth_date: "1911-06-11",
+      death_date: "1989-05-05",
+      place_of_birth: "Villa Domínico (Buenos Aires) Argentina"
     )
   }
 
   let(:el_recodo_person3) {
     ExternalCatalog::ElRecodo::Person.create!(
-      name: "Roberto Flores",
-      birth_date: "1907-07-29",
-      death_date: "1981-11-09",
-      nicknames: ["El Chato"],
-      place_of_birth: "Buenos Aires Argentina"
+      name: "Enrique Gaudino",
+      birth_date: "1899-04-25",
+      death_date: "1974-10-06",
+      place_of_birth: "San Miguel del Monte (Buenos Aires) Argentina"
     )
   }
 
@@ -86,7 +93,7 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
         builder = described_class.new(recording_metadata:)
         recording = builder.build
 
-        expect(recording.composition.title).to eq("Te quiero ver escopeta")
+        expect(recording.composition.title).to eq("Nunca te podré olvidar")
       end
     end
 
@@ -96,7 +103,7 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
         recording = builder.build
 
         singer_names = recording.recording_singers.map { _1.person.name }
-        expect(singer_names).to include("Roberto Flores")
+        expect(singer_names).to include("Carlos Dante")
       end
     end
 
@@ -105,7 +112,7 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
         builder = described_class.new(recording_metadata:)
         recording = builder.build
 
-        expect(recording.composition.composers.first.name).to eq("Enrique Rodríguez")
+        expect(recording.composition.composers.first.name).to eq("Víctor Braña")
       end
     end
 
@@ -114,7 +121,7 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
         builder = described_class.new(recording_metadata:)
         recording = builder.build
 
-        expect(recording.composition.lyricists.first.name).to eq("Alfredo Bigeschi")
+        expect(recording.composition.lyricists.first.name).to eq("Enrique Gaudino")
       end
     end
 
@@ -132,7 +139,7 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
         builder = described_class.new(recording_metadata:)
         recording = builder.build
 
-        expect(recording.orchestra.name).to eq("Enrique Rodríguez")
+        expect(recording.orchestra.name).to eq("Alfredo De Angelis")
       end
     end
 
@@ -141,7 +148,7 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
         builder = described_class.new(recording_metadata:)
         recording = builder.build
 
-        expect(recording.recorded_date.year).to eq(1939)
+        expect(recording.recorded_date.year).to eq(1950)
       end
     end
 
@@ -150,7 +157,7 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
         builder = described_class.new(recording_metadata:)
         recording = builder.build
 
-        expect(recording.el_recodo_song.ert_number).to eq(4552)
+        expect(recording.el_recodo_song.ert_number).to eq(9479)
       end
     end
 
@@ -159,13 +166,13 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
         builder = described_class.new(recording_metadata:)
         recording = builder.build
 
-        expect(recording.recorded_date).to eq("1939-02-01".to_date)
+        expect(recording.recorded_date).to eq("1950-09-22".to_date)
       end
     end
 
     context "when creating a new recording without duplicates" do
       it "does not create duplicate compositions" do
-        existing_composition = Composition.create!(title: "Te quiero ver escopeta")
+        existing_composition = Composition.create!(title: "Nunca te podré olvidar")
         builder = described_class.new(recording_metadata:)
         recording = builder.build
 
