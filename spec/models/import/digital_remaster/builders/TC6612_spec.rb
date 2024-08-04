@@ -3,63 +3,72 @@ require "rails_helper"
 RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
   let(:recording_metadata) do
     Import::DigitalRemaster::Builder::RecordingMetadata.new(
-      date: "1950-09-22",
-      title: "Nunca te podré olvidar",
-      genre: "Tango",
-      artist: "Carlos Dante",
-      composer: "Víctor Braña",
-      lyricist: "Enrique Gaudino",
-      album_artist: "Alfredo De Angelis",
-      album_artist_sort: "De Angelis, Alfredo",
-      year: "1939",
-      grouping: "Tango Tunes",
-      catalog_number: "TC6612",
-      barcode: "ERT-9479",
-      organization: nil,
+      date: "1953-01-01",
+      title: "Vuelve la serenata",
+      genre: "Vals",
+      artist: "Jorge Casal, Raúl Berón",
+      composer: "Aníbal Troilo",
+      lyricist: "Cátulo Castillo",
+      album_artist: "Aníbal Troilo",
+      album_artist_sort: "Troilo, Aníbal",
+      year: "1953",
+      grouping: "Free",
+      catalog_number: "TC7514",
+      barcode: "ERT-2918",
+      organization: "Tk",
       lyrics: "Letra de la canción"
     )
   end
 
   let(:el_recodo_song) {
     build(:external_catalog_el_recodo_song,
-      title: "Nunca te podré olvidar",
-      ert_number: 9479,
-      label: "Odeon",
+      title: "Vuelve la serenata",
+      ert_number: 2918,
+      label: "Tk",
       duration: 179)
   }
 
   let(:el_recodo_orchestra) {
     ExternalCatalog::ElRecodo::Orchestra.create!(
-      name: "Alfredo De Angelis",
+      name: "Aníbal Troilo",
       song: el_recodo_song
     )
   }
 
   let(:el_recodo_person) {
     ExternalCatalog::ElRecodo::Person.create!(
-      name: "Carlos Dante",
-      birth_date: "1906-03-12",
-      death_date: "1985-04-28",
-      nicknames: ["Testori, Carlos Dante"],
+      name: "Jorge Casal",
+      birth_date: "1924-01-14",
+      death_date: "1996-06-25",
       place_of_birth: "Buenos Aires Argentina"
     )
   }
 
   let(:el_recodo_person2) {
     ExternalCatalog::ElRecodo::Person.create!(
-      name: "Victor Braña",
-      birth_date: "1911-06-11",
-      death_date: "1989-05-05",
-      place_of_birth: "Villa Domínico (Buenos Aires) Argentina"
+      name: "Raúl Berón",
+      birth_date: "1920-03-30",
+      death_date: "1982-06-28",
+      place_of_birth: "Zárate (Buenos Aires) Argentina"
     )
   }
 
   let(:el_recodo_person3) {
     ExternalCatalog::ElRecodo::Person.create!(
-      name: "Enrique Gaudino",
-      birth_date: "1899-04-25",
-      death_date: "1974-10-06",
-      place_of_birth: "San Miguel del Monte (Buenos Aires) Argentina"
+      name: "Aníbal Troilo",
+      birth_date: "1914-07-11",
+      death_date: "1975-05-18",
+      nicknames: ["Pichuco"],
+      place_of_birth: "Buenos Aires Argentina"
+    )
+  }
+
+  let(:el_recodo_person4) {
+    ExternalCatalog::ElRecodo::Person.create!(
+      name: "Cátulo Castillo",
+      birth_date: "1906-08-06",
+      death_date: "1975-10-19",
+      place_of_birth: "Buenos Aires Argentina"
     )
   }
 
@@ -71,14 +80,19 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
         person: el_recodo_person
       ),
       ExternalCatalog::ElRecodo::PersonRole.create!(
-        role: "composer",
+        role: "singer",
         song: el_recodo_song,
         person: el_recodo_person2
       ),
       ExternalCatalog::ElRecodo::PersonRole.create!(
-        role: "author",
+        role: "composer",
         song: el_recodo_song,
         person: el_recodo_person3
+      ),
+      ExternalCatalog::ElRecodo::PersonRole.create!(
+        role: "author",
+        song: el_recodo_song,
+        person: el_recodo_person4
       )
     ]
   }
@@ -93,7 +107,7 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
         builder = described_class.new(recording_metadata:)
         recording = builder.build
 
-        expect(recording.composition.title).to eq("Nunca te podré olvidar")
+        expect(recording.composition.title).to eq("Vuelve la serenata")
       end
     end
 
@@ -103,7 +117,7 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
         recording = builder.build
 
         singer_names = recording.recording_singers.map { _1.person.name }
-        expect(singer_names).to include("Carlos Dante")
+        expect(singer_names).to include("Jorge Casal", "Raúl Berón")
       end
     end
 
@@ -112,7 +126,7 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
         builder = described_class.new(recording_metadata:)
         recording = builder.build
 
-        expect(recording.composition.composers.first.name).to eq("Víctor Braña")
+        expect(recording.composition.composers.first.name).to eq("Aníbal Troilo")
       end
     end
 
@@ -121,7 +135,7 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
         builder = described_class.new(recording_metadata:)
         recording = builder.build
 
-        expect(recording.composition.lyricists.first.name).to eq("Enrique Gaudino")
+        expect(recording.composition.lyricists.first.name).to eq("Cátulo Castillo")
       end
     end
 
@@ -130,7 +144,7 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
         builder = described_class.new(recording_metadata:)
         recording = builder.build
 
-        expect(recording.genre.name).to eq("Tango")
+        expect(recording.genre.name).to eq("Vals")
       end
     end
 
@@ -139,7 +153,7 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
         builder = described_class.new(recording_metadata:)
         recording = builder.build
 
-        expect(recording.orchestra.name).to eq("Alfredo De Angelis")
+        expect(recording.orchestra.name).to eq("Aníbal Troilo")
       end
     end
 
@@ -148,7 +162,7 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
         builder = described_class.new(recording_metadata:)
         recording = builder.build
 
-        expect(recording.recorded_date.year).to eq(1950)
+        expect(recording.recorded_date.year).to eq(1953)
       end
     end
 
@@ -157,7 +171,7 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
         builder = described_class.new(recording_metadata:)
         recording = builder.build
 
-        expect(recording.el_recodo_song.ert_number).to eq(9479)
+        expect(recording.el_recodo_song.ert_number).to eq(2918)
       end
     end
 
@@ -166,13 +180,13 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
         builder = described_class.new(recording_metadata:)
         recording = builder.build
 
-        expect(recording.recorded_date).to eq("1950-09-22".to_date)
+        expect(recording.recorded_date).to eq("1953-01-01".to_date)
       end
     end
 
     context "when creating a new recording without duplicates" do
       it "does not create duplicate compositions" do
-        existing_composition = Composition.create!(title: "Nunca te podré olvidar")
+        existing_composition = Composition.create!(title: "Vuelve la serenata")
         builder = described_class.new(recording_metadata:)
         recording = builder.build
 
@@ -180,7 +194,7 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
       end
 
       it "does not create duplicate genres" do
-        existing_genre = Genre.create!(name: "Tango")
+        existing_genre = Genre.create!(name: "Vals")
         builder = described_class.new(recording_metadata:)
         recording = builder.build
 
@@ -188,7 +202,7 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
       end
 
       it "does not create duplicate record labels" do
-        existing_record_label = RecordLabel.create!(name: "Odeon")
+        existing_record_label = RecordLabel.create!(name: "Tk")
         builder = described_class.new(recording_metadata:)
         recording = builder.build
 
