@@ -8,18 +8,22 @@ module Import
 
         def build
           el_recodo_song = find_el_recodo_song
+
           recording = Recording.new(
             el_recodo_song:,
             composition: build_composition,
-            recorded_date: @date,
-            orchestra: OrchestraBuilder.new(orchestra_name: @orchestra_name, orchestra_image:, musicians:).build,
+            recorded_date: @metadata.date,
+            orchestra: build_orchestra(el_recodo_song),
             genre: build_genre,
             time_period: find_existing_time_period,
             record_label: build_record_label
           )
 
-          singers = SingerBuilder.new(artist: @artist).build
-          singers.each { |singer| recording.recording_singers.build(person: singer.person, soloist: singer.soloist) }
+          singers = SingerBuilder.new(name: @metadata.artist).build
+
+          singers.each do
+            recording.recording_singers.build(person: _1.person, soloist: _1.soloist)
+          end
 
           recording.save!
           recording
@@ -28,33 +32,42 @@ module Import
         private
 
         def find_el_recodo_song
-          return if @barcode.blank?
+          return if @metadata.barcode.blank?
 
-          ert_number = @barcode.split("-")[1]
+          ert_number = @metadata.barcode.split("-")[1]
           ExternalCatalog::ElRecodo::Song.includes(:people, :person_roles).find_by(ert_number:)
         end
 
+        def build_orchestra(el_recodo_song)
+          OrchestraBuilder.new(orchestra_name: @metadata.album_artist, el_recodo_song:).build
+        end
+
         def build_composition
-          CompositionBuilder.new(title: @title, composer: @composer, lyricist: @lyricist).build
+          CompositionBuilder.new(
+            composer_name: @metadata.composer,
+            lyricist_name: @metadata.lyricist,
+            title: @metadata.title,
+            lyrics: @metadata.lyrics
+          ).build
         end
 
         def find_existing_time_period
-          return nil if @date.blank?
+          return nil if @metadata.date.blank?
 
-          year = Date.parse(@date).year
+          year = Date.parse(@metadata.date).year
           TimePeriod.covering_year(year).first
         end
 
         def build_record_label
-          return if @organization.blank?
+          return if @metadata.organization.blank?
 
-          RecordLabel.find_or_create_by!(name: @organization)
+          RecordLabel.find_or_create_by!(name: @metadata.organization)
         end
 
         def build_genre
-          return if @genre.blank?
+          return if @metadata.genre.blank?
 
-          Genre.find_or_create_by!(name: @genre)
+          Genre.find_or_create_by!(name: @metadata.genre)
         end
       end
     end

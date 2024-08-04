@@ -2,33 +2,21 @@ module Import
   module DigitalRemaster
     class Builder
       RecordingMetadata = Data.define(
-        :date,
-        :barcode,
-        :artist,
-        :composer,
-        :lyricist,
         :title,
-        :orchestra_name,
-        :conductor,
-        :musicians,
+        :artist,
+        :year,
         :genre,
+        :album_artist,
+        :album_artist_sort,
+        :composer,
+        :grouping,
+        :catalog_number,
+        :lyricist,
+        :barcode,
+        :date,
         :organization,
         :lyrics
       ).freeze
-
-      ROLE_TRANSLATION = {
-        "piano" => "Pianist",
-        "arranger" => "Arranger",
-        "doublebass" => "Double Bassist",
-        "bandoneon" => "Bandoneonist",
-        "violin" => "Violinist",
-        "singer" => "Vocalist",
-        "soloist" => "Soloist",
-        "director" => "Conductor",
-        "composer" => "Composer",
-        "author" => "Lyricist",
-        "cello" => "Cellist"
-      }.freeze
 
       def initialize
         @digital_remaster = ::DigitalRemaster.new
@@ -53,16 +41,18 @@ module Import
 
       def build_recording(metadata:)
         recording_metadata = RecordingMetadata.new(
-          date: metadata.date,
-          barcode: metadata.barcode,
-          artist: metadata.artist,
-          composer: metadata.composer,
-          lyricist: metadata.lyricist,
           title: metadata.title,
-          orchestra_name: metadata.orchestra_name,
-          conductor: metadata.conductor,
-          musicians: metadata.musicians,
+          artist: metadata.artist,
+          year: metadata.year,
           genre: metadata.genre,
+          album_artist: metadata.album_artist,
+          album_artist_sort: metadata.album_artist_sort,
+          composer: metadata.composer,
+          grouping: metadata.grouping,
+          catalog_number: metadata.catalog_number,
+          lyricist: metadata.lyricist,
+          barcode: metadata.barcode,
+          date: metadata.date,
           organization: metadata.organization,
           lyrics: metadata.lyrics
         )
