@@ -18,24 +18,30 @@ module Import
         :lyrics
       ).freeze
 
-      def initialize
+      def initialize(audio_file:, metadata:, waveform:, waveform_image:, album_art:, compressed_audio:)
+        @audio_file = audio_file
+        @metadata = metadata
+        @waveform = waveform
+        @waveform_image = waveform_image
+        @album_art = album_art
+        @compressed_audio = compressed_audio
         @digital_remaster = ::DigitalRemaster.new
       end
 
-      def build(audio_file:, metadata:, waveform:, waveform_image:, album_art:, compressed_audio:)
-        @digital_remaster.duration = metadata.duration
-        @digital_remaster.replay_gain = metadata.replaygain_track_gain.to_f
-        @digital_remaster.peak_value = metadata.replaygain_track_peak.to_f
-        @digital_remaster.tango_cloud_id = metadata.catalog_number&.split("TC")&.last.to_i
-        @digital_remaster.album = build_album(title: metadata.album, album_art:)
-        @digital_remaster.remaster_agent = build_remaster_agent(name: metadata.grouping)
-        @digital_remaster.recording = build_recording(metadata:)
-        @digital_remaster.waveform = build_waveform(waveform:, waveform_image:)
-        @digital_remaster.audio_file = audio_file
+      def build
+        @digital_remaster.duration = @metadata.duration
+        @digital_remaster.replay_gain = @metadata.replaygain_track_gain.to_f
+        @digital_remaster.peak_value = @metadata.replaygain_track_peak.to_f
+        @digital_remaster.tango_cloud_id = @metadata.catalog_number&.split("TC")&.last.to_i
+        @digital_remaster.album = build_album(title: @metadata.album, album_art: @album_art)
+        @digital_remaster.remaster_agent = build_remaster_agent(name: @metadata.grouping)
+        @digital_remaster.recording = build_recording(metadata: @metadata)
+        @digital_remaster.waveform = build_waveform(waveform: @waveform, waveform_image: @waveform_image)
+        @digital_remaster.audio_file = @audio_file
         @digital_remaster.audio_variants << build_audio_variant(
-          format: metadata.format,
-          bit_rate: metadata.bit_rate,
-          compressed_audio:
+          format: @metadata.format,
+          bit_rate: @metadata.bit_rate,
+          compressed_audio: @compressed_audio
         )
         @digital_remaster
       end

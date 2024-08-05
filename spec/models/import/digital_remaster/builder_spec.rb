@@ -45,9 +45,8 @@ RSpec.describe Import::DigitalRemaster::Builder do
       )
       waveform_image = Rails.root.join("spec/fixtures/files/19401008_volver_a_sonar_roberto_rufino_tango_2476_waveform.png")
       compressed_audio = Rails.root.join("spec/fixtures/files/audio/compressed/19401008_volver_a_sonar_roberto_rufino_tango_2476.mp3")
-      builder = Import::DigitalRemaster::Builder.new
 
-      digital_remaster = builder.build(
+      builder = Import::DigitalRemaster::Builder.new(
         audio_file:,
         metadata:,
         waveform:,
@@ -55,6 +54,8 @@ RSpec.describe Import::DigitalRemaster::Builder do
         album_art:,
         compressed_audio:
       )
+
+      digital_remaster = builder.build
 
       expect(digital_remaster).to be_a(DigitalRemaster)
       expect(digital_remaster.duration).to eq(154)
@@ -77,7 +78,7 @@ RSpec.describe Import::DigitalRemaster::Builder do
       expect(digital_remaster.recording.genre.name).to eq("Vals")
       expect(digital_remaster.recording.composition.composers.first.name).to eq("Aníbal Troilo")
       expect(digital_remaster.recording.composition.lyricists.first.name).to eq("Cátulo Castillo")
-      expect(digital_remaster.recording.recording_singers.map { _1.person.name }).to include("Jorge Casal", "Raúl Berón")
+      expect(digital_remaster.recording.recording_singers.map { |singer| singer.person.name }).to include("Jorge Casal", "Raúl Berón")
       expect(digital_remaster.recording.record_label.name).to eq("Tk")
 
       expect(digital_remaster.waveform).to be_a(Waveform)
@@ -89,9 +90,7 @@ RSpec.describe Import::DigitalRemaster::Builder do
       expect(digital_remaster.waveform.length).to eq(100)
       expect(digital_remaster.waveform.data).to eq([0.1, 0.2, 0.3, 0.4])
       expect(digital_remaster.waveform.image).to be_attached
-
       expect(digital_remaster.audio_file).to eq(audio_file)
-
       expect(digital_remaster.audio_variants.size).to eq(1)
       audio_variant = digital_remaster.audio_variants.first
       expect(audio_variant).to be_a(AudioVariant)
