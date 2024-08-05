@@ -1,4 +1,4 @@
-class CreateImportAudioFiles < ActiveRecord::Migration[7.1]
+class CreateAudioFiles < ActiveRecord::Migration[7.1]
   def change
     create_enum :audio_file_status, ["pending", "processing", "completed", "failed"]
     create_table :audio_files, id: :uuid do |t|
