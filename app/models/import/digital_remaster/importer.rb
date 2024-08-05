@@ -1,11 +1,11 @@
 module Import
   module DigitalRemaster
     class Importer
-      def initialize(metadata_extractor:, waveform_generator:, album_art_extractor:, audio_converter:)
-        @metadata_extractor = metadata_extractor
-        @waveform_generator = waveform_generator
-        @album_art_extractor = album_art_extractor
-        @audio_converter = audio_converter
+      def initialize(metadata_extractor: nil, waveform_generator: nil, album_art_extractor: nil, audio_converter: nil)
+        @metadata_extractor = metadata_extractor || AudioProcessing::MetadataExtractor.new
+        @waveform_generator = waveform_generator || AudioProcessing::WaveformGenerator.new
+        @album_art_extractor = album_art_extractor || AudioProcessing::AlbumArtExtractor.new
+        @audio_converter = audio_converter || AudioProcessing::AudioConverter.new
       end
 
       def import(audio_file:)
