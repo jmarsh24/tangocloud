@@ -7,6 +7,6 @@ module Types
     field :start_date, GraphQL::Types::ISO8601Date, null: true
     field :end_date, GraphQL::Types::ISO8601Date, null: true
 
-    belongs_to :orchestra
+    belongs_to :orchestra, type: Types::OrchestraType
   end
 end
