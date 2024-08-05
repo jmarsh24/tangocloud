@@ -59,7 +59,7 @@ module Import
         end
 
         def build_record_label(el_recodo_song)
-          name = @metadata.organization || el_recodo_song.label
+          name = @metadata.organization || el_recodo_song&.label
 
           return if name.blank?
 
