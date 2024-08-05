@@ -1,7 +1,6 @@
 FactoryBot.define do
   factory :orchestra_role do
     name { "MyString" }
-    orchestra
   end
 end
 
