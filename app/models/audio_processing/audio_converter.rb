@@ -24,7 +24,6 @@ module AudioProcessing
 
     def convert(file:)
       @output_dir ||= File.dirname(file.path)
-      filename = "#{File.basename(file, File.extname(file))}.#{format}"
       movie = FFMPEG::Movie.new(file.path)
 
       Tempfile.create(["converted-", ".#{format}"]) do |tempfile|
