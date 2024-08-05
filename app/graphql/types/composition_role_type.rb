@@ -1,8 +1,6 @@
 module Types
   class CompositionRoleType < Types::BaseObject
     field :id, ID, null: true
-    field :composition, Types::CompositionType, null: true
-    field :person, Types::PersonType, null: true
 
     enum_field :role
 
