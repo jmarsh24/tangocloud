@@ -1,7 +1,6 @@
 module Types
   class CompositionType < Types::BaseObject
     field :id, ID, null: true
-    field :tangotube_slug, String, null: true
     field :title, String, null: true
 
     belongs_to :person, null: true
