@@ -62,7 +62,7 @@ RSpec.describe Import::DigitalRemaster::Importer do
     allow(waveform_generator).to receive(:generate).with(file: anything).and_return(waveform)
     allow(waveform_generator).to receive(:generate_image).with(file: anything).and_return(waveform_image)
     allow(album_art_extractor).to receive(:extract).with(file: anything).and_return(album_art)
-    allow(audio_converter).to receive(:convert).with(file: anything).and_return(compressed_audio)
+    allow(audio_converter).to receive(:convert).with(file: anything).and_yield(compressed_audio)
   end
 
   describe "#import" do

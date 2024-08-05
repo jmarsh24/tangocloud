@@ -27,24 +27,26 @@ module AudioProcessing
       filename = "#{File.basename(file, File.extname(file))}.#{format}"
       movie = FFMPEG::Movie.new(file.path)
 
-      tempfile = Tempfile.create(["converted-", ".#{format}"])
-      custom_options = [
-        "-map", "0:a:0",           # Map the first (audio) stream from the first input (audio file)
-        "-codec:a", codec,         # Audio codec
-        "-b:a", bitrate,           # Audio bitrate (enforce 256k for high quality)
-        "-ar", sample_rate.to_s,   # Audio sample rate
-        "-ac", channels.to_s,      # Number of audio channels (2 for stereo)
-        "-movflags", "+faststart", # Fast start for streaming
-        "-id3v2_version", "3"      # Ensure compatibility with ID3v2
-      ]
+      Tempfile.create(["converted-", ".#{format}"]) do |tempfile|
+        custom_options = [
+          "-map", "0:a:0",           # Map the first (audio) stream from the first input (audio file)
+          "-codec:a", codec,         # Audio codec
+          "-b:a", bitrate,           # Audio bitrate (enforce 256k for high quality)
+          "-ar", sample_rate.to_s,   # Audio sample rate
+          "-ac", channels.to_s,      # Number of audio channels (2 for stereo)
+          "-movflags", "+faststart", # Fast start for streaming
+          "-id3v2_version", "3"      # Ensure compatibility with ID3v2
+        ]
 
-      custom_options += ["-map_metadata", "-1"] if @strip_metadata
+        custom_options += ["-map_metadata", "-1"] if @strip_metadata
 
-      movie.transcode(tempfile.path, custom_options) do |progress|
-        puts progress
+        movie.transcode(tempfile.path, custom_options) do |progress|
+          puts progress
+        end
+
+        # Returning the tempfile for further processing
+        yield tempfile if block_given?
       end
-
-      tempfile
     end
   end
 end

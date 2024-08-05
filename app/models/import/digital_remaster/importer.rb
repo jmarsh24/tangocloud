@@ -17,23 +17,24 @@ module Import
             waveform = @waveform_generator.generate(file: tempfile)
             waveform_image = @waveform_generator.generate_image(file: tempfile)
             album_art = @album_art_extractor.extract(file: tempfile)
-            compressed_audio = @audio_converter.convert(file: tempfile)
 
-            builder = Builder.new(
-              audio_file:,
-              metadata:,
-              waveform:,
-              waveform_image:,
-              album_art:,
-              compressed_audio:
-            )
+            @audio_converter.convert(file: tempfile) do |compressed_audio|
+              builder = Builder.new(
+                audio_file:,
+                metadata:,
+                waveform:,
+                waveform_image:,
+                album_art:,
+                compressed_audio:
+              )
 
-            @digital_remaster = builder.build
+              @digital_remaster = builder.build
 
-            if @digital_remaster.save!
-              audio_file.update!(status: :completed, error_message: nil)
+              if @digital_remaster.save!
+                audio_file.update!(status: :completed, error_message: nil)
+              end
+              @digital_remaster
             end
-            @digital_remaster
           end
         rescue ActiveRecord::RecordInvalid => e
           Rails.logger.error("Digital Remaster Importer Error: #{e.message}")
