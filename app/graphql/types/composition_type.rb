@@ -3,7 +3,6 @@ module Types
     field :id, ID, null: true
     field :title, String, null: true
 
-    belongs_to :person, null: true
     has_many :recordings
     has_many :lyrics
     has_many :composition_lyrics
