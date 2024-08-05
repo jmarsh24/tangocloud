@@ -1,9 +1,6 @@
-require "tempfile"
-require "streamio-ffmpeg"
-
 module AudioProcessing
   class AudioConverter
-    attr_reader :file, :format, :bitrate, :sample_rate, :channels, :codec, :filename, :movie
+    attr_reader :format, :bitrate, :sample_rate, :channels, :codec, :output_dir
 
     DEFAULT_OPTIONS = {
       format: "mp3",
@@ -14,21 +11,22 @@ module AudioProcessing
       strip_metadata: true
     }.freeze
 
-    def initialize(file:, output_dir: nil, **options)
+    def initialize(output_dir: nil, **options)
       options = DEFAULT_OPTIONS.merge(options)
-      @file = file
       @format = options[:format]
       @bitrate = options[:bitrate]
       @sample_rate = options[:sample_rate]
       @channels = options[:channels]
       @codec = options[:codec]
       @strip_metadata = options[:strip_metadata]
-      @output_dir = output_dir || File.dirname(@file.path)
-      @filename = "#{File.basename(@file, File.extname(@file))}.#{format}"
-      @movie = FFMPEG::Movie.new(@file.path)
+      @output_dir = output_dir
     end
 
-    def convert
+    def convert(file:)
+      @output_dir ||= File.dirname(file.path)
+      filename = "#{File.basename(file, File.extname(file))}.#{format}"
+      movie = FFMPEG::Movie.new(file.path)
+
       tempfile = Tempfile.create(["converted-", ".#{format}"])
       custom_options = [
         "-map", "0:a:0",           # Map the first (audio) stream from the first input (audio file)
@@ -42,7 +40,7 @@ module AudioProcessing
 
       custom_options += ["-map_metadata", "-1"] if @strip_metadata
 
-      @movie.transcode(tempfile.path, custom_options) do |progress|
+      movie.transcode(tempfile.path, custom_options) do |progress|
         puts progress
       end
 

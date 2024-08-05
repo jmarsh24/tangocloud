@@ -1,9 +1,11 @@
 module Import
   module DigitalRemaster
     class Importer
-      def initialize(builder:)
-        @builder = builder
-        @audio_file_processor = AudioFileProcessor.new
+      def initialize(metadata_extractor:, waveform_generator:, album_art_extractor:, audio_converter:)
+        @metadata_extractor = metadata_extractor
+        @waveform_generator = waveform_generator
+        @album_art_extractor = album_art_extractor
+        @audio_converter = audio_converter
       end
 
       def import(audio_file:)
@@ -11,13 +13,13 @@ module Import
           ActiveRecord::Base.transaction do
             audio_file.update!(status: :processing)
 
-            metadata = @audio_file_processor.extract_metadata(file: tempfile)
-            waveform = @audio_file_processor.generate_waveform(file: tempfile)
-            waveform_image = @audio_file_processor.generate_waveform_image(file: tempfile)
-            album_art = @audio_file_processor.extract_album_art(file: tempfile)
-            compressed_audio = @audio_file_processor.compress_audio(file: tempfile)
+            metadata = @metadata_extractor.extract(file: tempfile)
+            waveform = @waveform_generator.generate(file: tempfile)
+            waveform_image = @waveform_generator.generate_image(file: tempfile)
+            album_art = @album_art_extractor.extract(file: tempfile)
+            compressed_audio = @audio_converter.convert(file: tempfile)
 
-            @digital_remaster = @builder.build(
+            builder = Builder.new(
               audio_file:,
               metadata:,
               waveform:,
@@ -26,10 +28,11 @@ module Import
               compressed_audio:
             )
 
+            @digital_remaster = builder.build
+
             if @digital_remaster.save!
               audio_file.update!(status: :completed, error_message: nil)
             end
-
             @digital_remaster
           end
         rescue ActiveRecord::RecordInvalid => e

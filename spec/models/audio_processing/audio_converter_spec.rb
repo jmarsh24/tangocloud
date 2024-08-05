@@ -2,17 +2,15 @@ require "rails_helper"
 
 RSpec.describe AudioProcessing::AudioConverter do
   let(:file) { File.open(file_fixture("audio/raw/19390201__enrique_rodriguez__te_quiero_ver_escopeta__roberto_flores__tango__TC6612_TT.flac")) }
-  let!(:converted_audio) { AudioProcessing::AudioConverter.new(file:).convert }
+  let!(:converted_audio) { AudioProcessing::AudioConverter.new.convert(file:) }
 
   describe "#convert" do
     it "converts the file to the specified format and deletes it afterward" do
       converted_movie = FFMPEG::Movie.new(converted_audio.path)
 
-      # Make sure the file is converted to the correct format
       expect(converted_movie.audio_codec).to eq("mp3")
 
-      # Make sure metadata is removed from file
-      extracted_metadata = AudioProcessing::MetadataExtractor.new(file: converted_audio).extract
+      extracted_metadata = AudioProcessing::MetadataExtractor.new.extract(file: converted_audio)
 
       non_nil_keys = [:duration, :bit_rate, :sample_rate, :channels, :format, :bit_depth, :codec_name]
 
