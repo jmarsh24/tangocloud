@@ -79,7 +79,7 @@ RSpec.describe Import::DigitalRemaster::Builder do
       expect(digital_remaster.recording.composition.composers.first.name).to eq("Aníbal Troilo")
       expect(digital_remaster.recording.composition.lyricists.first.name).to eq("Cátulo Castillo")
       expect(digital_remaster.recording.recording_singers.map { |singer| singer.person.name }).to include("Jorge Casal", "Raúl Berón")
-      expect(digital_remaster.recording.record_label.name).to eq("Tk")
+      expect(digital_remaster.recording.record_label.name).to eq("tk")
 
       expect(digital_remaster.waveform).to be_a(Waveform)
       expect(digital_remaster.waveform.version).to eq(1)

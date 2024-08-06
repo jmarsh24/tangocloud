@@ -153,7 +153,7 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
         builder = described_class.new(recording_metadata:)
         recording = builder.build
 
-        expect(recording.record_label.name).to eq("Tango Records")
+        expect(recording.record_label.name).to eq("tango records")
       end
     end
 
@@ -169,7 +169,10 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
     context "when creating a new recording without duplicates" do
       it "does not create duplicate compositions" do
         existing_composition = Composition.create!(title: "Ciego")
+        person = Person.create!(name: "Luis Rubistein")
+        existing_composition.composers << person
         builder = described_class.new(recording_metadata:)
+
         recording = builder.build
 
         expect(recording.composition.id).to eq(existing_composition.id)
@@ -184,7 +187,7 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
       end
 
       it "does not create duplicate record labels" do
-        existing_record_label = RecordLabel.create!(name: "Tango Records")
+        existing_record_label = RecordLabel.create!(name: "tango records")
         builder = described_class.new(recording_metadata:)
         recording = builder.build
 

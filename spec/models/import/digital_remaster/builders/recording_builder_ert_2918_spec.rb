@@ -187,6 +187,9 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
     context "when creating a new recording without duplicates" do
       it "does not create duplicate compositions" do
         existing_composition = Composition.create!(title: "Vuelve la serenata")
+        person = Person.create!(name: "Aníbal Troilo")
+
+        existing_composition.composers << person
         builder = described_class.new(recording_metadata:)
         recording = builder.build
 
@@ -202,7 +205,7 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
       end
 
       it "does not create duplicate record labels" do
-        existing_record_label = RecordLabel.create!(name: "Tk")
+        existing_record_label = RecordLabel.create!(name: "tk")
         builder = described_class.new(recording_metadata:)
         recording = builder.build
 

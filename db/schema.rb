@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_03_210616) do
+ActiveRecord::Schema[7.1].define(version: 202401142347013) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -63,6 +63,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_03_210616) do
     t.string "external_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["title"], name: "index_albums_on_title", unique: true
   end
 
   create_table "audio_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -101,6 +102,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_03_210616) do
     t.datetime "updated_at", null: false
     t.index ["composition_id"], name: "index_composition_roles_on_composition_id"
     t.index ["person_id"], name: "index_composition_roles_on_person_id"
+    t.index ["role", "person_id", "composition_id"], name: "idx_on_role_person_id_composition_id_6ffdb3e22b", unique: true
   end
 
   create_table "compositions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -211,6 +213,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_03_210616) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_genres_on_name", unique: true
   end
 
   create_table "languages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -296,6 +299,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_03_210616) do
     t.string "birth_place"
     t.uuid "el_recodo_person_id"
     t.index ["el_recodo_person_id"], name: "index_people_on_el_recodo_person_id"
+    t.index ["name"], name: "index_people_on_name", unique: true
     t.index ["slug"], name: "index_people_on_slug", unique: true
     t.index ["sort_name"], name: "index_people_on_sort_name"
   end
@@ -343,6 +347,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_03_210616) do
     t.text "bio"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_record_labels_on_name", unique: true
   end
 
   create_table "recording_singers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -383,6 +388,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_03_210616) do
     t.string "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_remaster_agents_on_name", unique: true
   end
 
   create_table "shares", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

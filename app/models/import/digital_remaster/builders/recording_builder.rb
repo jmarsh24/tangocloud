@@ -63,13 +63,13 @@ module Import
 
           return if name.blank?
 
-          RecordLabel.find_or_create_by!(name:)
+          RecordLabel.create_or_find_by(name: name.downcase)
         end
 
         def build_genre
           return if @metadata.genre.blank?
 
-          Genre.find_or_create_by!(name: @metadata.genre)
+          Genre.create_or_find_by(name: @metadata.genre.titleize)
         end
       end
     end
