@@ -9,7 +9,7 @@ class Avo::Resources::OrchestraRole < Avo::BaseResource
     field :id, as: :idlo
     field :name, as: :text
     field :orchestra_id, as: :text
-    field :orchestra_roles, as: :has_many
-    field :orchestra, as: :belongs_to
+    field :orchestra_positions, as: :has_many
+    field :orchestras, as: :has_many
   end
 end
