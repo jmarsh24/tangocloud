@@ -7,7 +7,7 @@ class Person < ApplicationRecord
   belongs_to :el_recodo_person, class_name: "ExternalCatalog::ElRecodo::Person", optional: true
   has_many :composition_roles, dependent: :destroy
   has_many :compositions, through: :composition_roles
-  has_many :orchestra_roles, dependent: :destroy
+  has_many :orchestra_positions, dependent: :destroy
   has_many :orchestras, through: :orchestra_roles
   has_many :recording_singers, dependent: :destroy
   has_many :recordings, through: :recording_singers

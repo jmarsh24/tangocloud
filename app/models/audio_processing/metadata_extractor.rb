@@ -1,8 +1,6 @@
 module AudioProcessing
   class MetadataExtractor
-    attr_reader :file, :movie
-
-    Metadata = Data.define(
+    Metadata = Struct.new(
       :title,
       :artist,
       :album,
@@ -26,15 +24,12 @@ module AudioProcessing
       :organization,
       :replaygain_track_gain,
       :replaygain_track_peak,
-      :lyrics
-    ).freeze
+      :lyrics,
+      keyword_init: true
+    )
 
-    def initialize(file:)
-      @file = file
-      @movie = FFMPEG::Movie.new(file.path)
-    end
-
-    def extract
+    def extract(file:)
+      movie = FFMPEG::Movie.new(file.path)
       metadata = movie.metadata
       streams = metadata.dig(:streams)
       format = metadata.dig(:format)

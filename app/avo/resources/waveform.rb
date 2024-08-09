@@ -1,5 +1,6 @@
 class Avo::Resources::Waveform < Avo::BaseResource
   self.includes = [:digital_remaster]
+  self.attachments = [:image]
 
   def fields
     field :id, as: :id, readonly: true, only_on: :show

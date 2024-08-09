@@ -4,9 +4,8 @@ RSpec.describe "Orchestras", type: :graph do
   describe "Querying for orchestras with aggregations" do
     let!(:user) { create(:user) }
     let!(:orchestra) { create(:orchestra, name: "Carlos Di Sarli") }
-    let!(:orchestra_period) { create(:orchestra_period, name: "42-44", orchestra:) }
-    let!(:orchestra_role) { create(:orchestra_role, name: "Pianist", orchestra:) }
     let!(:singer) { create(:person, name: "Alberto Podesta") }
+    let!(:orchestra_period) { create(:orchestra_period, name: "42-44", orchestra:) }
     let!(:genre) { create(:genre, name: "Tango") }
     let!(:time_period) { create(:time_period, name: "Golden Age") }
     let!(:recording) { create(:recording, orchestra:, singers: [singer], genre:, time_period:) }
@@ -21,6 +20,9 @@ RSpec.describe "Orchestras", type: :graph do
                   id
                   composition {
                     title
+                  }
+                  orchestra {
+                    name
                   }
                 }
               }

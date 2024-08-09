@@ -4,6 +4,7 @@ class Orchestra < ApplicationRecord
 
   searchkick word_start: [:name]
 
+  belongs_to :el_recodo_orchestra, class_name: "ExternalCatalog::ElRecodo::Orchestra", optional: true
   has_many :orchestra_periods, dependent: :destroy
   has_many :orchestra_positions, dependent: :destroy
   has_many :orchestra_roles, through: :orchestra_positions
@@ -33,10 +34,11 @@ end
 #
 # Table name: orchestras
 #
-#  id         :uuid             not null, primary key
-#  name       :string           not null
-#  sort_name  :string
-#  slug       :string           not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                     :uuid             not null, primary key
+#  name                   :string           not null
+#  sort_name              :string
+#  slug                   :string           not null
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  el_recodo_orchestra_id :uuid
 #

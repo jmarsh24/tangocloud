@@ -13,7 +13,6 @@ module Types
     belongs_to :album
     belongs_to :remaster_agent, null: true
     belongs_to :recording
-    belongs_to :audio_file
     has_one :waveform
 
     has_many :audio_variants

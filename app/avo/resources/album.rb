@@ -1,5 +1,6 @@
 class Avo::Resources::Album < Avo::BaseResource
   self.includes = [:digital_remasters]
+  self.attachments = [:album_art]
   self.search = {
     query: -> { query.search(params[:q]).results }
   }

@@ -4,7 +4,7 @@ class Recording < ApplicationRecord
 
   searchkick word_start: [:title, :orchestra_name, :singer_name]
 
-  belongs_to :orchestra
+  belongs_to :orchestra, optional: true
   belongs_to :composition
   belongs_to :record_label, optional: true
   belongs_to :genre
@@ -26,9 +26,6 @@ class Recording < ApplicationRecord
   has_many :waveforms, through: :digital_remasters
 
   validates :recorded_date, presence: true
-  validates :composition, presence: true
-  validates :orchestra, presence: true
-  validates :genre, presence: true
 
   enum recording_type: {studio: "studio", live: "live"}
 
@@ -70,7 +67,7 @@ end
 #  recording_type    :enum             default("studio"), not null
 #  playbacks_count   :integer          default(0), not null
 #  el_recodo_song_id :uuid
-#  orchestra_id      :uuid             not null
+#  orchestra_id      :uuid
 #  composition_id    :uuid             not null
 #  genre_id          :uuid             not null
 #  record_label_id   :uuid

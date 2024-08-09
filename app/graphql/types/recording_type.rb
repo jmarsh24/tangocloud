@@ -13,13 +13,12 @@ module Types
     field :slug, String, null: false
     field :playbacks_count, Integer, null: false
 
-    belongs_to :person, null: true
     belongs_to :record_label, null: true
     belongs_to :time_period, null: true
     belongs_to :genre, null: true
     belongs_to :composition, null: true
-    belongs_to :orchestra, null: true
-    belongs_to :el_recodo_song, null: true
+    belongs_to :orchestra, null: true, type: Types::OrchestraType
+    belongs_to :el_recodo_song, null: true, type: Types::ElRecodoSongType
     has_many :recording_singers
     has_many :singers
     has_many :playbacks

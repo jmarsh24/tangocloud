@@ -6,6 +6,6 @@ module Types
     field :soloist, Boolean, null: false
 
     belongs_to :recording
-    belongs_to :person
+    belongs_to :person, type: Types::PersonType
   end
 end

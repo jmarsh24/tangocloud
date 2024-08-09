@@ -6,6 +6,7 @@ module Types
     field :sort_name, String, null: true
 
     has_many :orchestra_periods
+    has_many :orchestra_positions
     has_many :orchestra_roles
     has_many :singers
     has_many :genres

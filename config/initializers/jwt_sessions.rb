@@ -4,3 +4,11 @@ JWTSessions.encryption_key =
   else
     Config.secret_key_base
   end
+
+JWTSessions.token_store = :redis, {
+  redis_host: "redis",
+  redis_port: "6379",
+  redis_db_name: "0",
+  token_prefix: "jwt_",
+  pool_size: Integer(ENV.fetch("RAILS_MAX_THREADS", 5))
+}
