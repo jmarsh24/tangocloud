@@ -1,6 +1,6 @@
 class Lyric < ApplicationRecord
-  has_many :composition_lyrics, dependent: :destroy
-  has_many :compositions, through: :composition_lyrics
+  has_one :composition_lyric, dependent: :destroy
+  has_one :composition, through: :composition_lyric
   belongs_to :language
 
   validates :text, presence: true

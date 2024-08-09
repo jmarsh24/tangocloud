@@ -9,6 +9,13 @@ class Avo::Resources::Person < Avo::BaseResource
                misspellings: {below: 5})
            }
   }
+  self.find_record_method = -> {
+    if id.is_a?(Array)
+      query.where(slug: id)
+    else
+      query.friendly.find id
+    end
+  }
 
   def fields
     field :image, as: :file, is_image: true, accept: "image/*"
