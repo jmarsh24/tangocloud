@@ -31,13 +31,15 @@ services:
   redis:
     image: redis
     restart: unless-stopped
+    ports:
+      - 6379:6379
     volumes:
       - redis:/data
   elasticsearch:
     image: elasticsearch:8.11.1
     restart: always
     ports:
-      - "9200:9200"
+      - 9200:9200
     volumes:
       - elasticsearch:/usr/share/elasticsearch/data
     environment:
@@ -48,4 +50,3 @@ volumes:
   postgres:
   elasticsearch:
   redis:
-version: "3"

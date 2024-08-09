@@ -24,8 +24,15 @@ module Import
         end
 
         def build
-          orchestra = Orchestra.find_or_initialize_by(name: @orchestra_name)
-          attach_image(orchestra)
+          orchestra = Orchestra.find_or_initialize_by(name: @orchestra_name) do |orchestra|
+            if @el_recodo_song&.orchestra.present?
+              orchestra.el_recodo_orchestra = @el_recodo_song.el_recodo_orchestra
+            end
+          end
+
+          if !orchestra.image.attached? && @el_recodo_song&.orchestra&.image&.attached?
+            orchestra.image.attach(@el_recodo_song.orchestra.image.blob)
+          end
 
           if @el_recodo_song.present?
             @el_recodo_song.person_roles.each do |person_role|
@@ -49,14 +56,6 @@ module Import
 
           orchestra.save!
           orchestra
-        end
-
-        private
-
-        def attach_image(orchestra)
-          return unless @el_recodo_song&.orchestra&.image&.attached?
-
-          orchestra.image.attach(@el_recodo_song.orchestra.image.blob)
         end
       end
     end

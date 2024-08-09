@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 202401142347013) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_09_105027) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -191,7 +191,9 @@ ActiveRecord::Schema[7.1].define(version: 202401142347013) do
     t.uuid "orchestra_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "el_recodo_orchestra_id"
     t.index ["date"], name: "index_external_catalog_el_recodo_songs_on_date"
+    t.index ["el_recodo_orchestra_id"], name: "idx_on_el_recodo_orchestra_id_bec9fe0da0"
     t.index ["ert_number"], name: "index_external_catalog_el_recodo_songs_on_ert_number", unique: true
     t.index ["orchestra_id"], name: "index_external_catalog_el_recodo_songs_on_orchestra_id"
     t.index ["page_updated_at"], name: "index_external_catalog_el_recodo_songs_on_page_updated_at"
@@ -281,6 +283,8 @@ ActiveRecord::Schema[7.1].define(version: 202401142347013) do
     t.string "slug", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "el_recodo_orchestra_id"
+    t.index ["el_recodo_orchestra_id"], name: "index_orchestras_on_el_recodo_orchestra_id"
     t.index ["name"], name: "index_orchestras_on_name", unique: true
     t.index ["slug"], name: "index_orchestras_on_slug", unique: true
     t.index ["sort_name"], name: "index_orchestras_on_sort_name"
@@ -634,6 +638,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347013) do
   add_foreign_key "digital_remasters", "remaster_agents"
   add_foreign_key "external_catalog_el_recodo_person_roles", "external_catalog_el_recodo_people", column: "person_id"
   add_foreign_key "external_catalog_el_recodo_person_roles", "external_catalog_el_recodo_songs", column: "song_id"
+  add_foreign_key "external_catalog_el_recodo_songs", "external_catalog_el_recodo_orchestras", column: "el_recodo_orchestra_id"
   add_foreign_key "external_catalog_el_recodo_songs", "external_catalog_el_recodo_orchestras", column: "orchestra_id"
   add_foreign_key "likes", "users"
   add_foreign_key "lyrics", "languages"
@@ -641,6 +646,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347013) do
   add_foreign_key "orchestra_positions", "orchestra_roles"
   add_foreign_key "orchestra_positions", "orchestras"
   add_foreign_key "orchestra_positions", "people"
+  add_foreign_key "orchestras", "external_catalog_el_recodo_orchestras", column: "el_recodo_orchestra_id"
   add_foreign_key "people", "external_catalog_el_recodo_people", column: "el_recodo_person_id"
   add_foreign_key "playbacks", "recordings"
   add_foreign_key "playbacks", "users"

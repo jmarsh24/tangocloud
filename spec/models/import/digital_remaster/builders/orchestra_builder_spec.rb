@@ -58,6 +58,21 @@ RSpec.describe Import::DigitalRemaster::Builders::OrchestraBuilder do
         expect(position.orchestra_role.name).to eq("pianist")
       end
 
+      context "when el_recodo_song has an orchestra" do
+        it "creates a new orchestra with the el_recodo_orchestra" do
+          el_recodo_orchestra = ExternalCatalog::ElRecodo::Orchestra.create!(name: "Orquesta Típica")
+          el_recodo_song.update!(el_recodo_orchestra:)
+
+          builder = described_class.new(
+            orchestra_name:,
+            el_recodo_song:
+          )
+          orchestra = builder.build
+
+          expect(orchestra.el_recodo_orchestra).to eq(el_recodo_orchestra)
+        end
+      end
+
       it "attaches the orchestra image if available" do
         builder = described_class.new(
           orchestra_name:,

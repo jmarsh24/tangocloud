@@ -54,6 +54,7 @@ gem "imgproxy-rails"
 gem "active_storage_validations"
 gem "devise"
 gem "jwt_sessions"
+gem "redis"
 
 # Assets
 gem "stimulus-rails"
