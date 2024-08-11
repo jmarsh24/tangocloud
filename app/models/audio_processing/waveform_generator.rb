@@ -2,13 +2,13 @@ module AudioProcessing
   class WaveformGenerator
     attr_reader :waveform, :image
 
-    Waveform = Data.define(:version, :channels, :sample_rate, :samples_per_pixel, :bits, :length, :data).freeze
-    def initialize(file:)
-      @file = file
+    Waveform = Struct.new(:version, :channels, :sample_rate, :samples_per_pixel, :bits, :length, :data, keyword_init: true).freeze
+
+    def initialize
     end
 
-    def generate
-      audio_path = @file.path
+    def generate(file:)
+      audio_path = file.path
       movie = FFMPEG::Movie.new(audio_path)
 
       if movie.audio_codec != "mp3"
@@ -16,32 +16,31 @@ module AudioProcessing
           movie.transcode(tempfile.path, {audio_codec: "mp3"})
           data = generate_waveform_json(tempfile.path)
           return Waveform.new(
-            data["version"],
-            data["channels"],
-            data["sample_rate"],
-            data["samples_per_pixel"],
-            data["bits"],
-            data["length"],
-            data["data"]
+            version: data["version"],
+            channels: data["channels"],
+            sample_rate: data["sample_rate"],
+            samples_per_pixel: data["samples_per_pixel"],
+            bits: data["bits"],
+            length: data["length"],
+            data: data["data"]
           )
         end
       else
-
         data = generate_waveform_json(audio_path)
         Waveform.new(
-          data["version"],
-          data["channels"],
-          data["sample_rate"],
-          data["samples_per_pixel"],
-          data["bits"],
-          data["length"],
-          data["data"]
+          version: data["version"],
+          channels: data["channels"],
+          sample_rate: data["sample_rate"],
+          samples_per_pixel: data["samples_per_pixel"],
+          bits: data["bits"],
+          length: data["length"],
+          data: data["data"]
         )
       end
     end
 
-    def generate_image(width: 800, height: 150)
-      waveform_data = generate.data
+    def generate_image(file:, width: 800, height: 150)
+      waveform_data = generate(file:).data
       image = ChunkyPNG::Image.new(width, height, ChunkyPNG::Color::TRANSPARENT)
       tempfile = Tempfile.new(["waveform-", ".png"])
 

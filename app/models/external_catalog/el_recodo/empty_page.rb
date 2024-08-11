@@ -1,5 +1,5 @@
 class ExternalCatalog::ElRecodo::EmptyPage < ApplicationRecord
-  validates :ert_number, presence: true, uniqueness: true
+  validates :ert_number, presence: true
 end
 
 # == Schema Information

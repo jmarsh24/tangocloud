@@ -1,12 +1,20 @@
 class Avo::Resources::Orchestra < Avo::BaseResource
   self.includes = [:recordings, :singers, :compositions, :orchestra_roles, :orchestra_periods]
+  self.attachments = [:image]
   self.search = {
     query: -> { query.search(params[:q]).results }
+  }
+  self.find_record_method = -> {
+    if id.is_a?(Array)
+      query.where(slug: id)
+    else
+      query.friendly.find id
+    end
   }
 
   def fields
     field :id, as: :id, readonly: true, only_on: :show
-    field :photo, as: :file, is_image: true, accept: "image/*"
+    field :image, as: :file, is_image: true, accept: "image/*"
     field :name, as: :text
     field :sort_name, as: :text, only_on: :show
     field :slug, as: :text, readonly: true, only_on: :show

@@ -4,7 +4,7 @@ RSpec.describe AudioProcessing::MetadataExtractor do
   describe "#extract" do
     it "returns correct metadata for normal mp3" do
       file = File.open(file_fixture("audio/raw/19390201__enrique_rodriguez__te_quiero_ver_escopeta__roberto_flores__tango__TC6612_TT.flac"))
-      metadata = AudioProcessing::MetadataExtractor.new(file:).extract
+      metadata = AudioProcessing::MetadataExtractor.new.extract(file:)
 
       expect(metadata.title).to eq("Te quiero ver escopeta")
       expect(metadata.artist).to eq("Roberto Flores")
@@ -34,7 +34,7 @@ RSpec.describe AudioProcessing::MetadataExtractor do
 
     it "returns correct metadata for De Angelis mp3" do
       file = File.open(file_fixture("audio/raw/19500922__alfredo_de_angelis__nunca_te_podre_olvidar__carlos_dante__tango__TC3674_FREE.mp3"))
-      metadata = AudioProcessing::MetadataExtractor.new(file:).extract
+      metadata = AudioProcessing::MetadataExtractor.new.extract(file:)
 
       expect(metadata.title).to eq("Nunca te podré olvidar")
       expect(metadata.artist).to eq("Carlos Dante")
@@ -63,7 +63,7 @@ RSpec.describe AudioProcessing::MetadataExtractor do
     end
     it "returns correct metadata for normal flac" do
       file = File.open(file_fixture("audio/raw/19530101__anibal_troilo__vuelve_la_serenata__jorge_casal_y_raul_beron__vals__TC7514_FREE.flac"))
-      metadata = AudioProcessing::MetadataExtractor.new(file:).extract
+      metadata = AudioProcessing::MetadataExtractor.new.extract(file:)
 
       expect(metadata.title).to eq("Vuelve la serenata")
       expect(metadata.artist).to eq("Jorge Casal, Raúl Berón")
@@ -93,7 +93,7 @@ RSpec.describe AudioProcessing::MetadataExtractor do
 
     it "returns correct metadata for director mp3" do
       file = File.open(file_fixture("audio/raw/19550101__alberto_moran__ciego__armando_cupo__tango__TC5905_FREE.mp3"))
-      metadata = AudioProcessing::MetadataExtractor.new(file:).extract
+      metadata = AudioProcessing::MetadataExtractor.new.extract(file:)
 
       expect(metadata.title).to eq("Ciego")
       expect(metadata.artist).to eq("Dir. Armando Cupo")

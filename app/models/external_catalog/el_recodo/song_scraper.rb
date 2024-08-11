@@ -61,7 +61,7 @@ module ExternalCatalog
         response = @connection.get("https://www.el-recodo.com/music?id=#{ert_number}&lang=en")
 
         if response.status == 302
-          EmptyPage.find_or_create_by!(ert_number:)
+          EmptyPage.create_or_find_by(ert_number:)
           return
         end
 
@@ -96,7 +96,7 @@ module ExternalCatalog
 
         Result.new(metadata:, members:, tags:)
       rescue Faraday::ResourceNotFound
-        EmptyPage.find_or_create_by!(ert_number:)
+        EmptyPage.create_or_find_by(ert_number:)
       rescue Faraday::TooManyRequestsError
         raise TooManyRequestsError
       rescue Faraday::ServerError

@@ -6,8 +6,8 @@ RSpec.describe AudioProcessing::AlbumArtExtractor, type: :model do
       let(:file) { File.open(file_fixture("audio/raw/19390201__enrique_rodriguez__te_quiero_ver_escopeta__roberto_flores__tango__TC6612_TT.flac")) }
 
       it "extracts the album art from the file" do
-        album_art_extractor = AudioProcessing::AlbumArtExtractor.new(file:)
-        album_art = album_art_extractor.extract
+        album_art_extractor = AudioProcessing::AlbumArtExtractor.new
+        album_art = album_art_extractor.extract(file:)
 
         expect(album_art).not_to be_nil
         expect(File.exist?(album_art.path)).to be true
