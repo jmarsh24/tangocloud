@@ -72,7 +72,7 @@ module ExternalCatalog
           o.path = path
         end
 
-        if orchestra.new_record? && image_path.present?
+        if image_path.present? && !orchestra.image.attached?
           attach_image(record: orchestra, image_path:)
         end
 
