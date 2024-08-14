@@ -19,7 +19,7 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg ma
 RUN apt-get update && \
   export DEBIAN_FRONTEND=noninteractive && \
   apt-get -y install --no-install-recommends \
-  software-properties-common terraform gh libvips42 postgresql-client-15 python3-pip ffmpeg
+  software-properties-common terraform gh libvips42 postgresql-client-15 python3-pip ffmpeg zsh
 
 # Install packages needed for audiowaveform
 RUN apt-get update -qq && \
@@ -36,9 +36,7 @@ RUN curl -LO https://github.com/bbc/audiowaveform/releases/download/1.10.1/audio
 RUN curl -fsSL https://get.docker.com | sh
 
 RUN . /usr/local/share/nvm/nvm.sh \
-  && nvm install 20.10.0
-
-RUN npm install -g heroku
+  && nvm install $NODE_VERSION
 
 RUN gem install rails pull-request
 
@@ -47,3 +45,12 @@ RUN npx playwright install-deps && npx playwright install chromium
 RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash && \
   apt-get install -y git-lfs && \
   git lfs install
+
+COPY devcontainer-load-profile.sh etc/profile.d
+
+ARG USERNAME=nerd
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+
+RUN groupadd --gid $USER_GID $USERNAME \
+  && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME
