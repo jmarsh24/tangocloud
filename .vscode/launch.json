@@ -5,13 +5,6 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Browser",
-      "type": "chrome",
-      "request": "launch",
-      "url": "http://127.0.0.1:3000/",
-      "webRoot": "${workspaceFolder}"
-    },
-    {
       "name": "Rails",
       "type": "ruby_lsp",
       "request": "launch",
