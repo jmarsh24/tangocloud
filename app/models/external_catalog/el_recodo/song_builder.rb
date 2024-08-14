@@ -48,7 +48,7 @@ module ExternalCatalog
       def find_or_build_people(person_data)
         names = person_data.name.split(/ y | Y /).map(&:strip)
         names.flat_map do |name|
-          person = Person.create_or_find_by(name:) do |p|
+          person = Person.find_or_create_by!(name:) do |p|
             scraped_person_data = @person_scraper.fetch(path: person_data.url)
 
             p.assign_attributes(
@@ -68,11 +68,11 @@ module ExternalCatalog
       end
 
       def find_or_build_orchestra(name:, path:, image_path: nil)
-        orchestra = Orchestra.find_or_initialize_by(name:) do |o|
+        orchestra = Orchestra.find_or_create_by!(name:) do |o|
           o.path = path
         end
 
-        if orchestra.new_record? && image_path.present?
+        if image_path.present? && !orchestra.image.attached?
           attach_image(record: orchestra, image_path:)
         end
 

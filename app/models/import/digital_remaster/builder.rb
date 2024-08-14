@@ -94,7 +94,7 @@ module Import
       def build_album(title:, album_art:)
         return if title.blank?
 
-        album = Album.create_or_find_by(title:)
+        album = Album.find_or_create_by!(title:)
         album.album_art.attach(io: File.open(album_art), filename: File.basename(album_art))
         album
       end
@@ -102,7 +102,7 @@ module Import
       def build_remaster_agent(name:)
         return if name.blank?
 
-        RemasterAgent.create_or_find_by(name:)
+        RemasterAgent.find_or_create_by!(name:)
       end
     end
   end

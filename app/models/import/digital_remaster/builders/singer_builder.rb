@@ -16,10 +16,10 @@ module Import
 
             if name.start_with?("Dir. ")
               name = name.sub("Dir. ", "").strip
-              person = Person.create_or_find_by(name:)
+              person = Person.find_or_create_by!(name:)
               Singer.new(person:, soloist: true)
             else
-              person = Person.create_or_find_by(name:)
+              person = Person.find_or_create_by!(name:)
               Singer.new(person:, soloist: false)
             end
           end
