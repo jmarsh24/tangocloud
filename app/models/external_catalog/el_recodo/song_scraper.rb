@@ -275,7 +275,7 @@ module ExternalCatalog
       end
 
       def convert_duration_to_seconds(duration_str)
-        return nil unless duration_str
+        return 0 unless duration_str
 
         minutes, seconds = duration_str.split(":").map(&:to_i)
         minutes * 60 + seconds
