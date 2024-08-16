@@ -9,46 +9,61 @@ namespace :db do
     desc "Export ElRecodo-related models to SQL files in the db/seeds directory"
     task el_recodo: :environment do
       def ensure_directory_exists(directory_path)
-        FileUtils.mkdir_p(directory_path) unless File.directory?(directory_path)
-      end
-
-      def generate_insert_statement(table_name, attribute_names, values_array)
-        "INSERT INTO #{table_name} (#{attribute_names}) VALUES #{values_array.join(", ")};"
-      end
-
-      def quote_value(value)
-        if value.is_a?(Array)
-          # Escape each element in the array and join them with commas
-          quoted_elements = value.map { |v| ActiveRecord::Base.connection.quote(v).gsub("'", "''") }
-          "'{#{quoted_elements.join(",")}}'"
-        else
-          ActiveRecord::Base.connection.quote(value).gsub("'", "''")
-        end
+        FileUtils.mkdir_p(directory_path) unless Dir.exist?(directory_path)
       end
 
       def export_model_to_sql(model, sql_file_path)
         table_name = model.table_name
-        attribute_names = model.column_names.map { |key| "\"#{key}\"" }.join(", ")
 
-        # Open the SQL file for writing
-        File.open(sql_file_path, "w") do |file|
-          values_array = []
+        # Ensure the directory exists
+        ensure_directory_exists(File.dirname(sql_file_path))
 
-          model.find_each do |record|
-            values = record.attributes.map { |_key, value| quote_value(value) }.join(", ")
-            values_array << "(#{values})"
+        # Database configuration
+        config = Rails.configuration.database_configuration[Rails.env]
+        host = config["host"]
+        database = config["database"]
+        username = config["username"]
+        rows_per_insert = 5000
 
-            if values_array.size >= 1000
-              file.puts generate_insert_statement(table_name, attribute_names, values_array)
-              values_array.clear
-            end
-          end
+        # Construct the pg_dump command with --data-only
+        cmd = "pg_dump --host=#{host} --username=#{username} --column-inserts --data-only --rows-per-insert=#{rows_per_insert} --table=#{table_name} #{database} > #{sql_file_path}"
 
-          # Insert any remaining records
-          file.puts generate_insert_statement(table_name, attribute_names, values_array) unless values_array.empty?
-        end
+        # Execute the command
+        system(cmd)
+
+        # Preprocess the SQL file to remove unnecessary comments and add custom ones
+        preprocess_sql_file(sql_file_path, model)
 
         puts "SQL file exported successfully for #{model.name} to #{sql_file_path}."
+      end
+
+      def preprocess_sql_file(sql_file_path, model)
+        temp_file_path = "#{sql_file_path}.tmp"
+        insert_found = false
+
+        File.open(temp_file_path, "w") do |new_file|
+          custom_comments = <<~COMMENTS
+            --
+            -- Data export for table: #{model.table_name}
+            -- Exported at: #{Time.now}
+            -- Total records: #{model.count}
+            --
+
+          COMMENTS
+
+          new_file.write(custom_comments)
+
+          File.foreach(sql_file_path) do |line|
+            # Only start writing lines after finding the first INSERT statement
+            if insert_found || line.strip.start_with?("INSERT INTO")
+              insert_found = true
+              new_file.write(line)
+            end
+          end
+        end
+
+        # Replace the original file with the preprocessed file
+        FileUtils.mv(temp_file_path, sql_file_path)
       end
 
       def export_attachments(model, attachment_name, export_directory)
@@ -86,7 +101,6 @@ namespace :db do
       # Export SQL data
       models.each do |model|
         sql_file_path = Rails.root.join("db/seeds", "#{model.table_name}.sql")
-        ensure_directory_exists(File.dirname(sql_file_path))
         export_model_to_sql(model, sql_file_path)
       end
 

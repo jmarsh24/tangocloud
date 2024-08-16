@@ -1,5 +1,3 @@
-require "csv"
-
 def create_user(email, password, admin = false)
   user = User.find_or_create_by!(email:) do |u|
     u.password = password
@@ -24,11 +22,11 @@ end
 
 # Step 1: Seed the SQL Files
 sql_files = [
-  "external_catalog_el_recodo_empty_pages copy.sql",
-  "external_catalog_el_recodo_orchestras copy.sql",
-  "external_catalog_el_recodo_people copy.sql",
-  "external_catalog_el_recodo_songs copy.sql",
-  "external_catalog_el_recodo_person_roles copy.sql"
+  "external_catalog_el_recodo_empty_pages.sql",
+  "external_catalog_el_recodo_orchestras.sql",
+  "external_catalog_el_recodo_people.sql",
+  "external_catalog_el_recodo_songs.sql",
+  "external_catalog_el_recodo_person_roles.sql"
 ]
 
 sql_files.each do |file_name|
@@ -62,7 +60,7 @@ end
 # Attach images for people
 people_metadata_path = Rails.root.join("db/seeds/images/el_recodo_people/image_metadata.json")
 if File.exist?(people_metadata_path)
-  File.readlines(people_metadata_path).each do |line|
+  File.readlines(people_metadata_path).find_each do |line|
     metadata = JSON.parse(line)
     person = ExternalCatalog::ElRecodo::Person.find(metadata["record_id"])
     file_path = Rails.root.join("db/seeds/images/el_recodo_people", metadata["file_name"])
@@ -74,7 +72,7 @@ end
 # Attach images for orchestras
 orchestras_metadata_path = Rails.root.join("db/seeds/images/el_recodo_orchestras/image_metadata.json")
 if File.exist?(orchestras_metadata_path)
-  File.readlines(orchestras_metadata_path).each do |line|
+  File.readlines(orchestras_metadata_path).find_each do |line|
     metadata = JSON.parse(line)
     orchestra = ExternalCatalog::ElRecodo::Orchestra.find(metadata["record_id"])
     file_path = Rails.root.join("db/seeds/images/el_recodo_orchestras", metadata["file_name"])
