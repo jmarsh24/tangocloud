@@ -789,6 +789,7 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec
   ruby-lsp-rspec
+  ruby-progressbar
   ruby-vips
   searchkick
   sentry-rails
