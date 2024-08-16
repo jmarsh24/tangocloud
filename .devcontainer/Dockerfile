@@ -1,7 +1,7 @@
 # syntax = docker/dockerfile:1
 ARG NODE_VERSION=20.10.0
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
-ARG RUBY_VERSION=3.2
+ARG RUBY_VERSION=3.3
 FROM mcr.microsoft.com/devcontainers/ruby:1-${RUBY_VERSION}-bookworm
 # Prepare for Terraform
 RUN wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
