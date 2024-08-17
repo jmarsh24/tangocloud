@@ -31,10 +31,10 @@ namespace :audio_files do
 
     puts "Audio File Import Status Overview:"
     puts "-----------------------------------"
-    puts "Pending: #{status_counts['pending'] || 0}"
-    puts "Processing: #{status_counts['processing'] || 0}"
-    puts "Completed: #{status_counts['completed'] || 0}"
-    puts "Failed: #{status_counts['failed'] || 0}"
+    puts "Pending: #{status_counts["pending"] || 0}"
+    puts "Processing: #{status_counts["processing"] || 0}"
+    puts "Completed: #{status_counts["completed"] || 0}"
+    puts "Failed: #{status_counts["failed"] || 0}"
     puts "-----------------------------------"
     puts "Total: #{AudioFile.count}"
   end
