@@ -24,6 +24,10 @@ class Person < ApplicationRecord
       singer: recording_singers.any?
     }
   end
+
+  def export_filename
+    "#{name.parameterize}_#{id}"
+  end
 end
 
 # == Schema Information

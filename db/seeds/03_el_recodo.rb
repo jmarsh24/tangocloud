@@ -10,7 +10,7 @@ puts "Seeding SQL files..."
 progressbar = ProgressBar.create(total: sql_files.size)
 
 sql_files.each do |file_name|
-  file_path = Rails.root.join("db/seeds", file_name)
+  file_path = Rails.root.join("db/seeds/el_recodo", file_name)
 
   if File.exist?(file_path)
     puts "Seeding data from #{file_name}..."

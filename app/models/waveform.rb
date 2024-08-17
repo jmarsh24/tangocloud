@@ -2,6 +2,10 @@ class Waveform < ApplicationRecord
   belongs_to :digital_remaster
 
   has_one_attached :image
+
+  def export_filename
+    "#{digital_remaster.recording.title.parameterize}_#{digital_remaster.id}"
+  end
 end
 
 # == Schema Information
