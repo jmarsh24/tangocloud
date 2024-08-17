@@ -18,7 +18,9 @@
       ],
       "settings": {
         "typescript.tsdk": "node_modules/typescript/lib",
-        "rubyLsp.rubyVersionManager": "none",
+        "rubyLsp.rubyVersionManager": {
+          "identifier": "rvm"
+        },
         "[ruby]": {
           "editor.formatOnSave": true,
           "editor.defaultFormatter": "Shopify.ruby-lsp"
