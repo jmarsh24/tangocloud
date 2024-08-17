@@ -3,7 +3,7 @@ class OrchestraRole < ApplicationRecord
   has_many :orchestras, through: :orchestra_positions
   has_many :people, through: :orchestra_positions
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: true
 end
 
 # == Schema Information
