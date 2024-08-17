@@ -1,6 +1,8 @@
 module Import
   module DigitalRemaster
     class Importer
+      class AlreadyCompletedError < StandardError; end
+
       def initialize(metadata_extractor: nil, waveform_generator: nil, album_art_extractor: nil, audio_converter: nil)
         @metadata_extractor = metadata_extractor || AudioProcessing::MetadataExtractor.new
         @waveform_generator = waveform_generator || AudioProcessing::WaveformGenerator.new
@@ -9,6 +11,8 @@ module Import
       end
 
       def import(audio_file:)
+        raise AlreadyCompletedError if audio_file.completed?
+
         audio_file.file.blob.open do |tempfile|
           ActiveRecord::Base.transaction do
             audio_file.update!(status: :processing)

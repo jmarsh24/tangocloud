@@ -84,5 +84,11 @@ RSpec.describe Import::DigitalRemaster::Importer do
       expect(audio_file.reload.status).to eq("failed")
       expect(audio_file.reload.error_message).to eq("StandardError")
     end
+
+    it "does not import the audio file if it is already completed" do
+      audio_file.update!(status: :completed)
+
+      expect { importer.import(audio_file:) }.to raise_error(Import::AudioFile::Importer::AlreadyCompletedError)
+    end
   end
 end
