@@ -5,6 +5,8 @@ module Resolvers
     argument :query, String, required: false
 
     def resolve(query: "*")
+      check_authentication!
+
       ::Person.search(query,
         fields: ["name"],
         where: {singer: true},
