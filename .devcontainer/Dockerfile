@@ -63,4 +63,4 @@ RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.d
   apt-get install -y git-lfs && \
   git lfs install
 
-COPY tangocloud-load-profile.sh etc/profile.d
+COPY tangocloud-load-profile.sh /etc/profile.d/

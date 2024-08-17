@@ -1,6 +1,6 @@
 # this file is intended to be copied into /etc/profile.d
 
-project_profile="/workspace/.devcontainer/profile.sh"
+project_profile="/workspaces/tangocloud/.devcontainer/profile.sh"
 if [ -r $project_profile ]; then
   source $project_profile
 else
