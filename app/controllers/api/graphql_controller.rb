@@ -52,6 +52,14 @@ module Api
     end
 
     def current_user
+      # if the user is logged in via the web application in development
+      # we bypass the jwt token authentication and return a user from the cookies
+      if Rails.env.development?
+        devise_user = warden.authenticate(scope: :user)
+        return devise_user if devise_user
+      end
+
+      # Fall back to JWT session
       return unless payload.present?
 
       @current_user ||= User.find(payload["user_id"])
