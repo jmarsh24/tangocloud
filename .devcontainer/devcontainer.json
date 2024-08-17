@@ -14,27 +14,39 @@
         "Shopify.ruby-lsp",
         "EditorConfig.EditorConfig",
         "eamodio.gitlens",
-        "GraphQL.vscode-graphql"
+        "GraphQL.vscode-graphql",
       ],
       "settings": {
         "typescript.tsdk": "node_modules/typescript/lib",
         "rubyLsp.rubyVersionManager": {
-          "identifier": "rvm"
+          "identifier": "rvm",
         },
         "[ruby]": {
           "editor.formatOnSave": true,
-          "editor.defaultFormatter": "Shopify.ruby-lsp"
-        }
-      }
-    }
+          "editor.defaultFormatter": "Shopify.ruby-lsp",
+        },
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "bash",
+            "args": ["-l"],
+            "icon": "terminal-bash",
+          },
+          "zsh": {
+            "path": "zsh",
+            "args": ["-l"],
+          },
+        },
+      },
+    },
   },
   "features": {
-    "ghcr.io/devcontainers/features/desktop-lite:1": {}
+    "ghcr.io/devcontainers/features/git-lfs:1": { "autoPull": true },
+    "ghcr.io/devcontainers/features/desktop-lite:1": {},
   },
   "forwardPorts": [6080, 5432],
   "portsAttributes": {
     "6080": {
-      "label": "playwright"
-    }
-  }
+      "label": "playwright",
+    },
+  },
 }
