@@ -3,6 +3,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        RUBY_VERSION: "3.3"
+        NODE_VERSION: "20.10.0"
+        
     volumes:
       - ../..:/workspaces:cached
       - ~/.netrc:/root/.netrc
