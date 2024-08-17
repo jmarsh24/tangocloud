@@ -5,7 +5,7 @@ export const ORCHESTRA = gql`
     orchestra(id: $id) {
       id
       name
-      photo {
+      image {
         blob {
           url
         }
