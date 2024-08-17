@@ -4,8 +4,10 @@ class Orchestra < ApplicationRecord
 
   searchkick word_start: [:name]
 
+  belongs_to :el_recodo_orchestra, class_name: "ExternalCatalog::ElRecodo::Orchestra", optional: true
   has_many :orchestra_periods, dependent: :destroy
-  has_many :orchestra_roles, dependent: :destroy
+  has_many :orchestra_positions, dependent: :destroy
+  has_many :orchestra_roles, through: :orchestra_positions
   has_many :recordings, dependent: :destroy
   has_many :compositions, through: :recordings
   has_many :singers, through: :recordings
@@ -14,7 +16,7 @@ class Orchestra < ApplicationRecord
   validates :name, presence: true, uniqueness: true
   validates :slug, presence: true, uniqueness: true
 
-  has_one_attached :photo
+  has_one_attached :image
 
   def search_data
     {
@@ -26,16 +28,21 @@ class Orchestra < ApplicationRecord
       genres: genres.pluck(:name)
     }
   end
+
+  def export_filename
+    "#{name.parameterize}_#{id}"
+  end
 end
 
 # == Schema Information
 #
 # Table name: orchestras
 #
-#  id         :uuid             not null, primary key
-#  name       :string           not null
-#  sort_name  :string
-#  slug       :string           not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                     :uuid             not null, primary key
+#  name                   :string           not null
+#  sort_name              :string
+#  slug                   :string           not null
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  el_recodo_orchestra_id :uuid
 #

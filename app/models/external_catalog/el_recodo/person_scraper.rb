@@ -1,6 +1,12 @@
 module ExternalCatalog
   module ElRecodo
     class PersonScraper
+      class TooManyRequestsError < StandardError; end
+
+      class PageNotFoundError < StandardError; end
+
+      class ServerError < StandardError; end
+
       BASE_URL = "https://www.el-recodo.com".freeze
 
       Person = Data.define(
@@ -28,6 +34,7 @@ module ExternalCatalog
         sleep Config.el_recodo_request_delay.to_i
 
         response = @connection.get(path)
+
         body = response.body.force_encoding("UTF-8")
         doc = Nokogiri::HTML(body)
 
@@ -46,6 +53,12 @@ module ExternalCatalog
           path:,
           image_path: parse_image_path(image_element)
         )
+      rescue Faraday::ResourceNotFound
+        raise PageNotFoundError
+      rescue Faraday::TooManyRequestsError
+        raise TooManyRequestsError
+      rescue Faraday::ServerError
+        raise ServerError
       end
 
       private

@@ -7,7 +7,6 @@ module ExternalCatalog
 
       def perform(ert_number:)
         ::ExternalCatalog::ElRecodo::SongSynchronizer.new.sync_song(ert_number:)
-      rescue ExternalCatalog::ElRecodo::SongScraper::PageNotFoundError
       end
     end
   end

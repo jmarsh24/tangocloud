@@ -1,12 +1,8 @@
 module AudioProcessing
   class AlbumArtExtractor
-    def initialize(file:)
-      @file = file
-    end
-
-    def extract
+    def extract(file:)
       tempfile = Tempfile.new(["album-art_", ".jpg"])
-      movie = FFMPEG::Movie.new(@file.path)
+      movie = FFMPEG::Movie.new(file.path)
 
       if !movie.valid?
         raise FFMPEG::Error, "Invalid audio file"

@@ -1,7 +1,10 @@
 class Avo::Resources::DigitalRemaster < Avo::BaseResource
-  self.includes = [:audio_file, :album, :recording, :remaster_agent, :audio_variants]
+  self.includes = [:audio_file, :album, :remaster_agent, :audio_variants, :waveform, recording: [:composition]]
   self.search = {
     query: -> { query.search(params[:q]).results }
+  }
+  self.title = -> {
+    record.recording.composition.title
   }
 
   def fields
@@ -15,6 +18,6 @@ class Avo::Resources::DigitalRemaster < Avo::BaseResource
     field :recording, as: :belongs_to, readonly: true
     field :remaster_agent, as: :belongs_to, readonly: true
     field :audio_variants, as: :has_many, readonly: true
-    field :waveform, as: :has_one, readonly: true
+    field :waveform, as: :has_one, readonly: true, hide_on: :index
   end
 end

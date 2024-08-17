@@ -1,5 +1,5 @@
 class Sources::Association < GraphQL::Dataloader::Source
-  def initialize(model_class, association_name, scope)
+  def initialize(model_class, association_name, scope = nil)
     @model_class = model_class
     @association_name = association_name
     @scope = scope

@@ -7,7 +7,7 @@ module ExternalCatalog
 
       class TooManyRequestsError < StandardError; end
 
-      class PageNotFoundError < StandardError; end
+      class ServerError < StandardError; end
 
       Metadata = Data.define(
         :ert_number,
@@ -60,7 +60,6 @@ module ExternalCatalog
 
         response = @connection.get("https://www.el-recodo.com/music?id=#{ert_number}&lang=en")
 
-        # If the page is empty, it means the song doesn't exist for that ert_number
         if response.status == 302
           EmptyPage.find_or_create_by!(ert_number:)
           return
@@ -97,14 +96,11 @@ module ExternalCatalog
 
         Result.new(metadata:, members:, tags:)
       rescue Faraday::ResourceNotFound
-        sleep Config.el_recodo_request_delay.to_i
-        raise PageNotFoundError
+        EmptyPage.find_or_create_by!(ert_number:)
       rescue Faraday::TooManyRequestsError
-        sleep Config.el_recodo_request_delay.to_i
         raise TooManyRequestsError
       rescue Faraday::ServerError
-        sleep Config.el_recodo_request_delay.to_i
-        nil
+        raise ServerError
       end
 
       private
@@ -155,10 +151,13 @@ module ExternalCatalog
 
       def extract_page_updated_at(parsed_page)
         date_string = parsed_page.css("p.text-muted.small.mb-0")&.text&.split(": ")&.last
-
         return nil unless date_string
 
-        DateTime.parse(date_string) || nil
+        begin
+          DateTime.parse(date_string)
+        rescue Date::Error
+          nil
+        end
       end
 
       def safe_parse_date(date_string)
@@ -276,7 +275,7 @@ module ExternalCatalog
       end
 
       def convert_duration_to_seconds(duration_str)
-        return nil unless duration_str
+        return 0 unless duration_str
 
         minutes, seconds = duration_str.split(":").map(&:to_i)
         minutes * 60 + seconds

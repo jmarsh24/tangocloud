@@ -2,6 +2,18 @@ require "rails_helper"
 
 RSpec.describe Import::DigitalRemaster::Importer do
   let(:audio_file) { create(:flac_audio_file) }
+  let(:metadata_extractor) { instance_double(AudioProcessing::MetadataExtractor) }
+  let(:waveform_generator) { instance_double(AudioProcessing::WaveformGenerator) }
+  let(:album_art_extractor) { instance_double(AudioProcessing::AlbumArtExtractor) }
+  let(:audio_converter) { instance_double(AudioProcessing::AudioConverter) }
+  let(:importer) do
+    described_class.new(
+      metadata_extractor:,
+      waveform_generator:,
+      album_art_extractor:,
+      audio_converter:
+    )
+  end
   let(:compressed_audio) { File.open(Rails.root.join("spec/fixtures/files/audio/compressed/19401008_volver_a_sonar_roberto_rufino_tango_2476.mp3")) }
   let(:metadata) do
     AudioProcessing::MetadataExtractor::Metadata.new(
@@ -44,34 +56,39 @@ RSpec.describe Import::DigitalRemaster::Importer do
   }
   let(:album_art) { File.open(Rails.root.join("spec/support/assets/album_art.jpg")) }
   let(:waveform_image) { File.open(Rails.root.join("spec/fixtures/files/19401008_volver_a_sonar_roberto_rufino_tango_2476_waveform.png")) }
-  let(:processor) { instance_double("AudioProcessing::AudioProcessor", process: processor, extract_metadata: metadata, generate_waveform_data: waveform, album_art:, compressed_audio:, waveform_image:) }
-  let(:builder) { Import::DigitalRemaster::Builder.new }
-  let(:director) { described_class.new(builder:) }
 
   before do
-    allow(builder).to receive(:extract_metadata).and_return(metadata)
-    allow(builder).to receive(:generate_waveform).and_return(waveform)
-    allow(builder).to receive(:extract_album_art).and_return(album_art)
-    allow(builder).to receive(:compress_audio).and_return(compressed_audio)
-    allow(builder).to receive(:generate_waveform_image).and_return(waveform_image)
+    allow(metadata_extractor).to receive(:extract).with(file: anything).and_return(metadata)
+    allow(waveform_generator).to receive(:generate).with(file: anything).and_return(waveform)
+    allow(waveform_generator).to receive(:generate_image).with(file: anything).and_return(waveform_image)
+    allow(album_art_extractor).to receive(:extract).with(file: anything).and_return(album_art)
+    allow(audio_converter).to receive(:convert).with(file: anything).and_yield(compressed_audio)
   end
 
   describe "#import" do
     it "creates an audio transfer" do
-      digital_remaster = director.import(audio_file:)
-
+      digital_remaster = importer.import(audio_file:)
       expect(digital_remaster).to be_persisted
     end
 
     it "updates the audio file status to complete on success" do
-      director.import(audio_file:)
+      importer.import(audio_file:)
+
       expect(audio_file.reload.status).to eq("completed")
     end
 
-    it "updates the audio file status to failed on error" do
-      allow(builder).to receive(:build_digital_remaster).and_raise(StandardError.new("some error"))
-      expect { director.import(audio_file:) }.to raise_error(StandardError, "some error")
+    it "updates the audio file status to failed on failure" do
+      allow(metadata_extractor).to receive(:extract).with(file: anything).and_raise(StandardError)
+      importer.import(audio_file:)
+
       expect(audio_file.reload.status).to eq("failed")
+      expect(audio_file.reload.error_message).to eq("StandardError")
+    end
+
+    it "does not import the audio file if it is already completed" do
+      audio_file.update!(status: :completed)
+
+      expect { importer.import(audio_file:) }.to raise_error(Import::AudioFile::Importer::AlreadyCompletedError)
     end
   end
 end

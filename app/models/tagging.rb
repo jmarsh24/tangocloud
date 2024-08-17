@@ -2,9 +2,6 @@ class Tagging < ApplicationRecord
   belongs_to :tag
   belongs_to :taggable, polymorphic: true
   belongs_to :user
-
-  validates :tag, presence: true
-  validates :user, presence: true
 end
 
 # == Schema Information

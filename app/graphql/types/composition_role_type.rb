@@ -1,13 +1,10 @@
 module Types
-  class CompositionTypeEnum < Types::BaseEnum
-    value "composer"
-    value "lyricist"
-  end
-
   class CompositionRoleType < Types::BaseObject
     field :id, ID, null: true
-    field :role, CompositionTypeEnum, null: true
-    field :composition, Types::CompositionType, null: true
-    field :person, Types::PersonType, null: true
+
+    enum_field :role
+
+    belongs_to :composition
+    belongs_to :person, type: Types::PersonType
   end
 end

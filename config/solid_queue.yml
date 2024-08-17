@@ -8,8 +8,8 @@ default: &default
           schedule: 1.day
   workers:
     - queues: "*"
-      threads: 1
-      processes: 2
+      threads: <%= ENV["RAILS_MAX_THREADS"] || 3 %>
+      processes: 1
       polling_interval: 0.1
 
 development:

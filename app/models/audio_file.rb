@@ -10,7 +10,6 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
-
 class AudioFile < ApplicationRecord
   SUPPORTED_MIME_TYPES = [
     "audio/x-aiff",
@@ -34,9 +33,13 @@ class AudioFile < ApplicationRecord
     failed: "failed"
   }
 
-  def import
+  def import(async: false)
     update(status: :processing)
 
-    AudioFileImportJob.perform_later(self)
+    if async
+      Import::AudioFile::ImportJob.perform_later(self)
+    else
+      Import::AudioFile::ImportJob.perform_now(self)
+    end
   end
 end

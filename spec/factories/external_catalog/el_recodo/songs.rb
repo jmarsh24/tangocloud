@@ -4,11 +4,20 @@ FactoryBot.define do
     ert_number { Faker::Number.number(digits: 4) }
     title { Faker::Music::Opera.verdi }
     style { Faker::Music.genre }
-    label { Faker::Music.album }
+    label { Faker::Music.band }
     lyrics { Faker::Lorem.paragraph }
     lyrics_year { Faker::Number.number(digits: 4) }
     synced_at { Faker::Time.backward(days: 14, period: :evening) }
     page_updated_at { Faker::Time.backward(days: 7, period: :evening) }
+    association :orchestra, factory: :external_catalog_el_recodo_orchestra
+
+    transient do
+      person_roles_count { 5 }
+    end
+
+    after(:create) do |song, evaluator|
+      create_list(:external_catalog_el_recodo_person_role, evaluator.person_roles_count, song:)
+    end
   end
 end
 
@@ -16,24 +25,25 @@ end
 #
 # Table name: external_catalog_el_recodo_songs
 #
-#  id              :uuid             not null, primary key
-#  date            :date             not null
-#  ert_number      :integer          default(0), not null
-#  title           :string           not null
-#  style           :string
-#  label           :string
-#  instrumental    :boolean          default(TRUE), not null
-#  lyrics          :text
-#  lyrics_year     :integer
-#  search_data     :string
-#  matrix          :string
-#  disk            :string
-#  speed           :integer
-#  duration        :integer
-#  synced_at       :datetime         not null
-#  page_updated_at :datetime
-#  orchestra_id    :uuid
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  formatted_title :string
+#  id                     :uuid             not null, primary key
+#  date                   :date             not null
+#  ert_number             :integer          default(0), not null
+#  title                  :string           not null
+#  formatted_title        :string
+#  style                  :string
+#  label                  :string
+#  instrumental           :boolean          default(TRUE), not null
+#  lyrics                 :text
+#  lyrics_year            :integer
+#  search_data            :string
+#  matrix                 :string
+#  disk                   :string
+#  speed                  :integer
+#  duration               :integer
+#  synced_at              :datetime         not null
+#  page_updated_at        :datetime
+#  orchestra_id           :uuid
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  el_recodo_orchestra_id :uuid
 #

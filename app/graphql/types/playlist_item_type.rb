@@ -7,7 +7,8 @@ module Types
     field :item_type, String, null: false
     field :position, Integer, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
-    field :playlist, Types::PlaylistType, null: false
-    field :item, Types::ItemType, null: false
+
+    belongs_to :playlist
+    belongs_to :item
   end
 end

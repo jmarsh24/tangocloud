@@ -33,7 +33,7 @@ end
 #  recording_type    :enum             default("studio"), not null
 #  playbacks_count   :integer          default(0), not null
 #  el_recodo_song_id :uuid
-#  orchestra_id      :uuid             not null
+#  orchestra_id      :uuid
 #  composition_id    :uuid             not null
 #  genre_id          :uuid             not null
 #  record_label_id   :uuid

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 202401142347012) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_17_122713) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -63,6 +63,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.string "external_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["title"], name: "index_albums_on_title", unique: true
   end
 
   create_table "audio_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -101,6 +102,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.datetime "updated_at", null: false
     t.index ["composition_id"], name: "index_composition_roles_on_composition_id"
     t.index ["person_id"], name: "index_composition_roles_on_person_id"
+    t.index ["role", "person_id", "composition_id"], name: "idx_on_role_person_id_composition_id_6ffdb3e22b", unique: true
   end
 
   create_table "compositions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -189,7 +191,9 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.uuid "orchestra_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "el_recodo_orchestra_id"
     t.index ["date"], name: "index_external_catalog_el_recodo_songs_on_date"
+    t.index ["el_recodo_orchestra_id"], name: "idx_on_el_recodo_orchestra_id_bec9fe0da0"
     t.index ["ert_number"], name: "index_external_catalog_el_recodo_songs_on_ert_number", unique: true
     t.index ["orchestra_id"], name: "index_external_catalog_el_recodo_songs_on_orchestra_id"
     t.index ["page_updated_at"], name: "index_external_catalog_el_recodo_songs_on_page_updated_at"
@@ -211,6 +215,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_genres_on_name", unique: true
   end
 
   create_table "languages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -235,12 +240,9 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
 
   create_table "lyrics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "text", null: false
-    t.uuid "composition_id", null: false
     t.uuid "language_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["composition_id", "language_id"], name: "index_lyrics_on_composition_id_and_language_id", unique: true
-    t.index ["composition_id"], name: "index_lyrics_on_composition_id"
     t.index ["language_id"], name: "index_lyrics_on_language_id"
   end
 
@@ -271,10 +273,8 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
 
   create_table "orchestra_roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
-    t.uuid "orchestra_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["orchestra_id"], name: "index_orchestra_roles_on_orchestra_id"
   end
 
   create_table "orchestras", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -283,6 +283,8 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.string "slug", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "el_recodo_orchestra_id"
+    t.index ["el_recodo_orchestra_id"], name: "index_orchestras_on_el_recodo_orchestra_id"
     t.index ["name"], name: "index_orchestras_on_name", unique: true
     t.index ["slug"], name: "index_orchestras_on_slug", unique: true
     t.index ["sort_name"], name: "index_orchestras_on_sort_name"
@@ -297,6 +299,11 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.date "death_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "nickname"
+    t.string "birth_place"
+    t.uuid "el_recodo_person_id"
+    t.index ["el_recodo_person_id"], name: "index_people_on_el_recodo_person_id"
+    t.index ["name"], name: "index_people_on_name", unique: true
     t.index ["slug"], name: "index_people_on_slug", unique: true
     t.index ["sort_name"], name: "index_people_on_sort_name"
   end
@@ -344,6 +351,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.text "bio"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_record_labels_on_name", unique: true
   end
 
   create_table "recording_singers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -362,7 +370,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.enum "recording_type", default: "studio", null: false, enum_type: "recording_type"
     t.integer "playbacks_count", default: 0, null: false
     t.uuid "el_recodo_song_id"
-    t.uuid "orchestra_id", null: false
+    t.uuid "orchestra_id"
     t.uuid "composition_id", null: false
     t.uuid "genre_id", null: false
     t.uuid "record_label_id"
@@ -384,6 +392,7 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.string "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_remaster_agents_on_name", unique: true
   end
 
   create_table "shares", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -488,6 +497,22 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
     t.datetime "created_at", null: false
     t.index ["job_id"], name: "index_solid_queue_recurring_executions_on_job_id", unique: true
     t.index ["task_key", "run_at"], name: "index_solid_queue_recurring_executions_on_task_key_and_run_at", unique: true
+  end
+
+  create_table "solid_queue_recurring_tasks", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "schedule", null: false
+    t.string "command", limit: 2048
+    t.string "class_name"
+    t.text "arguments"
+    t.string "queue_name"
+    t.integer "priority", default: 0
+    t.boolean "static", default: true
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_solid_queue_recurring_tasks_on_key", unique: true
+    t.index ["static"], name: "index_solid_queue_recurring_tasks_on_static"
   end
 
   create_table "solid_queue_scheduled_executions", force: :cascade do |t|
@@ -629,15 +654,16 @@ ActiveRecord::Schema[7.1].define(version: 202401142347012) do
   add_foreign_key "digital_remasters", "remaster_agents"
   add_foreign_key "external_catalog_el_recodo_person_roles", "external_catalog_el_recodo_people", column: "person_id"
   add_foreign_key "external_catalog_el_recodo_person_roles", "external_catalog_el_recodo_songs", column: "song_id"
+  add_foreign_key "external_catalog_el_recodo_songs", "external_catalog_el_recodo_orchestras", column: "el_recodo_orchestra_id"
   add_foreign_key "external_catalog_el_recodo_songs", "external_catalog_el_recodo_orchestras", column: "orchestra_id"
   add_foreign_key "likes", "users"
-  add_foreign_key "lyrics", "compositions"
   add_foreign_key "lyrics", "languages"
   add_foreign_key "orchestra_periods", "orchestras"
   add_foreign_key "orchestra_positions", "orchestra_roles"
   add_foreign_key "orchestra_positions", "orchestras"
   add_foreign_key "orchestra_positions", "people"
-  add_foreign_key "orchestra_roles", "orchestras"
+  add_foreign_key "orchestras", "external_catalog_el_recodo_orchestras", column: "el_recodo_orchestra_id"
+  add_foreign_key "people", "external_catalog_el_recodo_people", column: "el_recodo_person_id"
   add_foreign_key "playbacks", "recordings"
   add_foreign_key "playbacks", "users"
   add_foreign_key "playlist_items", "playlists"

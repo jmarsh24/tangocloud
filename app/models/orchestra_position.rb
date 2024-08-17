@@ -16,8 +16,4 @@ class OrchestraPosition < ApplicationRecord
   belongs_to :orchestra
   belongs_to :orchestra_role
   belongs_to :person
-
-  validates :orchestra, presence: true
-  validates :orchestra_role, presence: true
-  validates :person, presence: true
 end

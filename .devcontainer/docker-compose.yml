@@ -3,9 +3,18 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        RUBY_VERSION: "3.3"
+        NODE_VERSION: "20.10.0"
+        
     volumes:
       - ../..:/workspaces:cached
-      - ~/.netrc:/root/.netrc:ro
+      - ~/.netrc:/root/.netrc
+      - ~/.ssh:/root/.ssh
+      - ~/.config/gh:/root/.config/gh
+      - ~/.aws:/root/.aws
+      - ~/Music:/app/music:ro
+
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
@@ -26,13 +35,15 @@ services:
   redis:
     image: redis
     restart: unless-stopped
+    ports:
+      - 6379:6379
     volumes:
       - redis:/data
   elasticsearch:
     image: elasticsearch:8.11.1
     restart: always
     ports:
-      - "9200:9200"
+      - 9200:9200
     volumes:
       - elasticsearch:/usr/share/elasticsearch/data
     environment:
@@ -43,4 +54,3 @@ volumes:
   postgres:
   elasticsearch:
   redis:
-version: "3"
