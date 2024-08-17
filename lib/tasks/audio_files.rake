@@ -3,7 +3,7 @@ namespace :audio_files do
   task enqueue_imports: :environment do
     audio_files = AudioFile.where.not(status: :completed)
 
-    progress_bar = ProgressBar.create(total: audio_files.size)
+    progress_bar = ProgressBar.new(audio_files.size)
 
     audio_files.find_each do |audio_file|
       audio_file.import(async: true)
@@ -16,7 +16,7 @@ namespace :audio_files do
   task reprocess_failed: :environment do
     failed_audio_files = AudioFile.failed
 
-    progress_bar = ProgressBar.create(total: failed_audio_files.size)
+    progress_bar = ProgressBar.new(failed_audio_files.size)
 
     failed_audio_files.find_each do |audio_file|
       audio_file.import(async: true)

@@ -10,9 +10,9 @@ models = [
   User
 ]
 
-progressbar = ProgressBar.create(total: models.size)
+progress_bar = ProgressBar.new(models.size)
 
 models.each do |model|
   model.reindex
-  progressbar.increment
+  progress_bar.increment
 end
