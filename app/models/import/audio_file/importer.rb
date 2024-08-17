@@ -20,6 +20,7 @@ module Import
 
         files_to_process = all_files.reject do |file_path|
           mime_type = Marcel::MimeType.for(File.open(file_path))
+
           !::AudioFile::SUPPORTED_MIME_TYPES.include?(mime_type) || existing_filenames.include?(File.basename(file_path))
         end
 
