@@ -99,7 +99,6 @@ group :development do
   gem "brakeman"
   gem "database_validations"
   gem "database_consistency", require: false
-  gem "ruby-progressbar"
 end
 
 group :test do

@@ -19,4 +19,18 @@ namespace :audio_files do
       puts "AudioFile #{audio_file.id}: #{audio_file.status}"
     end
   end
+
+  desc "Import all audio files from the /app/music directory"
+  task import_from_music: :environment do
+    music_directory = "/app/music"
+
+    unless Dir.exist?(music_directory)
+      puts "Directory not found: #{music_directory}"
+      exit(1)
+    end
+
+    Import::AudioFile::Importer.new(music_directory).sync
+
+    puts "Audio files from #{music_directory} have been imported."
+  end
 end
