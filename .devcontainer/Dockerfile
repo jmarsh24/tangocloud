@@ -59,8 +59,4 @@ RUN gem install rails pull-request
 
 RUN npx playwright install-deps && npx playwright install chromium
 
-RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash && \
-  apt-get install -y git-lfs && \
-  git lfs install
-
 COPY tangocloud-load-profile.sh /etc/profile.d/
