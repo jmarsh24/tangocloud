@@ -1,10 +1,9 @@
 import { createContext, useContext, useEffect, useState, PropsWithChildren } from 'react'
 import { useApolloClient, ApolloError } from '@apollo/client'
-import { REGISTER, LOGIN, APPLE_LOGIN, GOOGLE_LOGIN, FACEBOOK_LOGIN } from '@/graphql'
+import { REGISTER, LOGIN, APPLE_LOGIN, GOOGLE_LOGIN } from '@/graphql'
 import * as SecureStore from 'expo-secure-store'
 import * as AppleAuthentication from 'expo-apple-authentication'
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
-import { AccessToken, LoginManager } from 'react-native-fbsdk-next'
 
 interface AuthState {
 	token: string | null
@@ -32,7 +31,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 	useEffect(() => {
 		const loadToken = async () => {
 			const token = await SecureStore.getItemAsync('token')
-
 			if (token) {
 				setAuthState({
 					token: token,
@@ -64,11 +62,11 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 				variables: { login, password },
 			})
 			setAuthState({
-				token: data.login.token,
+				token: data.login.session.access,
 				authenticated: true,
 			})
 
-			await SecureStore.setItemAsync('token', data.login.token)
+			await SecureStore.setItemAsync('token', data.login.session.access)
 			return data.login
 		} catch (error) {
 			const apolloError = error as ApolloError
@@ -97,11 +95,11 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 			})
 
 			setAuthState({
-				token: data.appleLogin.token,
+				token: data.appleLogin.session.access,
 				authenticated: true,
 			})
 
-			await SecureStore.setItemAsync('token', data.appleLogin.token)
+			await SecureStore.setItemAsync('token', data.appleLogin.session.access)
 			return data.appleLogin
 		} catch (error) {
 			const apolloError = error as ApolloError
@@ -121,49 +119,12 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 			})
 
 			setAuthState({
-				token: data.googleLogin.token,
+				token: data.googleLogin.session.access,
 				authenticated: true,
 			})
 
-			await SecureStore.setItemAsync('token', data.googleLogin.token)
+			await SecureStore.setItemAsync('token', data.googleLogin.session.access)
 			return data.googleLogin
-		} catch (error) {
-			const apolloError = error as ApolloError
-			throw new Error(apolloError.message)
-		}
-	}
-
-	const facebookLogin = async () => {
-		try {
-			// Attempt to get current access token
-			let token = await AccessToken.getCurrentAccessToken()
-
-			// If no token, prompt the user to log in
-			if (!token) {
-				const result = await LoginManager.logInWithPermissions(['public_profile', 'email'])
-				if (result.isCancelled) {
-					throw new Error('User cancelled the login process')
-				}
-				// Fetch new access token after successful login
-				token = await AccessToken.getCurrentAccessToken()
-			}
-
-			if (!token) {
-				throw new Error('Unable to obtain access token')
-			}
-
-			const { data } = await apolloClient.mutate({
-				mutation: FACEBOOK_LOGIN,
-				variables: { accessToken: token.accessToken },
-			})
-
-			setAuthState({
-				token: data.facebookLogin.token,
-				authenticated: true,
-			})
-
-			await SecureStore.setItemAsync('token', data.facebookLogin.token)
-			return data.facebookLogin
 		} catch (error) {
 			const apolloError = error as ApolloError
 			throw new Error(apolloError.message)
@@ -184,7 +145,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 		onLogin: login,
 		onAppleLogin: appleLogin,
 		onGoogleLogin: googleLogin,
-		onFacebookLogin: facebookLogin,
 		onLogout: logout,
 	}
 
