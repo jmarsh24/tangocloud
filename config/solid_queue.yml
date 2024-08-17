@@ -8,7 +8,7 @@ default: &default
           schedule: 1.day
   workers:
     - queues: "*"
-      threads: 3
+      threads: 8
       processes: 1
       polling_interval: 0.1
 
