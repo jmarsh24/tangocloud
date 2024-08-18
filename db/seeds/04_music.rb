@@ -37,7 +37,7 @@ sql_files.each do |file_name|
     puts "File #{file_name} does not exist. Skipping."
   end
 
-  progress_bar.increment
+  progress_bar.increment!
 end
 
 def attach_file_to_record(record, attachment_name, file_path)
@@ -61,7 +61,7 @@ if File.exist?(albums_metadata_path)
     album = Album.find(metadata["record_id"])
     file_path = Rails.root.join("db/seeds/music/albums", metadata["file_name"])
     attach_file_to_record(album, metadata["attachment_name"], file_path)
-    progress_bar.increment
+    progress_bar.increment!
   end
 else
   puts "Album metadata file not found. Skipping album art."
@@ -77,7 +77,7 @@ if File.exist?(people_metadata_path)
     person = Person.find(metadata["record_id"])
     file_path = Rails.root.join("db/seeds/music/people", metadata["file_name"])
     attach_file_to_record(person, metadata["attachment_name"], file_path)
-    progress_bar.increment
+    progress_bar.increment!
   end
 else
   puts "People metadata file not found. Skipping person images."
@@ -93,7 +93,7 @@ if File.exist?(orchestras_metadata_path)
     orchestra = Orchestra.find(metadata["record_id"])
     file_path = Rails.root.join("db/seeds/music/orchestras", metadata["file_name"])
     attach_file_to_record(orchestra, metadata["attachment_name"], file_path)
-    progress_bar.increment
+    progress_bar.increment!
   end
 else
   puts "Orchestra metadata file not found. Skipping orchestra images."
@@ -109,7 +109,7 @@ if File.exist?(waveforms_metadata_path)
     waveform = Waveform.find(metadata["record_id"])
     file_path = Rails.root.join("db/seeds/music/waveforms", metadata["file_name"])
     attach_file_to_record(waveform, metadata["attachment_name"], file_path)
-    progress_bar.increment
+    progress_bar.increment!
   end
 else
   puts "Waveform metadata file not found. Skipping waveform images."
@@ -122,14 +122,14 @@ if File.exist?(audio_file_path)
 
   AudioFile.find_each do |audio_file|
     attach_file_to_record(audio_file, :file, audio_file_path)
-    progress_bar.increment
+    progress_bar.increment!
   end
 
   progress_bar = ProgressBar.new(AudioVariant.size)
 
   AudioVariant.find_each do |audio_variant|
     attach_file_to_record(audio_variant, :audio_file, audio_file_path)
-    progress_bar.increment
+    progress_bar.increment!
   end
 else
   puts "MP3 file #{audio_file_path} does not exist. Skipping attachment."

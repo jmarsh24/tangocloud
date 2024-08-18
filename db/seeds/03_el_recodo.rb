@@ -22,7 +22,7 @@ sql_files.each do |file_name|
     puts "File #{file_name} does not exist. Skipping."
   end
 
-  progress_bar.increment
+  progress_bar.increment!
 end
 
 def attach_file_to_record(record, attachment_name, file_path)
@@ -46,7 +46,7 @@ if File.exist?(people_metadata_path)
     person = ExternalCatalog::ElRecodo::Person.find(metadata["record_id"])
     file_path = Rails.root.join("db/seeds/images/el_recodo_people", metadata["file_name"])
     attach_file_to_record(person, metadata["attachment_name"], file_path)
-    progress_bar.increment
+    progress_bar.increment!
   end
 else
   puts "People metadata file not found. Skipping person images."
@@ -62,7 +62,7 @@ if File.exist?(orchestras_metadata_path)
     orchestra = ExternalCatalog::ElRecodo::Orchestra.find(metadata["record_id"])
     file_path = Rails.root.join("db/seeds/images/el_recodo_orchestras", metadata["file_name"])
     attach_file_to_record(orchestra, metadata["attachment_name"], file_path)
-    progress_bar.increment
+    progress_bar.increment!
   end
 else
   puts "Orchestra metadata file not found. Skipping orchestra images."

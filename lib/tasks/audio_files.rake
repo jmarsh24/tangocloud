@@ -8,7 +8,7 @@ namespace :audio_files do
     audio_files.find_each do |audio_file|
       audio_file.import(async: true)
 
-      progress_bar.increment
+      progress_bar.increment!
     end
   end
 
@@ -21,7 +21,7 @@ namespace :audio_files do
     failed_audio_files.find_each do |audio_file|
       audio_file.import(async: true)
 
-      progress_bar.increment
+      progress_bar.increment!
     end
   end
 
