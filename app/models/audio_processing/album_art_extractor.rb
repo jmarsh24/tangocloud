@@ -20,6 +20,7 @@ module AudioProcessing
       end
     rescue FFMPEG::Error => e
       Rails.logger.error "Failed to extract album art: #{e.message}"
+      yield nil if block_given?
       nil
     end
   end
