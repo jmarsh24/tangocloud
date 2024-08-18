@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_18_210718) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_18_223956) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -305,7 +305,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_18_210718) do
     t.string "nickname"
     t.string "birth_place"
     t.uuid "el_recodo_person_id"
-    t.string "normalized_name"
+    t.string "normalized_name", null: false
     t.string "pseudonym"
     t.index ["el_recodo_person_id"], name: "index_people_on_el_recodo_person_id"
     t.index ["name"], name: "index_people_on_name"

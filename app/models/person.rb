@@ -67,6 +67,6 @@ end
 #  nickname            :string
 #  birth_place         :string
 #  el_recodo_person_id :uuid
-#  normalized_name     :string
+#  normalized_name     :string           not null
 #  pseudonym           :string
 #
