@@ -34,7 +34,7 @@ module AudioProcessing
     end
 
     def generate_image(path, width: 800, height: 150)
-      waveform_data = generate(file:).data
+      waveform_data = generate(path).data
 
       Tempfile.create(["waveform-", ".png"]) do |tempfile|
         image = ChunkyPNG::Image.new(width, height, ChunkyPNG::Color::TRANSPARENT)
