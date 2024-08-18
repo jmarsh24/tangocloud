@@ -2,9 +2,9 @@ module Import
   module DigitalRemaster
     module Builders
       class CompositionBuilder
-        def initialize(composer_name:, lyricist_name:, title:, lyrics:)
-          @composer_name = composer_name
-          @lyricist_name = lyricist_name
+        def initialize(composer_names:, lyricist_names:, title:, lyrics:)
+          @composer_names = composer_names || []
+          @lyricist_names = lyricist_names || []
           @title = title
           @lyrics = lyrics
         end
@@ -12,13 +12,13 @@ module Import
         def build
           composition = find_or_create_composition
 
-          if @composer_name.present?
-            composer_person = Person.find_or_create_by!(name: @composer_name)
+          @composer_names.each do |composer_name|
+            composer_person = Person.find_or_create_by!(name: composer_name)
             composition.composition_roles.find_or_create_by!(person: composer_person, role: "composer")
           end
 
-          if @lyricist_name.present?
-            lyricist_person = Person.find_or_create_by!(name: @lyricist_name)
+          @lyricist_names.each do |lyricist_name|
+            lyricist_person = Person.find_or_create_by!(name: lyricist_name)
             composition.composition_roles.find_or_create_by!(person: lyricist_person, role: "lyricist")
           end
 
@@ -38,25 +38,12 @@ module Import
         private
 
         def find_or_create_composition
-          if @composer_name.present?
-            composer_person = Person.find_or_create_by!(name: @composer_name)
-            existing_composition = Composition.joins(:composition_roles)
-              .where(title: @title, composition_roles: {person: composer_person, role: "composer"})
-              .first
+          composition = Composition.joins(:composition_roles)
+            .where(title: @title)
+            .where(composition_roles: {person_id: Person.where(name: @composer_names + @lyricist_names).select(:id)})
+            .first
 
-            return existing_composition if existing_composition
-          end
-
-          if @lyricist_name.present?
-            lyricist_person = Person.find_or_create_by!(name: @lyricist_name)
-            existing_composition = Composition.joins(:composition_roles)
-              .where(title: @title, composition_roles: {person: lyricist_person, role: "lyricist"})
-              .first
-
-            return existing_composition if existing_composition
-          end
-
-          Composition.find_or_create_by!(title: @title)
+          composition || Composition.find_or_create_by!(title: @title)
         end
       end
     end

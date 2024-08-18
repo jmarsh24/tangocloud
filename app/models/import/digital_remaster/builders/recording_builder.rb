@@ -44,11 +44,17 @@ module Import
 
         def build_composition
           CompositionBuilder.new(
-            composer_name: @metadata.composer,
-            lyricist_name: @metadata.lyricist,
+            composer_names: parse_names(@metadata.composer),
+            lyricist_names: parse_names(@metadata.lyricist),
             title: @metadata.title,
             lyrics: @metadata.lyrics
           ).build
+        end
+
+        def parse_names(names)
+          return [] if names.blank?
+          # Split by comma or "y" in Spanish
+          names.split(/(?:,|\s+y\s+)/).map(&:strip)
         end
 
         def find_existing_time_period

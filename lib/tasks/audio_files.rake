@@ -1,6 +1,6 @@
 namespace :audio_files do
   desc "Enqueue import for all audio files that are not completed"
-  task import_all: :environment do
+  task import: :environment do
     audio_files = AudioFile.where(status: [:pending, :failed])
 
     progress_bar = ProgressBar.new(audio_files.size)
@@ -14,7 +14,7 @@ namespace :audio_files do
   end
 
   desc "Check the status of all audio file imports"
-  task check_statuses: :environment do
+  task status: :environment do
     status_counts = AudioFile.group(:status).count
 
     puts "Audio File Import Status Overview:"

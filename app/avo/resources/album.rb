@@ -10,7 +10,7 @@ class Avo::Resources::Album < Avo::BaseResource
     field :album_art, as: :file, is_image: true
     field :title, as: :text
     field :description, as: :textarea
-    field :release_date, as: :date
+    field :release_date, as: :date, only_on: :show
     field :external_id, as: :text, only_on: :show, readonly: true
     field :digital_remasters, as: :has_many
   end
