@@ -10,7 +10,7 @@ RSpec.describe AudioProcessing::AudioConverter do
 
         expect(converted_audio.audio_codec).to eq("mp3")
 
-        extracted_metadata = AudioProcessing::MetadataExtractor.new.extract(file: converted_audio)
+        extracted_metadata = AudioProcessing::MetadataExtractor.new.extract(converted_audio.path)
 
         non_nil_keys = [:duration, :bit_rate, :sample_rate, :channels, :format, :bit_depth, :codec_name]
 
