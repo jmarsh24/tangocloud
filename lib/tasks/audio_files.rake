@@ -1,28 +1,16 @@
 namespace :audio_files do
   desc "Enqueue import for all audio files that are not completed"
-  task enqueue_imports: :environment do
-    audio_files = AudioFile.where.not(status: :completed)
+  task import_all: :environment do
+    audio_files = AudioFile.where(status: [:pending, :failed])
 
     progress_bar = ProgressBar.new(audio_files.size)
 
     audio_files.find_each do |audio_file|
       audio_file.import(async: true)
-
       progress_bar.increment!
     end
-  end
 
-  desc "Reprocess all failed audio file imports"
-  task reprocess_failed: :environment do
-    failed_audio_files = AudioFile.failed
-
-    progress_bar = ProgressBar.new(failed_audio_files.size)
-
-    failed_audio_files.find_each do |audio_file|
-      audio_file.import(async: true)
-
-      progress_bar.increment!
-    end
+    puts "Import process for all pending and failed audio files initiated."
   end
 
   desc "Check the status of all audio file imports"
