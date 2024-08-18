@@ -57,5 +57,7 @@ module Tangocloud
 
     config.active_storage.variant_processor = :vips
     config.mission_control.jobs.base_controller_class = "AdminController"
+
+    config.active_storage.queue = :low_priority
   end
 end
