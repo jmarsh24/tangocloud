@@ -18,13 +18,14 @@ class Person < ApplicationRecord
   has_one_attached :image
 
   before_save :set_normalized_name
-
-  def self.find_or_create_by_normalized_name!(name)
-    normalized_name = NameUtils::NameNormalizer.normalize(name)
-    find_or_create_by!(normalized_name:) do |person|
-      parser = NameUtils::NameParser.new(name)
-      person.name = parser.formatted_name
-      person.pseudonym = parser.pseudonym
+  class << self
+    def find_or_create_by_normalized_name!(name)
+      normalized_name = NameUtils::NameNormalizer.normalize(name)
+      find_or_create_by!(normalized_name:) do |person|
+        parsed_name = NameUtils::NameParser.parse(name)
+        person.name = parsed_name.formatted_name
+        person.pseudonym = parsed_name.pseudonym
+      end
     end
   end
 
