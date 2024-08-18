@@ -60,4 +60,5 @@ end
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  el_recodo_orchestra_id :uuid
+#  normalized_name        :string
 #
