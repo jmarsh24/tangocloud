@@ -7,7 +7,6 @@ sql_files = [
 ]
 
 puts "Seeding SQL files..."
-progress_bar = ProgressBar.new(sql_files.size)
 
 sql_files.each do |file_name|
   file_path = Rails.root.join("db/seeds/el_recodo", file_name)
@@ -21,8 +20,6 @@ sql_files.each do |file_name|
   else
     puts "File #{file_name} does not exist. Skipping."
   end
-
-  progress_bar.increment!
 end
 
 def attach_file_to_record(record, attachment_name, file_path)
