@@ -5,10 +5,10 @@ RSpec.describe AudioProcessing::AudioConverter do
 
   describe "#convert" do
     it "converts the file to the specified format and deletes it afterward" do
-      AudioProcessing::AudioConverter.new.convert(file:) do |converted_audio|
-        converted_movie = FFMPEG::Movie.new(converted_audio.path)
+      AudioProcessing::AudioConverter.new.convert(file.path) do |converted_audio|
+        converted_audio = FFMPEG::Movie.new(converted_audio.path)
 
-        expect(converted_movie.audio_codec).to eq("mp3")
+        expect(converted_audio.audio_codec).to eq("mp3")
 
         extracted_metadata = AudioProcessing::MetadataExtractor.new.extract(file: converted_audio)
 
