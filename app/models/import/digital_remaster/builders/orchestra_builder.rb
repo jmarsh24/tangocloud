@@ -43,7 +43,7 @@ module Import
               role_name = ROLE_TRANSLATION[role]
               raise UnrecognizedRoleError, "Unrecognized role: #{person_role.role}" unless role_name
 
-              person = Person.find_or_create_by!(name: person_role.person.name)
+              person = Person.find_or_create_by_normalized_name!(person_role.person.name)
               orchestra_role = OrchestraRole.find_or_create_by!(name: role_name)
 
               OrchestraPosition.find_or_create_by!(

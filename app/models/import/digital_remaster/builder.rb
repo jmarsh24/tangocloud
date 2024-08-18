@@ -95,7 +95,11 @@ module Import
         return if title.blank?
 
         album = Album.find_or_create_by!(title:)
-        album.album_art.attach(io: File.open(album_art), filename: File.basename(album_art))
+
+        if album_art.present? && !album.album_art.attached?
+          album.album_art.attach(io: File.open(album_art), filename: File.basename(album_art))
+        end
+
         album
       end
 

@@ -28,8 +28,8 @@ module AudioProcessing
       keyword_init: true
     )
 
-    def extract(file:)
-      movie = FFMPEG::Movie.new(file.path)
+    def extract(path)
+      movie = FFMPEG::Movie.new(path)
       metadata = movie.metadata
       streams = metadata.dig(:streams)
       format = metadata.dig(:format)

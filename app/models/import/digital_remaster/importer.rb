@@ -1,6 +1,8 @@
 module Import
   module DigitalRemaster
     class Importer
+      class AlreadyCompletedError < StandardError; end
+
       def initialize(metadata_extractor: nil, waveform_generator: nil, album_art_extractor: nil, audio_converter: nil)
         @metadata_extractor = metadata_extractor || AudioProcessing::MetadataExtractor.new
         @waveform_generator = waveform_generator || AudioProcessing::WaveformGenerator.new
@@ -9,31 +11,36 @@ module Import
       end
 
       def import(audio_file:)
+        raise AlreadyCompletedError if audio_file.completed?
+
         audio_file.file.blob.open do |tempfile|
           ActiveRecord::Base.transaction do
             audio_file.update!(status: :processing)
 
-            metadata = @metadata_extractor.extract(file: tempfile)
-            waveform = @waveform_generator.generate(file: tempfile)
-            waveform_image = @waveform_generator.generate_image(file: tempfile)
-            album_art = @album_art_extractor.extract(file: tempfile)
+            metadata = @metadata_extractor.extract(tempfile.path)
+            waveform = @waveform_generator.generate(tempfile.path)
 
-            @audio_converter.convert(file: tempfile) do |compressed_audio|
-              builder = Builder.new(
-                audio_file:,
-                metadata:,
-                waveform:,
-                waveform_image:,
-                album_art:,
-                compressed_audio:
-              )
+            @waveform_generator.generate_image(tempfile.path) do |waveform_image|
+              @album_art_extractor.extract(tempfile.path) do |album_art|
+                @audio_converter.convert(tempfile.path) do |compressed_audio|
+                  builder = Builder.new(
+                    audio_file:,
+                    metadata:,
+                    waveform:,
+                    waveform_image:,
+                    album_art:,
+                    compressed_audio:
+                  )
 
-              @digital_remaster = builder.build
+                  @digital_remaster = builder.build
 
-              if @digital_remaster.save!
-                audio_file.update!(status: :completed, error_message: nil)
+                  if @digital_remaster.save!
+                    audio_file.update!(status: :completed, error_message: nil)
+                  end
+
+                  return @digital_remaster
+                end
               end
-              @digital_remaster
             end
           end
         rescue ActiveRecord::RecordInvalid => e

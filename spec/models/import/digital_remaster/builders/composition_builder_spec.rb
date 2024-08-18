@@ -5,8 +5,8 @@ RSpec.describe Import::DigitalRemaster::Builders::CompositionBuilder do
     context "when creating a new composition" do
       it "creates a new composition with a composer" do
         builder = described_class.new(
-          composer_name: "Carlos Gardel",
-          lyricist_name: nil,
+          composer_names: ["Carlos Gardel"],
+          lyricist_names: nil,
           title: "El Dia Que Me Quieras",
           lyrics: nil
         )
@@ -18,8 +18,8 @@ RSpec.describe Import::DigitalRemaster::Builders::CompositionBuilder do
 
       it "creates a new composition with a lyricist" do
         builder = described_class.new(
-          composer_name: nil,
-          lyricist_name: "Alfredo Le Pera",
+          composer_names: nil,
+          lyricist_names: ["Alfredo Le Pera"],
           title: "El Dia Que Me Quieras",
           lyrics: nil
         )
@@ -31,8 +31,8 @@ RSpec.describe Import::DigitalRemaster::Builders::CompositionBuilder do
 
       it "creates a new composition with lyrics" do
         builder = described_class.new(
-          composer_name: nil,
-          lyricist_name: nil,
+          composer_names: nil,
+          lyricist_names: nil,
           title: "El Dia Que Me Quieras",
           lyrics: "El día que me quieras..."
         )
@@ -44,8 +44,8 @@ RSpec.describe Import::DigitalRemaster::Builders::CompositionBuilder do
 
       it "creates a new composition with a composer, lyricist, and lyrics" do
         builder = described_class.new(
-          composer_name: "Carlos Gardel",
-          lyricist_name: "Alfredo Le Pera",
+          composer_names: ["Carlos Gardel"],
+          lyricist_names: ["Alfredo Le Pera"],
           title: "El Dia Que Me Quieras",
           lyrics: "El día que me quieras..."
         )
@@ -65,8 +65,8 @@ RSpec.describe Import::DigitalRemaster::Builders::CompositionBuilder do
         person = Person.create!(name: "Carlos Gardel")
         existing_composition.composers << person
         builder = described_class.new(
-          composer_name: "Carlos Gardel",
-          lyricist_name: nil,
+          composer_names: ["Carlos Gardel"],
+          lyricist_names: nil,
           title: "El Dia Que Me Quieras",
           lyrics: nil
         )
@@ -80,8 +80,8 @@ RSpec.describe Import::DigitalRemaster::Builders::CompositionBuilder do
         person = Person.create!(name: "Alfredo Le Pera")
         existing_composition.lyricists << person
         builder = described_class.new(
-          composer_name: nil,
-          lyricist_name: "Alfredo Le Pera",
+          composer_names: nil,
+          lyricist_names: ["Alfredo Le Pera"],
           title: "El Dia Que Me Quieras",
           lyrics: nil
         )
@@ -95,8 +95,8 @@ RSpec.describe Import::DigitalRemaster::Builders::CompositionBuilder do
         person = Person.create!(name: "Alfredo Le Pera")
         existing_composition.lyricists << person
         builder = described_class.new(
-          composer_name: nil,
-          lyricist_name: "Alfredo Le Pera",
+          composer_names: nil,
+          lyricist_names: ["Alfredo Le Pera"],
           title: "El Dia Que Me Quieras",
           lyrics: "El día que me quieras..."
         )
@@ -113,8 +113,8 @@ RSpec.describe Import::DigitalRemaster::Builders::CompositionBuilder do
         existing_composition.lyrics.create!(text: "El día que me quieras...", language:)
 
         builder = described_class.new(
-          composer_name: nil,
-          lyricist_name: "Alfredo Le Pera",
+          composer_names: nil,
+          lyricist_names: ["Alfredo Le Pera"],
           title: "El Dia Que Me Quieras",
           lyrics: "El día que me quieras..."
         )
@@ -136,8 +136,8 @@ RSpec.describe Import::DigitalRemaster::Builders::CompositionBuilder do
 
       it "does not create duplicate composers for an existing composition" do
         builder = described_class.new(
-          composer_name: "Carlos Gardel",
-          lyricist_name: nil,
+          composer_names: ["Carlos Gardel"],
+          lyricist_names: nil,
           title: "El Dia Que Me Quieras",
           lyrics: nil
         )
@@ -153,8 +153,8 @@ RSpec.describe Import::DigitalRemaster::Builders::CompositionBuilder do
         another_composition.composition_roles.create!(person: existing_composer, role: "composer")
 
         builder = described_class.new(
-          composer_name: "Carlos Gardel",
-          lyricist_name: nil,
+          composer_names: ["Carlos Gardel"],
+          lyricist_names: nil,
           title: "El Dia Que Me Quieras",
           lyrics: nil
         )

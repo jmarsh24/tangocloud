@@ -58,11 +58,11 @@ RSpec.describe Import::DigitalRemaster::Importer do
   let(:waveform_image) { File.open(Rails.root.join("spec/fixtures/files/19401008_volver_a_sonar_roberto_rufino_tango_2476_waveform.png")) }
 
   before do
-    allow(metadata_extractor).to receive(:extract).with(file: anything).and_return(metadata)
-    allow(waveform_generator).to receive(:generate).with(file: anything).and_return(waveform)
-    allow(waveform_generator).to receive(:generate_image).with(file: anything).and_return(waveform_image)
-    allow(album_art_extractor).to receive(:extract).with(file: anything).and_return(album_art)
-    allow(audio_converter).to receive(:convert).with(file: anything).and_yield(compressed_audio)
+    allow(metadata_extractor).to receive(:extract).and_return(metadata)
+    allow(waveform_generator).to receive(:generate).and_return(waveform)
+    allow(waveform_generator).to receive(:generate_image).and_yield(waveform_image)
+    allow(album_art_extractor).to receive(:extract).and_yield(album_art)
+    allow(audio_converter).to receive(:convert).and_yield(compressed_audio)
   end
 
   describe "#import" do
@@ -78,11 +78,17 @@ RSpec.describe Import::DigitalRemaster::Importer do
     end
 
     it "updates the audio file status to failed on failure" do
-      allow(metadata_extractor).to receive(:extract).with(file: anything).and_raise(StandardError)
+      allow(metadata_extractor).to receive(:extract).and_raise(StandardError)
       importer.import(audio_file:)
 
       expect(audio_file.reload.status).to eq("failed")
       expect(audio_file.reload.error_message).to eq("StandardError")
+    end
+
+    it "does not import the audio file if it is already completed" do
+      audio_file.update!(status: :completed)
+
+      expect { importer.import(audio_file:) }.to raise_error(Import::DigitalRemaster::Importer::AlreadyCompletedError)
     end
   end
 end
