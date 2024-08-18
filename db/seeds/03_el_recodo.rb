@@ -53,13 +53,12 @@ orchestras_metadata_path = Rails.root.join("db/seeds/el_recodo/images/el_recodo_
 if File.exist?(orchestras_metadata_path)
   orchestras_metadata = File.readlines(orchestras_metadata_path)
   progress_bar = ProgressBar.new(orchestras_metadata.size)
-
-  orchestras_metadata.each do |line|
-    metadata = JSON.parse(line)
-    orchestra = ExternalCatalog::ElRecodo::Orchestra.find(metadata["record_id"])
-    file_path = Rails.root.join("db/seeds/el_recodo/images/el_recodo_orchestras", metadata["file_name"])
     attach_file_to_record(orchestra, metadata["attachment_name"], file_path)
     progress_bar.increment!
+
+    file_path = Rails.root.join("db/seeds/images/el_recodo_orchestras", metadata["file_name"])
+    attach_file_to_record(orchestra, metadata["attachment_name"], file_path)
+    progressbar.increment
   end
 else
   puts "Orchestra metadata file not found. Skipping orchestra images."
