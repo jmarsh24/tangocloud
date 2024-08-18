@@ -24,6 +24,8 @@ module NameUtils
       if word.include?("'")
         parts = word.split("'")
         parts.map(&:capitalize).join("'")
+      elsif word.include?(".")
+        word # Do not change words with periods (like "F.Lila")
       else
         word.capitalize
       end

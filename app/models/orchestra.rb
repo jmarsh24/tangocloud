@@ -18,6 +18,25 @@ class Orchestra < ApplicationRecord
 
   has_one_attached :image
 
+  before_save :set_normalized_name
+
+  def self.find_or_create_by_normalized_name!(name)
+    normalized_name = NameUtils::NameNormalizer.normalize(name)
+    find_or_create_by!(normalized_name:) do |orchestra|
+      orchestra.name = NameUtils::NameFormatter.format(name)
+    end
+  end
+
+  def export_filename
+    "#{name.parameterize}_#{id}"
+  end
+
+  private
+
+  def set_normalized_name
+    self.normalized_name = NameUtils::NameNormalizer.normalize(name)
+  end
+
   def search_data
     {
       id:,
@@ -27,10 +46,6 @@ class Orchestra < ApplicationRecord
       singers: singers.pluck(:name),
       genres: genres.pluck(:name)
     }
-  end
-
-  def export_filename
-    "#{name.parameterize}_#{id}"
   end
 end
 

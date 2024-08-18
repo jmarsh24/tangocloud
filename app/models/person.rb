@@ -17,16 +17,33 @@ class Person < ApplicationRecord
 
   has_one_attached :image
 
+  before_save :set_normalized_name
+
+  def self.find_or_create_by_normalized_name!(name)
+    normalized_name = NameUtils::NameNormalizer.normalize(name)
+    find_or_create_by!(normalized_name:) do |person|
+      parser = NameUtils::NameParser.new(name)
+      person.name = parser.formatted_name
+      person.pseudonym = parser.pseudonym
+    end
+  end
+
+  def export_filename
+    "#{name.parameterize}_#{id}"
+  end
+
+  private
+
+  def set_normalized_name
+    self.normalized_name = NameUtils::NameNormalizer.normalize(name)
+  end
+
   def search_data
     {
       name:,
       composition_roles: composition_roles.map(&:role),
       singer: recording_singers.any?
     }
-  end
-
-  def export_filename
-    "#{name.parameterize}_#{id}"
   end
 end
 
@@ -46,4 +63,6 @@ end
 #  nickname            :string
 #  birth_place         :string
 #  el_recodo_person_id :uuid
+#  normalized_name     :string
+#  pseudonym           :string
 #

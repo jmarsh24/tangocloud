@@ -53,8 +53,8 @@ module Import
 
         def parse_names(names)
           return [] if names.blank?
-          # Split by comma or "y" in Spanish
-          names.split(/(?:,|\s+y\s+)/).map(&:strip)
+          # Split by comma, "y" in Spanish, or "&"
+          names.split(/(?:,|\s+y\s+|\s*&\s*)/).map(&:strip)
         end
 
         def find_existing_time_period

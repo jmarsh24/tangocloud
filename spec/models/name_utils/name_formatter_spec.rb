@@ -13,5 +13,9 @@ RSpec.describe NameUtils::NameFormatter, type: :model do
     it "capitalizes 'Aníbal Troilo Y Astor Piazzolla' to 'Aníbal Troilo y Astor Piazzolla'" do
       expect(described_class.format("Aníbal Troilo Y Astor Piazzolla")).to eq("Aníbal Troilo y Astor Piazzolla")
     end
+
+    it "capitalized 'F.Lila' to 'F.Lila'" do
+      expect(described_class.format("F.Lila")).to eq("F.Lila")
+    end
   end
 end

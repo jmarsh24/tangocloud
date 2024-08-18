@@ -48,7 +48,7 @@ module ExternalCatalog
       def find_or_build_people(person_data)
         names = person_data.name.split(/ y | Y /).map(&:strip)
         names.flat_map do |name|
-          person = Person.find_or_create_by!(name:) do |p|
+          person = Person.find_or_create_by_normalized_name!(name:) do |p|
             scraped_person_data = @person_scraper.fetch(path: person_data.url)
 
             p.assign_attributes(

@@ -13,12 +13,12 @@ module Import
           composition = find_or_create_composition
 
           @composer_names.each do |composer_name|
-            composer_person = Person.find_or_create_by!(name: composer_name)
+            composer_person = Person.find_or_create_by_normalized_name!(composer_name)
             composition.composition_roles.find_or_create_by!(person: composer_person, role: "composer")
           end
 
           @lyricist_names.each do |lyricist_name|
-            lyricist_person = Person.find_or_create_by!(name: lyricist_name)
+            lyricist_person = Person.find_or_create_by_normalized_name!(lyricist_name)
             composition.composition_roles.find_or_create_by!(person: lyricist_person, role: "lyricist")
           end
 
