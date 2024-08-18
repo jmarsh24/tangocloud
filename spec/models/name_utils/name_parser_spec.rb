@@ -9,7 +9,7 @@ RSpec.describe NameUtils::NameParser, type: :model do
   end
 
   it "parses a name without a pseudonym" do
-    parsed_name = NameUtils::NameParser.new("Juan D'Arienzo")
+    parsed_name = NameUtils::NameParser.parse("Juan D'Arienzo")
 
     expect(parsed_name.formatted_name).to eq("Juan D'Arienzo")
     expect(parsed_name.pseudonym).to be_nil
