@@ -1,5 +1,5 @@
 class Avo::Resources::Waveform < Avo::BaseResource
-  self.includes = [:digital_remaster]
+  self.includes = [:digital_remaster, :waveform_datum]
   self.attachments = [:image]
 
   def fields
@@ -13,5 +13,6 @@ class Avo::Resources::Waveform < Avo::BaseResource
     field :length, as: :number, readonly: true, only_on: :show
     field :data, as: :code, readonly: true, only_on: :show
     field :digital_remaster, as: :belongs_to, readonly: true
+    field :waveform_datum, as: :has_one, readonly: true
   end
 end
