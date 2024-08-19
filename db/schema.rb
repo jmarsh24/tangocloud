@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_18_223956) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_19_155646) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -633,6 +633,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_18_223956) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  create_table "waveform_data", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.float "data", default: [], null: false, array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "waveforms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "version", null: false
     t.integer "channels", null: false
@@ -640,11 +646,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_18_223956) do
     t.integer "samples_per_pixel", null: false
     t.integer "bits", null: false
     t.integer "length", null: false
-    t.float "data", default: [], array: true
     t.uuid "digital_remaster_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "waveform_datum_id"
     t.index ["digital_remaster_id"], name: "index_waveforms_on_digital_remaster_id"
+    t.index ["waveform_datum_id"], name: "index_waveforms_on_waveform_datum_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -694,4 +701,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_18_223956) do
   add_foreign_key "tanda_recordings", "tandas"
   add_foreign_key "user_preferences", "users"
   add_foreign_key "waveforms", "digital_remasters"
+  add_foreign_key "waveforms", "waveform_data"
 end

@@ -6,8 +6,8 @@ FactoryBot.define do
     samples_per_pixel { Faker::Number.between(from: 100, to: 1000) }
     bits { Faker::Number.between(from: 8, to: 32) }
     length { Faker::Number.between(from: 60, to: 3600) }
-    data { Array.new(100) { Faker::Number.decimal(l_digits: 2, r_digits: 2) } }
     association :digital_remaster
+    association :waveform_datum
 
     after(:build) do |waveform|
       waveform.image.attach(
@@ -30,8 +30,8 @@ end
 #  samples_per_pixel   :integer          not null
 #  bits                :integer          not null
 #  length              :integer          not null
-#  data                :float            default([]), is an Array
 #  digital_remaster_id :uuid             not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  waveform_datum_id   :uuid
 #
