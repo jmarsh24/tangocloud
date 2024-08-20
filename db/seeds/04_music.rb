@@ -17,7 +17,8 @@ sql_files = [
   "recording_singers.sql",
   "recordings.sql",
   "remaster_agents.sql",
-  "waveforms.sql"
+  "waveforms.sql",
+  "waveform_data.sql"
 ]
 
 puts "Seeding SQL files..."
