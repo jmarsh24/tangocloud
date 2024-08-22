@@ -177,7 +177,7 @@ namespace :db do
       def export_attachments(model, attachment_name, export_directory, sample_mapping)
         ensure_directory_exists(export_directory)
 
-        records = model.includes(attachment_name => :blob).find_each
+        records = model.includes("#{attachment_name}_attachment" => :blob).find_each
 
         records.each do |record|
           if record.send(attachment_name).attached?
@@ -254,8 +254,12 @@ namespace :db do
           )
 
           waveform = audio_file.digital_remaster.waveform
-          waveform.waveform_datum&.destroy! if waveform.waveform_datum_id != sampled_data[:waveform_datum_id]
-          waveform.image.blob.purge
+
+          if waveform.waveform_datum_id.present? && !waveform_datum_ids.include?(waveform.waveform_datum_id)
+            waveform.waveform_datum&.destroy!
+            waveform.image.blob.purge
+          end
+
           waveform.update!(waveform_datum_id: sampled_data[:waveform_datum_id])
 
           waveform.image.update!(blob_id: sampled_data[:waveform_image_blob_id])
@@ -272,6 +276,8 @@ namespace :db do
         CompositionRole,
         Composition,
         DigitalRemaster,
+        Genre,
+        Lyric,
         OrchestraPosition,
         OrchestraRole,
         Orchestra,
@@ -293,9 +299,9 @@ namespace :db do
       export_attachments(Person, :image, Rails.root.join("db/seeds/music/people"), sample_mapping)
       export_attachments(Orchestra, :image, Rails.root.join("db/seeds/music/orchestras"), sample_mapping)
 
-      audio_file_blobs = AudioFile.all.with_attached_file.map { _1.file.blob }
-      audio_variant_blobs = AudioVariant.all.with_attached_audio_file.map { _1.audio_file.blob }
-      waveform_image_blobs = Waveform.all.with_attached_image.map { _1.image.blob }
+      audio_file_blobs = AudioFile.all.with_attached_file.map { _1.file.blob }.uniq!
+      audio_variant_blobs = AudioVariant.all.with_attached_audio_file.map { _1.audio_file.blob }.uniq!
+      waveform_image_blobs = Waveform.all.with_attached_image.map { _1.image.blob }.uniq!
 
       export_shared_blobs(audio_file_blobs, Rails.root.join("db/seeds/music/audio_files"), "audio_file")
       export_shared_blobs(audio_variant_blobs, Rails.root.join("db/seeds/music/audio_variants"), "audio_variant")
