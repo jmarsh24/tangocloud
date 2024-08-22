@@ -54,7 +54,9 @@ def attach_file_to_record(record, attachment_name, file_path)
   end
 end
 
-albums_metadata_path = Rails.root.join("db/seeds/music/albums/image_metadata.json")
+albums_metadata_path = Rails.root.join("db/seeds/music/albums/album_art_metadata.json")
+raise "Album metadata file not found" unless File.exist?(albums_metadata_path)
+
 if File.exist?(albums_metadata_path)
   albums_metadata = File.readlines(albums_metadata_path)
   progress_bar = ProgressBar.new(albums_metadata.size)
