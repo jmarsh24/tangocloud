@@ -277,6 +277,7 @@ namespace :db do
         Composition,
         DigitalRemaster,
         Genre,
+        Language,
         Lyric,
         OrchestraPosition,
         OrchestraRole,
