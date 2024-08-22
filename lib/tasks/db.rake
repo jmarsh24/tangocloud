@@ -299,6 +299,7 @@ namespace :db do
       export_attachments(Album, :album_art, Rails.root.join("db/seeds/music/albums"), sample_mapping)
       export_attachments(Person, :image, Rails.root.join("db/seeds/music/people"), sample_mapping)
       export_attachments(Orchestra, :image, Rails.root.join("db/seeds/music/orchestras"), sample_mapping)
+      export_attachments(Person, :image, Rails.root.join("db/seeds/music/people"), sample_mapping)
 
       audio_file_blobs = AudioFile.all.with_attached_file.map { _1.file.blob }.uniq!
       audio_variant_blobs = AudioVariant.all.with_attached_audio_file.map { _1.audio_file.blob }.uniq!
