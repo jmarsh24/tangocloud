@@ -4,7 +4,7 @@ sql_files = [
   "audio_files.sql",
   "people.sql",
   "compositions.sql",
-  "language.sql",
+  "languages.sql",
   "lyrics.sql",
   "composition_lyrics.sql",
   "composition_roles.sql",
