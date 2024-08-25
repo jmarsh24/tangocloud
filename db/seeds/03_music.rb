@@ -104,6 +104,13 @@ else
   puts "Orchestra metadata file not found. Skipping orchestra images."
 end
 
+Active::Storage::Blob.create!(
+  key: "audio_files/missing_audio_file.mp3",
+  filename: "missing_audio_file.mp3",
+  content_type: "audio/mpeg",
+  metadata: {"record_id" => 0}
+)
+
 waveforms_metadata_path = Rails.root.join("db/seeds/music/waveforms/image_metadata.json")
 if File.exist?(waveforms_metadata_path)
   waveforms_metadata = File.readlines(waveforms_metadata_path)
@@ -119,67 +126,3 @@ if File.exist?(waveforms_metadata_path)
 else
   puts "Waveform metadata file not found. Skipping waveform images."
 end
-
-new_data_sql_files = [
-  "new_albums.sql",
-  "new_people.sql",
-  "new_recordings.sql"
-]
-
-puts "Seeding new SQL files..."
-
-progress_bar = ProgressBar.new(new_data_sql_files.size)
-
-new_data_sql_files.each do |file_name|
-  file_path = Rails.root.join("db/seeds/music", file_name)
-
-  if File.exist?(file_path)
-    puts "Seeding data from #{file_name}..."
-
-    sql = File.read(file_path)
-    ActiveRecord::Base.connection.execute(sql)
-    puts "#{file_name} seeded successfully."
-  else
-    puts "File #{file_name} does not exist. Skipping."
-  end
-
-  progress_bar.increment!
-end
-
-new_images_metadata_path = Rails.root.join("db/seeds/music/new_data/image_metadata.json")
-if File.exist?(new_images_metadata_path)
-  new_images_metadata = File.readlines(new_images_metadata_path)
-  progress_bar = ProgressBar.new(new_images_metadata.size)
-
-  new_images_metadata.each do |line|
-    metadata = JSON.parse(line)
-    record = metadata["record_type"].constantize.find(metadata["record_id"])
-    file_path = Rails.root.join("db/seeds/music/new_data", metadata["file_name"])
-    attach_file_to_record(record, metadata["attachment_name"], file_path)
-    progress_bar.increment!
-  end
-else
-  puts "New images metadata file not found. Skipping new images."
-end
-
-audio_file_path = Rails.root.join("spec/fixtures/files/audio/compressed/19401008_volver_a_sonar_roberto_rufino_tango_2476.mp3")
-
-if File.exist?(audio_file_path)
-  progress_bar = ProgressBar.new(AudioFile.all.size)
-
-  AudioFile.find_each do |audio_file|
-    attach_file_to_record(audio_file, :file, audio_file_path)
-    progress_bar.increment!
-  end
-
-  progress_bar = ProgressBar.new(AudioVariant.all.size)
-
-  AudioVariant.find_each do |audio_variant|
-    attach_file_to_record(audio_variant, :audio_file, audio_file_path)
-    progress_bar.increment!
-  end
-else
-  puts "MP3 file #{audio_file_path} does not exist. Skipping attachment."
-end
-
-puts "All music data seeded successfully."
