@@ -51,7 +51,7 @@ def create_blob_with_specific_id(blob_id, metadata, file_path)
     content_type: metadata["metadata"]["content_type"],
     metadata: metadata["metadata"],
     byte_size: File.size(file_path),
-    checksum: Digest::MD5.file(file_path).base64digest,
+    checksum: metadata["metadata"]["checksum"],
     service_name: ActiveStorage::Blob.service.name
   )
 
