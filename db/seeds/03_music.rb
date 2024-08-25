@@ -50,7 +50,7 @@ def create_blob_with_specific_id(blob_id, metadata, file_path)
     filename: metadata["file_name"],
     content_type: metadata["metadata"]["content_type"],
     metadata: metadata["metadata"],
-    byte_size: File.size(file_path),
+    byte_size: metadata["metadata"]["byte_size"],
     checksum: metadata["metadata"]["checksum"],
     service_name: ActiveStorage::Blob.service.name
   )
