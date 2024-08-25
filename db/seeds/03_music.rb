@@ -43,15 +43,15 @@ sql_files.each do |file_name|
   progress_bar.increment!
 end
 
-def create_blob_with_specific_id(metadata)
+def create_blob_with_specific_id(blob_id, metadata, file_path)
   blob = ActiveStorage::Blob.new(
     id: blob_id,
-    key: blob_id, # Set key same as id if desired, or generate a new key
+    key: blob_id,
     filename: metadata["file_name"],
     content_type: metadata["metadata"]["content_type"],
     metadata: metadata["metadata"],
     byte_size: File.size(file_path),
-    checksum: Digest::MD5.file(file_path).base64digest, # Calculate checksum
+    checksum: Digest::MD5.file(file_path).base64digest,
     service_name: ActiveStorage::Blob.service.name
   )
 
