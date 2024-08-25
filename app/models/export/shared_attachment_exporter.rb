@@ -9,12 +9,14 @@ module Export
     def export
       ensure_directory_exists(@export_directory)
 
+      # Preload the attachments and blobs to avoid N+1 queries
       records = @model.includes("#{@attachment_name}_attachment" => :blob)
 
+      # Collect all unique blobs
       blobs = records.map { |record| record.send(@attachment_name).blob }.uniq!(&:checksum)
       mapping = export_blobs(blobs)
       export_mapping_json(mapping)
-      export_metadata(mapping)
+      export_metadata(records, mapping)
     end
 
     private
@@ -58,13 +60,18 @@ module Export
       end
     end
 
-    def export_metadata(mapping)
-      @model.find_each do |record|
-        next unless record.send(@attachment_name).attached?
+    def export_metadata(records, mapping)
+      File.open(File.join(@export_directory, "#{@attachment_name}_metadata.json"), "a") do |metadata_file|
+        records.each do |record|
+          next unless record.send(@attachment_name).attached?
 
-        blob = record.send(@attachment_name).blob
-        File.open(File.join(@export_directory, "#{@attachment_name}_metadata.json"), "a") do |metadata_file|
-          metadata = {record_id: record.id, attachment_name: @attachment_name, blob_id: blob.id, file_name: mapping[blob.id][:file_name]}
+          blob = record.send(@attachment_name).blob
+          metadata = {
+            record_id: record.id,
+            attachment_name: @attachment_name,
+            blob_id: blob.id,
+            file_name: mapping[blob.id][:file_name]
+          }
           metadata_file.puts(metadata.to_json)
         end
       end

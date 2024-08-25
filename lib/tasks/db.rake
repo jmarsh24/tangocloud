@@ -47,6 +47,8 @@ namespace :db do
         Person, RecordLabel, RecordingSinger, Recording, RemasterAgent, Waveform, WaveformDatum
       ]
 
+      FileUtils.rm_rf(Dir.glob(Rails.root.join("db/seeds/music/*")))
+
       models.each do |model|
         sql_file_path = Rails.root.join("db/seeds/music", "#{model.table_name}.sql")
         Export::SqlExporter.new(model).export(sql_file_path)
