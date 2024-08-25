@@ -1,15 +1,3 @@
-# == Schema Information
-#
-# Table name: audio_files
-#
-#  id            :uuid             not null, primary key
-#  filename      :string           not null
-#  format        :string           not null
-#  status        :string           default("pending"), not null
-#  error_message :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#
 class AudioFile < ApplicationRecord
   SUPPORTED_MIME_TYPES = [
     "audio/x-aiff",
@@ -43,3 +31,16 @@ class AudioFile < ApplicationRecord
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: audio_files
+#
+#  id            :uuid             not null, primary key
+#  filename      :string           not null
+#  format        :string           not null
+#  status        :string           default("pending"), not null
+#  error_message :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#

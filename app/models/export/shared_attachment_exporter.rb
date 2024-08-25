@@ -9,10 +9,8 @@ module Export
     def export
       ensure_directory_exists(@export_directory)
 
-      # Preload the attachments and blobs to avoid N+1 queries
       records = @model.includes("#{@attachment_name}_attachment" => :blob)
 
-      # Collect all unique blobs
       blobs = records.map { |record| record.send(@attachment_name).blob }.uniq!(&:checksum)
       mapping = export_blobs(blobs)
       export_mapping_json(mapping)
