@@ -116,7 +116,8 @@ def attach_file_to_record(record, attachment_name, file_path)
   if File.exist?(file_path)
     record.send(attachment_name).attach(
       io: File.open(file_path),
-      filename: File.basename(file_path)
+      filename: File.basename(file_path),
+      identify: false
     )
   else
     puts "File #{file_path} does not exist. Skipping attachment for record #{record.id}."
