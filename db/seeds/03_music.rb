@@ -142,7 +142,6 @@ if File.exist?(albums_metadata_path)
     progress_bar.increment!
   end
 else
-  binding.irb
   raise "Album metadata file not found. Skipping album art."
 end
 
