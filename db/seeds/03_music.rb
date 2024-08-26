@@ -37,7 +37,7 @@ sql_files.each do |file_name|
     ActiveRecord::Base.connection.execute(sql)
     puts "#{file_name} seeded successfully."
   else
-    puts "File #{file_name} does not exist. Skipping."
+    raise "File #{file_name} does not exist. Skipping."
   end
 
   progress_bar.increment!
@@ -55,11 +55,9 @@ def create_blob_with_specific_id(blob_id, metadata, file_path)
     service_name: ActiveStorage::Blob.service.name
   )
 
-  # Save the blob record without uploading
   blob.save!
 
-  # Upload the file to the service
-  blob.upload(File.open(file_path))
+  blob.upload(File.open(file_path), identify: false)
 
   puts "Created blob with ID #{blob.id} for file #{metadata["file_name"]}."
   blob
@@ -78,20 +76,23 @@ def create_blobs_from_mapping(blob_mapping_path)
         if File.exist?(file_path)
           create_blob_with_specific_id(blob_id, metadata, file_path)
         else
-          puts "File #{file_path} does not exist. Skipping blob creation for #{blob_id}."
+          raise "File #{file_path} does not exist. Skipping blob creation for #{blob_id}."
         end
 
         progress_bar.increment!
       end
     end
   else
-    puts "Blob mapping file not found at #{blob_mapping_path}. Skipping."
+    raise "Blob mapping file not found at #{blob_mapping_path}. Skipping."
   end
 end
 
 def process_attachment_metadata(metadata_path, model_class)
   if File.exist?(metadata_path)
-    File.foreach(metadata_path) do |line|
+    lines = File.readlines(metadata_path)
+    progress_bar = ProgressBar.new(lines.size)
+
+    lines.each do |line|
       next if line.strip.empty? # Skip empty lines
 
       data = JSON.parse(line)
@@ -100,12 +101,13 @@ def process_attachment_metadata(metadata_path, model_class)
 
       if record && blob
         record.send(data["attachment_name"]).attach(blob)
-        puts "Attached blob #{blob.id} to #{record.class.name} with ID #{record.id}."
       elsif record.nil?
         raise "Record with ID #{data["record_id"]} not found in #{model_class.name}. Skipping."
       else
         raise "Blob with ID #{data["blob_id"]} not found. Skipping attachment for #{model_class.name} with ID #{data["record_id"]}."
       end
+
+      progress_bar.increment!
     end
   else
     raise "Metadata file not found at #{metadata_path}. Skipping."
@@ -119,8 +121,9 @@ def attach_file_to_record(record, attachment_name, file_path)
       filename: File.basename(file_path),
       identify: false
     )
+    raise "Attached file #{file_path} to #{record.class.name} with ID #{record.id}."
   else
-    puts "File #{file_path} does not exist. Skipping attachment for record #{record.id}."
+    raise "File #{file_path} does not exist. Skipping attachment for record #{record.id}."
   end
 end
 
@@ -139,7 +142,7 @@ if File.exist?(albums_metadata_path)
     progress_bar.increment!
   end
 else
-  puts "Album metadata file not found. Skipping album art."
+  raise "Album metadata file not found. Skipping album art."
 end
 
 people_metadata_path = Rails.root.join("db/seeds/music/people/image_metadata.json")
@@ -155,7 +158,7 @@ if File.exist?(people_metadata_path)
     progress_bar.increment!
   end
 else
-  puts "People metadata file not found. Skipping person images."
+  raise "People metadata file not found. Skipping person images."
 end
 
 orchestras_metadata_path = Rails.root.join("db/seeds/music/orchestras/image_metadata.json")
@@ -171,7 +174,7 @@ if File.exist?(orchestras_metadata_path)
     progress_bar.increment!
   end
 else
-  puts "Orchestra metadata file not found. Skipping orchestra images."
+  raise "Orchestra metadata file not found. Skipping orchestra images."
 end
 
 puts "Creating ActiveStorage blobs for waveforms..."
