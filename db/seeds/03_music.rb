@@ -121,7 +121,7 @@ def attach_file_to_record(record, attachment_name, file_path)
       filename: File.basename(file_path),
       identify: false
     )
-    raise "Attached file #{file_path} to #{record.class.name} with ID #{record.id}."
+    puts "Attached file #{file_path} to #{record.class.name} with ID #{record.id}."
   else
     raise "File #{file_path} does not exist. Skipping attachment for record #{record.id}."
   end
@@ -142,6 +142,7 @@ if File.exist?(albums_metadata_path)
     progress_bar.increment!
   end
 else
+  binding.irb
   raise "Album metadata file not found. Skipping album art."
 end
 
