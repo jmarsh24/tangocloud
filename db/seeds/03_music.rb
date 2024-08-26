@@ -101,7 +101,12 @@ def process_attachment_metadata(metadata_path, model_class)
       blob = ActiveStorage::Blob.find_by(id: data["blob_id"])
 
       if record && blob
-        record.send(data["attachment_name"]).attach(blob)
+        ActiveStorage::Attachment.create!(
+          name: data["attachment_name"],
+          record:,
+          blob:,
+          analyzed: true
+        )
       elsif record.nil?
         raise "Record with ID #{data["record_id"]} not found in #{model_class.name}. Skipping."
       else
