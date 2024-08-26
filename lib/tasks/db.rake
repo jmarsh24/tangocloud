@@ -41,6 +41,71 @@ namespace :db do
       sample_mapping = Export::SampleMapper.new(sample_filenames).generate_mapping
       Export::SampleMappingUpdater.new(sample_mapping).update
 
+      def export_shared_blobs(blobs, export_directory, attachment_name)
+        ensure_directory_exists(export_directory)
+
+        mapping = {}
+
+        blobs.each do |blob|
+          file_name = "#{blob.id}.#{blob.filename.extension}"
+          file_path = File.join(export_directory, file_name)
+
+          begin
+            File.binwrite(file_path, blob.download)
+          rescue ActiveStorage::FileNotFoundError
+            puts "Missing file for Blob ID #{blob.id} (#{attachment_name})"
+          end
+
+          mapping[blob.id] = {
+            file_name:,
+            metadata: {
+              filename: blob.filename.to_s,
+              byte_size: blob.byte_size,
+              checksum: blob.checksum,
+              content_type: blob.content_type,
+              created_at: blob.created_at
+            }
+          }
+        end
+
+        json_file_path = File.join(export_directory, "#{attachment_name}_blob_mapping.json")
+        File.open(json_file_path, "w") do |json_file|
+          json_file.puts(mapping.to_json)
+        end
+
+        puts "Blobs and mapping exported successfully for #{attachment_name} to #{export_directory}."
+      end
+
+      def update_tables_with_sample_mapping(sample_mapping)
+        AudioFile.where.not(filename: sample_mapping.keys).find_each do |audio_file|
+          sampled_data = sample_mapping.values.sample
+
+          audio_file.file.blob.purge
+          audio_file.file.update!(blob_id: sampled_data[:audio_file_blob_id])
+
+          audio_variant = audio_file.digital_remaster.audio_variants.sole
+          audio_variant.audio_file.blob.purge
+          audio_variant.audio_file.update!(blob_id: sampled_data[:audio_variant_blob_id])
+
+          digital_remaster = audio_file.digital_remaster
+          digital_remaster.update!(
+            duration: sampled_data[:digital_remaster_duration],
+            bpm: sampled_data[:digital_remaster_bpm],
+            replay_gain: sampled_data[:digital_remaster_replay_gain],
+            peak_value: sampled_data[:digital_remaster_peak_value]
+          )
+
+          waveform = audio_file.digital_remaster.waveform
+          waveform.waveform_datum&.destroy! if waveform.waveform_datum_id != sampled_data[:waveform_datum_id]
+          waveform.image.blob.purge
+          waveform.update!(waveform_datum_id: sampled_data[:waveform_datum_id])
+
+          waveform.image.update!(blob_id: sampled_data[:waveform_image_blob_id])
+        end
+      end
+
+      update_tables_with_sample_mapping(sample_mapping)
+
       models = [
         Album, AudioFile, AudioVariant, CompositionLyric, CompositionRole, Composition,
         DigitalRemaster, Genre, Language, Lyric, OrchestraPosition, OrchestraRole, Orchestra,
