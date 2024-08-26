@@ -6,6 +6,7 @@ RSpec.configure do |config|
   config.before(:suite) do
     # reindex models
     ExternalCatalog::ElRecodo::Song.reindex
+    ExternalCatalog::ElRecodo::Person.reindex
     Recording.reindex
     Playlist.reindex
     Person.reindex

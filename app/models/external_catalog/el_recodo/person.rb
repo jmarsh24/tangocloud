@@ -8,6 +8,8 @@ class ExternalCatalog::ElRecodo::Person < ApplicationRecord
 
   validates :name, presence: true
 
+  private
+
   def search_data
     {
       name:,
