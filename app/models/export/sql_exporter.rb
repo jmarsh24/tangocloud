@@ -1,3 +1,5 @@
+require "shellwords"
+
 module Export
   class SqlExporter
     def initialize(model)
@@ -8,12 +10,26 @@ module Export
       ensure_directory_exists(File.dirname(sql_file_path))
 
       config = Rails.configuration.database_configuration[Rails.env]
-      host = config["host"]
-      database = config["database"]
-      username = config["username"]
+
+      host = Shellwords.escape(config["host"])
+      database = Shellwords.escape(config["database"])
+      username = Shellwords.escape(config["username"])
+      table_name = Shellwords.escape(@model.table_name)
+      sql_file_path = Shellwords.escape(sql_file_path)
       rows_per_insert = 5000
 
-      cmd = "pg_dump --host=#{host} --username=#{username} --column-inserts --data-only --rows-per-insert=#{rows_per_insert} --table=#{@model.table_name} #{database} > #{sql_file_path}"
+      cmd = [
+        "pg_dump",
+        "--host=#{host}",
+        "--username=#{username}",
+        "--column-inserts",
+        "--data-only",
+        "--rows-per-insert=#{rows_per_insert}",
+        "--table=#{table_name}",
+        database,
+        "> #{sql_file_path}"
+      ].join(" ")
+
       system(cmd)
 
       preprocess_sql_file(sql_file_path)
