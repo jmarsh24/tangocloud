@@ -46,7 +46,8 @@ class Person < ApplicationRecord
     {
       name:,
       composition_roles: composition_roles.map(&:role),
-      singer: recording_singers.any?
+      singer: recording_singers.any?,
+      normalized_name:
     }
   end
 end
