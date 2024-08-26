@@ -1,13 +1,17 @@
 puts "Reindexing models..."
 
 models = [
-  ExternalCatalog::ElRecodo::Song,
-  Recording,
-  Playlist,
-  Person,
+  Album,
   Genre,
   Orchestra,
-  User
+  Person,
+  Playlist,
+  Recording,
+  TimePeriod,
+  User,
+  ExternalCatalog::ElRecodo::Person,
+  ExternalCatalog::ElRecodo::Orchestra,
+  ExternalCatalog::ElRecodo::Song
 ]
 
 progressbar = ProgressBar.create(total: models.size)
