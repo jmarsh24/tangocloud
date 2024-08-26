@@ -23,13 +23,6 @@ class Playlist < ApplicationRecord
   scope :public_playlists, -> { where(public: true) }
   scope :system_playlists, -> { where(system: true) }
 
-  def search_data
-    {
-      title:,
-      description:
-    }
-  end
-
   def set_default_title
     self.title = playlist_file.filename.to_s.split(".").first if title.blank?
   end
@@ -63,6 +56,15 @@ class Playlist < ApplicationRecord
     image.attach(io: File.open(output_path), filename: "composite_image.png", content_type: "image/png")
 
     File.delete(output_path) if File.exist?(output_path)
+  end
+
+  private
+
+  def search_data
+    {
+      title:,
+      description:
+    }
   end
 end
 

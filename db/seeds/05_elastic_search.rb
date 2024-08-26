@@ -1,7 +1,6 @@
 puts "Reindexing models..."
 
 models = [
-  Album,
   Genre,
   Orchestra,
   Person,

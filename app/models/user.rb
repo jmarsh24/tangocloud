@@ -26,6 +26,8 @@ class User < ApplicationRecord
 
   accepts_nested_attributes_for :user_preference
 
+  scope :search_import, -> { includes(:user_preference) }
+
   class << self
     def find_by_email_or_username(email_or_username)
       find_by(email: email_or_username) || find_by(username: email_or_username)
@@ -44,6 +46,12 @@ class User < ApplicationRecord
     end
   end
 
+  private
+
+  def ensure_user_preference
+    create_user_preference unless user_preference
+  end
+
   def search_data
     {
       username:,
@@ -51,12 +59,6 @@ class User < ApplicationRecord
       first_name:,
       last_name:
     }
-  end
-
-  private
-
-  def ensure_user_preference
-    create_user_preference unless user_preference
   end
 end
 

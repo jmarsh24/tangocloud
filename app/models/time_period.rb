@@ -14,6 +14,8 @@ class TimePeriod < ApplicationRecord
 
   scope :covering_year, ->(year) { where("? BETWEEN start_year AND end_year", year) }
 
+  private
+
   def search_data
     {
       name:,

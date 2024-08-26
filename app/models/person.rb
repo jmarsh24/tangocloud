@@ -19,6 +19,8 @@ class Person < ApplicationRecord
   has_one_attached :image
 
   before_validation :set_normalized_name, unless: -> { normalized_name.present? }
+
+  scope :search_import, -> { includes(:composition_roles, :recording_singers) }
   class << self
     def find_or_create_by_normalized_name!(name)
       normalized_name = NameUtils::NameNormalizer.normalize(name)

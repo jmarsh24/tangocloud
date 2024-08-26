@@ -5,13 +5,6 @@ class Album < ApplicationRecord
 
   has_one_attached :album_art
 
-  def search_data
-    {
-      title:,
-      description:
-    }
-  end
-
   def export_filename
     "#{title.parameterize}_#{id}"
   end
