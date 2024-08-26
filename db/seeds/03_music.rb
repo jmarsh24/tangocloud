@@ -52,7 +52,8 @@ def create_blob_with_specific_id(blob_id, metadata, file_path)
     metadata: metadata["metadata"],
     byte_size: metadata["metadata"]["byte_size"],
     checksum: metadata["metadata"]["checksum"],
-    service_name: ActiveStorage::Blob.service.name
+    service_name: ActiveStorage::Blob.service.name,
+    analyzed: true
   )
 
   blob.save!
