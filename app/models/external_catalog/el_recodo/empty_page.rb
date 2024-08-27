@@ -6,7 +6,7 @@ end
 #
 # Table name: external_catalog_el_recodo_empty_pages
 #
-#  id         :bigint           not null, primary key
+#  id         :uuid             not null, primary key
 #  ert_number :integer          not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
