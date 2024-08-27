@@ -132,7 +132,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_19_155646) do
     t.index ["tango_cloud_id"], name: "index_digital_remasters_on_tango_cloud_id", unique: true
   end
 
-  create_table "external_catalog_el_recodo_empty_pages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "external_catalog_el_recodo_empty_pages", force: :cascade do |t|
     t.integer "ert_number", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
