@@ -1,7 +1,7 @@
 class CreatePeople < ActiveRecord::Migration[7.1]
   def change
     create_table :people, id: :uuid do |t|
-      t.string :name
+      t.string :name, null: false
       t.string :slug, null: false
       t.string :sort_name
       t.string :nickname

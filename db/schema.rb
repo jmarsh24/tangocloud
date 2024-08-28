@@ -141,6 +141,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_07_175204) do
 
   create_table "external_catalog_el_recodo_orchestras", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", default: "", null: false
+    t.string "path", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_external_catalog_el_recodo_orchestras_on_name", unique: true
@@ -280,7 +281,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_07_175204) do
   create_table "orchestras", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "sort_name"
-    t.path "path", null: false
     t.string "normalized_name", default: "", null: false
     t.uuid "el_recodo_orchestra_id"
     t.string "slug", null: false
@@ -294,7 +294,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_07_175204) do
   end
 
   create_table "people", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.string "slug", null: false
     t.string "sort_name"
     t.string "nickname"

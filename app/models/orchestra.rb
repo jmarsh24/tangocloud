@@ -58,7 +58,6 @@ end
 #  id                     :uuid             not null, primary key
 #  name                   :string           not null
 #  sort_name              :string
-#  path                   :path             not null
 #  normalized_name        :string           default(""), not null
 #  el_recodo_orchestra_id :uuid
 #  slug                   :string           not null

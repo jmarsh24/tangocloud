@@ -59,7 +59,7 @@ end
 # Table name: people
 #
 #  id                  :uuid             not null, primary key
-#  name                :string
+#  name                :string           not null
 #  slug                :string           not null
 #  sort_name           :string
 #  nickname            :string
