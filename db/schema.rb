@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_19_155646) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_07_175204) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "btree_gist"
@@ -141,9 +141,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_19_155646) do
 
   create_table "external_catalog_el_recodo_orchestras", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", default: "", null: false
+    t.string "path", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "path", default: "", null: false
     t.index ["name"], name: "index_external_catalog_el_recodo_orchestras_on_name", unique: true
   end
 
@@ -189,9 +189,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_19_155646) do
     t.datetime "synced_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "page_updated_at"
     t.uuid "orchestra_id"
+    t.uuid "el_recodo_orchestra_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "el_recodo_orchestra_id"
     t.index ["date"], name: "index_external_catalog_el_recodo_songs_on_date"
     t.index ["el_recodo_orchestra_id"], name: "idx_on_el_recodo_orchestra_id_bec9fe0da0"
     t.index ["ert_number"], name: "index_external_catalog_el_recodo_songs_on_ert_number", unique: true
@@ -281,11 +281,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_19_155646) do
   create_table "orchestras", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "sort_name"
+    t.string "normalized_name", default: "", null: false
+    t.uuid "el_recodo_orchestra_id"
     t.string "slug", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "el_recodo_orchestra_id"
-    t.string "normalized_name"
     t.index ["el_recodo_orchestra_id"], name: "index_orchestras_on_el_recodo_orchestra_id"
     t.index ["name"], name: "index_orchestras_on_name", unique: true
     t.index ["normalized_name"], name: "index_orchestras_on_normalized_name", unique: true
@@ -297,18 +297,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_19_155646) do
     t.string "name", null: false
     t.string "slug", null: false
     t.string "sort_name"
+    t.string "nickname"
+    t.string "birth_place"
+    t.string "normalized_name", default: "", null: false
+    t.string "pseudonym"
     t.text "bio"
     t.date "birth_date"
     t.date "death_date"
+    t.uuid "el_recodo_person_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "nickname"
-    t.string "birth_place"
-    t.uuid "el_recodo_person_id"
-    t.string "normalized_name", null: false
-    t.string "pseudonym"
     t.index ["el_recodo_person_id"], name: "index_people_on_el_recodo_person_id"
-    t.index ["name"], name: "index_people_on_name"
+    t.index ["name"], name: "index_people_on_name", unique: true
     t.index ["normalized_name"], name: "index_people_on_normalized_name", unique: true
     t.index ["slug"], name: "index_people_on_slug", unique: true
     t.index ["sort_name"], name: "index_people_on_sort_name"
@@ -647,9 +647,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_19_155646) do
     t.integer "bits", null: false
     t.integer "length", null: false
     t.uuid "digital_remaster_id", null: false
+    t.uuid "waveform_datum_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "waveform_datum_id"
     t.index ["digital_remaster_id"], name: "index_waveforms_on_digital_remaster_id"
     t.index ["waveform_datum_id"], name: "index_waveforms_on_waveform_datum_id"
   end

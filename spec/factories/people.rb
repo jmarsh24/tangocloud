@@ -36,14 +36,14 @@ end
 #  name                :string           not null
 #  slug                :string           not null
 #  sort_name           :string
+#  nickname            :string
+#  birth_place         :string
+#  normalized_name     :string           default(""), not null
+#  pseudonym           :string
 #  bio                 :text
 #  birth_date          :date
 #  death_date          :date
+#  el_recodo_person_id :uuid
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
-#  nickname            :string
-#  birth_place         :string
-#  el_recodo_person_id :uuid
-#  normalized_name     :string           not null
-#  pseudonym           :string
 #
