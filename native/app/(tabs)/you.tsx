@@ -72,19 +72,19 @@ export default function YouScreen() {
 
 	const username = data.userProfile?.username
 	const avatarUrl = data.userProfile?.avatarUrl
-	const recordings = data.userProfile?.playbacks.edges.map((edge) => {
-		const recording = edge.node.recording
-		return {
-			id: recording.id,
-			title: recording.title,
-			artist: recording.orchestra?.name || 'Unknown Artist',
-			duration: recording.audioTransfers[0]?.audioVariants[0]?.duration || 0,
-			artwork: recording.audioTransfers[0]?.album?.albumArtUrl || '',
-			url: recording.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || '',
-			genre: recording.genre.name,
-			year: recording.year,
-		}
-	})
+	// const recordings = data.userProfile?.playbacks.edges.map((edge) => {
+	// 	const recording = edge.node.recording
+	// 	return {
+	// 		id: recording.id,
+	// 		title: recording.title,
+	// 		artist: recording.orchestra?.name || 'Unknown Artist',
+	// 		duration: recording.audioTransfers[0]?.audioVariants[0]?.duration || 0,
+	// 		artwork: recording.audioTransfers[0]?.album?.albumArtUrl || '',
+	// 		url: recording.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || '',
+	// 		genre: recording.genre.name,
+	// 		year: recording.year,
+	// 	}
+	// })
 
 	return (
 		<SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
@@ -96,29 +96,6 @@ export default function YouScreen() {
 				</View>
 			</View>
 			<Button type="secondary" onPress={onLogout} text="Sign out" />
-			<View style={styles.listContainer}>
-				<Text style={[styles.header, { color: colors.text }]}>History</Text>
-				<FlashList
-					data={recordings}
-					keyExtractor={(item, index) => `${item.id}-${index}`}
-					contentContainerStyle={{ paddingTop: 10, paddingBottom: 128 }}
-					ListEmptyComponent={
-						<View>
-							<Text style={utilsStyles.emptyContentText}>No songs found</Text>
-							<FastImage
-								source={require('@/assets/unknown_track.png')}
-								style={utilsStyles.emptyContentImage}
-							/>
-						</View>
-					}
-					ListFooterComponent={ItemDivider}
-					ItemSeparatorComponent={ItemDivider}
-					renderItem={({ item }) => (
-						<TracksListItem track={item} onTrackSelect={() => handleTrackSelect(item)} />
-					)}
-					estimatedItemSize={80}
-				/>
-			</View>
 		</SafeAreaView>
 	)
 }
