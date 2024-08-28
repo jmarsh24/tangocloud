@@ -25,5 +25,4 @@ end
 #  name       :string           default(""), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  path       :string           default(""), not null
 #
