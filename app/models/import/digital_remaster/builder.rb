@@ -69,17 +69,20 @@ module Import
       end
 
       def build_waveform(waveform:, waveform_image:)
-        waveform = Waveform.new(
+        data = waveform.data
+
+        new_waveform = Waveform.new(
           version: waveform.version,
           channels: waveform.channels,
           sample_rate: waveform.sample_rate,
           samples_per_pixel: waveform.samples_per_pixel,
           bits: waveform.bits,
-          length: waveform.length,
-          data: waveform.data
+          length: waveform.length
         )
-        waveform.image.attach(io: File.open(waveform_image), filename: File.basename(waveform_image))
-        waveform
+        new_waveform.build_waveform_datum
+        new_waveform.data = data
+        new_waveform.image.attach(io: File.open(waveform_image), filename: File.basename(waveform_image))
+        new_waveform
       end
 
       def build_audio_variant(format:, bit_rate:, compressed_audio:)
@@ -95,7 +98,11 @@ module Import
         return if title.blank?
 
         album = Album.find_or_create_by!(title:)
-        album.album_art.attach(io: File.open(album_art), filename: File.basename(album_art))
+
+        if album_art.present? && !album.album_art.attached?
+          album.album_art.attach(io: File.open(album_art), filename: File.basename(album_art))
+        end
+
         album
       end
 

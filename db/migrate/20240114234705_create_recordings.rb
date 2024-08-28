@@ -8,7 +8,7 @@ class CreateRecordings < ActiveRecord::Migration[7.1]
       t.integer :playbacks_count, null: false, default: 0
 
       t.belongs_to :el_recodo_song, type: :uuid, foreign_key: {to_table: :external_catalog_el_recodo_songs}
-      t.belongs_to :orchestra, foreign_key: true, type: :uuid, null: false
+      t.belongs_to :orchestra, foreign_key: true, type: :uuid, null: true
       t.belongs_to :composition, foreign_key: true, type: :uuid, null: false
       t.belongs_to :genre, foreign_key: true, type: :uuid, null: false
       t.belongs_to :record_label, foreign_key: true, type: :uuid

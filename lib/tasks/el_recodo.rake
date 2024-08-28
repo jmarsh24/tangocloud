@@ -5,7 +5,7 @@ namespace :el_recodo do
     excluded_ert_numbers = ExternalCatalog::ElRecodo::EmptyPage.pluck(:ert_number)
     ert_numbers = (1..total_songs).to_a.shuffle - excluded_ert_numbers
 
-    progressbar = ProgressBar.create(
+    progress_bar = ProgressBar.create(
       title: "Enqueuing Jobs",
       total: ert_numbers.size,
       format: "%t: |%B| %p%% %a",
@@ -18,12 +18,12 @@ namespace :el_recodo do
       end
 
       ActiveJob.perform_all_later(sync_song_jobs)
-      progressbar.progress += batch.size
+      progress_bar.progress += batch.size
 
       puts "Enqueued batch #{index + 1} of #{(ert_numbers.size / 1000.0).ceil}"
     end
 
-    progressbar.finish
+    progress_bar.finish
 
     puts "All #{ert_numbers.size} jobs have been enqueued."
   end

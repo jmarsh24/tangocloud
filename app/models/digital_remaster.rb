@@ -8,6 +8,7 @@ class DigitalRemaster < ApplicationRecord
   has_one :waveform, dependent: :destroy
 
   validates :duration, presence: true, numericality: {greater_than_or_equal_to: 0}
+  validates :tango_cloud_id, presence: true, uniqueness: true
 end
 
 # == Schema Information

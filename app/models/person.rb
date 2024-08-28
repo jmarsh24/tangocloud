@@ -14,14 +14,42 @@ class Person < ApplicationRecord
 
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true
+  validates :normalized_name, presence: true, uniqueness: true
 
   has_one_attached :image
+
+  before_validation :set_normalized_name, unless: -> { normalized_name.present? }
+
+  scope :search_import, -> { includes(:composition_roles, :recording_singers) }
+  class << self
+    def find_or_create_by_normalized_name!(name)
+      normalized_name = NameUtils::NameNormalizer.normalize(name)
+
+      find_or_create_by!(normalized_name:) do |person|
+        parsed_name = NameUtils::NameParser.parse(name)
+        person.name = parsed_name.formatted_name
+        person.pseudonym = parsed_name.pseudonym
+        person.normalized_name = normalized_name
+      end
+    end
+  end
+
+  def export_filename
+    "#{name.parameterize}_#{id}"
+  end
+
+  private
+
+  def set_normalized_name
+    self.normalized_name = NameUtils::NameNormalizer.normalize(name)
+  end
 
   def search_data
     {
       name:,
       composition_roles: composition_roles.map(&:role),
-      singer: recording_singers.any?
+      singer: recording_singers.any?,
+      normalized_name:
     }
   end
 
@@ -46,4 +74,6 @@ end
 #  nickname            :string
 #  birth_place         :string
 #  el_recodo_person_id :uuid
+#  normalized_name     :string           not null
+#  pseudonym           :string
 #

@@ -29,6 +29,19 @@ class Recording < ApplicationRecord
 
   enum recording_type: {studio: "studio", live: "live"}
 
+  scope :search_import, -> {
+                          includes(
+                            :composition,
+                            :orchestra,
+                            :singers,
+                            :genre,
+                            :record_label,
+                            :time_period,
+                            composition: [:composers, :lyricists],
+                            orchestra: [:orchestra_periods]
+                          )
+                        }
+
   def title
     composition.title
   end
@@ -36,6 +49,8 @@ class Recording < ApplicationRecord
   def year
     recorded_date&.year
   end
+
+  private
 
   def search_data
     {

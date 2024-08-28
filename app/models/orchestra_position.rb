@@ -1,3 +1,9 @@
+class OrchestraPosition < ApplicationRecord
+  belongs_to :orchestra
+  belongs_to :orchestra_role
+  belongs_to :person
+end
+
 # == Schema Information
 #
 # Table name: orchestra_positions
@@ -12,8 +18,3 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #
-class OrchestraPosition < ApplicationRecord
-  belongs_to :orchestra
-  belongs_to :orchestra_role
-  belongs_to :person
-end

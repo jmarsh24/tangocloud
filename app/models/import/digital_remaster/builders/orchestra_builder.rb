@@ -43,7 +43,7 @@ module Import
               role_name = ROLE_TRANSLATION[role]
               raise UnrecognizedRoleError, "Unrecognized role: #{person_role.role}" unless role_name
 
-              person = Person.find_or_create_by!(name: person_role.person.name)
+              person = find_or_create_person_with_image(person_role.person.name)
               orchestra_role = OrchestraRole.find_or_create_by!(name: role_name)
 
               OrchestraPosition.find_or_create_by!(
@@ -56,6 +56,19 @@ module Import
 
           orchestra.save!
           orchestra
+        end
+
+        private
+
+        def find_or_create_person_with_image(name)
+          person = Person.find_or_create_by_normalized_name!(name)
+          el_recodo_person = ExternalCatalog::ElRecodo::Person.search(name).first
+
+          if el_recodo_person&.image&.attached? && !person.image.attached?
+            person.image.attach(el_recodo_person.image.blob)
+          end
+
+          person
         end
       end
     end

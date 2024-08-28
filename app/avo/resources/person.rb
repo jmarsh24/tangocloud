@@ -25,6 +25,7 @@ class Avo::Resources::Person < Avo::BaseResource
     field :bio, as: :text, hide_on: :index
     field :birth_date, as: :date
     field :death_date, as: :date
+    field :normalized_name, as: :text, hide_on: :index
     field :orchestra_positions, as: :has_many
     field :recording_singers, as: :has_many
     field :composition_roles, as: :has_many

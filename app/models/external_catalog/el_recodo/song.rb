@@ -15,6 +15,14 @@ class ExternalCatalog::ElRecodo::Song < ApplicationRecord
 
   before_save :set_formatted_title
 
+  scope :search_import, -> { includes(:orchestra, :people) }
+
+  def singers
+    people.joins(:person_roles).merge(ExternalCatalog::ElRecodo::PersonRole.singers)
+  end
+
+  private
+
   def search_data
     {
       date:,
@@ -27,12 +35,6 @@ class ExternalCatalog::ElRecodo::Song < ApplicationRecord
       people: people&.map(&:name)
     }
   end
-
-  def singers
-    people.joins(:person_roles).merge(ExternalCatalog::ElRecodo::PersonRole.singers)
-  end
-
-  private
 
   def set_formatted_title
     singer_names = singers.map(&:name)

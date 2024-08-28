@@ -7,8 +7,8 @@ class CreateWaveforms < ActiveRecord::Migration[7.1]
       t.integer :samples_per_pixel, null: false
       t.integer :bits, null: false
       t.integer :length, null: false
-      t.float :data, array: true, default: []
       t.belongs_to :digital_remaster, null: false, foreign_key: true, type: :uuid
+      t.belongs_to :waveform_datum, null: false, foreign_key: true, type: :uuid
 
       t.timestamps
     end

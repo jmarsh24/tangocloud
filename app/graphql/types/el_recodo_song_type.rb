@@ -12,7 +12,6 @@ module Types
     field :instrumental, Boolean, null: false
     field :lyrics, String
     field :lyrics_year, Integer
-    field :search_data, String
     field :matrix, String
     field :disk, String
     field :speed, Integer
