@@ -4,7 +4,5 @@ class CreateWaveformData < ActiveRecord::Migration[7.1]
       t.float :data, array: true, default: [], null: false
       t.timestamps
     end
-
-    add_reference :waveforms, :waveform_datum, type: :uuid, foreign_key: true
   end
 end

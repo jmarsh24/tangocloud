@@ -8,5 +8,7 @@ class CreateCompositionRoles < ActiveRecord::Migration[7.1]
 
       t.timestamps
     end
+
+    add_index :composition_roles, [:role, :person_id, :composition_id], unique: true
   end
 end
