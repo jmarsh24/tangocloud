@@ -2,6 +2,7 @@ module Api
   class SessionsController < BaseController
     before_action :authorize_access_request!, only: [:destroy]
 
+    # @route POST /api/login (api_login)
     def create
       user = User.find_by_email_or_username(params[:login])
 
@@ -14,6 +15,7 @@ module Api
       end
     end
 
+    # @route POST /api/google_login (api_google_login)
     def google_login
       id_token = params[:id_token]
       google_user_info = Google::Auth::IDTokens.verify_oidc(id_token, aud: Config.google_client_id!)
@@ -45,6 +47,7 @@ module Api
       end
     end
 
+    # @route POST /api/apple_login (api_apple_login)
     def apple_login
       user_identifier = params[:user_identifier]
       identity_token = params[:identity_token]
@@ -69,6 +72,7 @@ module Api
       end
     end
 
+    # @route DELETE /api/logout (api_logout)
     def destroy
       session = JWTSessions::Session.new(payload:)
       session.flush_by_access_payload

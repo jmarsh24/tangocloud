@@ -3,6 +3,8 @@ module Api
     include JWTSessions::RailsAuthorization
     rescue_from JWTSessions::Errors::Unauthorized, with: :not_authorized
 
+    # @route POST /api/graphql (api_graphql)
+    # @route POST /api/graphql (api_graphql)
     def execute
       variables = prepare_variables(params[:variables])
       query = params[:query]
