@@ -12,6 +12,7 @@ module Types
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
     has_many :likes, -> { most_recent }
+    has_many :liked_recordings, type: Types::RecordingType
     has_many :tandas
     has_many :playlists
     has_many :playlist_items

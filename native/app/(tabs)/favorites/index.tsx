@@ -1,16 +1,16 @@
 import { TracksList } from '@/components/TracksList'
 import { screenPadding } from '@/constants/tokens'
-import { FETCH_LIKED_RECORDINGS } from '@/graphql'
+import { Person } from '@/generated/graphql'
+import { LIKED_RECORDINGS } from '@/graphql'
 import { generateTracksListId } from '@/helpers/miscellaneous'
 import { useNavigationSearch } from '@/hooks/useNavigationSearch'
 import { defaultStyles } from '@/styles'
 import { useQuery } from '@apollo/client'
-import { useMemo } from 'react'
 import { ScrollView, Text, View } from 'react-native'
 
 const FavoritesScreen = () => {
-	const { data, loading, error } = useQuery(FETCH_LIKED_RECORDINGS, {
-		fetchPolicy: 'cache-and-network',
+	const { data, loading, error } = useQuery(LIKED_RECORDINGS, {
+		fetchPolicy: 'network-only',
 	})
 
 	const search = useNavigationSearch({
@@ -18,28 +18,6 @@ const FavoritesScreen = () => {
 			placeholder: 'Find in recordings',
 		},
 	})
-
-	// Processing data to get favorites tracks, now filtered based on search
-	const favoritesTracks = useMemo(() => {
-		const allTracks =
-			data?.fetchLikedRecordings?.edges.map((edge) => ({
-				id: edge.node.id,
-				title: edge.node.title,
-				artist: edge.node.orchestra?.name || 'Unknown Orchestra',
-				duration: edge.node.audioTransfers[0]?.audioVariants[0]?.duration || 0,
-				artwork:
-					edge.node.audioTransfers[0]?.album?.albumArtUrl || require('@/assets/unknown_track.png'),
-				url: edge.node.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || '',
-				singer: edge.node.singers?.map((s) => s.name).join(', ') || '',
-				lyrics: edge.node?.composition?.lyrics[0]?.content || '',
-				year: edge.node.year || 'Unknown Year',
-				genre: edge.node.genre?.name || 'Unknown Genre',
-			})) || []
-
-		return search
-			? allTracks.filter((track) => track.title.toLowerCase().includes(search.toLowerCase()))
-			: allTracks
-	}, [data, search])
 
 	if (loading) {
 		return (
@@ -57,6 +35,26 @@ const FavoritesScreen = () => {
 			</View>
 		)
 	}
+
+  const allTracks =
+    data?.currentUser?.likedRecordings?.edges.map((edge) => {
+      const recording = edge.node;
+      return {
+        id: recording.id,
+        title: recording.title,
+        artist: recording.recordingSingers?.edges
+          .map((singerEdge : Person) => singerEdge.node.person.name)
+          .join(', '),
+        duration: recording.digitalRemasters.edges[0].node.duration || 0,
+        artwork: recording.digitalRemasters.edges[0].node.album.albumArt.blob.url,
+        genre: recording.genre?.name,
+      };
+    }) || [];
+  const favoritesTracks = search
+    ? allTracks.filter((track) =>
+        track.title.toLowerCase().includes(search.toLowerCase())
+      )
+    : allTracks;
 
 	return (
 		<View style={defaultStyles.container}>
