@@ -1,8 +1,11 @@
 module Api
   class GraphQLController < ActionController::API
     include JWTSessions::RailsAuthorization
+    before_action :authenticate_user!
     rescue_from JWTSessions::Errors::Unauthorized, with: :not_authorized
 
+    # @route POST /api/graphql (api_graphql)
+    # @route POST /api/graphql (api_graphql)
     def execute
       variables = prepare_variables(params[:variables])
       query = params[:query]
@@ -48,7 +51,17 @@ module Api
     end
 
     def not_authorized
-      render json: {error: "Not authorized"}, status: :unauthorized
+      message = "Not authorized"
+      if Rails.env.development?
+        message += ". Please login via the web interface to authenticate."
+      end
+      render json: {error: message}, status: :unauthorized
+    end
+
+    def authenticate_user!
+      return if current_user.present?
+
+      raise JWTSessions::Errors::Unauthorized
     end
 
     def current_user

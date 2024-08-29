@@ -7,8 +7,6 @@ module Mutations::Playlists
     field :playlist_item, Types::PlaylistItemType, null: true
 
     def resolve(playlist_id:, recording_id:)
-      check_authentication!
-
       playlist = current_user.playlists.find_by(id: playlist_id)
       return {playlist_item: nil, errors: ["Playlist not found"]} if playlist.nil?
 

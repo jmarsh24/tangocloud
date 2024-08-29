@@ -3,8 +3,6 @@ module Resolvers
     type Types::RecordingType.connection_type, null: false
 
     def resolve
-      check_authentication!
-
       ::Recording.all
     end
   end

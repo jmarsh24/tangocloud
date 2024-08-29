@@ -5,8 +5,6 @@ module Resolvers
     argument :query, String, required: false, description: "Search query."
 
     def resolve(query: "*")
-      check_authentication!
-
       ::Playlist.search(
         query,
         fields: [:title, :description],

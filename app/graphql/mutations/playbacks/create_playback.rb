@@ -6,8 +6,6 @@ module Mutations::Playbacks
     field :playback, Types::PlaybackType, null: true
 
     def resolve(recording_id:)
-      check_authentication!
-
       playback = current_user.playbacks.new(
         recording_id:
       )

@@ -10,8 +10,6 @@ module Mutations::Playlists
     field :playlist, Types::PlaylistType, null: true
 
     def resolve(id:, title: nil, description: nil, public: nil, image: nil)
-      check_authentication!
-
       playlist = current_user.playlists.find(id)
 
       playlist.title = title if title.present?

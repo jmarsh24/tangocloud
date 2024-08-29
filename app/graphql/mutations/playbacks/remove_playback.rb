@@ -7,8 +7,6 @@ module Mutations::Playbacks
     field :success, Boolean, null: false
 
     def resolve(id:)
-      check_authentication!
-
       playback = Playback.find(id)
 
       if playback.destroy
