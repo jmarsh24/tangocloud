@@ -39,14 +39,11 @@ const PlayerScreen = () => {
 		data: relatedRecordingsData,
 		loading: relatedRecordingsLoading,
 		error: relatedRecordingsError,
-	} = useQuery(SEARCH_RECORDINGS, {
-		variables: { query: activeTrack?.title, first: 10 },
-		skip: !activeTrack,
-	})
+	} = useQuery(SEARCH_RECORDINGS)
 
 	const { top } = useSafeAreaInsets()
 
-	const { isFavorite, toggleFavorite } = useTrackPlayerFavorite()
+	// const { isFavorite, toggleFavorite } = useTrackPlayerFavorite()
 
 	const { activeQueueId, setActiveQueueId } = useQueue()
 
@@ -71,19 +68,36 @@ const PlayerScreen = () => {
 
 	const recentlyaddedRecordings = useMemo(() => {
 		if (!relatedRecordingsData) return []
-		return relatedRecordingsData.searchRecordings.edges
+
+		return relatedRecordingsData.searchRecordings.recordings.edges
 			.map((edge) => ({
 				id: edge.node.id,
 				title: edge.node.title,
 				artist: edge.node.orchestra?.name || 'Unknown Artist',
-				duration: edge.node.audioTransfers[0]?.audioVariants[0]?.duration || 0,
-				artwork: edge.node.audioTransfers[0]?.album?.albumArtUrl || '',
-				url: edge.node.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || '',
+				duration: edge.node.digitalRemasters[0]?.audioVariants[0]?.duration || 0,
+				artwork: edge.node.digitalRemasters[0]?.album?.albumArt.blob.url || '',
+				url: edge.node.digitalRemasters[0]?.audioVariants[0]?.audioFile.blob.url || '',
 				genre: edge.node.genre?.name || 'Unknown Genre',
 				year: edge.node.year || 'Unknown Year',
 			}))
-			.filter((recording) => recording.id !== activeTrack.id)
+			.filter((recording) => recording.id !== activeTrack?.id)
 	}, [relatedRecordingsData, activeTrack?.id])
+
+	if (relatedRecordingsLoading) {
+    return (
+      <View style={[defaultStyles.container, { justifyContent: 'center' }]}>
+        <ActivityIndicator color={colors.icon} />
+      </View>
+    )
+  }
+
+  if (relatedRecordingsError) {
+    return (
+      <View style={[defaultStyles.container, { justifyContent: 'center' }]}>
+        <Text style={defaultStyles.text}>Error fetching related recordings</Text>
+      </View>
+    )
+  }
 
 	if (!activeTrack) {
 		return (
@@ -141,14 +155,14 @@ const PlayerScreen = () => {
 													style={styles.trackTitleText}
 												/>
 											</View>
-											<TouchableOpacity activeOpacity={0.7} onPress={toggleFavorite}>
+											{/* <TouchableOpacity activeOpacity={0.7} onPress={toggleFavorite}>
 												<FontAwesome
 													name={isFavorite ? 'heart' : 'heart-o'}
 													size={28}
 													color={isFavorite ? colors.primary : colors.icon}
 													style={{ marginHorizontal: 14 }}
 												/>
-											</TouchableOpacity>
+											</TouchableOpacity> */}
 										</View>
 
 										{activeTrack.artist && (
