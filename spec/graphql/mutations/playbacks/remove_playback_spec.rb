@@ -23,7 +23,7 @@ RSpec.describe "RemovePlayback", type: :graph do
       gql(mutation, variables:, user:)
 
       expect(Playback.find_by(id: playback.id)).to be_nil
-      expect(data.remove_playback.success).to eq(true)
+      expect(data.remove_playback.success).to be(true)
     end
   end
 end
