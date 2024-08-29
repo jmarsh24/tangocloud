@@ -15,4 +15,4 @@ JWTSessions.token_store = :redis, {
 
 # Set the access token expiration time to 1 year (in seconds), this disables the need to refresh the token.
 # This should be changed in the future.
-JWTSessions.access_exp_time = 31_536_000
+JWTSessions.access_exp_time = 31_536_000 if Rails.env.development?
