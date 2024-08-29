@@ -15,7 +15,6 @@ Rails.application.routes.draw do
     post "/graphql", to: "graphql#execute"
 
     post :login, to: "login#create"
-    delete :login, to: "login#destroy"
     post :refresh, to: "refresh#create"
 
     resources :users, only: [:show, :create]
