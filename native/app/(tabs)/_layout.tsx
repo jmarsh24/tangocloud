@@ -27,7 +27,7 @@ const TabsNavigation = () => {
 		console.error('Error fetching user:', error)
 	}
 
-	const avatarUrl = data?.currentUser?.userPreference.avatar.blob.url
+	const avatarUrl = data?.currentUser?.userPreference?.avatar?.blob?.url
 
 	const youIcon = (color) => {
 		if (authState?.authenticated && avatarUrl) {
