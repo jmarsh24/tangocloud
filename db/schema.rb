@@ -294,8 +294,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_07_175204) do
   end
 
   create_table "people", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name", null: false
-    t.string "slug", null: false
+    t.string "name", default: "", null: false
+    t.string "slug"
     t.string "sort_name"
     t.string "nickname"
     t.string "birth_place"
@@ -308,7 +308,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_07_175204) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["el_recodo_person_id"], name: "index_people_on_el_recodo_person_id"
-    t.index ["name"], name: "index_people_on_name", unique: true
     t.index ["normalized_name"], name: "index_people_on_normalized_name", unique: true
     t.index ["slug"], name: "index_people_on_slug", unique: true
     t.index ["sort_name"], name: "index_people_on_sort_name"

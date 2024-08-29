@@ -33,8 +33,8 @@ end
 # Table name: people
 #
 #  id                  :uuid             not null, primary key
-#  name                :string           not null
-#  slug                :string           not null
+#  name                :string           default(""), not null
+#  slug                :string
 #  sort_name           :string
 #  nickname            :string
 #  birth_place         :string

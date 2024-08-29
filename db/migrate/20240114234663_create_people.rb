@@ -1,8 +1,8 @@
 class CreatePeople < ActiveRecord::Migration[7.1]
   def change
     create_table :people, id: :uuid do |t|
-      t.string :name, null: false
-      t.string :slug, null: false
+      t.string :name, null: false, default: ""
+      t.string :slug
       t.string :sort_name
       t.string :nickname
       t.string :birth_place
@@ -18,7 +18,6 @@ class CreatePeople < ActiveRecord::Migration[7.1]
 
     add_index :people, :slug, unique: true
     add_index :people, :sort_name
-    add_index :people, :name, unique: true
     add_index :people, :normalized_name, unique: true
   end
 end
