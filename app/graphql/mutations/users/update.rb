@@ -10,8 +10,6 @@ module Mutations
     argument :password, String, required: false
 
     def resolve(avatar: nil, username: nil, password: nil, first_name: nil, last_name: nil)
-      check_authentication!
-
       user = current_user
 
       if avatar

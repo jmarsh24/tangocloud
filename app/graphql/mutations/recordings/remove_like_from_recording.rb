@@ -7,8 +7,6 @@ module Mutations
       argument :recording_id, ID, required: true
 
       def resolve(recording_id:)
-        check_authentication!
-
         recording = Recording.find(recording_id)
 
         if recording.nil?

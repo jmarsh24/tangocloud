@@ -5,8 +5,6 @@ module Resolvers
     argument :query, String, required: false
 
     def resolve(query: "*")
-      check_authentication!
-
       ::Person.search(query,
         match: :word_start,
         where: {composition_roles: "lyricist"},
