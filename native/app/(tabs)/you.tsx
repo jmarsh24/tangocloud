@@ -96,6 +96,29 @@ export default function YouScreen() {
 				</View>
 			</View>
 			<Button type="secondary" onPress={onLogout} text="Sign out" />
+			<View style={styles.listContainer}>
+				<Text style={[styles.header, { color: colors.text }]}>History</Text>
+				<FlashList
+					data={recordings}
+					keyExtractor={(item, index) => `${item.id}-${index}`}
+					contentContainerStyle={{ paddingTop: 10, paddingBottom: 128 }}
+					ListEmptyComponent={
+						<View>
+							<Text style={utilsStyles.emptyContentText}>No songs found</Text>
+							<FastImage
+								source={require('@/assets/unknown_track.png')}
+								style={utilsStyles.emptyContentImage}
+							/>
+						</View>
+					}
+					ListFooterComponent={ItemDivider}
+					ItemSeparatorComponent={ItemDivider}
+					renderItem={({ item }) => (
+						<TracksListItem track={item} onTrackSelect={() => handleTrackSelect(item)} />
+					)}
+					estimatedItemSize={80}
+				/>
+			</View>
 		</SafeAreaView>
 	)
 }
