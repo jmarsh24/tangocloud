@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "api login", type: :request do
+RSpec.describe "Login User", type: :request do
   let(:password) { "password123" }
   let!(:user) { create(:user, password:) }
 

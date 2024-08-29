@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Api::RefreshController", type: :request do
+RSpec.describe "Refresh Tokens", type: :request do
   let(:password) { "password123" }
   let!(:user) { create(:user, password:) }
 
