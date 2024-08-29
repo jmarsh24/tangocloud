@@ -10,12 +10,22 @@ Rails.application.routes.draw do
   authenticate :user, ->(user) { user.admin? } do
     mount Avo::Engine => "/admin"
   end
-  resources :digital_remaster, only: [:new, :create]
+
+  namespace :api do
+    post "/graphql", to: "graphql#execute"
+
+    post :login, to: "login#create"
+    delete :login, to: "login#destroy"
+    post :refresh, to: "refresh#create"
+
+    resources :users, only: [:show, :create]
+  end
 
   namespace :api do
     post "/graphql", to: "graphql#execute"
   end
 
+  resources :digital_remaster, only: [:new, :create]
   resources :recordings, only: [:show]
   resources :audio_variants, only: [:show]
 
