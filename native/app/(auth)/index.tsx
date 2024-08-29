@@ -7,7 +7,7 @@ import { AntDesign } from '@expo/vector-icons'
 
 const LoginScreen = () => {
 	const [loading, setLoading] = useState(false)
-	const { onAppleLogin, onGoogleLogin, onFacebookLogin } = useAuth()
+	const { onAppleLogin, onGoogleLogin } = useAuth()
 
 	async function signInWithApple() {
 		setLoading(true)
@@ -22,15 +22,6 @@ const LoginScreen = () => {
 		setLoading(true)
 		try {
 			await onGoogleLogin()
-		} finally {
-			setLoading(false)
-		}
-	}
-
-	async function signInWithFacebook() {
-		setLoading(true)
-		try {
-			await onFacebookLogin()
 		} finally {
 			setLoading(false)
 		}
@@ -79,15 +70,6 @@ const LoginScreen = () => {
 						<Text style={[styles.buttonText, { color: colors.text }]}>Continue with Google</Text>
 					</TouchableOpacity>
 
-					{/* Uncomment if you want to include Facebook login
-					<TouchableOpacity
-						onPress={signInWithFacebook}
-						style={[styles.customButton, { backgroundColor: 'black' }]}
-						disabled={loading}
-					>
-						<Image source={require('@/assets/images/facebook_logo.png')} style={styles.icon} />
-						<Text style={[styles.buttonText, { color: colors.text }]}>Continue with Facebook</Text>
-					</TouchableOpacity> */}
 
 					<Link href="/login" style={styles.textButton}>
 						Log in

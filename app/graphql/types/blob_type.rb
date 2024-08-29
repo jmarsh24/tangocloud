@@ -8,11 +8,27 @@ module Types
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
     field :url, String, null: false do
       argument :width, Integer, required: false
+      argument :height, Integer, required: false
+      argument :resizing_type, String, required: false, default_value: "fit"
+      argument :format, String, required: false, default_value: "jpg"
     end
 
-    def url(width: nil)
+    def url(width: nil, height: nil, resizing_type: "fit", format: "jpg")
       if object.image? && object.variable?
-        object.imgproxy_url(imgproxy_options: {width: width || 1000})
+
+        resize_option = if width && height
+          "#{width}x#{height}"
+        elsif width
+          "#{width}x"
+        elsif height
+          "x#{height}"
+        end
+
+        variant_options = {resize: resize_option, format:}.compact
+        variant = object.variant(variant_options)
+
+        imgproxy_options = {width:, height:, resizing_type:}.compact
+        Rails.application.routes.url_helpers.rails_representation_url(variant.processed, imgproxy_options:)
       else
         Rails.application.routes.url_helpers.rails_blob_url(object)
       end

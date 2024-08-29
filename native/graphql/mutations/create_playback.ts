@@ -1,14 +1,20 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client'
 
 export const CREATE_PLAYBACK = gql`
-  mutation CreatePlayback($recordingId: ID!) {
-    createPlayback(input: { recordingId: $recordingId }) {
-      playback {
-        id
-        recording {
-          id
-        }
-      }
-    }
-  }
-`;
+	mutation CreatePlayback($recordingId: ID!) {
+		createPlayback(input: { recordingId: $recordingId }) {
+			playback {
+				id
+				recording {
+					id
+					title
+				}
+				user {
+					id
+					username
+				}
+			}
+			errors
+		}
+	}
+`
