@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Create User", type: :request do
+RSpec.describe "User", type: :request do
   let(:password) { "password123" }
   let!(:user) { create(:user, password:) }
   let(:payload) { {user_id: user.id} }
@@ -50,14 +50,11 @@ RSpec.describe "Create User", type: :request do
     end
 
     context "failure" do
-      it "returns 401 when no access token is provided" do
-        post api_users_path, params: user_params
-        expect(response.code).to eq "401"
-      end
-
-      it "allows request when using headers without CSRF token" do
-        post api_users_path, headers: {JWTSessions.access_header => access_token}, params: user_params
-        expect(response.code).to eq "200"
+      it "returns an error if user creation fails" do
+        invalid_params = {user: {email: "", password: ""}}
+        post api_users_path, params: invalid_params
+        expect(response.code).to eq "422"
+        expect(json_response["errors"]).to be_present
       end
     end
   end
