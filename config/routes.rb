@@ -14,7 +14,8 @@ Rails.application.routes.draw do
   namespace :api do
     post "/graphql", to: "graphql#execute"
 
-    post :login, to: "login#create"
+    post :login, to: "sessions#create"
+    delete :logout, to: "sessions#destroy"
     post :refresh, to: "refresh#create"
 
     resources :users, only: [:show, :create]

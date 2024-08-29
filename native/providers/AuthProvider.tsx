@@ -87,8 +87,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   };
 
   const login = async (login: string, password: string) => {
-		console.log('login', login, password);
-		console.log('process.env.EXPO_PUBLIC_API_ENDPOINT', process.env.EXPO_PUBLIC_API_ENDPOINT);
     try {
       const response = await axios.post(`${process.env.EXPO_PUBLIC_API_ENDPOINT}/login`, {
         login,

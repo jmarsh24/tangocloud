@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Login User", type: :request do
+RSpec.describe "Sessions", type: :request do
   let(:password) { "password123" }
   let!(:user) { create(:user, password:) }
 
@@ -22,9 +22,8 @@ RSpec.describe "Login User", type: :request do
         session = JWTSessions::Session.new(payload:, refresh_by_access_allowed: true)
         tokens = session.login
 
-        delete api_login_path, headers: {
-          JWTSessions.access_header => "Bearer #{tokens[:access]}",
-          JWTSessions.csrf_header => tokens[:csrf]
+        delete api_logout_path, headers: {
+          JWTSessions.access_header => "Bearer #{tokens[:access]}"
         }
       end
 
@@ -43,9 +42,8 @@ RSpec.describe "Login User", type: :request do
         session2 = JWTSessions::Session.new(payload: session.payload, refresh_by_access_allowed: true)
         tokens = session2.refresh_by_access_payload
 
-        delete api_login_path, headers: {
-          JWTSessions.access_header => "Bearer #{tokens[:access]}",
-          JWTSessions.csrf_header => tokens[:csrf]
+        delete api_logout_path, headers: {
+          JWTSessions.access_header => "Bearer #{tokens[:access]}"
         }
       end
 

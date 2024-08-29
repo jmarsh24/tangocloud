@@ -1,5 +1,5 @@
 module Api
-  class LoginController < BaseController
+  class SessionsController < BaseController
     before_action :authorize_access_request!, only: [:destroy]
 
     def create
@@ -12,6 +12,12 @@ module Api
       else
         render json: "Invalid user", status: :unauthorized
       end
+    end
+
+    def destroy
+      session = JWTSessions::Session.new(payload:)
+      session.flush_by_access_payload
+      render json: :ok
     end
   end
 end
