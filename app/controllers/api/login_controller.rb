@@ -13,11 +13,5 @@ module Api
         render json: "Invalid user", status: :unauthorized
       end
     end
-
-    def destroy
-      session = JWTSessions::Session.new(payload:)
-      session.flush_by_access_payload
-      render json: :ok
-    end
   end
 end
