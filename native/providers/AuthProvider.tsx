@@ -1,12 +1,13 @@
 import { createContext, useContext, useEffect, useState, PropsWithChildren } from 'react'
 import { useApolloClient, ApolloError } from '@apollo/client'
-import { REGISTER, LOGIN, APPLE_LOGIN, GOOGLE_LOGIN } from '@/graphql'
+import { REGISTER, LOGIN, APPLE_LOGIN, GOOGLE_LOGIN, REFRESH } from '@/graphql'
 import * as SecureStore from 'expo-secure-store'
 import * as AppleAuthentication from 'expo-apple-authentication'
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
 
 interface AuthState {
 	token: string | null
+	refreshToken: string | null
 	authenticated: boolean | null
 }
 
@@ -17,6 +18,7 @@ interface AuthContextType {
 	onAppleLogin: () => Promise<any>
 	onGoogleLogin: () => Promise<any>
 	onLogout: () => Promise<void>
+	refreshToken: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -25,21 +27,50 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 	const apolloClient = useApolloClient()
 	const [authState, setAuthState] = useState<AuthState>({
 		token: null,
+		refreshToken: null,
 		authenticated: null,
 	})
 
 	useEffect(() => {
 		const loadToken = async () => {
 			const token = await SecureStore.getItemAsync('token')
+			const refreshToken = await SecureStore.getItemAsync('refreshToken')
 			if (token) {
 				setAuthState({
 					token: token,
+					refreshToken: refreshToken,
 					authenticated: true,
 				})
 			}
 		}
 		loadToken()
 	}, [])
+
+	const refreshToken = async () => {
+		if (!authState.refreshToken) return
+
+		try {
+			const { data } = await apolloClient.mutate({
+				mutation: REFRESH,
+				variables: { refreshToken: authState.refreshToken },
+			})
+
+			if (data.refresh.access) {
+				setAuthState({
+					token: data.refresh.access,
+					refreshToken: data.refresh.refresh,
+					authenticated: true,
+				})
+				await SecureStore.setItemAsync('token', data.refresh.access)
+				await SecureStore.setItemAsync('refreshToken', data.refresh.refresh)
+			} else {
+				await logout()
+			}
+		} catch (error) {
+			const apolloError = error as ApolloError
+			throw new Error(apolloError.message)
+		}
+	}
 
 	const register = async (username: string, email: string, password: string) => {
 		try {
@@ -63,10 +94,12 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 			})
 			setAuthState({
 				token: data.login.session.access,
+				refreshToken: data.login.session.refresh,
 				authenticated: true,
 			})
 
 			await SecureStore.setItemAsync('token', data.login.session.access)
+			await SecureStore.setItemAsync('refreshToken', data.login.session.refresh)
 			return data.login
 		} catch (error) {
 			const apolloError = error as ApolloError
@@ -96,10 +129,12 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
 			setAuthState({
 				token: data.appleLogin.session.access,
+				refreshToken: data.appleLogin.session.refresh,
 				authenticated: true,
 			})
 
 			await SecureStore.setItemAsync('token', data.appleLogin.session.access)
+			await SecureStore.setItemAsync('refreshToken', data.appleLogin.session.refresh)
 			return data.appleLogin
 		} catch (error) {
 			const apolloError = error as ApolloError
@@ -120,10 +155,12 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
 			setAuthState({
 				token: data.googleLogin.session.access,
+				refreshToken: data.googleLogin.session.refresh,
 				authenticated: true,
 			})
 
 			await SecureStore.setItemAsync('token', data.googleLogin.session.access)
+			await SecureStore.setItemAsync('refreshToken', data.googleLogin.session.refresh)
 			return data.googleLogin
 		} catch (error) {
 			const apolloError = error as ApolloError
@@ -133,8 +170,10 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
 	const logout = async () => {
 		await SecureStore.deleteItemAsync('token')
+		await SecureStore.deleteItemAsync('refreshToken')
 		setAuthState({
 			token: null,
+			refreshToken: null,
 			authenticated: false,
 		})
 	}
@@ -146,6 +185,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 		onAppleLogin: appleLogin,
 		onGoogleLogin: googleLogin,
 		onLogout: logout,
+		refreshToken: refreshToken,
 	}
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
