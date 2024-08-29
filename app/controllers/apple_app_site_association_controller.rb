@@ -2,6 +2,8 @@ class AppleAppSiteAssociationController < ApplicationController
   skip_after_action :verify_authorized, :verify_policy_scoped
   skip_before_action :authenticate_user!
 
+  # @route GET /apple-app-site-association (apple_app_site_association)
+  # @route GET /.well-known/apple-app-site-association
   def show
     file_content = {
       applinks: {

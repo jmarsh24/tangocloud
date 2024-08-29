@@ -5,8 +5,6 @@ module Resolvers
     argument :id, ID, required: true, description: "ID of the period."
 
     def resolve(id:)
-      check_authentication!
-
       ::TimePeriod.find(id)
     end
   end
