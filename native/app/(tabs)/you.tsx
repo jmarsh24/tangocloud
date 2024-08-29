@@ -64,27 +64,31 @@ export default function YouScreen() {
 	if (error) {
 		return (
 			<SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-				<Text style={[styles.text, { color: colors.text }]}>Error loading data...</Text>
+				<Text style={[styles.text, { color: colors.text }]}>Error: {error.message}</Text>
 				<Button onPress={onLogout} text="Sign out" />
 			</SafeAreaView>
 		)
 	}
 
-	const username = data.userProfile?.username
-	const avatarUrl = data.userProfile?.avatarUrl
-	const recordings = data.userProfile?.playbacks.edges.map((edge) => {
-		const recording = edge.node.recording
+	const username = data.currentUser?.username;
+	const avatarUrl = data.currentUser?.userPreference?.avatar?.blob?.url;
+
+	const recordings = data.currentUser.playbacks.edges.map((edge) => {
+		const recording = edge.node.recording;
+		const digitalRemaster = recording.digitalRemasters?.edges[0]?.node;
+		const audioVariant = digitalRemaster?.audioVariants?.edges[0]?.node;
+
 		return {
 			id: recording.id,
-			title: recording.title,
+			title: recording.composition?.title || 'Unknown Title',
 			artist: recording.orchestra?.name || 'Unknown Artist',
-			duration: recording.audioTransfers[0]?.audioVariants[0]?.duration || 0,
-			artwork: recording.audioTransfers[0]?.album?.albumArtUrl || '',
-			url: recording.audioTransfers[0]?.audioVariants[0]?.audioFileUrl || '',
-			genre: recording.genre.name,
-			year: recording.year,
-		}
-	})
+			duration: digitalRemaster?.duration || 0,
+			artwork: digitalRemaster?.album?.albumArt?.blob?.url || '',
+			url: audioVariant?.audioFile?.blob?.url || '',
+			genre: recording.genre?.name || 'Unknown Genre',
+			year: recording.year || 'Unknown Year',
+		};
+	});
 
 	return (
 		<SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>

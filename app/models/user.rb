@@ -7,6 +7,7 @@ class User < ApplicationRecord
 
   has_one :user_preference, dependent: :destroy
   has_many :likes, dependent: :destroy
+  has_many :liked_recordings, -> { joins(:likes).order("likes.created_at DESC") }, through: :likes, source: :likeable, source_type: "Recording"
   has_many :tandas, dependent: :destroy
   has_many :playlists, dependent: :destroy
   has_many :playlist_items, through: :playlists
