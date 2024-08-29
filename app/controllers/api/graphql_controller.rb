@@ -55,7 +55,7 @@ module Api
       if Rails.env.development?
         message += ". Please login via the web interface to authenticate."
       end
-      render json: { error: message }, status: :unauthorized
+      render json: {error: message}, status: :unauthorized
     end
 
     def authenticate_user!
