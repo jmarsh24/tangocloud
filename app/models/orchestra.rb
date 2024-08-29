@@ -49,10 +49,6 @@ class Orchestra < ApplicationRecord
       genres: genres.pluck(:name)
     }
   end
-
-  def export_filename
-    "#{name.parameterize}_#{id}"
-  end
 end
 
 # == Schema Information

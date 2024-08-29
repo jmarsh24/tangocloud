@@ -8,10 +8,6 @@ class Album < ApplicationRecord
   def export_filename
     "#{title.parameterize}_#{id}"
   end
-
-  def export_filename
-    "#{title.parameterize}_#{id}"
-  end
 end
 
 # == Schema Information

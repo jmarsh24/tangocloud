@@ -52,10 +52,6 @@ class Person < ApplicationRecord
       normalized_name:
     }
   end
-
-  def export_filename
-    "#{name.parameterize}_#{id}"
-  end
 end
 
 # == Schema Information
