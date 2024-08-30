@@ -40,7 +40,7 @@ module Types
     end
 
     def liked_by_current_user
-      dataloader.with(Sources::LikeSource, object).load(object.id)
+      dataloader.with(Sources::LikeSource, user: current_user, likeable_type: "Recording").load(object.id)
     end
   end
 end
