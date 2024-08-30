@@ -6,7 +6,7 @@ RSpec.describe "liked", type: :graph do
   let(:mutation) do
     <<~GQL
       mutation LikeRecording($recordingId: ID!) {
-        LikeRecording(input: { recordingId: $recordingId}) {
+        likeRecording(input: { recordingId: $recordingId}) {
           like {
             id
             likeableType
@@ -25,12 +25,12 @@ RSpec.describe "liked", type: :graph do
   describe "LikeRecording" do
     it "creates a like" do
       gql(mutation, variables: {recordingId: recording.id}, user:)
-      binding.irb
-      expect(data.like_recording.success).be_truthy
-      expect(data.like_recording.errors).be_blank
-      expect(data.like_recording.like.likeable_type).eq("Recording")
-      expect(data.like_recording.like.likeable_id).eq(recording.id._s)
-      expect(data.like_recording.like.user.id).eq(user.id._s)
+
+      expect(data.like_recording.success).to be_truthy
+      expect(data.like_recording.errors).to be_blank
+      expect(data.like_recording.like.likeable_type).to eq("Recording")
+      expect(data.like_recording.like.likeable_id).to eq(recording.id)
+      expect(data.like_recording.like.user.id).to eq(user.id)
     end
 
     it "returns error if user alread liked recording" do
@@ -38,8 +38,8 @@ RSpec.describe "liked", type: :graph do
 
       gql(mutation, variables: {recordingId: recording.id}, user:)
 
-      expect(data.like_recording.success).be_falsey
-      expect(data.like_recording.errors).eq(["User has already liked this"])
+      expect(data.like_recording.success).to be_falsey
+      expect(data.like_recording.errors).to eq(["User has already liked this"])
     end
   end
 end
