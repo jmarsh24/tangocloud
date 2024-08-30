@@ -7,6 +7,7 @@ module Mutations::Recordings
     argument :recording_id, ID, required: true
 
     def resolve(recording_id:)
+
       like = Like.new(likeable_type: "Recording", likeable_id: recording_id, user: current_user)
       if like.save
         {like:, success: true, errors: []}

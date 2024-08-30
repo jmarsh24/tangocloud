@@ -3,56 +3,56 @@ import { useCallback } from 'react'
 import { useActiveTrack } from 'react-native-track-player'
 
 import {
-	ADD_LIKE_TO_RECORDING,
-	CHECK_LIKE_STATUS_ON_RECORDING,
-	FETCH_LIKED_RECORDINGS,
-	REMOVE_LIKE_FROM_RECORDING,
+	LIKE_RECORDING,
+	RECORDING_LIKE_STATUS,
+	UNLIKE_RECORDING,
+	LIKED_RECORDINGS,  // Don't forget to keep importing this if it's used in refetch
 } from '@/graphql'
 
 export const useTrackPlayerFavorite = () => {
 	const activeTrack = useActiveTrack()
 	const client = useApolloClient()
 
-	const {
-		data,
-		loading: statusLoading,
-		error: statusError,
-		refetch,
-	} = useQuery(CHECK_LIKE_STATUS_ON_RECORDING, {
-		variables: { recordingId: activeTrack?.id },
-		fetchPolicy: 'network-only',
-	})
+	// Use the RECORDING_LIKE_STATUS query to fetch the like status
+	const { data, loading: queryLoading, error: queryError, refetch } = useQuery(
+		RECORDING_LIKE_STATUS,
+		{
+			variables: { recordingId: activeTrack?.id },
+			skip: !activeTrack?.id,  // Skip the query if there's no active track
+			fetchPolicy: 'network-only',  // Ensure fresh data each time
+		}
+	)
 
-	const isFavorite = data?.checkLikeStatusOnRecording
+	const isFavorite = data?.recording?.likedByCurrentUser
 
 	const [addLikeToRecording, { loading: adding, error: addError }] = useMutation(
-		ADD_LIKE_TO_RECORDING,
+		LIKE_RECORDING,
 		{
 			onCompleted: () => {
 				refetch()
-				refetchLikedRecordings() // Refetch the list of liked recordings
+				refetchLikedRecordings()
 			},
-		},
+		}
 	)
+
 	const [removeLikeFromRecording, { loading: removing, error: removeError }] = useMutation(
-		REMOVE_LIKE_FROM_RECORDING,
+		UNLIKE_RECORDING,
 		{
 			onCompleted: () => {
 				refetch()
-				refetchLikedRecordings() // Refetch the list of liked recordings
+				refetchLikedRecordings()
 			},
-		},
+		}
 	)
 
 	const refetchLikedRecordings = useCallback(() => {
 		client.refetchQueries({
-			include: [FETCH_LIKED_RECORDINGS],
+			include: [LIKED_RECORDINGS],
 		})
 	}, [client])
 
 	const toggleFavorite = useCallback(async () => {
-		if (!activeTrack) return // Do nothing if there is no active track
-
+		if (!activeTrack) return
 		const mutation = isFavorite ? removeLikeFromRecording : addLikeToRecording
 		await mutation({ variables: { recordingId: activeTrack.id } })
 	}, [isFavorite, activeTrack, addLikeToRecording, removeLikeFromRecording])
@@ -60,7 +60,7 @@ export const useTrackPlayerFavorite = () => {
 	return {
 		isFavorite,
 		toggleFavorite,
-		loading: adding || removing || statusLoading,
-		error: addError || removeError || statusError,
+		loading: adding || removing || queryLoading,
+		error: addError || removeError || queryError,
 	}
 }

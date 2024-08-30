@@ -43,7 +43,7 @@ const PlayerScreen = () => {
 
 	const { top } = useSafeAreaInsets()
 
-	// const { isFavorite, toggleFavorite } = useTrackPlayerFavorite()
+	const { isFavorite, toggleFavorite } = useTrackPlayerFavorite()
 
 	const { activeQueueId, setActiveQueueId } = useQueue()
 
@@ -155,14 +155,14 @@ const PlayerScreen = () => {
 													style={styles.trackTitleText}
 												/>
 											</View>
-											{/* <TouchableOpacity activeOpacity={0.7} onPress={toggleFavorite}>
+											<TouchableOpacity activeOpacity={0.7} onPress={toggleFavorite}>
 												<FontAwesome
 													name={isFavorite ? 'heart' : 'heart-o'}
 													size={28}
 													color={isFavorite ? colors.primary : colors.icon}
 													style={{ marginHorizontal: 14 }}
 												/>
-											</TouchableOpacity> */}
+											</TouchableOpacity>
 										</View>
 
 										{activeTrack.artist && (
