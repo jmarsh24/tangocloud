@@ -8,7 +8,9 @@ export const ORCHESTRAS = gql`
 					id
 					name
 					image {
-						url
+						blob {
+							url
+						}
 					}
 				}
 			}

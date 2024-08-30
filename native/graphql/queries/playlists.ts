@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const PLAYLISTS = gql`
-	query Playlists($query: String, $first: Int) {
-		playlists(query: $query, first: $first) {
+	query Playlists {
+		playlists {
 			edges {
 				node {
 					id
@@ -12,12 +12,6 @@ export const PLAYLISTS = gql`
 						url
 					}
 				}
-			}
-			pageInfo {
-				endCursor
-				startCursor
-				hasNextPage
-				hasPreviousPage
 			}
 		}
 	}
