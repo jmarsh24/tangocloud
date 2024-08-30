@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const SEARCH_ORCHESTRAS = gql`
-  query SearchOrchestras($query: String) {
-    searchOrchestras(query: $query) {
+  query orchestras($query: String) {
+    orchestras(query: $query) {
       edges {
         node {
           id
