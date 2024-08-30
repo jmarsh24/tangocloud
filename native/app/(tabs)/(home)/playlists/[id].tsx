@@ -1,6 +1,6 @@
 import { PlaylistTracksList } from '@/components/PlaylistTracksList'
 import { screenPadding } from '@/constants/tokens'
-import { FETCH_PLAYLIST } from '@/graphql'
+import { PLAYLIST } from '@/graphql'
 import { defaultStyles } from '@/styles'
 import { useQuery } from '@apollo/client'
 import { Redirect, useLocalSearchParams } from 'expo-router'
@@ -8,7 +8,7 @@ import { ScrollView, Text, View } from 'react-native'
 
 const PlaylistScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>()
-	const { data, loading, error } = useQuery(FETCH_PLAYLIST, {
+	const { data, loading, error } = useQuery(PLAYLIST, {
 		variables: { id: id },
 	})
 
@@ -29,9 +29,8 @@ const PlaylistScreen = () => {
 		)
 	}
 
-	const playlist = data?.fetchPlaylist
-	const playlistTitle = data?.fetchPlaylist?.title
-
+	const playlist = data?.playlist
+	const playlistTitle = data?.playlist?.title
 	if (!playlist) {
 		console.warn(`Playlist ${playlistTitle} was not found!`)
 

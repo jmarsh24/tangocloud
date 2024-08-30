@@ -1,4 +1,5 @@
-import { Playlist } from './types'
+import { Playlist } from '@/generated/graphql'
+import { Orchestra } from '@/generated/graphql'
 
 export const trackTitleFilter = (title: string) => (track: any) =>
 	track.title?.toLowerCase().includes(title.toLowerCase())

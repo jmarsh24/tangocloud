@@ -1,7 +1,7 @@
 module Types
   class OrchestraType < Types::BaseObject
     field :id, ID, null: true
-    field :name, String, null: true
+    field :name, String, null: false
     field :slug, String, null: true
     field :sort_name, String, null: true
 

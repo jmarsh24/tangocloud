@@ -1,7 +1,7 @@
 import { PlaylistsList } from '@/components/PlaylistsList'
 import { screenPadding } from '@/constants/tokens'
-import { SEARCH_PLAYLISTS } from '@/graphql'
-import { Playlist } from '@/helpers/types'
+import { PLAYLISTS } from '@/graphql'
+import { Playlist } from '@/generated/graphql'
 import { useNavigationSearch } from '@/hooks/useNavigationSearch'
 import { defaultStyles } from '@/styles'
 import { useQuery } from '@apollo/client'
@@ -18,13 +18,12 @@ const PlaylistsScreen = () => {
 		},
 	})
 
-	const { data, loading, error } = useQuery(SEARCH_PLAYLISTS, {
-		variables: { query: search || '*' },
+	const { data, loading, error } = useQuery(PLAYLISTS, {
 		fetchPolicy: 'cache-and-network',
 	})
 
 	const playlists = useMemo(() => {
-		return data?.searchPlaylists?.edges.map((edge) => edge.node) ?? []
+		return data?.playlists?.edges.map((edge) => edge.node) ?? []
 	}, [data])
 
 	const handlePlaylistPress = (playlist: Playlist) => {

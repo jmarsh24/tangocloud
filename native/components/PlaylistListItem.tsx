@@ -1,5 +1,5 @@
 import { colors } from '@/constants/tokens'
-import { Playlist } from '@/helpers/types'
+import { Playlist } from '@/generated/graphql'
 import { defaultStyles } from '@/styles'
 import { AntDesign } from '@expo/vector-icons'
 import { StyleSheet, Text, TouchableHighlight, TouchableHighlightProps, View } from 'react-native'
@@ -16,7 +16,7 @@ export const PlaylistListItem = ({ playlist, ...props }: PlaylistListItemProps) 
 				<View>
 					<FastImage
 						source={{
-							uri: playlist.imageUrl,
+							uri: playlist?.image?.blob?.url,
 							priority: FastImage.priority.normal,
 						}}
 						style={styles.playlistArtworkImage}

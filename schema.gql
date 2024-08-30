@@ -827,7 +827,7 @@ type Orchestra {
   ): GenreConnection!
   id: ID
   image: Attachment
-  name: String
+  name: String!
   orchestraPeriod(id: ID!): OrchestraPeriod!
   orchestraPeriods(
     "Returns the elements in the list that come after the specified cursor."
