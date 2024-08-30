@@ -1,6 +1,6 @@
 import { OrchestraTracksList } from '@/components/OrchestraTracksList'
 import { screenPadding } from '@/constants/tokens'
-import { FETCH_ORCHESTRA } from '@/graphql'
+import { ORCHESTRA } from '@/graphql'
 import { defaultStyles } from '@/styles'
 import { useQuery } from '@apollo/client'
 import { useLocalSearchParams } from 'expo-router'
@@ -8,10 +8,9 @@ import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-nat
 
 const OrchestraScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>()
-	const { data, loading, error } = useQuery(FETCH_ORCHESTRA, { variables: { id } })
+	const { data, loading, error } = useQuery(ORCHESTRA, { variables: { id } })
 
-	const orchestra = data?.fetchOrchestra
-
+	const orchestra = data?.orchestra
 	if (loading) {
 		return (
 			<View style={defaultStyles.container}>

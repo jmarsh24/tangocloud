@@ -8,6 +8,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { QueueControls } from './QueueControls'
 import { TracksList } from './TracksList'
+import { Orchestra } from '@/generated/graphql'
 
 export const OrchestraTracksList = ({ orchestra }: { orchestra: Orchestra }) => {
 	const search = useNavigationSearch({
@@ -17,14 +18,15 @@ export const OrchestraTracksList = ({ orchestra }: { orchestra: Orchestra }) => 
 		},
 	})
 
+	console.log(orchestra.recordings)
 	const recordings =
 		orchestra?.recordings?.edges.map(({ node: item }) => ({
 			id: item.id,
 			title: item.title,
 			artist: orchestra.name,
-			duration: item.audioTransfers[0]?.audioVariants[0]?.duration || 0,
-			artwork: item.audioTransfers[0]?.album?.albumArtUrl,
-			url: item.audioTransfers[0]?.audioVariants[0]?.audioFileUrl,
+			duration: item.digitalRemasters.edges[0].node.duration || 0,
+			artwork: item.digitalRemasters.edges[0].node.album?.albumArt.blob.url,
+			url: item.digitalRemasters.edges[0].node.audioVariants[0]?.audioFile.blob.url,
 			genre: item.genre?.name,
 			year: item.year,
 			singer: item.singers[0]?.name,
@@ -45,7 +47,7 @@ export const OrchestraTracksList = ({ orchestra }: { orchestra: Orchestra }) => 
 					<View style={styles.artworkImageContainer}>
 						<FastImage
 							source={{
-								uri: orchestra.photoUrl || require('@/assets/unknown_artist.png'),
+								uri: orchestra.image.blob.url || require('@/assets/unknown_artist.png'),
 								priority: FastImage.priority.high,
 							}}
 							style={styles.artistImage}
