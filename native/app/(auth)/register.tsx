@@ -1,26 +1,20 @@
-import Button from '@/components/Button'
-import { colors } from '@/constants/tokens'
-import { useAuth } from '@/providers/AuthProvider'
-import * as AppleAuthentication from 'expo-apple-authentication'
-import { Link } from 'expo-router'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import {
 	Alert,
 	Image,
-	Keyboard,
 	KeyboardAvoidingView,
 	Platform,
-	ScrollView,
 	StyleSheet,
 	Text,
 	TextInput,
-	TouchableWithoutFeedback,
 	View,
 } from 'react-native'
-import { GoogleSigninButton } from '@react-native-google-signin/google-signin'
+import { useAuth } from '@/providers/AuthProvider'
+import { colors } from '@/constants/tokens'
+import Button from '@/components/Button'
 
 const RegisterScreen = () => {
-	const { onRegister, onAppleLogin, onGoogleLogin } = useAuth()
+	const { onRegister } = useAuth()
 	const [username, setUsername] = useState('')
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
@@ -45,89 +39,66 @@ const RegisterScreen = () => {
 		}
 	}
 
-	async function signInWithApple() {
-		setLoading(true)
-		try {
-			await onAppleLogin()
-		} finally {
-			setLoading(false)
-		}
-	}
-
-	async function signInWithGoogle() {
-		setLoading(true)
-		try {
-			await onGoogleLogin()
-		} finally {
-			setLoading(false)
-		}
-	}
-
 	return (
-		<View style={{ flex: 1 }}>
+		<View style={styles.fullScreen}>
 			<KeyboardAvoidingView
-				style={{ flex: 1 }}
+				style={styles.fullScreen}
 				behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
 			>
-				<View style={{ flex: 1 }}>
-					<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-						<View style={{ flex: 1 }}>
-							<ScrollView
-								style={styles.container}
-								contentContainerStyle={styles.scrollContainer}
-								showsVerticalScrollIndicator={false}
-							>
-								<View style={{ flex: 1, justifyContent: 'center', paddingBottom: 50 }}>
-									<View style={{ gap: 24 }}>
-										<View style={{ gap: 8 }}>
-											<Text style={styles.label}>Username</Text>
-											<TextInput
-												value={username}
-												onChangeText={setUsername}
-												placeholder="ElSeniorDeTango"
-												autoCorrect={false}
-												autoComplete="username"
-												autoCapitalize="none"
-												textContentType="username"
-												style={styles.input}
-											/>
+				<View style={styles.container}>
+					<View style={styles.imageAndLogoContainer}>
+						<Image source={require('@/assets/images/app_logo.png')} style={styles.image} />
+						<Text style={styles.logo}>TangoCloud</Text>
+					</View>
 
-											<Text style={styles.label}>Email</Text>
-											<TextInput
-												value={email}
-												onChangeText={setEmail}
-												placeholder="carlosdisarli@hotmail.com"
-												autoCorrect={false}
-												autoComplete="email"
-												autoCapitalize="none"
-												textContentType="emailAddress"
-												keyboardType="email-address"
-												style={styles.input}
-											/>
+					<View style={styles.formContainer}>
+						<View style={styles.formGroup}>
+							<View style={styles.inputGroup}>
+								<Text style={styles.label}>Username</Text>
+								<TextInput
+									value={username}
+									onChangeText={setUsername}
+									placeholder="ElSeniorDeTango"
+									autoCorrect={false}
+									autoComplete="username"
+									autoCapitalize="none"
+									textContentType="username"
+									style={styles.input}
+								/>
 
-											<Text style={styles.label}>Password</Text>
-											<TextInput
-												value={password}
-												onChangeText={setPassword}
-												placeholder=""
-												style={styles.input}
-												autoComplete="password"
-												secureTextEntry
-											/>
-										</View>
-										<View style={styles.buttonContainer}>
-											<Button
-												onPress={register}
-												disabled={loading}
-												text={loading ? 'Creating account...' : 'Create account'}
-												style={styles.button}
-											/>
-										</View>
-									</View>
-								</View>
-							</ScrollView>
+								<Text style={styles.label}>Email</Text>
+								<TextInput
+									value={email}
+									onChangeText={setEmail}
+									placeholder="carlosdisarli@hotmail.com"
+									autoCorrect={false}
+									autoComplete="email"
+									autoCapitalize="none"
+									textContentType="emailAddress"
+									keyboardType="email-address"
+									style={styles.input}
+								/>
+
+								<Text style={styles.label}>Password</Text>
+								<TextInput
+									value={password}
+									onChangeText={setPassword}
+									placeholder=""
+									style={styles.input}
+									autoComplete="password"
+									secureTextEntry
+								/>
+							</View>
+							<View style={styles.buttonContainer}>
+								<Button
+									onPress={register}
+									disabled={loading}
+									text={loading ? 'Creating account...' : 'Create account'}
+									style={styles.button}
+								/>
+							</View>
 						</View>
-					</TouchableWithoutFeedback>
+					</View>
 				</View>
 			</KeyboardAvoidingView>
 		</View>
@@ -135,13 +106,38 @@ const RegisterScreen = () => {
 }
 
 const styles = StyleSheet.create({
+	fullScreen: {
+		flex: 1,
+	},
 	container: {
 		flex: 1,
 		padding: 20,
 	},
-	scrollContainer: {
-		flexGrow: 1,
+	imageAndLogoContainer: {
+		flex: 1,
+		alignItems: 'center',
 		justifyContent: 'center',
+
+	},
+	image: {
+		width: 200,
+		height: 200,
+		resizeMode: 'contain',
+	},
+	logo: {
+		fontSize: 48,
+		fontWeight: 'bold',
+		color: colors.text,
+		textAlign: 'center',
+	},
+	formContainer: {
+		paddingBottom: 50,
+	},
+	formGroup: {
+		gap: 24,
+	},
+	inputGroup: {
+		gap: 8,
 	},
 	label: {
 		color: colors.text,
@@ -156,27 +152,13 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		color: colors.text,
 	},
-	textButton: {
-		alignSelf: 'center',
-		fontWeight: 'bold',
-		color: colors.text,
-		paddingVertical: 20,
-	},
-	imageContainer: {
-		alignItems: 'center',
-	},
-	image: {
-		width: 200,
-		height: 200,
+	buttonContainer: {
+		gap: 10,
 	},
 	button: {
 		width: '100%',
 		height: 36,
 		paddingVertical: 8,
-	},
-	buttonContainer: {
-		display: 'flex',
-		gap: 10,
 	},
 })
 

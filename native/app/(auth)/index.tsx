@@ -30,21 +30,18 @@ const LoginScreen = () => {
 	return (
 		<View style={{ flex: 1 }}>
 			<View style={styles.container}>
-				<View style={styles.imageContainer}>
-					<Text style={styles.logo}>TangoCloud</Text>
-					<Image source={require('@/assets/icon.png')} style={styles.image} />
+				<View style={styles.contentContainer}>
+					<View style={styles.imageAndLogoContainer}>
+						<Image source={require('@/assets/images/app_logo.png')} style={styles.image} />
+						<Text style={styles.logo}>TangoCloud</Text>
+					</View>
 				</View>
+
 				<View style={styles.buttonContainer}>
 					<TouchableOpacity style={styles.linkButton}>
 						<Link
 							href="/register"
-							style={{
-								color: 'white',
-								fontWeight: '600',
-								width: '100%',
-								height: '100%',
-								textAlign: 'center',
-							}}
+							style={styles.linkButtonText}
 						>
 							Sign Up Free
 						</Link>
@@ -70,7 +67,6 @@ const LoginScreen = () => {
 						<Text style={[styles.buttonText, { color: colors.text }]}>Continue with Google</Text>
 					</TouchableOpacity>
 
-
 					<Link href="/login" style={styles.textButton}>
 						Log in
 					</Link>
@@ -82,39 +78,30 @@ const LoginScreen = () => {
 
 const styles = StyleSheet.create({
 	container: {
-		padding: 20,
 		flex: 1,
-		justifyContent: 'flex-end',
+		justifyContent: 'space-between',
+		padding: 20,
 		paddingBottom: 40,
 	},
-	label: {
-		color: colors.text,
+	contentContainer: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
 	},
-	input: {
-		width: '100%',
-		borderWidth: 1,
-		borderColor: colors.icon,
-		padding: 10,
-		marginTop: 5,
-		marginBottom: 20,
-		backgroundColor: colors.background,
-		borderRadius: 5,
-		fontSize: 18,
-		color: colors.text,
-	},
-	textButton: {
-		alignSelf: 'center',
-		fontWeight: 'bold',
-		color: colors.text,
-		marginVertical: 10,
+	imageAndLogoContainer: {
+		alignItems: 'center',
 	},
 	image: {
-		width: 200,
-		height: 200,
+		width: 250,
+		height: 250,
+    resizeMode: 'contain'
 	},
-	imageContainer: {
+	linkButtonText: {
+		color: 'white',
+		fontWeight: '600',
 		width: '100%',
-		alignItems: 'center',
+		height: '100%',
+		textAlign: 'center',
 	},
 	linkButton: {
 		width: '100%',
@@ -156,7 +143,12 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		color: colors.text,
 		textAlign: 'center',
-		marginTop: 20,
+	},
+	textButton: {
+		alignSelf: 'center',
+		fontWeight: 'bold',
+		color: colors.text,
+		marginVertical: 10,
 	},
 })
 

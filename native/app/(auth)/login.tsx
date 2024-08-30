@@ -8,22 +8,18 @@ import {
 	StyleSheet,
 	Text,
 	TextInput,
-	TouchableOpacity,
 	TouchableWithoutFeedback,
 	View,
 } from 'react-native'
 import { useAuth } from '@/providers/AuthProvider'
-import { Link } from 'expo-router'
 import { colors } from '@/constants/tokens'
 import Button from '@/components/Button'
-import * as AppleAuthentication from 'expo-apple-authentication'
-import { AntDesign } from '@expo/vector-icons' // You can use other icons if you prefer
 
 const LoginScreen = () => {
 	const [login, setLogin] = useState('')
 	const [password, setPassword] = useState('')
 	const [loading, setLoading] = useState(false)
-	const { onLogin, onAppleLogin, onGoogleLogin } = useAuth()
+	const { onLogin } = useAuth()
 
 	async function signIn() {
 		setLoading(true)
@@ -36,34 +32,21 @@ const LoginScreen = () => {
 		}
 	}
 
-	async function signInWithApple() {
-		setLoading(true)
-		try {
-			await onAppleLogin()
-		} finally {
-			setLoading(false)
-		}
-	}
-
-	async function signInWithGoogle() {
-		setLoading(true)
-		try {
-			await onGoogleLogin()
-		} finally {
-			setLoading(false)
-		}
-	}
-
 	return (
 		<View style={{ flex: 1 }}>
 			<KeyboardAvoidingView
 				style={{ flex: 1 }}
 				behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
 			>
-				<View style={{ flex: 1 }}>
+				<View style={styles.container}>
 					<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-						<View style={styles.container}>
-							<View>
+						<View style={styles.contentContainer}>
+							<View style={styles.imageAndLogoContainer}>
+								<Image source={require('@/assets/images/app_logo.png')} style={styles.image} />
+								<Text style={styles.logo}>TangoCloud</Text>
+							</View>
+
+							<View style={styles.inputContainer}>
 								<Text style={styles.label}>Email or Username</Text>
 								<TextInput
 									value={login}
@@ -86,14 +69,12 @@ const LoginScreen = () => {
 									autoComplete="password"
 									secureTextEntry
 								/>
-								<View style={styles.buttonContainer}>
-									<Button
-										onPress={signIn}
-										disabled={loading}
-										text={loading ? 'Signing in...' : 'Sign in'}
-										style={styles.button}
-									/>
-								</View>
+								<Button
+									onPress={signIn}
+									disabled={loading}
+									text={loading ? 'Signing in...' : 'Sign in'}
+									style={styles.button}
+								/>
 							</View>
 						</View>
 					</TouchableWithoutFeedback>
@@ -105,9 +86,34 @@ const LoginScreen = () => {
 
 const styles = StyleSheet.create({
 	container: {
+		flex: 1,
 		padding: 20,
+		justifyContent: 'space-between',
+		paddingBottom: 40,
+	},
+	contentContainer: {
+		flex: 1,
+		justifyContent: 'flex-end',
+		paddingBottom: 50,
+	},
+	imageAndLogoContainer: {
 		flex: 1,
 		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	image: {
+		width: 200,
+		height: 200,
+		resizeMode: 'contain',
+	},
+	logo: {
+		fontSize: 48,
+		fontWeight: 'bold',
+		color: colors.text,
+		textAlign: 'center',
+	},
+	inputContainer: {
+		width: '100%',
 	},
 	label: {
 		color: colors.text,
@@ -117,54 +123,18 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderColor: colors.icon,
 		padding: 10,
-		marginTop: 5,
-		marginBottom: 20,
 		backgroundColor: colors.background,
 		borderRadius: 5,
 		fontSize: 18,
 		color: colors.text,
-	},
-	textButton: {
-		alignSelf: 'center',
-		fontWeight: 'bold',
-		color: colors.text,
-		marginVertical: 10,
-	},
-	image: {
-		width: 200,
-		height: 200,
-	},
-	imageContainer: {
-		width: '100%',
-		alignItems: 'center',
-	},
-	button: {
-		width: '100%',
-		height: 36,
-		paddingVertical: 8,
-	},
-	buttonContainer: {
-		gap: 10,
-	},
-	customButton: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'center',
-		width: '100%',
-		height: 40,
-		borderColor: 'white',
-		borderRadius: 5,
-		borderWidth: 1,
+		marginTop: 5,
+		marginBottom: 20,
 	},
 	icon: {
 		position: 'absolute',
 		left: 16,
 		width: 24,
 		height: 24,
-	},
-	buttonText: {
-		fontSize: 16,
-		color: 'white',
 	},
 })
 

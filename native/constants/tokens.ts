@@ -1,6 +1,6 @@
 export const colors = {
-	primary: '#fc3c44',
-	secondary: '#fc3c44',
+	primary: '#4240A1',
+	secondary: '#4240A1',
 	background: '#000',
 	backgroundDarker: '#000',
 	subHeader: 'rbga(255,255,255,0.8)',
