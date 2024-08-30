@@ -12,6 +12,7 @@ module Types
     field :year, Integer, null: true
     field :slug, String, null: false
     field :playbacks_count, Integer, null: false
+    field :liked_by_current_user, Boolean, null: true
 
     belongs_to :record_label, null: true
     belongs_to :time_period, null: true
@@ -36,6 +37,10 @@ module Types
 
     def year
       object.recorded_date&.year
+    end
+
+    def liked_by_current_user
+      dataloader.with(Sources::LikeSource, object).load(object.id)
     end
   end
 end
