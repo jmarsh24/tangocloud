@@ -10,6 +10,7 @@ module Api
       variables = prepare_variables(params[:variables])
       query = params[:query]
       operation_name = params[:operationName]
+
       context = {
         current_user:
       }
@@ -59,6 +60,7 @@ module Api
     end
 
     def authenticate_user!
+      return if Rails.env.development? && introspection_query?
       return if current_user.present?
 
       raise JWTSessions::Errors::Unauthorized
@@ -76,6 +78,10 @@ module Api
       return unless payload.present?
 
       @current_user ||= User.find(payload["user_id"])
+    end
+
+    def introspection_query?
+      params[:query].present? && params[:query].include?("__schema")
     end
   end
 end

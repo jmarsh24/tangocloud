@@ -1,8 +1,8 @@
 module Types
   class MutationType < Types::BaseObject
-    field :add_like_to_recording, mutation: Mutations::Recordings::AddLikeToRecording
     field :add_playlist_recording, mutation: Mutations::Playlists::AddPlaylistRecording
-    field :remove_like_from_recording, mutation: Mutations::Recordings::RemoveLikeFromRecording
+    field :like_recording, mutation: Mutations::Recordings::LikeRecording
+    field :unlike_recording, mutation: Mutations::Recordings::UnlikeRecording
 
     field :change_playlist_item_position, mutation: Mutations::Playlists::ChangePlaylistItemPosition
 
