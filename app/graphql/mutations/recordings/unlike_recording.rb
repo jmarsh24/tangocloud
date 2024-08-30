@@ -1,6 +1,6 @@
 module Mutations
   module Recordings
-    class RemoveLikeFromRecording < Mutations::BaseMutation
+    class UnlikeRecording < Mutations::BaseMutation
       field :errors, [String], null: false
       field :success, Boolean, null: false
 
