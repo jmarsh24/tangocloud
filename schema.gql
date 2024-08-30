@@ -2173,6 +2173,7 @@ type UserPreference {
   avatar: Attachment
   createdAt: ISO8601DateTime!
   firstName: String
+  id: ID!
   lastName: String
   name: String
   updatedAt: ISO8601DateTime!

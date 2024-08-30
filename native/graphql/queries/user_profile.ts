@@ -6,6 +6,7 @@ export const USER_PROFILE = gql`
 			id
 			username
 			userPreference {
+				id
 				avatar {
 					blob {
 						url

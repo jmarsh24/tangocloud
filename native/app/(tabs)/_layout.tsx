@@ -9,7 +9,7 @@ import { Redirect, Tabs } from 'expo-router'
 import { Image, Platform, StyleSheet, View } from 'react-native'
 
 const TabsNavigation = () => {
-	const { authState, onLogout } = useAuth()
+	const { authState } = useAuth()
 
 	const { data, loading, error } = useQuery(CURRENT_USER, {
 		skip: !authState.authenticated,
