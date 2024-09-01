@@ -30,7 +30,6 @@ export const FloatingPlayer = ({ style }: ViewProps) => {
 
 	const extraInfo = `${joinAttributes([displayedTrack.artist, displayedTrack.singer, displayedTrack.year])}`
 
-	// Generate list of years from 1912 to 2018
 	const years = Array.from({ length: 2018 - 1912 + 1 }, (_, i) => 1912 + i)
 
 	return (
@@ -115,6 +114,7 @@ const styles = StyleSheet.create({
 	mainContentContainer: {
 		flexDirection: 'row',
 		alignItems: 'center',
+		gap: 10,
 	},
 	trackArtworkImage: {
 		width: 40,
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
 	progressBar: {
 		position: 'absolute',
 		bottom: 0,
-		left: 15,
-		right: 15,
+		left: 0,
+		right: 0
 	},
 })
