@@ -15,22 +15,10 @@ module Types
 
     def url(width: nil, height: nil, resizing_type: "fit", format: "jpg")
       if object.image? && object.variable?
-
-        resize_option = if width && height
-          "#{width}x#{height}"
-        elsif width
-          "#{width}x"
-        elsif height
-          "x#{height}"
-        end
-
-        variant_options = {resize: resize_option, format:}.compact
-        variant = object.variant(variant_options)
-
-        imgproxy_options = {width:, height:, resizing_type:}.compact
-        Rails.application.routes.url_helpers.rails_representation_url(variant.processed, imgproxy_options:)
+        imgproxy_options = {width:, height:, resizing_type:, format:}.compact
+        Rails.application.routes.url_helpers.imgproxy_active_storage_url(object, **imgproxy_options)
       else
-        Rails.application.routes.url_helpers.rails_blob_url(object)
+        Rails.application.routes.url_helpers.imgproxy_active_storage_url(object)
       end
     end
   end

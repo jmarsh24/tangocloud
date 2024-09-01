@@ -9,7 +9,9 @@ export const PLAYLISTS = gql`
 					title
 					description
 					image {
-						url
+						blob {
+							url
+						}
 					}
 				}
 			}
