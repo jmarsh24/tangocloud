@@ -8,7 +8,9 @@ query likedRecordings {
       edges {
         node {
           id
-          title
+          composition {
+            title
+          }
           genre {
             name
           }

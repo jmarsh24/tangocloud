@@ -37,7 +37,7 @@ const LyricistScreen = () => {
 	const recordings = data?.fetchLyricist.compositions.edges.flatMap(({ node: composition }) =>
 		composition.recordings.edges.map(({ node: recording }) => ({
 			id: recording.id,
-			title: recording.title,
+			title: recording.composition.title,
 			artist: data.fetchLyricist.name,
 			duration: recording.audioTransfers[0]?.audioVariants[0]?.duration || 0,
 			artwork: recording.audioTransfers[0]?.album?.albumArtUrl,

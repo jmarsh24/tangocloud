@@ -14,7 +14,9 @@ export const ORCHESTRA = gql`
         edges {
           node {
             id
-            title
+            composition {
+              title
+            }
             genre {
               name
             }

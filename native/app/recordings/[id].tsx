@@ -19,7 +19,7 @@ const RecordingPage = () => {
 				const recording = data.fetchRecording
 				const track = {
 					id: recording.id,
-					title: recording.title,
+					title: recording.composition.title,
 					artist: recording.orchestra.name,
 					duration: recording.audioTransfers[0]?.audioVariants[0]?.duration || 0,
 					artwork: recording.audioTransfers[0]?.album?.albumArtUrl || '',

@@ -17,7 +17,9 @@ export const PLAYLIST = gql`
 						item {
 							... on Recording {
 								id
-								title
+								composition {
+									title
+								}
 								orchestra {
 									name
 									image {

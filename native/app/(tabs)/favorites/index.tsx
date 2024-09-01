@@ -41,7 +41,7 @@ const FavoritesScreen = () => {
       const recording = edge.node;
       return {
         id: recording.id,
-        title: recording.title,
+        title: recording.composition.title,
         artist: recording.recordingSingers?.edges
           .map((singerEdge : Person) => singerEdge.node.person.name)
           .join(', '),

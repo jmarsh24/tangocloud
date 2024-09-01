@@ -111,7 +111,7 @@ const HomeScreen = () => {
 		if (!popularRecordingsData) return []
 		const recordings = popularRecordingsData.searchRecordings.recordings.edges.map((edge) => ({
 			id: edge.node.id,
-			title: edge.node.title,
+			title: edge.node.composition.title,
 			artist: edge.node.orchestra?.name || 'Unknown Artist',
 			duration: edge.node.digitalRemasters.edges[0].node.duration || 0,
 			artwork: edge.node.digitalRemasters.edges[0].node.album.albumArt.blob.url || '',
@@ -127,7 +127,7 @@ const HomeScreen = () => {
 
 		const recordings = popularRecordingsData.searchRecordings.recordings.edges.map((edge) => ({
 			id: edge.node.id,
-			title: edge.node.title,
+			title: edge.node.composition.title,
 			artist: edge.node.orchestra?.name || 'Unknown Artist',
 			duration: edge.node.digitalRemasters.edges[0].node.duration || 0,
 			artwork: edge.node.digitalRemasters.edges[0].node.album.albumArt.blob.url || '',

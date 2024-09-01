@@ -7,7 +7,9 @@ export const CREATE_PLAYBACK = gql`
 				id
 				recording {
 					id
-					title
+					composition {
+						title
+					}
 				}
 				user {
 					id
