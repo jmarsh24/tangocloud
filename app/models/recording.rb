@@ -29,8 +29,6 @@ class Recording < ApplicationRecord
 
   enum recording_type: {studio: "studio", live: "live"}
 
-  delegate :title, to: :composition, prefix: true
-
   scope :search_import, -> {
                           includes(
                             :composition,
@@ -43,6 +41,10 @@ class Recording < ApplicationRecord
                             orchestra: [:orchestra_periods]
                           )
                         }
+
+  def title
+    composition.title
+  end
 
   def year
     recorded_date&.year

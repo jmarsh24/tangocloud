@@ -1326,7 +1326,7 @@ type Query {
     "Returns the last _n_ elements from the list."
     last: Int
   ): RecordingConnection!
-  searchRecordings(filters: RecordingFilterInput, orderBy: RecordingOrderByInput, query: String): RecordingSearchResults!
+  searchRecordings(filters: RecordingFilterInput, orderBy: RecordingOrderByInput, query: String, aggs: [String!], limit: Int = 20, offset: Int = 0): RecordingSearchResults!
   singers(query: String, 
     "Returns the elements in the list that come after the specified cursor."
     after: String,
@@ -1552,7 +1552,6 @@ type Recording {
   ): TandaConnection!
   timePeriod: TimePeriod
   timePeriodId: ID
-  title: String!
   waveform(id: ID!): Waveform!
   waveforms(
     "Returns the elements in the list that come after the specified cursor."

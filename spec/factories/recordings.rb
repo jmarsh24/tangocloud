@@ -9,17 +9,6 @@ FactoryBot.define do
     association :time_period
     association :record_label
     association :el_recodo_song, factory: :external_catalog_el_recodo_song
-
-    transient do
-      composition_title { nil }
-    end
-
-    after(:create) do |recording, evaluator|
-      if evaluator.composition_title
-        recording.composition = build(:composition, title: evaluator.composition_title)
-        recording.save!
-      end
-    end
   end
 end
 
