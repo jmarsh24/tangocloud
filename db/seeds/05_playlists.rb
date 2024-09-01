@@ -37,7 +37,7 @@ def attach_playlist_image(playlist, image_path)
   playlist.image.attach(
     io: File.open(image_path),
     filename: File.basename(image_path),
-    content_type: "image/jpeg" # assuming JPEG format, adjust if needed
+    content_type: "image/jpeg"
   )
 end
 
