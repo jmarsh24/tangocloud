@@ -28,8 +28,9 @@ class Playlist < ApplicationRecord
   end
 
   def attach_default_image
-    unique_albums = albums.with_attached_album_art.uniq
-    unique_album_arts = unique_albums.map(&:album_art)
+    unique_album_arts = recordings.includes(digital_remasters: {album: {album_art_attachment: :blob}})
+      .filter_map { _1.digital_remasters.first.album.album_art }
+      .uniq
 
     if unique_album_arts.size < 4
       image.attach(unique_album_arts.first.blob)

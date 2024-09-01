@@ -199,7 +199,7 @@ const HomeScreen = () => {
 			}}
 		>
 			<ScrollView showsVerticalScrollIndicator={false}>
-				<View style={{ gap: 10 }}>
+				{/* <View style={{ gap: 10 }}>
 					<Text style={[defaultStyles.text, styles.subHeader, { paddingHorizontal: 20 }]}>
 						Moods
 					</Text>
@@ -221,7 +221,7 @@ const HomeScreen = () => {
 						)}
 						keyExtractor={(item) => item.id}
 					/>
-				</View>
+				</View> */}
 				<View
 					style={{
 						...defaultStyles.container,
@@ -266,7 +266,7 @@ const HomeScreen = () => {
 									<Link push href={`/playlists/${item.id}`} key={item.id} asChild>
 										<Pressable style={styles.tandaContainer}>
 											<FastImage
-												source={{ uri: item.imageUrl, priority: FastImage.priority.normal }}
+												source={{ uri: item.image.blob.url, priority: FastImage.priority.normal }}
 												style={styles.tandaImage}
 												resizeMode={FastImage.resizeMode.cover}
 											/>
