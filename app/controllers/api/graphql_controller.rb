@@ -1,8 +1,6 @@
 module Api
   class GraphQLController < ActionController::API
     include JWTSessions::RailsAuthorization
-    before_action :authenticate_user!
-    rescue_from JWTSessions::Errors::Unauthorized, with: :not_authorized
 
     # @route POST /api/graphql (api_graphql)
     # @route POST /api/graphql (api_graphql)
@@ -51,21 +49,6 @@ module Api
       render json: {errors: [{message: e.message, backtrace: e.backtrace}], data: {}}, status: :internal_server_error
     end
 
-    def not_authorized
-      message = "Not authorized"
-      if Rails.env.development?
-        message += ". Please login via the web interface to authenticate."
-      end
-      render json: {error: message}, status: :unauthorized
-    end
-
-    def authenticate_user!
-      return if Rails.env.development? && introspection_query?
-      return if current_user.present?
-
-      raise JWTSessions::Errors::Unauthorized
-    end
-
     def current_user
       # if the user is logged in via the web application in development
       # we bypass the jwt token authentication and return a user from the cookies
@@ -78,10 +61,6 @@ module Api
       return unless payload.present?
 
       @current_user ||= User.find(payload["user_id"])
-    end
-
-    def introspection_query?
-      params[:query].present? && params[:query].include?("__schema")
     end
   end
 end

@@ -7,7 +7,9 @@ export const SEARCH_RECORDINGS = gql`
         edges {
           node {
             id
-            title
+            composition {
+              title
+            }
             year
             genre {
               name

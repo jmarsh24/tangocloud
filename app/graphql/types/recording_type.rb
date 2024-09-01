@@ -8,7 +8,6 @@ module Types
     field :id, ID, null: false
     field :recorded_date, GraphQL::Types::ISO8601Date, null: true
     field :recording_type, Types::RecordingTypeEnum, null: false
-    field :title, String, null: false
     field :year, Integer, null: true
     field :slug, String, null: false
     field :playbacks_count, Integer, null: false

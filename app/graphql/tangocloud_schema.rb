@@ -6,6 +6,10 @@ class TangocloudSchema < GraphQL::Schema
   use GraphQL::Dataloader
   trace_with GraphQL::Tracing::NewRelicTrace, set_transaction_name: true
 
+  if Rails.env.production?
+    disable_introspection_entry_points
+  end
+
   # GraphQL-Ruby calls this when something goes wrong while running a query:
   def self.type_error(err, context)
     # if err.is_a?(GraphQL::InvalidNullError)

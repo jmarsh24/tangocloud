@@ -36,7 +36,7 @@ export default function ComposerScreen() {
 	const recordings = data?.fetchComposer.compositions.edges.flatMap(({ node: composition }) =>
 		composition.recordings.edges.map(({ node: recording }) => ({
 			id: recording.id,
-			title: recording.title,
+			title: recording.composition.title,
 			artist: data.fetchComposer.name,
 			duration: recording.audioTransfers[0]?.audioVariants[0]?.duration || 0,
 			artwork: recording.audioTransfers[0]?.album?.albumArtUrl,
