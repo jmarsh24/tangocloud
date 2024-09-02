@@ -9,8 +9,12 @@ FactoryBot.define do
       create(:user_preference, user:)
     end
 
-    factory :admin_user do
+    trait :admin do
       admin { true }
+    end
+
+    trait :approved do
+      approved_at { Time.current }
     end
   end
 end
@@ -40,4 +44,5 @@ end
 #  confirmed_at           :datetime
 #  confirmation_sent_at   :datetime
 #  unconfirmed_email      :string
+#  approved_at            :datetime
 #

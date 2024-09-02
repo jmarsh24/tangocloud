@@ -14,7 +14,7 @@ RSpec.describe "RemovePlayback", type: :graph do
 
   describe "removePlayback" do
     it "removes a playback" do
-      user = create(:user)
+      user = create(:user, :approved)
       recording = create(:recording)
       playback = create(:playback, user:, recording:)
 

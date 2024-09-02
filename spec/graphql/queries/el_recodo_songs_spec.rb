@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "elRecodoSongs", type: :graph do
   describe "Querying for el_recodo_songs" do
-    let!(:user) { create(:admin_user) }
+    let!(:user) { create(:user, :approved) }
     let!(:volver_a_sonar) { create(:external_catalog_el_recodo_song, title: "Volver a soñar") }
     let(:query) do
       <<~GQL

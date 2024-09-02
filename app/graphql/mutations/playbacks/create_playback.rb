@@ -9,7 +9,6 @@ module Mutations::Playbacks
       playback = current_user.playbacks.new(
         recording_id:
       )
-
       if playback.save
         {playback:}
       else

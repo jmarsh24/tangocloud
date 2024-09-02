@@ -2,9 +2,11 @@
 require "rails_helper"
 
 RSpec.describe "CreatePlaylist", type: :graph do
-  let(:user) { create(:user) }
-  let(:volver_a_sonar) { create(:recording, composition_title: "Volver a soñar") }
-  let(:milonga_vieja) { create(:recording, composition_title: "Milonga vieja") }
+  let(:user) { create(:user, :approved) }
+  let(:volver_a_sonar_composition) { create(:composition, title: "Volver a soñar") }
+  let(:milonga_vieja_composition) { create(:composition, title: "Milonga vieja") }
+  let(:volver_a_sonar) { create(:recording, composition: volver_a_sonar_composition) }
+  let(:milonga_vieja) { create(:recording, composition: milonga_vieja_composition) }
   let(:uploaded_file) { Rails.root.join("spec/fixtures/files/di_sarli.jpg") }
   let(:image) do
     ApolloUploadServer::Wrappers::UploadedFile.new(

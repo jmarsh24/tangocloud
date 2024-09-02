@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "digitalRemaster", type: :graph do
   describe "digitalRemaster" do
-    let!(:user) { create(:user) }
+    let!(:user) { create(:user, :approved) }
     let!(:audio_file) { create(:audio_file) }
     let!(:orchestra) { create(:orchestra) }
     let!(:genre) { create(:genre) }

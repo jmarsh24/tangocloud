@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "users", type: :graph do
   describe "Querying for users" do
-    let!(:user) { create(:user) }
+    let!(:user) { create(:user, :approved) }
     let(:query) do
       <<~GQL
         query Users($query: String!) {

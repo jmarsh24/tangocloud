@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "Genre", type: :graph do
   describe "Genre" do
-    let!(:user) { create(:admin_user) }
+    let!(:user) { create(:user, :approved) }
     let!(:genre) { create(:genre, name: "Tango") }
     let(:query) do
       <<~GQL

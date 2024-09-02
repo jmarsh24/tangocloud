@@ -1,8 +1,8 @@
 module Types
   class RecordingAggregationsType < Types::BaseObject
-    field :genre, [AggregateType], null: false
-    field :orchestra_periods, [AggregateType], null: false
-    field :singers, [AggregateType], null: false
-    field :time_period, [AggregateType], null: false
+    field :genre, [AggregateType], null: true
+    field :orchestra_periods, [AggregateType], null: true
+    field :singers, [AggregateType], null: true
+    field :time_period, [AggregateType], null: true
   end
 end

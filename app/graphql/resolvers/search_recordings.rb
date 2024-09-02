@@ -10,14 +10,14 @@ module Resolvers
     argument :offset, Integer, required: false, default_value: 0
 
     def resolve(query: "*", filters: nil, order_by: nil, aggs: nil, limit: 20, offset: 0)
-      authorize(::Recording, :search?)
-
       search_options = {
         fields: ["title^2", "orchestra", "singers", "genre", "year"],
         match: :word_start,
         misspellings: {below: 5},
         limit:,
-        offset:
+        offset:,
+        where: {},
+        aggs: {}
       }
 
       search_options[:where].merge!(filters.to_h) if filters.present?
@@ -25,7 +25,7 @@ module Resolvers
       search_options[:order] = {order_by.field => order_by.order} if order_by.present?
 
       if aggs.present?
-        search_options[:aggs] = aggs.map(&:to_sym)
+        search_options[:aggs] = aggs.map { |agg| agg.underscore.to_sym }
       end
 
       search_result = ::Recording.search(query, **search_options)
@@ -38,7 +38,13 @@ module Resolvers
       if aggs.present?
         result[:aggregations] = {}
         aggs.each do |agg|
-          result[:aggregations][agg.to_sym] = format_aggregations(search_result.aggs[agg]["buckets"])
+          snake_case_agg = agg.underscore.to_sym
+
+          result[:aggregations][snake_case_agg] = if search_result.aggs[snake_case_agg.to_s].present?
+            format_aggregations(search_result.aggs[snake_case_agg.to_s]["buckets"])
+          else
+            []
+          end
         end
       end
 

@@ -19,9 +19,11 @@ module Authorizing
     end
 
     def current_user
-      raise JWTSessions::Errors::Unauthorized, "Not authorized" unless context[:current_user]
+      current_user = context[:current_user]
 
-      context[:current_user]
+      raise JWTSessions::Errors::Unauthorized, "Not authorized" unless current_user
+
+      current_user
     end
   end
 end

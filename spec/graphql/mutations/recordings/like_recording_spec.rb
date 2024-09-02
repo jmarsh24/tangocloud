@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "liked", type: :graph do
-  let(:user) { create(:user) }
+  let(:user) { create(:user, :approved) }
   let(:recording) { create(:recording) }
   let(:mutation) do
     <<~GQL

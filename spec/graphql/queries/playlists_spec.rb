@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "Playlists", type: :graph do
   describe "Fetching playlists" do
-    let!(:user) { create(:user) }
+    let!(:user) { create(:user, :approved) }
     let!(:playlist) { create(:playlist, :public, title: "Awesome Playlist", user:) }
     let!(:composition) { create(:composition, title: "Awesome Recording") }
     let!(:recording) { create(:recording, composition:) }

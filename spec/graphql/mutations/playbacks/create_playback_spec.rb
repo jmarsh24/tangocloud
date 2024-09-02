@@ -9,7 +9,9 @@ RSpec.describe "CreatePlayback", type: :graph do
             id
             recording {
               id
-              title
+              composition {
+                title
+              }
             }
             user {
               id
@@ -25,7 +27,7 @@ RSpec.describe "CreatePlayback", type: :graph do
   describe "createPlayback" do
     it "creates a playback" do
       recording = create(:recording)
-      user = create(:user)
+      user = create(:user, :approved)
       variables = {recordingId: recording.id}
 
       gql(mutation, variables:, user:)

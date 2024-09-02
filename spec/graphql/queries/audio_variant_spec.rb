@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "AudioVariant", type: :graph do # Ensure you specify the type to include the GraphQLHelper
   describe "audioVariant" do
-    let(:user) { create(:user) }
+    let(:user) { create(:user, :approved) }
     let(:audio_variant) { create(:audio_variant) }
 
     let(:query) do

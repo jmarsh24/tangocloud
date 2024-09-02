@@ -12,6 +12,7 @@ module GraphQLHelper
     unless skip_errors
       raise "GraphQL Error: #{result["errors"].to_json}" if result["errors"]
     end
+
     JSON.parse(result.to_h.deep_transform_keys(&:underscore).to_json, object_class: OpenStruct)
   end
 

@@ -42,4 +42,5 @@ end
 #  confirmed_at           :datetime
 #  confirmation_sent_at   :datetime
 #  unconfirmed_email      :string
+#  approved_at            :datetime
 #

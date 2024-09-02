@@ -1,7 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "UpdatePlaylist", type: :graph do
-  let(:playlist) { create(:playlist) }
+  let(:user) { create(:user, :approved) }
+  let(:playlist) { create(:playlist, user:) }
   let(:uploaded_file) { Rails.root.join("spec/fixtures/files/di_sarli.jpg") }
   let(:image) do
     ApolloUploadServer::Wrappers::UploadedFile.new(

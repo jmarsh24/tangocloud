@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "CurrentUser", type: :graph do
   describe "Querying for user_profile" do
-    let!(:user) { create(:admin_user) }
+    let!(:user) { create(:user, :approved) }
     let(:query) do
       <<~GQL
         query CurrentUser {

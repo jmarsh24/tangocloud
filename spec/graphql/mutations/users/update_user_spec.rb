@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "UpdateUser", type: :graph do
-  let(:user) { create(:user) }
+  let(:user) { create(:user, :approved) }
   let(:uploaded_file) { Rails.root.join("spec/fixtures/files/di_sarli.jpg") }
   let(:avatar) do
     ApolloUploadServer::Wrappers::UploadedFile.new(

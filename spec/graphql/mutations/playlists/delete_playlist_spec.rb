@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "DeletePlaylist", type: :graph do
-  let!(:user) { create(:user) }
+  let!(:user) { create(:user, :approved) }
   let!(:playlist) { create(:playlist, user:) }
   let!(:mutation) do
     <<~GQL

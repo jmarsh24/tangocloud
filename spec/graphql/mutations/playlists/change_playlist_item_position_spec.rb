@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe "ChangePlaylistItemPosition", type: :graph do
-  let!(:user) { create(:user) }
+  let!(:user) { create(:user, :approved) }
   let!(:playlist) { create(:playlist, title: "Awesome Playlist", user:) }
 
   let!(:composition1) { create(:composition, title: "Volver a soñar") }

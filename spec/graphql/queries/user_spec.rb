@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "user", type: :graph do
   describe "Querying for user" do
-    let!(:user) { create(:user) }
+    let!(:user) { create(:user, :approved) }
     let(:query) do
       <<~GQL
         query User($id: ID!) {
@@ -23,7 +23,7 @@ RSpec.describe "user", type: :graph do
       expect(user_data.id).to eq(user.id)
       expect(user_data.username).to eq(user.username)
       expect(user_data.email).to eq(user.email)
-      expect(user_data.admin).to be(false)
+      expect(user_data.admin).to be(true)
     end
   end
 end

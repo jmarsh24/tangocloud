@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe "AddPlaylistRecording", type: :graph do
-  let!(:user) { create(:user) }
+  let!(:user) { create(:user, :approved) }
   let!(:playlist) { create(:playlist, title: "Awesome Playlist", user:) }
   let!(:composition) { create(:composition, title: "Volver a soñar") }
   let!(:recording) { create(:recording, composition:) }
