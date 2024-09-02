@@ -72,7 +72,7 @@ const PlayerScreen = () => {
 		return relatedRecordingsData.searchRecordings.recordings.edges
 			.map((edge) => ({
 				id: edge.node.id,
-				title: edge.node.title,
+				title: edge.node.composition.title,
 				artist: edge.node.orchestra?.name || 'Unknown Artist',
 				duration: edge.node.digitalRemasters[0]?.audioVariants[0]?.duration || 0,
 				artwork: edge.node.digitalRemasters[0]?.album?.albumArt.blob.url || '',

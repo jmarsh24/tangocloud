@@ -5,7 +5,7 @@ module Types
 
     class UnauthorizedError < GraphQL::ExecutionError
       def initialize
-        super("You are not authorized to perform this action, only admins are allowed.")
+        super("You are not authorized to perform this action, please contact an administrator.")
       end
     end
 

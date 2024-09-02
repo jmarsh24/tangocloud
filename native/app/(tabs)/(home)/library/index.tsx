@@ -32,7 +32,7 @@ export default function LibrarysScreen() {
 	const tracks =
 		recordings?.fetchLikedRecordings.edges.map((edge) => ({
 			id: edge.node.id,
-			title: edge.node.title,
+			title: edge.node.composition.title,
 			artist: edge.node.orchestra.name,
 			duration: edge.node.audioTransfers[0]?.audioVariants[0]?.duration || 0,
 			artwork: edge.node.audioTransfers[0]?.album?.albumArtUrl || '',

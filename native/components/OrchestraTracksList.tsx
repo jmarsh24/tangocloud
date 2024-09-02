@@ -8,87 +8,89 @@ import { StyleSheet, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { QueueControls } from './QueueControls'
 import { TracksList } from './TracksList'
-import { Orchestra } from '@/generated/graphql'
+import { Orchestra, RecordingEdge } from '@/generated/graphql'
 
-export const OrchestraTracksList = ({ orchestra }: { orchestra: Orchestra }) => {
-	const search = useNavigationSearch({
-		searchBarOptions: {
-			hideWhenScrolling: true,
-			placeholder: 'Find in recordings',
-		},
-	})
+export const OrchestraTracksList: React.FC<{ orchestra: Orchestra }> = ({ orchestra }) => {
+  const search = useNavigationSearch({
+    searchBarOptions: {
+      hideWhenScrolling: true,
+      placeholder: 'Find in recordings',
+    },
+  })
 
-	console.log(orchestra.recordings)
-	const recordings =
-		orchestra?.recordings?.edges.map(({ node: item }) => ({
-			id: item.id,
-			title: item.title,
-			artist: orchestra.name,
-			duration: item.digitalRemasters.edges[0].node.duration || 0,
-			artwork: item.digitalRemasters.edges[0].node.album?.albumArt.blob.url,
-			url: item.digitalRemasters.edges[0].node.audioVariants[0]?.audioFile.blob.url,
-			genre: item.genre?.name,
-			year: item.year,
-			singer: item.singers[0]?.name,
-		})) || []
+  const recordings = useMemo(() => {
+    return orchestra?.recordings?.edges.map(({ node: item }: RecordingEdge) => ({
+      id: item.id,
+      title: item.composition?.title || '',
+      artist: orchestra.name,
+      duration: item.digitalRemasters.edges[0]?.node.duration || 0,
+      artwork: item.digitalRemasters.edges[0]?.node.album?.albumArt.blob.url || '',
+      url: item.digitalRemasters?.edges[0]?.node.audioVariants[0]?.audioFile.blob.url || '',
+      genre: item.genre?.name || '',
+      year: item.year || '',
+      singer: item.singers[0]?.name || '',
+    })) || []
+  }, [orchestra])
 
-	const filteredArtistTracks = useMemo(() => {
-		return recordings.filter(trackTitleFilter(search))
-	}, [recordings, search])
+  const filteredArtistTracks = useMemo(() => {
+    return recordings.filter(trackTitleFilter(search))
+  }, [recordings, search])
 
-	return (
-		<TracksList
-			id={generateTracksListId(orchestra.name, search)}
-			scrollEnabled={false}
-			hideQueueControls={true}
-			ListHeaderComponentStyle={styles.artistHeaderContainer}
-			ListHeaderComponent={
-				<View>
-					<View style={styles.artworkImageContainer}>
-						<FastImage
-							source={{
-								uri: orchestra.image.blob.url || require('@/assets/unknown_artist.png'),
-								priority: FastImage.priority.high,
-							}}
-							style={styles.artistImage}
-						/>
-					</View>
+  return (
+    <TracksList
+      id={generateTracksListId(orchestra.name, search)}
+      scrollEnabled={false}
+      hideQueueControls={true}
+      ListHeaderComponentStyle={styles.artistHeaderContainer}
+      ListHeaderComponent={
+        <View>
+          <View style={styles.artworkImageContainer}>
+            <FastImage
+              source={{
+                uri: orchestra.image?.blob.url || require('@/assets/unknown_artist.png'),
+                priority: FastImage.priority.high,
+              }}
+              style={styles.artistImage}
+            />
+          </View>
 
-					<Text numberOfLines={1} style={styles.artistNameText}>
-						{orchestra.name}
-					</Text>
+          <Text numberOfLines={1} style={styles.artistNameText}>
+            {orchestra.name}
+          </Text>
 
-					{search.length === 0 && (
-						<QueueControls tracks={filteredArtistTracks} style={{ paddingTop: 24 }} />
-					)}
-				</View>
-			}
-			tracks={filteredArtistTracks}
-		/>
-	)
+          {search.length === 0 && (
+            <QueueControls tracks={filteredArtistTracks} style={{ paddingTop: 24 }} />
+          )}
+        </View>
+      }
+      tracks={filteredArtistTracks}
+    />
+  )
 }
 
 const styles = StyleSheet.create({
-	artistHeaderContainer: {
-		flex: 1,
-		marginBottom: 32,
-	},
-	artworkImageContainer: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		height: 200,
-	},
-	artistImage: {
-		width: '60%',
-		height: '100%',
-		resizeMode: 'cover',
-		borderRadius: 128,
-	},
-	artistNameText: {
-		...defaultStyles.text,
-		marginTop: 22,
-		textAlign: 'center',
-		fontSize: fontSize.lg,
-		fontWeight: '800',
-	},
+  artistHeaderContainer: {
+    flex: 1,
+    marginBottom: 32,
+  },
+  artworkImageContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    height: 200,
+  },
+  artistImage: {
+    width: '60%',
+    height: '100%',
+    resizeMode: 'cover',
+    borderRadius: 128,
+  },
+  artistNameText: {
+    ...defaultStyles.text,
+    marginTop: 22,
+    textAlign: 'center',
+    fontSize: fontSize.lg,
+    fontWeight: '800',
+  },
 })
+
+export default OrchestraTracksList

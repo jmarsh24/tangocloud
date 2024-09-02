@@ -46,7 +46,7 @@ const tracks = data?.searchRecordings?.recordings.edges.map((edge) => {
 
   return {
     id: node.id,
-    title: node.title || 'Unknown Title',
+    title: node.composition.title || 'Unknown Title',
     artist: node.orchestra?.name || 'Unknown Orchestra',
     duration: node.digitalRemasters?.edges?.[0]?.node?.duration || 0,
     artwork: node.digitalRemasters?.edges?.[0]?.node?.album?.albumArt?.blob?.url || '',
