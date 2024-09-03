@@ -11,7 +11,7 @@
 		"test": "playwright test",
 		"android": "expo run:android",
 		"ios": "expo run:ios",
-		"graphql:types": "graphql-codegen && yarn lint --fix"
+		"graphql:types": "graphql-codegen"
 	},
 	"dependencies": {
 		"@apollo/client": "^3.8.10",

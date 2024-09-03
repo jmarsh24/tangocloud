@@ -1566,10 +1566,10 @@ type Recording {
   year: Int
 }
 type RecordingAggregations {
-  genre: [Aggregate!]!
-  orchestraPeriods: [Aggregate!]!
-  singers: [Aggregate!]!
-  timePeriod: [Aggregate!]!
+  genre: [Aggregate!]
+  orchestraPeriods: [Aggregate!]
+  singers: [Aggregate!]
+  timePeriod: [Aggregate!]
 }
 "The connection type for Recording."
 type RecordingConnection {
@@ -1588,7 +1588,7 @@ type RecordingEdge {
   node: Recording
 }
 type RecordingSearchResults {
-  aggregations: RecordingAggregations!
+  aggregations: RecordingAggregations
   recordings(
     "Returns the elements in the list that come after the specified cursor."
     after: String,
