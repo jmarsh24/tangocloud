@@ -2,9 +2,9 @@ import { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
   schema: './schema.gql',
-  documents: ['native/app/**/*.tsx', 'native/app/**/*.ts', 'native/graphql/**/*.ts'],
+  documents: ['native/app/**/*.tsx', 'native/graphql/**/*.ts'],
   generates: {
-    './native/app/generated/': {
+    './native/app/graphql/__generated__/': {
       preset: 'client',
       plugins: [],
     },

@@ -50,3 +50,4 @@ yarn-error.*
 expo-env.d.ts
 # @end expo-cli
 
+app/graphql/__generated__/**/*
