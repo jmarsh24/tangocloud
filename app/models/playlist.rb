@@ -8,12 +8,14 @@ class Playlist < ApplicationRecord
 
   validates :title, presence: true
 
-  belongs_to :user
-  has_many :playlist_items, -> { order(position: :asc) }, dependent: :destroy, inverse_of: :playlist
+  has_many :playlist_items, dependent: :destroy, inverse_of: :playlist
+  has_many :recordings, through: :playlist_items
+  has_many :child_playlists, through: :playlist_items, source: :child_playlist
+  belongs_to :parent, class_name: "Playlist", optional: true
+
   has_many :likes, as: :likeable, dependent: :destroy
   has_many :shares, as: :shareable, dependent: :destroy
-  has_many :tandas, through: :playlist_items, source: :item, source_type: "Tanda"
-  has_many :recordings, through: :playlist_items, source: :item, source_type: "Recording"
+  belongs_to :user
 
   alias_method :items, :playlist_items
 

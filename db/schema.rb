@@ -342,9 +342,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_02_114329) do
     t.string "slug"
     t.boolean "public", default: true, null: false
     t.boolean "system", default: false, null: false
+    t.string "type", default: "Playlist", null: false
     t.uuid "user_id", null: false
+    t.uuid "parent_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["parent_id"], name: "index_playlists_on_parent_id"
     t.index ["slug"], name: "index_playlists_on_slug", unique: true
     t.index ["user_id"], name: "index_playlists_on_user_id"
   end
@@ -562,28 +565,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_02_114329) do
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
-  create_table "tanda_recordings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "position", default: 0, null: false
-    t.uuid "tanda_id", null: false
-    t.uuid "recording_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["position"], name: "index_tanda_recordings_on_position"
-    t.index ["recording_id"], name: "index_tanda_recordings_on_recording_id"
-    t.index ["tanda_id"], name: "index_tanda_recordings_on_tanda_id"
-  end
-
-  create_table "tandas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "title", null: false
-    t.string "subtitle"
-    t.string "description"
-    t.boolean "public", default: true, null: false
-    t.uuid "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_tandas_on_user_id"
-  end
-
   create_table "time_periods", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
@@ -680,6 +661,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_02_114329) do
   add_foreign_key "playbacks", "recordings"
   add_foreign_key "playbacks", "users"
   add_foreign_key "playlist_items", "playlists"
+  add_foreign_key "playlists", "playlists", column: "parent_id"
   add_foreign_key "recording_singers", "people"
   add_foreign_key "recording_singers", "recordings"
   add_foreign_key "recordings", "compositions"
@@ -697,8 +679,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_02_114329) do
   add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "taggings", "tags"
   add_foreign_key "taggings", "users"
-  add_foreign_key "tanda_recordings", "recordings"
-  add_foreign_key "tanda_recordings", "tandas"
   add_foreign_key "user_preferences", "users"
   add_foreign_key "waveforms", "digital_remasters"
   add_foreign_key "waveforms", "waveform_data"
