@@ -1,6 +1,8 @@
 class PlaylistItem < ApplicationRecord
   belongs_to :playlist
   belongs_to :item, polymorphic: true
+  belongs_to :recording, -> { where(item_type: "Recording") }, foreign_key: :item_id, optional: true, inverse_of: :playlist_items
+  belongs_to :tanda, -> { where(item_type: "Tanda") }, foreign_key: :item_id, optional: true, inverse_of: :playlist_items
 
   acts_as_list scope: :playlist
 
