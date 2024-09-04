@@ -17,7 +17,7 @@ module Playlistable
 
     has_many :likes, as: :likeable, dependent: :destroy
     has_many :shares, as: :shareable, dependent: :destroy
-    belongs_to :user
+    belongs_to :user, optional: true
 
     alias_method :items, :playlist_items
 

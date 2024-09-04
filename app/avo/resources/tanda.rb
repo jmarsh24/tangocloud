@@ -1,9 +1,16 @@
 class Avo::Resources::Tanda < Avo::BaseResource
   self.title = :title
-  self.includes = [:playlist_items]
+  self.includes = [:playlist_items, :user]
   self.attachments = [:image, :playlist_file]
   self.search = {
     query: -> { query.search(params[:q]).results }
+  }
+  self.find_record_method = -> {
+    if id.is_a?(Array)
+      query.where(slug: id)
+    else
+      query.friendly.find id
+    end
   }
 
   self.ordering = {

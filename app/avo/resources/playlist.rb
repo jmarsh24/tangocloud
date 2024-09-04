@@ -1,7 +1,16 @@
 class Avo::Resources::Playlist < Avo::BaseResource
+  self.title = :title
   self.includes = [:playlist_items, :user]
+  self.attachments = [:playlist_file, :image]
   self.search = {
     query: -> { query.search(params[:q]).results }
+  }
+  self.find_record_method = -> {
+    if id.is_a?(Array)
+      query.where(slug: id)
+    else
+      query.friendly.find id
+    end
   }
 
   self.ordering = {
