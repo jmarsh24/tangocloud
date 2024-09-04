@@ -7,7 +7,7 @@ class CreateTandas < ActiveRecord::Migration[7.1]
       t.string :slug, null: true, index: {unique: true}
       t.boolean :public, null: false, default: true
       t.boolean :system, null: false, default: false
-      t.belongs_to :user, null: false, type: :uuid
+      t.belongs_to :user, type: :uuid
 
       t.timestamps
     end

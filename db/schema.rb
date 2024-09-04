@@ -343,7 +343,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_02_114329) do
     t.string "slug"
     t.boolean "public", default: true, null: false
     t.boolean "system", default: false, null: false
-    t.uuid "user_id", null: false
+    t.uuid "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_playlists_on_slug", unique: true
@@ -570,7 +570,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_02_114329) do
     t.string "slug"
     t.boolean "public", default: true, null: false
     t.boolean "system", default: false, null: false
-    t.uuid "user_id", null: false
+    t.uuid "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_tandas_on_slug", unique: true

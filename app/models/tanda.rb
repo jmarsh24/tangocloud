@@ -1,7 +1,7 @@
 class Tanda < ApplicationRecord
   include Playlistable
 
-  validate :validate_tanda_recording_count
+  # validate :validate_tanda_recording_count
 
   def validate_tanda_recording_count
     if playlist_items.size < 3
@@ -23,7 +23,7 @@ end
 #  slug        :string
 #  public      :boolean          default(TRUE), not null
 #  system      :boolean          default(FALSE), not null
-#  user_id     :uuid             not null
+#  user_id     :uuid
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #

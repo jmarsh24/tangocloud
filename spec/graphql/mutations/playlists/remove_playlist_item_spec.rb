@@ -5,7 +5,7 @@ RSpec.describe "RemovePlaylistItem", type: :graph do
   let!(:playlist) { create(:playlist, user:) }
   let!(:volver_a_sonar_composition) { create(:composition, title: "Volver a soñar") }
   let!(:volver_a_sonar) { create(:recording, composition: volver_a_sonar_composition) }
-  let!(:playlist_item) { create(:playlist_item, playlist:, item: volver_a_sonar) }
+  let!(:playlist_item) { create(:playlist_item, playlistable: playlist, item: volver_a_sonar) }
 
   let!(:mutation) do
     <<~GQL

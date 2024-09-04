@@ -15,7 +15,7 @@ end
 #  slug        :string
 #  public      :boolean          default(TRUE), not null
 #  system      :boolean          default(FALSE), not null
-#  user_id     :uuid             not null
+#  user_id     :uuid
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
