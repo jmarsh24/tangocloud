@@ -12,7 +12,7 @@ class Avo::Resources::Recording < Avo::BaseResource
     :recording_singers,
     :singers,
     :lyrics,
-    :tanda_recordings,
+    :playlist_items,
     :tandas
   ]
   self.search = {
@@ -37,8 +37,8 @@ class Avo::Resources::Recording < Avo::BaseResource
     field :recording_singers, as: :has_many
     field :singers, as: :has_many, through: :recording_singers
     field :lyrics, as: :has_many, through: :compositions
-    field :tanda_recordings, as: :has_many
-    field :tandas, as: :has_many, through: :tanda_recordings
+    field :playlist_items, as: :has_many
+    field :tandas, as: :has_many, through: :playlist_items
     field :waveform, as: :has_one, through: :digital_remasters
     field :playbacks, as: :has_many
   end

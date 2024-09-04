@@ -8,6 +8,8 @@ class PlaylistItem < ApplicationRecord
   validates :item, presence: true
 
   validates :position, presence: true, numericality: {only_integer: true}
+
+  scope :ordered, -> { order(position: :asc) }
 end
 
 # == Schema Information
