@@ -8,6 +8,7 @@ class PlaylistItem < ApplicationRecord
 
   validates :playlist, presence: true
   validates :item, presence: true
+  validates :item_type, presence: true, inclusion: {in: ["Recording", "Tanda"]}
 
   validates :position, presence: true, numericality: {only_integer: true}
 
