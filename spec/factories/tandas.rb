@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :playlist do
+  factory :tanda do
     title { Faker::Music.album }
     subtitle { Faker::Lorem.sentence }
     description { Faker::Lorem.paragraph }
@@ -7,23 +7,22 @@ FactoryBot.define do
     system { false }
     user
 
-    before(:create) do |playlist|
-      playlist.image.attach(
+    before(:create) do |tanda|
+      tanda.image.attach(
         io: File.open(Rails.root.join("spec/fixtures/files/album-art-volver-a-sonar.jpg")),
         filename: "album-art-volver-a-sonar.jpg",
         content_type: "image/jpeg"
       )
-      playlist.playlist_file.attach(
-        io: File.open(Rails.root.join("spec/fixtures/files/awesome_playlist.m3u8")),
-        filename: "awesome_playlist.m3u8",
+      tanda.playlist_file.attach(
+        io: File.open(Rails.root.join("spec/fixtures/files/awesome_tanda.m3u8")),
+        filename: "awesome_tanda.m3u8",
         content_type: "application/x-mpegURL"
       )
     end
 
-    # Trait to include items after creating the playlist
     trait :with_items do
-      after(:create) do |playlist|
-        create_list(:playlist_item, 5, playlistable: playlist)  # Ensure playlistable is used
+      after(:create) do |tanda|
+        create_list(:playlist_item, 3, playlistable: tanda)
       end
     end
 
@@ -43,7 +42,7 @@ end
 
 # == Schema Information
 #
-# Table name: playlists
+# Table name: tandas
 #
 #  id          :uuid             not null, primary key
 #  title       :string           not null

@@ -30,7 +30,6 @@ module Types
     has_many :digital_remasters
     has_many :audio_variants
     has_many :lyrics
-    has_many :tanda_recordings
     has_many :tandas
     has_many :waveforms
 

@@ -1,14 +1,15 @@
 class Tanda < ApplicationRecord
-  belongs_to :user
-  has_many :tanda_recordings, dependent: :destroy
-  has_many :recordings, through: :tanda_recordings
-  has_many :playlist_items, as: :item, dependent: :destroy
-  has_many :playlists, through: :playlist_items
-  has_many :shares, as: :shareable, dependent: :destroy
-  has_many :likes, as: :likeable, dependent: :destroy
+  include Playlistable
 
-  validates :name, presence: true
-  validates :public, inclusion: {in: [true, false]}
+  # validate :validate_tanda_recording_count
+
+  def validate_tanda_recording_count
+    if playlist_items.size < 3
+      errors.add(:base, "Tanda must have at least 3 recordings.")
+    elsif playlist_items.size > 5
+      errors.add(:base, "Tanda cannot have more than 5 recordings.")
+    end
+  end
 end
 
 # == Schema Information
@@ -18,9 +19,11 @@ end
 #  id          :uuid             not null, primary key
 #  title       :string           not null
 #  subtitle    :string
-#  description :string
+#  description :text
+#  slug        :string
 #  public      :boolean          default(TRUE), not null
-#  user_id     :uuid             not null
+#  system      :boolean          default(FALSE), not null
+#  user_id     :uuid
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #

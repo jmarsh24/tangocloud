@@ -1,5 +1,3 @@
-# spec/graphql/mutations/add_playlist_recording_spec.rb
-
 require "rails_helper"
 
 RSpec.describe "AddPlaylistRecording", type: :graph do
@@ -15,16 +13,28 @@ RSpec.describe "AddPlaylistRecording", type: :graph do
           playlistItem {
             id
             position
-            playlist {
-              id
-              title
+            playlistable {
+              __typename
+              ... on Playlist {
+                id
+                title
+              }
+              ... on Tanda {
+                id
+                title
+              }
             }
             item {
+              __typename
               ... on Recording {
                 id
                 composition {
                   title
                 }
+              }
+              ... on Tanda {
+                id
+                title
               }
             }
           }
@@ -38,11 +48,14 @@ RSpec.describe "AddPlaylistRecording", type: :graph do
     it "successfully adds a recording to a playlist" do
       gql(mutation, variables: {playlistId: playlist.id, recordingId: recording.id}, user:)
 
-      playlist_title = result.data.add_playlist_recording.playlist_item.playlist.title
-      item_title = result.data.add_playlist_recording.playlist_item.item.composition.title
+      playlistable = result.data.add_playlist_recording.playlist_item.playlistable
+      item = result.data.add_playlist_recording.playlist_item.item
       position = result.data.add_playlist_recording.playlist_item.position
-      expect(playlist_title).to eq("Awesome Playlist")
-      expect(item_title).to eq("Volver a soñar")
+
+      expect(playlistable.__typename).to eq("Playlist")
+      expect(playlistable.title).to eq("Awesome Playlist")
+      expect(item.__typename).to eq("Recording")
+      expect(item.composition.title).to eq("Volver a soñar")
       expect(position).to eq(1)
       expect(result.data.add_playlist_recording.errors).to be_empty
     end
