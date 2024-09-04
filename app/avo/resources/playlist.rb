@@ -1,7 +1,16 @@
 class Avo::Resources::Playlist < Avo::BaseResource
+  self.title = :title
   self.includes = [:playlist_items, :user]
+  self.attachments = [:playlist_file, :image]
   self.search = {
     query: -> { query.search(params[:q]).results }
+  }
+  self.find_record_method = -> {
+    if id.is_a?(Array)
+      query.where(slug: id)
+    else
+      query.friendly.find id
+    end
   }
 
   self.ordering = {
@@ -23,7 +32,7 @@ class Avo::Resources::Playlist < Avo::BaseResource
     field :description, as: :textarea
     field :public, as: :boolean
     field :system, as: :boolean, only_on: :show
-    field :user_id, as: :hidden, default: -> { current_user.id }
+    field :user, as: :belongs_to
     field :playlist_items, as: :has_many
   end
 end

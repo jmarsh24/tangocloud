@@ -11,13 +11,19 @@ class Avo::Resources::Recording < Avo::BaseResource
     :audio_variants,
     :recording_singers,
     :singers,
-    :lyrics,
-    :tanda_recordings,
-    :tandas
+    :lyrics
   ]
   self.search = {
     query: -> { query.search(params[:q]).results }
   }
+  self.find_record_method = -> {
+    if id.is_a?(Array)
+      query.where(slug: id)
+    else
+      query.friendly.find(id)
+    end
+  }
+
   def fields
     field :id, as: :id, readonly: true, only_on: :show
     field :title, as: :text
@@ -37,9 +43,9 @@ class Avo::Resources::Recording < Avo::BaseResource
     field :recording_singers, as: :has_many
     field :singers, as: :has_many, through: :recording_singers
     field :lyrics, as: :has_many, through: :compositions
-    field :tanda_recordings, as: :has_many
-    field :tandas, as: :has_many, through: :tanda_recordings
-    field :waveform, as: :has_one, through: :digital_remasters
+    # field :playlist_items, as: :has_many, hide_on: :index
+    # field :tandas, as: :has_many, through: :playlist_items, hide_on: :index
+    # field :waveform, as: :has_many, through: :digital_remasters
     field :playbacks, as: :has_many
   end
 end

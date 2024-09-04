@@ -1,11 +1,13 @@
 class Avo::Resources::User < Avo::BaseResource
-  self.includes = []
+  self.title = :username
+  self.includes = [:user_preference, :playbacks, :playlists, :playlist_items, :tandas]
   self.search = {
     query: -> { query.search(params[:q]).results }
   }
 
   def fields
     field :id, as: :id, readonly: true, only_on: :show
+    field :avatar, as: :file, is_image: true, direct_upload: true, display_filename: false, required: false
     field :email, as: :text
     field :verified, as: :boolean
     field :provider, as: :text
@@ -14,8 +16,10 @@ class Avo::Resources::User < Avo::BaseResource
     field :first_name, as: :text
     field :last_name, as: :text
     field :admin, as: :boolean
-    field :avatar, as: :file
-    field :user_preference, as: :has_one
+    field :user_preference, as: :has_one, hide_on: [:index, :show]
     field :playbacks, as: :has_many
+    field :playlists, as: :has_many
+    field :playlist_items, as: :has_many, through: :playlists
+    field :tandas, as: :has_many
   end
 end

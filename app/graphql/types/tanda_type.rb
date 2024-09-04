@@ -11,7 +11,6 @@ module Types
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
     belongs_to :user
-    has_many :tanda_recordings
     has_many :recordings
     has_many :playlist_items
     has_many :playlists
