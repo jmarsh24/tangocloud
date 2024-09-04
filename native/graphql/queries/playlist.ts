@@ -28,6 +28,10 @@ export const PLAYLIST = gql`
 										}
 									}
 								}
+								genre {
+									name
+								}
+								year
 								digitalRemasters {
 									edges {
 										node {
@@ -51,19 +55,62 @@ export const PLAYLIST = gql`
 												}
 											}
 										}
-
-                	}
+									}
 								}
-								genre {
-									name
-								}
-								year
-								singers {
-                  edges {
-                    node {
-                      name
-                    }
-                  }
+							}
+							... on Tanda {
+								id
+								title
+								playlistItems {
+									edges {
+										node {
+											item {
+												... on Recording {
+													id
+													composition {
+														title
+													}
+													orchestra {
+														name
+														image {
+															blob {
+																url
+															}
+														}
+													}
+													genre {
+														name
+													}
+													year
+													digitalRemasters {
+														edges {
+															node {
+																duration
+																album {
+																	albumArt {
+																		blob {
+																			url
+																		}
+																	}
+																}
+																audioVariants {
+																	edges {
+																		node {
+																			audioFile {
+																				blob {
+																					url
+																				}
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
 								}
 							}
 						}

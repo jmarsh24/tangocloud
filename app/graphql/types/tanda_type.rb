@@ -13,7 +13,6 @@ module Types
     belongs_to :user
     has_many :recordings
     has_many :playlist_items
-    has_many :playlists
     has_many :shares
     has_many :likes
   end
