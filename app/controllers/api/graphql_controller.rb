@@ -2,7 +2,8 @@ module Api
   class GraphQLController < ActionController::API
     include JWTSessions::RailsAuthorization
 
-    # @route POST /api/graphql (api_graphql)
+    before_action :authorize_admin!, unless: -> { introspection_query? && Rails.env.development? }
+
     # @route POST /api/graphql (api_graphql)
     def execute
       variables = prepare_variables(params[:variables])
@@ -50,8 +51,7 @@ module Api
     end
 
     def current_user
-      # if the user is logged in via the web application in development
-      # we bypass the jwt token authentication and return a user from the cookies
+      # In development, bypass JWT and use Devise for easier testing
       if Rails.env.development?
         devise_user = warden.authenticate(scope: :user)
         return devise_user if devise_user
@@ -60,7 +60,20 @@ module Api
       # Fall back to JWT session
       return unless payload.present?
 
-      @current_user ||= User.find(payload["user_id"])
+      User.find(payload["user_id"])
+    end
+
+    # Authorize only admin users
+    def authorize_admin!
+      unless current_user&.admin?
+        render json: {error: "Not authorized"}, status: :unauthorized
+      end
+    end
+
+    # Check if the current query is an introspection query
+    def introspection_query?
+      query = params[:query]
+      query.include?("__schema") || query.include?("__type")
     end
   end
 end
