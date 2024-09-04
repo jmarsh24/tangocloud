@@ -1,6 +1,6 @@
-class CreatePlaylists < ActiveRecord::Migration[7.1]
+class CreateTandas < ActiveRecord::Migration[7.1]
   def change
-    create_table :playlists, id: :uuid do |t|
+    create_table :tandas, id: :uuid do |t|
       t.string :title, null: false
       t.string :subtitle, null: true
       t.text :description, null: true

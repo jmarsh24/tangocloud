@@ -33,7 +33,7 @@ def create_tandas_for_user(user)
     "Troilo, Aníbal - Tanda 33.m3u8" => "troilo_anibal.jpeg"
   }
 
-  base_path = Rails.root.join("db/seeds/playlists/tandas")
+  base_path = Rails.root.join("db/seeds/tandas")
 
   tanda_data.each do |tanda_filename, image_filename|
     tanda_title = File.basename(tanda_filename, ".m3u8").humanize
@@ -50,8 +50,10 @@ def create_tandas_for_user(user)
       tanda.playlist_items.build(item: recording, position:)
       position += 1
     end
-    attach_tanda_file(tanda, base_path.join(tanda_filename))
+
     tanda.save!
+
+    attach_tanda_file(tanda, base_path.join(tanda_filename))
     attach_tanda_image(tanda, base_path.join(image_filename))
   end
 end

@@ -324,14 +324,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_02_114329) do
   end
 
   create_table "playlist_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "playlist_id", null: false
+    t.string "playlistable_type", null: false
+    t.uuid "playlistable_id", null: false
     t.string "item_type", null: false
     t.uuid "item_id", null: false
     t.integer "position", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["item_type", "item_id"], name: "index_playlist_items_on_item"
-    t.index ["playlist_id"], name: "index_playlist_items_on_playlist_id"
+    t.index ["playlistable_type", "playlistable_id"], name: "index_playlist_items_on_playlistable"
     t.index ["position"], name: "index_playlist_items_on_position"
   end
 
@@ -342,12 +343,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_02_114329) do
     t.string "slug"
     t.boolean "public", default: true, null: false
     t.boolean "system", default: false, null: false
-    t.string "type", default: "Playlist", null: false
     t.uuid "user_id", null: false
-    t.uuid "parent_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["parent_id"], name: "index_playlists_on_parent_id"
     t.index ["slug"], name: "index_playlists_on_slug", unique: true
     t.index ["user_id"], name: "index_playlists_on_user_id"
   end
@@ -565,6 +563,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_02_114329) do
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
+  create_table "tandas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title", null: false
+    t.string "subtitle"
+    t.text "description"
+    t.string "slug"
+    t.boolean "public", default: true, null: false
+    t.boolean "system", default: false, null: false
+    t.uuid "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_tandas_on_slug", unique: true
+    t.index ["user_id"], name: "index_tandas_on_user_id"
+  end
+
   create_table "time_periods", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
@@ -660,8 +672,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_02_114329) do
   add_foreign_key "people", "external_catalog_el_recodo_people", column: "el_recodo_person_id"
   add_foreign_key "playbacks", "recordings"
   add_foreign_key "playbacks", "users"
-  add_foreign_key "playlist_items", "playlists"
-  add_foreign_key "playlists", "playlists", column: "parent_id"
   add_foreign_key "recording_singers", "people"
   add_foreign_key "recording_singers", "recordings"
   add_foreign_key "recordings", "compositions"

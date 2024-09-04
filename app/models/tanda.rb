@@ -1,4 +1,6 @@
-class Tanda < Playlist
+class Tanda < ApplicationRecord
+  include Playlistable
+
   validate :validate_tanda_recording_count
 
   def validate_tanda_recording_count
@@ -9,3 +11,19 @@ class Tanda < Playlist
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: tandas
+#
+#  id          :uuid             not null, primary key
+#  title       :string           not null
+#  subtitle    :string
+#  description :text
+#  slug        :string
+#  public      :boolean          default(TRUE), not null
+#  system      :boolean          default(FALSE), not null
+#  user_id     :uuid             not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
