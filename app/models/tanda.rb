@@ -1,7 +1,7 @@
 class Tanda < ApplicationRecord
   include Playlistable
 
-  validate :validate_tanda_recording_count
+  # validate :validate_tanda_recording_count
 
   def validate_tanda_recording_count
     if playlist_items.size < 3
