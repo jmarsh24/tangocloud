@@ -14,6 +14,7 @@ RSpec.configure do |config|
     Orchestra.reindex
     TimePeriod.reindex
     User.reindex
+    Tanda.reindex
 
     # and disable callbacks
     Searchkick.disable_callbacks
