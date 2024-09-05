@@ -6,7 +6,7 @@
     "lint:style": "eslint app/**/*.ts --max-warnings 0",
     "lint:format": "prettier --list-different \"app/**/*.{ts,scss,json}\"",
     "graphql:schema": "rover graph introspect http://localhost:3000/api/graphql --output schema.gql",
-    "graphql:types": "graphql-codegen && cd native"
+    "graphql:types": "graphql-codegen && cd native && yarn graphql:types"
   },
   "license": "MIT",
   "dependencies": {
