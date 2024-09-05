@@ -24,5 +24,6 @@ module Types
     field :time_periods, resolver: Resolvers::TimePeriods
     field :user, resolver: Resolvers::User
     field :users, resolver: Resolvers::Users
+    field :search, resolver: Resolvers::Search
   end
 end
