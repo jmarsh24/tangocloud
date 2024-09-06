@@ -8,7 +8,7 @@
       "name": "Rails",
       "type": "ruby_lsp",
       "request": "launch",
-      "program": "bin/rails server"
+      "program": "bin/rails s"
     },
     {
       "name": "Worker",

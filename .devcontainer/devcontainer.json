@@ -40,7 +40,9 @@
     },
   },
   "features": {
-    "ghcr.io/devcontainers/features/git-lfs:1": { "autoPull": true },
+    "ghcr.io/devcontainers/features/git-lfs:1": {
+      "autoPull": true,
+    },
     "ghcr.io/devcontainers/features/desktop-lite:1": {},
   },
   "forwardPorts": [6080, 5432],

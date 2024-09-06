@@ -15,7 +15,10 @@
 		"development": {
 			"developmentClient": true,
 			"distribution": "internal",
-			"channel": "development"
+			"channel": "development",
+      "env": {
+        "BUNDLE_IDENTIFIER": "com.tangocloud.app.dev"
+      }
 		},
 		"production": {
 			"ios": {

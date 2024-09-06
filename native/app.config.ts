@@ -1,5 +1,7 @@
 import { ExpoConfig } from 'expo/config'
 
+const bundleIdentifier = process.env.BUNDLE_IDENTIFIER ?? 'com.tangocloud.app';
+
 export default (): ExpoConfig => {
 	return {
 		name: 'Tango Cloud',
@@ -18,7 +20,7 @@ export default (): ExpoConfig => {
 		assetBundlePatterns: ['**/*'],
 		ios: {
 			supportsTablet: true,
-			bundleIdentifier: 'tangocloud',
+			bundleIdentifier,
 			runtimeVersion: '1.0.0',
 			buildNumber: '70',
 			usesAppleSignIn: true,

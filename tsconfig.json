@@ -1,21 +1,32 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "module": "ESNext",
-    "target": "es2020",
-    "moduleResolution": "node",
-    "allowJs": true,
-    "strict": true,
-    "declaration": true,
-    "noUnusedLocals": true,
-    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "declaration": false,
+    "emitDecoratorMetadata": true,
     "esModuleInterop": true,
-    "lib": ["ESNext", "DOM"],
+    "experimentalDecorators": true,
+    "jsx": "react",
+    "lib": [
+      "dom",
+      "ES2020",
+      "ES2021.String"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "sourceMap": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "target": "es6",
     "paths": {
       "@/*": ["./app/*"],
       "@/component*": ["app/frontend/components/*"]
     }
   },
   "include": ["app/**/*", "app/frontend/components/*"],
-  "exclude": ["**/dist", "**/node_modules", "**/public", "**/vendor"]
+  "exclude": ["**/dist", "**/node_modules", "**/public", "**/vendor"],
+  "compileOnSave": false
 }
