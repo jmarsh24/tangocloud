@@ -8,5 +8,6 @@ namespace :api do
   post :google_login, to: "sessions#google_login"
   post :apple_login, to: "sessions#apple_login"
 
+  resources :audio_variants, only: [:show]
   resources :users, only: [:show, :create]
 end
