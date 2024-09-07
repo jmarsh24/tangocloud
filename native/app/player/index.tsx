@@ -122,9 +122,9 @@ const PlayerScreen = () => {
 		>
 			<View style={[styles.overlayContainer]}>
 				<ScrollView
-					style={[styles.scrollContainer, { marginTop: top + 24 }]}
+					style={[styles.scrollContainer]}
 					showsVerticalScrollIndicator={false}
-					snapToAlignment="start"
+					bounces={false}
 				>
 					<View style={{ display: 'flex', gap: 72, paddingBottom: 36 }}>
 						<View style={{ display: 'flex', gap: 36 }}>
@@ -266,18 +266,14 @@ const styles = StyleSheet.create({
 	},
 	linearGradient: {
 		flex: 1,
-		borderTopRightRadius: 24,
-		borderTopLeftRadius: 24,
 	},
 	overlayContainer: {
 		...defaultStyles.container,
 		paddingHorizontal: 12,
 		backgroundColor: 'rgba(0,0,0,0.5)',
-		borderTopRightRadius: 24,
-		borderTopLeftRadius: 24,
 	},
 	scrollContainer: {
-		paddingTop: 12,
+		paddingTop: 28,
 		paddingHorizontal: 12,
 		zIndex: 10,
 	},

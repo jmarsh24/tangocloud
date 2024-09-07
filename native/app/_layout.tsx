@@ -89,10 +89,8 @@ function RootLayoutNav() {
 						<Stack.Screen
 							name="player"
 							options={{
-								presentation: 'card',
-								gestureEnabled: true,
+								presentation: 'modal',
 								gestureDirection: 'vertical',
-								animationDuration: 400,
 								headerShown: false,
 							}}
 						/>
