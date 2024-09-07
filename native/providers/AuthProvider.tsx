@@ -33,6 +33,9 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     const loadToken = async () => {
       const token = await SecureStore.getItemAsync('token');
       const refreshToken = await SecureStore.getItemAsync('refreshToken');
+      console.log('token', token);
+      console.log('refreshToken', refreshToken);
+      console.log('authState', authState);
       if (token) {
         setAuthState({
           token,
