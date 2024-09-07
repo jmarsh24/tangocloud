@@ -9,10 +9,10 @@ const SearchLayout = () => {
     <View style={defaultStyles.container}>
       <Stack>
         <Stack.Screen
-          name="index" 
-          options={{ 
+          name="index"
+          options={{
           ...StackScreenWithSearchBar,
-          title: 'Search' }} 
+          title: 'Search' }}
         />
       </Stack>
     </View>

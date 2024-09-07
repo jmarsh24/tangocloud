@@ -3,7 +3,7 @@ import { defaultStyles } from '@/styles'
 import { Stack } from 'expo-router'
 import { View } from 'react-native'
 
-const FavoritesScreenLayout = () => {
+export default function CollectionLayout() {
 	return (
 		<View style={defaultStyles.container}>
 			<Stack>
@@ -18,5 +18,3 @@ const FavoritesScreenLayout = () => {
 		</View>
 	)
 }
-
-export default FavoritesScreenLayout

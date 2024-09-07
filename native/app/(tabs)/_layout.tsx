@@ -7,6 +7,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import { BlurView } from 'expo-blur'
 import { Redirect, Tabs } from 'expo-router'
 import { Image, Platform, StyleSheet, View } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
 
 const TabsNavigation = () => {
 	const { authState } = useAuth()
@@ -70,9 +71,9 @@ const TabsNavigation = () => {
 				<Tabs.Screen
 					name="(home)"
 					options={{
-						title: 'Home',
+						title: 'Radio',
 						headerShown: false,
-						tabBarIcon: ({ color }) => <MaterialIcons name="home" size={24} color={color} />,
+						tabBarIcon: ({ color }) => <MaterialIcons name="radio" size={24} color={color} />,
 					}}
 				/>
 				<Tabs.Screen
@@ -84,21 +85,13 @@ const TabsNavigation = () => {
 					}}
 				/>
 				<Tabs.Screen
-					name="favorites"
+					name="collection"
 					options={{
-						title: 'Favorites',
+						title: 'Collection',
 						headerShown: false,
-						tabBarIcon: ({ color }) => <MaterialIcons name="favorite" size={24} color={color} />,
+						tabBarIcon: ({ color }) => <Ionicons name="albums" size={24} color={color} />,
 					}}
 				/>
-				<Tabs.Screen
- 					name="you"
- 					options={{
- 						title: 'Your Profile',
- 						headerShown: false,
- 						tabBarIcon: ({ color }) => youIcon(color),
- 					}}
- 				/>
 			</Tabs>
 			<FloatingPlayer
 				style={{
