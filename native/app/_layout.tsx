@@ -2,7 +2,7 @@ import { colors } from '@/constants/tokens'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { DarkTheme, ThemeProvider } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
-import { SplashScreen, Stack } from 'expo-router'
+import { SplashScreen, Stack, Redirect, Link } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useCallback, useEffect } from 'react'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
@@ -16,6 +16,11 @@ import { updateIfPossible } from '@/model/updates'
 import ApolloClientProvider from '@/providers/ApolloClientProvider'
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
 import { AuthProvider } from '@/providers/AuthProvider'
+
+import { CURRENT_USER } from '@/graphql'
+import { useAuth } from '@/providers/AuthProvider'
+import { useQuery } from '@apollo/client'
+import { Image } from 'react-native'
 
 export { ErrorBoundary } from 'expo-router'
 
@@ -77,6 +82,32 @@ const App = () => {
 	)
 }
 
+const Avatar = () => {
+	const { authState } = useAuth()
+
+	const { data, loading, error } = useQuery(CURRENT_USER, {
+		skip: !authState.authenticated,
+	})
+
+	if (loading) {
+		return null
+	}
+
+	if (error) {
+		console.error('Error fetching user:', error as Error)
+	}
+
+	const avatarUrl = data?.currentUser?.userPreference?.avatar?.blob?.url
+
+	if (!authState.authenticated) {
+		return <Redirect href="/" />
+	}
+
+	return <Link href="/profile/">
+		<Image source={{ uri: avatarUrl }} style={{ width: 36, height: 36, borderRadius: 18 }} />
+	</Link>
+}
+
 function RootLayoutNav() {
 	return (
 		<ThemeProvider value={DarkTheme}>
@@ -84,8 +115,18 @@ function RootLayoutNav() {
 				<AuthProvider>
 					<Stack>
 						<Stack.Screen name="(auth)" options={{ headerShown: false }} />
-						<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+						<Stack.Screen name="(tabs)"
+							options={{
+								headerLeft: () => <Avatar />,
+								headerTitle: '',
+							}}
+						/>
 						<Stack.Screen name="recordings" options={{ headerShown: false }} />
+						<Stack.Screen name="profile" options={{
+							headerShown: false,
+							presentation: 'modal',
+						 }}
+						/>
 						<Stack.Screen
 							name="player"
 							options={{

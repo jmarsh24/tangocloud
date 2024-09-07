@@ -2,7 +2,7 @@ import { defaultStyles } from '@/styles'
 import { Stack } from 'expo-router'
 import { View } from 'react-native'
 
-const HomeScreenLayout = () => {
+export default function ProfileLayout() {
 	return (
 		<View style={defaultStyles.container}>
 			<Stack>
@@ -12,21 +12,7 @@ const HomeScreenLayout = () => {
 						headerShown: false,
 					}}
 				/>
-				<Stack.Screen
-					name="playlists"
-					options={{
-						headerShown: false,
-					}}
-				/>
-				<Stack.Screen
-					name="orchestras"
-					options={{
-						headerShown: false,
-					}}
-				/>
 			</Stack>
 		</View>
 	)
 }
-
-export default HomeScreenLayout

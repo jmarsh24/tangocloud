@@ -6,40 +6,11 @@ import { useQuery } from '@apollo/client'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import { BlurView } from 'expo-blur'
 import { Redirect, Tabs } from 'expo-router'
-import { Image, Platform, StyleSheet, View } from 'react-native'
+import { Platform, StyleSheet, View, Text } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
+import React from 'react'
 
 const TabsNavigation = () => {
-	const { authState } = useAuth()
-
-	const { data, loading, error } = useQuery(CURRENT_USER, {
-		skip: !authState.authenticated,
-	})
-
-	if (!authState.authenticated) {
-		return <Redirect href="/" />
-	}
-
-	if (loading) {
-		return null
-	}
-
-	if (error) {
-		console.error('Error fetching user:', error)
-	}
-
-	const avatarUrl = data?.currentUser?.userPreference?.avatar?.blob?.url
-
-	const youIcon = (color) => {
-		if (authState?.authenticated && avatarUrl) {
-			return (
-				<Image source={{ uri: avatarUrl }} style={{ width: 24, height: 24, borderRadius: 12 }} />
-			)
-		} else {
-			return <MaterialIcons name="person" color={color} size={24} />
-		}
-	}
-
 	const floatingPlayerHeight = Platform.OS === 'ios' ? 78 : 50
 
 	return (
@@ -72,7 +43,7 @@ const TabsNavigation = () => {
 					name="(home)"
 					options={{
 						title: 'Radio',
-						headerShown: false,
+						headerLeft: () => <View><Text>hello</Text></View>,
 						tabBarIcon: ({ color }) => <MaterialIcons name="radio" size={24} color={color} />,
 					}}
 				/>
@@ -80,7 +51,6 @@ const TabsNavigation = () => {
 					name="search"
 					options={{
 						title: 'Search',
-						headerShown: false,
 						tabBarIcon: ({ color }) => <MaterialIcons name="search" size={24} color={color} />,
 					}}
 				/>
@@ -88,7 +58,6 @@ const TabsNavigation = () => {
 					name="collection"
 					options={{
 						title: 'Collection',
-						headerShown: false,
 						tabBarIcon: ({ color }) => <Ionicons name="albums" size={24} color={color} />,
 					}}
 				/>
