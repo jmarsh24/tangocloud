@@ -4,6 +4,7 @@ import { CURRENT_USER } from '@/graphql'
 import { useAuth } from '@/providers/AuthProvider'
 import { useQuery } from '@apollo/client'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
+import Ionicons from '@expo/vector-icons/Ionicons'
 import { BlurView } from 'expo-blur'
 import { Redirect, Tabs } from 'expo-router'
 import { Image, Platform, StyleSheet, View } from 'react-native'
@@ -76,6 +77,14 @@ const TabsNavigation = () => {
 					}}
 				/>
 				<Tabs.Screen
+					name="radio"
+					options={{
+						title: 'Radio',
+						headerShown: false,
+						tabBarIcon: ({ color }) => <MaterialIcons name="radio" size={24} color={color} />,
+					}}
+				/>
+				<Tabs.Screen
 					name="search"
 					options={{
 						title: 'Search',
@@ -84,11 +93,11 @@ const TabsNavigation = () => {
 					}}
 				/>
 				<Tabs.Screen
-					name="favorites"
+					name="collection"
 					options={{
-						title: 'Favorites',
+						title: 'Collection',
 						headerShown: false,
-						tabBarIcon: ({ color }) => <MaterialIcons name="favorite" size={24} color={color} />,
+						tabBarIcon: ({ color }) => <Ionicons name="albums" size={24} color={color} />,
 					}}
 				/>
 				<Tabs.Screen

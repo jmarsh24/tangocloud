@@ -161,7 +161,7 @@ const HomeScreen = () => {
 		moodPlaylistsLoading ||
 		orchestrasLoading
 	) {
-		return <ActivityIndicator size="large" color="#0000ff" />
+		return <SafeAreaView><ActivityIndicator size="large" color="#0000ff" /></SafeAreaView>
 	}
 
 	if (
