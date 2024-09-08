@@ -1,6 +1,6 @@
 import { TracksList } from '@/components/TracksList'
 import { screenPadding } from '@/constants/tokens'
-import { Person } from '@/generated/graphql'
+import { Person } from '@/graphql/__generated__/graphql'
 import { LIKED_RECORDINGS } from '@/graphql'
 import { generateTracksListId } from '@/helpers/miscellaneous'
 import { useNavigationSearch } from '@/hooks/useNavigationSearch'
