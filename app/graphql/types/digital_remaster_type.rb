@@ -1,6 +1,6 @@
 module Types
   class DigitalRemasterType < Types::BaseObject
-    field :id, ID, null: true
+    field :id, ID, null: false
     field :duration, Integer, null: true
     field :bpm, Integer, null: true
     field :external_id, String, null: true

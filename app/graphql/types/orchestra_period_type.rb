@@ -1,6 +1,6 @@
 module Types
   class OrchestraPeriodType < Types::BaseObject
-    field :id, ID, null: true
+    field :id, ID, null: false
 
     field :name, String, null: true
     field :description, String, null: true

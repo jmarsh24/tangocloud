@@ -1,6 +1,6 @@
 module Types
   class OrchestraPositionType < Types::BaseObject
-    field :id, ID, null: true
+    field :id, ID, null: false
     field :start_date, GraphQL::Types::ISO8601Date, null: true
     field :end_date, GraphQL::Types::ISO8601Date, null: true
     field :principal, Boolean, null: true

@@ -1,9 +1,9 @@
 module Types
   class OrchestraType < Types::BaseObject
-    field :id, ID, null: true
+    field :id, ID, null: false
     field :name, String, null: false
-    field :slug, String, null: true
-    field :sort_name, String, null: true
+    field :slug, String
+    field :sort_name, String
 
     has_many :orchestra_periods
     has_many :orchestra_positions

@@ -1,6 +1,6 @@
 module Types
   class PersonType < Types::BaseObject
-    field :id, ID, null: true
+    field :id, ID, null: false
 
     field :bio, String, null: true
     field :birth_date, GraphQL::Types::ISO8601Date, null: true

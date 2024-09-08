@@ -1,6 +1,6 @@
 module Types
   class OrchestraRoleType < Types::BaseObject
-    field :id, ID, null: true
+    field :id, ID, null: false
     field :name, String, null: true
 
     has_many :orchestra_positions
