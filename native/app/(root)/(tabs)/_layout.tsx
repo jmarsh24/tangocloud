@@ -1,45 +1,13 @@
 import { FloatingPlayer } from '@/components/FloatingPlayer'
 import { colors, fontSize } from '@/constants/tokens'
-import { CURRENT_USER } from '@/graphql'
-import { useAuth } from '@/providers/AuthProvider'
-import { useQuery } from '@apollo/client'
+
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { BlurView } from 'expo-blur'
-import { Redirect, Tabs } from 'expo-router'
-import { Image, Platform, StyleSheet, View } from 'react-native'
+import { Tabs } from 'expo-router'
+import { Platform, StyleSheet, View } from 'react-native'
 
 const TabsNavigation = () => {
-	const { authState } = useAuth()
-
-	const { data, loading, error } = useQuery(CURRENT_USER, {
-		skip: !authState.authenticated,
-	})
-
-	if (!authState.authenticated) {
-		return <Redirect href="/" />
-	}
-
-	if (loading) {
-		return null
-	}
-
-	if (error) {
-		console.error('Error fetching user:', error)
-	}
-
-	const avatarUrl = data?.currentUser?.userPreference?.avatar?.blob?.url
-
-	const youIcon = (color) => {
-		if (authState?.authenticated && avatarUrl) {
-			return (
-				<Image source={{ uri: avatarUrl }} style={{ width: 24, height: 24, borderRadius: 12 }} />
-			)
-		} else {
-			return <MaterialIcons name="person" color={color} size={24} />
-		}
-	}
-
 	const floatingPlayerHeight = Platform.OS === 'ios' ? 78 : 50
 
 	return (
@@ -101,11 +69,11 @@ const TabsNavigation = () => {
 					}}
 				/>
 				<Tabs.Screen
- 					name="you"
+ 					name="profile"
  					options={{
  						title: 'Your Profile',
  						headerShown: false,
- 						tabBarIcon: ({ color }) => youIcon(color),
+						href: null
  					}}
  				/>
 			</Tabs>

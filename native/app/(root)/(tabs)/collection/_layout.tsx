@@ -3,7 +3,7 @@ import { defaultStyles } from '@/styles'
 import { Stack } from 'expo-router'
 import { View } from 'react-native'
 
-const FavoritesScreenLayout = () => {
+const CollectionLayout = () => {
 	return (
 		<View style={defaultStyles.container}>
 			<Stack>
@@ -11,7 +11,7 @@ const FavoritesScreenLayout = () => {
 					name="index"
 					options={{
 						...StackScreenWithSearchBar,
-						headerTitle: 'Favorites',
+						headerTitle: 'Collection',
 					}}
 				/>
 			</Stack>
@@ -19,4 +19,4 @@ const FavoritesScreenLayout = () => {
 	)
 }
 
-export default FavoritesScreenLayout
+export default CollectionLayout
