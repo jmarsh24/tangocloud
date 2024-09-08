@@ -61,6 +61,13 @@ const TabsNavigation = () => {
 						tabBarIcon: ({ color }) => <Ionicons name="albums" size={24} color={color} />,
 					}}
 				/>
+				<Tabs.Screen
+					name="profile"
+					options={{
+						title: 'Profile',
+						tabBarIcon: ({ color }) => <Ionicons name="person" size={24} color={color} />,
+					}}
+				/>
 			</Tabs>
 			<FloatingPlayer
 				style={{
