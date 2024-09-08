@@ -48,7 +48,7 @@ export default function YouScreen() {
 
 		TrackPlayer.play()
 	}
-
+	console.log('YouScreen rendered')
 	if (!authState.authenticated) {
 		return <Redirect href="/" />
 	}
