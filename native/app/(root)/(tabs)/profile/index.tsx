@@ -16,7 +16,7 @@ import FastImage from 'react-native-fast-image'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import TrackPlayer from 'react-native-track-player'
 
-export default function YouScreen() {
+export default function Profile() {
 	const { authState, onLogout } = useAuth()
 	const { colors } = useTheme()
 

@@ -5,10 +5,10 @@ import Avatar from '@/components/Avatar'
 import { CURRENT_USER } from '@/graphql'
 import { useQuery } from '@apollo/client'
 
-const HomeLayout = () => {
+const ProfileLayout = () => {
 	const { data } = useQuery(CURRENT_USER)
 
-  const avatarUrl = data?.currentUser?.userPreference?.avatar?.blob?.url
+	const avatarUrl = data?.currentUser?.userPreference?.avatar?.blob?.url
 
 	return (
 		<View style={defaultStyles.container}>
@@ -16,24 +16,12 @@ const HomeLayout = () => {
 				<Stack.Screen
 					name="index"
 					options={{
-						headerTitle: 'Home',
+						headerTitle: '',
 						headerLeft: () => (
-							<Link href="/profile">
+							<Link href="/profile" push>
 								<Avatar avatarUrl={avatarUrl} size={36} />
 							</Link>
 						),
-					}}
-				/>
-				<Stack.Screen
-					name="playlists"
-					options={{
-						headerShown: false,
-					}}
-				/>
-				<Stack.Screen
-					name="orchestras"
-					options={{
-						headerShown: false,
 					}}
 				/>
 			</Stack>
@@ -41,4 +29,4 @@ const HomeLayout = () => {
 	)
 }
 
-export default HomeLayout
+export default ProfileLayout
