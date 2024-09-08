@@ -122,7 +122,7 @@ const PlayerScreen = () => {
 		>
 			<View style={[styles.overlayContainer]}>
 				<ScrollView
-					style={[styles.scrollContainer, { marginTop: top + 24 }]}
+					style={[styles.scrollContainer]}
 					showsVerticalScrollIndicator={false}
 					snapToAlignment="start"
 				>
@@ -155,14 +155,19 @@ const PlayerScreen = () => {
 													style={styles.trackTitleText}
 												/>
 											</View>
-											<TouchableOpacity activeOpacity={0.7} onPress={toggleFavorite}>
-												<FontAwesome
-													name={isFavorite ? 'heart' : 'heart-o'}
-													size={28}
-													color={isFavorite ? colors.primary : colors.icon}
-													style={{ marginHorizontal: 14 }}
-												/>
-											</TouchableOpacity>
+											<View style={{ flexDirection: 'row', gap: 12 }}>
+												<TouchableOpacity activeOpacity={0.7} onPress={toggleFavorite}>
+													<FontAwesome
+														name={isFavorite ? 'heart' : 'heart-o'}
+														size={28}
+														color={isFavorite ? colors.primary : colors.icon}
+													/>
+												</TouchableOpacity>
+												<ShareButton recording_id={activeTrack.id} />
+												<Link href="/queue" asChild>
+													<MaterialIcons name="queue-music" size={30} color="white" />
+												</Link>
+											</View>
 										</View>
 
 										{activeTrack.artist && (
@@ -178,19 +183,6 @@ const PlayerScreen = () => {
 									<PlayerProgressBar />
 
 									<PlayerControls />
-
-									<View
-										style={{
-											flexDirection: 'row',
-											justifyContent: 'flex-end',
-											gap: 36,
-										}}
-									>
-										<ShareButton recording_id={activeTrack.id} />
-										<Link href="/queue" asChild>
-											<MaterialIcons name="queue-music" size={30} color="white" />
-										</Link>
-									</View>
 								</View>
 							</View>
 						</View>
@@ -277,7 +269,7 @@ const styles = StyleSheet.create({
 		borderTopLeftRadius: 24,
 	},
 	scrollContainer: {
-		paddingTop: 12,
+		paddingTop: 24,
 		paddingHorizontal: 12,
 		zIndex: 10,
 	},

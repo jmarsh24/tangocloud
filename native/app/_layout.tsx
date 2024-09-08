@@ -84,45 +84,7 @@ function RootLayoutNav() {
 				<AuthProvider>
 					<Stack>
 						<Stack.Screen name="(auth)" options={{ headerShown: false }} />
-						<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-						<Stack.Screen name="recordings" options={{ headerShown: false }} />
-						<Stack.Screen
-							name="player"
-							options={{
-								presentation: 'card',
-								gestureEnabled: true,
-								gestureDirection: 'vertical',
-								animationDuration: 400,
-								headerShown: false,
-							}}
-						/>
-						<Stack.Screen
-							name="queue"
-							options={{
-								animation: 'fade',
-								headerShown: false,
-							}}
-						/>
-						<Stack.Screen
-							name="lyrics"
-							options={{
-								animation: 'fade',
-								headerShown: false,
-							}}
-						/>
-						<Stack.Screen
-							name="(modals)/addToPlaylist"
-							options={{
-								presentation: 'modal',
-								headerStyle: {
-									backgroundColor: colors.background,
-								},
-								headerTitle: 'Add to playlist',
-								headerTitleStyle: {
-									color: colors.text,
-								},
-							}}
-						/>
+						<Stack.Screen name="(root)" options={{ headerShown: false }} />
 					</Stack>
 				</AuthProvider>
 			</ApolloClientProvider>
