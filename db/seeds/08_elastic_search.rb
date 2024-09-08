@@ -8,6 +8,7 @@ models = [
   Recording,
   TimePeriod,
   User,
+  Tanda,
   ExternalCatalog::ElRecodo::Person,
   ExternalCatalog::ElRecodo::Orchestra,
   ExternalCatalog::ElRecodo::Song
