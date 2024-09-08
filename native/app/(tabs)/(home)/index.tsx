@@ -324,7 +324,7 @@ const HomeScreen = () => {
 								<Link href={`/orchestras/${item.id}`} key={item.id} asChild>
 									<Pressable style={{ alignItems: 'center', gap: 16 }}>
 										<FastImage
-											source={{ uri: item.image.blob.url }}
+											source={{ uri: item.image?.blob?.url }}
 											style={{ width: 170, height: 170, borderRadius: 100 }}
 										/>
 										<Text style={styles.orchestraText}>{item.name}</Text>
