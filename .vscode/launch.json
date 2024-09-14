@@ -5,10 +5,18 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "UI",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000/",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "Sleepdelay"
+    },
+    {
       "name": "Rails",
       "type": "ruby_lsp",
       "request": "launch",
-      "program": "bin/rails server"
+      "program": "bin/rails server -b 0.0.0.0"
     },
     {
       "name": "Worker",
@@ -29,7 +37,8 @@
       "configurations": [
         "Vite",
         "Rails",
-        "Worker"
+        "Worker",
+        "UI"
       ],
       "stopAll": true,
       "presentation": {
