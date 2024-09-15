@@ -5,7 +5,7 @@ module Resolvers
     argument :filters, Types::RecordingFilterInputType, required: false
     argument :order_by, Types::RecordingOrderByInputType, required: false
     argument :query, String, required: false
-    argument :aggs, [String], required: false
+    argument :aggs, [Types::RecordingAggregationInputType], required: false
     argument :limit, Integer, required: false, default_value: 20
     argument :offset, Integer, required: false, default_value: 0
 
@@ -25,7 +25,7 @@ module Resolvers
       search_options[:order] = {order_by.field => order_by.order} if order_by.present?
 
       if aggs.present?
-        search_options[:aggs] = aggs.map { |agg| agg.underscore.to_sym }
+        search_options[:aggs] = aggs.map { _1.field.underscore.to_sym }
       end
 
       search_result = ::Recording.search(query, **search_options)
@@ -38,7 +38,7 @@ module Resolvers
       if aggs.present?
         result[:aggregations] = {}
         aggs.each do |agg|
-          snake_case_agg = agg.underscore.to_sym
+          snake_case_agg = agg.field.underscore.to_sym
 
           result[:aggregations][snake_case_agg] = if search_result.aggs[snake_case_agg.to_s].present?
             format_aggregations(search_result.aggs[snake_case_agg.to_s]["buckets"])

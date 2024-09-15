@@ -1,12 +1,19 @@
 import { gql } from '@apollo/client'
 
 export const SEARCH_RECORDINGS = gql`
-  query searchRecordings($query: String, $filters: RecordingFilterInput, $order_by: RecordingOrderByInput) {
-    searchRecordings(query: $query, filters: $filters, orderBy: $order_by) {
-      recordings {
-        edges {
-          node {
-            id
+	query searchRecordings(
+		$query: String
+		$filters: RecordingFilterInput
+		$order_by: RecordingOrderByInput
+		$aggs: [RecordingAggregationInput!],
+    $limit: Int,
+    $offset: Int
+	) {
+		searchRecordings(query: $query, filters: $filters, orderBy: $order_by, aggs: $aggs, limit: $limit, offset: $offset) {
+			recordings {
+				edges {
+					node {
+						id
             composition {
               title
             }
@@ -41,9 +48,35 @@ export const SEARCH_RECORDINGS = gql`
                 }
               }
             }
-          }
+					}
+				}
+			}
+			aggregations {
+        orchestra {
+          key
+          docCount
         }
-      }
-    }
-  }
+				orchestraPeriods {
+					key
+					docCount
+				}
+				timePeriod {
+					key
+					docCount
+				}
+				singers {
+					key
+					docCount
+				}
+				genre {
+					key
+					docCount
+				}
+        year {
+          key
+          docCount
+        }
+			}
+		}
+	}
 `

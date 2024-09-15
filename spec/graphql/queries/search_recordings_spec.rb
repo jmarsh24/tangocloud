@@ -12,7 +12,7 @@ RSpec.describe "Orchestras", type: :graph do
 
     let(:query) do
       <<~GQL
-        query searchRecordings($query: String, $filters: RecordingFilterInput, $order_by: RecordingOrderByInput, $aggs: [String!]) {
+        query searchRecordings($query: String, $filters: RecordingFilterInput, $order_by: RecordingOrderByInput, $aggs: [RecordingAggregationInput!]) {
           searchRecordings(query: $query, filters: $filters, orderBy: $order_by, aggs: $aggs) {
             recordings {
               edges {
@@ -53,7 +53,17 @@ RSpec.describe "Orchestras", type: :graph do
     it "returns the correct orchestra details with aggregations" do
       Recording.reindex
 
-      gql(query, variables: {filters: {orchestra: "Carlos Di Sarli"}, aggs: ["orchestraPeriods", "timePeriod", "singers", "genre"]}, user:)
+      gql(query,
+        variables: {
+          filters: {orchestra: "Carlos Di Sarli"},
+          aggs: [
+            {field: "orchestraPeriods"},
+            {field: "timePeriod"},
+            {field: "singers"},
+            {field: "genre"}
+          ]
+        },
+        user:)
       response_data = data.search_recordings
 
       recordings = response_data.recordings

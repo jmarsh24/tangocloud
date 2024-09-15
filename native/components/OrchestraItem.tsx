@@ -10,7 +10,7 @@ const OrchestraItem: React.FC<OrchestraItemProps> = ({ name, imageUrl }) => {
   return (
     <View style={styles.container}>
       <Image source={{ uri: imageUrl }} style={styles.image} />
-      <Text style={styles.name}>{name}</Text>
+      <Text style={styles.name} numberOfLines={2} ellipsizeMode="tail">{name}</Text>
     </View>
   );
 }

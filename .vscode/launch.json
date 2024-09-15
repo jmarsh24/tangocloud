@@ -1,50 +1,51 @@
-{
-  // Use IntelliSense to learn about possible attributes.
-  // Hover to view descriptions of existing attributes.
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "name": "UI",
-      "type": "chrome",
-      "request": "launch",
-      "url": "http://localhost:3000/",
-      "webRoot": "${workspaceFolder}",
-      "preLaunchTask": "Sleepdelay"
-    },
-    {
-      "name": "Rails",
-      "type": "ruby_lsp",
-      "request": "launch",
-      "program": "bin/rails server -b 0.0.0.0"
-    },
-    {
-      "name": "Worker",
-      "type": "ruby_lsp",
-      "request": "launch",
-      "program": "bin/rails solid_queue:start"
-    },
-    {
-      "name": "Vite",
-      "type": "node-terminal",
-      "request": "launch",
-      "command": "bin/vite dev"
-    }
-  ],
-  "compounds": [
-    {
-      "name": "Run App",
-      "configurations": [
-        "Vite",
-        "Rails",
-        "Worker",
-        "UI"
-      ],
-      "stopAll": true,
-      "presentation": {
-        "group": "1_dev",
-        "order": 1
+  {
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+      {
+        "name": "UI",
+        "type": "chrome",
+        "request": "launch",
+        "url": "http://127.0.0.1:3000/",
+        "webRoot": "${workspaceFolder}",
+        "preLaunchTask": "Sleepdelay"
+      },
+      {
+        "name": "Rails",
+        "type": "ruby_lsp",
+        "request": "launch",
+        "program": "bin/rails server -b 0.0.0.0"
+      },
+      {
+        "name": "Worker",
+        "type": "ruby_lsp",
+        "request": "launch",
+        "program": "bin/rails solid_queue:start"
+      },
+      {
+        "name": "Vite",
+        "type": "node-terminal",
+        "request": "launch",
+        "command": "bin/vite dev"
       }
-    }
-  ]
-}
+    ],
+    "compounds": [
+      {
+        "name": "Run App",
+        "configurations": [
+          "Vite",
+          "Rails",
+          "Worker",
+          "UI"
+        ],
+        "stopAll": true,
+        "presentation": {
+          "group": "1_dev",
+          "order": 1
+        }
+      }
+    ]
+  }

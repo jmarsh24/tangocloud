@@ -58,7 +58,7 @@ class Recording < ApplicationRecord
       lyricists: composition&.lyricists&.map(&:name),
       orchestra_periods: orchestra&.orchestra_periods&.map(&:name),
       orchestra: orchestra&.name,
-      singers: singers.map(&:name).join(" "),
+      singers: singers.present? ? singers.map(&:name) : "Inst",
       genre: genre&.name,
       playbacks_count:,
       year:,
