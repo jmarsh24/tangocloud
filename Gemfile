@@ -3,7 +3,7 @@ ruby File.read(File.join(__dir__, ".ruby-version")).strip
 
 # Core
 gem "puma"
-gem "rails", "7.1.3"
+gem "rails", "7.2.1"
 
 # Database
 gem "pg"

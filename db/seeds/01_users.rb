@@ -3,6 +3,7 @@ def create_user(email, password, admin = false)
     u.password = password
     u.admin = admin
     u.username = email.split("@").first
+    u.confirmed_at = Time.current
   end
 
   unless user.avatar.attached?
