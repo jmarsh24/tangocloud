@@ -1,7 +1,7 @@
 import { PlaylistsList } from '@/components/PlaylistsList'
 import { screenPadding } from '@/constants/tokens'
 import { PLAYLISTS } from '@/graphql'
-import { Playlist } from '@/generated/graphql'
+import { Playlist } from '@/graphql/__generated__/graphql'
 import { useNavigationSearch } from '@/hooks/useNavigationSearch'
 import { defaultStyles } from '@/styles'
 import { useQuery } from '@apollo/client'

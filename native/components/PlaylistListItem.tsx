@@ -1,5 +1,5 @@
 import { colors } from '@/constants/tokens'
-import { Playlist } from '@/generated/graphql'
+import { Playlist } from '@/graphql/__generated__/graphql'
 import { defaultStyles } from '@/styles'
 import { AntDesign } from '@expo/vector-icons'
 import { StyleSheet, Text, TouchableHighlight, TouchableHighlightProps, View } from 'react-native'

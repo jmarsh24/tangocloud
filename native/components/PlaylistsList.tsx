@@ -1,6 +1,6 @@
 import { PlaylistListItem } from '@/components/PlaylistListItem'
 import { playlistNameFilter } from '@/helpers/filter'
-import { Playlist } from '@/generated/graphql'
+import { Playlist } from '@/graphql/__generated__/graphql'
 import { useNavigationSearch } from '@/hooks/useNavigationSearch'
 import { utilsStyles } from '@/styles'
 import { useMemo } from 'react'

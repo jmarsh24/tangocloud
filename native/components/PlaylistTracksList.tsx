@@ -1,7 +1,7 @@
 import { fontSize } from '@/constants/tokens'
 import { trackTitleFilter } from '@/helpers/filter'
 import { generateTracksListId } from '@/helpers/miscellaneous'
-import { Playlist } from '@/generated/graphql'
+import { Playlist } from '@/graphql/__generated__/graphql'
 import { useNavigationSearch } from '@/hooks/useNavigationSearch'
 import { defaultStyles } from '@/styles'
 import { useMemo } from 'react'

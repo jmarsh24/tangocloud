@@ -1,5 +1,5 @@
 import { colors } from '@/constants/tokens'
-import { Playlist } from '@/generated/graphql'
+import { Playlist } from '@/graphql/__generated__/graphql'
 import { defaultStyles } from '@/styles'
 import { router } from 'expo-router'
 import { StyleSheet, Text, TouchableHighlight, TouchableHighlightProps, View } from 'react-native'

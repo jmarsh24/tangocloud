@@ -1,6 +1,6 @@
 import { PlaylistsList } from '@/components/PlaylistsList'
 import { screenPadding } from '@/constants/tokens'
-import { Playlist } from '@/generated/graphql'
+import { Playlist } from '@/graphql/__generated__/graphql'
 import { useQueue } from '@/store/queue'
 import { defaultStyles } from '@/styles'
 import { useHeaderHeight } from '@react-navigation/elements'

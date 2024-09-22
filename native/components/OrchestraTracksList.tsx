@@ -8,7 +8,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { QueueControls } from './QueueControls'
 import { TracksList } from './TracksList'
-import { Orchestra, RecordingEdge } from '@/generated/graphql'
+import { Orchestra, RecordingEdge } from '@/graphql/__generated__/graphql'
 
 export const OrchestraTracksList: React.FC<{ orchestra: Orchestra }> = ({ orchestra }) => {
   const search = useNavigationSearch({
