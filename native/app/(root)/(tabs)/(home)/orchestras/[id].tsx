@@ -4,7 +4,7 @@ import { ORCHESTRA } from '@/graphql'
 import { defaultStyles } from '@/styles'
 import { useQuery } from '@apollo/client'
 import { useLocalSearchParams } from 'expo-router'
-import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, ScrollView, Text, View } from 'react-native'
 
 const OrchestraScreen = () => {
 	const { id } = useLocalSearchParams<{ id: string }>()
