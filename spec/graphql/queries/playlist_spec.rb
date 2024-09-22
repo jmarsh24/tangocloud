@@ -37,9 +37,7 @@ RSpec.describe "Playlist", type: :graph do
                                 node {
                                   id
                                   audioFile {
-                                    blob {
-                                      url
-                                    }
+                                    url
                                   }
                                 }
                               }
@@ -79,7 +77,7 @@ RSpec.describe "Playlist", type: :graph do
       first_audio_variant_data = first_digital_remaster_data.audio_variants.edges.first.node
 
       expect(first_audio_variant_data.id).to eq(audio_variant.id.to_s)
-      expect(first_audio_variant_data.audio_file.blob?.url).to be_present
+      expect(first_audio_variant_data.audio_file.url).to be_present
     end
   end
 end

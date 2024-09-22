@@ -18,9 +18,7 @@ RSpec.describe "digitalRemaster", type: :graph do
             id
             album {
               albumArt {
-                blob {
-                  url
-                }
+                url
               }
             }
             audioVariants {
@@ -31,9 +29,7 @@ RSpec.describe "digitalRemaster", type: :graph do
                     duration
                   }
                   audioFile {
-                    blob {
-                      url
-                    }
+                    url
                   }
                 }
               }
@@ -48,7 +44,7 @@ RSpec.describe "digitalRemaster", type: :graph do
 
       expect(data.digital_remaster).not_to be_nil
       expect(data.digital_remaster.id).to eq(digital_remaster.id.to_s)
-      expect(data.digital_remaster.album.album_art.blob?.url).not_to be_nil
+      expect(data.digital_remaster.album.album_art.url).not_to be_nil
       expect(data.digital_remaster.audio_variants.edges).not_to be_empty
       expect(data.digital_remaster.audio_variants.edges.first.node.id).to eq(digital_remaster.audio_variants.first.id.to_s)
     end

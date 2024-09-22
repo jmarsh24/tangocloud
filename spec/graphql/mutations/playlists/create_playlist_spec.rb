@@ -39,9 +39,7 @@ RSpec.describe "CreatePlaylist", type: :graph do
             description
             public
             image {
-              blob {
-                url
-              }
+              url
             }
             playlistItems {
               edges {
@@ -76,7 +74,7 @@ RSpec.describe "CreatePlaylist", type: :graph do
       description: "This is a new playlist",
       public: true
     )
-    expect(result.data.create_playlist.playlist.image.blob?.url).to be_present
+    expect(result.data.create_playlist.playlist.image.url).to be_present
     expect(result.data.create_playlist.playlist.playlist_items.edges.map { |edge| edge.node.item.id }).to match_array([volver_a_sonar.id, milonga_vieja.id])
   end
 end

@@ -14,7 +14,7 @@ class AudioFile < ApplicationRecord
 
   validates :file, content_type: SUPPORTED_MIME_TYPES
 
-  enum status: {
+  enum :status, {
     pending: "pending",
     processing: "processing",
     completed: "completed",

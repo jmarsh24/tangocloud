@@ -11,9 +11,7 @@ RSpec.describe "period", type: :graph do
             id
             name
             image {
-              blob {
-                url
-              }
+              url
             }
           }
         }
@@ -27,7 +25,7 @@ RSpec.describe "period", type: :graph do
 
       expect(data.time_period.id).to eq(time_period.id)
       expect(data.time_period.name).to eq("Golden Age")
-      expect(data.time_period.image.blob?.url).to be_present
+      expect(data.time_period.image.url).to be_present
     end
   end
 end
