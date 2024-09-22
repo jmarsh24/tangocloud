@@ -29,7 +29,7 @@ export const ORCHESTRA = gql`
             digitalRemasters {
               edges {
                 node {
-                duration
+                  duration
                   audioVariants {
                     edges {
                       node {

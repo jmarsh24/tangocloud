@@ -161,7 +161,11 @@ const HomeScreen = () => {
 		moodPlaylistsLoading ||
 		orchestrasLoading
 	) {
-		return <SafeAreaView><ActivityIndicator size="large" color="#0000ff" /></SafeAreaView>
+		return (
+			<SafeAreaView>
+				<ActivityIndicator size="large" color="#0000ff" />
+			</SafeAreaView>
+		)
 	}
 
 	if (
@@ -195,7 +199,7 @@ const HomeScreen = () => {
 	return (
 		<SafeAreaView
 			style={{
-				...defaultStyles.container
+				...defaultStyles.container,
 			}}
 		>
 			<ScrollView showsVerticalScrollIndicator={false}>
@@ -324,8 +328,9 @@ const HomeScreen = () => {
 								<Link href={`/orchestras/${item.id}`} key={item.id} asChild>
 									<Pressable style={{ alignItems: 'center', gap: 16 }}>
 										<FastImage
-											source={{ uri: item.image?.url }}
+											source={item.image?.url ? { uri: item.image.url, priority: FastImage.priority.normal } : require('@/assets/unknown_artist.png') }
 											style={{ width: 170, height: 170, borderRadius: 100 }}
+											resizeMode={FastImage.resizeMode.cover}
 										/>
 										<Text style={styles.orchestraText}>{item.name}</Text>
 									</Pressable>
