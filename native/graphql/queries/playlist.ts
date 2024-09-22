@@ -36,9 +36,8 @@ export const PLAYLIST = gql`
 											audioVariants {
 												edges {
 													node {
-														audioFile {
-															url
-														}
+														id
+														url
 													}
 												}
 											}

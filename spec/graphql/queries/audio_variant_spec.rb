@@ -10,9 +10,7 @@ RSpec.describe "AudioVariant", type: :graph do # Ensure you specify the type to 
         query AudioVariant($id: ID!) {
           audioVariant(id: $id) {
             id
-            audioFile {
-              url
-            }
+            url
           }
         }
       GQL
@@ -26,7 +24,7 @@ RSpec.describe "AudioVariant", type: :graph do # Ensure you specify the type to 
 
       expect(audio_variant_data).not_to be_nil
       expect(audio_variant_data.id).to eq(audio_variant.id.to_s)
-      expect(audio_variant_data.audio_file.url).to be_present
+      expect(audio_variant_data.url).to be_present
     end
   end
 end

@@ -17,8 +17,6 @@ require "mime/types"
 require "faraday"
 require "faraday/retry"
 
-require_relative "../lib/middleware/silent_logger_middleware"
-
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -27,32 +25,27 @@ Config = Shimmer::Config.instance # rubocop:disable Style/MutableConstant
 
 module Tangocloud
   class Application < Rails::Application
-    config.middleware.insert_before Rails::Rack::Logger, Middleware::SilentLoggerMiddleware
+    # Prevents Rails from trying to eager-load the contents of app/frontend
+    config.javascript_path = "frontend"
+
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.2
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
-
-    [:tracking, :user].each do |folder|
-      config.autoload_paths += Dir[Rails.root.join("app", "models", folder.to_s, "**/")]
-    end
+    config.autoload_lib(ignore: ["templates", "assets", "tasks"])
 
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     #
-    # config.time_zone = "Central Time (US & Canada)"
+    config.time_zone = "Europe/Berlin"
     # config.eager_load_paths << Rails.root.join("extras")
 
     # Don't generate system test files.
     config.generators.system_tests = nil
-
-    host = Config.host(default: "localhost:3000")
-    Rails.application.routes.default_url_options[:host] = host
-    config.action_mailer.default_url_options = {host:}
 
     config.active_storage.variant_processor = :vips
     config.mission_control.jobs.base_controller_class = "AdminController"

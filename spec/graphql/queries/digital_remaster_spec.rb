@@ -25,11 +25,9 @@ RSpec.describe "digitalRemaster", type: :graph do
               edges {
                 node {
                   id
+                  url
                   digitalRemaster {
                     duration
-                  }
-                  audioFile {
-                    url
                   }
                 }
               }

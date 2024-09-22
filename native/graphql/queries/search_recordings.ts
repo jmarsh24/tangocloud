@@ -30,6 +30,13 @@ export const SEARCH_RECORDINGS = gql`
                       url
                     }
                   }
+                  audioVariants {
+                    edges {
+                      node {
+                        url
+                      }
+                    }
+                  }
                 }
               }
             }
