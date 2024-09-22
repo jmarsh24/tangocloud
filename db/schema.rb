@@ -12,15 +12,9 @@
 
 ActiveRecord::Schema[7.2].define(version: 2024_09_02_114329) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "btree_gin"
-  enable_extension "btree_gist"
   enable_extension "citext"
-  enable_extension "fuzzystrmatch"
-  enable_extension "pg_stat_statements"
-  enable_extension "pg_trgm"
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
-  enable_extension "unaccent"
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
@@ -475,7 +469,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_02_114329) do
     t.string "uid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "email", default: "", null: false
+    t.citext "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"

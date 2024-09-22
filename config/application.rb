@@ -49,10 +49,6 @@ module Tangocloud
 
     # Don't generate system test files.
     config.generators.system_tests = nil
-    config.active_job.queue_adapter = :solid_queue
-    config.solid_queue.connects_to = {database: {writing: :queue}}
-
-    config.cache_store = :solid_cache_store
 
     host = Config.host(default: "localhost:3000")
     Rails.application.routes.default_url_options[:host] = host
