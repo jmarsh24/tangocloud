@@ -29,7 +29,7 @@ module Tangocloud
   class Application < Rails::Application
     config.middleware.insert_before Rails::Rack::Logger, Middleware::SilentLoggerMiddleware
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.1
+    config.load_defaults 7.2
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
@@ -49,7 +49,6 @@ module Tangocloud
 
     # Don't generate system test files.
     config.generators.system_tests = nil
-    config.active_job.queue_adapter = :solid_queue
 
     host = Config.host(default: "localhost:3000")
     Rails.application.routes.default_url_options[:host] = host

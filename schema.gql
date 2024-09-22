@@ -36,7 +36,7 @@ type Album {
     last: Int
   ): DigitalRemasterConnection!
   externalId: String
-  id: ID
+  id: ID!
   releaseDate: ISO8601Date
   title: String
   updatedAt: ISO8601DateTime
@@ -124,7 +124,7 @@ type Composer {
   ): CompositionConnection!
   createdAt: ISO8601Date
   deathDate: ISO8601Date
-  id: ID
+  id: ID!
   image: Attachment
   name: String
   orchestra(id: ID!): Orchestra!
@@ -214,7 +214,7 @@ type Composition {
     "Returns the last _n_ elements from the list."
     last: Int
   ): CompositionRoleConnection!
-  id: ID
+  id: ID!
   lyric(id: ID!): Lyric!
   lyrics(
     "Returns the elements in the list that come after the specified cursor."
@@ -283,7 +283,7 @@ type CompositionLyricEdge {
 type CompositionRole {
   composition: Composition!
   compositionId: ID!
-  id: ID
+  id: ID!
   person: Person!
   personId: ID!
   role: CompositionRoleRole!
@@ -343,7 +343,7 @@ type DigitalRemaster {
   createdAt: ISO8601Date
   duration: Int
   externalId: String
-  id: ID
+  id: ID!
   peakValue: Float
   recording: Recording!
   recordingId: ID!
@@ -640,7 +640,7 @@ type Lyric {
   composition: Composition!
   compositionId: ID!
   createdAt: ISO8601Date
-  id: ID
+  id: ID!
   language: Language!
   languageId: ID!
   text: String!
@@ -689,7 +689,7 @@ type Lyricist {
   ): CompositionConnection!
   createdAt: ISO8601Date
   deathDate: ISO8601Date
-  id: ID
+  id: ID!
   image: Attachment
   name: String
   orchestra(id: ID!): Orchestra!
@@ -825,7 +825,7 @@ type Orchestra {
     "Returns the last _n_ elements from the list."
     last: Int
   ): GenreConnection!
-  id: ID
+  id: ID!
   image: Attachment
   name: String!
   orchestraPeriod(id: ID!): OrchestraPeriod!
@@ -905,7 +905,7 @@ type OrchestraEdge {
 type OrchestraPeriod {
   description: String
   endDate: ISO8601Date
-  id: ID
+  id: ID!
   name: String
   orchestra: Orchestra!
   orchestraId: ID!
@@ -930,7 +930,7 @@ type OrchestraPeriodEdge {
 type OrchestraPosition {
   createdAt: ISO8601Date
   endDate: ISO8601Date
-  id: ID
+  id: ID!
   orchestra: Orchestra!
   orchestraId: ID!
   orchestraRole: OrchestraRole!
@@ -958,7 +958,7 @@ type OrchestraPositionEdge {
   node: OrchestraPosition
 }
 type OrchestraRole {
-  id: ID
+  id: ID!
   name: String
   orchestra(id: ID!): Orchestra!
   orchestraPosition(id: ID!): OrchestraPosition!
@@ -1037,7 +1037,7 @@ type Person {
   ): CompositionConnection!
   createdAt: ISO8601Date
   deathDate: ISO8601Date
-  id: ID
+  id: ID!
   image: Attachment
   name: String
   orchestra(id: ID!): Orchestra!
@@ -1326,7 +1326,8 @@ type Query {
     "Returns the last _n_ elements from the list."
     last: Int
   ): RecordingConnection!
-  searchRecordings(filters: RecordingFilterInput, orderBy: RecordingOrderByInput, query: String, aggs: [String!], limit: Int = 20, offset: Int = 0): RecordingSearchResults!
+  search(query: String): [SearchResult!]
+  searchRecordings(filters: RecordingFilterInput, orderBy: RecordingOrderByInput, query: String, aggs: [RecordingAggregationInput!], limit: Int = 20, offset: Int = 0): RecordingSearchResults!
   singers(query: String, 
     "Returns the elements in the list that come after the specified cursor."
     after: String,
@@ -1375,7 +1376,7 @@ type RecordLabel {
   createdAt: ISO8601DateTime
   description: String
   foundedDate: ISO8601Date
-  id: ID
+  id: ID!
   name: String
   recording(id: ID!): Recording!
   recordings(
@@ -1556,9 +1557,11 @@ type Recording {
 }
 type RecordingAggregations {
   genre: [Aggregate!]
+  orchestra: [Aggregate!]
   orchestraPeriods: [Aggregate!]
   singers: [Aggregate!]
   timePeriod: [Aggregate!]
+  year: [Aggregate!]
 }
 "The connection type for Recording."
 type RecordingConnection {
@@ -1698,7 +1701,7 @@ type Singer {
   ): CompositionConnection!
   createdAt: ISO8601Date
   deathDate: ISO8601Date
-  id: ID
+  id: ID!
   image: Attachment
   name: String
   orchestra(id: ID!): Orchestra!
@@ -1903,7 +1906,7 @@ type TandaEdge {
 type TimePeriod {
   description: String
   endYear: Int
-  id: ID
+  id: ID!
   image: Attachment
   name: String
   recording(id: ID!): Recording!
@@ -2169,6 +2172,8 @@ type WaveformEdge {
 union ItemUnion = Recording | Tanda
 "Objects which can be a playlistable type, either Playlist or Tanda"
 union PlaylistableUnion = Playlist | Tanda
+"Search result"
+union SearchResult = Genre | Orchestra | Playlist | Recording | Tanda
 union UserResult = User | ValidationError
 enum CompositionRoleRole {
   "Composer"
@@ -2181,6 +2186,21 @@ enum OrderEnum {
   ASC
   "Descending order"
   DESC
+}
+"Fields allowed for aggregations"
+enum RecordingAggregationFieldEnum {
+  "Aggregate by genre"
+  genre
+  "Aggregate by orchestra period"
+  orchestraPeriods
+  "Aggregate by time period"
+  timePeriod
+  "Aggregate by year"
+  year
+  "Aggregate by singer"
+  singers
+  "Aggregate by orchestra"
+  orchestra
 }
 enum RecordingOrderFieldEnum {
   "Sort by title"
@@ -2252,12 +2272,17 @@ input LikeRecordingInput {
   clientMutationId: String
   recordingId: ID!
 }
+"Input for defining aggregation options"
+input RecordingAggregationInput {
+  field: RecordingAggregationFieldEnum
+}
 input RecordingFilterInput {
-  genres: [String!]
-  orchestra: String
+  orchestra: [String!]
   orchestraPeriods: [String!]
   roles: [String!]
   singers: [String!]
+  year: [String!]
+  genre: [String!]
 }
 input RecordingOrderByInput {
   "Field to sort by."

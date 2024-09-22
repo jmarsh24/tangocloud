@@ -64,11 +64,8 @@ Rails.application.configure do
   # want to log everything, set the level to "debug".
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "debug")
 
-  # Use a different cache store in production.
-  config.cache_store = :solid_cache_store
-
   # Use a real queuing backend for Active Job (and separate queues per environment).
-  config.active_job.queue_adapter = :solid_queue
+
   # config.active_job.queue_name_prefix = "tangocloud_production"
 
   config.action_mailer.perform_caching = false
@@ -100,4 +97,10 @@ Rails.application.configure do
   config.public_file_server.enabled = true
 
   config.active_storage.resolve_model_to_route = :imgproxy_active_storage
+
+  config.active_job.queue_adapter = :solid_queue
+  config.solid_queue.connects_to = {database: {writing: :queue}}
+
+  config.cache_store = :solid_cache_store
+  config.solid_cache.connects_to database: {writing: :cache}
 end
