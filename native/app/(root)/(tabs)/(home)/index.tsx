@@ -40,7 +40,7 @@ const HomeScreen = () => {
 		variables: { first: 32 },
 		fetchPolicy: 'cache-and-network',
 	})
-
+	console.log(popularRecordingsData)
 	const {
 		data: recentlyaddedRecordingsData,
 		loading: recentlyaddedRecordingsLoading,
@@ -115,7 +115,7 @@ const HomeScreen = () => {
 			artist: edge.node.orchestra?.name || 'Unknown Artist',
 			duration: edge.node.digitalRemasters.edges[0].node.duration || 0,
 			artwork: edge.node.digitalRemasters.edges[0].node.album.albumArt.url || '',
-			url: edge.node.digitalRemasters.edges[0].node.audioVariants?.audioFile.url || '',
+			url: edge.node.digitalRemasters.edges[0].node.audioVariants.edges[0].node.url || '',
 			genre: edge.node.genre?.name || 'Unknown Genre',
 			year: edge.node.year || 'Unknown Year',
 		}))
@@ -131,7 +131,7 @@ const HomeScreen = () => {
 			artist: edge.node.orchestra?.name || 'Unknown Artist',
 			duration: edge.node.digitalRemasters.edges[0].node.duration || 0,
 			artwork: edge.node.digitalRemasters.edges[0].node.album.albumArt.url || '',
-			url: edge.node.digitalRemasters.edges[0].node.audioVariants?.audioFile.url || '',
+			url: edge.node.digitalRemasters.edges[0].node.audioVariants.edges[0].node.url || '',
 			genre: edge.node.genre?.name || 'Unknown Genre',
 			year: edge.node.year || 'Unknown Year',
 		}))

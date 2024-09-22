@@ -42,9 +42,8 @@ require "rails_helper"
 #                   audioVariants {
 #                     edges {
 #                       node {
-#                         audioFile {
-#                           url
-#                         }
+#                         id
+#                         url
 #                       }
 #                     }
 #                   }

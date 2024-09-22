@@ -33,9 +33,8 @@ export const ORCHESTRA = gql`
                   audioVariants {
                     edges {
                       node {
-                        audioFile {
-                          url
-                        }
+                        id
+                        url
                       }
                     }
                   }

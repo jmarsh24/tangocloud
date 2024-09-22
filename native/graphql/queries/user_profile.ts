@@ -38,9 +38,8 @@ export const USER_PROFILE = gql`
 										audioVariants {
 											edges {
 												node {
-													audioFile {
-														url
-													}
+													id
+													url
 												}
 											}
 										}

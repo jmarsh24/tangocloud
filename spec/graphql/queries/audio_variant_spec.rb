@@ -10,9 +10,7 @@ RSpec.describe "AudioVariant", type: :graph do # Ensure you specify the type to 
         query AudioVariant($id: ID!) {
           audioVariant(id: $id) {
             id
-            audioFile {
-              url
-            }
+            url
           }
         }
       GQL

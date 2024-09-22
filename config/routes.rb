@@ -22,15 +22,11 @@ Rails.application.routes.draw do
     post :apple_login, to: "sessions#apple_login"
 
     resources :users, only: [:show, :create]
-  end
-
-  namespace :api do
-    post "/graphql", to: "graphql#execute"
+    resources :audio_variants, only: [:show]
   end
 
   resources :digital_remaster, only: [:new, :create]
   resources :recordings, only: [:show]
-  resources :audio_variants, only: [:show]
 
   post "auth/facebook/data-deletion", to: "auth#facebook_data_deletion"
 

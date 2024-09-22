@@ -52,7 +52,6 @@ type AttributeError {
   errors: [String!]!
 }
 type AudioVariant {
-  audioFile: Attached
   bitRate: Int
   createdAt: ISO8601DateTime!
   digitalRemaster: DigitalRemaster!
@@ -60,6 +59,7 @@ type AudioVariant {
   format: String!
   id: ID!
   updatedAt: ISO8601DateTime!
+  url: String!
 }
 "The connection type for AudioVariant."
 type AudioVariantConnection {

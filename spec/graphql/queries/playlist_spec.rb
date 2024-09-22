@@ -36,9 +36,7 @@ RSpec.describe "Playlist", type: :graph do
                               edges {
                                 node {
                                   id
-                                  audioFile {
-                                    url
-                                  }
+                                  url
                                 }
                               }
                             }

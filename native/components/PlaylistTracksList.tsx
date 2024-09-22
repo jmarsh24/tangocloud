@@ -35,7 +35,7 @@ export const PlaylistTracksList = ({ playlist }: { playlist: Playlist }) => {
           artist: recording?.orchestra?.name || 'Unknown Artist',
           duration: digitalRemasterNode?.duration || 0,
           artwork: digitalRemasterNode?.album?.albumArt.url || '',
-          url: audioVariantNode?.audioFile.blob?.url || '',
+          url: audioVariantNode?.audioFile.url || '',
           genre: recording?.genre?.name || 'Unknown Genre',
           year: recording?.year || 'Unknown Year',
         }
