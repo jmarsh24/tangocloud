@@ -23,7 +23,7 @@
         "name": "Worker",
         "type": "ruby_lsp",
         "request": "launch",
-        "program": "bin/rails solid_queue:start"
+        "program": "bin/jobs"
       },
       {
         "name": "Vite",

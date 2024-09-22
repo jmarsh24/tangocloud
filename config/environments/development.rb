@@ -74,5 +74,8 @@ Rails.application.configure do
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = false
   config.action_mailer.perform_deliveries = true
-  # config.active_storage.resolve_model_to_route = :rails_storage_proxy
+  config.active_storage.resolve_model_to_route = :rails_storage_proxy
+
+  config.active_job.queue_adapter = :solid_queue
+  config.solid_queue.connects_to = {database: {writing: :queue}}
 end
