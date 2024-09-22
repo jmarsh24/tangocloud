@@ -31,11 +31,11 @@ export const PlaylistTracksList = ({ playlist }: { playlist: Playlist }) => {
 
         return {
           id: recording?.id || '',
-          title: recording?.title || '',
+          title: recording.composition.title || '',
           artist: recording?.orchestra?.name || 'Unknown Artist',
           duration: digitalRemasterNode?.duration || 0,
           artwork: digitalRemasterNode?.album?.albumArt.url || '',
-          url: audioVariantNode?.audioFile.url || '',
+          url: audioVariantNode?.url || '',
           genre: recording?.genre?.name || 'Unknown Genre',
           year: recording?.year || 'Unknown Year',
         }
