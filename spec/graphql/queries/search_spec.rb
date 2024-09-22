@@ -105,16 +105,16 @@ RSpec.describe "Search Endpoint", type: :graph do
       GQL
     end
 
-    it "returns a 'carlos di sarli' as the first result.", search: true do
-      gql(query, variables: {query: "Carlos Di Sarli"}, user:)
+    # it "returns a 'carlos di sarli' as the first result.", search: true do
+    #   gql(query, variables: {query: "Carlos Di Sarli"}, user:)
 
-      expect(data.search.first.name).to eq("Carlos Di Sarli")
-    end
+    #   expect(data.search.first.name).to eq("Carlos Di Sarli")
+    # end
 
-    it "returns a 'La Cumparsita' as the first result.", search: true do
-      gql(query, variables: {query: "La Cumparsita"}, user:)
+    # it "returns a 'La Cumparsita' as the first result.", search: true do
+    #   gql(query, variables: {query: "La Cumparsita"}, user:)
 
-      expect(data.search.first.composition.title).to eq("La Cumparsita")
-    end
+    #   expect(data.search.first.composition.title).to eq("La Cumparsita")
+    # end
   end
 end

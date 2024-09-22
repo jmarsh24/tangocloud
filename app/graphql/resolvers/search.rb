@@ -14,7 +14,6 @@ module Resolvers
           ::Genre,
           ::Tanda
         ],
-        indices_boost: {::Orchestra => 4, ::Recording => 1},
         limit: 100
       ).results
     end
