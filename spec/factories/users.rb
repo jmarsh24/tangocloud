@@ -30,7 +30,7 @@ end
 #  uid                    :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  email                  :string           default(""), not null
+#  email                  :citext           default(""), not null
 #  encrypted_password     :string           default(""), not null
 #  reset_password_token   :string
 #  reset_password_sent_at :datetime
