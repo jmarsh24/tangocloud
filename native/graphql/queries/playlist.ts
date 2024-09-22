@@ -6,9 +6,7 @@ export const PLAYLIST = gql`
 			id
 			title
 			image {
-				blob {
-					url
-				}
+				url
 			}
 			playlistItems {
 				edges {
@@ -23,9 +21,7 @@ export const PLAYLIST = gql`
 								orchestra {
 									name
 									image {
-										blob {
-											url
-										}
+										url
 									}
 								}
 								digitalRemasters {
@@ -34,18 +30,14 @@ export const PLAYLIST = gql`
 											duration
 											album {
 												albumArt {
-													blob {
-														url
-													}
+													url
 												}
 											}
 											audioVariants {
 												edges {
 													node {
 														audioFile {
-															blob {
-																url
-															}
+															url
 														}
 													}
 												}

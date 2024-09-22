@@ -27,9 +27,7 @@ export const SEARCH_RECORDINGS = gql`
                   duration
                   album {
                     albumArt {
-                      blob {
-                        url
-                      }
+                      url
                     }
                   }
                 }
