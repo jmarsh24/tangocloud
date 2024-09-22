@@ -25,10 +25,12 @@ export const TracksListItem = ({
 			<View style={styles.trackItemContainer}>
 				<View>
 					<FastImage
-						source={{
-							uri: track.artwork ?? require('@/assets/unknown_track.png'),
-							priority: FastImage.priority.normal,
-						}}
+						source={
+							track?.artwork
+								? { uri: track.artwork }
+								: require('@/assets/unknown_track.png')
+						}
+						resizeMode={FastImage.resizeMode.cover}
 						style={{
 							...styles.trackArtworkImage,
 							opacity: isActiveTrack ? 0.6 : 1,
