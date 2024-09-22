@@ -21,7 +21,7 @@ export const PlaylistButton = ({ playlist, ...props }: PlaylistButtonProps) => {
 				<View>
 					<FastImage
 						source={{
-							uri: playlist?.image?.blob.url,
+							uri: playlist?.image.url,
 							priority: FastImage.priority.normal,
 						}}
 						style={styles.playlistArtworkImage}

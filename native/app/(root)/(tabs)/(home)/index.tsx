@@ -114,8 +114,8 @@ const HomeScreen = () => {
 			title: edge.node.composition.title,
 			artist: edge.node.orchestra?.name || 'Unknown Artist',
 			duration: edge.node.digitalRemasters.edges[0].node.duration || 0,
-			artwork: edge.node.digitalRemasters.edges[0].node.album.albumArt.blob.url || '',
-			url: edge.node.digitalRemasters.edges[0].node.audioVariants?.audioFile.blob.url || '',
+			artwork: edge.node.digitalRemasters.edges[0].node.album.albumArt.url || '',
+			url: edge.node.digitalRemasters.edges[0].node.audioVariants?.audioFile.url || '',
 			genre: edge.node.genre?.name || 'Unknown Genre',
 			year: edge.node.year || 'Unknown Year',
 		}))
@@ -130,8 +130,8 @@ const HomeScreen = () => {
 			title: edge.node.composition.title,
 			artist: edge.node.orchestra?.name || 'Unknown Artist',
 			duration: edge.node.digitalRemasters.edges[0].node.duration || 0,
-			artwork: edge.node.digitalRemasters.edges[0].node.album.albumArt.blob.url || '',
-			url: edge.node.digitalRemasters.edges[0].node.audioVariants?.audioFile.blob.url || '',
+			artwork: edge.node.digitalRemasters.edges[0].node.album.albumArt.url || '',
+			url: edge.node.digitalRemasters.edges[0].node.audioVariants?.audioFile.url || '',
 			genre: edge.node.genre?.name || 'Unknown Genre',
 			year: edge.node.year || 'Unknown Year',
 		}))
@@ -266,7 +266,7 @@ const HomeScreen = () => {
 									<Link push href={`/playlists/${item.id}`} key={item.id} asChild>
 										<Pressable style={styles.tandaContainer}>
 											<FastImage
-												source={{ uri: item.image.blob.url, priority: FastImage.priority.normal }}
+												source={{ uri: item.image.url, priority: FastImage.priority.normal }}
 												style={styles.tandaImage}
 												resizeMode={FastImage.resizeMode.cover}
 											/>
@@ -324,7 +324,7 @@ const HomeScreen = () => {
 								<Link href={`/orchestras/${item.id}`} key={item.id} asChild>
 									<Pressable style={{ alignItems: 'center', gap: 16 }}>
 										<FastImage
-											source={{ uri: item.image?.blob?.url }}
+											source={{ uri: item.image?.url }}
 											style={{ width: 170, height: 170, borderRadius: 100 }}
 										/>
 										<Text style={styles.orchestraText}>{item.name}</Text>

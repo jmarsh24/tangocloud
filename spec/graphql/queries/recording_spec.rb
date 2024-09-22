@@ -72,8 +72,8 @@ RSpec.describe "Recording", type: :graph do
 
       expect(recording_data.digital_remasters.edges).not_to be_empty
       digital_remaster = recording_data.digital_remasters.edges.first.node
-      expect(digital_remaster.album.album_art.blob.url).not_to be_nil
-      expect(digital_remaster.waveform.image.blob.url).not_to be_nil
+      expect(digital_remaster.album.album_art.blob?.url).not_to be_nil
+      expect(digital_remaster.waveform.image.blob?.url).not_to be_nil
       expect(digital_remaster.waveform.data).not_to be_empty
     end
   end

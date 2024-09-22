@@ -49,7 +49,7 @@ const tracks = data?.searchRecordings?.recordings.edges.map((edge) => {
     title: node.composition.title || 'Unknown Title',
     artist: node.orchestra?.name || 'Unknown Orchestra',
     duration: node.digitalRemasters?.edges?.[0]?.node?.duration || 0,
-    artwork: node.digitalRemasters?.edges?.[0]?.node?.album?.albumArt?.blob?.url || '',
+    artwork: node.digitalRemasters?.edges?.[0]?.node?.album?.albumArt?.url || '',
     url: node.digitalRemasters?.edges?.[0]?.node?.audioVariants?.[0]?.audioFileUrl || '',
     singer: node.recordingSingers?.edges?.map(singerEdge => singerEdge.node.person.name).join(', ') || '',
     lyrics: '',

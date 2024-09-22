@@ -71,7 +71,7 @@ export default function Profile() {
 	}
 
 	const username = data.currentUser?.username;
-	const avatarUrl = data.currentUser?.userPreference?.avatar?.blob?.url;
+	const avatarUrl = data.currentUser?.userPreference?.avatar?.url;
 
 	const recordings = data.currentUser.playbacks.edges.map((edge) => {
 		const recording = edge.node.recording;
@@ -83,8 +83,8 @@ export default function Profile() {
 			title: recording.composition?.title || 'Unknown Title',
 			artist: recording.orchestra?.name || 'Unknown Artist',
 			duration: digitalRemaster?.duration || 0,
-			artwork: digitalRemaster?.album?.albumArt?.blob?.url || '',
-			url: audioVariant?.audioFile?.blob?.url || '',
+			artwork: digitalRemaster?.album?.albumArt?.url || '',
+			url: audioVariant?.audioFile?.url || '',
 			genre: recording.genre?.name || 'Unknown Genre',
 			year: recording.year || 'Unknown Year',
 		};

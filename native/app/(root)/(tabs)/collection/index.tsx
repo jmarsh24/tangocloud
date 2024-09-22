@@ -46,7 +46,7 @@ const FavoritesScreen = () => {
           .map((singerEdge : Person) => singerEdge.node.person.name)
           .join(', '),
         duration: recording.digitalRemasters.edges[0].node.duration || 0,
-        artwork: recording.digitalRemasters.edges[0].node.album.albumArt.blob.url,
+        artwork: recording.digitalRemasters.edges[0].node.album.albumArt.url,
         genre: recording.genre?.name,
       };
     }) || [];

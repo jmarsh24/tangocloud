@@ -24,8 +24,8 @@ export const OrchestraTracksList: React.FC<{ orchestra: Orchestra }> = ({ orches
       title: item.composition?.title || '',
       artist: orchestra.name,
       duration: item.digitalRemasters.edges[0]?.node.duration || 0,
-      artwork: item.digitalRemasters.edges[0]?.node.album?.albumArt.blob.url || '',
-      url: item.digitalRemasters?.edges[0]?.node.audioVariants[0]?.audioFile.blob.url || '',
+      artwork: item.digitalRemasters.edges[0]?.node.album?.albumArt.blob?.url || '',
+      url: item.digitalRemasters?.edges[0]?.node.audioVariants[0]?.audioFile.blob?.url || '',
       genre: item.genre?.name || '',
       year: item.year || '',
       singer: item.singers[0]?.name || '',
@@ -47,7 +47,7 @@ export const OrchestraTracksList: React.FC<{ orchestra: Orchestra }> = ({ orches
           <View style={styles.artworkImageContainer}>
             <FastImage
               source={{
-                uri: orchestra.image?.blob.url || require('@/assets/unknown_artist.png'),
+                uri: orchestra.image.url || require('@/assets/unknown_artist.png'),
                 priority: FastImage.priority.high,
               }}
               style={styles.artistImage}
