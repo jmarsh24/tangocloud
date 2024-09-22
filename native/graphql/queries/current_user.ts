@@ -10,9 +10,7 @@ export const CURRENT_USER = gql`
         firstName
         lastName
         avatar {
-          blob {
-            url
-          }
+          url
         }
       }
     }

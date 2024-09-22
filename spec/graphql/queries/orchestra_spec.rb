@@ -11,9 +11,7 @@ RSpec.describe "Orchestras", type: :graph do
             id
             name
             image {
-              blob {
-                url
-              }
+              url
             }
           }
         }
@@ -26,7 +24,7 @@ RSpec.describe "Orchestras", type: :graph do
 
       expect(first_orchestra.id).to eq(orchestra.id)
       expect(first_orchestra.name).to eq("Carlos Di Sarli")
-      expect(first_orchestra.image.blob.url).to be_present
+      expect(first_orchestra.image.url).to be_present
     end
   end
 end

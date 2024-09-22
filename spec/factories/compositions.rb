@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :composition do
-    title { Faker::Music.album }
+    title { Faker::Music.unique.album }
 
     after(:create) do |composition|
       create(:composition_role, composition:, person: create(:person), role: "composer")

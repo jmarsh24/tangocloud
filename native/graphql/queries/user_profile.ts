@@ -8,9 +8,7 @@ export const USER_PROFILE = gql`
 			userPreference {
 				id
 				avatar {
-					blob {
-						url
-					}
+					url
 				}
 			}
 			playbacks {
@@ -34,18 +32,14 @@ export const USER_PROFILE = gql`
 										duration
 										album {
 											albumArt {
-												blob {
-													url
-												}
+												url
 											}
 										}
 										audioVariants {
 											edges {
 												node {
 													audioFile {
-														blob {
-															url
-														}
+														url
 													}
 												}
 											}

@@ -9,7 +9,7 @@ import { useQuery } from '@apollo/client'
 const SearchLayout = () => {
 	const { data } = useQuery(CURRENT_USER)
 
-	const avatarUrl = data?.currentUser?.userPreference?.avatar?.blob?.url
+	const avatarUrl = data?.currentUser?.userPreference?.avatar?.url
 
 	return (
 		<View style={defaultStyles.container}>

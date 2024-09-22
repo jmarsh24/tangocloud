@@ -5,7 +5,8 @@ module Resolvers
     argument :query, String, required: false
 
     def resolve(query: "*")
-      Searchkick.search(query,
+      Searchkick.search(
+        query,
         models: [
           ::Recording,
           ::Orchestra,
@@ -13,7 +14,8 @@ module Resolvers
           ::Genre,
           ::Tanda
         ],
-        limit: 100).results
+        limit: 100
+      ).results
     end
   end
 end

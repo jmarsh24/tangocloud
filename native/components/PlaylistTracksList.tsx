@@ -34,8 +34,8 @@ export const PlaylistTracksList = ({ playlist }: { playlist: Playlist }) => {
           title: recording?.title || '',
           artist: recording?.orchestra?.name || 'Unknown Artist',
           duration: digitalRemasterNode?.duration || 0,
-          artwork: digitalRemasterNode?.album?.albumArt?.blob.url || '',
-          url: audioVariantNode?.audioFile.blob.url || '',
+          artwork: digitalRemasterNode?.album?.albumArt.url || '',
+          url: audioVariantNode?.audioFile.blob?.url || '',
           genre: recording?.genre?.name || 'Unknown Genre',
           year: recording?.year || 'Unknown Year',
         }
@@ -59,7 +59,7 @@ export const PlaylistTracksList = ({ playlist }: { playlist: Playlist }) => {
           <View style={styles.artworkImageContainer}>
             <FastImage
               source={{
-                uri: playlist?.image?.blob?.url || require('@/assets/unknown_artist.png'),
+                uri: playlist?.image?.url || require('@/assets/unknown_artist.png'),
                 priority: FastImage.priority.high,
               }}
               style={styles.artworkImage}

@@ -20,9 +20,7 @@ query likedRecordings {
                 duration
                 album {
                   albumArt {
-                    blob {
-                      url
-                    }
+                    url
                   }
                 }
               }

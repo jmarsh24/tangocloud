@@ -37,7 +37,7 @@ module FieldDescribing
       alias_method :has_one, :belongs_to
 
       def has_one_attached(name)
-        field name, Types::AttachmentType, null: true
+        field name, Types::AttachedType, null: true
 
         define_method name do
           dataloader
@@ -47,7 +47,7 @@ module FieldDescribing
       end
 
       def has_many_attached(name)
-        field name, [Types::AttachmentType], null: true
+        field name, [Types::AttachedType], null: true
 
         define_method name do
           dataloader

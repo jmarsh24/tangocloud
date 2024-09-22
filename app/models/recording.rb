@@ -26,7 +26,7 @@ class Recording < ApplicationRecord
 
   validates :recorded_date, presence: true
 
-  enum recording_type: {studio: "studio", live: "live"}
+  enum :recording_type, {studio: "studio", live: "live"}
 
   scope :search_import, -> {
                           includes(

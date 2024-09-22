@@ -6,9 +6,7 @@ export const ORCHESTRA = gql`
       id
       name
       image {
-        blob {
-          url
-        }
+        url
       }
       recordings {
         edges {
@@ -36,18 +34,14 @@ export const ORCHESTRA = gql`
                     edges {
                       node {
                         audioFile {
-                          blob {
-                            url
-                          }
+                          url
                         }
                       }
                     }
                   }
                   album {
                     albumArt {
-                      blob {
-                        url
-                      }
+                      url
                     }
                   }
                 }

@@ -75,8 +75,8 @@ const PlayerScreen = () => {
 				title: edge.node.composition.title,
 				artist: edge.node.orchestra?.name || 'Unknown Artist',
 				duration: edge.node.digitalRemasters[0]?.audioVariants[0]?.duration || 0,
-				artwork: edge.node.digitalRemasters[0]?.album?.albumArt.blob.url || '',
-				url: edge.node.digitalRemasters[0]?.audioVariants[0]?.audioFile.blob.url || '',
+				artwork: edge.node.digitalRemasters[0]?.album?.albumArt.blob?.url || '',
+				url: edge.node.digitalRemasters[0]?.audioVariants[0]?.audioFile.blob?.url || '',
 				genre: edge.node.genre?.name || 'Unknown Genre',
 				year: edge.node.year || 'Unknown Year',
 			}))
