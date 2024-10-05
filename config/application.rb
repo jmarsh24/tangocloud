@@ -12,7 +12,7 @@ require "action_mailer/railtie"
 require "action_text/engine"
 require "action_view/railtie"
 require "action_cable/engine"
-require "rails/test_unit/railtie"
+# require "rails/test_unit/railtie"
 require "mime/types"
 require "faraday"
 require "faraday/retry"
@@ -47,5 +47,7 @@ module Tangocloud
 
     # to remove once encrytion completed
     config.active_record.encryption.support_unencrypted_data = true
+
+    config.mission_control.jobs.base_controller_class = "AdminController"
   end
 end
