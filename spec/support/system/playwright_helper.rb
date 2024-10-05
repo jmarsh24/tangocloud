@@ -7,7 +7,7 @@ module CupriteHelper
   end
 
   def screenshot(name)
-    return unless Config.screenshots?
+    return unless Rails.application.credentials.dig(:screenshot)
 
     width = page.current_window.size[0]
     height = page.current_window.size[1]

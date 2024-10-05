@@ -15,7 +15,6 @@ services:
       - ~/.aws:/root/.aws
       - ~/Music:/app/music:ro
 
-
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
 
@@ -28,6 +27,8 @@ services:
   db:
     image: postgres:16.4
     restart: unless-stopped
+    ports:
+      - 5432:5432
     volumes:
       - postgres:/var/lib/postgresql/data
     environment:

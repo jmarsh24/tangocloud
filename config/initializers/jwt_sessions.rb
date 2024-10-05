@@ -1,8 +1,8 @@
 JWTSessions.encryption_key =
   if Rails.env.test? || Rails.env.development?
-    Config.secret_key_base(default: "stubbed_secret_key_base")
+    "stubbed_secret_key_base"
   else
-    Config.secret_key_base
+    Rails.application.credentials.secret_key_base
   end
 
 JWTSessions.token_store = :redis, {

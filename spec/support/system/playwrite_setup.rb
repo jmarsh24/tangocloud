@@ -3,7 +3,7 @@
 Capybara.register_driver(:playwright) do |app|
   Capybara::Playwright::Driver.new(app,
     browser_type: :chromium,
-    headless: Config.headless?(default: true))
+    headless: Rails.application.config.playwright[:headless])
 end
 
 Capybara.default_driver = Capybara.javascript_driver = :playwright

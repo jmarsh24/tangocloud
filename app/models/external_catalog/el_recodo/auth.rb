@@ -5,8 +5,8 @@ module ExternalCatalog
       LOGIN_PATH = "/connect?lang=en".freeze
 
       def initialize(email: nil, password: nil)
-        @email = email || Config.el_recodo_email
-        @password = password || Config.el_recodo_password
+        @email = email || Rails.application.credentials.dig(:el_recodo_email)
+        @password = password || Rails.application.credentials.dig(:el_recodo_password)
         @connection = Faraday.new(url: BASE_URL) do |faraday|
           faraday.request :retry, max: 3, interval: 0.5, interval_randomness: 0.5, backoff_factor: 2, retry_statuses: [503]
           faraday.response :raise_error

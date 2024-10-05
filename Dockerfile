@@ -1,86 +1,60 @@
-# syntax = docker/dockerfile:1
+ARG NODE_VERSION=20.10.0
 
-# Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
-ARG RUBY_VERSION=3.2.2
-FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
+ARG RUBY_VERSION=3.3
+FROM mcr.microsoft.com/devcontainers/ruby:1-${RUBY_VERSION}-bookworm
 
-# Rails app lives here
-WORKDIR /rails
+# Prepare for Terraform
+RUN wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+RUN echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+RUN wget -O- https://cli.github.com/packages/githubcli-archive-keyring.gpg | gpg --dearmor | sudo tee /usr/share/keyrings/githubcli-archive-keyring.gpg
+RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list
+RUN wget -O- https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" | sudo tee /etc/apt/sources.list.d/postgres.list
 
-# Set production environment
-ENV RAILS_ENV="production" \
-  BUNDLE_DEPLOYMENT="1" \
-  BUNDLE_PATH="/usr/local/bundle" \
-  BUNDLE_WITHOUT="development"
+# Install additional OS packages.
+ RUN apt-get update && \
+   export DEBIAN_FRONTEND=noninteractive && \
+   apt-get -y install --no-install-recommends \
+   software-properties-common \
+   terraform \
+   gh \
+   libvips42 \
+   postgresql-client \
+   python3-pip \
+   ffmpeg \
+   zsh
 
-# Install packages needed for deployment
-RUN apt-get update -qq && \
-  apt-get install --no-install-recommends -y curl postgresql-client libvips ffmpeg software-properties-common && \
-  rm -rf /var/lib/apt/lists/* /var/cache/apt/archives
-
-# Install packages needed for audiowaveform
-RUN apt-get update -qq && \
-  apt-get install -y make cmake gcc g++ libmad0-dev \
-  libid3tag0-dev libsndfile1-dev libgd-dev libboost-filesystem-dev \
-  libboost-program-options-dev libboost-regex-dev && \
+ # Install packages needed for audiowaveform
+ RUN apt-get update -qq && \
+  apt-get install -y make \
+  cmake \
+  gcc \
+  g++ \
+  libmad0-dev \
+  libid3tag0-dev \
+  libsndfile1-dev \
+  libgd-dev \
+  libboost-filesystem-dev \
+  libboost-program-options-dev \
+  libboost-regex-dev && \
   rm -rf /var/lib/apt/lists/* /var/cache/apt/archives
 
 # install audiowaveform
-RUN curl -LO https://github.com/bbc/audiowaveform/releases/download/1.10.1/audiowaveform_1.10.1-1-12_arm64.deb && \
-  dpkg -i audiowaveform_1.10.1-1-12_arm64.deb && \
-  rm audiowaveform_1.10.1-1-12_arm64.deb
+RUN curl -LO https://github.com/bbc/audiowaveform/releases/download/1.10.1/audiowaveform_1.10.1-1-11_arm64.deb && \
+  dpkg -i audiowaveform_1.10.1-1-11_arm64.deb && \
+  rm audiowaveform_1.10.1-1-11_arm64.deb
 
-# Throw-away build stage to reduce size of final image
-FROM base as build
+# Install overmind
+RUN curl -L https://github.com/DarthSim/overmind/releases/download/v2.1.0/overmind-v2.1.0-linux-amd64.gz > overmind.gz \
+  && gunzip overmind.gz \
+  && sudo mv overmind /usr/local/bin \
+  && chmod +x /usr/local/bin/overmind
 
-# Install packages needed to build gems and node modules
-RUN apt-get update -qq && \
-  apt-get install --no-install-recommends -y build-essential git libpq-dev node-gyp pkg-config python-is-python3
+RUN curl -fsSL https://get.docker.com | sh
 
-# Install JavaScript dependencies
-ARG NODE_VERSION=20.10.0
-ARG YARN_VERSION=1.22.19
-ENV PATH=/usr/local/node/bin:$PATH
-RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
-  /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
-  npm install -g yarn@$YARN_VERSION && \
-  rm -rf /tmp/node-build-master
+RUN . /usr/local/share/nvm/nvm.sh \
+  && nvm install 20.10.0
 
-# Install application gems
-COPY Gemfile Gemfile.lock .ruby-version ./
-RUN bundle install && \
-  rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
-  bundle exec bootsnap precompile --gemfile
+RUN gem install rails pull-request
 
-# Install node modules
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
-
-# Copy application code
-COPY . .
-
-# Precompile bootsnap code for faster boot times
-RUN bundle exec bootsnap precompile app/ lib/
-
-# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
-
-
-# Final stage for app image
-FROM base
-
-# Copy built artifacts: gems, application
-COPY --from=build /usr/local/bundle /usr/local/bundle
-COPY --from=build /rails /rails
-
-# Run and own only the runtime files as a non-root user for security
-RUN useradd rails --create-home --shell /bin/bash && \
-  chown -R rails:rails db log storage tmp
-USER rails:rails
-
-# Entrypoint prepares the database.
-ENTRYPOINT ["/rails/bin/docker-entrypoint"]
-
-# Start the server by default, this can be overwritten at runtime
-EXPOSE 3000
-CMD ["./bin/rails", "server"]
+RUN npx playwright install-deps && npx playwright install chromium

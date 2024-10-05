@@ -614,7 +614,6 @@ GEM
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
     shellany (0.0.1)
-    shimmer (0.0.37)
     signet (0.19.0)
       addressable (~> 2.8)
       faraday (>= 0.17.5, < 3.a)
@@ -797,7 +796,6 @@ DEPENDENCIES
   searchkick
   sentry-rails
   sentry-ruby
-  shimmer
   socialization
   solid_cache
   solid_queue

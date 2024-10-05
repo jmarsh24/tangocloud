@@ -1,9 +1,9 @@
 require "sentry-ruby"
 
 Sentry.init do |config|
-  sentry_environment = Config.sentry_environment || Rails.env
+  sentry_environment = Rails.application.credentials.dig(:sentry_environment) || Rails.env
   next unless Rails.env.production? || Rails.env.staging?
-  config.dsn = Config.sentry_dsn
+  config.dsn = Rails.application.credentials.dig(:sentry_dsn)
 
   config.breadcrumbs_logger = [:sentry_logger, :http_logger]
 

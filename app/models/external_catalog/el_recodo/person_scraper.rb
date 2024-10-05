@@ -31,7 +31,7 @@ module ExternalCatalog
       end
 
       def fetch(path:)
-        sleep Config.el_recodo_request_delay.to_i
+        sleep Rails.application.credentials.dig(:el_recodo_request_delay).to_i
 
         response = @connection.get(path)
 

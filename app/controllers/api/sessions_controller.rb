@@ -18,7 +18,7 @@ module Api
     # @route POST /api/google_login (api_google_login)
     def google_login
       id_token = params[:id_token]
-      google_user_info = Google::Auth::IDTokens.verify_oidc(id_token, aud: Config.google_client_id!)
+      google_user_info = Google::Auth::IDTokens.verify_oidc(id_token, aud: Rails.application.credentials.dig(:google_client_id))
 
       email = google_user_info["email"]
       first_name = google_user_info["given_name"]
