@@ -49,5 +49,7 @@ module Tangocloud
     config.active_record.encryption.support_unencrypted_data = true
 
     config.mission_control.jobs.base_controller_class = "AdminController"
+
+    config.host_authorization = {exclude: ->(request) { request.path == "/up" }}
   end
 end

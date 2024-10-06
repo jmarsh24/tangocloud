@@ -105,3 +105,5 @@ group :test do
   gem "rspec-retry"
   gem "webmock"
 end
+
+gem "shimmer", "~> 0.0.38"

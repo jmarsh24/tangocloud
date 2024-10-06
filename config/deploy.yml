@@ -1,44 +1,95 @@
+# Name of your application. Used to uniquely configure containers.
 service: tangocloud
 
+# Name of the container image.
 image: jmarsh24/tangocloud
 
+# Deploy to these servers.
 servers:
   web:
+    - 37.27.221.99
+  # worker configuration using the `cmd` key for job processing
+  job:
     hosts:
-      - 94.130.104.7
-  worker-1:
-    hosts:
-      - 195.201.147.15
-    cmd: bundle exec rake solid_queue:start
-  worker-2:
-    hosts:
-      - 195.201.147.15
-    cmd: bundle exec rake solid_queue:start
+    - 37.27.221.99
+    cmd: bin/jobs
+
+# Enable SSL auto certification via Let's Encrypt (and allow for multiple apps on one server).
+# Set ssl: false if using something like Cloudflare to terminate SSL (but keep host!).
+proxy:
+  ssl: true
+  host: tangocloud.app
+  # kamal-proxy connects to your container over port 80, use `app_port` to specify a different port.
+  app_port: 3000
+  healthcheck:
+    path: /up
+    interval: 3
+    timeout: 30
+
+# Credentials for your image host.
 registry:
   server: ghcr.io
-  username:
-    - KAMAL_REGISTRY_USERNAME
+  username: jmarsh24
+  # Always use an access token rather than real password (pulled from .kamal/secrets).
   password:
     - KAMAL_REGISTRY_PASSWORD
+
+# Configure builder setup.
+builder:
+  arch: arm64
+  cache:
+    type: registry
+    options: mode=max,image-manifest=true,oci-mediatypes=true
+
+# Inject ENV variables into containers (secrets come from .kamal/secrets).
 env:
   clear:
-    KAMAL_CONTAINER_NAME: tangocloud
-    HOST: tangocloud.app
-    RAILS_ENV: production
-    RAILS_LOG_LEVEL: debug
-    RAILS_LOG_TO_STDOUT: true
-    DB_POOL: 40
-    DB_HOST: 10.1.0.3
-    CLOUDFLARE_BUCKET: tangocloud
-    ELASTICSEARCH_URL: 10.1.0.5:9200
-    CDN_HOST: https://tangocloud.app
+    RUBY_YJIT_ENABLE: 1
+    WEB_CONCURRENCY: 2
+    RAILS_MAX_THREADS: 3
   secret:
     - RAILS_MASTER_KEY
     - POSTGRES_PASSWORD
+
+# Aliases are triggered with "bin/kamal <alias>". You can overwrite arguments on invocation:
+# "bin/kamal logs -r job" will tail logs from the first server in the job section.
+#
+aliases:
+  console: app exec --interactive --reuse "bin/rails console"
+  shell: app exec --interactive --reuse "bash"
+  logs: app logs -f
+  dbc: app exec --interactive --reuse "bin/rails dbconsole"
+
+# Use a different ssh user than root
+ssh:
+  user: nerd
+
+# Use a persistent storage volume.
+#
+# volumes:
+#   - "app_storage:/app/storage"
+
+# Bridge fingerprinted assets, like JS and CSS, between versions to avoid
+# hitting 404 on in-flight requests. Combines all files from new and old
+# version inside the asset_path.
+#
+# asset_path: /app/public/assets
+
+# Configure rolling deploys by setting a wait time between batches of restarts.
+#
+# boot:
+#   limit: 10 # Can also specify as a percentage of total hosts, such as "25%"
+#   wait: 2
+
+logging:
+  options:
+    max-size: 100m
+
+# Use accessory services (secrets come from .kamal/secrets).
 accessories:
   db:
     image: postgres:15
-    host: 167.235.70.96
+    host: 37.27.221.99
     port: 5432
     env:
       clear:
@@ -51,13 +102,15 @@ accessories:
       - /var/postgres/data:/var/lib/postgresql/data
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0-arm64
-    host: 49.13.197.47
+    host: 37.27.221.99
     port: 9200
     files:
       - config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     volumes:
       - /var/lib/elasticsearch/data:/usr/share/elasticsearch/data
-builder:
-  multiarch: false
-healthcheck:
-  log_lines: 10_000
+  redis:
+    image: redis:7.0
+    host: 37.27.221.99
+    port: 6379
+    directories:
+      - data:/data

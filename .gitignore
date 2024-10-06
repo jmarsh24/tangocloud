@@ -54,3 +54,5 @@ node_modules
 *.dump
 
 .devcontainer/volumes/*
+
+.kamal/secrets
