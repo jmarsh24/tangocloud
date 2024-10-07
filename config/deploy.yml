@@ -17,7 +17,7 @@ servers:
 # Enable SSL auto certification via Let's Encrypt (and allow for multiple apps on one server).
 # Set ssl: false if using something like Cloudflare to terminate SSL (but keep host!).
 proxy:
-  ssl: true
+  ssl: false
   host: tangocloud.app
   # kamal-proxy connects to your container over port 80, use `app_port` to specify a different port.
   app_port: 3000
@@ -112,7 +112,6 @@ accessories:
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0-arm64
     host: 37.27.221.99
-    port: 9200
     files:
       - config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     volumes:
