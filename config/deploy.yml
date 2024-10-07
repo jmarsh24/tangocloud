@@ -47,13 +47,11 @@ env:
     RUBY_YJIT_ENABLE: 1
     WEB_CONCURRENCY: 2
     RAILS_MAX_THREADS: 3
+    DB_HOST: tangocloud-db
   secret:
     - RAILS_MASTER_KEY
     - POSTGRES_PASSWORD
     - REDIS_PASSWORD
-    - REDIS_URL
-    - DATABASE_URL
-    - DB_HOST
 
 # Aliases are triggered with "bin/kamal <alias>". You can overwrite arguments on invocation:
 # "bin/kamal logs -r job" will tail logs from the first server in the job section.
@@ -95,9 +93,6 @@ accessories:
     image: postgres:15
     host: 37.27.221.99
     env:
-      clear:
-        POSTGRES_USER: "postgres"
-        POSTGRES_DB: "tangocloud_production"
       secret:
         - POSTGRES_PASSWORD
     files:
