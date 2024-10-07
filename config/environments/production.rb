@@ -25,6 +25,8 @@ Rails.application.configure do
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   config.asset_host = "https://www.tangocloud.app"
+  config.action_mailer.default_url_options = {host: "www.tangocloud.app", protocol: "https"}
+  config.action_controller.default_url_options = {host: "www.tangocloud.app", protocol: "https"}
 
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for Apache
