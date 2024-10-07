@@ -28,7 +28,6 @@ production:
     host: <%= ENV["DB_HOST"] %>
     database: tangocloud_production
     password: <%= ENV["POSTGRES_PASSWORD"] %>
-    port: 5432
   queue:
     <<: *default
     database: tangocloud_production_queue
