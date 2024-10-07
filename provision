@@ -51,7 +51,6 @@ add_user = <<~EOF
   echo '#{user_name} ALL=(ALL:ALL) NOPASSWD: ALL' | tee /etc/sudoers.d/#{user_name};
   chmod 0440 /etc/sudoers.d/#{user_name};
   visudo -c -f /etc/sudoers.d/#{user_name};
-  usermod -aG docker #{user_name}
 EOF
 
 # Install fail2ban
