@@ -48,6 +48,7 @@ env:
     WEB_CONCURRENCY: 2
     RAILS_MAX_THREADS: 3
     DB_HOST: tangocloud-db
+    ELASTICSEARCH_URL: http://tangocloud-elasticsearch:9200
   secret:
     - RAILS_MASTER_KEY
     - POSTGRES_PASSWORD
