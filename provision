@@ -10,7 +10,7 @@ require "kamal"
 
 # Get server IP and user name from config/deploy.yml
 config_file = Pathname.new(File.expand_path("config/deploy.yml"))
-config = Kamal::Configuration.create_from(config_file: config_file)
+config = Kamal::Configuration.create_from(config_file:)
 hosts = config.roles.map(&:hosts).flatten + config.accessories.map(&:hosts).flatten
 hosts.uniq!
 user_name = config.ssh.user
