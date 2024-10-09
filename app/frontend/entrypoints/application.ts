@@ -2,7 +2,6 @@ import "./main.scss";
 import "vite/modulepreload-polyfill";
 import "@hotwired/turbo-rails";
 import { Application } from "@hotwired/stimulus";
-import { start } from "@nerdgeschoss/shimmer";
 import { registerControllers } from "stimulus-vite-helpers";
 
 const application = Application.start();
@@ -17,4 +16,5 @@ const controllers = import.meta.glob(
 );
 
 registerControllers(application, controllers);
-start({ application });
+
+
