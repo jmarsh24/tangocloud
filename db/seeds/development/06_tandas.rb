@@ -33,7 +33,7 @@ def create_tandas_for_user(user)
     "Troilo, Aníbal - Tanda 33.m3u8" => "troilo_anibal.jpeg"
   }
 
-  base_path = Rails.root.join("db/seeds/tandas")
+  base_path = Rails.root.join("db/seeds/development/tandas")
 
   tanda_data.each do |tanda_filename, image_filename|
     tanda_title = File.basename(tanda_filename, ".m3u8").humanize

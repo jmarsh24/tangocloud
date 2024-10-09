@@ -19,12 +19,12 @@ namespace :db do
       ]
 
       models.each do |model|
-        sql_file_path = Rails.root.join("db/seeds/el_recodo", "#{model.table_name}.sql")
+        sql_file_path = Rails.root.join("db/seeds/development/el_recodo", "#{model.table_name}.sql")
         Export::SqlExporter.new(model).export(sql_file_path)
       end
 
-      Export::AttachmentExporter.new(ExternalCatalog::ElRecodo::Person, :image, Rails.root.join("db/seeds/el_recodo/images/el_recodo_people")).export
-      Export::AttachmentExporter.new(ExternalCatalog::ElRecodo::Orchestra, :image, Rails.root.join("db/seeds/el_recodo/images/el_recodo_orchestras")).export
+      Export::AttachmentExporter.new(ExternalCatalog::ElRecodo::Person, :image, Rails.root.join("db/seeds/development/el_recodo/images/el_recodo_people")).export
+      Export::AttachmentExporter.new(ExternalCatalog::ElRecodo::Orchestra, :image, Rails.root.join("db/seeds/development/el_recodo/images/el_recodo_orchestras")).export
     end
 
     desc "Export models to SQL files in the db/seeds directory and cleanup"
@@ -112,20 +112,20 @@ namespace :db do
         Person, RecordLabel, RecordingSinger, Recording, RemasterAgent, Waveform, WaveformDatum
       ]
 
-      FileUtils.rm_rf(Dir.glob(Rails.root.join("db/seeds/music/*")))
+      FileUtils.rm_rf(Dir.glob(Rails.root.join("db/seeds/development/music/*")))
 
       models.each do |model|
-        sql_file_path = Rails.root.join("db/seeds/music", "#{model.table_name}.sql")
+        sql_file_path = Rails.root.join("db/seeds/development/music", "#{model.table_name}.sql")
         Export::SqlExporter.new(model).export(sql_file_path)
       end
 
-      Export::AttachmentExporter.new(Album, :album_art, Rails.root.join("db/seeds/music/albums")).export
-      Export::AttachmentExporter.new(Person, :image, Rails.root.join("db/seeds/music/people")).export
-      Export::AttachmentExporter.new(Orchestra, :image, Rails.root.join("db/seeds/music/orchestras")).export
+      Export::AttachmentExporter.new(Album, :album_art, Rails.root.join("db/seeds/development/music/albums")).export
+      Export::AttachmentExporter.new(Person, :image, Rails.root.join("db/seeds/development/music/people")).export
+      Export::AttachmentExporter.new(Orchestra, :image, Rails.root.join("db/seeds/development/music/orchestras")).export
 
-      Export::SharedAttachmentExporter.new(AudioFile, :file, Rails.root.join("db/seeds/music/audio_files")).export
-      Export::SharedAttachmentExporter.new(AudioVariant, :audio_file, Rails.root.join("db/seeds/music/audio_variants")).export
-      Export::SharedAttachmentExporter.new(Waveform, :image, Rails.root.join("db/seeds/music/waveforms")).export
+      Export::SharedAttachmentExporter.new(AudioFile, :file, Rails.root.join("db/seeds/development/music/audio_files")).export
+      Export::SharedAttachmentExporter.new(AudioVariant, :audio_file, Rails.root.join("db/seeds/development/music/audio_variants")).export
+      Export::SharedAttachmentExporter.new(Waveform, :image, Rails.root.join("db/seeds/development/music/waveforms")).export
     end
   end
 end
