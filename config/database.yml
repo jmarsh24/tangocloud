@@ -25,14 +25,6 @@ test:
   primary: &primary_test
     <<: *default
     database: tangocloud_test
-  queue:
-    <<: *default
-    database: tangocloud_test_queue
-    migrations_paths: db/queue_migrate
-  cache:
-    <<: *default
-    database: tangocloud_test_cache
-    migrations_paths: db/cache_migrate
 
 production:
   primary: &primary_production
