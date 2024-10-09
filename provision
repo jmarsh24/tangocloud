@@ -28,6 +28,13 @@ prepare_storage = <<~EOF
   chown 1000:1000 /storage
 EOF
 
+# Prepare elasticsearch
+prepare_storage = <<~EOF
+  mkdir -p /var/lib/elasticsearch/data;
+  chmod 700 /var/lib/elasticsearch/data;
+  chown 1000:1000 /var/lib/elasticsearch/data
+EOF
+
 # Add swap space
 add_swap = <<~EOF
   fallocate -l 2GB /swapfile;
