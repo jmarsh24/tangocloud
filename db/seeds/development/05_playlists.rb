@@ -8,7 +8,7 @@ def create_playlists_for_user(user)
     "troilo_essentials.m3u8" => "anibal_troilo.jpeg"
   }
 
-  base_path = Rails.root.join("db/seeds/playlists")
+  base_path = Rails.root.join("db/seeds/development/playlists")
 
   playlist_data.each do |playlist_filename, image_filename|
     playlist_title = File.basename(playlist_filename, ".m3u8").humanize

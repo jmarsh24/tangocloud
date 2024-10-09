@@ -28,7 +28,7 @@ puts "Seeding SQL files..."
 progress_bar = ProgressBar.new(sql_files.size)
 
 sql_files.each do |file_name|
-  file_path = Rails.root.join("db/seeds/music", file_name)
+  file_path = Rails.root.join("db/seeds/development/music", file_name)
 
   if File.exist?(file_path)
     puts "Seeding data from #{file_name}..."
@@ -133,7 +133,7 @@ def attach_file_to_record(record, attachment_name, file_path)
   end
 end
 
-albums_metadata_path = Rails.root.join("db/seeds/music/albums/album_art_metadata.json")
+albums_metadata_path = Rails.root.join("db/seeds/development/music/albums/album_art_metadata.json")
 raise "Album metadata file not found" unless File.exist?(albums_metadata_path)
 
 if File.exist?(albums_metadata_path)
@@ -143,7 +143,7 @@ if File.exist?(albums_metadata_path)
   albums_metadata.each do |line|
     metadata = JSON.parse(line)
     album = Album.find(metadata["record_id"])
-    file_path = Rails.root.join("db/seeds/music/albums", metadata["file_name"])
+    file_path = Rails.root.join("db/seeds/development/music/albums", metadata["file_name"])
     attach_file_to_record(album, metadata["attachment_name"], file_path)
     progress_bar.increment!
   end
@@ -151,7 +151,7 @@ else
   raise "Album metadata file not found. Skipping album art."
 end
 
-people_metadata_path = Rails.root.join("db/seeds/music/people/image_metadata.json")
+people_metadata_path = Rails.root.join("db/seeds/development/music/people/image_metadata.json")
 if File.exist?(people_metadata_path)
   people_metadata = File.readlines(people_metadata_path)
   progress_bar = ProgressBar.new(people_metadata.size)
@@ -159,7 +159,7 @@ if File.exist?(people_metadata_path)
   people_metadata.each do |line|
     metadata = JSON.parse(line)
     person = Person.find(metadata["record_id"])
-    file_path = Rails.root.join("db/seeds/music/people", metadata["file_name"])
+    file_path = Rails.root.join("db/seeds/development/music/people", metadata["file_name"])
     attach_file_to_record(person, metadata["attachment_name"], file_path)
     progress_bar.increment!
   end
@@ -167,7 +167,7 @@ else
   raise "People metadata file not found. Skipping person images."
 end
 
-orchestras_metadata_path = Rails.root.join("db/seeds/music/orchestras/image_metadata.json")
+orchestras_metadata_path = Rails.root.join("db/seeds/development/music/orchestras/image_metadata.json")
 if File.exist?(orchestras_metadata_path)
   orchestras_metadata = File.readlines(orchestras_metadata_path)
   progress_bar = ProgressBar.new(orchestras_metadata.size)
@@ -175,7 +175,7 @@ if File.exist?(orchestras_metadata_path)
   orchestras_metadata.each do |line|
     metadata = JSON.parse(line)
     orchestra = Orchestra.find(metadata["record_id"])
-    file_path = Rails.root.join("db/seeds/music/orchestras", metadata["file_name"])
+    file_path = Rails.root.join("db/seeds/development/music/orchestras", metadata["file_name"])
     attach_file_to_record(orchestra, metadata["attachment_name"], file_path)
     progress_bar.increment!
   end
@@ -184,28 +184,28 @@ else
 end
 
 puts "Creating ActiveStorage blobs for waveforms..."
-create_blobs_from_mapping(Rails.root.join("db/seeds/music/waveforms/image_blob_mapping.json"))
+create_blobs_from_mapping(Rails.root.join("db/seeds/development/music/waveforms/image_blob_mapping.json"))
 
 puts "Creating ActiveStorage blobs for audio variants..."
-create_blobs_from_mapping(Rails.root.join("db/seeds/music/audio_variants/audio_file_blob_mapping.json"))
+create_blobs_from_mapping(Rails.root.join("db/seeds/development/music/audio_variants/audio_file_blob_mapping.json"))
 
 puts "Creating ActiveStorage blobs for audio files..."
-create_blobs_from_mapping(Rails.root.join("db/seeds/music/audio_files/file_blob_mapping.json"))
+create_blobs_from_mapping(Rails.root.join("db/seeds/development/music/audio_files/file_blob_mapping.json"))
 
 puts "Processing audio variants..."
 process_attachment_metadata(
-  Rails.root.join("db/seeds/music/audio_variants/audio_file_metadata.json"),
+  Rails.root.join("db/seeds/development/music/audio_variants/audio_file_metadata.json"),
   AudioVariant
 )
 
 puts "Processing audio files..."
 process_attachment_metadata(
-  Rails.root.join("db/seeds/music/audio_files/file_metadata.json"),
+  Rails.root.join("db/seeds/development/music/audio_files/file_metadata.json"),
   AudioFile
 )
 
 puts "Processing waveform images..."
 process_attachment_metadata(
-  Rails.root.join("db/seeds/music/waveforms/image_metadata.json"),
+  Rails.root.join("db/seeds/development/music/waveforms/image_metadata.json"),
   Waveform
 )

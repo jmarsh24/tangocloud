@@ -20,14 +20,14 @@ playlist = Playlist.create!(title: "La Coqueta 2024", user:, subtitle: "Lyon, Fr
 
 Tanda.limit(12).each_with_index do |tanda, index|
   playlist.playlist_items.create!(item: tanda, position: index)
-  attach_playlist_image(playlist, Rails.root.join("db/seeds/playlists/dogac_ozen.jpeg"))
-  attach_playlist_file(playlist, Rails.root.join("db/seeds/playlists/dogac_la_coqueta.m3u8"))
+  attach_playlist_image(playlist, Rails.root.join("db/seeds/development/playlists/dogac_ozen.jpeg"))
+  attach_playlist_file(playlist, Rails.root.join("db/seeds/development/playlists/dogac_la_coqueta.m3u8"))
 end
 
 playlist = Playlist.create!(title: "Petit Marathon", user:, subtitle: "Lyon, France")
 
 Tanda.offset(12).limit(17).each_with_index do |tanda, index|
   playlist.playlist_items.create!(item: tanda, position: index)
-  attach_playlist_image(playlist, Rails.root.join("db/seeds/playlists/dogac_ozen.jpeg"))
-  attach_playlist_file(playlist, Rails.root.join("db/seeds/playlists/dogac_petit_marathon.m3u8"))
+  attach_playlist_image(playlist, Rails.root.join("db/seeds/development/playlists/dogac_ozen.jpeg"))
+  attach_playlist_file(playlist, Rails.root.join("db/seeds/development/playlists/dogac_petit_marathon.m3u8"))
 end
