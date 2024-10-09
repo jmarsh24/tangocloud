@@ -23,7 +23,8 @@
 			},
 			"channel": "production",
 			"env": {
-				"EXPO_PUBLIC_GRAPHQL_ENDPOINT": "https://tangocloud.app/api/graphql"
+				"EXPO_PUBLIC_GRAPHQL_ENDPOINT": "https://tangocloud.app/api/graphql",
+				"EXPO_PUBLIC_API_ENDPOINT": "https://tangocloud.app/api"
 			}
 		}
 	},
