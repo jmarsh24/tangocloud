@@ -70,4 +70,6 @@ Rails.application.configure do
 
   # encryption
   config.active_record.encryption.encrypt_fixtures = true
+
+  Rails.application.routes.default_url_options = {host: "localhost", port: 3000}
 end

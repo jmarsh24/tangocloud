@@ -1,32 +1,7 @@
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        RUBY_VERSION: "3.3"
-        NODE_VERSION: "20.10.0"
-
-    volumes:
-      - ../..:/workspaces:cached
-      - ~/.netrc:/root/.netrc
-      - ~/.ssh:/root/.ssh
-      - ~/.config/gh:/root/.config/gh
-      - ~/.aws:/root/.aws
-      - ~/Music:/app/music:ro
-
-    # Overrides default command so things don't shut down after the process ends.
-    command: sleep infinity
-
-    # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
-    network_mode: service:db
-
-    environment:
-      TZ: Europe/Berlin
-      EDITOR: code --wait
   db:
     image: postgres:16.4
-    restart: unless-stopped
+    restart: always
     ports:
       - 5432:5432
     volumes:
@@ -35,7 +10,7 @@ services:
       POSTGRES_HOST_AUTH_METHOD: trust
   redis:
     image: redis
-    restart: unless-stopped
+    restart: always
     ports:
       - 6379:6379
     volumes:
@@ -53,5 +28,5 @@ services:
       - xpack.security.enabled=false
 volumes:
   postgres:
-  elasticsearch:
   redis:
+  elasticsearch:
