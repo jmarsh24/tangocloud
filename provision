@@ -1,4 +1,3 @@
-# ./provision
 #!/usr/bin/env ruby
 # Provision a virtual private server for Kamal deployments on Ubuntu 22 LTS.
 #
