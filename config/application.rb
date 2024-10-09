@@ -42,8 +42,6 @@ module Tangocloud
     config.autoload_lib(ignore: ["assets", "tasks", "protobuf"])
 
     config.active_storage.variant_processor = :vips
-    config.active_job.queue_adapter = :solid_queue
-    config.solid_queue.connects_to = {database: {writing: :queue}}
 
     # to remove once encrytion completed
     config.active_record.encryption.support_unencrypted_data = true

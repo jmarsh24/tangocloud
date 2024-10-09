@@ -98,4 +98,7 @@ Rails.application.configure do
     config.active_record.verbose_query_logs = false
     config.action_view.cache_template_loading = true
   end
+
+  config.active_job.queue_adapter = :solid_queue
+  config.solid_queue.connects_to = {database: {writing: :queue}}
 end
