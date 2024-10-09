@@ -4,8 +4,6 @@ RSpec.describe "GoogleLogin", type: :request do
   let(:user) { create(:user, email: "new@google-user.com") }
 
   before do
-    stub_config(google_client_id: "YOUR_CLIENT_ID.apps.googleusercontent.com")
-
     stub_request(:get, "https://example.com/avatar.jpg")
       .to_return(status: 200, body: file_fixture("album-art-volver-a-sonar.jpg").read)
 

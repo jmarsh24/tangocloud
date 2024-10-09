@@ -16,6 +16,10 @@ development:
     <<: *default
     database: tangocloud_development_queue
     migrations_paths: db/queue_migrate
+  cache:
+    <<: *default
+    database: tangocloud_development_cache
+    migrations_paths: db/cache_migrate
 
 test:
   primary: &primary_test
@@ -28,12 +32,11 @@ production:
     host: <%= ENV["DB_HOST"] %>
     database: tangocloud_production
     password: <%= ENV["POSTGRES_PASSWORD"] %>
-    port: 5432
   queue:
-    <<: *default
+    <<: *primary_production
     database: tangocloud_production_queue
     migrations_paths: db/queue_migrate
   cache:
-    <<: *default
+    <<: *primary_production
     database: tangocloud_production_cache
     migrations_paths: db/cache_migrate

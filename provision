@@ -1,0 +1,112 @@
+#!/usr/bin/env ruby
+# Provision a virtual private server for Kamal deployments on Ubuntu 22 LTS.
+#
+# This script relies on SSH keys authentication.
+#
+# Make sure to add your private key first:
+#   % ssh-add ~/path/to/ssh/key
+require "net/ssh"
+require "kamal"
+
+# Get server IP and user name from config/deploy.yml
+config_file = Pathname.new(File.expand_path("config/deploy.yml"))
+config = Kamal::Configuration.create_from(config_file:)
+hosts = config.roles.map(&:hosts).flatten + config.accessories.map(&:hosts).flatten
+hosts.uniq!
+user_name = config.ssh.user
+
+# Install Docker and add the private network
+install_essentials = <<~EOF
+  apt update && apt install -y build-essential curl
+EOF
+
+# Prepare storage
+prepare_storage = <<~EOF
+  mkdir -p /storage;
+  chmod 700 /storage;
+  chown 1000:1000 /storage
+EOF
+
+# Prepare elasticsearch
+prepare_storage = <<~EOF
+  mkdir -p /var/lib/elasticsearch/data;
+  chmod 700 /var/lib/elasticsearch/data;
+  chown 1000:1000 /var/lib/elasticsearch/data
+EOF
+
+# Add swap space
+add_swap = <<~EOF
+  fallocate -l 2GB /swapfile;
+  chmod 600 /swapfile;
+  mkswap /swapfile;
+  swapon /swapfile;
+  echo "\\n/swapfile swap swap defaults 0 0\\n" >> /etc/fstab;
+  sysctl vm.swappiness=20;
+  echo "\\nvm.swappiness=20\\n" >> /etc/sysctl.conf
+EOF
+
+# Add non-root user
+add_user = <<~EOF
+  useradd --create-home #{user_name};
+  usermod -s /bin/bash #{user_name};
+  su - #{user_name} -c 'mkdir -p ~/.ssh';
+  su - #{user_name} -c 'touch ~/.ssh/authorized_keys';
+  cat /root/.ssh/authorized_keys >> /home/#{user_name}/.ssh/authorized_keys;
+  chmod 700 /home/#{user_name}/.ssh;
+  chmod 600 /home/#{user_name}/.ssh/authorized_keys;
+  echo '#{user_name} ALL=(ALL:ALL) NOPASSWD: ALL' | tee /etc/sudoers.d/#{user_name};
+  chmod 0440 /etc/sudoers.d/#{user_name};
+  visudo -c -f /etc/sudoers.d/#{user_name};
+EOF
+
+# Install fail2ban
+install_fail2ban = <<~EOF
+  apt install -y fail2ban;
+  systemctl start fail2ban;
+  systemctl enable fail2ban
+EOF
+
+# Configure firewall
+configure_firewall = <<~EOF
+  ufw logging on;
+  ufw default deny incoming;
+  ufw default allow outgoing;
+  ufw allow 22;
+  ufw allow 80;
+  ufw allow 443;
+  ufw --force enable;
+  systemctl restart ufw
+EOF
+
+# Disable root
+disable_root = <<~EOF
+  sed -i 's@PasswordAuthentication yes@PasswordAuthentication no@g' /etc/ssh/sshd_config;
+  sed -i 's@PermitRootLogin yes@PermitRootLogin no@g' /etc/ssh/sshd_config;
+  chage -E 0 root;
+  systemctl restart ssh
+EOF
+
+hosts.each do |host|
+  puts "Provisioning server '#{host}' with user '#{user_name}'..."
+
+  # Run provisioning on server `host`
+  Net::SSH.start(host, "root") do |ssh|
+    puts "Installing essential packages..."
+    ssh.exec!(install_essentials)
+    puts "Adding swap space..."
+    ssh.exec!(add_swap)
+    puts "Preparing storage for disk service..."
+    ssh.exec!(prepare_storage)
+    puts "Adding user with sudo privileges..."
+    ssh.exec!(add_user)
+    puts "Installing and running fail2ban..."
+    ssh.exec!(install_fail2ban)
+    puts "Configure firewall..."
+    ssh.exec!(configure_firewall)
+    puts "Disabling root..."
+    ssh.exec!(disable_root)
+  end
+end
+puts "Done!"
+puts "Remember to log in as '#{user_name}' from now on:"
+puts "  ssh #{user_name}@#{hosts.first}"

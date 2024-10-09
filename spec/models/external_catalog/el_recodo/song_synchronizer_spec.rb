@@ -57,8 +57,6 @@ RSpec.describe ExternalCatalog::ElRecodo::SongSynchronizer do
 
     it "fetches the song data and builds a new el recodo song" do
       freeze_time do
-        stub_config el_recodo_request_delay: 0
-
         song_synchronizer.sync_song(ert_number: 1)
 
         song = ExternalCatalog::ElRecodo::Song.find_by(ert_number: 1)

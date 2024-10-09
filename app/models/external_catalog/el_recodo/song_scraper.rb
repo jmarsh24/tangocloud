@@ -56,7 +56,7 @@ module ExternalCatalog
       end
 
       def fetch(ert_number:)
-        sleep Rails.application.credentials.dig(:el_recodo_request_delay).to_i
+        sleep ENV["EL_RECODO_REQUEST_DELAY"].to_i
 
         response = @connection.get("https://www.el-recodo.com/music?id=#{ert_number}&lang=en")
 
