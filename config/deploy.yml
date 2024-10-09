@@ -106,6 +106,7 @@ accessories:
       - data:/var/lib/postgresql/data
   redis:
     image: redis:7
+    host: 37.27.221.99
     cmd: "redis-server --requirepass <%= File.read('.kamal/secrets')[/REDIS_PASSWORD="(.*?)"/, 1] %>"
     directories:
       - data:/data
