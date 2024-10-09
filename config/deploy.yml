@@ -18,7 +18,9 @@ servers:
 # Set ssl: false if using something like Cloudflare to terminate SSL (but keep host!).
 proxy:
   ssl: false
-  host: tangocloud.app
+  hosts:
+    - www.tangocloud.app
+    - tangocloud.app
   # kamal-proxy connects to your container over port 80, use `app_port` to specify a different port.
   app_port: 3000
   healthcheck:
@@ -104,15 +106,18 @@ accessories:
       - data:/var/lib/postgresql/data
   redis:
     image: redis:7
-    roles:
-      - web
-      - job
     cmd: "redis-server --requirepass <%= File.read('.kamal/secrets')[/REDIS_PASSWORD="(.*?)"/, 1] %>"
     directories:
       - data:/data
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0-arm64
     host: 37.27.221.99
+    port: 9200
+    env:
+      clear:
+        discovery.type: single-node
+        xpack.security.enabled: "false"
+        ES_JAVA_OPTS: "-Xms1g -Xmx1g"
     files:
       - config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     volumes:
