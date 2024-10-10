@@ -9,7 +9,7 @@ sql_files = [
 puts "Seeding SQL files..."
 
 sql_files.each do |file_name|
-  file_path = Rails.root.join("db/seeds/development/el_recodo", file_name)
+  file_path = Rails.root.join("db/seeds/common/el_recodo", file_name)
 
   if File.exist?(file_path)
     puts "Seeding data from #{file_name}..."
@@ -34,7 +34,7 @@ def attach_file_to_record(record, attachment_name, file_path)
   end
 end
 
-people_metadata_path = Rails.root.join("db/seeds/development/el_recodo/images/el_recodo_people/image_metadata.json")
+people_metadata_path = Rails.root.join("db/seeds/common/el_recodo/images/el_recodo_people/image_metadata.json")
 if File.exist?(people_metadata_path)
   people_metadata = File.readlines(people_metadata_path)
   progress_bar = ProgressBar.new(people_metadata.size)
@@ -42,7 +42,7 @@ if File.exist?(people_metadata_path)
   people_metadata.each do |line|
     metadata = JSON.parse(line)
     person = ExternalCatalog::ElRecodo::Person.find(metadata["record_id"])
-    file_path = Rails.root.join("db/seeds/development/el_recodo/images/el_recodo_people", metadata["file_name"])
+    file_path = Rails.root.join("db/seeds/common/el_recodo/images/el_recodo_people", metadata["file_name"])
     attach_file_to_record(person, metadata["attachment_name"], file_path)
     progress_bar.increment!
   end
@@ -50,7 +50,7 @@ else
   puts "People metadata file not found. Skipping person images."
 end
 
-orchestras_metadata_path = Rails.root.join("db/seeds/development/el_recodo/images/el_recodo_orchestras/image_metadata.json")
+orchestras_metadata_path = Rails.root.join("db/seeds/common/el_recodo/images/el_recodo_orchestras/image_metadata.json")
 if File.exist?(orchestras_metadata_path)
   orchestras_metadata = File.readlines(orchestras_metadata_path)
   progress_bar = ProgressBar.new(orchestras_metadata.size)
@@ -58,7 +58,7 @@ if File.exist?(orchestras_metadata_path)
   orchestras_metadata.each do |line|
     metadata = JSON.parse(line)
     orchestra = ExternalCatalog::ElRecodo::Orchestra.find(metadata["record_id"])
-    file_path = Rails.root.join("db/seeds/development/el_recodo/images/el_recodo_orchestras", metadata["file_name"])
+    file_path = Rails.root.join("db/seeds/common/el_recodo/images/el_recodo_orchestras", metadata["file_name"])
     attach_file_to_record(orchestra, metadata["attachment_name"], file_path)
     progress_bar.increment!
   end
