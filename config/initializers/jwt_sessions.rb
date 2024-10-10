@@ -5,11 +5,18 @@ JWTSessions.encryption_key =
     Rails.application.credentials.secret_key_base
   end
 
+redis_password = Rails.application.credentials.dig(:redis_password)
+redis_host = Rails.application.credentials.dig(:redis_host)
+
+redis_url =
+  if redis_password.present? && redis_host.present?
+    "redis://#{redis_password}@#{redis_host}:6379/0"
+  else
+    "redis://127.0.0.1:6379/0"
+  end
+
 JWTSessions.token_store = :redis, {
-  redis_host: ENV.fetch("REDIS_HOST", "127.0.0.1"),
-  redis_password: ENV["REDIS_PASSWORD"],
-  redis_port: "6379",
-  redis_db_name: "0",
+  redis_url:,
   token_prefix: "jwt_",
   pool_size: Integer(ENV.fetch("RAILS_MAX_THREADS", 5))
 }
