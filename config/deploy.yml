@@ -72,7 +72,8 @@ ssh:
 
 # Use a persistent storage volume.
 #
-# volumes:
+volumes:
+  - /srv/tangocloud/synced_files/tc_tagged_library:/app/music_library
 #   - "app_storage:/app/storage"
 
 # Bridge fingerprinted assets, like JS and CSS, between versions to avoid
