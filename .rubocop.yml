@@ -13,9 +13,6 @@ AllCops:
     - "scratchpad.rb"
     - "native/**/*"
 
-inherit_gem:
-  shimmer: config/rubocop_base.yml
-
 Style/FrozenStringLiteralComment:
   Enabled: false
 
