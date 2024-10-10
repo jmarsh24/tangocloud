@@ -20,7 +20,6 @@ export default (): ExpoConfig => {
 			supportsTablet: true,
 			bundleIdentifier: 'tangocloud',
 			runtimeVersion: '1.0.0',
-			buildNumber: '70',
 			usesAppleSignIn: true,
 			config: {
 				usesNonExemptEncryption: false,
