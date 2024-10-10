@@ -52,6 +52,7 @@ env:
     DB_HOST: tangocloud-db
     ELASTICSEARCH_URL: http://tangocloud-elasticsearch:9200
     EL_RECODO_REQUEST_DELAY: 20
+    REDIS_HOST: tangocloud-redis
   secret:
     - RAILS_MASTER_KEY
     - POSTGRES_PASSWORD
