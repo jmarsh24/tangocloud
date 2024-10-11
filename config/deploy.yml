@@ -18,6 +18,7 @@ servers:
 # Set ssl: false if using something like Cloudflare to terminate SSL (but keep host!).
 proxy:
   ssl: false
+  forward_headers: true
   hosts:
     - www.tangocloud.app
     - tangocloud.app
