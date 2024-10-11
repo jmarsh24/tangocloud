@@ -66,6 +66,7 @@ aliases:
   shell: app exec --interactive --reuse "bash"
   logs: app logs -f
   dbc: app exec --interactive --reuse "bin/rails dbconsole"
+  backup: accessory exec --reuse --interactive backup "sh backup.sh"
 
 # Use a different ssh user than root
 ssh:
@@ -105,12 +106,31 @@ accessories:
         - POSTGRES_PASSWORD
     files:
       - config/init.sql:/docker-entrypoint-initdb.d/setup.sql
+      - postgres/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
     directories:
       - data:/var/lib/postgresql/data
+  backup:
+    image: eeshugerman/postgres-backup-s3:15
+    host: 37.27.221.99
+    env:
+      clear:
+        S3_ENDPOINT: https://b23e5ff0654b18a5b20bd3016cc32b35.r2.cloudflarestorage.com/
+        S3_BUCKET: tangocloud-db-backups
+        S3_PREFIX: backups
+        S3_REGION: auto
+        SCHEDULE: "@daily"
+        BACKUP_KEEP_DAYS: 14
+        POSTGRES_HOST: tangocloud-db
+        POSTGRES_DATABASE: tangocloud_production
+        POSTGRES_USER: postgres
+      secret:
+        - POSTGRES_PASSWORD
+        - S3_ACCESS_KEY_ID
+        - S3_SECRET_ACCESS_KEY
   redis:
     image: redis:7
     host: 37.27.221.99
-    cmd: "redis-server --requirepass <%= File.read('.kamal/secrets')[/REDIS_PASSWORD="(.*?)"/, 1] %>"
+    # cmd: "redis-server --requirepass <%= File.read('.kamal/secrets')[/REDIS_PASSWORD="(.*?)"/, 1] %>"
     directories:
       - data:/data
   elasticsearch:
