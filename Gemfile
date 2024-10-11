@@ -29,7 +29,6 @@ gem "graphiql-rails"
 gem "graphql-sources"
 gem "groupdate"
 gem "jwt"
-gem "kamal"
 gem "kaminari"
 gem "omniauth"
 gem "omniauth-rails_csrf_protection"
@@ -54,6 +53,7 @@ gem "active_storage_validations"
 gem "devise"
 gem "jwt_sessions"
 gem "redis"
+gem "kamal", require: false
 
 # Assets
 gem "stimulus-rails"
@@ -62,6 +62,7 @@ gem "propshaft"
 gem "ruby-vips"
 gem "vite_rails"
 gem "turbo-rails"
+gem "thruster", require: false
 
 # External Services
 gem "aws-sdk-s3", require: false
@@ -72,7 +73,7 @@ gem "sentry-ruby"
 group :development, :test do
   gem "capybara"
   gem "capybara-playwright-driver"
-  gem "debug"
+  gem "debug", platforms: %i[mri windows], require: "debug/prelude"
   gem "i18n-tasks"
   gem "rack_session_access"
   gem "rspec-rails"
@@ -83,6 +84,7 @@ group :development, :test do
   gem "ruby-lsp-rspec", require: false
   gem "faker"
   gem "factory_bot_rails"
+  gem "rubocop-rails-omakase", require: false
 end
 
 group :development do
@@ -95,7 +97,7 @@ group :development do
   gem "pry-rails"
   gem "rb-fsevent"
   gem "web-console"
-  gem "brakeman"
+  gem "brakeman", require: false
   gem "database_validations"
   gem "database_consistency", require: false
   gem "ruby-progressbar"

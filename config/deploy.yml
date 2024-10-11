@@ -50,6 +50,7 @@ env:
     RUBY_YJIT_ENABLE: 1
     WEB_CONCURRENCY: 2
     RAILS_MAX_THREADS: 3
+    SOLID_QUEUE_IN_PUMA: true
     DB_HOST: tangocloud-db
     ELASTICSEARCH_URL: http://tangocloud-elasticsearch:9200
     EL_RECODO_REQUEST_DELAY: 20
@@ -87,7 +88,7 @@ volumes:
 # hitting 404 on in-flight requests. Combines all files from new and old
 # version inside the asset_path.
 #
-# asset_path: /app/public/assets
+asset_path: /app/public/assets
 
 # Configure rolling deploys by setting a wait time between batches of restarts.
 #
