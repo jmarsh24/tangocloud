@@ -9,7 +9,7 @@ local:
 cloudflare:
   service: S3
   endpoint: https://<%= ENV['CLOUDFLARE_ACCOUNT_ID'] %>.r2.cloudflarestorage.com
-  access_key_id: <%= ENV['CLOUDFLARE_SECRET_ACCESS_KEY_ID'] %>
+  access_key_id: <%= ENV['CLOUDFLARE_ACCESS_KEY_ID'] %>
   secret_access_key: <%= ENV['CLOUDFLARE_SECRET_ACCESS_KEY'] %>
   region: auto
   bucket: <%= ENV['CLOUDFLARE_BUCKET'] || "tangocloud-#{Rails.env}" %>
