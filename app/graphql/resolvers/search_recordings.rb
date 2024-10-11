@@ -2,12 +2,12 @@ module Resolvers
   class SearchRecordings < BaseResolver
     type Types::RecordingSearchResultsType, null: false
 
-    argument :filters, Types::RecordingFilterInputType, required: false
-    argument :order_by, Types::RecordingOrderByInputType, required: false
-    argument :query, String, required: false
     argument :aggs, [Types::RecordingAggregationInputType], required: false
+    argument :filters, Types::RecordingFilterInputType, required: false
     argument :limit, Integer, required: false, default_value: 20
     argument :offset, Integer, required: false, default_value: 0
+    argument :order_by, Types::RecordingOrderByInputType, required: false
+    argument :query, String, required: false
 
     def resolve(query: "*", filters: nil, order_by: nil, aggs: nil, limit: 20, offset: 0)
       search_options = {

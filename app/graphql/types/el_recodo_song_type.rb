@@ -2,23 +2,23 @@
 
 module Types
   class ElRecodoSongType < Types::BaseObject
-    field :id, ID, null: false
+    field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :date, GraphQL::Types::ISO8601Date, null: false
+    field :disk, String
+    field :duration, Integer
     field :ert_number, Integer, null: false
-    field :title, String, null: false
     field :formatted_title, String
-    field :style, String
-    field :label, String
+    field :id, ID, null: false
     field :instrumental, Boolean, null: false
+    field :label, String
     field :lyrics, String
     field :lyrics_year, Integer
     field :matrix, String
-    field :disk, String
-    field :speed, Integer
-    field :duration, Integer
-    field :synced_at, GraphQL::Types::ISO8601DateTime, null: false
     field :page_updated_at, GraphQL::Types::ISO8601DateTime
-    field :created_at, GraphQL::Types::ISO8601DateTime, null: false
+    field :speed, Integer
+    field :style, String
+    field :synced_at, GraphQL::Types::ISO8601DateTime, null: false
+    field :title, String, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
     belongs_to :orchestra, type: Types::ElRecodoOrchestraType

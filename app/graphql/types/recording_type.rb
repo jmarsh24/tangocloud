@@ -6,12 +6,12 @@ module Types
 
   class RecordingType < Types::BaseObject
     field :id, ID, null: false
+    field :liked_by_current_user, Boolean, null: true
+    field :playbacks_count, Integer, null: false
     field :recorded_date, GraphQL::Types::ISO8601Date, null: true
     field :recording_type, Types::RecordingTypeEnum, null: false
-    field :year, Integer, null: true
     field :slug, String, null: false
-    field :playbacks_count, Integer, null: false
-    field :liked_by_current_user, Boolean, null: true
+    field :year, Integer, null: true
 
     belongs_to :record_label, null: true
     belongs_to :time_period, null: true

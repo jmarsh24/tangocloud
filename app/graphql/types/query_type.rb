@@ -18,12 +18,12 @@ module Types
     field :playlists, resolver: Resolvers::Playlists
     field :recording, resolver: Resolvers::Recording
     field :recordings, resolver: Resolvers::Recordings
+    field :search, resolver: Resolvers::Search
     field :search_recordings, resolver: Resolvers::SearchRecordings
     field :singers, resolver: Resolvers::Singers
     field :time_period, resolver: Resolvers::TimePeriod
     field :time_periods, resolver: Resolvers::TimePeriods
     field :user, resolver: Resolvers::User
     field :users, resolver: Resolvers::Users
-    field :search, resolver: Resolvers::Search
   end
 end

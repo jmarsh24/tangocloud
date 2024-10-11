@@ -4,10 +4,10 @@ module Mutations
     type Types::UserResultType, null: false
 
     argument :avatar, ApolloUploadServer::Upload, required: false
-    argument :username, String, required: false
     argument :first_name, String, required: false
     argument :last_name, String, required: false
     argument :password, String, required: false
+    argument :username, String, required: false
 
     def resolve(avatar: nil, username: nil, password: nil, first_name: nil, last_name: nil)
       user = current_user

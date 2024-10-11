@@ -7,10 +7,10 @@ module Types
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
     field :url, String, null: false do
-      argument :width, Integer, required: false
+      argument :format, String, required: false, default_value: "jpg"
       argument :height, Integer, required: false
       argument :resizing_type, String, required: false, default_value: "fit"
-      argument :format, String, required: false, default_value: "jpg"
+      argument :width, Integer, required: false
     end
 
     def url(width: nil, height: nil, resizing_type: "fit", format: "jpg")

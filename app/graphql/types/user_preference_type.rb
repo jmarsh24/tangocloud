@@ -1,8 +1,8 @@
 module Types
   class UserPreferenceType < BaseObject
-    field :id, ID, null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :first_name, String, null: true
+    field :id, ID, null: false
     field :last_name, String, null: true
     field :name, String, null: true
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false

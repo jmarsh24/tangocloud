@@ -1,12 +1,12 @@
 module Types
   class UserType < BaseObject
-    field :id, ID, null: false
-    field :username, String
     field :admin, Boolean, null: false
+    field :email, String, null: false
+    field :id, ID, null: false
     field :provider, String
     field :uid, String
-    field :email, String, null: false
     field :user_preference, UserPreferenceType, null: true
+    field :username, String
 
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false

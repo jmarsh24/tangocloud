@@ -1,3 +1,10 @@
+require:
+  - rubocop-graphql
+  - standard
+
+inherit_gem:
+  standard: config/base.yml
+
 AllCops:
   DisplayCopNames: true
   DisplayStyleGuide: true
@@ -23,4 +30,16 @@ GraphQL/ObjectDescription:
   Enabled: false
 
 GraphQL/ArgumentDescription:
+  Enabled: false
+
+GraphQL/ExtractType:
+  Enabled: false
+
+GraphQL/MaxDepthSchema:
+  Enabled: false
+
+GraphQL/MaxComplexitySchema:
+  Enabled: false
+
+GraphQL/ExtractInputType:
   Enabled: false
