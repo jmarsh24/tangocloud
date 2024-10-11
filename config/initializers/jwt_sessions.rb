@@ -2,7 +2,7 @@ JWTSessions.encryption_key =
   if Rails.env.test? || Rails.env.development?
     "stubbed_secret_key_base"
   else
-    Rails.application.credentials.secret_key_base
+    Rails.application.credentials.dig(:secret_key_base)
   end
 
 redis_password = ENV["REDIS_PASSWORD"]
