@@ -5,7 +5,7 @@ JWTSessions.encryption_key =
     Rails.application.credentials.secret_key_base
   end
 
-redis_password = Rails.application.credentials.dig(:redis_password)
+redis_password = ENV["REDIS_PASSWORD"]
 redis_host = ENV["REDIS_HOST"]
 
 redis_url =
