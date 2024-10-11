@@ -12,4 +12,4 @@ cloudflare:
   access_key_id: <%= ENV['CLOUDFLARE_SECRET_ACCESS_KEY_ID'] %>
   secret_access_key: <%= ENV['CLOUDFLARE_SECRET_ACCESS_KEY'] %>
   region: auto
-  bucket: <%= ENV['CLOUDFLARE_BUCKET'] %>
+  bucket: <%= ENV['CLOUDFLARE_BUCKET'] || "tangocloud-#{Rails.env}" %>
