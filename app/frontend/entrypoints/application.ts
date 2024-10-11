@@ -16,5 +16,3 @@ const controllers = import.meta.glob(
 );
 
 registerControllers(application, controllers);
-
-
