@@ -6,7 +6,11 @@ JWTSessions.encryption_key =
   end
 
 redis_password = Rails.application.credentials.dig(:redis_password)
-redis_host = Rails.application.credentials.dig(:redis_host)
+redis_host = ENV["REDIS_HOST"]
+
+if Rails.env.production?
+  raise "Missing Redis credentials in production!" unless redis_password.present? && redis_host.present?
+end
 
 redis_url =
   if redis_password.present? && redis_host.present?
