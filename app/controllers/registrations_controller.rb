@@ -4,7 +4,10 @@ class RegistrationsController < Devise::RegistrationsController
   protected
 
   def update_resource(resource, params)
-    resource.update_without_password(params)
+    if params[:user_preference_attributes].blank?
+      params.delete(:user_preference_attributes)
+    end
+    resource.update(params)
   end
 
   def configure_permitted_parameters
