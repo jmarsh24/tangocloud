@@ -24,7 +24,7 @@ Rails.application.configure do
   # config.public_file_server.enabled = false
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  config.asset_host = "https://www.tangocloud.app"
+  # config.asset_host = "https://www.tangocloud.app"
   config.action_mailer.default_url_options = {host: "www.tangocloud.app", protocol: "https"}
   config.action_controller.default_url_options = {host: "www.tangocloud.app", protocol: "https"}
 
@@ -33,7 +33,7 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = "X-Accel-Redirect" # for NGINX
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :cloudflare
+  config.active_storage.service = :local
 
   # Mount Action Cable outside main process or domain.
   # config.action_cable.mount_path = nil
@@ -102,7 +102,7 @@ Rails.application.configure do
     enable_starttls_auto: true
   }
 
-  config.public_file_server.enabled = true
+  # config.public_file_server.enabled = true
 
   config.active_storage.resolve_model_to_route = :imgproxy_active_storage
 end
