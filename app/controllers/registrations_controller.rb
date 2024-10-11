@@ -7,7 +7,12 @@ class RegistrationsController < Devise::RegistrationsController
     if params[:user_preference_attributes].blank?
       params.delete(:user_preference_attributes)
     end
-    resource.update(params)
+
+    if params[:password].present? || params[:password_confirmation].present?
+      resource.update(params)
+    else
+      resource.update_without_password(params)
+    end
   end
 
   def configure_permitted_parameters
