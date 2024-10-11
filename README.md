@@ -46,21 +46,13 @@ docker-compose up
 
 ### Starting the Application
 
-The following command will start Rails, SolidQueue and Vite (for CSS and JS).
+The following command will start Rails, SolidQueue, SolidCache, and Vite (for CSS and JS).
 
 ```
 bin/dev
 ```
 
-## Linter
-
-The CI performs 3 checks:
-
-- erblint
-- standardrb
-- standard (js)
-
-Before committing your code you can run `bin/lint` to detect and potentially autocorrect lint errors.
+Before committing your code you can run `bin/rubocop` and `bin/yarn lint` to detect and potentially autocorrect lint errors.
 
 To follow Tailwind CSS's recommended order of classes, you can use [Prettier](https://prettier.io/) along with the [prettier-plugin-tailwindcss](https://github.com/tailwindlabs/prettier-plugin-tailwindcss), both of which are included as devDependencies. This formating is not yet enforced by the CI.
 
