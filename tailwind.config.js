@@ -6,7 +6,11 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        circular: ['Circular', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 };
