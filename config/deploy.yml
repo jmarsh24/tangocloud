@@ -56,6 +56,7 @@ env:
     EL_RECODO_REQUEST_DELAY: 20
     REDIS_HOST: tangocloud-redis
     CLOUDFLARE_BUCKET: tangocloud
+    IMGPROXY_ENDPOINT: tangocloud-imgproxy
   secret:
     - RAILS_MASTER_KEY
     - POSTGRES_PASSWORD
@@ -82,7 +83,7 @@ ssh:
 #
 volumes:
   - /srv/tangocloud/synced_files/tc_tagged_library:/app/music_library
-#   - "app_storage:/app/storage"
+  - "app_storage:/app/storage"
 
 # Bridge fingerprinted assets, like JS and CSS, between versions to avoid
 # hitting 404 on in-flight requests. Combines all files from new and old
@@ -151,3 +152,12 @@ accessories:
       - config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     volumes:
       - /var/lib/elasticsearch/data:/usr/share/elasticsearch/data
+  imgproxy:
+    container_name: imgproxy
+    image: darthsim/imgproxy:latest
+    env:
+      clear:
+        IMGPROXY_LOCAL_FILESYSTEM_ROOT: /app_storage
+      secret:
+        - IMGPROXY_KEY
+        - IMGPROXY_SALT
