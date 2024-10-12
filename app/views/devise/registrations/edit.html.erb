@@ -1,56 +1,67 @@
-<div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-md w-full space-y-8">
-    <div>
-      <%= inline_svg_tag("logos/tangocloud-logo.svg", class: "mx-auto h-64 w-auto") %>
-      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-        Edit <%= resource_name.to_s.humanize %>
-      </h2>
-    </div>
+<div class="form-container">
+  <div class="form-wrapper">
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-      <div class="mt-8 space-y-6">
-        <%= render "devise/shared/error_messages", resource: resource %>
-        <div class="flex flex-col gap-6">
-          <div class="rounded-md -space-y-px">
+      <div class="form-body">
+        <div class="form-input-group">
+          <div class="form-group">
             <%= f.fields_for :user_preference do |up| %>
-              <%= up.label :avatar, class: "hidden" %>
-              <% if resource.user_preference&.avatar&.attached? %>
-                <div class="flex items-center space-x-4 mt-2">
-                  <%= image_tag(resource.user_preference.avatar.variant(resize_to_fill: [80, 80]), class: "w-20 h-20 rounded-full object-cover") %>
-                  <%= up.file_field :avatar, class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" %>
-                </div>
-              <% else %>
-                <%= up.file_field :avatar, class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" %>
-              <% end %>
+              <div class="avatar-upload flex flex-col items-center gap-8 mt-4">
+                <% if resource.user_preference&.avatar&.attached? %>
+                  <%= image_tag(resource.user_preference.avatar.variant(resize_to_fill: [150, 150]), class: "avatar-image w-40 h-40 rounded-full object-cover shadow-lg") %>
+                <% else %>
+                  <%= image_tag("icons/default-avatar.svg", class: "avatar-image w-40 h-40 rounded-full object-cover shadow-lg") %>
+                <% end %>
+
+                <label for="user_preference_avatar" class="custom-file-upload cursor-pointer bg-indigo-600 text-white px-4 py-2 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                  Change Avatar
+                  <%= up.file_field :avatar, class: "hidden", id: "user_preference_avatar", accept: "image/*", data: { preview_target: "preview" } %>
+                </label>
+              </div>
+
+              <div class="form-group mt-6">
+                <%= up.label :first_name, class: "label", for: "user_preference_first_name" %>
+                <%= up.text_field :first_name, id: "user_preference_first_name", class: "input" %>
+              </div>
+
+              <div class="form-group">
+                <%= up.label :last_name, class: "label", for: "user_preference_last_name" %>
+                <%= up.text_field :last_name, id: "user_preference_last_name", class: "input" %>
+              </div>
             <% end %>
           </div>
-          <div>
-            <div>
-              <%= f.label :email, clasas: "sr-only", for: "email-address" %>
-              <%= f.email_field :email, id: "email-address", autofocus: true, autocomplete: "email", placeholder: "Email address", class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" %>
-            </div>
-            <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-              <div class="text-sm text-gray-600">Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-            <% end %>
-            <div>
-              <%= f.label :password, class: "sr-only", for: "password" %>
-              <%= f.password_field :password, id: "password", autocomplete: "new-password", placeholder: "Password (leave blank if you don't want to change it)", class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" %>
-            </div>
-            <div>
-              <%= f.label :password_confirmation, class: "sr-only", for: "password-confirmation" %>
-              <%= f.password_field :password_confirmation, id: "password-confirmation", autocomplete: "new-password", placeholder: "Confirm Password", class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" %>
-            </div>
-            <% if @minimum_password_length %>
-              <p class="mt-2 text-sm text-gray-600"><em><%= @minimum_password_length %> characters minimum</em></p>
-            <% end %>
+
+          <div class="form-group">
+            <%= f.label :email, class: "label", for: "email-address" %>
+            <%= f.email_field :email, id: "email-address", autofocus: true, autocomplete: "email", class: "input" %>
           </div>
+
+          <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+            <div class="text-sm text-gray-600">Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+          <% end %>
+
+          <div class="form-group">
+            <%= f.label :password, class: "label", for: "password" %>
+            <%= f.password_field :password, id: "password", autocomplete: "new-password", class: "input" %>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :password_confirmation, class: "label", for: "password-confirmation" %>
+            <%= f.password_field :password_confirmation, id: "password-confirmation", autocomplete: "new-password", class: "input" %>
+          </div>
+
+          <% if @minimum_password_length %>
+            <p class="text-sm text-neutral-600 dark:text-neutral-500"><em><%= @minimum_password_length %> characters minimum</em></p>
+          <% end %>
         </div>
+
         <div class="actions">
-          <%= f.submit "Update", class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+          <%= f.submit "Update", class: "button" %>
         </div>
       </div>
     <% end %>
-    <div class="flex justify-center">
-      <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class: "font-medium text-red-600 hover:text-red-800" %>
+
+    <div class="form-footer">
+      <%= button_to "Delete your account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class: "link" %>
     </div>
   </div>
 </div>

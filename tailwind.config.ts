@@ -1,4 +1,5 @@
 module.exports = {
+  darkMode: 'class',
   content: [
     "./app/views/**/*.{html,html.erb,erb}",
     "./app/frontend/components/**/*.{js,ts,jsx,tsx}",
@@ -13,4 +14,7 @@ module.exports = {
     },
   },
   plugins: [],
+    safelist: [
+    'form-error'
+  ]
 };

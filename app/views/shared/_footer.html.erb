@@ -1,17 +1,17 @@
-<footer class="p-8 bg-gray-100">
+<footer class="p-8 bg-neutral-100 dark:bg-neutral-900">
   <div class="mx-auto text-center gap-4">
-    <p class="text-lg font-semibold">
+    <p class="text-lg font-semibold text-gray-800 dark:text-gray-200">
       TangoCloud © <%= Time.current.year %>
     </p>
     <ul class="flex justify-center space-x-6">
       <li>
-        <%= link_to "Privacy Policy", privacy_path, class: "text-gray-600 hover:text-gray-800" %>
+        <%= link_to "Privacy Policy", privacy_path, class: "text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200" %>
       </li>
       <li>
-        <%= link_to "Terms of Service", terms_path, class: "text-gray-600 hover:text-gray-800" %>
+        <%= link_to "Terms of Service", terms_path, class: "text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200" %>
       </li>
       <li>
-        <%= link_to "Data Deletion", data_deletion_path, class: "text-gray-600 hover:text-gray-800" %>
+        <%= link_to "Data Deletion", data_deletion_path, class: "text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200" %>
       </li>
     </ul>
   </div>
