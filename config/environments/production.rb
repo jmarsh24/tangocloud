@@ -103,7 +103,7 @@ Rails.application.configure do
     enable_starttls_auto: true
   }
 
-  # config.public_file_server.enabled = true
+  config.public_file_server.enabled = true
 
   config.active_storage.resolve_model_to_route = :imgproxy_active_storage
 end

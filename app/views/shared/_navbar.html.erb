@@ -5,9 +5,9 @@
       <li class="relative">
         <button class="flex items-center space-x-2 focus:outline-none" data-action="click->hidden#toggle" data-hidden-target="button">
           <% if current_user.avatar.present? %>
-            <%= image_tag current_user.avatar, alt: "User Avatar", class: "w-8 h-8 rounded-full" %>
+            <%= image_tag(current_user.avatar, alt: "User Avatar", class: "w-8 h-8 rounded-full") %>
           <% else %>
-            <%= image_tag "new-user.svg", alt: "User Avatar", class: "w-8 h-8" %>
+            <%= image_tag("icons/new-user.svg", alt: "User Avatar", class: "w-8 h-8") %>
           <% end %>
         </button>
         <div data-hidden-target="toggleable" class="dropdown-menu hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-50 overflow-hidden">

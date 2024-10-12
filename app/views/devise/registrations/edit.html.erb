@@ -15,7 +15,7 @@
               <%= up.label :avatar, class: "hidden" %>
               <% if resource.user_preference&.avatar&.attached? %>
                 <div class="flex items-center space-x-4 mt-2">
-                  <%= image_tag resource.user_preference.avatar.variant(resize_to_fill: [80, 80]), class: "w-20 h-20 rounded-full object-cover" %>
+                  <%= image_tag(resource.user_preference.avatar.variant(resize_to_fill: [80, 80]), class: "w-20 h-20 rounded-full object-cover") %>
                   <%= up.file_field :avatar, class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" %>
                 </div>
               <% else %>
