@@ -153,7 +153,6 @@ accessories:
     volumes:
       - /var/lib/elasticsearch/data:/usr/share/elasticsearch/data
   imgproxy:
-    container_name: imgproxy
     image: darthsim/imgproxy:latest
     env:
       clear:
