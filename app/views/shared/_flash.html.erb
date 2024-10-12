@@ -1,14 +1,14 @@
 <% flash.each do |type, msg| %>
   <% if type == 'alert' %>
-    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+    <div class="bg-red-100 dark:bg-red-950 dark:border-red-600 text-red-00 dark:text-red-500 px-4 py-3 relative" role="alert">
       <span class="block sm:inline"><%= msg %></span>
     </div>
   <% elsif type == 'notice' %>
-    <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert">
+    <div class="bg-blue-100 dark:bg-neutral-900 dark:border-blue-600 text-blue-700 dark:text-blue-400 px-4 py-3 relative" role="alert">
       <span class="block sm:inline"><%= msg %></span>
     </div>
   <% else %>
-    <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert">
+    <div class="bg-blue-100 dark:bg-neutral-900 dark:border-blue-600 text-blue-700 dark:text-blue-400 px-4 py-3 relative" role="alert">
       <span class="block sm:inline"><%= msg %></span>
     </div>
   <% end %>

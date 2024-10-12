@@ -1,36 +1,40 @@
-<nav class="navbar bg-neutral-200 dark:bg-neutral-900 p-4 flex justify-between items-center relative" data-controller="hidden">
-  <%= nav_link_to "TangoCloud", root_path, class: "text-xl font-extrabold text-gray-800 dark:text-gray-200 hover:text-gray-400 dark:hover:text-gray-500" %>
-  <ul class="menu flex space-x-4 items-center">
-    <% if user_signed_in? %>
-      <li class="relative">
-        <button class="flex items-center space-x-2 focus:outline-none" data-action="click->hidden#toggle" data-hidden-target="button">
-          <% if current_user.avatar.present? %>
-            <%= image_tag(current_user.avatar, alt: "User Avatar", class: "w-8 h-8 rounded-full") %>
-          <% else %>
-            <%= image_tag("icons/new-user.svg", alt: "User Avatar", class: "w-8 h-8") %>
-          <% end %>
-        </button>
-        <div data-hidden-target="toggleable" class="dropdown-menu hidden absolute right-0 mt-2 w-48 bg-white dark:bg-neutral-800 rounded-lg shadow-lg z-50 overflow-hidden">
-          <% if current_user&.admin? %>
-            <%= link_to avo.root_path, class: "block px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-t-lg" do %>
-              Admin
+<nav class="navbar bg-neutral-200 dark:bg-neutral-900 p-4 shadow-md" data-controller="hidden">
+  <div class="container mx-auto flex justify-between items-center">
+    <%= nav_link_to "TangoCloud", root_path, class: "text-2xl font-extrabold text-neutral-800 dark:text-neutral-300 hover:text-neutral-600 dark:hover:text-neutral-200 transition ease-in-out duration-200" %>
+
+    <ul class="menu flex space-x-6 items-center">
+      <% if user_signed_in? %>
+        <li class="relative">
+          <button class="flex items-center space-x-2 focus:outline-none" data-action="click->hidden#toggle" data-hidden-target="button">
+            <% if current_user.avatar.present? %>
+              <%= image_tag(current_user.avatar, alt: "User Avatar", class: "w-10 h-10 rounded-full border-neutral-300 dark:border-neutral-600 object-cover") %>
+            <% else %>
+              <%= image_tag("icons/new-user.svg", alt: "User Avatar", class: "w-10 h-10 rounded-full border-neutral-300 dark:border-neutral-600 object-cover") %>
             <% end %>
-            <%= link_to mission_control_jobs_path, class: "block px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-neutral-100 dark:hover:bg-neutral-700" do %>
-              Jobs
+          </button>
+
+          <div data-hidden-target="toggleable" class="dropdown-menu hidden absolute right-0 mt-2 w-48 bg-white dark:bg-neutral-800 rounded-lg shadow-lg z-50 overflow-hidden transition-all duration-200 ease-in-out">
+            <% if current_user&.admin? %>
+              <%= link_to avo.root_path, class: "block px-4 py-3 text-neutral-800 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition ease-in-out duration-200" do %>
+                Admin
+              <% end %>
+              <%= link_to mission_control_jobs_path, class: "block px-4 py-3 text-neutral-800 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition ease-in-out duration-200" do %>
+                Jobs
+              <% end %>
             <% end %>
-          <% end %>
-          <%= link_to edit_user_registration_path, class: "block px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-neutral-100 dark:hover:bg-neutral-700" do %>
-            Edit Profile
-          <% end %>
-          <%= link_to destroy_user_session_path, 'data-turbo-method': :delete, class: "block px-4 py-2 text-red-400 hover:bg-red-100 dark:text-red-300 dark:hover:bg-red-100 rounded-b-lg" do %>
-            Sign Out
-          <% end %>
-        </div>
-      </li>
-    <% else %>
-      <li>
-        <%= nav_link_to "Log in", new_user_session_path, class: "text-gray-800 dark:text-gray-200 hover:text-gray-400 dark:hover:text-gray-500" %>
-      </li>
-    <% end %>
-  </ul>
+            <%= link_to edit_user_registration_path, class: "block px-4 py-3 text-neutral-800 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition ease-in-out duration-200" do %>
+              Edit Profile
+            <% end %>
+            <%= link_to destroy_user_session_path, 'data-turbo-method': :delete, class: "block px-4 py-3 text-neutral-800 hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-700 transition ease-in-out duration-200 rounded-b-lg" do %>
+              Sign Out
+            <% end %>
+          </div>
+        </li>
+      <% else %>
+        <li>
+          <%= nav_link_to "Login", new_user_session_path, class: "button" %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
 </nav>
