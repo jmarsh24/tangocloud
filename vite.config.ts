@@ -1,18 +1,18 @@
 import { defineConfig } from "vite";
-import * as path from "path";
-import ViteRails from 'vite-plugin-rails';
-import StimulusHMR from "vite-plugin-stimulus-hmr";
-import FullReload from "vite-plugin-full-reload";
-import sassGlobImports from "vite-plugin-sass-glob-import";
+ import * as path from "path";
+ import RubyPlugin from "vite-plugin-ruby";
+ import StimulusHMR from "vite-plugin-stimulus-hmr";
+ import FullReload from "vite-plugin-full-reload";
+ import sassGlobImports from "vite-plugin-sass-glob-import";
 
-export default defineConfig({
-  plugins: [
-    ViteRails(),
-    StimulusHMR(),
-    FullReload(["config/routes.rb", "app/views/**/*", "config/locales/*.yml"]),
-    sassGlobImports(),
-  ],
-  resolve: {
+ export default defineConfig({
+   plugins: [
+     RubyPlugin(),
+     StimulusHMR(),
+     FullReload(["config/routes.rb", "app/views/**/*", "config/locales/*.yml"]),
+     sassGlobImports(),
+   ],
+   resolve: {
     alias: [
       {
         find: "@/lib",
