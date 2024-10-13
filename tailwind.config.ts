@@ -14,7 +14,9 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms'),
+    ],
     safelist: [
     'form-error'
   ]
