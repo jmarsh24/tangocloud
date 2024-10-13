@@ -152,12 +152,3 @@ accessories:
       - config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     volumes:
       - /var/lib/elasticsearch/data:/usr/share/elasticsearch/data
-  imgproxy:
-    host: 37.27.221.99
-    image: darthsim/imgproxy:latest
-    env:
-      clear:
-        IMGPROXY_LOCAL_FILESYSTEM_ROOT: /app_storage
-      secret:
-        - IMGPROXY_KEY
-        - IMGPROXY_SALT
