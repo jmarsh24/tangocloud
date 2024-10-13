@@ -93,6 +93,7 @@ GEM
       actionpack (>= 6.1.6)
       graphql (>= 1.8)
     ast (2.4.2)
+    authentication-zero (4.0.1)
     avo (3.13.5)
       actionview (>= 6.1)
       active_link_to
@@ -176,12 +177,6 @@ GEM
     debug (1.9.2)
       irb (~> 1.10)
       reline (>= 0.3.8)
-    devise (4.9.4)
-      bcrypt (~> 3.0)
-      orm_adapter (~> 0.1)
-      railties (>= 4.1.0)
-      responders
-      warden (~> 1.2.3)
     diff-lcs (1.5.1)
     docile (1.4.1)
     domain_name (0.6.20240107)
@@ -194,9 +189,25 @@ GEM
     dry-core (1.0.1)
       concurrent-ruby (~> 1.0)
       zeitwerk (~> 2.6)
+    dry-inflector (1.1.0)
+    dry-initializer (3.1.1)
+    dry-initializer-rails (3.1.1)
+      dry-initializer (>= 2.4, < 4)
+      rails (> 3.0)
+    dry-logic (1.5.0)
+      concurrent-ruby (~> 1.0)
+      dry-core (~> 1.0, < 2)
+      zeitwerk (~> 2.6)
     dry-monads (1.6.0)
       concurrent-ruby (~> 1.0)
       dry-core (~> 1.0, < 2)
+      zeitwerk (~> 2.6)
+    dry-types (1.7.2)
+      bigdecimal (~> 3.0)
+      concurrent-ruby (~> 1.0)
+      dry-core (~> 1.0)
+      dry-inflector (~> 1.0)
+      dry-logic (~> 1.4)
       zeitwerk (~> 2.6)
     ed25519 (1.3.0)
     elastic-transport (8.3.5)
@@ -453,7 +464,6 @@ GEM
       actionpack (>= 4.2)
       omniauth (~> 2.0)
     options (2.3.2)
-    orm_adapter (0.5.0)
     os (1.1.4)
     ostruct (0.6.0)
     pagy (9.1.0)
@@ -556,9 +566,6 @@ GEM
       io-console (~> 0.5)
     request_store (1.7.0)
       rack (>= 1.4)
-    responders (3.1.1)
-      actionpack (>= 5.2)
-      railties (>= 5.2)
     rexml (3.3.8)
     rspec (3.13.0)
       rspec-core (~> 3.13.0)
@@ -719,8 +726,6 @@ GEM
       dry-cli (>= 0.7, < 2)
       rack-proxy (~> 0.6, >= 0.6.1)
       zeitwerk (~> 2.2)
-    warden (1.2.9)
-      rack (>= 2.0.9)
     web-console (4.2.1)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -758,6 +763,7 @@ DEPENDENCIES
   acts_as_list
   annotate
   apollo_upload_server
+  authentication-zero
   avo
   aws-sdk-s3
   bcrypt
@@ -770,9 +776,10 @@ DEPENDENCIES
   database_consistency
   database_validations
   debug
-  devise
   dotenv-rails
+  dry-initializer-rails
   dry-monads
+  dry-types
   elasticsearch
   erb_lint
   erblint-github
@@ -839,6 +846,7 @@ DEPENDENCIES
   thruster
   translate_client
   turbo-rails
+  view_component
   vite_rails
   web-console
   webmock

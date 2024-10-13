@@ -15,7 +15,7 @@ const application = Application.start()
 application.debug = false
 window.Stimulus = application
 
-const controllers = import.meta.glob('../**/*_controller.ts', { eager: true })
+const controllers = import.meta.glob('../**/*_controller.{js,ts}', { eager: true })
 registerControllers(application, controllers)
 
 export { application }

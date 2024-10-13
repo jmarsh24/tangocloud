@@ -1,9 +1,8 @@
-def create_user(email, password, admin = false)
+def create_user(email:, password:, admin: false)
   user = User.find_or_create_by!(email:) do |u|
     u.password = password
     u.admin = admin
-    u.username = email.split("@").first
-    u.confirmed_at = Time.current
+    u.verified = true
   end
 
   unless user.avatar.attached?
@@ -13,5 +12,9 @@ def create_user(email, password, admin = false)
   user
 end
 
-create_user("admin@tangocloud.app", "tangocloud123", true)
-create_user("user@tangocloud.app", "tangocloud123")
+create_user(
+  email: "admin@tangocloud.app",
+  password: "tangocloud123",
+  admin: true
+)
+create_user(email: "user@tangocloud.app", password: "tangocloud123")

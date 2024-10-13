@@ -1,11 +1,8 @@
 class User < ApplicationRecord
-  devise :database_authenticatable, :registerable,
-    :recoverable, :rememberable, :validatable,
-    :trackable, :confirmable, :omniauthable
+  include Authenticatable
 
-  searchkick word_start: [:username, :email, :first_name, :last_name]
+  searchkick word_start: [:email]
 
-  has_one :user_preference, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :liked_recordings, -> { joins(:likes).order("likes.created_at DESC") }, through: :likes, source: :likeable, source_type: "Recording"
   has_many :tandas, dependent: :destroy
@@ -20,24 +17,9 @@ class User < ApplicationRecord
   has_many :shared_tandas, through: :shares, source: :shareable, source_type: "Tanda"
   has_many :playbacks, dependent: :destroy
 
-  after_create :ensure_user_preference
-
-  delegate :avatar, to: :user_preference, allow_nil: true
-  delegate :first_name, :last_name, :name, to: :user_preference, allow_nil: true
-
-  accepts_nested_attributes_for :user_preference
+  has_one_attached :avatar
 
   scope :search_import, -> { includes(:user_preference) }
-
-  class << self
-    def find_by_email_or_username(email_or_username)
-      find_by(email: email_or_username) || find_by(username: email_or_username)
-    end
-  end
-
-  def to_s
-    name
-  end
 
   def avatar_thumbnail(width: 160)
     if avatar&.attached?
@@ -53,16 +35,9 @@ class User < ApplicationRecord
 
   private
 
-  def ensure_user_preference
-    create_user_preference unless user_preference
-  end
-
   def search_data
     {
-      username:,
-      email:,
-      first_name:,
-      last_name:
+      email:
     }
   end
 end
@@ -71,26 +46,14 @@ end
 #
 # Table name: users
 #
-#  id                     :uuid             not null, primary key
-#  username               :string
-#  admin                  :boolean          default(FALSE), not null
-#  provider               :string
-#  uid                    :string
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  email                  :citext           default(""), not null
-#  encrypted_password     :string           default(""), not null
-#  reset_password_token   :string
-#  reset_password_sent_at :datetime
-#  remember_created_at    :datetime
-#  sign_in_count          :integer          default(0), not null
-#  current_sign_in_at     :datetime
-#  last_sign_in_at        :datetime
-#  current_sign_in_ip     :string
-#  last_sign_in_ip        :string
-#  confirmation_token     :string
-#  confirmed_at           :datetime
-#  confirmation_sent_at   :datetime
-#  unconfirmed_email      :string
-#  approved_at            :datetime
+#  id              :uuid             not null, primary key
+#  email           :string           not null
+#  password_digest :string           not null
+#  provider        :string
+#  uid             :string
+#  admin           :boolean          default(FALSE), not null
+#  verified        :boolean          default(FALSE), not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  approved_at     :datetime
 #

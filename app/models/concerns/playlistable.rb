@@ -1,4 +1,3 @@
-# app/models/concerns/playlistable.rb
 module Playlistable
   extend ActiveSupport::Concern
 

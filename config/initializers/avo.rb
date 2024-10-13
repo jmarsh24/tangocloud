@@ -1,4 +1,5 @@
 Avo.configure do |config|
+  config.root_path = "/admin"
   config.app_name = "TangoCloud"
   config.per_page_steps = [48, 96, 256]
   config.full_width_index_view = true
@@ -7,5 +8,4 @@ Avo.configure do |config|
   config.raise_error_on_missing_policy = true
   config.home_path = -> { resources_playlists_path }
   config.license_key = Rails.application.credentials.dig(:avo_license_key)
-  config.current_user_method = :current_user
 end

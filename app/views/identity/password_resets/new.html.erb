@@ -1,0 +1,25 @@
+<div class="form-container">
+  <div class="form-wrapper">
+    <div>
+      <%= inline_svg_tag("logos/tangocloud-logo-with-text.svg", class: "form-header") %>
+    </div>
+
+    <%= form_with(url: identity_password_reset_path, local: true) do |form| %>
+      <div class="form-body">
+        <div class="form-input-group">
+          <div class="form-group">
+            <%= form.label :email, "Email address", class: "label", for: "email-address" %>
+            <%= form.email_field :email, required: true, autofocus: true, class: "input", id: "email-address" %>
+          </div>
+        </div>
+        <div class="actions">
+          <%= form.submit "Send password reset email", class: "button" %>
+        </div>
+
+        <div class="form-footer">
+          <%= link_to "Sign in", sign_in_path, class: "link", data: {turbo_frame: "modal"} %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

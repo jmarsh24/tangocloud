@@ -50,10 +50,12 @@ gem "lograge"
 gem "dry-monads"
 gem "imgproxy-rails"
 gem "active_storage_validations"
-gem "devise"
 gem "jwt_sessions"
 gem "redis"
 gem "kamal", require: false
+gem "view_component"
+gem "dry-types"
+gem "dry-initializer-rails"
 
 # Assets
 gem "stimulus-rails"
@@ -90,6 +92,7 @@ group :development, :test do
 end
 
 group :development do
+  gem "authentication-zero"
   gem "annotate"
   gem "chusaku"
   gem "guard"
