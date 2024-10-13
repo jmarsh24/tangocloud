@@ -1,4 +1,4 @@
-<div class="form-container">
+<%= turbo_frame_tag "new-registration", class: "form-container" do %>
   <div class="form-wrapper">
     <div>
       <%= inline_svg_tag("logos/tangocloud-logo-with-text.svg", class: "form-header") %>
@@ -37,6 +37,6 @@
       </div>
     <% end %>
   </div>
-</div>
+<% end %>
 
 
