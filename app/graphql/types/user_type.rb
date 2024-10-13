@@ -5,7 +5,6 @@ module Types
     field :id, ID, null: false
     field :provider, String
     field :uid, String
-    field :user_preference, UserPreferenceType, null: true
     field :username, String
 
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false

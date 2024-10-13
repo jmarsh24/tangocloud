@@ -16,7 +16,7 @@
             <%= form.label :password, class: "label", for: "password" %>
             <%= form.password_field :password, required: true, autocomplete: "new-password", class: "input" %>
             <%= inline_errors_for(@user, :password) %>
-            <div class="password-hint">12 characters minimum.</div>
+            <div class="text-xs text-neutral-700 dark:text-neutral-500">12 characters minimum.</div>
           </div>
 
           <div class="form-group">

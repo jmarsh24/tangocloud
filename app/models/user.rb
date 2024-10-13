@@ -19,8 +19,6 @@ class User < ApplicationRecord
 
   has_one_attached :avatar
 
-  scope :search_import, -> { includes(:user_preference) }
-
   def avatar_thumbnail(width: 160)
     if avatar&.attached?
       avatar.variant(:large)

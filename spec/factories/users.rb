@@ -5,10 +5,6 @@ FactoryBot.define do
     password { Faker::Internet.password }
     admin { false }
 
-    after(:build) do |user|
-      create(:user_preference, user:)
-    end
-
     trait :admin do
       admin { true }
     end
