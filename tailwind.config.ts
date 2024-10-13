@@ -1,10 +1,11 @@
 module.exports = {
   darkMode: 'class',
   content: [
-    "./app/views/**/*.{html,html.erb,erb}",
-    "./app/frontend/components/**/*.{js,ts,jsx,tsx}",
-    "./app/frontend/**/*.{js,ts,jsx,tsx}",
-    "./app/**/*.{js,ts,jsx,tsx}",
+    './app/views/**/*.html.erb',
+    './app/components/**/*',
+    './app/helpers/**/*.rb',
+    './app/assets/stylesheets/**/*.css',
+    './app/javascript/**/*.js',
   ],
   theme: {
     extend: {

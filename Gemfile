@@ -85,6 +85,8 @@ group :development, :test do
   gem "faker"
   gem "factory_bot_rails"
   gem "rubocop-rails-omakase", require: false
+  gem "erb_lint", require: false
+  gem "erblint-github"
 end
 
 group :development do

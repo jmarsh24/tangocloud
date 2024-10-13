@@ -13,6 +13,7 @@
   <%= csp_meta_tag %>
   <!-- Assets -->
   <%= vite_client_tag %>
-  <%= vite_typescript_tag "application" %>
+  <%= vite_typescript_tag "application", media: "all", "data-turbo-track": "reload" %>
+  <%= vite_stylesheet_tag "application.css", media: "all", "data-turbo-track": "reload" %>
   <%= yield :additional_head_tags if content_for? :additional_head_tags %>
 </head>

@@ -10,12 +10,7 @@
     "noUnusedLocals": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "lib": ["ESNext", "DOM"],
-    "paths": {
-      "@/*": ["./app/*"],
-      "@/component*": ["app/frontend/components/*"]
-    }
+    "lib": ["ESNext", "DOM"]
   },
-  "include": ["app/**/*", "app/frontend/components/*"],
-  "exclude": ["**/dist", "**/node_modules", "**/public", "**/vendor"]
+  "include": ["app/**/*"]
 }
