@@ -3,6 +3,7 @@ class CreateUsers < ActiveRecord::Migration[7.2]
     create_table :users, id: :uuid do |t|
       t.string :email, null: false, index: {unique: true}
       t.string :password_digest, null: false
+      t.string :username
       t.string :provider
       t.string :uid
       t.boolean :admin, null: false, default: false
