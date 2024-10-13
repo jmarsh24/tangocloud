@@ -7,7 +7,7 @@
         <li class="dropdown dropdown-end relative">
           <button class="flex items-center space-x-2 focus:outline-none" tabindex="0">
             <% if Current&.user&.avatar.present? %>
-              <%= image_tag(Current.user.avatar), alt: "User Avatar", class: "w-10 h-10 rounded-full fill-neutral-300 dark:fill-neutral-800 object-cover") %>
+              <%= image_tag(Current.user.avatar, alt: "User Avatar", class: "w-10 h-10 rounded-full fill-neutral-300 dark:fill-neutral-800 object-cover") %>
             <% else %>
               <%= icon("new_user", path: "icons/new-user.svg", alt: "User Avatar", class: "w-10 h-10 rounded-full fill-neutral-300 dark:fill-neutral-4  00 object-cover") %>
             <% end %>
