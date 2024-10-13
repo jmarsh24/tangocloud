@@ -19,6 +19,12 @@ class User < ApplicationRecord
 
   has_one_attached :avatar
 
+  validates :username,
+    presence: true,
+    uniqueness: {case_sensitive: false},
+    length: {minimum: 3, maximum: 20},
+    format: {with: /\A[a-zA-Z0-9_]+\z/, message: "only allows letters, numbers, and underscores"}
+
   def avatar_thumbnail(width: 160)
     if avatar&.attached?
       avatar.variant(:large)
