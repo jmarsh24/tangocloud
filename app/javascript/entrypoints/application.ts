@@ -19,4 +19,4 @@ const controllers = import.meta.glob('../**/*_controller.ts', { eager: true })
 registerControllers(application, controllers)
 
 export { application }
-console.log('Hello from application.ts')
+
