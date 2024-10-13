@@ -16,7 +16,7 @@ module Authenticatable
     has_many :events, dependent: :destroy
 
     validates :email, presence: true, uniqueness: true, format: {with: URI::MailTo::EMAIL_REGEXP}
-    validates :password, allow_nil: true, length: {minimum: 12}
+    validates :password, allow_nil: true, length: {minimum: 8}
 
     normalizes :email, with: -> { _1.strip.downcase }
 
