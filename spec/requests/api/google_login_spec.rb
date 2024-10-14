@@ -35,7 +35,6 @@ RSpec.describe "GoogleLogin", type: :request do
 
       expect(response).to be_successful
       json = JSON.parse(response.body)
-
       expect(json["email"]).to eq("new@google-user.com")
       expect(json["session"]["access"]).to be_present
       expect(json["session"]["refresh"]).to be_present

@@ -6,12 +6,8 @@ export const CURRENT_USER = gql`
       id
       email
       username
-      userPreference {
-        firstName
-        lastName
-        avatar {
-          url
-        }
+      avatar {
+        url
       }
     }
   }

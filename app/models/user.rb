@@ -20,10 +20,16 @@ class User < ApplicationRecord
   has_one_attached :avatar
 
   validates :username,
-    presence: true,
     uniqueness: {case_sensitive: false},
     length: {minimum: 3, maximum: 20},
-    format: {with: /\A[a-zA-Z0-9_]+\z/, message: "only allows letters, numbers, and underscores"}
+    format: {with: /\A[a-zA-Z0-9_]+\z/, message: "only allows letters, numbers, and underscores"},
+    allow_nil: true
+
+  class << self
+    def find_by_email_or_username(email_or_username)
+      find_by(email: email_or_username) || find_by(username: email_or_username)
+    end
+  end
 
   def avatar_thumbnail(width: 160)
     if avatar&.attached?
@@ -41,6 +47,7 @@ class User < ApplicationRecord
 
   def search_data
     {
+      username:,
       email:
     }
   end

@@ -6,7 +6,7 @@ module Api
     def create
       user = User.find_by_email_or_username(params[:login])
 
-      if user&.valid_password?(params[:password])
+      if user.update(password: params[:password])
         payload = {user_id: user.id}
         session = JWTSessions::Session.new(payload:)
         render json: session.login
@@ -21,8 +21,6 @@ module Api
       google_user_info = Google::Auth::IDTokens.verify_oidc(id_token, aud: Rails.application.credentials.dig(:google_client_id))
 
       email = google_user_info["email"]
-      first_name = google_user_info["given_name"]
-      last_name = google_user_info["family_name"]
       user_identifier = google_user_info["sub"]
       picture_url = google_user_info["picture"]
 
@@ -30,11 +28,10 @@ module Api
 
       if user.new_record?
         user.email = email if email
-        user.password = Devise.friendly_token[0, 20]
-        user.build_user_preference(first_name:, last_name:)
+        user.password = SecureRandom.urlsafe_base64(15)
       end
 
-      attach_google_avatar(user, picture_url) unless user.user_preference.avatar.attached?
+      attach_google_avatar(user, picture_url) unless user.avatar.attached?
 
       user.provider = "google"
       user.uid = user_identifier
@@ -57,8 +54,7 @@ module Api
 
       if user.new_record?
         user.email = email if email
-        user.password = Devise.friendly_token[0, 20]
-        user.build_user_preference(first_name: params[:first_name], last_name: params[:last_name])
+        user.password = SecureRandom.urlsafe_base64(15)
       end
 
       user.provider = "apple"
@@ -87,7 +83,7 @@ module Api
 
       file = StringIO.new(response.body)
       filename = File.basename(URI.parse(picture_url).path)
-      user.user_preference.avatar.attach(io: file, filename:)
+      user.avatar.attach(io: file, filename:)
     end
 
     def generate_session(user)

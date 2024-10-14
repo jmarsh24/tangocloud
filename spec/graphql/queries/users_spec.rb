@@ -18,10 +18,10 @@ RSpec.describe "users", type: :graph do
       GQL
     end
 
-    it "returns the correct el_recodo_song details" do
+    it "returns the correct user" do
       User.reindex
 
-      gql(query, variables: {query: user.first_name}, user:)
+      gql(query, variables: {query: user.email}, user:)
 
       found_user = data.users.edges.first.node
 

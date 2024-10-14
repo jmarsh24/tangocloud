@@ -17,25 +17,17 @@ RSpec.describe "UpdateUser", type: :graph do
       mutation UpdateUser(
         $username: String,
         $password: String,
-        $firstName: String,
-        $lastName: String,
         $avatar: Upload
       ) {
         updateUser(input: {
           username: $username,
-          firstName: $firstName,
-          lastName: $lastName,
           password: $password,
           avatar: $avatar
         }) {
           ... on User {
             username
-            userPreference {
-              firstName
-              lastName
-              avatar {
-                url
-              }
+            avatar {
+              url
             }
           }
           ...on ValidationError {
@@ -56,8 +48,6 @@ RSpec.describe "UpdateUser", type: :graph do
     user.avatar.purge
 
     variables = {
-      firstName: "Updated",
-      lastName: "Updated",
       username: "Updated",
       password: "tangocloud!9082",
       avatar:
@@ -66,8 +56,6 @@ RSpec.describe "UpdateUser", type: :graph do
     gql(mutation, variables:, user:)
 
     expect(data.update_user.username).to eq("Updated")
-    expect(data.update_user.user_preference.first_name).to eq("Updated")
-    expect(data.update_user.user_preference.last_name).to eq("Updated")
-    expect(data.update_user.user_preference.avatar.url).to be_present
+    expect(data.update_user.avatar.url).to be_present
   end
 end

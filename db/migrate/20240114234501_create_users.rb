@@ -8,6 +8,7 @@ class CreateUsers < ActiveRecord::Migration[7.2]
       t.string :uid
       t.boolean :admin, null: false, default: false
       t.datetime :approved_at
+      t.datetime :confirmed_at
 
       t.boolean :verified, null: false, default: false
 

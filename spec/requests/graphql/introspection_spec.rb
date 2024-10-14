@@ -20,6 +20,7 @@ RSpec.describe "GraphQL Introspection", type: :request do
 
     it "allows introspection in development" do
       post "/api/graphql", params: {query: introspection_query}
+
       json_response = JSON.parse(response.body)
 
       expect(json_response["data"]["__schema"]).not_to be_nil

@@ -5,11 +5,9 @@ export const USER_PROFILE = gql`
 		currentUser {
 			id
 			username
-			userPreference {
-				id
-				avatar {
-					url
-				}
+			id
+			avatar {
+				url
 			}
 			playbacks {
 				edges {

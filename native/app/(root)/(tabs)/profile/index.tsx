@@ -71,7 +71,7 @@ export default function Profile() {
 	}
 
 	const username = data.currentUser?.username;
-	const avatarUrl = data.currentUser?.userPreference?.avatar?.url;
+	const avatarUrl = data.currentUser?.avatar?.url;
 
 	const recordings = data.currentUser.playbacks.edges.map((edge) => {
 		const recording = edge.node.recording;

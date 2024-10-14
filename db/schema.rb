@@ -473,17 +473,19 @@ ActiveRecord::Schema[7.2].define(version: 2024_07_07_175204) do
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "email", null: false
+    t.citext "email", null: false
+    t.citext "username"
     t.string "password_digest", null: false
-    t.string "username"
     t.string "provider"
     t.string "uid"
     t.boolean "admin", default: false, null: false
     t.datetime "approved_at"
+    t.datetime "confirmed_at"
     t.boolean "verified", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
   create_table "waveform_data", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
