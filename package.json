@@ -18,12 +18,13 @@
     "dropzone": "^6.0.0-beta.2",
     "graphql": "^16.9.0",
     "path": "^0.12.7",
-    "stimulus-use": "^0.52.2"
+    "stimulus-use": "^0.52.2",
+    "turbo_power": "^0.7.0"
   },
   "devDependencies": {
+    "@apollo/rover": "^0.25.0",
     "@graphql-codegen/cli": "^2.15.0",
     "@graphql-codegen/client-preset": "^1.2.1",
-    "@apollo/rover": "^0.25.0",
     "@tailwindcss/forms": "^0.5.9",
     "@types/node": "^22.7.5",
     "@typescript-eslint/eslint-plugin": "^6.11.0",

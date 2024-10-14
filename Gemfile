@@ -111,3 +111,5 @@ group :test do
   gem "rspec-retry"
   gem "webmock"
 end
+
+gem "turbo_power", "~> 0.6.2"
