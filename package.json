@@ -54,5 +54,9 @@
   "volta": {
     "node": "20.11.0",
     "yarn": "1.22.19"
+  },
+  "resolutions": {
+  "wrap-ansi": "7.0.0",
+  "string-width": "4.1.0"
   }
 }
