@@ -55,6 +55,7 @@ gem "kamal", require: false
 gem "view_component"
 gem "dry-types"
 gem "dry-initializer-rails"
+gem "turbo_power"
 
 # Assets
 gem "stimulus-rails"
@@ -111,5 +112,3 @@ group :test do
   gem "rspec-retry"
   gem "webmock"
 end
-
-gem "turbo_power", "~> 0.6.2"
