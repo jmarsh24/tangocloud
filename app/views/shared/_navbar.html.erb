@@ -17,11 +17,11 @@
             <% if Current.user&.admin? %>
               <li><%= link_to avo.root_path, class: "text-neutral-800 dark:text-neutral-200" do %>Admin<% end %></li>
               <li><%= link_to mission_control_jobs_path, class: "text-neutral-800 dark:text-neutral-200" do %>Jobs<% end %></li>
+              <li><%= link_to "Upload Playlists", avo.new_resources_playlist_path, class: "text-neutral-800 dark:text-neutral-200" %></li>
             <% end %>
-            <li><%= link_to "Edit", edit_registration_path(Current.user), data: { turbo_frame: "modal" } %></li>
-            <li><%= link_to "Upload Playlists", avo.new_resources_playlist_path %></li>
-            <li><%= link_to "Devices & Sessions", sessions_path, data: { turbo_frame: "modal" } %></li>
-            <li><%= link_to "Activity Log", authentications_events_path, data: { turbo_frame: "modal" } %></li>
+            <li><%= link_to "Edit", edit_registration_path(Current.user), class: "text-neutral-800 dark:text-neutral-200", data: { turbo_frame: "modal" } %></li>
+            <li><%= link_to "Devices & Sessions", sessions_path, class: "text-neutral-800 dark:text-neutral-200", data: { turbo_frame: "modal" } %></li>
+            <li><%= link_to "Activity Log", authentications_events_path, class: "text-neutral-800 dark:text-neutral-200", data: { turbo_frame: "modal" } %></li>
             <li><%= link_to Current.session, "data-turbo-method": :delete, id: :sign_out, class: "text-neutral-800 hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-700 rounded-b-lg" do %>Sign Out<% end %></li>
           </ul>
         </li>
