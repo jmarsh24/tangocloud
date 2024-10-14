@@ -60,10 +60,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          always-auth: false
-          check-latest: false
       - name: Install yarn
-        run: yarn install && cd native && yarn install
+        run: yarn cache clear && yarn install && cd native && yarn install
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
