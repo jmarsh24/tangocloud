@@ -36,7 +36,8 @@ class RegistrationsController < ApplicationController
     @user = Current.user
 
     if @user.update(user_params)
-      redirect_to edit_registration_path(@user), notice: "Your profile has been updated successfully."
+      flash[:modal_notice] = "Your profile has been updated successfully."
+      redirect_to edit_registration_path(@user)
     else
       render :edit, status: :unprocessable_entity
     end

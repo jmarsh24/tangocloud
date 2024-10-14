@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "edit-registration", class: "form-container" do %>
-  <div class="form-wrapper">
+  <div class="form-wrapper gap-8">
 
     <%= form_with(url: registration_path(@user), method: :patch, html: { multipart: true, id: "avatar-form" }, data: { turbo_frame: "edit-registration" }) do |f| %>
       <div class="avatar-upload flex flex-col items-center gap-8">
@@ -17,6 +17,13 @@
     <% end %>
 
     <%= form_with(url: registration_path(@user), html: { method: :put }) do |f| %>
+      <div class="h-6">
+        <% if flash[:modal_notice] %>
+          <div class="text-neutral-700 dark:text-neutral-500 rounded-md shadow-sm relative transition-colors duration-300 ease-in-out" role="alert">
+            <span class="block sm:inline"><%= flash[:modal_notice] %></span>
+          </div>
+        <% end %>
+      </div>
       <div class="form-body">
         <div class="form-input-group">
           <div class="form-group">
