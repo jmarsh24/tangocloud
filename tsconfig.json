@@ -10,7 +10,8 @@
     "noUnusedLocals": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "lib": ["ESNext", "DOM"]
+    "lib": ["ESNext", "DOM"],
+    "types": ["vite/client"]
   },
   "include": ["app/**/*"]
 }
