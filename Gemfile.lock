@@ -837,7 +837,7 @@ DEPENDENCIES
   thruster
   translate_client
   turbo-rails
-  turbo_power (~> 0.6.2)
+  turbo_power
   view_component
   vite_rails
   web-console
