@@ -20,13 +20,14 @@ end
 # Table name: users
 #
 #  id              :uuid             not null, primary key
-#  email           :string           not null
+#  email           :citext           not null
+#  username        :citext
 #  password_digest :string           not null
-#  username        :string
 #  provider        :string
 #  uid             :string
 #  admin           :boolean          default(FALSE), not null
 #  approved_at     :datetime
+#  confirmed_at    :datetime
 #  verified        :boolean          default(FALSE), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
