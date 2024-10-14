@@ -43,6 +43,16 @@ class RegistrationsController < ApplicationController
     end
   end
 
+  def destroy
+    Current.user.destroy
+    flash[:notice] = "Your account has been deleted successfully."
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.redirect_to(root_path)
+      end
+    end
+  end
+
   private
 
   def user_params

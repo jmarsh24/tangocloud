@@ -62,7 +62,7 @@
     <% end %>
 
     <div class="form-footer">
-      <%= button_to "Delete your account", registration_path(@user), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class: "link" %>
+      <%= button_to "Delete your account", registration_path, data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class: "link" %>
     </div>
   </div>
 <% end %>
