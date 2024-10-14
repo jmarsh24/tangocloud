@@ -19,6 +19,7 @@
     "graphql": "^16.9.0",
     "path": "^0.12.7",
     "stimulus-use": "^0.52.2",
+    "string-width": "4.2.3",
     "turbo_power": "^0.7.0"
   },
   "devDependencies": {
@@ -54,9 +55,5 @@
   "volta": {
     "node": "20.11.0",
     "yarn": "1.22.19"
-  },
-  "resolutions": {
-  "wrap-ansi": "7.0.0",
-  "string-width": "4.1.0"
   }
 }
