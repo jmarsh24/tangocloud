@@ -19,13 +19,12 @@
     "graphql": "^16.9.0",
     "path": "^0.12.7",
     "stimulus-use": "^0.52.2",
-    "string-width": "4.2.3",
     "turbo_power": "^0.7.0"
   },
   "devDependencies": {
     "@apollo/rover": "^0.26.2",
-    "@graphql-codegen/cli": "^5.0.3",
-    "@graphql-codegen/client-preset": "^4.4.0",
+    "@graphql-codegen/cli": "^2.15.0",
+    "@graphql-codegen/client-preset": "^1.2.1",
     "@tailwindcss/forms": "^0.5.9",
     "@types/node": "^22.7.5",
     "@typescript-eslint/eslint-plugin": "^8.8.1",
