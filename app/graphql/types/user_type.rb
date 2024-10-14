@@ -5,11 +5,12 @@ module Types
     field :id, ID, null: false
     field :provider, String
     field :uid, String
-    field :user_preference, UserPreferenceType, null: true
     field :username, String
 
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
+
+    has_one_attached :avatar
 
     has_many :likes, -> { most_recent }
     has_many :liked_recordings, type: Types::RecordingType

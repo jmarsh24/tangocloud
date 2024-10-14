@@ -1,6 +1,6 @@
 class Avo::Resources::User < Avo::BaseResource
-  self.title = :username
-  self.includes = [:user_preference, :playbacks, :playlists, :playlist_items, :tandas]
+  self.title = :email
+  self.includes = [:playbacks, :playlists, :playlist_items, :tandas]
   self.search = {
     query: -> { query.search(params[:q]).results }
   }
@@ -12,11 +12,7 @@ class Avo::Resources::User < Avo::BaseResource
     field :verified, as: :boolean
     field :provider, as: :text
     field :uid, as: :text
-    field :username, as: :text
-    field :first_name, as: :text
-    field :last_name, as: :text
     field :admin, as: :boolean
-    field :user_preference, as: :has_one, hide_on: [:index, :show]
     field :playbacks, as: :has_many
     field :playlists, as: :has_many
     field :playlist_items, as: :has_many, through: :playlists

@@ -1,6 +1,7 @@
 module Api
   class GraphQLController < ActionController::API
     include JWTSessions::RailsAuthorization
+    include ActionController::Cookies
 
     before_action :authorize_admin!, unless: -> { introspection_query? && Rails.env.development? }
 
@@ -51,10 +52,11 @@ module Api
     end
 
     def current_user
-      # In development, bypass JWT and use Devise for easier testing
-      if Rails.env.development?
-        devise_user = warden.authenticate(scope: :user)
-        return devise_user if devise_user
+      # In development, bypass JWT and use Browser Cookies for easier testing
+      if Rails.env.development? && cookies.signed[:session_token].present?
+        Current.session = Session.find_by_id(cookies.signed[:session_token])
+
+        return Current.user if Current.user.present?
       end
 
       # Fall back to JWT session

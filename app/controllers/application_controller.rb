@@ -1,8 +1,7 @@
 class ApplicationController < ActionController::Base
+  include Authenticable
   include Pundit::Authorization
-  before_action :authenticate_user!
-  after_action :verify_authorized, :verify_policy_scoped, unless: :devise_controller?
-
+  after_action :verify_authorized, :verify_policy_scoped
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   private

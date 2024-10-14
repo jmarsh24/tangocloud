@@ -1,0 +1,24 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+lazaro_nixon:
+  email: lazaronixon@hotmail.com
+  password_digest: <%= BCrypt::Password.create("Secret1*3*5*") %>
+  verified: true
+
+# == Schema Information
+#
+# Table name: users
+#
+#  id              :uuid             not null, primary key
+#  email           :citext           not null
+#  username        :citext
+#  password_digest :string           not null
+#  provider        :string
+#  uid             :string
+#  admin           :boolean          default(FALSE), not null
+#  approved_at     :datetime
+#  confirmed_at    :datetime
+#  verified        :boolean          default(FALSE), not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#

@@ -1,14 +1,32 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: {registrations: "registrations"}
+  extend Authenticator
+
+  get "sign_in", to: "sessions#new"
+  post "sign_in", to: "sessions#create"
+  get "sign_up", to: "registrations#new"
+  post "sign_up", to: "registrations#create"
+  resources :registrations, only: [:edit, :update, :destroy] do
+    delete :destroy, on: :collection
+  end
+  resources :sessions, only: [:index, :show, :destroy]
+  resource :password, only: [:edit, :update]
+  namespace :identity do
+    # resource :email, only: [:edit, :update]
+    resource :email_verification, only: [:show, :create]
+    resource :password_reset, only: [:new, :edit, :create, :update]
+  end
+  namespace :authentications do
+    resources :events, only: :index
+  end
 
   get "/apple-app-site-association", to: "apple_app_site_association#show", as: :apple_app_site_association
   get "/.well-known/apple-app-site-association", to: "apple_app_site_association#show"
 
   mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "api/graphql"
 
-  mount MissionControl::Jobs::Engine, at: "/jobs"
-  authenticate :user, ->(user) { user.admin? } do
-    mount Avo::Engine => "/admin"
+  authenticate :admin do
+    mount MissionControl::Jobs::Engine, at: "/jobs"
+    mount Avo::Engine, at: Avo.configuration.root_path
   end
 
   namespace :api do
@@ -21,7 +39,7 @@ Rails.application.routes.draw do
     post :google_login, to: "sessions#google_login"
     post :apple_login, to: "sessions#apple_login"
 
-    resources :users, only: [:show, :create]
+    resources :users, only: [:show, :create, :edit, :update]
     resources :audio_variants, only: [:show]
   end
 

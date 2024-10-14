@@ -48,12 +48,14 @@ gem "googleauth"
 gem "inline_svg"
 gem "lograge"
 gem "dry-monads"
-gem "imgproxy-rails"
 gem "active_storage_validations"
-gem "devise"
 gem "jwt_sessions"
 gem "redis"
 gem "kamal", require: false
+gem "view_component"
+gem "dry-types"
+gem "dry-initializer-rails"
+gem "turbo_power"
 
 # Assets
 gem "stimulus-rails"
@@ -85,9 +87,12 @@ group :development, :test do
   gem "faker"
   gem "factory_bot_rails"
   gem "rubocop-rails-omakase", require: false
+  gem "erb_lint", require: false
+  gem "erblint-github"
 end
 
 group :development do
+  gem "authentication-zero"
   gem "annotate"
   gem "chusaku"
   gem "guard"

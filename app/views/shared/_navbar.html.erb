@@ -1,36 +1,36 @@
-<nav class="navbar bg-gray-200 p-4 flex justify-between items-center relative" data-controller="hidden">
-  <%= nav_link_to "TangoCloud", root_path, class: "text-xl font-extrabold text-gray-800 hover:text-gray-400" %>
-  <ul class="menu flex space-x-4 items-center">
-    <% if user_signed_in? %>
-      <li class="relative">
-        <button class="flex items-center space-x-2 focus:outline-none" data-action="click->hidden#toggle" data-hidden-target="button">
-          <% if current_user.avatar.present? %>
-            <%= image_tag(current_user.avatar, alt: "User Avatar", class: "w-8 h-8 rounded-full") %>
-          <% else %>
-            <%= image_tag("icons/new-user.svg", alt: "User Avatar", class: "w-8 h-8") %>
-          <% end %>
-        </button>
-        <div data-hidden-target="toggleable" class="dropdown-menu hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-50 overflow-hidden">
-          <% if current_user&.admin? %>
-            <%= link_to avo.root_path, class: "block px-4 py-2 text-gray-800 hover:bg-gray-100 rounded-t-lg" do %>
-              Admin
+<nav class="bg-neutral-200 dark:bg-neutral-900 p-4">
+  <div class="container mx-auto flex justify-between items-center">
+    <%= nav_link_to "TangoCloud", root_path, class: "text-2xl font-extrabold text-neutral-800 dark:text-neutral-300 hover:text-neutral-600 dark:hover:text-neutral-200 transition ease-in-out duration-200" %>
+
+    <ul class="flex space-x-6 items-center">
+      <% signed_in do %>
+        <li class="dropdown dropdown-end relative">
+          <button class="flex items-center space-x-2 focus:outline-none" tabindex="0">
+            <% if Current&.user&.avatar.present? %>
+              <%= image_tag(Current.user.avatar, alt: "User Avatar", class: "w-10 h-10 rounded-full fill-neutral-300 dark:fill-neutral-800 object-cover") %>
+            <% else %>
+              <%= icon("new_user", path: "icons/new-user.svg", alt: "User Avatar", class: "w-10 h-10 rounded-full fill-neutral-300 dark:fill-neutral-4  00 object-cover") %>
             <% end %>
-            <%= link_to mission_control_jobs_path, class: "block px-4 py-2 text-gray-800 hover:bg-gray-100" do %>
-              Jobs
+          </button>
+
+          <ul tabindex="0" class="dropdown-content menu p-2 text-normal shadow bg-base-100 dark:bg-neutral-800 rounded-box w-52 mt-2 z-50">
+            <% if Current.user&.admin? %>
+              <li><%= link_to avo.root_path, class: "text-neutral-800 dark:text-neutral-200" do %>Admin<% end %></li>
+              <li><%= link_to mission_control_jobs_path, class: "text-neutral-800 dark:text-neutral-200" do %>Jobs<% end %></li>
+              <li><%= link_to "Upload Playlists", avo.new_resources_playlist_path, class: "text-neutral-800 dark:text-neutral-200" %></li>
             <% end %>
-          <% end %>
-          <%= link_to edit_user_registration_path, class: "block px-4 py-2 text-gray-800 hover:bg-gray-100" do %>
-            Edit Profile
-          <% end %>
-          <%= link_to destroy_user_session_path, 'data-turbo-method': :delete, class: "block px-4 py-2 text-red-400 hover:bg-red-100 rounded-b-lg" do %>
-            Sign Out
-          <% end %>
-        </div>
-      </li>
-    <% else %>
-      <li>
-        <%= nav_link_to "Log in", new_user_session_path, class: "text-gray-800 hover:text-gray-400" %>
-      </li>
-    <% end %>
-  </ul>
+            <li><%= link_to "Edit", edit_registration_path(Current.user), class: "text-neutral-800 dark:text-neutral-200", data: { turbo_frame: "modal" } %></li>
+            <li><%= link_to "Devices & Sessions", sessions_path, class: "text-neutral-800 dark:text-neutral-200", data: { turbo_frame: "modal" } %></li>
+            <li><%= link_to "Activity Log", authentications_events_path, class: "text-neutral-800 dark:text-neutral-200", data: { turbo_frame: "modal" } %></li>
+            <li><%= link_to Current.session, "data-turbo-method": :delete, id: :sign_out, class: "text-neutral-800 hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-700 rounded-b-lg" do %>Sign Out<% end %></li>
+          </ul>
+        </li>
+      <% end %>
+      <% signed_out do %>
+        <li>
+          <%= link_to "Login", sign_in_path, class: "button", data: { turbo_frame: "modal" } %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
 </nav>

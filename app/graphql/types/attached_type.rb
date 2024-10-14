@@ -15,11 +15,35 @@ module Types
 
     def url(width: nil, height: nil, resizing_type: "fit", format: "jpg")
       if object.image? && object.variable?
-        imgproxy_options = {width:, height:, resizing_type:, format:}.compact
-        Rails.application.routes.url_helpers.imgproxy_active_storage_url(object, **imgproxy_options)
+        variant = object.variant(
+          combine_options(width:, height:, resizing_type:, format:)
+        ).processed
+
+        Rails.application.routes.url_helpers.url_for(variant)
       else
-        Rails.application.routes.url_helpers.imgproxy_active_storage_url(object)
+        Rails.application.routes.url_helpers.url_for(object)
       end
+    end
+
+    private
+
+    def combine_options(width:, height:, resizing_type:, format:)
+      options = {}
+
+      if width && height
+        options[:resize] = "#{width}x#{height}^" if resizing_type == "fit"
+        options[:resize] = "#{width}x#{height}" if resizing_type == "limit"
+      end
+
+      options[:format] = format if format.present?
+
+      if format == "jpg"
+        options[:saver] = {quality: 80}
+      elsif format == "png"
+        options[:strip] = true
+      end
+
+      options
     end
   end
 end

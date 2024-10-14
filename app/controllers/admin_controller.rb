@@ -3,7 +3,7 @@ class AdminController < ApplicationController
   before_action :require_admin!
 
   def require_admin!
-    unless current_user.admin?
+    unless Current.user&.admin?
       redirect_to root_path, alert: "You must be an admin to do that."
     end
   end

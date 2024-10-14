@@ -1,0 +1,5 @@
+<%= turbo_frame_tag "modal" do %>
+  <%= ui_modal open: true, position: :responsive, class: "dark:bg-neutral-100 dark:bg-opacity-10" do %>
+    <%= yield %>
+  <% end %>
+<% end %>

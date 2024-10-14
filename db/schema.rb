@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_02_114329) do
+ActiveRecord::Schema[7.2].define(version: 2024_07_07_175204) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pgcrypto"
@@ -124,6 +124,16 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_02_114329) do
     t.index ["recording_id"], name: "index_digital_remasters_on_recording_id"
     t.index ["remaster_agent_id"], name: "index_digital_remasters_on_remaster_agent_id"
     t.index ["tango_cloud_id"], name: "index_digital_remasters_on_tango_cloud_id", unique: true
+  end
+
+  create_table "events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "action", null: false
+    t.string "user_agent"
+    t.string "ip_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_events_on_user_id"
   end
 
   create_table "external_catalog_el_recodo_empty_pages", force: :cascade do |t|
@@ -395,6 +405,15 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_02_114329) do
     t.index ["name"], name: "index_remaster_agents_on_name", unique: true
   end
 
+  create_table "sessions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "user_agent"
+    t.string "ip_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
   create_table "shares", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id", null: false
     t.string "shareable_type", null: false
@@ -453,40 +472,19 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_02_114329) do
     t.index ["slug"], name: "index_time_periods_on_slug", unique: true
   end
 
-  create_table "user_preferences", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "first_name"
-    t.string "last_name"
-    t.uuid "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_user_preferences_on_user_id"
-  end
-
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "username"
-    t.boolean "admin", default: false, null: false
+    t.citext "email", null: false
+    t.citext "username"
+    t.string "password_digest", null: false
     t.string "provider"
     t.string "uid"
+    t.boolean "admin", default: false, null: false
+    t.datetime "approved_at"
+    t.datetime "confirmed_at"
+    t.boolean "verified", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.citext "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.string "current_sign_in_ip"
-    t.string "last_sign_in_ip"
-    t.string "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
-    t.string "unconfirmed_email"
-    t.datetime "approved_at"
-    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
@@ -522,6 +520,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_02_114329) do
   add_foreign_key "digital_remasters", "audio_files"
   add_foreign_key "digital_remasters", "recordings"
   add_foreign_key "digital_remasters", "remaster_agents"
+  add_foreign_key "events", "users"
   add_foreign_key "external_catalog_el_recodo_person_roles", "external_catalog_el_recodo_people", column: "person_id"
   add_foreign_key "external_catalog_el_recodo_person_roles", "external_catalog_el_recodo_songs", column: "song_id"
   add_foreign_key "external_catalog_el_recodo_songs", "external_catalog_el_recodo_orchestras", column: "el_recodo_orchestra_id"
@@ -544,10 +543,10 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_02_114329) do
   add_foreign_key "recordings", "orchestras"
   add_foreign_key "recordings", "record_labels"
   add_foreign_key "recordings", "time_periods"
+  add_foreign_key "sessions", "users"
   add_foreign_key "shares", "users"
   add_foreign_key "taggings", "tags"
   add_foreign_key "taggings", "users"
-  add_foreign_key "user_preferences", "users"
   add_foreign_key "waveforms", "digital_remasters"
   add_foreign_key "waveforms", "waveform_data"
 end

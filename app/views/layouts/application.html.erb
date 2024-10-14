@@ -1,12 +1,13 @@
-<!DOCTYPE html>
-<html lang="<%= I18n.locale %>">
+<!DOCTYPE html >
+<html lang="<%= I18n.locale %>" class="h-dvh">
   <%= render "components/head" %>
-  <body class="flex flex-col h-dvh font-circular">
+  <body class="flex min-h-full flex-col font-circular dark">
     <%= render "shared/navbar" %>
     <%= render "shared/flash" %>
-    <main class="flex-grow flex flex-col items-center">
+    <main class="grow dark:bg-black">
       <%= yield %>
     </main>
     <%= render "shared/footer" %>
+    <%= turbo_frame_tag "modal", target: "_top" %>
   </body>
 </html>

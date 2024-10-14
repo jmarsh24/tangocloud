@@ -38,11 +38,13 @@ RSpec.describe "User", type: :request do
 
   describe "POST #create" do
     let(:email) { "new@test.com" }
-    let(:user_params) { {user: {email:, password:}} }
+    let(:username) { "new_user" }
+    let(:user_params) { {user: {username:, email:, password:}} }
 
     context "success" do
       it "creates a new user when the access token is valid" do
         post api_users_path, headers: {JWTSessions.access_header => access_token}, params: user_params
+
         expect(response).to be_successful
         expect(json_response["current_user"]).to eq user.to_json
         expect(JSON.parse(json_response["user"])["email"]).to eq email

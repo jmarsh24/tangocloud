@@ -1,0 +1,42 @@
+<%= turbo_frame_tag "new-registration", class: "form-container" do %>
+  <div class="form-wrapper">
+    <div>
+      <%= inline_svg_tag("logos/tangocloud-logo-with-text.svg", class: "form-header") %>
+    </div>
+    <%= form_with(url: sign_up_path) do |form| %>
+      <div class="form-body">
+        <div class="form-input-group">
+          <div class="form-group">
+            <%= form.label :email, "Email address", class: "label", for: "email-address" %>
+            <%= form.email_field :email, id: "email-address", value: @user.email, required: true, autofocus: true, autocomplete: "email", class: "input" %>
+            <%= inline_errors_for(@user, :email) %>
+          </div>
+
+          <div class="form-group">
+            <%= form.label :password, class: "label", for: "password" %>
+            <%= form.password_field :password, required: true, autocomplete: "new-password", class: "input" %>
+            <%= inline_errors_for(@user, :password) %>
+            <div class="text-xs text-neutral-700 dark:text-neutral-500">8 characters minimum.</div>
+          </div>
+
+          <div class="form-group">
+            <%= form.label :password_confirmation, class: "label", for: "password_confirmation" %>
+            <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", class: "input" %>
+            <%= inline_errors_for(@user, :password_confirmation) %>
+          </div>
+        </div>
+
+
+        <div class="actions">
+          <%= form.submit "Sign up", class: "button" %>
+        </div>
+
+        <div class="form-footer">
+          <%= link_to "Already have an account?", sign_in_path, class: "link", data: {turbo_frame: "modal"} %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+

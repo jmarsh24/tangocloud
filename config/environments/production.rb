@@ -105,5 +105,5 @@ Rails.application.configure do
 
   config.public_file_server.enabled = true
 
-  config.active_storage.resolve_model_to_route = :imgproxy_active_storage
+  config.active_storage.resolve_model_to_route = :rails_storage_proxy
 end
