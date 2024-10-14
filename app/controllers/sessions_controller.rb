@@ -12,6 +12,7 @@ class SessionsController < ApplicationController
   end
 
   def new
+    @minimum_password_length = User::MINIMUM_PASSWORD_LENGTH
   end
 
   def create
@@ -19,10 +20,16 @@ class SessionsController < ApplicationController
       @session = user.sessions.create!
       cookies.signed.permanent[:session_token] = {value: @session.id, httponly: true}
 
-      redirect_to root_path, notice: "Signed in successfully"
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.redirect_to(root_path, notice: "Signed in successfully")
+        end
+      end
     else
       @session = Session.new
       @session.errors.add(:base, "The email or password is incorrect")
+      @email_hint = params[:email]
+      @minimum_password_length = User::MINIMUM_PASSWORD_LENGTH
       render :new, status: :unprocessable_entity
     end
   end
