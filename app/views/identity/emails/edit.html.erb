@@ -16,7 +16,7 @@
       <%= button_to "Re-send verification email", identity_email_verification_path, class: "button" %>
     <% end %>
 
-    <%= form_with(model: @user, url: identity_email_path, method: :patch, local: true) do |form| %>
+    <%= form_with(model: @user, url: identity_email_path, method: :patch) do |form| %>
       <div class="form-body">
         <div class="form-input-group">
           <div class="form-group">

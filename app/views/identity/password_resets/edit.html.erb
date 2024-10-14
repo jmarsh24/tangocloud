@@ -1,10 +1,10 @@
-<div class="form-container">
+<%=turbo_frame_tag "new-session", class: "form-container" do %>
   <div class="form-wrapper">
     <div>
       <%= inline_svg_tag("logos/tangocloud-logo-with-text.svg", class: "form-header") %>
     </div>
 
-    <%= form_with(model: @user, url: identity_password_reset_path, method: :patch, local: true) do |form| %>
+    <%= form_with(model: @user, url: identity_password_reset_path, method: :patch) do |form| %>
       <div class="form-body">
 
         <%= form.hidden_field :sid, value: params[:sid] %>
@@ -30,4 +30,4 @@
       </div>
     <% end %>
   </div>
-</div>
+<% end %>

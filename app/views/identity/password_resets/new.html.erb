@@ -1,10 +1,10 @@
-<div class="form-container">
+<%= turbo_frame_tag "new-session", class: "form-container" do %>
   <div class="form-wrapper">
     <div>
       <%= inline_svg_tag("logos/tangocloud-logo-with-text.svg", class: "form-header") %>
     </div>
 
-    <%= form_with(url: identity_password_reset_path, local: true) do |form| %>
+    <%= form_with(url: identity_password_reset_path) do |form| %>
       <div class="form-body">
         <div class="form-input-group">
           <div class="form-group">
@@ -22,4 +22,4 @@
       </div>
     <% end %>
   </div>
-</div>
+<% end %>

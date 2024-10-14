@@ -3,8 +3,13 @@
     <div>
       <%= inline_svg_tag("logos/tangocloud-logo-with-text.svg", class: "form-header") %>
     </div>
-    <%= form_with(url: sign_in_path, local: true) do |form| %>
+    <%= form_with(url: sign_in_path) do |form| %>
       <div class="h-6">
+        <% if flash[:modal_notice] %>
+          <div class="text-neutral-700 dark:text-neutral-500 rounded-md shadow-sm relative transition-colors duration-300 ease-in-out" role="alert">
+            <span class="block sm:inline"><%= flash[:modal_notice] %></span>
+          </div>
+        <% end %>
         <% if @session&.errors&.any? %>
           <% @session.errors.full_messages.each do |message| %>
             <p class="form-error"><%= message %></p>
@@ -15,13 +20,27 @@
         <div class="form-input-group">
           <div class="form-group">
             <%= form.label :email, "Email address", class: "label", for: "email-address" %>
-            <%= form.email_field :email, id: "email-address", value: params[:email_hint], required: true, autofocus: true, autocomplete: "email", class: "input" %>
+            <%= form.email_field :email,
+              id: "email-address",
+              value: @email_hint,
+              required: true,
+              autofocus: true,
+              autocomplete: "email",
+              inputmode: "email",
+              spellcheck: "false",
+              class: "input" %>
           </div>
 
           <div class="form-group">
-            <%= form.label :password, class: "label", for: "password" %>
-            <%= form.password_field :password, required: true, autocomplete: "current-password", class: "input" %>
+            <%= form.label :password, "Password", class: "label", for: "password" %>
+            <%= form.password_field :password,
+                                    required: true,
+                                    autocomplete: "new-password",
+                                    class: "input",
+                                    minlength: 8,
+                                    inputmode: "text" %>
           </div>
+          <p class="text-sm text-neutral-600 dark:text-neutral-500"><em><%= @minimum_password_length %> characters minimum</em></p>
         </div>
 
         <div class="actions">

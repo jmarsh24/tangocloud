@@ -1,6 +1,8 @@
 module Authenticatable
   extend ActiveSupport::Concern
 
+  MINIMUM_PASSWORD_LENGTH = 8
+
   included do
     has_secure_password
 
@@ -16,7 +18,7 @@ module Authenticatable
     has_many :events, dependent: :destroy
 
     validates :email, presence: true, uniqueness: true, format: {with: URI::MailTo::EMAIL_REGEXP}
-    validates :password, allow_nil: true, length: {minimum: 8}
+    validates :password, allow_nil: true, length: {minimum: MINIMUM_PASSWORD_LENGTH}
 
     normalizes :email, with: -> { _1.strip.downcase }
 

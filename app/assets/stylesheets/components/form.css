@@ -4,7 +4,7 @@
   }
 
   .form-wrapper {
-    @apply w-full max-w-md lg:max-w-lg flex flex-col gap-12;
+    @apply w-full max-w-md lg:max-w-lg flex flex-col;
   }
 
   .form-group {
@@ -12,7 +12,7 @@
   }
 
   .form-header {
-    @apply mx-auto h-32 w-auto fill-black dark:fill-neutral-100 lg:h-48 transition-all duration-300 ease-in-out;
+    @apply mx-auto h-32 pb-16 w-auto fill-black dark:fill-neutral-100 lg:h-48 transition-all duration-300 ease-in-out;
   }
 
   .form-body {
