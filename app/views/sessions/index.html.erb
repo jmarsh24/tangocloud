@@ -1,8 +1,5 @@
 <div class="form-container">
   <div class="w-full max-w-4xl flex flex-col gap-6">
-    <% if notice %>
-      <p class="text-green-600 text-center"><%= notice %></p>
-    <% end %>
     <h1 class="text-2xl font-bold mb-6 text-center">Devices & Sessions</h1>
     <div id="sessions" class="space-y-4">
       <% @sessions.each do |session| %>

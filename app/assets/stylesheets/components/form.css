@@ -1,6 +1,6 @@
 @layer components {
   .form-container {
-    @apply w-full min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 dark:bg-black;
+    @apply w-full min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 dark:bg-black text-neutral-950 dark:text-neutral-300;
   }
 
   .form-wrapper {
