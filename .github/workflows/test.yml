@@ -60,8 +60,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'yarn'
-          cache-dependency-path: '/dev/null'  # Invalid path to skip the cache
+          always-auth: false
+          check-latest: false
       - name: Install yarn
         run: yarn install && cd native && yarn install
       - name: Set up Ruby
