@@ -21,13 +21,15 @@ class SessionsController < ApplicationController
 
       redirect_to root_path, notice: "Signed in successfully"
     else
-      redirect_to sign_in_path(email_hint: params[:email]), alert: "That email or password is incorrect"
+      @session = Session.new
+      @session.errors.add(:base, "The email or password is incorrect")
+      render :new, status: :unprocessable_entity
     end
   end
 
   def destroy
     @session.destroy
-    redirect_to(sessions_path, notice: "That session has been logged out")
+    redirect_to(sessions_path)
   end
 
   private

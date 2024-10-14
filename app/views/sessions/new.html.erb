@@ -4,18 +4,23 @@
       <%= inline_svg_tag("logos/tangocloud-logo-with-text.svg", class: "form-header") %>
     </div>
     <%= form_with(url: sign_in_path, local: true) do |form| %>
+      <div class="h-6">
+        <% if @session&.errors&.any? %>
+          <% @session.errors.full_messages.each do |message| %>
+            <p class="form-error"><%= message %></p>
+          <% end %>
+        <% end %>
+      </div>
       <div class="form-body">
         <div class="form-input-group">
           <div class="form-group">
             <%= form.label :email, "Email address", class: "label", for: "email-address" %>
             <%= form.email_field :email, id: "email-address", value: params[:email_hint], required: true, autofocus: true, autocomplete: "email", class: "input" %>
-            <%= inline_errors_for(@session&.user, :email) %>
           </div>
 
           <div class="form-group">
             <%= form.label :password, class: "label", for: "password" %>
             <%= form.password_field :password, required: true, autocomplete: "current-password", class: "input" %>
-            <%= inline_errors_for(@session&.user, :password) %>
           </div>
         </div>
 
