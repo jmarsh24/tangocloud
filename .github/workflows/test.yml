@@ -61,7 +61,7 @@ jobs:
         with:
           node-version: 20
       - name: Install yarn
-        run: yarn cache clean && yarn install && cd native && yarn install
+        run: yarn cache clean && yarn install --frozen-lockfile && cd native && yarn install
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
