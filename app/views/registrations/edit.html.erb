@@ -4,9 +4,9 @@
     <%= form_with(url: registration_path(@user), method: :patch, html: { multipart: true, id: "avatar-form" }, data: { turbo_frame: "edit-registration" }) do |f| %>
       <div class="avatar-upload flex items-center gap-8">
         <% if @user.avatar&.attached? %>
-          <%= image_tag(@user.avatar, class: "avatar-image w-36 h-36 rounded-full object-cover") %>
+          <%= image_tag(@user.avatar, class: "w-24 h-24 rounded-full object-cover aspect-square") %>
         <% else %>
-          <%= icon("new_user", path: "icons/new-user.svg", class: "avatar-image w-36 h-36 rounded-full object-cover fill-neutral-700 dark:fill-neutral-400") %>
+          <%= icon("new_user", path: "icons/new-user.svg", class: "aspect-square w-24 h-24 rounded-full object-cover fill-neutral-700 dark:fill-neutral-400") %>
         <% end %>
 
         <label for="user_avatar" class="custom-file-upload cursor-pointer bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
