@@ -56,9 +56,16 @@ jobs:
           sudo add-apt-repository -y ppa:chris-needham/ppa
           sudo apt-get update
           sudo apt-get install -y audiowaveform
-      - uses: actions/setup-node@v4
+      - name: Cache Yarn Dependencies
+        uses: actions/cache@v3
         with:
-          node-version: "20.x"
+          path: |
+            node_modules
+            native/node_modules
+            ~/.cache/yarn
+          key: ${{ runner.os }}-yarn-cache-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-cache-
       - name: Install yarn
         run: yarn install && cd native && yarn install
       - name: Set up Ruby
