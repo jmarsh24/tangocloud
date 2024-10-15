@@ -9,7 +9,7 @@
             <% if Current&.user&.avatar.present? %>
               <%= image_tag(Current.user.avatar, alt: "User Avatar", class: "w-10 h-10 rounded-full fill-neutral-300 dark:fill-neutral-800 object-cover") %>
             <% else %>
-              <%= icon("new_user", path: "icons/new-user.svg", alt: "User Avatar", class: "w-10 h-10 rounded-full fill-neutral-300 dark:fill-neutral-4  00 object-cover") %>
+              <%= heroicon("user-circle", variant: :solid, size: :xl, class: "fill-neutral-300 dark:fill-neutral-400") %>
             <% end %>
           </button>
 
