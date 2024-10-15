@@ -8,7 +8,7 @@
   }
 
   .form-group {
-    @apply flex flex-col gap-2;
+    @apply flex flex-row;
   }
 
   .form-header {
@@ -36,7 +36,7 @@
     @apply appearance-none font-light text-slate-900 bg-white rounded-md block w-full py-3 px-4 h-12 sm:text-sm focus:outline-none placeholder:text-slate-400
       dark:bg-neutral-900 dark:text-neutral-300 dark:placeholder-neutral-400
       dark:ring-neutral-600 dark:focus:ring-indigo-400 dark:focus:border-indigo-400
-      transition-all duration-300 ease-in-out focus:ring-2 focus:border-indigo-500 hover:ring-indigo-400 hover:border-indigo-400;
+      transition-all duration-300 ease-in-out focus:ring-2 focus:border-indigo-500 hover:ring-indigo-400 hover:border-indigo-400 border-none;
   }
 
   .button {

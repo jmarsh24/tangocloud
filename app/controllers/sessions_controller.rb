@@ -12,7 +12,6 @@ class SessionsController < ApplicationController
   end
 
   def new
-    @minimum_password_length = User::MINIMUM_PASSWORD_LENGTH
   end
 
   def create
@@ -29,7 +28,6 @@ class SessionsController < ApplicationController
       @session = Session.new
       @session.errors.add(:base, "The email or password is incorrect")
       @email_hint = params[:email]
-      @minimum_password_length = User::MINIMUM_PASSWORD_LENGTH
       render :new, status: :unprocessable_entity
     end
   end
