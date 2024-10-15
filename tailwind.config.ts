@@ -15,8 +15,8 @@ module.exports = {
     },
   },
   plugins: [
-    require("daisyui"),
     require('@tailwindcss/forms'),
+    require("daisyui"),
     ],
     safelist: [
     'form-error'
