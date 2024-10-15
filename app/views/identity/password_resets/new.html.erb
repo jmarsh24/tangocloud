@@ -1,20 +1,15 @@
 <%= turbo_frame_tag "new-session" do %>
   <div class="flex flex-col gap-16 py-8">
     <%= inline_svg_tag("logos/tangocloud-logo-with-text.svg", class: "w-36 h-auto mx-auto dark:fill-neutral-100") %>
-
     <%= form_with(url: identity_password_reset_path) do |form| %>
       <div class="form-control space-y-4">
-        <div>
-          <label class="input input-bordered flex items-center gap-2">
-            <%= heroicon("envelope", variant: :solid) %>
-            <%= form.email_field :email, required: true, autofocus: true, class: "grow", id: "email-address", placeholder: "Email" %>
-          </label>
-        </div>
-
+        <label class="input input-bordered flex items-center gap-2">
+          <%= heroicon("envelope", variant: :solid) %>
+          <%= form.email_field :email, required: true, autofocus: true, class: "grow", id: "email-address", placeholder: "Email" %>
+        </label>
         <div class="flex justify-center mt-4">
           <%= form.submit "Send password reset email", class: "btn btn-primary btn-block" %>
         </div>
-
         <div class="flex justify-center gap-4 py-2">
           <%= link_to "Sign in", sign_in_path, class: "link", data: { turbo_frame: "modal" } %>
         </div>
