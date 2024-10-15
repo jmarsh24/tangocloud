@@ -5,13 +5,13 @@
       <div class="form-control space-y-4">
         <div class="h-6">
           <% if flash[:modal_notice] %>
-            <div class="text-neutral-700 dark:text-neutral-500 rounded-md shadow-sm relative transition-colors duration-300 ease-in-out" role="alert">
+            <div class="text-neutral-700 dark:text-neutral-400 rounded-md shadow-sm relative transition-colors duration-300 ease-in-out" role="alert">
               <span class="block sm:inline"><%= flash[:modal_notice] %></span>
             </div>
           <% end %>
           <% if @session&.errors&.any? %>
             <% @session.errors.full_messages.each do |message| %>
-              <p class="text-red-600 dark:text-red-500 text-sm"><%= message %></p>
+              <span class="text-red-600 dark:text-red-500 text-sm"><%= message %></p>
             <% end %>
           <% end %>
         </div>
