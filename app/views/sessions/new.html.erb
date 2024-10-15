@@ -1,54 +1,40 @@
-<%= turbo_frame_tag "new-session", class: "form-container" do %>
-  <div class="form-wrapper">
-    <div>
-      <%= inline_svg_tag("logos/tangocloud-logo-with-text.svg", class: "form-header") %>
-    </div>
+<%= turbo_frame_tag "new-session" do %>
+  <div class="flex flex-col gap-8 py-8">
+    <%= inline_svg_tag("logos/tangocloud-logo-with-text.svg", class: "w-36 h-auto mx-auto dark:fill-neutral-100") %>
+
     <%= form_with(url: sign_in_path) do |form| %>
-      <div class="h-6">
-        <% if flash[:modal_notice] %>
-          <div class="text-neutral-700 dark:text-neutral-500 rounded-md shadow-sm relative transition-colors duration-300 ease-in-out" role="alert">
-            <span class="block sm:inline"><%= flash[:modal_notice] %></span>
-          </div>
-        <% end %>
-        <% if @session&.errors&.any? %>
-          <% @session.errors.full_messages.each do |message| %>
-            <p class="form-error"><%= message %></p>
+      <div class="form-control space-y-4">
+        <div class="h-6">
+          <% if flash[:modal_notice] %>
+            <div class="text-neutral-700 dark:text-neutral-500 rounded-md shadow-sm relative transition-colors duration-300 ease-in-out" role="alert">
+              <span class="block sm:inline"><%= flash[:modal_notice] %></span>
+            </div>
           <% end %>
-        <% end %>
-      </div>
-      <div class="form-body">
-        <div class="form-input-group">
-          <div class="form-group">
-            <%= form.label :email, "Email address", class: "label", for: "email-address" %>
-            <%= form.email_field :email,
-              id: "email-address",
-              value: @email_hint,
-              required: true,
-              autofocus: true,
-              autocomplete: "email",
-              inputmode: "email",
-              spellcheck: "false",
-              class: "input" %>
-          </div>
 
-          <div class="form-group">
-            <%= form.label :password, "Password", class: "label", for: "password" %>
-            <%= form.password_field :password,
-                                    required: true,
-                                    autocomplete: "new-password",
-                                    class: "input",
-                                    minlength: 8,
-                                    inputmode: "text" %>
-          </div>
+          <% if @session&.errors&.any? %>
+            <% @session.errors.full_messages.each do |message| %>
+              <p class="text-red-600 dark:text-red-500 text-sm"><%= message %></p>
+            <% end %>
+          <% end %>
         </div>
 
-        <div class="actions">
-          <%= form.submit "Sign in to account", class: "button" %>
+        <label class="input input-bordered flex items-center gap-2">
+          <%= heroicon("envelope", variant: :solid) %>
+          <%= form.email_field :email, id: "email-address", value: @email_hint, required: true, autofocus: true, autocomplete: "email", inputmode: "email", spellcheck: "false", placeholder: "Email", class: "grow" %>
+        </label>
+
+        <label class="input input-bordered flex items-center gap-2">
+          <%= heroicon("key", variant: :solid) %>
+          <%= form.password_field :password, required: true, autocomplete: "new-password", minlength: 8, inputmode: "text", placeholder: "Password", class: "grow" %>
+        </label>
+
+        <div class="flex justify-center mt-4">
+          <%= form.submit "Sign in to account", class: "btn btn-primary btn-block" %>
         </div>
 
-        <div class="form-footer">
-          <%= link_to "Forgot your password?", new_identity_password_reset_path, class: "link", data: { turbo_frame: "modal" } %>
-          <%= link_to "Don't have an account?", sign_up_path, class: "link", data: { turbo_frame: "modal" } %>
+        <div class="flex flex-col items-center gap-6 py-2">
+          <%= link_to "Forgot your password?", new_identity_password_reset_path, class: "link link-hover", data: { turbo_frame: "modal" } %>
+          <%= link_to "Don't have an account?", sign_up_path, class: "link link-hover", data: { turbo_frame: "modal" } %>
         </div>
       </div>
     <% end %>

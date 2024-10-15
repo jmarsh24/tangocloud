@@ -13,9 +13,9 @@
   </div>
   <div class="mt-4">
     <% if @sessions.size == 1 %>
-      <%= button_to "Log out", session, method: :delete, class: "button" %>
+      <%= button_to "Log out", session, method: :delete, class: "btn" %>
     <% else %>
-      <%= button_to "Log out", session, method: :delete, class: "button", data: { turbo_frame: "modal" } %>
+      <%= button_to "Log out", session, method: :delete, class: "btn", data: { turbo_frame: "modal" } %>
     <% end %>
   </div>
 </div>

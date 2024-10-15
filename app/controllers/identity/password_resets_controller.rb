@@ -11,9 +11,6 @@ class Identity::PasswordResetsController < ApplicationController
   def new
   end
 
-  def edit
-  end
-
   def create
     @user = User.find_by(email: params[:email], verified: true)
     send_password_reset_email

@@ -13,7 +13,7 @@
     <% else %>
       <h1 class="form-title">Verify your email</h1>
       <p>We sent a verification email to the address below. Check that email and follow those instructions to confirm it's your email address.</p>
-      <%= button_to "Re-send verification email", identity_email_verification_path, class: "button" %>
+      <%= button_to "Re-send verification email", identity_email_verification_path, class: "btn" %>
     <% end %>
 
     <%= form_with(model: @user, url: identity_email_path, method: :patch) do |form| %>
@@ -33,7 +33,7 @@
         </div>
 
         <div class="actions">
-          <%= form.submit "Save changes", class: "button" %>
+          <%= form.submit "Save changes", class: "btn" %>
         </div>
       </div>
     <% end %>
