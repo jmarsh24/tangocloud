@@ -1,8 +1,6 @@
 <%= content_tag :dialog, class: classes, **attributes do %>
-  <div class="modal-box bg-black w-full" data-modal-target="modalBox">
-    <button class="btn btn-sm btn-circle btn-ghost absolute right-3 top-3" data-action="click->modal#close">
-      <%= inline_svg_tag("icons/close.svg", class: "w-6 h-6 fill-neutral-500 dark fill-neutral-300 ") %>
-    </button>
+  <div class="modal-box bg-black" data-modal-target="modalBox">
+    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" data-action="click->modal#close">✕</button>
     <%= content %>
   </div>
 <% end %>
