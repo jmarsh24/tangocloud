@@ -2,26 +2,7 @@
   <div class="w-full max-w-4xl flex flex-col gap-6">
     <h1 class="text-2xl font-bold mb-6 text-center">Activity Log</h1>
     <div id="sessions" class="space-y-4">
-      <% @events.each do |event| %>
-        <div id="<%= dom_id event %>" class="p-4 bg-white rounded-md shadow-md dark:bg-neutral-800 flex flex-col gap-2">
-          <div class="flex">
-            <span class="label w-1/3">User Agent:</span>
-            <span class="text-sm text-gray-700 dark:text-gray-300 w-2/3"><%= event.user_agent %></span>
-          </div>
-          <div class="flex">
-            <span class="label w-1/3">Action:</span>
-            <span class="text-sm text-gray-700 dark:text-gray-300 w-2/3"><%= event.action %></span>
-          </div>
-          <div class="flex">
-            <span class="label w-1/3">Ip Address:</span>
-            <span class="text-sm text-gray-700 dark:text-gray-300 w-2/3"><%= event.ip_address %></span>
-          </div>
-          <div class="flex">
-            <span class="label w-1/3">Created at:</span>
-            <span class="text-sm text-gray-700 dark:text-gray-300 w-2/3"><%= event.created_at %></span>
-          </div>
-        </div>
-      <% end %>
+      <%= render @events %>
     </div>
   </div>
 </div>
