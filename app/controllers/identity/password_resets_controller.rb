@@ -27,7 +27,8 @@ class Identity::PasswordResetsController < ApplicationController
 
   def update
     if @user.update(user_params)
-      redirect_to sign_in_path, notice: "Your password was reset successfully. Please sign in"
+      flash[:modal_notice] = "Your password was reset successfully. Please sign in"
+      redirect_to sign_in_path
     else
       render :edit, status: :unprocessable_entity
     end

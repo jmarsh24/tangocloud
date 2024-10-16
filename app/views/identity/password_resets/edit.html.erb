@@ -1,12 +1,11 @@
 <%= turbo_frame_tag "new-session" do %>
   <div class="flex flex-col gap-8 py-8 max-w-md mx-auto">
+
     <div class="text-center">
       <%= inline_svg_tag("logos/tangocloud-logo-with-text.svg", class: "w-36 h-auto mx-auto dark:fill-neutral-100") %>
     </div>
-
     <%= form_with(url: identity_password_reset_path, method: :patch) do |form| %>
       <%= form.hidden_field :sid, value: params[:sid] %>
-
       <div class="form-control space-y-4">
         <div>
           <label class="input input-bordered flex items-center gap-2 <%= error_class(@user, :password) %>">
@@ -15,7 +14,6 @@
           </label>
           <%= inline_errors_for(@user, :password) %>
         </div>
-
         <div>
           <label class="input input-bordered flex items-center gap-2 <%= error_class(@user, :password_confirmation) %>">
             <%= heroicon("key", variant: :solid) %>
@@ -23,7 +21,6 @@
           </label>
           <%= inline_errors_for(@user, :password_confirmation) %>
         </div>
-
         <div class="flex justify-center mt-4">
           <%= form.submit "Save changes", class: "btn btn-primary btn-block" %>
         </div>
