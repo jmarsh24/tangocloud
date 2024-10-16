@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   resource :password, only: [:edit, :update]
   namespace :identity do
     resource :email_verification, only: [:show, :create]
-    resource :password_reset, only: [:new, :create, :update]
+    resource :password_reset, only: [:new, :edit, :create, :update]
   end
   namespace :authentications do
     resources :events, only: :index

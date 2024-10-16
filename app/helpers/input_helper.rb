@@ -8,7 +8,8 @@ module InputHelper
     end
   end
 
-  def error_class(resource, field)
-    resource.errors[field].present? ? "input-error" : ""
+  def error_class(resource, fields)
+    fields = Array(fields)
+    (fields.any? { |field| resource.errors[field].present? }) ? "input-error" : ""
   end
 end
