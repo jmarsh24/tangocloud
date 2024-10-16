@@ -27,7 +27,7 @@ Rails.application.configure do
   # config.asset_host = "https://www.tangocloud.app"
   config.action_mailer.default_url_options = {host: "tangocloud.app", protocol: "https"}
   config.action_controller.default_url_options = {host: "tangocloud.app", protocol: "https"}
-  Rails.application.routes.default_url_options = {host: "tangocloud.app", port: 3000}
+  Rails.application.routes.default_url_options = {host: "tangocloud.app", protocol: "https"}
 
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for Apache

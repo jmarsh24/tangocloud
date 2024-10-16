@@ -1,68 +1,66 @@
-<%= turbo_frame_tag "edit-registration" do %>
-  <div class="flex flex-col py-8 max-w-md mx-auto">
-    <div class="text-center">
-      <h1 class="text-2xl font-bold">Edit Profile</h1>
-    </div>
-    <%= form_with(url: registration_path(@user), method: :patch) do |f| %>
-      <div class="flex gap-4 sm:gap-8 justify-space-between items-center">
-        <label for="user_avatar" class="relative cursor-pointer group">
-          <% if @user.avatar&.attached? %>
-            <%= image_tag(@user.avatar, class: "w-24 h-24 rounded-full object-cover aspect-square") %>
-          <% else %>
-            <div class="w-24 h-24 bg-neutral-600 rounded-full flex items-center justify-center">
-              <%= inline_svg_tag("heroicons/solid/user.svg", class: "w-16 h-16 fill-neutral-700 dark:fill-neutral-100") %>
-            </div>
-          <% end %>
-          <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full">
-            <%= heroicon("camera", class: "w-8 h-8 fill-black") %>
+<div class="flex flex-col py-8 max-w-md mx-auto">
+  <div class="text-center">
+    <h1 class="text-2xl font-bold">Edit Profile</h1>
+  </div>
+  <%= form_with(url: registration_path(@user), method: :patch) do |f| %>
+    <div class="flex gap-4 sm:gap-8 justify-space-between items-center">
+      <label for="user_avatar" class="relative cursor-pointer group">
+        <% if @user.avatar&.attached? %>
+          <%= image_tag(@user.avatar, class: "w-24 h-24 rounded-full object-cover aspect-square") %>
+        <% else %>
+          <div class="w-24 h-24 bg-neutral-600 rounded-full flex items-center justify-center">
+            <%= inline_svg_tag("heroicons/solid/user.svg", class: "w-16 h-16 fill-neutral-700 dark:fill-neutral-100") %>
           </div>
-          <%= f.file_field :avatar, class: "hidden", id: "user_avatar", accept: "image/*", data: { controller: "auto-submit", action: "change->auto-submit#submit" } %>
+        <% end %>
+        <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full">
+          <%= heroicon("camera", class: "w-8 h-8 fill-black") %>
+        </div>
+        <%= f.file_field :avatar, class: "hidden", id: "user_avatar", accept: "image/*", data: { controller: "auto-submit", action: "change->auto-submit#submit" } %>
+      </label>
+    </div>
+  <% end %>
+  <div class="flex flex-col justify-center h-12">
+    <% if flash[:modal_notice] %>
+      <div class="text-neutral-700 dark:text-neutral-300 rounded-md shadow-sm relative transition-colors duration-300 ease-in-out" role="alert">
+        <span class="block sm:inline"><%= flash[:modal_notice] %></span>
+      </div>
+    <% end %>
+  </div>
+  <%= form_with(url: registration_path(@user), html: { method: :put }) do |f| %>
+    <div class="form-control space-y-4 pb-4">
+      <div>
+        <label class="input input-bordered flex items-center gap-2 <%= error_class(@user, :email) %>"
+          <%= heroicon("envelope", variant: :solid) %>
+          <%= f.email_field :email, class: "grow", id: "email-address", value: @user.email, readonly: true, placeholder: "Email", disabled: true %>
+          <%= inline_errors_for(@user, :email) %>
         </label>
-      </div>
-    <% end %>
-    <div class="flex flex-col justify-center h-12">
-      <% if flash[:modal_notice] %>
-        <div class="text-neutral-700 dark:text-neutral-300 rounded-md shadow-sm relative transition-colors duration-300 ease-in-out" role="alert">
-          <span class="block sm:inline"><%= flash[:modal_notice] %></span>
         </div>
-      <% end %>
-    </div>
-    <%= form_with(url: registration_path(@user), html: { method: :put }) do |f| %>
-      <div class="form-control space-y-4 pb-4">
         <div>
-          <label class="input input-bordered flex items-center gap-2 <%= error_class(@user, :email) %>"
-            <%= heroicon("envelope", variant: :solid) %>
-            <%= f.email_field :email, class: "grow", id: "email-address", value: @user.email, readonly: true, placeholder: "Email", disabled: true %>
-            <%= inline_errors_for(@user, :email) %>
+          <label class="input input-bordered flex items-center gap-2 <%= error_class(@user, :username) %>">
+            <%= heroicon("user", variant: :solid)%>
+            <%= f.text_field :username, class: "grow", id: "username", value: @user.username, placeholder: "Username", type: "text" %>
           </label>
-          </div>
-          <div>
-            <label class="input input-bordered flex items-center gap-2 <%= error_class(@user, :username) %>">
-              <%= heroicon("user", variant: :solid)%>
-              <%= f.text_field :username, class: "grow", id: "username", value: @user.username, placeholder: "Username", type: "text" %>
-            </label>
-          </div>
-          <%= inline_errors_for(@user, :username) %>
-          <div>
-            <label class="input input-bordered flex items-center gap-2 <%= error_class(@user, [:password, :password_confirmation]) %>">
-              <%= heroicon("key", variant: :solid) %>
-              <%= f.password_field :password, class: "grow", id: "password", autocomplete: "new-password", placeholder: "Password", minlength: 8 %>
-            </label>
-            <%= inline_errors_for(@user, :password) %>
-          </div>
-          <div>
-            <label class="input input-bordered flex items-center gap-2 <%= error_class(@user, :password_confirmation) %>">
-              <%= heroicon("key", variant: :solid) %>
-              <%= f.password_field :password_confirmation, class: "grow", id: "password-confirmation", autocomplete: "new-password", placeholder: "Confirm Password", minlength: 8 %>
-            </label>
-            <%= inline_errors_for(@user, :password_confirmation) %>
-          </div>
-          <div class="flex justify-center mt-4">
-            <%= f.submit "Update", class: "btn btn-primary btn-block" %>
-          </div>
         </div>
-      <% end %>
-      <div class="flex justify-center">
-        <%= button_to "Delete your account", registration_path, data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class: "link link-hover" %>
+        <%= inline_errors_for(@user, :username) %>
+        <div>
+          <label class="input input-bordered flex items-center gap-2 <%= error_class(@user, [:password, :password_confirmation]) %>">
+            <%= heroicon("key", variant: :solid) %>
+            <%= f.password_field :password, class: "grow", id: "password", autocomplete: "new-password", placeholder: "Password", minlength: 8 %>
+          </label>
+          <%= inline_errors_for(@user, :password) %>
+        </div>
+        <div>
+          <label class="input input-bordered flex items-center gap-2 <%= error_class(@user, :password_confirmation) %>">
+            <%= heroicon("key", variant: :solid) %>
+            <%= f.password_field :password_confirmation, class: "grow", id: "password-confirmation", autocomplete: "new-password", placeholder: "Confirm Password", minlength: 8 %>
+          </label>
+          <%= inline_errors_for(@user, :password_confirmation) %>
+        </div>
+        <div class="flex justify-center mt-4">
+          <%= f.submit "Update", class: "btn btn-primary btn-block" %>
+        </div>
       </div>
     <% end %>
+    <div class="flex justify-center">
+      <%= button_to "Delete your account", registration_path, data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class: "link link-hover" %>
+    </div>
