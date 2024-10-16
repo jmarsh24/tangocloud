@@ -2,7 +2,7 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-@import "./fonts";
+@import "./buttons";
 @import "./components/form.css";
 
 .turbo-progress-bar {
