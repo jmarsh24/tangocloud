@@ -9,26 +9,26 @@
             <% if Current&.user&.avatar.present? %>
               <%= image_tag(Current.user.avatar, alt: "User Avatar", class: "w-10 h-10 rounded-full fill-neutral-300 dark:fill-neutral-800 object-cover") %>
             <% else %>
-              <%= icon("new_user", path: "icons/new-user.svg", alt: "User Avatar", class: "w-10 h-10 rounded-full fill-neutral-300 dark:fill-neutral-4  00 object-cover") %>
+              <%= heroicon("user-circle", variant: :solid, size: :xl, class: "fill-neutral-300 dark:fill-neutral-400") %>
             <% end %>
           </button>
 
-          <ul tabindex="0" class="dropdown-content menu p-2 text-normal shadow bg-base-100 dark:bg-neutral-800 rounded-box w-52 mt-2 z-50">
+          <ul tabindex="0" class="dropdown-content menu p-2 text-lg shadow bg-base-100 dark:bg-neutral-800 rounded-box w-52 mt-2 z-50">
             <% if Current.user&.admin? %>
               <li><%= link_to avo.root_path, class: "text-neutral-800 dark:text-neutral-200" do %>Admin<% end %></li>
               <li><%= link_to mission_control_jobs_path, class: "text-neutral-800 dark:text-neutral-200" do %>Jobs<% end %></li>
               <li><%= link_to "Upload Playlists", avo.new_resources_playlist_path, class: "text-neutral-800 dark:text-neutral-200" %></li>
             <% end %>
-            <li><%= link_to "Edit", edit_registration_path(Current.user), class: "text-neutral-800 dark:text-neutral-200", data: { turbo_frame: "modal" } %></li>
-            <li><%= link_to "Devices & Sessions", sessions_path, class: "text-neutral-800 dark:text-neutral-200", data: { turbo_frame: "modal" } %></li>
-            <li><%= link_to "Activity Log", authentications_events_path, class: "text-neutral-800 dark:text-neutral-200", data: { turbo_frame: "modal" } %></li>
+            <li><%= link_to "Edit", edit_registration_path(Current.user), class: " text-neutral-800 dark:text-neutral-200", data: { turbo_frame: "modal" } %></li>
+            <!--<li><%#= link_to "Devices & Sessions", sessions_path, class: "text-neutral-800 dark:text-neutral-200", data: { turbo_frame: "modal" } %></li>-->
+            <!--<li><%#= link_to "Activity Log", authentications_events_path, class: "text-neutral-800 dark:text-neutral-200", data: { turbo_frame: "modal" } %></li>-->
             <li><%= link_to Current.session, "data-turbo-method": :delete, id: :sign_out, class: "text-neutral-800 hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-700 rounded-b-lg" do %>Sign Out<% end %></li>
           </ul>
         </li>
       <% end %>
       <% signed_out do %>
         <li>
-          <%= link_to "Login", sign_in_path, class: "button", data: { turbo_frame: "modal" } %>
+          <%= link_to "Login", sign_in_path, class: "btn btn-primary", data: { turbo_frame: "modal" } %>
         </li>
       <% end %>
     </ul>

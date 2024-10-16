@@ -2,5 +2,13 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-@import "./fonts";
+@import "./buttons";
 @import "./components/form.css";
+
+.turbo-progress-bar {
+  background-color: oklch(0.6569 0.196 275.75);
+}
+
+.turbo-progress-bar::before {
+  background-color: oklab(0.59121 0.0176732 -0.175512);
+}

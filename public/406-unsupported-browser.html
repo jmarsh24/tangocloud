@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>500 - Internal Server Error | Ruby Video</title>
+  <title>406 - Browser Not Supported | Ruby Video</title>
   <style>
     /* Reset some default styling */
     * {
@@ -28,20 +28,15 @@
     }
 
     h1 {
-      font-size: 8rem;
+      font-size: 3rem;
       color: #D63B33;
       /* Primary red */
     }
 
-    h2 {
-      font-size: 2rem;
-      margin: 20px 0;
-    }
-
     p {
-      font-size: 1rem;
+      font-size: 1.2rem;
       color: #666;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
 
     a {
@@ -62,61 +57,27 @@
       /* Darker purple on hover */
     }
 
-    .btn-home {
+    .btn-support {
       margin-top: 20px;
-    }
-
-    /* Dark Mode Styles */
-    .dark body {
-      background-color: #000000;
-      /* Dark background */
-      color: #E2E8F0;
-      /* Light text */
-    }
-
-    .dark h1 {
-      color: #F87171;
-      /* Lighter red in dark mode */
-    }
-
-    .dark h2 {
-      color: #F1F5F9;
-      /* Light text */
-    }
-
-    .dark p {
-      color: #94A3B8;
-      /* Muted text in dark mode */
-    }
-
-    .dark a {
-      background-color: oklch(0.6569 0.196 275.75);
-      /* Light blue button in dark mode */
-      color: #fff;
-    }
-
-    .dark a:hover {
-      background-color: oklab(0.59121 0.0176732 -0.175512);
-      /* Darker blue on hover */
     }
 
     @media (max-width: 768px) {
       h1 {
-        font-size: 6rem;
+        font-size: 2rem;
       }
 
-      h2 {
-        font-size: 1.5rem;
+      p {
+        font-size: 1rem;
       }
     }
 
     @media (max-width: 480px) {
       h1 {
-        font-size: 4rem;
+        font-size: 1.8rem;
       }
 
-      h2 {
-        font-size: 1.2rem;
+      p {
+        font-size: 0.9rem;
       }
     }
   </style>
@@ -124,10 +85,9 @@
 
 <body>
   <div class="container">
-    <h1>500</h1>
-    <h2>Oops! Something went wrong</h2>
-    <p>There seems to be an issue with our server. Please try again later.</p>
-    <a href="/" class="btn-home">Go Back to Home</a>
+    <h1>Your browser is not supported.</h1>
+    <p>Please upgrade your browser to continue using Ruby Video.</p>
+    <a href="https://www.whatismybrowser.com/" target="_blank" class="btn-support">Check Supported Browsers</a>
   </div>
 </body>
 

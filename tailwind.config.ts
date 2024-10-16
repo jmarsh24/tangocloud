@@ -1,5 +1,4 @@
 module.exports = {
-  darkMode: 'class',
   content: [
     './app/views/**/*.html.erb',
     './app/components/**/*',
@@ -16,9 +15,5 @@ module.exports = {
   },
   plugins: [
     require("daisyui"),
-    require('@tailwindcss/forms'),
-    ],
-    safelist: [
-    'form-error'
-  ]
+    ]
 };

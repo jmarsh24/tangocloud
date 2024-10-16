@@ -15,8 +15,12 @@ class Identity::PasswordResetsController < ApplicationController
   end
 
   def create
-    @user = User.find_by(email: params[:email], verified: true)
-    send_password_reset_email
+    @user = User.find_by(email: params[:email])
+
+    if @user.present?
+      send_password_reset_email
+    end
+
     flash[:modal_notice] = "Check your email for reset instructions."
     redirect_to(sign_in_path)
   end
