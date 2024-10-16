@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "new-session" do %>
-  <div class="flex flex-col gap-16 py-8">
+  <div class="flex flex-col gap-16 py-8 max-w-md mx-auto">
     <%= inline_svg_tag("logos/tangocloud-logo-with-text.svg", class: "w-36 h-auto mx-auto dark:fill-neutral-100") %>
     <%= form_with(url: identity_password_reset_path) do |form| %>
       <div class="form-control space-y-4">
