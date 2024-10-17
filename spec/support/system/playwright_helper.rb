@@ -19,6 +19,5 @@ module CupriteHelper
 end
 
 RSpec.configure do |config|
-  # config.include Capybara::Screenshot::Diff::TestMethods, type: :system
   config.include CupriteHelper, type: :system
 end
