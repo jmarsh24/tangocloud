@@ -21,7 +21,7 @@ class SessionsController < ApplicationController
 
       respond_to do |format|
         format.turbo_stream do
-          render turbo_stream: turbo_stream.redirect_to(root_path)
+          render turbo_stream: turbo_stream.redirect_to(root_path, notice: "Welcome! You have signed in successfully")
         end
       end
     else

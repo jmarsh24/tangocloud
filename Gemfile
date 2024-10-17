@@ -73,8 +73,6 @@ gem "sentry-rails"
 gem "sentry-ruby"
 
 group :development, :test do
-  gem "capybara"
-  gem "capybara-playwright-driver"
   gem "debug", platforms: %i[mri windows], require: "debug/prelude"
   gem "i18n-tasks"
   gem "rack_session_access"
@@ -111,4 +109,6 @@ end
 group :test do
   gem "rspec-retry"
   gem "webmock"
+  gem "capybara"
+  gem "capybara-playwright-driver"
 end

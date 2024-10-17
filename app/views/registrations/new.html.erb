@@ -6,7 +6,7 @@
         <div>
           <label class="input input-bordered flex items-center gap-2 <%= error_class(@user, :email) %>">
             <%= heroicon("envelope", variant: :solid) %>
-            <%= form.email_field :email, id: "email-address", value: @user.email, required: true, autofocus: true, autocomplete: "email", placeholder: "Email", class: "grow" %>
+            <%= form.email_field :email, value: @user.email, required: true, autofocus: true, autocomplete: "email", placeholder: "Email", class: "grow" %>
             <%= inline_errors_for(@user, :email) %>
           </label>
         </div>

@@ -6,6 +6,7 @@
     </div>
     <%= form_with(url: identity_password_reset_path, method: :patch) do |form| %>
       <%= form.hidden_field :sid, value: params[:sid] %>
+      <%= form.hidden_field :email, value: @user&.email %>
       <div class="form-control space-y-4">
         <div>
           <label class="input input-bordered flex items-center gap-2 <%= error_class(@user, :password) %>">

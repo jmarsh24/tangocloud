@@ -1,6 +1,8 @@
 require "rails_helper"
 require "rack_session_access/capybara"
 
+Dir[Rails.root.join("spec/support/system/*.rb")].sort.each { |f| require f }
+
 RSpec.configure do |config|
   config.before(:each, type: :system) do
     driven_by Capybara.javascript_driver
