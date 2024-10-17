@@ -1,8 +1,18 @@
 <%= ui_dropdown align: :end, content_classes: "mt-5 shadow-xl", id: "user_navbar_toggle" do |c| %>
-    <% if Current&.user&.avatar.present? %>
-      <%= image_tag(Current.user.avatar, alt: "User Avatar", class: "w-10 h-10 rounded-full object-cover") %>
-    <% else %>
-      <%= heroicon("user-circle", variant: :solid, size: :xl, class: "fill-neutral-300 dark:fill-neutral-400") %>
+    <% c.with_toggle_open do %>
+      <% if Current&.user&.avatar.present? %>
+        <%= image_tag(Current.user.avatar, alt: "User Avatar", class: "w-10 h-10 rounded-full object-cover") %>
+      <% else %>
+        <%= heroicon("user-circle", variant: :solid, size: :xl, class: "fill-neutral-300 dark:fill-neutral-400") %>
+      <% end %>
+    <% end %>
+
+    <% c.with_toggle_close do %>
+      <% if Current&.user&.avatar.present? %>
+        <%= image_tag(Current.user.avatar, alt: "User Avatar", class: "w-10 h-10 rounded-full object-cover") %>
+      <% else %>
+        <%= heroicon("user-circle", variant: :solid, size: :xl, class: "fill-neutral-300 dark:fill-neutral-400") %>
+      <% end %>
     <% end %>
     <% c.with_menu_item_link_to "Edit", edit_registration_path(Current.user), data: {turbo_frame: "modal"} %>
     <% if Current.user %>
