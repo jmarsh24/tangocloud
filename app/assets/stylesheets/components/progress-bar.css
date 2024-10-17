@@ -1,0 +1,5 @@
+@layer components {
+  .turbo-progress-bar {
+    @apply bg-primary
+  }
+}

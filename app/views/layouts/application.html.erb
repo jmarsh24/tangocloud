@@ -3,8 +3,8 @@
   <%= render "components/head" %>
   <body class="flex min-h-full flex-col font-circular dark">
     <%= render "shared/navbar" %>
-    <%= render "shared/flash" %>
-    <main class="grow dark:bg-black">
+    <%= render "shared/flashes" %>
+    <main class="flex grow dark:bg-black justify-center">
       <%= yield %>
     </main>
     <%= render "shared/footer" %>
