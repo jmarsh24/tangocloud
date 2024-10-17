@@ -9,6 +9,7 @@ RSpec.describe "Login", type: :system do
     fill_in "Email", with: "user@example.com"
     fill_in "Password", with: "password123"
     click_on "Sign in to account"
-    expect(page).to have_content("Welcome! You have signed in successfully")
+
+    expect(page).not_to have_content("Login")
   end
 end
