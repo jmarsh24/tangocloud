@@ -1,5 +1,5 @@
 module.exports = {
-  darkMode: 'class', // Ensure dark mode is based on a class
+  darkMode: 'class',
   content: [
     './app/views/**/*.html.erb',
     './app/components/**/*',
