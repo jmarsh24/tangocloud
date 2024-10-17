@@ -1,11 +1,11 @@
 class CreateOrchestraPeriods < ActiveRecord::Migration[7.1]
   def change
-    create_table :orchestra_periods, id: :uuid do |t|
+    create_table :orchestra_periods do |t|
       t.string :name
       t.text :description
       t.date :start_date
       t.date :end_date
-      t.references :orchestra, null: false, foreign_key: true, type: :uuid
+      t.references :orchestra, null: false, foreign_key: true
 
       t.timestamps
     end

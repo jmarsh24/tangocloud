@@ -12,10 +12,10 @@ end
 #
 # Table name: shares
 #
-#  id             :uuid             not null, primary key
-#  user_id        :uuid             not null
+#  id             :integer          not null, primary key
+#  user_id        :integer          not null
 #  shareable_type :string           not null
-#  shareable_id   :uuid             not null
+#  shareable_id   :integer          not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #

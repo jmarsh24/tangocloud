@@ -58,7 +58,7 @@ end
 #
 # Table name: people
 #
-#  id                  :uuid             not null, primary key
+#  id                  :integer          not null, primary key
 #  name                :string           default(""), not null
 #  slug                :string
 #  sort_name           :string
@@ -69,7 +69,7 @@ end
 #  bio                 :text
 #  birth_date          :date
 #  death_date          :date
-#  el_recodo_person_id :uuid
+#  el_recodo_person_id :integer
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #

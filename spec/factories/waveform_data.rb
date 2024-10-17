@@ -8,8 +8,9 @@ end
 #
 # Table name: waveform_data
 #
-#  id         :uuid             not null, primary key
-#  data       :float            default([]), not null, is an Array
+#  id         :integer          not null, primary key
+#  data       :text             default(""), not null
+#  text       :text             default(""), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #

@@ -56,7 +56,7 @@ end
 #
 # Table name: external_catalog_el_recodo_songs
 #
-#  id                     :uuid             not null, primary key
+#  id                     :integer          not null, primary key
 #  date                   :date             not null
 #  ert_number             :integer          default(0), not null
 #  title                  :string           not null
@@ -73,8 +73,8 @@ end
 #  duration               :integer
 #  synced_at              :datetime         not null
 #  page_updated_at        :datetime
-#  orchestra_id           :uuid
+#  orchestra_id           :integer
+#  el_recodo_orchestra_id :integer
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  el_recodo_orchestra_id :uuid
 #

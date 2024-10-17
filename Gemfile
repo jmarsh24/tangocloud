@@ -6,7 +6,9 @@ gem "puma"
 gem "rails", "7.2.1"
 
 # Database
-gem "pg"
+gem "sqlite3"
+gem "activerecord-enhancedsqlite3-adapter"
+gem "litestream"
 
 # Performance
 gem "bootsnap", require: false

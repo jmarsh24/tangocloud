@@ -9,10 +9,10 @@ end
 #
 # Table name: playbacks
 #
-#  id           :uuid             not null, primary key
+#  id           :integer          not null, primary key
 #  duration     :integer          default(0), not null
-#  user_id      :uuid             not null
-#  recording_id :uuid             not null
+#  user_id      :integer          not null
+#  recording_id :integer          not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #

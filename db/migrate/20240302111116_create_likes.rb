@@ -1,8 +1,8 @@
 class CreateLikes < ActiveRecord::Migration[7.1]
   def change
-    create_table :likes, id: :uuid do |t|
-      t.references :likeable, polymorphic: true, null: false, type: :uuid
-      t.belongs_to :user, type: :uuid, foreign_key: true, null: false
+    create_table :likes do |t|
+      t.references :likeable, polymorphic: true, null: false
+      t.belongs_to :user, foreign_key: true, null: false
 
       t.timestamps
     end

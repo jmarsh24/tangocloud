@@ -1,7 +1,7 @@
 class CreateWaveformData < ActiveRecord::Migration[7.1]
   def change
-    create_table :waveform_data, id: :uuid do |t|
-      t.float :data, array: true, default: [], null: false
+    create_table :waveform_data do |t|
+      t.text :data, :text, default: "", null: false
       t.timestamps
     end
   end

@@ -16,17 +16,17 @@ end
 #
 # Table name: recordings
 #
-#  id                :uuid             not null, primary key
+#  id                :integer          not null, primary key
 #  recorded_date     :date
 #  slug              :string           not null
-#  recording_type    :enum             default("studio"), not null
+#  recording_type    :integer          default("studio"), not null
 #  playbacks_count   :integer          default(0), not null
-#  el_recodo_song_id :uuid
-#  orchestra_id      :uuid
-#  composition_id    :uuid             not null
-#  genre_id          :uuid             not null
-#  record_label_id   :uuid
-#  time_period_id    :uuid
+#  el_recodo_song_id :integer
+#  orchestra_id      :integer
+#  composition_id    :integer          not null
+#  genre_id          :integer          not null
+#  record_label_id   :integer
+#  time_period_id    :integer
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #

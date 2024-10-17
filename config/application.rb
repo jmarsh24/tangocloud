@@ -44,5 +44,8 @@ module Tangocloud
     config.mission_control.jobs.base_controller_class = "AdminController"
 
     config.host_authorization = {exclude: ->(request) { request.path == "/up" }}
+
+    config.active_job.queue_adapter = :solid_queue
+    config.solid_queue.connects_to = {database: {writing: :queue}}
   end
 end

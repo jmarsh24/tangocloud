@@ -10,9 +10,9 @@ end
 #
 # Table name: lyrics
 #
-#  id          :uuid             not null, primary key
+#  id          :integer          not null, primary key
 #  text        :text             not null
-#  language_id :uuid             not null
+#  language_id :integer          not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #

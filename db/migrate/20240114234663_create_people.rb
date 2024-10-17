@@ -1,6 +1,6 @@
 class CreatePeople < ActiveRecord::Migration[7.1]
   def change
-    create_table :people, id: :uuid do |t|
+    create_table :people do |t|
       t.string :name, null: false, default: ""
       t.string :slug
       t.string :sort_name
@@ -11,7 +11,7 @@ class CreatePeople < ActiveRecord::Migration[7.1]
       t.text :bio
       t.date :birth_date
       t.date :death_date
-      t.belongs_to :el_recodo_person, foreign_key: {to_table: :external_catalog_el_recodo_people}, type: :uuid, null: true
+      t.belongs_to :el_recodo_person, foreign_key: {to_table: :external_catalog_el_recodo_people}, null: true
 
       t.timestamps
     end

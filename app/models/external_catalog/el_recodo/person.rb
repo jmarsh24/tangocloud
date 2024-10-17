@@ -24,12 +24,12 @@ end
 #
 # Table name: external_catalog_el_recodo_people
 #
-#  id             :uuid             not null, primary key
+#  id             :integer          not null, primary key
 #  name           :string           default(""), not null
 #  birth_date     :date
 #  death_date     :date
 #  real_name      :string
-#  nicknames      :string           is an Array
+#  nicknames      :string           default("[]"), not null
 #  place_of_birth :string
 #  path           :string
 #  synced_at      :datetime         not null

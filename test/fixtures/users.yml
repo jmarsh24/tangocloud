@@ -9,9 +9,9 @@ lazaro_nixon:
 #
 # Table name: users
 #
-#  id              :uuid             not null, primary key
-#  email           :citext           not null
-#  username        :citext
+#  id              :integer          not null, primary key
+#  email           :text             not null
+#  username        :text
 #  password_digest :string           not null
 #  provider        :string
 #  uid             :string

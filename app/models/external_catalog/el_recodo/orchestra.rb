@@ -21,7 +21,7 @@ end
 #
 # Table name: external_catalog_el_recodo_orchestras
 #
-#  id         :uuid             not null, primary key
+#  id         :integer          not null, primary key
 #  name       :string           default(""), not null
 #  path       :string           default(""), not null
 #  created_at :datetime         not null

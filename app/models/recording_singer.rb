@@ -7,9 +7,9 @@ end
 #
 # Table name: recording_singers
 #
-#  id           :uuid             not null, primary key
-#  recording_id :uuid             not null
-#  person_id    :uuid             not null
+#  id           :integer          not null, primary key
+#  recording_id :integer          not null
+#  person_id    :integer          not null
 #  soloist      :boolean          default(FALSE), not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null

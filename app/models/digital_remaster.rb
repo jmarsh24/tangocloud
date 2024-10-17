@@ -15,17 +15,17 @@ end
 #
 # Table name: digital_remasters
 #
-#  id                :uuid             not null, primary key
+#  id                :integer          not null, primary key
 #  duration          :integer          default(0), not null
 #  bpm               :integer
 #  external_id       :string
 #  replay_gain       :decimal(5, 2)
 #  peak_value        :decimal(8, 6)
 #  tango_cloud_id    :integer          not null
-#  album_id          :uuid             not null
-#  remaster_agent_id :uuid
-#  recording_id      :uuid             not null
-#  audio_file_id     :uuid             not null
+#  album_id          :integer          not null
+#  remaster_agent_id :integer
+#  recording_id      :integer          not null
+#  audio_file_id     :integer          not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #

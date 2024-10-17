@@ -62,6 +62,9 @@ GEM
       activemodel (= 7.2.1)
       activesupport (= 7.2.1)
       timeout (>= 0.4.0)
+    activerecord-enhancedsqlite3-adapter (0.8.0)
+      activerecord (>= 7.1)
+      sqlite3 (>= 1.6)
     activestorage (7.2.1)
       actionpack (= 7.2.1)
       activejob (= 7.2.1)
@@ -374,6 +377,39 @@ GEM
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     literal (0.2.1)
+    litestream (0.11.2)
+      actionpack (>= 7.0)
+      actionview (>= 7.0)
+      activejob (>= 7.0)
+      activesupport (>= 7.0)
+      logfmt (>= 0.0.10)
+      railties (>= 7.0)
+      sqlite3
+    litestream (0.11.2-arm64-darwin)
+      actionpack (>= 7.0)
+      actionview (>= 7.0)
+      activejob (>= 7.0)
+      activesupport (>= 7.0)
+      logfmt (>= 0.0.10)
+      railties (>= 7.0)
+      sqlite3
+    litestream (0.11.2-x86_64-darwin)
+      actionpack (>= 7.0)
+      actionview (>= 7.0)
+      activejob (>= 7.0)
+      activesupport (>= 7.0)
+      logfmt (>= 0.0.10)
+      railties (>= 7.0)
+      sqlite3
+    litestream (0.11.2-x86_64-linux)
+      actionpack (>= 7.0)
+      actionview (>= 7.0)
+      activejob (>= 7.0)
+      activesupport (>= 7.0)
+      logfmt (>= 0.0.10)
+      railties (>= 7.0)
+      sqlite3
+    logfmt (0.0.10)
     logger (1.6.1)
     lograge (0.14.0)
       actionpack (>= 4)
@@ -464,7 +500,6 @@ GEM
     parser (3.3.5.0)
       ast (~> 2.4.1)
       racc
-    pg (1.5.8)
     playwright-ruby-client (1.47.0)
       concurrent-ruby (>= 1.1.6)
       mime-types (>= 3.0)
@@ -658,6 +693,16 @@ GEM
       railties (>= 7.1)
       thor (~> 1.3.1)
     sorbet-runtime (0.5.11597)
+    sqlite3 (2.1.0-aarch64-linux-gnu)
+    sqlite3 (2.1.0-aarch64-linux-musl)
+    sqlite3 (2.1.0-arm-linux-gnu)
+    sqlite3 (2.1.0-arm-linux-musl)
+    sqlite3 (2.1.0-arm64-darwin)
+    sqlite3 (2.1.0-x86-linux-gnu)
+    sqlite3 (2.1.0-x86-linux-musl)
+    sqlite3 (2.1.0-x86_64-darwin)
+    sqlite3 (2.1.0-x86_64-linux-gnu)
+    sqlite3 (2.1.0-x86_64-linux-musl)
     sshkit (1.23.1)
       base64
       net-scp (>= 1.1.2)
@@ -752,6 +797,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_storage_validations
+  activerecord-enhancedsqlite3-adapter
   acts_as_list
   annotate
   apollo_upload_server
@@ -798,13 +844,13 @@ DEPENDENCIES
   kaminari
   letter_opener
   listen
+  litestream
   lograge
   mission_control-jobs
   newrelic_rpm
   oj
   omniauth
   omniauth-rails_csrf_protection
-  pg
   progress_bar
   propshaft
   pry-rails
@@ -831,6 +877,7 @@ DEPENDENCIES
   socialization
   solid_cache
   solid_queue
+  sqlite3
   standard
   stimulus-rails
   streamio-ffmpeg

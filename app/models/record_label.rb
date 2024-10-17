@@ -8,7 +8,7 @@ end
 #
 # Table name: record_labels
 #
-#  id           :uuid             not null, primary key
+#  id           :integer          not null, primary key
 #  name         :string           not null
 #  description  :text
 #  founded_date :date

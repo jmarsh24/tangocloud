@@ -11,10 +11,10 @@ end
 #
 # Table name: audio_variants
 #
-#  id                  :uuid             not null, primary key
+#  id                  :integer          not null, primary key
 #  format              :string           not null
 #  bit_rate            :integer          default(0), not null
-#  digital_remaster_id :uuid             not null
+#  digital_remaster_id :integer          not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #

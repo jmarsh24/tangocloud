@@ -10,7 +10,7 @@ end
 #
 # Table name: remaster_agents
 #
-#  id          :uuid             not null, primary key
+#  id          :integer          not null, primary key
 #  name        :string           not null
 #  description :text
 #  url         :string

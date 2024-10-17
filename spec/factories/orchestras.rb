@@ -13,11 +13,11 @@ end
 #
 # Table name: orchestras
 #
-#  id                     :uuid             not null, primary key
+#  id                     :integer          not null, primary key
 #  name                   :string           not null
 #  sort_name              :string
 #  normalized_name        :string           default(""), not null
-#  el_recodo_orchestra_id :uuid
+#  el_recodo_orchestra_id :integer
 #  slug                   :string           not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null

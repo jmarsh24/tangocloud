@@ -22,15 +22,15 @@ end
 #
 # Table name: waveforms
 #
-#  id                  :uuid             not null, primary key
+#  id                  :integer          not null, primary key
 #  version             :integer          not null
 #  channels            :integer          not null
 #  sample_rate         :integer          not null
 #  samples_per_pixel   :integer          not null
 #  bits                :integer          not null
 #  length              :integer          not null
-#  digital_remaster_id :uuid             not null
-#  waveform_datum_id   :uuid             not null
+#  digital_remaster_id :integer          not null
+#  waveform_datum_id   :integer          not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #

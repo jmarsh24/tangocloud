@@ -1,6 +1,6 @@
 class CreateTimePeriods < ActiveRecord::Migration[7.1]
   def change
-    create_table :time_periods, id: :uuid do |t|
+    create_table :time_periods do |t|
       t.string :name, null: false, index: {unique: true}
       t.text :description
       t.integer :start_year, null: false, default: 0

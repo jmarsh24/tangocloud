@@ -14,7 +14,7 @@ end
 #
 # Table name: albums
 #
-#  id           :uuid             not null, primary key
+#  id           :integer          not null, primary key
 #  title        :string           not null
 #  description  :text
 #  release_date :date

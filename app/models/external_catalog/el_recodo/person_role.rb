@@ -11,9 +11,9 @@ end
 #
 # Table name: external_catalog_el_recodo_person_roles
 #
-#  id         :uuid             not null, primary key
-#  person_id  :uuid             not null
-#  song_id    :uuid             not null
+#  id         :integer          not null, primary key
+#  person_id  :integer          not null
+#  song_id    :integer          not null
 #  role       :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null

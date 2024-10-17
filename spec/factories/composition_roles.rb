@@ -10,10 +10,10 @@ end
 #
 # Table name: composition_roles
 #
-#  id             :uuid             not null, primary key
-#  role           :enum             not null
-#  person_id      :uuid             not null
-#  composition_id :uuid             not null
+#  id             :integer          not null, primary key
+#  role           :composition_role not null
+#  person_id      :integer          not null
+#  composition_id :integer          not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #

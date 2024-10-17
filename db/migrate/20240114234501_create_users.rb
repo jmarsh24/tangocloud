@@ -1,8 +1,8 @@
 class CreateUsers < ActiveRecord::Migration[7.2]
   def change
-    create_table :users, id: :uuid do |t|
-      t.citext :email, null: false, index: {unique: true}
-      t.citext :username, index: {unique: true}
+    create_table :users do |t|
+      t.text :email, null: false, index: {unique: true}
+      t.text :username, index: {unique: true}
       t.string :password_digest, null: false
       t.string :provider
       t.string :uid
