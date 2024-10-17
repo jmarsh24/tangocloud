@@ -45,6 +45,7 @@ module Tangocloud
 
     config.host_authorization = {exclude: ->(request) { request.path == "/up" }}
 
+    config.cache_store = :solid_cache_store
     config.active_job.queue_adapter = :solid_queue
     config.solid_queue.connects_to = {database: {writing: :queue}}
   end
