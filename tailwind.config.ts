@@ -1,4 +1,5 @@
 module.exports = {
+  darkMode: 'class', // Ensure dark mode is based on a class
   content: [
     './app/views/**/*.html.erb',
     './app/components/**/*',
@@ -14,6 +15,9 @@ module.exports = {
     },
   },
   plugins: [
-    require("daisyui"),
-    ]
+    require('daisyui'),
+  ],
+  daisyui: {
+    themes: ['dark'],
+  },
 };
