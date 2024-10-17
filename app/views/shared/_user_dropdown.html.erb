@@ -7,8 +7,8 @@
     <% c.with_menu_item_link_to "Edit", edit_registration_path(Current.user), data: {turbo_frame: "modal"} %>
     <% if Current.user %>
       <% c.with_menu_item_link_to t("sign_out"), Current.session, method: :delete, "data-turbo-method": :delete, id: :sign_out %>
-      <% c.with_menu_item_divider %>
       <% if Current.user&.admin? %>
+        <% c.with_menu_item_divider %>
         <% c.with_menu_item_link_to "Admin", avo.root_path %>
         <% c.with_menu_item_link_to t("Jobs"), mission_control_jobs_path %>
         <% c.with_menu_item_link_to t("Upload Playlists"), avo.new_resources_playlist_path %>
