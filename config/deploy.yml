@@ -7,11 +7,12 @@ image: jmarsh24/tangocloud
 # Deploy to these servers.
 servers:
   web:
-    - 37.27.221.99
+    hosts:
+      - 37.27.221.99
   # worker configuration using the `cmd` key for job processing
   job:
     hosts:
-    - 37.27.221.99
+      - 37.27.221.99
     cmd: bin/jobs
 
 # Enable SSL auto certification via Let's Encrypt (and allow for multiple apps on one server).
@@ -56,7 +57,6 @@ env:
     EL_RECODO_REQUEST_DELAY: 20
     REDIS_HOST: tangocloud-redis
     CLOUDFLARE_BUCKET: tangocloud
-    IMGPROXY_ENDPOINT: tangocloud-imgproxy
   secret:
     - RAILS_MASTER_KEY
     - POSTGRES_PASSWORD
@@ -103,37 +103,37 @@ logging:
 
 # Use accessory services (secrets come from .kamal/secrets).
 accessories:
-  db:
-    image: postgres:15
-    host: 37.27.221.99
-    env:
-      clear:
-        POSTGRES_USER: postgres
-      secret:
-        - POSTGRES_PASSWORD
-    files:
-      - config/init.sql:/docker-entrypoint-initdb.d/setup.sql
-      # - postgres/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
-    directories:
-      - data:/var/lib/postgresql/data
-  backup:
-    image: eeshugerman/postgres-backup-s3:15
-    host: 37.27.221.99
-    env:
-      clear:
-        S3_ENDPOINT: https://b23e5ff0654b18a5b20bd3016cc32b35.r2.cloudflarestorage.com/
-        S3_BUCKET: tangocloud-db-backups
-        S3_PREFIX: backups
-        S3_REGION: auto
-        SCHEDULE: "@daily"
-        BACKUP_KEEP_DAYS: 14
-        POSTGRES_HOST: tangocloud-db
-        POSTGRES_DATABASE: tangocloud_production
-        POSTGRES_USER: postgres
-      secret:
-        - POSTGRES_PASSWORD
-        - S3_ACCESS_KEY_ID
-        - S3_SECRET_ACCESS_KEY
+  # db:
+  #   image: postgres:15
+  #   host: 37.27.221.99
+  #   env:
+  #     clear:
+  #       POSTGRES_USER: postgres
+  #     secret:
+  #       - POSTGRES_PASSWORD
+  #   files:
+  #     - config/init.sql:/docker-entrypoint-initdb.d/setup.sql
+  #     # - postgres/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+  #   directories:
+  #     - data:/var/lib/postgresql/data
+  # backup:
+  #   image: eeshugerman/postgres-backup-s3:15
+  #   host: 37.27.221.99
+  #   env:
+  #     clear:
+  #       S3_ENDPOINT: https://b23e5ff0654b18a5b20bd3016cc32b35.r2.cloudflarestorage.com/
+  #       S3_BUCKET: tangocloud-db-backups
+  #       S3_PREFIX: backups
+  #       S3_REGION: auto
+  #       SCHEDULE: "@daily"
+  #       BACKUP_KEEP_DAYS: 14
+  #       POSTGRES_HOST: tangocloud-db
+  #       POSTGRES_DATABASE: tangocloud_production
+  #       POSTGRES_USER: postgres
+  #     secret:
+  #       - POSTGRES_PASSWORD
+  #       - S3_ACCESS_KEY_ID
+  #       - S3_SECRET_ACCESS_KEY
   redis:
     image: redis:7
     host: 37.27.221.99
