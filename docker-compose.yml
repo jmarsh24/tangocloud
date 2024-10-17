@@ -1,13 +1,5 @@
 services:
-  db:
-    image: postgres:15
-    restart: always
-    ports:
-      - 5432:5432
-    volumes:
-      - postgres:/var/lib/postgresql/data
-    environment:
-      POSTGRES_HOST_AUTH_METHOD: trust
+
   redis:
     image: redis
     restart: always
@@ -27,6 +19,5 @@ services:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - xpack.security.enabled=false
 volumes:
-  postgres:
   redis:
   elasticsearch:
