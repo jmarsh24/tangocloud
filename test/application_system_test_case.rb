@@ -1,38 +1,27 @@
 require "test_helper"
 
-Capybara.register_driver :my_playwright do |app|
-  Capybara::Playwright::Driver.new(app,
-    browser_type: ENV["PLAYWRIGHT_BROWSER"]&.to_sym || :chromium,
-    headless: (false unless ENV["CI"] || ENV["PLAYWRIGHT_HEADLESS"]))
-end
+Dir[Rails.root.join("spec/support/system/*.rb")].sort.each { |f| require f }
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   driven_by :my_playwright
 
-  def sign_in_as(user)
-    visit sign_in_url
-    fill_in :email, with: user.email
-    fill_in :password, with: "Secret1*3*5*"
-    click_on "Sign in"
-
-    assert_current_path root_url
-    user
+  setup do
+    page.driver.start_tracing(title: name, screenshots: true, snapshots: true)
   end
 
-  def wait_for_turbo(timeout = 2)
-    if has_css?(".turbo-progress-bar", visible: true, wait: 0.25.seconds)
-      has_no_css?(".turbo-progress-bar", wait: timeout)
+  teardown do
+    if !passed? && ENV["SCREENSHOTS"]
+      take_screenshot("failure-#{name.parameterize}")
     end
-  end
 
-  def wait_for_turbo_stream_connected(streamable: nil)
-    if streamable
-      signed_stream_name = Turbo::StreamsChannel.signed_stream_name(streamable)
-      assert_selector("turbo-cable-stream-source[connected][channel=\"Turbo::StreamsChannel\"][signed-stream-name=\"#{signed_stream_name}\"]", visible: :all)
+    if !passed?
+      trace_path = Rails.root.join("tmp/playwright/traces/#{name.parameterize}.zip")
+      page.driver.stop_tracing(path: trace_path)
+      puts "View failed trace: npx playwright show-trace #{trace_path}"
     else
-      assert_selector("turbo-cable-stream-source[connected][channel=\"Turbo::StreamsChannel\"]", visible: :all)
+      page.driver.stop_tracing
     end
   end
 end
 
-Capybara.default_max_wait_time = 5 # Set the wait time in seconds
+Capybara.default_max_wait_time = 5
