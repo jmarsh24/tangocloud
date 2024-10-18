@@ -71,5 +71,5 @@ Rails.application.configure do
   # encryption
   config.active_record.encryption.encrypt_fixtures = true
 
-  # Rails.application.routes.default_url_options = {host: "www.example.com"}
+  Rails.application.routes.default_url_options = {host: "www.example.com"}
 end
