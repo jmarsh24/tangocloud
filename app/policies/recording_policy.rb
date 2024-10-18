@@ -1,4 +1,12 @@
 class RecordingPolicy < ApplicationPolicy
+  def index?
+    admin?
+  end
+
+  def play?
+    admin?
+  end
+
   def search?
     admin?
   end

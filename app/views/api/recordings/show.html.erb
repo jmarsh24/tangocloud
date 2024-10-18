@@ -1,0 +1,11 @@
+<% meta.title = @recording.title %>
+<% meta.description = [@recording.orchestra.name, @recording&.singers.compact&.map(&:name), @recording.recorded_date.year, @recording.genre.name].compact.join(" • ") %>
+<% meta.image = @recording.digital_remaster.first&.album&.album_art&.url %>
+<% content_for :additional_head_tags do %>
+  <meta property="al:ios:url" content="<%= @deeplink_url %>" />
+  <meta property="al:ios:app_store_id" content="6476820703" />
+  <meta property="al:ios:app_name" content="tangocloud" />
+  <meta property="al:android:url" content="<%= @deeplink_url %>" />
+  <meta property="al:android:package" content="com.tangocloud" />
+  <meta property="al:android:app_name" content="TangoCloud" />
+<% end %>

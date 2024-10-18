@@ -7,7 +7,6 @@
     <main class="flex flex-col grow dark:bg-black items-center">
       <%= yield %>
     </main>
-    <%= render "shared/footer" %>
     <%= turbo_frame_tag "modal", target: "_top" %>
   </body>
 </html>

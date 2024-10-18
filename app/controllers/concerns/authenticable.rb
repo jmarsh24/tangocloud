@@ -20,6 +20,10 @@ module Authenticable
     yield if block && !signed_in?
   end
 
+  def current_user
+    Current.user
+  end
+
   private
 
   def authenticate_user!

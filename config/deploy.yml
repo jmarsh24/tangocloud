@@ -49,7 +49,7 @@ env:
   clear:
     RUBY_YJIT_ENABLE: 1
     WEB_CONCURRENCY: 2
-    RAILS_MAX_THREADS: 3
+    RAILS_MAX_THREADS: 16
     SOLID_QUEUE_IN_PUMA: true
     DB_HOST: tangocloud-db
     ELASTICSEARCH_URL: http://tangocloud-elasticsearch:9200
@@ -82,7 +82,7 @@ ssh:
 # Use a persistent storage volume.
 #
 volumes:
-  - /srv/tangocloud/synced_files/tc_tagged_library:/app/music_library
+  - /srv/tangocloud/synced_files/tc_tagged_library:/app/music
   - "app_storage:/app/storage"
 
 # Bridge fingerprinted assets, like JS and CSS, between versions to avoid
@@ -113,7 +113,7 @@ accessories:
         - POSTGRES_PASSWORD
     files:
       - config/init.sql:/docker-entrypoint-initdb.d/setup.sql
-      # - postgres/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+      # - config/postgres/production.conf:/var/lib/postgresql/data/postgresql.conf
     directories:
       - data:/var/lib/postgresql/data
   backup:
