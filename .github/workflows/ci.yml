@@ -61,10 +61,12 @@ jobs:
           - 5432:5432
         # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
       redis:
         image: redis:latest
         ports:
           - 6379:6379
+
       elasticsearch:
         image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
         ports:
@@ -78,24 +80,30 @@ jobs:
           - elasticsearch:/usr/share/elasticsearch/data
     steps:
       - uses: actions/checkout@v3
+
       - name: Checkout LFS objects
         run: git lfs pull
+
       - name: Install Vips
         run: |
           sudo apt-get update
           sudo apt-get install -y libvips42
+
       - name: Install ffmpeg
         run: sudo apt-get install --no-install-recommends -y ffmpeg
+
       - name: Install audiowaveform
         run: |
           sudo add-apt-repository -y ppa:chris-needham/ppa
           sudo apt-get update
           sudo apt-get install -y audiowaveform
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: yarn
       - name: Install yarn
+
         run: yarn install && cd native && yarn install
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
