@@ -5,7 +5,7 @@ default: &default
       recurring_tasks:
   workers:
     - queues: "*"
-      threads: 8
+      threads: 4
       processes: 8
       polling_interval: 0.1
 
