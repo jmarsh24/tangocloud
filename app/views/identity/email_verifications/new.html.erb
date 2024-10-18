@@ -1,0 +1,15 @@
+<div class="flex flex-col gap-16 py-8 max-w-md mx-auto">
+  <%= inline_svg_tag("logos/tangocloud-logo-with-text.svg", class: "w-36 h-auto mx-auto dark:fill-neutral-100") %>
+  <%= turbo_frame_tag "form_frame" do %>
+    <h2>Verify Your Email</h2>
+    <%= form_with(url: identity_email_verification_path) do |form| %>
+      <label for="email" class="input input-bordered flex items-center gap-2">
+        <%= heroicon("envelope", variant: :solid) %>
+        <%= form.email_field :email, value: @email, required: true, autofocus: true, class: "grow", placeholder: "Email", id: "email" %>
+      </label>
+      <div class="flex justify-center mt-4">
+        <%= form.submit "Send password reset email", class: "link link-underline" %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

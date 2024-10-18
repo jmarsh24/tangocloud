@@ -20,21 +20,23 @@ class SessionsController < ApplicationController
       cookies.signed.permanent[:session_token] = {value: @session.id, httponly: true}
 
       respond_to do |format|
+        format.html do
+          redirect_to(root_path, notice: "Welcome! You have signed in successfully")
+        end
         format.turbo_stream do
-          render turbo_stream: turbo_stream.redirect_to(root_path, notice: "Welcome! You have signed in successfully")
+          render turbo_stream: turbo_stream.redirect_to(root_path)
         end
       end
     else
       @session = Session.new
       @session.errors.add(:base, "The email or password is incorrect")
-      @email_hint = params[:email]
       render :new, status: :unprocessable_entity
     end
   end
 
   def destroy
     @session.destroy
-    redirect_to(root_path)
+    redirect_to(root_path, notice: "You have signed out successfully")
   end
 
   private

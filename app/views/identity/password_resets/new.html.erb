@@ -1,26 +1,27 @@
 <div class="flex flex-col gap-16 py-8 max-w-md mx-auto">
   <%= inline_svg_tag("logos/tangocloud-logo-with-text.svg", class: "w-36 h-auto mx-auto dark:fill-neutral-100") %>
-  <%= form_with(url: identity_password_reset_path) do |form| %>
-    <div class="flex flex-col justify-center h-12">
-      Forgot your password?
-      <% if flash[:modal_notice] %>
-        <div class="text-neutral-700 dark:text-neutral-300 rounded-md shadow-sm relative transition-colors duration-300 ease-in-out" role="alert">
-          <span class="block sm:inline"><%= flash[:modal_notice] %></span>
+  <%= turbo_frame_tag "form_frame" do %>
+    <%= form_with(url: identity_password_reset_path) do |form| %>
+      <div class="flex flex-col justify-center h-12">
+        Forgot your password?
+        <% if flash[:modal_notice] %>
+          <div class="text-neutral-700 dark:text-neutral-300 rounded-md shadow-sm relative transition-colors duration-300 ease-in-out" role="alert">
+            <span class="block sm:inline"><%= flash[:modal_notice] %></span>
+          </div>
+        <% end %>
+      </div>
+      <div class="form-control space-y-4">
+        <label for="email" class="input input-bordered flex items-center gap-2">
+          <%= heroicon("envelope", variant: :solid) %>
+          <%= form.email_field :email, required: true, autofocus: true, class: "grow", placeholder: "Email", id: "email" %>
+        </label>
+        <div class="flex justify-center mt-4">
+          <%= form.submit "Send password reset email", class: "btn btn-primary btn-block" %>
         </div>
-      <% end %>
-    </div>
-    <div class="form-control space-y-4">
-      <label for="email" class="input input-bordered flex items-center gap-2">
-        <%= heroicon("envelope", variant: :solid) %>
-        <%= form.email_field :email, required: true, autofocus: true, class: "grow", placeholder: "Email", id: "email" %>
-      </label>
-      <div class="flex justify-center mt-4">
-        <%= form.submit "Send password reset email", class: "btn btn-primary btn-block" %>
+        <div class="flex justify-center gap-4 py-2">
+          <%= link_to "Sign in", sign_in_path, class: "link", data: { turbo_frame: "modal" } %>
+        </div>
       </div>
-      <div class="flex justify-center gap-4 py-2">
-        <%= link_to "Sign in", sign_in_path, class: "link", data: { turbo_frame: "modal" } %>
-      </div>
-    </div>
+    <% end %>
   <% end %>
 </div>
-

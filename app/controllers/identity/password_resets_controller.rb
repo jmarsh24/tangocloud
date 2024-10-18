@@ -15,20 +15,19 @@ class Identity::PasswordResetsController < ApplicationController
   end
 
   def create
-    @user = User.find_by(email: params[:email])
-
+    @user = User.find_by(email: params[:email], verified: true)
     if @user.present?
       send_password_reset_email
+      redirect_to sign_in_path, notice: "Check your email for reset instructions"
+    else
+      redirect_to new_identity_email_verification_path(email: params[:email])
     end
-
-    flash[:modal_notice] = "Check your email for reset instructions."
-    redirect_to(sign_in_path)
   end
 
   def update
     if @user.update(user_params)
       flash[:modal_notice] = "Your password was reset successfully. Please sign in"
-      redirect_to sign_in_path
+      redirect_to sign_in_path, notice: "Your password was reset successfully. Please sign in"
     else
       render :edit, status: :unprocessable_entity
     end

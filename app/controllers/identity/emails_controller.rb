@@ -1,5 +1,6 @@
 class Identity::EmailsController < ApplicationController
   before_action :set_user
+  skip_after_action :verify_authorized, :verify_policy_scoped
 
   def edit
   end

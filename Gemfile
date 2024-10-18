@@ -37,8 +37,8 @@ gem "pundit"
 gem "rack-cors"
 gem "rails-i18n"
 gem "socialization"
-gem "solid_cache"
 gem "translate_client"
+gem "solid_cache"
 gem "solid_queue"
 gem "mission_control-jobs"
 gem "streamio-ffmpeg"
@@ -80,7 +80,7 @@ group :development, :test do
   gem "rubocop-graphql", require: false
   gem "rubocop-rails", require: false
   gem "rubocop-rspec", require: false
-  gem "standard"
+  gem "standardrb", "~> 1.0", require: false
   gem "ruby-lsp-rspec", require: false
   gem "faker"
   gem "factory_bot_rails"
@@ -93,8 +93,6 @@ group :development do
   gem "authentication-zero"
   gem "annotate"
   gem "chusaku"
-  gem "guard"
-  gem "guard-rspec"
   gem "listen"
   gem "letter_opener"
   gem "pry-rails"
@@ -104,6 +102,7 @@ group :development do
   gem "database_validations"
   gem "database_consistency", require: false
   gem "ruby-progressbar"
+  gem "error_highlight", platforms: [:ruby]
 end
 
 group :test do
@@ -111,4 +110,6 @@ group :test do
   gem "webmock"
   gem "capybara"
   gem "capybara-playwright-driver"
+  gem "rails-controller-testing"
+  gem "vcr"
 end

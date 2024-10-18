@@ -19,8 +19,11 @@ class RegistrationsController < ApplicationController
       send_email_verification
 
       respond_to do |format|
+        format.html do
+          redirect_to root_path, notice: "Welcome! You have signed up successfully"
+        end
         format.turbo_stream do
-          render turbo_stream: turbo_stream.redirect_to(root_path, notice: "Welcome! You have signed up successfully")
+          render turbo_stream: turbo_stream.redirect_to(root_path)
         end
       end
     else
