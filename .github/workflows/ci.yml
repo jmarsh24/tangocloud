@@ -1,10 +1,15 @@
 name: test
 
-on: [push]
+on:
+  pull_request:
+    branches: ["*"]
+  push:
+    branches: [main]
+
+concurrency: ci-${{ github.ref }}
 
 env:
   RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-  TZ: Europe/Berlin
   RAILS_ENV: test
   DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/app
   REDIS_URL: redis://127.0.0.1:6379
@@ -12,6 +17,38 @@ env:
   ELASTICSEARCH_URL: 127.0.0.1:9200
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler: default
+          bundler-cache: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Lint Ruby
+        run: bundle exec rubocop
+
+      - name: Generate GraphQL Types
+        run: yarn graphql:types && cd native && yarn graphql:types
+
+      - name: Lint Api
+        run: yarn lint
+      # - name: Lint Native App
+      # add this once we are ready to lint the native app
+      # run: cd native && yarn lint
+
   build:
     name: Test
     runs-on: ubuntu-latest
@@ -66,22 +103,23 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-      - name: Lint Ruby
-        run: bundle exec rubocop
+
       - name: Create PG Database
         run: bundle exec rake db:create db:migrate
+
       - name: Check Model Annotations
         run: bundle exec annotate --models && bin/git_tracked_are_unmodified
-      - name: Generate GraphQL Types
-        run: yarn graphql:types && cd native && yarn graphql:types
-      - name: Lint Api
-        run: yarn lint
-      # - name: Lint Native App
-      # add this once we are ready to lint the native app
-      # run: cd native && yarn lint
+
       - name: Install Playwright Browsers
         run: npx --yes playwright install --with-deps chromium
+
       - name: Build and test with Rake
         run: bundle exec rspec --format documentation
+
+      - name: Run tests
+        run: |
+          bin/rails test
+          bin/rails test:system
+
       - name: Scan for security vulnerabilities
         run: bin/brakeman
