@@ -1,5 +1,5 @@
 <% if @recordings.present? %>
-  <div class="flex flex-col gap-4 py-4 md:py-16">
+  <div class="flex flex-col gap-4 py-4 px-2 md:px-0 md:py-16">
     <%= render @recordings %>
   </div>
   <%= turbo_frame_tag "music-player" %>
