@@ -19,7 +19,7 @@
     </div>
     <div class="flex justify-center items-center w-full md:max-w-sm 2xl:absolute 2xl:left-1/2 2xl:transform 2xl:-translate-x-1/2">
       <audio controls class="w-full max-w-xl">
-        <source src="<%= url_for(recording.digital_remasters.first.audio_variants.first.audio_file) %>" type="audio/mpeg">
+        <source src="<%= rails_storage_redirect_url(recording.digital_remasters.first.audio_variants.first.audio_file) %>" type="audio/mpeg">
         Your browser does not support the audio element.
       </audio>
     </div>
