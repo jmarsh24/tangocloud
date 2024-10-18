@@ -2,17 +2,20 @@ require "application_system_test_case"
 
 class PasswordsTest < ApplicationSystemTestCase
   setup do
-    @user = sign_in_as(users(:lazaro_nixon))
+    @user = users(:lazaro_nixon)
   end
 
   test "updating the password" do
-    click_on "Change password"
+    sign_in_as(@user)
 
-    fill_in "Current password", with: "Secret1*3*5*"
-    fill_in "New password", with: "Secret6*4*2*"
-    fill_in "Confirm new password", with: "Secret6*4*2*"
-    click_on "Save changes"
+    find("#user_navbar_toggle").click
+    find("a", text: "Edit").click
 
-    assert_text "Your password has been changed"
+    fill_in "username", with: "lazaronixon"
+    fill_in "password", with: "Secret6*4*2*"
+    fill_in "Confirm Password", with: "Secret6*4*2*"
+    click_on "Update"
+
+    assert_text "Your profile has been updated successfully."
   end
 end
