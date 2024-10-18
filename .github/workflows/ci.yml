@@ -40,11 +40,9 @@ jobs:
       - name: Lint Ruby
         run: bundle exec rubocop
 
-      - name: Generate GraphQL Types
-        run: yarn graphql:types && cd native && yarn graphql:types
-
       - name: Lint Api
         run: yarn lint
+
       # - name: Lint Native App
       # add this once we are ready to lint the native app
       # run: cd native && yarn lint
