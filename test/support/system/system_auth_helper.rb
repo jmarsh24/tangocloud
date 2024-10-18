@@ -1,4 +1,4 @@
-module AuthHelper
+module SystemAuthHelper
   def sign_in_as(user)
     visit root_path
     click_on "Login"

@@ -13,6 +13,7 @@ VCR.configure do |c|
   # c.ignore_hosts "chromedriver.storage.googleapis.com", "googlechromelabs.github.io", "edgedl.me.gvt1.com"
 end
 class ActiveSupport::TestCase
+  include AuthHelper
   # setup do
   #   @@once ||= begin
   #     MeiliSearch::Rails::Utilities.reindex_all_models

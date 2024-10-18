@@ -9,7 +9,7 @@ end
 Dir[Rails.root.join("test/support/system/*.rb")].sort.each { |f| require f }
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
-  include AuthHelper
+  include SystemAuthHelper
   include TurboHelper
 
   driven_by :my_playwright
