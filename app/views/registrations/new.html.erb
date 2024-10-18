@@ -1,6 +1,7 @@
-<%= turbo_frame_tag "new-registration" do %>
-  <div class="flex flex-col gap-16 py-8">
-    <%= inline_svg_tag("logos/tangocloud-logo-with-text.svg", class: "w-36 h-auto mx-auto dark:fill-neutral-100") %>
+
+<div class="flex flex-col gap-16 py-8">
+  <%= inline_svg_tag("logos/tangocloud-logo-with-text.svg", class: "w-36 h-auto mx-auto dark:fill-neutral-100") %>
+  <%= turbo_frame_tag "form_frame" do %>
     <%= form_with(url: sign_up_path) do |form| %>
       <div class="form-control space-y-4">
         <div>
@@ -32,5 +33,5 @@
         </div>
       </div>
     <% end %>
-  </div>
-<% end %>
+  <% end %>
+</div>

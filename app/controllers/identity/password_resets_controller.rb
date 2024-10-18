@@ -1,4 +1,7 @@
 class Identity::PasswordResetsController < ApplicationController
+  include RemoteModal
+  allowed_remote_modal_actions :new, :edit
+
   skip_before_action :authenticate_user!
   skip_after_action :verify_authorized, :verify_policy_scoped
 
@@ -17,7 +20,7 @@ class Identity::PasswordResetsController < ApplicationController
       send_password_reset_email
       redirect_to sign_in_path, notice: "Check your email for reset instructions"
     else
-      redirect_to new_identity_password_reset_path, alert: "You can't reset your password until you verify your email"
+      redirect_to new_identity_email_verification_path(email: params[:email])
     end
   end
 

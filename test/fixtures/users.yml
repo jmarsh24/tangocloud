@@ -3,17 +3,19 @@
 #
 # Table name: users
 #
-#  id              :integer          not null, primary key
-#  email           :string           not null
+#  id              :uuid             not null, primary key
+#  email           :citext           not null
+#  username        :citext
 #  password_digest :string           not null
-#  verified        :boolean          default(FALSE), not null
+#  provider        :string
+#  uid             :string
 #  admin           :boolean          default(FALSE), not null
+#  approved_at     :datetime
+#  confirmed_at    :datetime
+#  verified        :boolean          default(FALSE), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  name            :string
-#  github_handle   :string
 #
-# rubocop:enable Layout/LineLength
 
 one:
   email: one@rubyvideo.dev

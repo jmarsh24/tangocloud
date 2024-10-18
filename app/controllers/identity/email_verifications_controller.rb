@@ -1,8 +1,12 @@
 class Identity::EmailVerificationsController < ApplicationController
-  skip_before_action :authenticate_user!, only: :show
+  skip_before_action :authenticate_user!, only: [:new, :show, :create]
   skip_after_action :verify_authorized, :verify_policy_scoped
 
   before_action :set_user, only: :show
+
+  def new
+    @email = params[:email]
+  end
 
   def show
     @user.update! verified: true
@@ -10,7 +14,12 @@ class Identity::EmailVerificationsController < ApplicationController
   end
 
   def create
+    if params[:email]
+      resend_email_verification
+    end
+
     send_email_verification
+    flash[:modal_notice] = "We sent a verification email to your email address"
     redirect_to root_path, notice: "We sent a verification email to your email address"
   end
 
@@ -24,5 +33,9 @@ class Identity::EmailVerificationsController < ApplicationController
 
   def send_email_verification
     UserMailer.with(user: Current.user).email_verification.deliver_later
+  end
+
+  def resend_email_verification
+    UserMailer.with(user: User.find_by(email: params[:email])).email_verification.deliver_later
   end
 end

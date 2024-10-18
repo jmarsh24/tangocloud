@@ -25,24 +25,23 @@ class Identity::PasswordResetsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to sign_in_url
   end
 
-  test "should not send a password reset email to a nonexistent email" do
+  test "should not send a password reset email to an invalid email" do
     assert_no_enqueued_emails do
       post identity_password_reset_url, params: {email: "invalid_email@hey.com"}
     end
-
-    assert_redirected_to new_identity_password_reset_url
-    assert_equal "You can't reset your password until you verify your email", flash[:alert]
   end
 
   test "should not send a password reset email to a unverified email" do
     @user.update! verified: false
 
     assert_no_enqueued_emails do
-      post identity_password_reset_url, params: {email: @user.email}
+      post identity_password_reset_url, params: {email: "lazaronixon@hotmail.com"}
     end
 
-    assert_redirected_to new_identity_password_reset_url
-    assert_equal "You can't reset your password until you verify your email", flash[:alert]
+    assert_redirected_to new_identity_email_verification_url(email: "lazaronixon@hotmail.com")
+    follow_redirect!
+
+    assert_select "h2", text: /verify your email/i
   end
 
   test "should update password" do
