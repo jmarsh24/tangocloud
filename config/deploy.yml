@@ -113,7 +113,7 @@ accessories:
         - POSTGRES_PASSWORD
     files:
       - config/init.sql:/docker-entrypoint-initdb.d/setup.sql
-      - config/postgres/production.conf:data/postgresql.conf
+      - config/postgres/production.conf:/data/postgresql.conf
     directories:
       - data:/var/lib/postgresql/data
   backup:
