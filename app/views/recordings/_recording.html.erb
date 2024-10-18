@@ -1,0 +1,22 @@
+<div class="flex gap-4 items-center">
+  <%= form_with url: player_path, class: "flex gap-4" do |form| %>
+    <%= form.hidden_field :recording_id, value: recording.id %>
+    <%= button_tag type: :submit, class: "flex gap-4 items-center" do %>
+      <%= image_tag recording.digital_remasters.first.album.album_art, class: "w-20 h-20 md:w-24 md:h-24 rounded-lg" %>
+      <div class="flex flex-col items-start">
+        <div class="text-lg font-semibold">
+          <%= recording.composition.title %>
+        </div>
+        <div class="text-sm text-gray-500">
+          <%= recording.orchestra.name %>
+          <% if recording.singers.any? %>
+            - <%= recording.singers.map(&:name).join(", ") %>
+          <% end %>
+        </div>
+        <div class="text-sm text-gray-500">
+          <%= recording.genre.name %> - <%= recording.year %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

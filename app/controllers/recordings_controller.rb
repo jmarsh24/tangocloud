@@ -1,9 +1,9 @@
 class RecordingsController < ApplicationController
-  skip_after_action :verify_authorized, :verify_policy_scoped
-  skip_before_action :authenticate_user!
+  layout "music_player"
 
-  def show
-    @recording = Recording.find(params[:id])
-    @deeplink_url = "tangocloudapp://recordings/#{params[:id]}"
+  def index
+    @recordings = policy_scope(Recording).limit(100).includes(:composition, :orchestra, :singers, :genre, digital_remasters: [audio_variants: [audio_file_attachment: :blob], album: [album_art_attachment: :blob]])
+
+    authorize Recording
   end
 end
