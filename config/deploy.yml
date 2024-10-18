@@ -148,7 +148,7 @@ accessories:
         discovery.type: single-node
         xpack.security.enabled: "false"
         ES_JAVA_OPTS: "-Xms1g -Xmx1g"
-    files:
+    # files:
       # - config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     volumes:
       - /var/lib/elasticsearch/data:/usr/share/elasticsearch/data
