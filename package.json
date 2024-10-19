@@ -17,7 +17,8 @@
     "@rails/request.js": "^0.0.11",
     "graphql": "^16.9.0",
     "stimulus-use": "^0.52.2",
-    "turbo_power": "^0.7.0"
+    "turbo_power": "^0.7.0",
+    "wavesurfer.js": "^7.8.7"
   },
   "devDependencies": {
     "@apollo/rover": "^0.26.2",
