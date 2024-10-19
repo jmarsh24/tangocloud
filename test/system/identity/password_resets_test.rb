@@ -2,7 +2,7 @@
 
 # class Identity::PasswordResetsTest < ApplicationSystemTestCase
 #   setup do
-#     @user = users(:lazaro_nixon)
+#     @user = users(:normal)
 #     @sid = @user.password_reset_tokens.create.signed_id(expires_in: 20.minutes)
 #   end
 

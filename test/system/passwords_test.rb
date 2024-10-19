@@ -2,7 +2,7 @@ require "application_system_test_case"
 
 class PasswordsTest < ApplicationSystemTestCase
   setup do
-    @user = users(:lazaro_nixon)
+    @user = users(:normal)
   end
 
   test "updating the password" do
@@ -11,7 +11,7 @@ class PasswordsTest < ApplicationSystemTestCase
     find("#user_navbar_toggle").click
     find("a", text: "Edit").click
 
-    fill_in "username", with: "lazaronixon"
+    fill_in "username", with: "user"
     fill_in "password", with: "Secret6*4*2*"
     fill_in "Confirm Password", with: "Secret6*4*2*"
     click_on "Update"
