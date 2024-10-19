@@ -27,6 +27,7 @@ export default class extends Controller {
     requestAnimationFrame(() => {
 
       const canvas = document.createElement("canvas");
+      canvas.height = 100;
       const ctx = canvas.getContext("2d");
 
       const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height * 1.35);
