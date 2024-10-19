@@ -29,8 +29,7 @@
       </div>
       <div class="flex items-center gap-4">
         <audio data-peaks-target="audio" class="hidden">
-          <source src=<%= url_for(recording.digital_remasters.first.audio_variants.first.audio_file) %> />
-          <source src=<%= url_for(recording.digital_remasters.first.audio_variants.first.audio_file) %> />
+          <source src=<%= url_for(recording.digital_remasters.first.audio_variants.first.audio_file) %> type="audio/mpeg" />
         </audio>
         <button
           data-action="peaks#playPause"
