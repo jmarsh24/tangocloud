@@ -20,6 +20,8 @@ class Orchestra < ApplicationRecord
 
   before_save :set_normalized_name
 
+  scope :ordered_by_recordings, -> { order(recordings_count: :desc) }
+
   scope :search_import, -> { includes(:orchestra_periods, :orchestra_roles, :singers, :genres) }
 
   def self.find_or_create_by_normalized_name!(name)

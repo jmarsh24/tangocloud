@@ -1,0 +1,10 @@
+<%= link_to orchestra, class: "flex gap-4 items-center p-4 bg-white dark:bg-neutral-800 rounded-lg shadow-lg hover:bg-gray-100 dark:hover:bg-neutral-700 transition duration-300" do %>
+  <% if orchestra.image.attached? %>
+    <%= image_tag orchestra.image, class: "w-20 h-20 md:w-24 md:h-24 rounded-lg object-cover", loading: "lazy" %>
+  <% else %>
+    <%= heroicon "user-circle", variant: :solid, class: "w-20 h-20 md:w-24 md:h-24 fill-neutral-300" %>
+  <% end %>
+  <div class="flex flex-col">
+    <h2 class="text-lg font-semibold text-neutral-900 dark:text-neutral-100"><%= orchestra.name %></h2>
+  </div>
+<% end %>

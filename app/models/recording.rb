@@ -4,7 +4,7 @@ class Recording < ApplicationRecord
 
   searchkick word_start: [:title, :orchestra_name, :singer_name]
 
-  belongs_to :orchestra, optional: true
+  belongs_to :orchestra, optional: true, counter_cache: true
   belongs_to :composition
   belongs_to :record_label, optional: true
   belongs_to :genre
@@ -27,6 +27,12 @@ class Recording < ApplicationRecord
   validates :recorded_date, presence: true
 
   enum :recording_type, {studio: "studio", live: "live"}
+
+  scope :with_associations, -> {
+    includes(:composition, :orchestra, :singers, :genre, digital_remasters:
+    [audio_variants: [audio_file_attachment: :blob],
+     album: [album_art_attachment: :blob]])
+  }
 
   scope :search_import, -> {
                           includes(
