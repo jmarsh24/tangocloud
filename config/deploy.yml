@@ -57,6 +57,7 @@ env:
     REDIS_HOST: tangocloud-redis
     CLOUDFLARE_BUCKET: tangocloud
     IMGPROXY_ENDPOINT: tangocloud-imgproxy
+    JOB_CONCURRENCY: 16
   secret:
     - RAILS_MASTER_KEY
     - POSTGRES_PASSWORD

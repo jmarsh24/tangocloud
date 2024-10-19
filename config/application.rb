@@ -13,9 +13,6 @@ require "action_text/engine"
 require "action_view/railtie"
 require "action_cable/engine"
 # require "rails/test_unit/railtie"
-require "mime/types"
-require "faraday"
-require "faraday/retry"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -26,6 +23,11 @@ module Tangocloud
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
 
+    # Please, add to the `ignore` list any other `lib` subdirectories that do
+    # not contain `.rb` files, or that should not be reloaded or eager loaded.
+    # Common ones are `templates`, `generators`, or `middleware`, for example.
+    config.autoload_lib(ignore: %w[assets tasks])
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
@@ -33,16 +35,8 @@ module Tangocloud
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
-    #
-    config.autoload_lib(ignore: ["assets", "tasks", "protobuf"])
 
-    config.active_storage.variant_processor = :vips
-
-    # to remove once encrytion completed
-    config.active_record.encryption.support_unencrypted_data = true
-
-    config.mission_control.jobs.base_controller_class = "AdminController"
-
-    config.host_authorization = {exclude: ->(request) { request.path == "/up" }}
+    # Don't generate system test files.
+    config.generators.system_tests = nil
   end
 end
