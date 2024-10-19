@@ -29,7 +29,6 @@ export default class extends Controller {
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
 
-      // Define waveform gradient
       const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height * 1.35);
       gradient.addColorStop(0, "#656666");
       gradient.addColorStop((canvas.height * 0.7) / canvas.height, "#656666");
@@ -38,7 +37,6 @@ export default class extends Controller {
       gradient.addColorStop((canvas.height * 0.7 + 3) / canvas.height, "#B1B1B1");
       gradient.addColorStop(1, "#B1B1B1");
 
-      // Define progress gradient
       const progressGradient = ctx.createLinearGradient(
         0,
         0,
@@ -64,7 +62,6 @@ export default class extends Controller {
       );
       progressGradient.addColorStop(1, "#F6B094");
 
-      // Create WaveSurfer instance
       this.wavesurfer = WaveSurfer.create({
         container: this.containerTarget,
         waveColor: gradient,
@@ -104,11 +101,11 @@ export default class extends Controller {
       this.wavesurfer.on("timeupdate", (currentTime) => {
         this.timeTarget.textContent = this.formatTime(currentTime);
       });
-
-      this.containerTarget.addEventListener('pointermove', (e) => {
-        this.hoverTarget.style.width = `${e.offsetX}px`;
-      });
     });
+  }
+
+  handleHover = (e) => {
+    this.hoverTarget.style.width = `${e.offsetX}px`;
   }
 
   disconnect() {
