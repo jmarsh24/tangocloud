@@ -28,8 +28,8 @@
       </div>
       <div class="flex items-center gap-4">
         <audio data-peaks-target="audio" class="hidden">
-          <source src=<%= rails_storage_redirect_url(recording.digital_remasters.first.audio_variants.first.audio_file) %> />
-          <source src=<%= rails_storage_redirect_url(recording.digital_remasters.first.audio_variants.first.audio_file) %> />
+          <source src=<%= url_for(recording.digital_remasters.first.audio_variants.first.audio_file) %> />
+          <source src=<%= url_for(recording.digital_remasters.first.audio_variants.first.audio_file) %> />
         </audio>
         <button
           data-action="peaks#playPause"
