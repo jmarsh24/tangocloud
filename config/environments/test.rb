@@ -52,4 +52,6 @@ Rails.application.configure do
   config.action_controller.raise_on_missing_callback_actions = true
 
   Rails.application.routes.default_url_options = {host: "www.example.com"}
+
+  config.active_job.queue_adapter = :test
 end
