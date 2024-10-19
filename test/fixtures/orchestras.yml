@@ -2,3 +2,17 @@ juan_darienzo:
   name: "Juan D'Arienzo y su Orquesta Típica"
   slug: "juan-darienzo-y-su-orquesta-tipica"
   normalized_name: "juan_darienzo"
+
+# == Schema Information
+#
+# Table name: orchestras
+#
+#  id                     :uuid             not null, primary key
+#  name                   :string           not null
+#  sort_name              :string
+#  normalized_name        :string           default(""), not null
+#  el_recodo_orchestra_id :uuid
+#  slug                   :string           not null
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#

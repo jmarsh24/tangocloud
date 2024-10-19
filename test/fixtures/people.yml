@@ -2,3 +2,23 @@ alberto_echague:
   name: "Alberto Echagüe"
   slug: "alberto-echague"
   normalized_name: "alberto_echague"
+
+# == Schema Information
+#
+# Table name: people
+#
+#  id                  :uuid             not null, primary key
+#  name                :string           default(""), not null
+#  slug                :string
+#  sort_name           :string
+#  nickname            :string
+#  birth_place         :string
+#  normalized_name     :string           default(""), not null
+#  pseudonym           :string
+#  bio                 :text
+#  birth_date          :date
+#  death_date          :date
+#  el_recodo_person_id :uuid
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#

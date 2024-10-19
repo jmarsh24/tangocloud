@@ -1,3 +1,16 @@
 la_cumparsita_audio_file:
   filename: la_cumparsita.mp3
   format: mp3
+
+# == Schema Information
+#
+# Table name: audio_files
+#
+#  id            :uuid             not null, primary key
+#  filename      :string           not null
+#  format        :string           not null
+#  status        :string           default("pending"), not null
+#  error_message :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#

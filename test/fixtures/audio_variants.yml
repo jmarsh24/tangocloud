@@ -2,3 +2,15 @@ la_cumparsita_audio_variant:
   format: "mp3"
   bit_rate: 320
   digital_remaster: la_cumparsita_remaster
+
+# == Schema Information
+#
+# Table name: audio_variants
+#
+#  id                  :uuid             not null, primary key
+#  format              :string           not null
+#  bit_rate            :integer          default(0), not null
+#  digital_remaster_id :uuid             not null
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#
