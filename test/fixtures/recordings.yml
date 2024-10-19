@@ -1,0 +1,27 @@
+la_cumparsita_recording:
+  composition: la_cumparsita
+  orchestra: juan_darienzo
+  genre: tango
+  recorded_date: "1937-06-19"
+  slug: "la-cumparsita"
+  recording_type: "studio"
+  playbacks_count: 0
+
+# == Schema Information
+#
+# Table name: recordings
+#
+#  id                :uuid             not null, primary key
+#  recorded_date     :date
+#  slug              :string           not null
+#  recording_type    :enum             default("studio"), not null
+#  playbacks_count   :integer          default(0), not null
+#  el_recodo_song_id :uuid
+#  orchestra_id      :uuid
+#  composition_id    :uuid             not null
+#  genre_id          :uuid             not null
+#  record_label_id   :uuid
+#  time_period_id    :uuid
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#

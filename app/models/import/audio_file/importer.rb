@@ -27,10 +27,7 @@ module Import
         progress_bar = ProgressBar.new(files_to_process.size)
 
         files_to_process.each do |file_path|
-          mime_type = Marcel::MimeType.for(File.open(file_path))
-          audio_file = ::AudioFile.create!(filename: File.basename(file_path), format: mime_type)
-          audio_file.file.attach(io: File.open(file_path), filename: File.basename(file_path))
-
+          CreateAudioFileJob.perform_later(file_path:)
           progress_bar.increment!
         end
       end

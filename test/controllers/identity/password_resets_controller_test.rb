@@ -2,7 +2,7 @@ require "test_helper"
 
 class Identity::PasswordResetsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @user = users(:lazaro_nixon)
+    @user = users(:normal)
   end
 
   test "should get new" do
@@ -35,10 +35,10 @@ class Identity::PasswordResetsControllerTest < ActionDispatch::IntegrationTest
     @user.update! verified: false
 
     assert_no_enqueued_emails do
-      post identity_password_reset_url, params: {email: "lazaronixon@hotmail.com"}
+      post identity_password_reset_url, params: {email: "user@tangocloud.app"}
     end
 
-    assert_redirected_to new_identity_email_verification_url(email: "lazaronixon@hotmail.com")
+    assert_redirected_to new_identity_email_verification_url(email: "user@tangocloud.app")
     follow_redirect!
 
     assert_select "h2", text: /verify your email/i

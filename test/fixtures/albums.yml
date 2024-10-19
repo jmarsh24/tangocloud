@@ -1,0 +1,15 @@
+la_cumparsita_album:
+  title: "La Cumparsita - D'Arienzo"
+
+# == Schema Information
+#
+# Table name: albums
+#
+#  id           :uuid             not null, primary key
+#  title        :string           not null
+#  description  :text
+#  release_date :date
+#  external_id  :string
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#

@@ -31,7 +31,7 @@ end
 #  bits                :integer          not null
 #  length              :integer          not null
 #  digital_remaster_id :uuid             not null
-#  waveform_datum_id   :uuid             not null
+#  waveform_datum_id   :uuid
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #

@@ -20,7 +20,7 @@ class Recording < ApplicationRecord
   has_many :digital_remasters, dependent: :destroy
   has_many :audio_variants, through: :digital_remasters
   has_many :lyrics, through: :composition
-  has_many :playlist_items, dependent: :destroy
+  has_many :playlist_items, as: :item, dependent: :destroy
   has_many :tandas, through: :playlist_items
   has_many :waveforms, through: :digital_remasters
 

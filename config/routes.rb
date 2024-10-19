@@ -41,10 +41,12 @@ Rails.application.routes.draw do
 
     resources :users, only: [:show, :create, :edit, :update]
     resources :audio_variants, only: [:show]
+    resources :recordings, only: [:show]
   end
 
   resources :digital_remaster, only: [:new, :create]
-  resources :recordings, only: [:show, :index]
+  resources :recordings, only: [:index]
+  resource :player, only: [:create]
 
   post "auth/facebook/data-deletion", to: "auth#facebook_data_deletion"
 
