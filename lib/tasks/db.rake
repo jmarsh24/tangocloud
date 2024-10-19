@@ -1,8 +1,10 @@
 namespace :db do
-  task :migrate do
-    # This appends, it does not redefine.
-    # Always run doc:annotate after db:migrate
-    Rake::Task["doc:annotate"].invoke
+  namespace :db do
+    task :migrate do
+      Rake::Task["db:migrate"].invoke
+
+      system("bundle exec annotate -p bottom")
+    end
   end
 
   namespace :export do
