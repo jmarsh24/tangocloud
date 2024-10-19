@@ -16,6 +16,7 @@ export default class extends Controller {
     "duration",
     "playIcon",
     "pauseIcon",
+    "hover",
   ];
   static values = {
     markers: { type: Array, default: [] },
@@ -102,6 +103,10 @@ export default class extends Controller {
 
       this.wavesurfer.on("timeupdate", (currentTime) => {
         this.timeTarget.textContent = this.formatTime(currentTime);
+      });
+
+      this.containerTarget.addEventListener('pointermove', (e) => {
+        this.hoverTarget.style.width = `${e.offsetX}px`;
       });
     });
   }
