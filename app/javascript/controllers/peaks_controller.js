@@ -24,7 +24,7 @@ export default class extends Controller {
 
   connect() {
     requestAnimationFrame(() => {
-      console.log("Connected to PeaksController");
+
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
 
@@ -38,7 +38,7 @@ export default class extends Controller {
       );
       gradient.addColorStop(
         (canvas.height * 0.7 + 2) / canvas.height,
-        "#ffffff"
+
       );
       gradient.addColorStop(
         (canvas.height * 0.7 + 3) / canvas.height,
@@ -85,7 +85,7 @@ export default class extends Controller {
       });
 
       this.regions = this.wavesurfer.registerPlugin(RegionsPlugin.create());
-      console.log("this.regions:", this.regions);
+
       this.wavesurfer.on("play", () => {
         this.playingValue = true;
       });
