@@ -71,6 +71,7 @@ export default class extends Controller {
         barRadius: 2,
         barGap: 1,
         hideScrollbar: true,
+        backend: 'MediaElement'
       });
 
       this.regions = this.wavesurfer.registerPlugin(RegionsPlugin.create());
