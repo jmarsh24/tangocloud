@@ -1,0 +1,17 @@
+la_cumparsita_audio:
+  name: audio_file
+  record_type: AudioVariant
+  record_id: <%= ActiveRecord::FixtureSet.identify(:la_cumparsita_audio_variant, :uuid) %>
+  blob_id: <%= ActiveRecord::FixtureSet.identify(:la_cumparsita_audio_blob, :uuid) %>
+
+la_cumparsita_album_art:
+  name: album_art
+  record_type: Album
+  record_id: <%= ActiveRecord::FixtureSet.identify(:la_cumparsita_album, :uuid) %>
+  blob_id: <%= ActiveRecord::FixtureSet.identify(:la_cumparsita_album_art_blob, :uuid) %>
+
+user_avatar:
+  name: avatar
+  record_type: User
+  record_id: <%= ActiveRecord::FixtureSet.identify(:one, :uuid) %>
+  blob_id: <%= ActiveRecord::FixtureSet.identify(:avatar_blob, :uuid) %>
