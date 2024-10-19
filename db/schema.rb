@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_07_07_175204) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_19_112123) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pgcrypto"
@@ -502,7 +502,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_07_07_175204) do
     t.integer "bits", null: false
     t.integer "length", null: false
     t.uuid "digital_remaster_id", null: false
-    t.uuid "waveform_datum_id", null: false
+    t.uuid "waveform_datum_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["digital_remaster_id"], name: "index_waveforms_on_digital_remaster_id"
