@@ -1,7 +1,7 @@
 juan_darienzo:
-  name: "Juan D'Arienzo y su Orquesta Típica"
-  slug: "juan-darienzo-y-su-orquesta-tipica"
-  normalized_name: "juan_darienzo"
+  name: "Juan D'Arienzo"
+  slug: "juan-darienzo"
+  normalized_name: "juan darienzo"
 
 # == Schema Information
 #
@@ -15,4 +15,5 @@ juan_darienzo:
 #  slug                   :string           not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  recordings_count       :integer
 #

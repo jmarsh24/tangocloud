@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_10_19_175336) do
+ActiveRecord::Schema[8.0].define(version: 2024_10_19_211244) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -290,6 +290,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_19_175336) do
     t.string "slug", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "recordings_count"
     t.index ["el_recodo_orchestra_id"], name: "index_orchestras_on_el_recodo_orchestra_id"
     t.index ["name"], name: "index_orchestras_on_name", unique: true
     t.index ["normalized_name"], name: "index_orchestras_on_normalized_name", unique: true

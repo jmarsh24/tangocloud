@@ -46,6 +46,7 @@ Rails.application.routes.draw do
 
   resources :digital_remaster, only: [:new, :create]
   resources :recordings, only: [:index]
+  resources :orchestras, only: [:index, :show]
   resource :player, only: [:create]
 
   post "auth/facebook/data-deletion", to: "auth#facebook_data_deletion"

@@ -7,7 +7,7 @@ module SystemAuthHelper
     fill_in :password, with: "Secret1*3*5*"
     click_on "Sign in to account"
 
-    assert_current_path root_url
+    assert_no_link "Login"
     user
   end
 end

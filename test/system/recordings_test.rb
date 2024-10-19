@@ -2,24 +2,24 @@ require "application_system_test_case"
 
 class RecordingsTest < ApplicationSystemTestCase
   test "visiting the index" do
-    sign_in_as users(:admin) do
-      visit recordings_url
+    sign_in_as users(:admin)
 
-      click_on "Recordings"
+    visit recordings_url
 
-      assert_selector "h1", text: "Recordings"
-    end
+    click_on "Recordings"
+
+    assert_selector "h1", text: "Recordings"
   end
 
   test "should load the recording" do
-    sign_in_as users(:admin) do
-      visit recordings_url
+    sign_in_as users(:admin)
 
-      click_on "La Cumparsita"
+    visit recordings_url
 
-      within "#music-player" do
-        assert_text "La Cumparsita"
-      end
+    click_on "La Cumparsita"
+
+    within "#music-player" do
+      assert_text "La Cumparsita"
     end
   end
 end
