@@ -15,8 +15,7 @@ VCR.configure do |c|
 end
 
 WebMock.disable_net_connect!({
-  allow_localhost: true,
-  allow: "chromedriver.storage.googleapis.com"
+  allow_localhost: true
 })
 
 class ActiveSupport::TestCase
