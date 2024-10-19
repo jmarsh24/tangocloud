@@ -9,7 +9,6 @@
       </div>
     </div>
     <div class="flex justify-between items-center w-full">
-      <!-- Recording information (left side) -->
       <div class="flex items-center gap-4">
         <%= image_tag recording.digital_remasters.first.album.album_art, class: "w-24 h-24 rounded-lg" %>
         <div class="flex flex-col justify-center">
@@ -29,8 +28,8 @@
       </div>
       <div class="flex items-center gap-4">
         <audio data-peaks-target="audio" class="hidden">
-          <source src=<%= url_for(recording.digital_remasters.first.audio_variants.first.audio_file) %> />
-          <source src=<%= url_for(recording.digital_remasters.first.audio_variants.first.audio_file) %> />
+          <source src=<%= rails_storage_redirect_url(recording.digital_remasters.first.audio_variants.first.audio_file) %> />
+          <source src=<%= rails_storage_redirect_url(recording.digital_remasters.first.audio_variants.first.audio_file) %> />
         </audio>
         <button
           data-action="peaks#playPause"
