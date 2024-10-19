@@ -1,5 +1,5 @@
 module Api
-  class GraphQLController < ActionController::API
+  class GraphqlController < ActionController::API
     include JWTSessions::RailsAuthorization
     include ActionController::Cookies
 
