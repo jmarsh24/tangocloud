@@ -1,0 +1,7 @@
+<%= link_to playlist, class: "flex gap-4" do %>
+  <%= image_tag playlist.image, class: "w-20 h-20 md:w-24 md:h-24 rounded-lg object-cover", loading: "lazy" %>
+  <div class="flex flex-col">
+    <h2 class="text-lg font-semibold text-neutral-900 dark:text-neutral-100"><%= playlist.title %></h2>
+    <p class="text-sm text-neutral-500 dark:text-neutral-400"><%= playlist.description %></p>
+  </div>
+<% end %>

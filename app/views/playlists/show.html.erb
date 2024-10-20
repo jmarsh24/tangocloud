@@ -1,0 +1,6 @@
+<div class="container">
+  <%= @playlist.title %>
+  <%= @playlist.description %>
+  <%= image_tag @playlist.image, class: "w-20 h-20 md:w-24 md:h-24 rounded-lg object-cover", loading: "lazy" %>
+  <%= render collection: @playlist.items, partial: "playlists/playlist_item" %>
+</div>
