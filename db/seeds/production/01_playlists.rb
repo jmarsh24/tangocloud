@@ -14,7 +14,6 @@ def create_playlists_for_user(user)
     playlist_title = File.basename(playlist_filename, ".m3u8").humanize
 
     playlist = Playlist.find_or_create_by!(title: playlist_title) do |playlist|
-      playlist.description = Faker::Lorem.sentence
       playlist.public = true
       playlist.user = user
     end

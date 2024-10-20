@@ -14,7 +14,7 @@ def attach_playlist_image(tanda, image_path)
   )
 end
 
-user = User.find_by!(email: "admin@tangocloud.app")
+user = User.find_by!(email: "jmarsh24@gmail.com")
 
 playlist = Playlist.create!(title: "La Coqueta 2024", user:, subtitle: "Lyon, France")
 

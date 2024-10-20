@@ -39,7 +39,6 @@ def create_tandas_for_user(user)
     tanda_title = File.basename(tanda_filename, ".m3u8").humanize
 
     tanda = Tanda.find_or_initialize_by(title: tanda_title, user:) do |tanda|
-      tanda.description = Faker::Lorem.sentence
       tanda.public = true
     end
 
@@ -47,7 +46,7 @@ def create_tandas_for_user(user)
 
     position = 1
     recordings.each do |recording|
-      tanda.playlist_items.build(item: recording, position:)
+      tanda.tanda_recordings.build(recording:, position:)
       position += 1
     end
 
