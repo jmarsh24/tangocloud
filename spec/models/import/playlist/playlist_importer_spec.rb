@@ -18,7 +18,7 @@ RSpec.describe Import::Playlist::PlaylistImporter, type: :model do
     it "creates a playlist with audio transfers in correct order" do
       imported_playlist = Import::Playlist::PlaylistImporter.new(playlist).import
 
-      playlist_items = imported_playlist.items
+      playlist_items = imported_playlist.playlist_items
 
       expect(playlist_items.count).to eq(2)
       expect(playlist_items.first.item).to eq(volver_a_sonar)

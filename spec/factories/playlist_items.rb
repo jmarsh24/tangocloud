@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :playlist_item do
-    association :playlistable, factory: :playlist
+    association :playlist
     association :item, factory: :recording
-    position { playlistable.playlist_items.size + 1 }
+    position { playlist.playlist_items.size + 1 }
 
     trait :with_tanda do
       association :item, factory: :tanda

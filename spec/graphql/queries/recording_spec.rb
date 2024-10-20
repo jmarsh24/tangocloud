@@ -5,8 +5,8 @@ RSpec.describe "Recording", type: :graph do
     let!(:user) { create(:user, :approved) }
     let!(:singer) { create(:person, name: "Roberto Rufino") }
     let!(:orchestra) { create(:orchestra, name: "Carlos Di Sarli") }
-    let!(:genre) { create(:genre, name: "Tango") }
     let!(:composition) { create(:composition, title: "Volver a soñar") }
+    let!(:genre) { Genre.find_by(name: "Tango") }
     let!(:recording) { create(:recording, composition:, singers: [singer], orchestra:, genre:) }
     let!(:digital_remaster) { create(:digital_remaster, recording:) }
     let!(:waveform) { create(:waveform, digital_remaster:) }

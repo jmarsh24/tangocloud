@@ -193,7 +193,7 @@ RSpec.describe Import::DigitalRemaster::Builders::RecordingBuilder do
       end
 
       it "does not create duplicate genres" do
-        existing_genre = Genre.create!(name: "Tango")
+        existing_genre = Genre.find_by(name: "Tango")
         builder = described_class.new(recording_metadata:)
         recording = builder.build
 

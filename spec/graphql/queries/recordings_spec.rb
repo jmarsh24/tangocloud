@@ -4,9 +4,9 @@ RSpec.describe "Recordings", type: :graph do
   describe "Querying for recordings" do
     let!(:user) { create(:user, :approved) }
     let!(:singer) { create(:person, name: "Roberto Rufino") }
-    let!(:genre) { create(:genre, name: "Tango") }
     let!(:orchestra) { create(:orchestra, name: "Carlos Di Sarli") }
     let!(:composition) { create(:composition, title: "Volver a soñar") }
+    let!(:genre) { Genre.find_by(name: "Tango") }
     let!(:recording) { create(:recording, composition:, singers: [singer], orchestra:, genre:) }
     let!(:digital_remaster) { create(:digital_remaster, recording:) }
 
