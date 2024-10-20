@@ -1,6 +1,7 @@
-<div class="container">
-  <%= @playlist.title %>
+<div class="container flex flex-col gap-4">
+  <h1><%= @playlist.title %></h1>
   <%= @playlist.description %>
   <%= image_tag @playlist.image, class: "w-20 h-20 md:w-24 md:h-24 rounded-lg object-cover", loading: "lazy" %>
-  <%= render collection: @playlist.items, partial: "playlists/playlist_item" %>
+  <%= render collection: @playlist.playlist_items, partial: "playlists/playlist_item" %>
 </div>
+<%= turbo_frame_tag "music-player" %>

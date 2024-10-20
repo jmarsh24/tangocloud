@@ -1,16 +1,21 @@
-la_cumparsita_echague:
+la_cumparsita:
+  tanda: juan_darienzo
   recording: la_cumparsita
-  person: alberto_echague
-  soloist: true
+  position: 1
+
+el_choclo:
+  tanda: juan_darienzo
+  recording: el_choclo
+  position: 2
 
 # == Schema Information
 #
-# Table name: recording_singers
+# Table name: tanda_recordings
 #
 #  id           :uuid             not null, primary key
+#  tanda_id     :uuid             not null
 #  recording_id :uuid             not null
-#  person_id    :uuid             not null
-#  soloist      :boolean          default(FALSE), not null
+#  position     :integer          not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #

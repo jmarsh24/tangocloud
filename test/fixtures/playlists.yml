@@ -1,13 +1,14 @@
-class Tanda < ApplicationRecord
-  include Playlistable
-
-  has_many :tanda_recordings, dependent: :destroy
-  has_many :recordings, through: :tanda_recordings
-end
+darienzo_essentials:
+  title: "D'Arienzo Essentials"
+  subtitle: The Best of Juan D'Arienzo
+  slug: "darienzo-essentials"
+  public: true
+  system: false
+  user: user
 
 # == Schema Information
 #
-# Table name: tandas
+# Table name: playlists
 #
 #  id          :uuid             not null, primary key
 #  title       :string           not null

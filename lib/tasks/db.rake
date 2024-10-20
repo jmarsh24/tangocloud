@@ -1,10 +1,8 @@
 namespace :db do
-  namespace :db do
-    task :migrate do
-      Rake::Task["db:migrate"].invoke
+  task :migrate do
+    Rake::Task["db:migrate"].invoke
 
-      system("bundle exec annotate -p bottom")
-    end
+    system("bundle exec annotate -p bottom")
   end
 
   namespace :export do

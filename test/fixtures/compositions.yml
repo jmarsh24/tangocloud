@@ -1,6 +1,9 @@
 la_cumparsita:
   title: "La Cumparsita"
 
+el_choclo:
+  title: "El Choclo"
+
 # == Schema Information
 #
 # Table name: compositions

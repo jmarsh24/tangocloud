@@ -6,7 +6,9 @@ class PlaylistsController < ApplicationController
   end
 
   def show
-    @playlist = policy_scope(Playlist).friendly.find(params[:id])
+    @playlist = policy_scope(Playlist)
+      .includes(playlist_items: {item: [recording: :composition]})
+      .friendly.find(params[:id])
 
     authorize @playlist
   end
