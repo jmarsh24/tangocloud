@@ -12,13 +12,13 @@ RSpec.describe Import::Playlist::PlaylistImporter, type: :model do
   let!(:farol) { create(:recording, composition: composition_farol) }
   let!(:digital_remaster_farol) { create(:digital_remaster, audio_file: audio_file_farol, recording: farol) }
 
-  let(:playlist) { create(:playlist, user:) }
+  let!(:playlist) { create(:playlist, user:) }
 
   describe "import" do
     it "creates a playlist with audio transfers in correct order" do
       imported_playlist = Import::Playlist::PlaylistImporter.new(playlist).import
 
-      playlist_items = imported_playlist.playlist_items
+      playlist_items = imported_playlist.playlist_items.ordered
 
       expect(playlist_items.count).to eq(2)
       expect(playlist_items.first.item).to eq(volver_a_sonar)
