@@ -1,11 +1,9 @@
 class Avo::Resources::TandaRecording < Avo::BaseResource
-  # self.includes = []
-  # self.attachments = []
-  # self.search = {
-  #   query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
-  # }
-
+  self.includes = [:tanda, :recording]
   def fields
-    field :id, as: :id
+    field :id, hide_on: :index
+    field :position, as: :number
+    field :tanda, as: :belongs_to
+    field :recording, as: :belongs_to
   end
 end

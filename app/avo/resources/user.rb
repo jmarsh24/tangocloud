@@ -1,6 +1,6 @@
 class Avo::Resources::User < Avo::BaseResource
   self.title = :email
-  self.includes = [:playbacks, :playlists, :playlist_items, :tandas]
+  self.includes = [:playbacks, :playlists, :tandas]
   self.search = {
     query: -> { query.search(params[:q]).results }
   }
@@ -15,7 +15,6 @@ class Avo::Resources::User < Avo::BaseResource
     field :admin, as: :boolean
     field :playbacks, as: :has_many
     field :playlists, as: :has_many
-    field :playlist_items, as: :has_many, through: :playlists
     field :tandas, as: :has_many
   end
 end
