@@ -7,14 +7,14 @@ module Mutations::Playlists
     field :playlist_item, Types::PlaylistItemType, null: true
 
     def resolve(playlist_item_id:, position:)
-      playlist_item = PlaylistItem.find_by(id: playlist_item_id, playlistable: current_user.playlists + current_user.tandas)
+      playlist_item = PlaylistItem.find_by(id: playlist_item_id)
       return {playlist_item: nil, errors: ["Playlist item not found"]} if playlist_item.nil?
 
       if position < 1
         return {playlist_item: nil, errors: ["Position must be greater than or equal to 1"]}
       end
 
-      if position > playlist_item.playlistable.playlist_items.count
+      if position > playlist_item.playlist.playlist_items.count
         return {playlist_item: nil, errors: ["Position cannot be greater than the number of items in the playlist"]}
       end
 

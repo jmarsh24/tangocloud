@@ -11,14 +11,9 @@ module Playlistable
 
     validates :title, presence: true
 
-    has_many :playlist_items, -> { ordered }, dependent: :destroy, inverse_of: :playlistable
-    has_many :recordings, through: :playlist_items
-
     has_many :likes, as: :likeable, dependent: :destroy
     has_many :shares, as: :shareable, dependent: :destroy
     belongs_to :user, optional: true
-
-    alias_method :items, :playlist_items
 
     has_one_attached :image, dependent: :purge_later
     has_one_attached :playlist_file, dependent: :purge_later

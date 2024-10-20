@@ -1,7 +1,12 @@
-la_cumparsita_audio_variant:
+la_cumparsita:
   format: "mp3"
   bit_rate: 320
-  digital_remaster: la_cumparsita_remaster
+  digital_remaster: la_cumparsita
+
+el_choclo:
+  format: "mp3"
+  bit_rate: 320
+  digital_remaster: el_choclo
 
 # == Schema Information
 #

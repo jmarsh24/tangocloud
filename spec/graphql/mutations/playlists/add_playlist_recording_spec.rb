@@ -13,13 +13,9 @@ RSpec.describe "AddPlaylistRecording", type: :graph do
           playlistItem {
             id
             position
-            playlistable {
+            playlist {
               __typename
               ... on Playlist {
-                id
-                title
-              }
-              ... on Tanda {
                 id
                 title
               }
@@ -48,12 +44,12 @@ RSpec.describe "AddPlaylistRecording", type: :graph do
     it "successfully adds a recording to a playlist" do
       gql(mutation, variables: {playlistId: playlist.id, recordingId: recording.id}, user:)
 
-      playlistable = result.data.add_playlist_recording.playlist_item.playlistable
+      playlist = result.data.add_playlist_recording.playlist_item.playlist
       item = result.data.add_playlist_recording.playlist_item.item
       position = result.data.add_playlist_recording.playlist_item.position
 
-      expect(playlistable.__typename).to eq("Playlist")
-      expect(playlistable.title).to eq("Awesome Playlist")
+      expect(playlist.__typename).to eq("Playlist")
+      expect(playlist.title).to eq("Awesome Playlist")
       expect(item.__typename).to eq("Recording")
       expect(item.composition.title).to eq("Volver a soñar")
       expect(position).to eq(1)

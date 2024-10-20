@@ -1,12 +1,10 @@
 class Avo::Resources::PlaylistItem < Avo::BaseResource
-  self.includes = [:playlistable, :item]
+  self.includes = [:playlist, :item]
 
   def fields
-    field :id, as: :id, readonly: true, only_on: :show
-    field :playlistable, as: :belongs_to, polymorphic_as: :playlistable, types: [::Playlist, ::Tanda]
-    field :item, as: :belongs_to, polymorphic_as: :item, types: [::Recording, ::Tanda]
+    field :id, hide_on: :index
     field :position, as: :number
-    field :created_at, as: :date, readonly: true
-    field :updated_at, as: :date, readonly: true
+    field :playlist, as: :belongs_to
+    field :item, as: :belongs_to, polymorphic_as: :item, types: [::Recording, ::Tanda]
   end
 end

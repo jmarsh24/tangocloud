@@ -1,0 +1,7 @@
+<div class="playlist-items">
+  <% if playlist_item.item.is_a?(Tanda) %>
+    <%= render partial: 'tandas/tanda', locals: { tanda: playlist_item.item } %>
+  <% elsif playlist_item.item.is_a?(Recording) %>
+    <%= render partial: 'recordings/recording', locals: { recording: playlist_item.item } %>
+  <% end %>
+</div>

@@ -1,0 +1,21 @@
+la_cumparsita:
+  tanda: juan_darienzo
+  recording: la_cumparsita
+  position: 1
+
+el_choclo:
+  tanda: juan_darienzo
+  recording: el_choclo
+  position: 2
+
+# == Schema Information
+#
+# Table name: tanda_recordings
+#
+#  id           :uuid             not null, primary key
+#  tanda_id     :uuid             not null
+#  recording_id :uuid             not null
+#  position     :integer          not null
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#

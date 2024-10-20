@@ -1191,8 +1191,8 @@ type PlaylistItem {
   item: ItemUnion!
   itemId: ID!
   itemType: String!
-  playlistable: PlaylistableUnion!
-  playlistableId: ID!
+  playlist: Playlist!
+  playlistId: ID!
   position: Int!
   updatedAt: ISO8601DateTime!
 }
@@ -1823,40 +1823,7 @@ type Tanda {
     "Returns the last _n_ elements from the list."
     last: Int
   ): LikeConnection!
-  playlist(id: ID!): Playlist!
-  playlistItem(id: ID!): PlaylistItem!
-  playlistItems(
-    "Returns the elements in the list that come after the specified cursor."
-    after: String,
-    "Returns the elements in the list that come before the specified cursor."
-    before: String,
-    "Returns the first _n_ elements from the list."
-    first: Int,
-    "Returns the last _n_ elements from the list."
-    last: Int
-  ): PlaylistItemConnection!
-  playlists(
-    "Returns the elements in the list that come after the specified cursor."
-    after: String,
-    "Returns the elements in the list that come before the specified cursor."
-    before: String,
-    "Returns the first _n_ elements from the list."
-    first: Int,
-    "Returns the last _n_ elements from the list."
-    last: Int
-  ): PlaylistConnection!
   public: Boolean!
-  recording(id: ID!): Recording!
-  recordings(
-    "Returns the elements in the list that come after the specified cursor."
-    after: String,
-    "Returns the elements in the list that come before the specified cursor."
-    before: String,
-    "Returns the first _n_ elements from the list."
-    first: Int,
-    "Returns the last _n_ elements from the list."
-    last: Int
-  ): RecordingConnection!
   share(id: ID!): Share!
   shares(
     "Returns the elements in the list that come after the specified cursor."
@@ -1869,6 +1836,17 @@ type Tanda {
     last: Int
   ): ShareConnection!
   subtitle: String
+  tandaRecording(id: ID!): TandaRecording!
+  tandaRecordings(
+    "Returns the elements in the list that come after the specified cursor."
+    after: String,
+    "Returns the elements in the list that come before the specified cursor."
+    before: String,
+    "Returns the first _n_ elements from the list."
+    first: Int,
+    "Returns the last _n_ elements from the list."
+    last: Int
+  ): TandaRecordingConnection!
   title: String!
   updatedAt: ISO8601DateTime!
   user: User!
@@ -1889,6 +1867,32 @@ type TandaEdge {
   cursor: String!
   "The item at the end of the edge."
   node: Tanda
+}
+type TandaRecording {
+  createdAt: ISO8601DateTime!
+  id: ID!
+  position: Int!
+  recording: Recording!
+  recordingId: ID!
+  tanda: Tanda!
+  tandaId: ID!
+  updatedAt: ISO8601DateTime!
+}
+"The connection type for TandaRecording."
+type TandaRecordingConnection {
+  "A list of edges."
+  edges: [TandaRecordingEdge!]!
+  "A list of nodes."
+  nodes: [TandaRecording!]!
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+}
+"An edge in a connection."
+type TandaRecordingEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: TandaRecording
 }
 type TimePeriod {
   description: String
@@ -2146,8 +2150,6 @@ type WaveformEdge {
 }
 "Objects which can be an item type, either Recording or Tanda"
 union ItemUnion = Recording | Tanda
-"Objects which can be a playlistable type, either Playlist or Tanda"
-union PlaylistableUnion = Playlist | Tanda
 "Search result"
 union SearchResult = Genre | Orchestra | Playlist | Recording | Tanda
 union UserResult = User | ValidationError

@@ -11,7 +11,7 @@ RSpec.describe "Playlist", type: :graph do
     let!(:digital_remaster) { create(:digital_remaster, recording:, audio_file:) }
     let!(:audio_variant) { create(:audio_variant, digital_remaster:) }
     let!(:playlist) { create(:playlist, user:) }
-    let!(:playlist_item) { create(:playlist_item, playlistable: playlist, item: recording) }
+    let!(:playlist_item) { create(:playlist_item, playlist: playlist, item: recording) }
     let(:query) do
       <<~GQL
         query Playlist($id: ID!) {

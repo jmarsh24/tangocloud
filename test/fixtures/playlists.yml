@@ -1,0 +1,23 @@
+darienzo_essentials:
+  title: "D'Arienzo Essentials"
+  subtitle: The Best of Juan D'Arienzo
+  slug: "darienzo-essentials"
+  public: true
+  system: false
+  user: user
+
+# == Schema Information
+#
+# Table name: playlists
+#
+#  id          :uuid             not null, primary key
+#  title       :string           not null
+#  subtitle    :string
+#  description :text
+#  slug        :string
+#  public      :boolean          default(TRUE), not null
+#  system      :boolean          default(FALSE), not null
+#  user_id     :uuid
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#

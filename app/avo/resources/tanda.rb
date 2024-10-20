@@ -1,6 +1,6 @@
 class Avo::Resources::Tanda < Avo::BaseResource
   self.title = :title
-  self.includes = [:playlist_items, :user]
+  self.includes = [:user, :tanda_recordings, :recordings]
   self.attachments = [:image, :playlist_file]
   self.search = {
     query: -> { query.search(params[:q]).results }
@@ -24,15 +24,18 @@ class Avo::Resources::Tanda < Avo::BaseResource
   }
 
   def fields
-    field :id, as: :id, readonly: true, only_on: :show
+    field :id, as: :id, hide_on: :index
     field :image, as: :file, is_image: true, accept: "image/*", direct_upload: true, display_filename: false, required: false
-    field :playlist_file, as: :file, accept: "m3u8", required: true, hide_on: :index
-    field :title, as: :text, required: true
-    field :subtitle, as: :text
+    field :title, as: :text
+    field :subtitle, as: :text, hide_on: :index
     field :description, as: :textarea
-    field :public, as: :boolean
-    field :system, as: :boolean, only_on: :show
+    field :slug, as: :text, hide_on: :index
     field :user, as: :belongs_to
-    field :playlist_items, as: :has_many
+    field :public, as: :boolean
+    field :system, as: :boolean
+    field :playlist_file, as: :file, accept: "m3u8", required: true, hide_on: :index
+    field :tanda_recordings, as: :has_many
+    field :likes, as: :has_many
+    field :shares, as: :has_many
   end
 end
