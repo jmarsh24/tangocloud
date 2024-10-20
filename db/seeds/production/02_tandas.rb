@@ -30,7 +30,23 @@ def create_tandas_for_user(user)
     "Troilo, Aníbal - Tanda 5.m3u8" => "troilo_anibal.jpeg",
     "Troilo, Aníbal - Tanda 11.m3u8" => "troilo_anibal.jpeg",
     "Troilo, Aníbal - Tanda 14.m3u8" => "troilo_anibal.jpeg",
-    "Troilo, Aníbal - Tanda 33.m3u8" => "troilo_anibal.jpeg"
+    "Troilo, Aníbal - Tanda 33.m3u8" => "troilo_anibal.jpeg",
+    # New tanda files
+    "T_Calo-Iriarte_43-44.m3u8" => "calo_miguel.jpeg",
+    "T_Canaro-Maida_37-38.m3u8" => "canaro_francisco.jpeg",
+    "T_D_Agostino-Vargas_41-42.m3u8" => "dagostino_angel.jpeg",
+    "T_D_Agostino-Vargas_45.m3u8" => "dagostino_angel.jpeg",
+    "T_D_Arienzo-Maure_41.m3u8" => "darienzo_juan.jpeg",
+    "T_D_Arienzo-Maure_42-44.m3u8" => "darienzo_juan.jpeg",
+    "T_Donato-Mixed_35-39.m3u8" => "donato_edgardo.jpeg",
+    "T_Pugliese-Chanel_44-46.m3u8" => "osvaldo_pugliese.jpeg",
+    "T_Pugliese-Instrumental_44-49.m3u8" => "osvaldo_pugliese.jpeg",
+    "T_Pugliese-Instrumental_52-57.m3u8" => "osvaldo_pugliese.jpeg",
+    "T_Pugliese-Instrumental_57-73.m3u8" => "osvaldo_pugliese.jpeg",
+    "T_Pugliese-Instrumental_59-66.m3u8" => "osvaldo_pugliese.jpeg",
+    "T_Pugliese-Instrumental-56-58.m3u8" => "osvaldo_pugliese.jpeg",
+    "T_Pugliese-Maciel_55-59.m3u8" => "osvaldo_pugliese.jpeg",
+    "T_Tanturi-Campos_43-44.m3u8" => "tanturi_ricardo.jpeg"
   }
 
   base_path = Rails.root.join("db/seeds/common/tandas")
