@@ -74,5 +74,5 @@ def attach_tanda_image(tanda, image_path)
   )
 end
 
-normal_user = User.find_by(email: "admin@tangocloud.app")
+normal_user = User.find_by(email: "jmarsh24@gmail.com")
 create_tandas_for_user(normal_user) if normal_user

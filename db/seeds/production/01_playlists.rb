@@ -41,6 +41,6 @@ def attach_playlist_image(playlist, image_path)
   )
 end
 
-normal_user = User.find_by(email: "user@tangocloud.app")
+normal_user = User.find_by(email: "jmarsh24@gmail.com")
 
 create_playlists_for_user(normal_user) if normal_user
