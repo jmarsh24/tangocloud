@@ -1,6 +1,6 @@
 <%# locals: (recording: nil) -%>
 <% if recording %>
-  <div class="fixed bottom-0 left-0 w-full bg-neutral-900 p-4 z-50">
+  <div class="fixed bottom-0 left-0 w-full bg-neutral-900 p-4 flex flex-col gap-4 z-50">
     <div class="flex items-center gap-4">
       <% if recording %>
         <%= image_tag recording.digital_remasters.first.album.album_art, class: "w-24 h-24 rounded-lg" %>
@@ -21,7 +21,7 @@
       <% end %>
     </div>
     <audio
-      class="w-full h-12 flex justify-center items-center rounded-lg shadow-md"
+      class="w-full flex justify-center items-center rounded-lg shadow-md"
       controls
       id="custom-audio"
     >
