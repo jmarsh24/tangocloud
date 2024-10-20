@@ -48,6 +48,7 @@ Rails.application.routes.draw do
   resources :recordings, only: [:index]
   resources :orchestras, only: [:index, :show]
   resources :playlists, only: [:index, :show]
+  resources :tandas, only: [:index, :show]
   resource :player, only: [:create]
 
   post "auth/facebook/data-deletion", to: "auth#facebook_data_deletion"
