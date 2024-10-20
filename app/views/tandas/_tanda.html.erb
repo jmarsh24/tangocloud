@@ -1,6 +1,5 @@
 <div class="bg-neutral-800 text-white p-6 rounded-lg shadow-md">
   <h1 class="text-xl font-bold mb-4"><%= tanda.title %></h1>
-  <p class="text-sm text-neutral-400 mb-6"><%= tanda.user.email %></p>
   <div class="space-y-6">
     <%= render collection: tanda.recordings, partial: 'recordings/recording' %>
   </div>
