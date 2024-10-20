@@ -19,6 +19,7 @@ RSpec.describe "Genres", type: :graph do
     end
 
     it "returns the correct el_recodo_song details" do
+      Genre.find_or_create_by(name: "Tango")
       Genre.reindex
       gql(query, variables: {query: "tango"}, user:)
 
