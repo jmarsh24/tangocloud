@@ -7,7 +7,7 @@ RSpec.describe "Orchestras", type: :graph do
     let!(:singer) { create(:person, name: "Alberto Podesta") }
     let!(:orchestra_period) { create(:orchestra_period, name: "42-44", orchestra:) }
     let!(:time_period) { create(:time_period, name: "Golden Age") }
-    let!(:recording) { create(:recording, orchestra:, singers: [singer], genre: Genre.find_by(name: "Tango"), time_period:) }
+    let!(:recording) { create(:recording, orchestra:, singers: [singer], genre: Genre.find_or_create_by(name: "Tango"), time_period:) }
 
     let(:query) do
       <<~GQL

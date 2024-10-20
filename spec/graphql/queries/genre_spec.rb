@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "Genre", type: :graph do
   describe "Genre" do
     let!(:user) { create(:user, :approved) }
-    let!(:genre) { Genre.find_by(name: "Tango") }
+    let!(:genre) { Genre.find_or_create_by(name: "Tango") }
     let(:query) do
       <<~GQL
         query Genre($id: ID!) {
