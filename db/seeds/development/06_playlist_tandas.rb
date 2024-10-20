@@ -18,6 +18,8 @@ user = User.find_by!(email: "admin@tangocloud.app")
 
 playlist = Playlist.create!(title: "La Coqueta 2024", user:, subtitle: "Lyon, France")
 
+attach_playlist_image(playlist, Rails.root.join("db/seeds/development/playlists/dogac_ozen.jpeg"))
+
 Tanda.limit(12).each_with_index do |tanda, index|
   playlist.playlist_items.create!(item: tanda, position: index)
   attach_playlist_image(playlist, Rails.root.join("db/seeds/development/playlists/dogac_ozen.jpeg"))
