@@ -2,16 +2,12 @@ import { Controller } from "@hotwired/stimulus";
 import WaveSurfer from "wavesurfer.js";
 import RegionsPlugin from "wavesurfer.js/dist/plugins/regions.esm.js";
 
-const listItemTemplate =
-  '<li class="border-2 border-black rounded-lg p-2">BODY</li>';
-
 export default class extends Controller {
   static targets = [
     "audio",
     "container",
     "playButton",
     "markerDescription",
-    "list",
     "time",
     "duration",
     "playIcon",
@@ -23,9 +19,8 @@ export default class extends Controller {
     playing: { type: Boolean, default: false },
   };
 
-  connect() {
+  initialize() {
     requestAnimationFrame(() => {
-
       const canvas = document.createElement("canvas");
       canvas.height = 100;
       const ctx = canvas.getContext("2d");
@@ -89,13 +84,6 @@ export default class extends Controller {
         this.playingValue = false;
       });
 
-      this.regions.on("region-created", (region) => {
-        this.listTarget.insertAdjacentHTML(
-          "beforeend",
-          listItemTemplate.replace("BODY", region.content.innerText)
-        );
-      });
-
       this.wavesurfer.on("decode", (duration) => {
         this.durationTarget.textContent = this.formatTime(duration);
       });
@@ -104,6 +92,9 @@ export default class extends Controller {
         this.timeTarget.textContent = this.formatTime(currentTime);
       });
     });
+  }
+
+  connect() {
   }
 
   handleHover = (e) => {

@@ -6,7 +6,7 @@ class PlayersController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: turbo_stream.replace("music-player", partial: "shared/music_player", locals: {recording: @recording})
+        render turbo_stream: turbo_stream.update("music-player", partial: "shared/music_player", locals: {recording: @recording})
       end
     end
   end
