@@ -2,9 +2,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <link rel="manifest" href="/manifest.json">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#000000">
   <meta name="turbo-cache-control" content="no-cache">
+  <link rel="icon" href="/logo.png" type="image/png">
+  <link rel="icon" href="/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/logo.png">
   <%= favicon_link_tag "logos/favicon.svg", type: "image/svg+xml" %>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
