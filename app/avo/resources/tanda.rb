@@ -34,9 +34,8 @@ class Avo::Resources::Tanda < Avo::BaseResource
     field :public, as: :boolean
     field :system, as: :boolean
     field :playlist_file, as: :file, accept: "m3u8", required: true, hide_on: :index
+    field :tanda_recordings, as: :has_many
     field :likes, as: :has_many
     field :shares, as: :has_many
-    field :tanda_recordings, as: :has_many
-    field :recordings, as: :has_many, through: :tanda_recordings
   end
 end

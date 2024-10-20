@@ -2,7 +2,7 @@ class Tanda < ApplicationRecord
   include Playlistable
 
   has_many :tanda_recordings, dependent: :destroy
-  has_many :recordings, through: :tanda_recordings
+  has_many :recordings, through: :tanda_recordings, inverse_of: :tandas
 end
 
 # == Schema Information
