@@ -22,7 +22,7 @@ FactoryBot.define do
 
     trait :with_items do
       after(:create) do |tanda|
-        create_list(:playlist_item, 3, playlistable: tanda)
+        create_list(:playlist_item, 3, playlist: tanda)
       end
     end
 

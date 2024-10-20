@@ -47,7 +47,7 @@ def create_tandas_for_user(user)
 
     position = 1
     recordings.each do |recording|
-      tanda.playlist_items.build(item: recording, position:)
+      tanda.tanda_recordings.build(recording:, position:)
       position += 1
     end
 

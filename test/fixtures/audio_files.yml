@@ -1,5 +1,9 @@
-la_cumparsita_audio_file:
+la_cumparsita:
   filename: la_cumparsita.mp3
+  format: mp3
+
+el_choclo:
+  filename: el_choclo.mp3
   format: mp3
 
 # == Schema Information

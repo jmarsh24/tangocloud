@@ -11,7 +11,7 @@ RSpec.describe Person, type: :model do
         result = Person.find_or_create_by_normalized_name!("Juan D`Arienzo")
 
         expect(result).to eq(existing_person)
-        expect(Person.count).to eq(1) # No new record should be created
+        expect(Person.where(normalized_name: normalized_name).count).to eq(1)
       end
     end
 
@@ -21,7 +21,7 @@ RSpec.describe Person, type: :model do
           Person.find_or_create_by_normalized_name!("Juan D'Arienzo")
         }.to change { Person.count }.by(1)
 
-        new_person = Person.last
+        new_person = Person.find_by(normalized_name: normalized_name)
         expect(new_person.name).to eq("Juan D'Arienzo")
         expect(new_person.normalized_name).to eq(normalized_name)
       end
@@ -35,7 +35,7 @@ RSpec.describe Person, type: :model do
 
         expect(person1).to eq(person2)
         expect(person2).to eq(person3)
-        expect(Person.count).to eq(1) # Only one record should exist
+        expect(person1).to eq(person3)
         expect(person1.normalized_name).to eq(normalized_name)
       end
     end
@@ -43,12 +43,12 @@ RSpec.describe Person, type: :model do
     context "when the name has special characters or accents" do
       it "normalizes and creates or finds the person" do
         normalized_name_with_accent = "nicolas dalessandro"
-        Person.find_or_create_by_normalized_name!("Nicolás D´Alessandro")
+        person_1 = Person.find_or_create_by_normalized_name!("Nicolás D´Alessandro")
 
         person = Person.find_or_create_by_normalized_name!("Nicolás D´Alessandro")
 
         expect(person.normalized_name).to eq(normalized_name_with_accent)
-        expect(Person.count).to eq(1) # Only one record should exist
+        expect(person).to eq(person_1)
       end
     end
 

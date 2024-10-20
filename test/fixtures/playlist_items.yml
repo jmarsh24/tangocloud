@@ -1,0 +1,22 @@
+recording:
+  playlist: darienzo_essentials
+  item: la_cumparsita(Recording)
+  position: 1
+
+tanda:
+  playlist: darienzo_essentials
+  item: juan_darienzo_tanda(Tanda)
+  position: 2
+
+# == Schema Information
+#
+# Table name: playlist_items
+#
+#  id          :uuid             not null, primary key
+#  playlist_id :uuid             not null
+#  item_type   :string           not null
+#  item_id     :uuid             not null
+#  position    :integer          not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#

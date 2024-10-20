@@ -1,9 +1,16 @@
-la_cumparsita_remaster:
+la_cumparsita:
   duration: 180
-  album: la_cumparsita_album
-  recording: la_cumparsita_recording
-  audio_file: la_cumparsita_audio_file
+  album: la_cumparsita
+  recording: la_cumparsita
+  audio_file: la_cumparsita
   tango_cloud_id: 123
+
+el_choclo:
+  duration: 180
+  album: la_cumparsita
+  recording: el_choclo
+  audio_file: el_choclo
+  tango_cloud_id: 456
 
 # == Schema Information
 #

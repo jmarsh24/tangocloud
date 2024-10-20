@@ -20,10 +20,9 @@ FactoryBot.define do
       )
     end
 
-    # Trait to include items after creating the playlist
     trait :with_items do
       after(:create) do |playlist|
-        create_list(:playlist_item, 5, playlistable: playlist)  # Ensure playlistable is used
+        create_list(:playlist_item, 5, playlist:)
       end
     end
 

@@ -1,5 +1,5 @@
-recording_singer_la_cumparsita_echague:
-  recording: la_cumparsita_recording
+la_cumparsita_echague:
+  recording: la_cumparsita
   person: alberto_echague
   soloist: true
 

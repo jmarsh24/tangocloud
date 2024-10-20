@@ -20,6 +20,7 @@ WebMock.disable_net_connect!({
 
 class ActiveSupport::TestCase
   include AuthHelper
+  include ActiveJob::TestHelper
   # setup do
   #   @@once ||= begin
   #     MeiliSearch::Rails::Utilities.reindex_all_models
