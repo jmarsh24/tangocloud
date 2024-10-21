@@ -1,8 +1,10 @@
 <div class="w-full flex flex-col gap-2 bg-neutral-900  text-white p-4 rounded-lg shadow-md">
   <%= link_to tanda.title, tanda, class: "text-xl font-bold mb-4" %>
-  <div class="text-sm dark:text-white">
-    <%= tanda.user.username %>
-  </div>
+  <% if tanda.user&.present?%>
+    <div class="text-sm dark:text-white">
+      <%= tanda.user.username %>
+    </div>
+  <% end %>
   <div class="space-y-6">
     <%= render collection: tanda.recordings, partial: 'recordings/recording' %>
   </div>
