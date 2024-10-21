@@ -1,4 +1,4 @@
-<div class="playlist-items">
+<div class="w-full flex flex-col gap-2 rounded-lg shadow-md">
   <% if playlist_item.item.is_a?(Tanda) %>
     <%= render partial: 'tandas/tanda', locals: { tanda: playlist_item.item } %>
   <% elsif playlist_item.item.is_a?(Recording) %>
