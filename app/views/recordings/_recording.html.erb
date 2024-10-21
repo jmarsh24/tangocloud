@@ -1,4 +1,4 @@
-<div class="flex gap-4 px-4 items-center hover:bg-neutral-900 hover:cursor-pointer rounded-lg">
+<div class="w-full flex gap-4 items-center hover:bg-neutral-900 hover:cursor-pointer rounded-lg">
   <%= form_with url: player_path, class: "flex gap-4 items-center" do |form| %>
     <%= form.hidden_field :recording_id, value: recording.id %>
     <%= button_tag type: :submit, class: "flex gap-4 items-center text-left" do %>
