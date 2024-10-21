@@ -52,6 +52,9 @@ Rails.application.routes.draw do
   resource :music_library, only: [:show]
   resource :player, only: [:create]
 
+  get "service-worker" => "rails/pwa#service_worker", :as => :pwa_service_worker
+  get "manifest" => "rails/pwa#manifest", :as => :pwa_manifest
+
   post "auth/facebook/data-deletion", to: "auth#facebook_data_deletion"
 
   get "/landing", to: "pages#landing"
