@@ -20,45 +20,45 @@
   ],
   "icons": [
     {
-      "src": "<%= asset_path('app-icons/icon-64.svg') %>",
-      "type": "image/svg",
+      "src": "/assets/<%= Rails.application.assets.load_path.find('app-icons/icon-64.png').digested_path %>",
+      "type": "image/png",
       "sizes": "64x64"
     },
     {
-      "src": "<%= asset_path('app-icons/icon-192-maskable.svg') %>",
-      "type": "image/svg",
+      "src": "/assets/<%= Rails.application.assets.load_path.find('app-icons/icon-192-maskable.png').digested_path %>",
+      "type": "image/png",
       "sizes": "192x192",
       "purpose": "maskable"
     },
     {
-      "src": "<%= asset_path('app-icons/icon-192.svg') %>",
-      "type": "image/svg",
+      "src": "/assets/<%= Rails.application.assets.load_path.find('app-icons/icon-192.png').digested_path %>",
+      "type": "image/png",
       "sizes": "192x192",
       "purpose": "any"
     },
     {
-      "src": "<%= asset_path('app-icons/icon-512-maskable.svg') %>",
-      "type": "image/svg",
+      "src": "/assets/<%= Rails.application.assets.load_path.find('app-icons/icon-512-maskable.png').digested_path %>",
+      "type": "image/png",
       "sizes": "512x512",
       "purpose": "maskable"
     },
     {
-      "src": "<%= asset_path('app-icons/icon-512.svg') %>",
-      "type": "image/svg",
+      "src": "/assets/<%= Rails.application.assets.load_path.find('app-icons/icon-512.png').digested_path %>",
+      "type": "image/png",
       "sizes": "512x512",
       "purpose": "any"
     }
   ],
   "screenshots": [
     {
-      "src": "<%= asset_path('screenshots/homepage.jpg') %>",
+      "src": "/assets/<%= Rails.application.assets.load_path.find('screenshots/homepage.jpg').digested_path %>",
       "sizes": "1280x720",
       "type": "image/jpeg",
       "form_factor": "wide",
       "label": "Homescreen of TangoCloud"
     },
     {
-      "src": "<%= asset_path('screenshots/homepage-narrow.jpg') %>",
+      "src": "/assets/<%= Rails.application.assets.load_path.find('screenshots/homepage-narrow.jpg').digested_path %>",
       "sizes": "400x720",
       "type": "image/jpeg",
       "form_factor": "narrow",
