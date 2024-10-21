@@ -1,6 +1,6 @@
 <div class="container flex flex-col p-4 gap-4 items-center dark:bg-black">
   <% if @playlist.image.attached? %>
-    <%= image_tag @playlist.image, class: "w-64 h-64 md:w-24 md:h-24 rounded-lg object-cover shadow-md", loading: "lazy" %>
+    <%= image_tag @playlist.image, class: "w-64 h-64 md:w-24 md:h-24 rounded-lg object-cover shadow-md" %>
   <% end %>
   <h1 class="text-2xl font-bold dark:text-neutral-300"><%= @playlist.title %></h1>
   <% if @playlist.description.present? %>
