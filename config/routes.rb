@@ -61,5 +61,7 @@ Rails.application.routes.draw do
   get "/dashboard", to: "pages#dashboard"
 
   root "pages#landing"
-  get "up", to: "rails/health#show", as: :rails_health_checkb
+  get "up", to: "rails/health#show", as: :rails_health_check
+
+  get "pwa/manifest.json", to: "pwas#manifest", as: :manifest
 end
