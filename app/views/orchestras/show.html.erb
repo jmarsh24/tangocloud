@@ -1,36 +1,38 @@
-<div class="container flex flex-col gap-8 p-8 rounded-lg shadow-lg">
-  <div class="flex flex-col items-center">
-    <% if @orchestra.image.attached? %>
-      <%= image_tag @orchestra.image, class: "w-48 h-48 md:w-60 md:h-60 rounded-full object-cover" %>
-    <% else %>
-      <%= heroicon "user-circle", variant: :solid, class: "w-48 h-48 md:w-60 md:h-60 fill-neutral-300" %>
-    <% end %>
-    <h1 class="mt-4 text-3xl font-bold text-neutral-900 dark:text-neutral-100">
-      <%= @orchestra.name %>
-    </h1>
-  </div>
-  <div class="flex flex-col gap-8">
-    <div class="flex gap-4 overflow-x-auto pb-4">
-      <h2 class="text-xl font-semibold text-neutral-800 dark:text-neutral-200">Genres:</h2>
-      <% @genres.each do |genre| %>
-        <%= link_to genre.name, "#", class: "bg-neutral-500 text-white px-4 py-2 rounded-full hover:bg-neutral-600 transition flex-shrink-0" %>
+<% cache(@orchestra) do %>
+  <div class="container flex flex-col gap-8 p-8 rounded-lg shadow-lg">
+    <div class="flex flex-col items-center">
+      <% if @orchestra.image.attached? %>
+        <%= image_tag @orchestra.image, class: "w-48 h-48 md:w-60 md:h-60 rounded-full object-cover" %>
+      <% else %>
+        <%= heroicon "user-circle", variant: :solid, class: "w-48 h-48 md:w-60 md:h-60 fill-neutral-300" %>
       <% end %>
+      <h1 class="mt-4 text-3xl font-bold text-neutral-900 dark:text-neutral-100">
+        <%= @orchestra.name %>
+      </h1>
     </div>
-    <div class="flex gap-4 overflow-x-auto pb-4">
-      <h2 class="text-xl font-semibold text-neutral-800 dark:text-neutral-200">Periods:</h2>
-      <% @orchestra_periods.each do |period| %>
-        <%= link_to period.name, "#", class: "bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition flex-shrink-0" %>
-      <% end %>
+    <div class="flex flex-col gap-8">
+      <div class="flex gap-4 overflow-x-auto pb-4">
+        <h2 class="text-xl font-semibold text-neutral-800 dark:text-neutral-200">Genres:</h2>
+        <% @genres.each do |genre| %>
+          <%= link_to genre.name, "#", class: "bg-neutral-500 text-white px-4 py-2 rounded-full hover:bg-neutral-600 transition flex-shrink-0" %>
+        <% end %>
+      </div>
+      <div class="flex gap-4 overflow-x-auto pb-4">
+        <h2 class="text-xl font-semibold text-neutral-800 dark:text-neutral-200">Periods:</h2>
+        <% @orchestra_periods.each do |period| %>
+          <%= link_to period.name, "#", class: "bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition flex-shrink-0" %>
+        <% end %>
+      </div>
+      <div class="flex gap-4 overflow-x-auto pb-4 items-center">
+        <h2 class="text-xl font-semibold text-neutral-800 dark:text-neutral-200">Singers:</h2>
+        <%= render collection: @singers, partial: "people/person" %>
+      </div>
     </div>
-    <div class="flex gap-4 overflow-x-auto pb-4 items-center">
-      <h2 class="text-xl font-semibold text-neutral-800 dark:text-neutral-200">Singers:</h2>
-      <%= render collection: @singers, partial: "people/person" %>
+    <div class="mt-8">
+      <h2 class="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-4">Recordings</h2>
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <%= render @recordings %>
+      </div>
     </div>
   </div>
-  <div class="mt-8">
-    <h2 class="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-4">Recordings</h2>
-    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      <%= render @recordings %>
-    </div>
-  </div>
-</div>
+<% end %>
