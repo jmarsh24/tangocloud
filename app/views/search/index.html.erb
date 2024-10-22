@@ -1,0 +1,44 @@
+<% cache([params[:query], @top_result, @recordings, @orchestras, @playlists, @tandas]) do %>
+  <div class="container p-4 flex flex-col gap-8">
+    <div class="flex flex-col md:flex-row gap-4">
+      <% if @top_result.present? %>
+        <div class="md:w-1/4 flex flex-col gap-4">
+          <h2 class="text-xl md:text-2xl font-semibold">Top Result</h2>
+          <%= render @top_result %>
+        </div>
+      <% end %>
+      <% if @recordings.present? %>
+        <div class="md:w-3/4 flex flex-col gap-4">
+          <h2 class="text-xl md:text-2xl font-semibold">Recordings</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2">
+            <%= render @recordings %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <% if @orchestras.present? %>
+      <div class="flex flex-col gap-4">
+        <h2 class="text-xl md:text-2xl font-semibold">Orchestras</h2>
+        <div class="flex space-x-4 overflow-x-auto scrollbar-hide">
+          <%= render @orchestras %>
+        </div>
+      </div>
+    <% end %>
+    <% if @playlists.present? %>
+      <div class="flex flex-col gap-4">
+        <h2 class="text-xl md:text-2xl font-semibold">Playlists</h2>
+        <div class="flex space-x-4 overflow-x-auto scrollbar-hide">
+          <% render @playlists %>
+        </div>
+      </div>
+    <% end %>
+    <% if @tandas.present? %>
+      <div class="flex flex-col gap-4">
+        <h2 class="text-xl md:text-2xl font-semibold">Tandas</h2>
+        <div class="flex space-x-4 overflow-x-auto scrollbar-hide">
+          <% render @tandas %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
