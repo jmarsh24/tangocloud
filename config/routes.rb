@@ -52,6 +52,14 @@ Rails.application.routes.draw do
   resource :music_library, only: [:show]
   resource :player, only: [:create]
 
+  direct :public_cdn do |representation, options|
+    if Rails.configuration.active_storage.service == :cloudflare
+      "https://#{ENV["CDN_HOST"]}/#{representation.key}"
+    else
+      url_for(representation)
+    end
+  end
+
   get "service-worker" => "rails/pwa#service_worker", :as => :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", :as => :pwa_manifest
 
