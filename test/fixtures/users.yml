@@ -17,11 +17,9 @@
 #  updated_at      :datetime         not null
 #
 
-<% password_digest = BCrypt::Password.create("Secret1*3*5*") %>
-
 normal:
   email: user@tangocloud.app
-  password_digest: <%= password_digest %>
+  password_digest: <%= BCrypt::Password.create("Secret1*3*5*")  %>
 
 admin:
   email: admin@tangocloud.app
