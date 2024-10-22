@@ -8,4 +8,7 @@ Avo.configure do |config|
   config.raise_error_on_missing_policy = true
   config.home_path = -> { resources_playlists_path }
   config.license_key = Rails.application.credentials.dig(:avo_license_key)
+  config.cache_store = -> {
+    ActiveSupport::Cache.lookup_store(:solid_cache_store)
+  }
 end
