@@ -35,10 +35,6 @@ class ApplicationPolicy
     false
   end
 
-  def admin?
-    user&.admin?
-  end
-
   class Scope
     def initialize(user, scope)
       raise Pundit::NotAuthorizedError, "must be logged in" unless user

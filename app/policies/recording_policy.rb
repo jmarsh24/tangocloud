@@ -1,14 +1,14 @@
 class RecordingPolicy < ApplicationPolicy
   def index?
-    admin?
+    user.admin? || user.tester? || user.editor?
   end
 
   def play?
-    admin?
+    user.admin? || user.tester? || user.editor?
   end
 
   def search?
-    admin?
+    user.admin? || user.tester? || user.editor?
   end
 
   class Scope < Scope
