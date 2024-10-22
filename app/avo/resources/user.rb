@@ -12,7 +12,7 @@ class Avo::Resources::User < Avo::BaseResource
     field :verified, as: :boolean
     field :provider, as: :text
     field :uid, as: :text
-    field :admin, as: :boolean
+    field :role, as: :select, options: User.roles.keys.map { |role| {value: role, label: role.titleize} }
     field :playbacks, as: :has_many
     field :playlists, as: :has_many
     field :tandas, as: :has_many

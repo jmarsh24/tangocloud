@@ -1,6 +1,5 @@
 class User < ApplicationRecord
   include Authenticatable
-  include Role
 
   searchkick word_start: [:email]
 
@@ -17,6 +16,10 @@ class User < ApplicationRecord
   has_many :shared_orchestras, through: :shares, source: :shareable, source_type: "Orchestra"
   has_many :shared_tandas, through: :shares, source: :shareable, source_type: "Tanda"
   has_many :playbacks, dependent: :destroy
+
+  included do
+    enum role: {user: 0, tester: 1, editor: 2, admin: 3}
+  end
 
   has_one_attached :avatar
 
