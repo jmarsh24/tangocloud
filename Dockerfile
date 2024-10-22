@@ -25,9 +25,9 @@ RUN apt-get update -qq && \
   libgd-dev \
   libboost-filesystem-dev \
   libboost-program-options-dev \
-  libboost-regex-dev && \
+  libboost-regex-dev \
   libjemalloc2 \
-  libsqlite3-0 \
+  libsqlite3-0 && \
   rm -rf /var/lib/apt/lists/* /var/cache/apt/archives
 
 # Install audiowaveform
