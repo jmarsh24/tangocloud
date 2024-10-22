@@ -1,8 +1,10 @@
-<div class="flex items-center gap-2 flex-shrink-0 bg-neutral-800 hover:bg-neutral-900 py-1 px-2 rounded-lg">
-  <% if person.image.attached? %>
-    <%= image_tag person.image, class: "w-6 h-6 rounded-full object-cover", alt: person.name %>
-  <% else %>
-    <%= heroicon "user-circle", variant: :solid, size: :lg, class: "fill-neutral-300" %>
-  <% end %>
-  <%= link_to person.name, "#", class: "text-white px-4 py-2 rounded-full transition" %>
-</div>
+<% cache(person) do %>
+  <div class="flex items-center gap-2 flex-shrink-0 bg-neutral-800 hover:bg-neutral-900 py-1 px-2 rounded-lg">
+    <% if person.image.attached? %>
+      <%= image_tag person.image, class: "w-6 h-6 rounded-full object-cover", alt: person.name %>
+    <% else %>
+      <%= heroicon "user-circle", variant: :solid, size: :lg, class: "fill-neutral-300" %>
+    <% end %>
+    <%= link_to person.name, "#", class: "text-white px-4 py-2 rounded-full transition" %>
+  </div>
+<% end %>
