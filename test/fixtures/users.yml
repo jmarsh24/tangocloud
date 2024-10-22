@@ -15,15 +15,16 @@
 #  verified        :boolean          default(FALSE), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  role            :integer          default("user"), not null
 #
+
+<% password_digest = BCrypt::Password.create("secret123456") %>
 
 normal:
   email: user@tangocloud.app
-  password_digest: <%= BCrypt::Password.create("Secret1*3*5*") %>
-  verified: true
+  password_digest: password_digest
 
 admin:
   email: admin@tangocloud.app
-  password_digest: <%= BCrypt::Password.create("Secret1*3*5*") %>
-  verified: true
-  admin: true
+  password_digest: password_digest
+  role: admin
