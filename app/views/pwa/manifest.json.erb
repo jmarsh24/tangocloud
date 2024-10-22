@@ -1,0 +1,68 @@
+{
+  "id": "tango-cloud",
+  "name": "TangoCloud",
+  "short_name": "TangoCloud",
+  "description": "A Music Player for Tango Music",
+  "start_url": "<%= root_url %>",
+  "theme_color": "#000000",
+  "background_color": "#000000",
+  "display": "standalone",
+  "orientation": "portrait",
+  "author": "Justin Marsh",
+  "developer": {
+    "name": "Justin Marsh"
+  },
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "<%= root_url + 'manifest.json' %>"
+    }
+  ],
+  "icons": [
+    {
+      "src": "<%= image_path('app-icons/icon-64.png') %>",
+      "type": "image/png",
+      "sizes": "64x64"
+    },
+    {
+      "src": "<%= image_path('app-icons/icon-192-maskable.png') %>",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "maskable"
+    },
+    {
+      "src": "<%= image_path('app-icons/icon-192.png') %>",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "<%= image_path('app-icons/icon-512-maskable.png') %>",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
+    },
+    {
+      "src": "<%= image_path('app-icons/icon-512.png') %>",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "<%= image_path('screenshots/homepage.jpg') %>",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "Homescreen of TangoCloud"
+    },
+    {
+      "src": "<%= image_path('screenshots/homepage-narrow.jpg') %>",
+      "sizes": "400x720",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Homescreen of TangoCloud"
+    }
+  ]
+}
