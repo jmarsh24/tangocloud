@@ -8,7 +8,7 @@
             <div class="w-full md:w-64 lg:w-80 xl:w-96">
               <label class="input input-bordered flex items-center gap-2">
                 <%= heroicon("magnifying-glass", variant: :outline, size: :md) %>
-                <%= form.text_field :query, data: { controller: "auto-submit", action: "keydown->auto-submit#submit" }, class: "grow bg-transparent placeholder-neutral-500 dark:placeholder-neutral-400 focus:outline-none" %>
+                <%= form.text_field :query, data: { controller: "auto-submit", action: "keydown->auto-submit#submit" }, autocorrect: false, class: "grow bg-transparent placeholder-neutral-500 dark:placeholder-neutral-400 focus:outline-none" %>
               </label>
             </div>
           <% end %>
