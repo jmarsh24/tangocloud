@@ -2,7 +2,7 @@
   <%= form_with url: player_path, class: "flex gap-4 items-center" do |form| %>
     <%= form.hidden_field :recording_id, value: recording.id %>
     <%= button_tag type: :submit, class: "flex gap-4 items-center text-left" do %>
-      <%= image_tag recording.digital_remasters.first.album.album_art, class: "w-16 h-16 md:w-20 md:h-20 rounded-lg" %>
+      <%= image_tag recording.digital_remasters.first.album.album_art, class: "w-16 h-16 md:w-20 md:h-24 rounded-lg", loading: "lazy" %>
       <div class="flex flex-col items-start text-left">
         <div class="text-sm font-semibold">
           <%= recording.composition.title %>

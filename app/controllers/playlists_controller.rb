@@ -8,6 +8,7 @@ class PlaylistsController < ApplicationController
     @playlist = policy_scope(Playlist).friendly.find(params[:id])
 
     recordings = PlaylistItem
+      .strict_loading
       .where(item_type: "Recording", playlist_id: @playlist.id)
       .includes(item: [
         :composition,
@@ -25,6 +26,7 @@ class PlaylistsController < ApplicationController
       ])
 
     tandas = PlaylistItem
+      .strict_loading
       .where(item_type: "Tanda", playlist_id: @playlist.id)
       .includes(item: {
         recordings: [

@@ -1,6 +1,28 @@
 class TandasController < ApplicationController
   def index
-    @tandas = policy_scope(Tanda.all).with_attached_image.limit(100)
+    @tandas = policy_scope(Tanda.all)
+      .strict_loading
+      .includes(
+        :user,
+        tanda_recordings: [
+          recording: [
+            :composition,
+            :orchestra,
+            :genre,
+            :singers,
+            digital_remasters: [
+              audio_variants: [
+                audio_file_attachment: :blob
+              ],
+              album: [
+                album_art_attachment: :blob
+              ]
+            ]
+          ]
+        ]
+      )
+      .random
+      .limit(100)
 
     authorize Tanda
   end
