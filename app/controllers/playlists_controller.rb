@@ -31,22 +31,25 @@ class PlaylistsController < ApplicationController
     tandas = PlaylistItem
       .strict_loading
       .where(item_type: "Tanda", playlist_id: @playlist.id)
-      .includes(item: {
-        recordings: [
-          :composition,
-          :orchestra,
-          :genre,
-          :singers,
-          digital_remasters: [
-            audio_variants: [
-              audio_file_attachment: :blob
-            ],
-            album: [
-              album_art_attachment: :blob
+      .includes(
+        playlist: :user,
+        item: {
+          recordings: [
+            :composition,
+            :orchestra,
+            :genre,
+            :singers,
+            digital_remasters: [
+              audio_variants: [
+                audio_file_attachment: :blob
+              ],
+              album: [
+                album_art_attachment: :blob
+              ]
             ]
           ]
-        ]
-      })
+        }
+      )
 
     @playlist_items = (recordings + tandas).sort_by(&:position)
 
