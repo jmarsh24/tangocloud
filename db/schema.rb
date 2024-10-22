@@ -488,7 +488,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_22_232444) do
     t.string "password_digest", null: false
     t.string "provider"
     t.string "uid"
-    t.boolean "admin", default: false, null: false
     t.datetime "approved_at"
     t.datetime "confirmed_at"
     t.boolean "verified", default: false, null: false

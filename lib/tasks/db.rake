@@ -1,9 +1,9 @@
 namespace :db do
-  task :migrate do
-    Rake::Task["db:migrate"].invoke
+  # task :migrate do
+  #   Rake::Task["db:migrate"].invoke
 
-    system("bin/annotate -p bottom") if Rails.env.development?
-  end
+  #   system("bin/annotate -p bottom") if Rails.env.development?
+  # end
 
   namespace :export do
     desc "Export ElRecodo-related models to SQL files in the db/seeds directory"

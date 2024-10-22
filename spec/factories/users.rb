@@ -25,7 +25,6 @@ end
 #  password_digest :string           not null
 #  provider        :string
 #  uid             :string
-#  admin           :boolean          default(FALSE), not null
 #  approved_at     :datetime
 #  confirmed_at    :datetime
 #  verified        :boolean          default(FALSE), not null
