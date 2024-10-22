@@ -59,6 +59,7 @@ env:
     IMGPROXY_ENDPOINT: tangocloud-imgproxy
     JOB_CONCURRENCY: 16
     CDN_HOST: b23e5ff0654b18a5b20bd3016cc32b35.r2.cloudflarestorage.com
+    RAILS_LOG_LEVEL: debug
   secret:
     - RAILS_MASTER_KEY
     - POSTGRES_PASSWORD
