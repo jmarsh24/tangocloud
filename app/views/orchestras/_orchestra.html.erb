@@ -1,6 +1,6 @@
 <%= link_to orchestra, class: "flex flex-col gap-4 items-center p-4 bg-white dark:bg-neutral-900 rounded-lg shadow-lg hover:bg-gray-100 dark:hover:bg-neutral-700 transition duration-300" do %>
   <% if orchestra.image.attached? %>
-    <%= image_tag orchestra.image, class: "w-16 h-16 md:w-20 md:h-20 rounded-lg object-cover" %>
+    <%= image_tag public_cdn_url(orchestra.image), class: "w-16 h-16 md:w-20 md:h-20 rounded-lg object-cover" %>
   <% else %>
     <div class="w-16 h-16 md:w-20 md:h-20 bg-neutral-200 dark:bg-neutral-800 rounded-lg"></div>
   <% end %>
