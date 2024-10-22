@@ -4,7 +4,6 @@ class SearchController < ApplicationController
   def index
     query = params[:query]
 
-    # Update model_includes to ensure associated records are preloaded
     @results = Searchkick.search(
       query,
       models: [Playlist, Recording, Orchestra, Tanda],
