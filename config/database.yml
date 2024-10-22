@@ -20,7 +20,7 @@ development:
 
   queue: &queue_development
     <<: *sqlite_default
-    database: storage/tangocloud_development-queue.sqlite3
+    database: storage/tangocloud_development_queue.sqlite3
     migrations_paths: db/queue_migrate
 
 test:
@@ -37,10 +37,10 @@ production:
 
   cache: &cache_production
     <<: *sqlite_default
-    database: storage/tangocloud_production-cache.sqlite3
+    database: storage/tangocloud_production_cache.sqlite3
     migrations_paths: db/cache_migrate
 
   queue: &queue_production
     <<: *sqlite_default
-    database: storage/tangocloud_production-queue.sqlite3
+    database: storage/tangocloud_production_queue.sqlite3
     migrations_paths: db/queue_migrate
