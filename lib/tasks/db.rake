@@ -1,10 +1,4 @@
 namespace :db do
-  task :migrate do
-    Rake::Task["db:migrate"].invoke
-
-    system("bin/annotate -p bottom")
-  end
-
   namespace :export do
     desc "Export ElRecodo-related models to SQL files in the db/seeds directory"
     task el_recodo: :environment do
