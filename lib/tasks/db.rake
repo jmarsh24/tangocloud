@@ -2,7 +2,7 @@ namespace :db do
   task :migrate do
     Rake::Task["db:migrate"].invoke
 
-    system("bundle exec annotate -p bottom")
+    system("bin/annotate -p bottom")
   end
 
   namespace :export do
