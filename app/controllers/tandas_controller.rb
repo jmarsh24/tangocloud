@@ -4,19 +4,17 @@ class TandasController < ApplicationController
       .strict_loading
       .includes(
         :user,
-        tanda_recordings: [
-          recording: [
-            :composition,
-            :orchestra,
-            :genre,
-            :singers,
-            digital_remasters: [
-              audio_variants: [
-                audio_file_attachment: :blob
-              ],
-              album: [
-                album_art_attachment: :blob
-              ]
+        recordings: [
+          :composition,
+          :orchestra,
+          :genre,
+          :singers,
+          digital_remasters: [
+            audio_variants: [
+              audio_file_attachment: :blob
+            ],
+            album: [
+              album_art_attachment: :blob
             ]
           ]
         ]
