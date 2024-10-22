@@ -17,6 +17,10 @@ development:
   primary: &primary_development
     <<: *default
     database: tangocloud_development
+  queue: &queue_development
+    <<: *sqlite_default
+    database: storage/reference_rails_development_queue
+    migrations_paths: db/queue_migrate
 
 test:
   primary: &primary_test
