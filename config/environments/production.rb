@@ -101,4 +101,6 @@ Rails.application.configure do
   }
 
   config.active_storage.resolve_model_to_route = :rails_storage_proxy
+
+  config.action_view.image_loading = :lazy
 end

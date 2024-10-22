@@ -1,13 +1,15 @@
-<h1>Recordings</h1>
-<% if @recordings.present? %>
-  <div class="flex flex-col gap-4 py-4 px-2 md:px-0 md:py-16">
-    <%= render @recordings %>
-  </div>
-<% else %>
-  <div class="flex flex-col items-center gap-4 py-8">
-    <div class="text-center">
-      <%= inline_svg_tag("logos/tangocloud-logo-with-text.svg", class: "w-36 h-auto mx-auto dark:fill-neutral-100") %>
+<div class="container flex flex-col items-center md:text-start gap-4 py-4 px-2 md:px-0 md:py-16">
+  <h1 class="text-2xl font-bold text-neutral-900 dark:text-neutral-100">Recordings</h1>
+  <% if @recordings.present? %>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 py-4 px-2 md:px-0 md:py-16">
+      <%= render @recordings %>
     </div>
-    <p class="text-center text-neutral-600 dark:text-neutral-300">No recordings found.</p>
-  </div>
-<% end %>
+  <% else %>
+    <div class="flex flex-col items-center gap-4 py-8">
+      <div class="text-center">
+        <%= inline_svg_tag("logos/tangocloud-logo-with-text.svg", class: "w-36 h-auto mx-auto dark:fill-neutral-100") %>
+      </div>
+      <p class="text-center text-neutral-600 dark:text-neutral-300">No recordings found.</p>
+    </div>
+  <% end %>
+</div>

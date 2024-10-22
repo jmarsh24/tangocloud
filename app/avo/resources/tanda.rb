@@ -25,7 +25,7 @@ class Avo::Resources::Tanda < Avo::BaseResource
 
   def fields
     field :id, as: :id, hide_on: :index
-    field :image, as: :file, is_image: true, accept: "image/*", direct_upload: true, display_filename: false, required: false
+    field :image, as: :file, is_image: true, accept: "image/*", display_filename: false, required: false
     field :title, as: :text
     field :subtitle, as: :text, hide_on: :index
     field :description, as: :textarea

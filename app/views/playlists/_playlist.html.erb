@@ -1,9 +1,11 @@
-<%= link_to playlist, class: "flex gap-4" do %>
+<%= link_to playlist, class: "flex gap-2 dark:bg-neutral-900 rounded-lg hover:bg-neutral-800" do %>
   <% if playlist.image.present? %>
-    <%= image_tag playlist.image, class: "w-20 h-20 md:w-24 md:h-24 rounded-lg object-cover", loading: "lazy" %>
+    <%= image_tag playlist.image, class: "w-12 h-12 md:w-20 md:h-20 rounded-l-lg object-cover" %>
+  <% else %>
+    <div class="w-12 h-12 md:w-20 md:h-20 bg-neutral-200 dark:bg-neutral-800 rounded-l-lg"></div>
   <% end %>
-  <div class="flex flex-col">
-    <h2 class="text-lg font-semibold text-neutral-900 dark:text-neutral-100"><%= playlist.title %></h2>
-    <p class="text-sm text-neutral-500 dark:text-neutral-400"><%= playlist.description %></p>
+  <div class="flex flex-col py-1 px-2 justify-center">
+    <h2 class="text-xs md:text-md font-semibold text-neutral-900 dark:text-neutral-100"><%= playlist.title %></h2>
+    <p class="text-xxs text-neutral-500 dark:text-neutral-400 hidden"><%= playlist.description %></p>
   </div>
 <% end %>
