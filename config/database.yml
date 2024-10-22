@@ -32,10 +32,10 @@ production:
 
   cache: &cache_production
     <<: *sqlite_default
-    database: tangocloud_production_cache.sqlite3
+    database: storage/tangocloud_production_cache
     migrations_paths: db/cache_migrate
 
   queue: &queue_production
     <<: *sqlite_default
-    database: reference_rails_production_queue.sqlite3
+    database: storage/reference_rails_production_queue
     migrations_paths: db/queue_migrate
