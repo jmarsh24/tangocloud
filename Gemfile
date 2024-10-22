@@ -7,6 +7,7 @@ gem "rails", "~> 8.0.0.rc1"
 
 # Database
 gem "pg"
+gem "sqlite3"
 
 # Performance
 gem "bootsnap", require: false

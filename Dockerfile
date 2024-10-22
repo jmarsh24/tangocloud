@@ -9,63 +9,65 @@ WORKDIR /rails
 
 # Install base packages and packages needed for audiowaveform
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y \
-      curl \
-      postgresql-client \
-      libvips \
-      ffmpeg \
-      software-properties-common \
-      make \
-      cmake \
-      gcc \
-      g++ \
-      libmad0-dev \
-      libid3tag0-dev \
-      libsndfile1-dev \
-      libgd-dev \
-      libboost-filesystem-dev \
-      libboost-program-options-dev \
-      libboost-regex-dev && \
-    rm -rf /var/lib/apt/lists/* /var/cache/apt/archives
+  apt-get install --no-install-recommends -y \
+  curl \
+  postgresql-client \
+  libvips \
+  ffmpeg \
+  software-properties-common \
+  make \
+  cmake \
+  gcc \
+  g++ \
+  libmad0-dev \
+  libid3tag0-dev \
+  libsndfile1-dev \
+  libgd-dev \
+  libboost-filesystem-dev \
+  libboost-program-options-dev \
+  libboost-regex-dev && \
+  libjemalloc2 \
+  libsqlite3-0 \
+  rm -rf /var/lib/apt/lists/* /var/cache/apt/archives
 
 # Install audiowaveform
 RUN curl -LO https://github.com/bbc/audiowaveform/releases/download/1.10.1/audiowaveform_1.10.1-1-12_arm64.deb && \
-    dpkg -i audiowaveform_1.10.1-1-12_arm64.deb && \
-    rm audiowaveform_1.10.1-1-12_arm64.deb
+  dpkg -i audiowaveform_1.10.1-1-12_arm64.deb && \
+  rm audiowaveform_1.10.1-1-12_arm64.deb
 
 # Set production environment
 ENV RAILS_ENV="production" \
-    BUNDLE_DEPLOYMENT="1" \
-    BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development"
+  BUNDLE_DEPLOYMENT="1" \
+  BUNDLE_PATH="/usr/local/bundle" \
+  BUNDLE_WITHOUT="development"
 
 # Throw-away build stage to reduce size of final image
 FROM base AS build
 
 # Install packages needed to build gems and node modules
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y \
-      build-essential \
-      git \
-      libpq-dev \
-      node-gyp \
-      pkg-config \
-      python-is-python3
+  apt-get install --no-install-recommends -y \
+  build-essential \
+  git \
+  libpq-dev \
+  node-gyp \
+  pkg-config \
+  python-is-python3
 
 # Install JavaScript dependencies
 ARG NODE_VERSION=20.10.0
 ARG YARN_VERSION=1.22.19
 ENV PATH=/usr/local/node/bin:$PATH
 RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
-    /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
-    npm install -g yarn@$YARN_VERSION && \
-    rm -rf /tmp/node-build-master
+  /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
+  npm install -g yarn@$YARN_VERSION && \
+  rm -rf /tmp/node-build-master
 
 # Install application gems
 COPY Gemfile Gemfile.lock .ruby-version ./
 RUN bundle install && \
-    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
-    bundle exec bootsnap precompile --gemfile
+  rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
+  bundle exec bootsnap precompile --gemfile
 
 # Install node modules
 COPY package.json yarn.lock ./
@@ -95,7 +97,7 @@ RUN rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Run and own only the runtime files as a non-root user for security
 RUN useradd rails --create-home --shell /bin/bash && \
-    chown -R rails:rails db log storage tmp
+  chown -R rails:rails db log storage tmp
 USER rails:rails
 
 # Entrypoint prepares the database.

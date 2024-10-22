@@ -8,13 +8,19 @@ default: &default
   variables:
     statement_timeout: <%= ENV["STATEMENT_TIMEOUT"] || 30000 %>
 
+sqlite_default: &sqlite_default
+  adapter: sqlite3
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 10 } %>
+  timeout: 5000
+
 development:
   primary: &primary_development
     <<: *default
     database: tangocloud_development
-  queue:
-    <<: *default
-    database: tangocloud_development_queue
+
+  queue: &queue_development
+    <<: *sqlite_default
+    database: storage/tangocloud_development-queue.sqlite3
     migrations_paths: db/queue_migrate
 
 test:
@@ -28,11 +34,13 @@ production:
     host: <%= ENV["DB_HOST"] %>
     database: tangocloud_production
     password: <%= ENV["POSTGRES_PASSWORD"] %>
-  queue:
-    <<: *primary_production
-    database: tangocloud_production_queue
-    migrations_paths: db/queue_migrate
-  cache:
-    <<: *primary_production
-    database: tangocloud_production_cache
+
+  cache: &cache_production
+    <<: *sqlite_default
+    database: storage/tangocloud_production-cache.sqlite3
     migrations_paths: db/cache_migrate
+
+  queue: &queue_production
+    <<: *sqlite_default
+    database: storage/tangocloud_production-queue.sqlite3
+    migrations_paths: db/queue_migrate
