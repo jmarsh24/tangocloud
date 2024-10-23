@@ -23,7 +23,7 @@ RSpec.describe "user", type: :graph do
       expect(user_data.id).to eq(user.id)
       expect(user_data.username).to eq(user.username)
       expect(user_data.email).to eq(user.email)
-      expect(user_data.role).to be("User")
+      expect(user_data.role).to eq("User")
     end
   end
 end
