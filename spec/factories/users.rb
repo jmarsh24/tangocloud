@@ -3,10 +3,9 @@ FactoryBot.define do
     email { Faker::Internet.email }
     sequence(:username) { |n| "#{Faker::Name.first_name}_#{n}" }
     password { Faker::Internet.password }
-    admin { false }
 
     trait :admin do
-      admin { true }
+      role { :admin }
     end
 
     trait :approved do
