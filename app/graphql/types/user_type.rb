@@ -1,6 +1,5 @@
 module Types
   class UserType < BaseObject
-    field :admin, Boolean, null: false
     field :email, String, null: false
     field :id, ID, null: false
     field :provider, String

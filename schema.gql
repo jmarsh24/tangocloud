@@ -1945,7 +1945,6 @@ type UpdatePlaylistPayload {
   playlist: Playlist
 }
 type User {
-  admin: Boolean!
   avatar: Attached
   createdAt: ISO8601DateTime!
   email: String!
