@@ -10,7 +10,7 @@ RSpec.describe "user", type: :graph do
             id
             email
             username
-            admin
+            role
           }
         }
       GQL
@@ -23,7 +23,7 @@ RSpec.describe "user", type: :graph do
       expect(user_data.id).to eq(user.id)
       expect(user_data.username).to eq(user.username)
       expect(user_data.email).to eq(user.email)
-      expect(user_data.admin).to be(false)
+      expect(user_data.role).to be("admin")
     end
   end
 end
