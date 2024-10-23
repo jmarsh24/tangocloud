@@ -2,34 +2,52 @@
   <div class="container flex flex-col gap-8 p-8 rounded-lg shadow-lg">
     <div class="flex flex-col items-center">
       <% if @orchestra.image.attached? %>
-        <%= image_tag @orchestra.image, class: "w-48 h-48 md:w-60 md:h-60 rounded-full object-cover" %>
+        <%= image_tag @orchestra.image, class: "w-36 h-36 md:w-48 md:h-48 rounded-full object-cover" %>
       <% else %>
-        <%= heroicon "user-circle", variant: :solid, class: "w-48 h-48 md:w-60 md:h-60 fill-neutral-300" %>
+        <%= heroicon "user-circle", variant: :solid, class: "w-36 h-36 md:w-48 md:h-48 fill-neutral-300" %>
       <% end %>
-      <h1 class="mt-4 text-3xl font-bold text-neutral-900 dark:text-neutral-100">
+      <h1 class="text-2xl md:text-3xl font-semibold text-neutral-700 dark:text-neutral-200 mt-4">
         <%= @orchestra.name %>
       </h1>
     </div>
-    <div class="flex flex-col gap-8">
-      <div class="flex gap-4 overflow-x-auto pb-4">
-        <h2 class="text-xl font-semibold text-neutral-800 dark:text-neutral-200">Genres:</h2>
-        <% @genres.each do |genre| %>
-          <%= link_to genre.name, "#", class: "bg-neutral-500 text-white px-4 py-2 rounded-full hover:bg-neutral-600 transition flex-shrink-0" %>
-        <% end %>
+    <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-1">
+          <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Years</h2>
+          <div class="flex gap-2 flex-wrap">
+            <% @years.each do |year| %>
+              <%= link_to year.to_s, "#", class: "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 px-3 py-1 rounded-full text-sm hover:bg-neutral-200 dark:hover:bg-neutral-700 transition" %>
+            <% end %>
+          </div>
+        </div>
       </div>
-      <div class="flex gap-4 overflow-x-auto pb-4">
-        <h2 class="text-xl font-semibold text-neutral-800 dark:text-neutral-200">Periods:</h2>
-        <% @orchestra_periods.each do |period| %>
-          <%= link_to period.name, "#", class: "bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition flex-shrink-0" %>
-        <% end %>
+      <div class="flex flex-col gap-1">
+        <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Genres</h2>
+        <div class="flex gap-2 flex-wrap">
+          <% @genres.each do |genre| %>
+            <%= link_to genre.name, "#", class: "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 px-3 py-1 rounded-full text-sm hover:bg-neutral-200 dark:hover:bg-neutral-700 transition" %>
+          <% end %>
+        </div>
       </div>
-      <div class="flex gap-4 overflow-x-auto pb-4 items-center">
-        <h2 class="text-xl font-semibold text-neutral-800 dark:text-neutral-200">Singers:</h2>
-        <%= render collection: @singers, partial: "people/person" %>
+      <div class="flex flex-col gap-1">
+        <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Periods</h2>
+        <div class="flex gap-2 flex-wrap">
+          <% @orchestra_periods.each do |period| %>
+            <%= link_to period.name, "#", class: "bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300 px-3 py-1 rounded-full text-sm hover:bg-neutral-200 dark:hover:bg-blue-700 transition" %>
+          <% end %>
+        </div>
+      </div>
+      <div class="flex flex-col gap-1">
+        <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Singers</h2>
+        <div class="flex gap-2 flex-wrap">
+          <% @singers.each do |singer| %>
+            <%= link_to singer.name, "#", class: "bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300 px-3 py-1 rounded-full text-sm hover:bg-neutral-200 dark:hover:bg-neutral-700 transition" %>
+          <% end %>
+        </div>
       </div>
     </div>
-    <div class="mt-8">
-      <h2 class="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-4">Recordings</h2>
+    <div>
+      <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide mb-2">Recordings</h2>
       <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <%= render @recordings %>
       </div>

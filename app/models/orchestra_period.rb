@@ -1,5 +1,5 @@
 class OrchestraPeriod < ApplicationRecord
-  belongs_to :orchestra
+  belongs_to :orchestra, touch: true
 end
 
 # == Schema Information
