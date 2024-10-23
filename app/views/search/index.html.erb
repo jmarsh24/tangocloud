@@ -4,14 +4,22 @@
       <% if @top_result.present? %>
         <div class="md:w-1/4 flex flex-col gap-4">
           <h2 class="text-xl md:text-2xl font-semibold">Top Result</h2>
-          <%= render @top_result %>
+          <% if @top_result.is_a?(Recording) %>
+            <%= render partial: 'recordings/recording', locals: { recording: @top_result } %>
+          <% elsif @top_result.is_a?(Orchestra) %>
+            <%= render partial: 'orchestras/orchestra', locals: { orchestra: @top_result } %>
+          <% elsif @top_result.is_a?(Playlist) %>
+            <%= render partial: 'playlists/playlist', locals: { playlist: @top_result } %>
+          <% elsif @top_result.is_a?(Tanda) %>
+            <%= render partial: 'tandas/tanda', locals: { tanda: @top_result } %>
+          <% end %>
         </div>
       <% end %>
       <% if @recordings.present? %>
         <div class="md:w-3/4 flex flex-col gap-4">
           <h2 class="text-xl md:text-2xl font-semibold">Recordings</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2">
-            <%= render @recordings %>
+            <%= render collection: @recordings, partial: 'recordings/recording' %>
           </div>
         </div>
       <% end %>
@@ -20,7 +28,7 @@
       <div class="flex flex-col gap-4">
         <h2 class="text-xl md:text-2xl font-semibold">Orchestras</h2>
         <div class="flex space-x-4 overflow-x-auto scrollbar-hide">
-          <%= render @orchestras %>
+          <%= render collection: @orchestras, partial: 'orchestras/orchestra' %>
         </div>
       </div>
     <% end %>
@@ -28,7 +36,7 @@
       <div class="flex flex-col gap-4">
         <h2 class="text-xl md:text-2xl font-semibold">Playlists</h2>
         <div class="flex space-x-4 overflow-x-auto scrollbar-hide">
-          <% render @playlists %>
+          <% render collection: @playlists, partial: 'playlists/playlist' %>
         </div>
       </div>
     <% end %>
@@ -36,7 +44,7 @@
       <div class="flex flex-col gap-4">
         <h2 class="text-xl md:text-2xl font-semibold">Tandas</h2>
         <div class="flex space-x-4 overflow-x-auto scrollbar-hide">
-          <% render @tandas %>
+          <% render collection: @tandas, partial: 'tandas/tanda' %>
         </div>
       </div>
     <% end %>

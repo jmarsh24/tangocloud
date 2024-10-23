@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_10_19_211244) do
+ActiveRecord::Schema[8.0].define(version: 2024_10_22_232444) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -488,12 +488,12 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_19_211244) do
     t.string "password_digest", null: false
     t.string "provider"
     t.string "uid"
-    t.boolean "admin", default: false, null: false
     t.datetime "approved_at"
     t.datetime "confirmed_at"
     t.boolean "verified", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "role", default: 0, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
   end

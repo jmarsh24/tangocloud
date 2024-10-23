@@ -1,6 +1,6 @@
 class MusicLibraryPolicy < ApplicationPolicy
   def show?
-    admin?
+    user.admin? || user.tester? || user.editor?
   end
 
   class Scope < Scope

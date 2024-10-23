@@ -1,6 +1,6 @@
 class SearchPolicy < ApplicationPolicy
   def index?
-    admin?
+    user.admin? || user.tester? || user.editor?
   end
 
   class Scope < Scope

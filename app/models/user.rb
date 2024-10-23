@@ -17,6 +17,8 @@ class User < ApplicationRecord
   has_many :shared_tandas, through: :shares, source: :shareable, source_type: "Tanda"
   has_many :playbacks, dependent: :destroy
 
+  enum :role, {user: 0, tester: 1, editor: 2, admin: 3}
+
   has_one_attached :avatar
 
   validates :username,
@@ -63,10 +65,10 @@ end
 #  password_digest :string           not null
 #  provider        :string
 #  uid             :string
-#  admin           :boolean          default(FALSE), not null
 #  approved_at     :datetime
 #  confirmed_at    :datetime
 #  verified        :boolean          default(FALSE), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  role            :integer          default("user"), not null
 #

@@ -1,7 +1,7 @@
 def create_user(email:, password:, admin: false)
   user = User.find_or_create_by!(email:) do |u|
     u.password = password
-    u.admin = admin
+    u.role = :admin if admin
     u.verified = true
   end
 
