@@ -4,14 +4,14 @@
       <% if @top_result.present? %>
         <div class="md:w-1/4 flex flex-col gap-4">
           <h2 class="text-xl md:text-2xl font-semibold">Top Result</h2>
-          <%= render @top_result %>
+          <%= render partial: 'shared/top_result', object: @top_result %>
         </div>
       <% end %>
       <% if @recordings.present? %>
         <div class="md:w-3/4 flex flex-col gap-4">
           <h2 class="text-xl md:text-2xl font-semibold">Recordings</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2">
-            <%= render @recordings %>
+            <%= render partial: 'recordings/recording', collection: @recordings %>
           </div>
         </div>
       <% end %>
@@ -20,7 +20,7 @@
       <div class="flex flex-col gap-4">
         <h2 class="text-xl md:text-2xl font-semibold">Orchestras</h2>
         <div class="flex space-x-4 overflow-x-auto scrollbar-hide">
-          <%= render @orchestras %>
+          <%= render partial: 'orchestras/orchestra', collection: @orchestras %>
         </div>
       </div>
     <% end %>
@@ -28,7 +28,7 @@
       <div class="flex flex-col gap-4">
         <h2 class="text-xl md:text-2xl font-semibold">Playlists</h2>
         <div class="flex space-x-4 overflow-x-auto scrollbar-hide">
-          <% render @playlists %>
+          <%= render partial: 'playlists/playlist', collection: @playlists %>
         </div>
       </div>
     <% end %>
@@ -36,7 +36,7 @@
       <div class="flex flex-col gap-4">
         <h2 class="text-xl md:text-2xl font-semibold">Tandas</h2>
         <div class="flex space-x-4 overflow-x-auto scrollbar-hide">
-          <% render @tandas %>
+          <%= render partial: 'tandas/tanda', collection: @tandas %>
         </div>
       </div>
     <% end %>
