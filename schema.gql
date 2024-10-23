@@ -2005,6 +2005,7 @@ type User {
     last: Int
   ): PlaylistConnection!
   provider: String
+  role: String!
   share(id: ID!): Share!
   sharedOrchestra(id: ID!): Share!
   sharedOrchestras(
