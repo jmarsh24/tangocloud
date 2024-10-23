@@ -4,8 +4,6 @@ class ApplicationController < ActionController::Base
   after_action :verify_authorized, :verify_policy_scoped
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  allow_browser versions: :modern
-
   private
 
   def user_not_authorized(exception)
