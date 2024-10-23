@@ -5,6 +5,10 @@ module Types
     field :provider, String
     field :uid, String
     field :username, String
+    field :role, String, null: false
+    def role
+      object.role.titleize
+    end
 
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
