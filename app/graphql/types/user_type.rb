@@ -1,17 +1,16 @@
 module Types
   class UserType < BaseObject
+    field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :email, String, null: false
     field :id, ID, null: false
     field :provider, String
-    field :uid, String
-    field :username, String
     field :role, String, null: false
+    field :uid, String
+    field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
+    field :username, String
     def role
       object.role.titleize
     end
-
-    field :created_at, GraphQL::Types::ISO8601DateTime, null: false
-    field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
     has_one_attached :avatar
 
