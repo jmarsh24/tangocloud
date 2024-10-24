@@ -1,5 +1,5 @@
 <% cache([@orchestra, @filters]) do %>
-  <div class="container flex flex-col gap-8 p-8 rounded-lg shadow-lg">
+  <div class="container flex flex-col gap-8 py-8 px-2 rounded-lg shadow-lg">
     <div id="orchestra-image" class="flex flex-col items-center">
       <% if @orchestra.image.attached? %>
         <%= image_tag @orchestra.image, class: "w-36 h-36 md:w-48 md:h-48 rounded-full object-cover" %>
@@ -32,7 +32,7 @@
       <% if @orchestra_periods.any? %>
         <div id="orchestra-period-filters" class="flex flex-col gap-1">
           <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Periods</h2>
-          <div class="flex gap-2 flex-wrap">
+          <div class="flex gap-2 overflow-x-auto no-scrollbar whitespace-nowrap flex-nowrap">
             <% @orchestra_periods.each do |period| %>
               <% selected = @filters[:orchestra_period].to_s == period.name %>
               <% new_filters = selected ? @filters.except(:orchestra_period) : @filters.merge(orchestra_period: period.name) %>
@@ -51,7 +51,7 @@
       <% if @singers.any? %>
         <div id="singer-filters" class="flex flex-col gap-1">
           <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Singers</h2>
-          <div class="flex gap-2 flex-wrap">
+          <div class="flex gap-2 overflow-x-auto no-scrollbar whitespace-nowrap flex-nowrap">
             <% @singers.each do |singer| %>
               <% selected = @filters[:singer] == singer.name %>
               <% new_filters = selected ? @filters.except(:singer) : @filters.merge(singer: singer.name) %>
@@ -68,9 +68,9 @@
         </div>
       <% end %>
       <% if @years.any? %>
-        <div id="year=filters" class="flex flex-col gap-1">
+        <div id="year-filters" class="flex flex-col gap-1">
           <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Years</h2>
-          <div class="flex gap-2 flex-wrap">
+          <div class="flex gap-2 overflow-x-auto no-scrollbar whitespace-nowrap flex-nowrap">
             <% @years.each do |year| %>
               <% selected = @filters[:year].to_s == year.to_s %>
               <% new_filters = selected ? @filters.except(:year) : @filters.merge(year: year) %>
@@ -89,7 +89,7 @@
       <% if @genres.any? %>
         <div id="genre-filters" class="flex flex-col gap-1">
           <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Genres</h2>
-          <div class="flex gap-2 flex-wrap">
+          <div class="flex gap-2 overflow-x-auto no-scrollbar whitespace-nowrap flex-nowrap">
             <% @genres.each do |genre| %>
               <% selected = @filters[:genre] == genre.name %>
               <% new_filters = selected ? @filters.except(:genre) : @filters.merge(genre: genre.name) %>
