@@ -48,27 +48,36 @@ class Recording::Query
   def orchestra_periods
     return OrchestraPeriod.none unless orchestra.present?
 
-    min_date, max_date = results.pluck(Arel.sql("MIN(recorded_date), MAX(recorded_date)")).first
-
-    if min_date && max_date
-      OrchestraPeriod
-        .joins(orchestra: :recordings)
-        .where(recordings: {id: recording_ids})
-        .where(start_date: ..max_date, end_date: min_date..)
-        .group("orchestra_periods.id")
-        .order("orchestra_periods.start_date ASC, orchestra_periods.end_date ASC")
+    if orchestra_period.present?
+      period = orchestra.orchestra_periods.find_by(name: orchestra_period)
+      period ? OrchestraPeriod.where(id: period.id) : OrchestraPeriod.none
     else
-      OrchestraPeriod.none
+      min_date, max_date = results.pluck(Arel.sql("MIN(recorded_date), MAX(recorded_date)")).first
+
+      if min_date && max_date
+        OrchestraPeriod
+          .joins(orchestra: :recordings)
+          .where(recordings: {id: recording_ids})
+          .where(start_date: ..max_date, end_date: min_date..)
+          .group("orchestra_periods.id")
+          .order("orchestra_periods.start_date ASC, orchestra_periods.end_date ASC")
+      else
+        OrchestraPeriod.none
+      end
     end
   end
 
   def singers
-    Person.with_attached_image
-      .joins(:recording_singers)
-      .where(recording_singers: {recording_id: recording_ids})
-      .group("people.id")
-      .select("people.*, COUNT(recording_singers.recording_id) AS recording_count")
-      .order("recording_count DESC")
+    if singer.present?
+      Person.where(name: singer)
+    else
+      Person
+        .joins(:recording_singers)
+        .where(recording_singers: {recording_id: recording_ids})
+        .group("people.id")
+        .select("people.*, COUNT(recording_singers.recording_id) AS recording_count")
+        .order("recording_count DESC")
+    end
   end
 
   private
@@ -89,7 +98,11 @@ class Recording::Query
   end
 
   def filter_by_singer(scope)
-    singer.present? ? scope.joins(recording_singers: :person).where(people: {name: singer}) : scope
+    if singer.present?
+      scope.joins(recording_singers: :person).where(people: {name: singer})
+    else
+      scope
+    end
   end
 
   def order_genres_sql
