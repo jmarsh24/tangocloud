@@ -16,15 +16,17 @@
   <% signed_in do %>
     <% c.with_menu_item_link_to "Edit", edit_registration_path(Current.user), data: {turbo_frame: "modal"} %>
   <% end %>
-  <% c.with_menu_item_button_to t("sign_out"), Current.session, method: :delete, "data-turbo-method": :delete, id: :sign_out %>
+  <% c.with_menu_item_button_to t("sign_out"), Current.session, method: :delete, "data-turbo-method": :delete %>
   <% signed_in do %>
-    <% if Current.user&.admin? %>
+    <% if Current.user.tester? || Current.user.admin? %>
       <% c.with_menu_item_divider %>
       <%= c.with_menu_item_link_to t(".home"), music_library_path %>
       <%= c.with_menu_item_link_to t(".recordings"), recordings_path %>
       <%= c.with_menu_item_link_to t(".orchestras"), orchestras_path %>
       <%= c.with_menu_item_link_to t(".playlists"), playlists_path %>
       <%= c.with_menu_item_link_to t(".tandas"), tandas_path %>
+    <% end %>
+    <% if Current.user&.admin? %>
       <% c.with_menu_item_divider %>
       <% c.with_menu_item_link_to "Admin", avo.root_path %>
       <% c.with_menu_item_link_to t(".jobs"), mission_control_jobs_path %>
