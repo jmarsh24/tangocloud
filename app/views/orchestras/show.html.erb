@@ -1,5 +1,9 @@
 <% cache([@orchestra, @filters]) do %>
   <div class="container flex flex-col gap-8 py-8 px-2 rounded-lg shadow-lg">
+    <%= link_to orchestras_path, class: "flex gap-2 text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300" do %>
+      <%= heroicon "chevron-left", size: :sm %>
+      <%= t(".back") %>
+    <% end %>
     <div id="orchestra-image" class="flex flex-col items-center">
       <% if @orchestra.image.attached? %>
         <%= image_tag @orchestra.image, class: "w-36 h-36 md:w-48 md:h-48 rounded-full object-cover" %>
