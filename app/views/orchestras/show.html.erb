@@ -1,4 +1,4 @@
-<%# cache(@orchestra, @filters) do %>
+<% cache([@orchestra, @filters]) do %>
   <div class="container flex flex-col gap-8 p-8 rounded-lg shadow-lg">
     <div class="flex flex-col items-center">
       <% if @orchestra.image.attached? %>
@@ -108,4 +108,4 @@
       </div>
     <% end %>
   </div>
-  <%# end %>
+<% end %>
