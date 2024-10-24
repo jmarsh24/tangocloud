@@ -67,11 +67,18 @@ class OrchestrasController < ApplicationController
                   ELSE 5
                 END, genres.name ASC"))
 
-    @orchestra_periods = OrchestraPeriod
-      .joins(orchestra: :recordings)
-      .where(recordings: {id: recording_ids})
-      .group("orchestra_periods.id")
-      .order("orchestra_periods.start_date ASC, orchestra_periods.end_date ASC")
+    min_date, max_date = Recording.where(id: recording_ids).pluck(Arel.sql("MIN(recorded_date), MAX(recorded_date)")).first
+
+    @orchestra_periods = if min_date && max_date
+      OrchestraPeriod
+        .joins(orchestra: :recordings)
+        .where(recordings: {id: recording_ids})
+        .where(start_date: ..max_date, end_date: min_date..)
+        .group("orchestra_periods.id")
+        .order("orchestra_periods.start_date ASC, orchestra_periods.end_date ASC")
+    else
+      OrchestraPeriod.none
+    end
 
     @singers = Person.with_attached_image
       .joins(:recording_singers)
