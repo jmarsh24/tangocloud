@@ -1,27 +1,26 @@
 <%= ui_dropdown align: :end, content_classes: "mt-5 shadow-xl", id: "user_navbar_toggle" do |c| %>
-    <% c.with_toggle_open do %>
-      <% if Current&.user&.avatar.present? %>
-        <%= image_tag(Current.user.avatar, alt: "User Avatar", class: "w-10 h-10 rounded-full object-cover") %>
-      <% else %>
-        <%= heroicon("user-circle", variant: :solid, size: :xl, class: "fill-neutral-300 dark:fill-neutral-400") %>
-      <% end %>
+  <% c.with_toggle_open do %>
+    <% if Current&.user&.avatar.present? %>
+      <%= image_tag(Current.user.avatar, alt: "User Avatar", class: "w-10 h-10 rounded-full object-cover") %>
+    <% else %>
+      <%= heroicon("user-circle", variant: :solid, size: :xl, class: "fill-neutral-300 dark:fill-neutral-400") %>
     <% end %>
-
-    <% c.with_toggle_close do %>
-      <% if Current&.user&.avatar.present? %>
-        <%= image_tag(Current.user.avatar, alt: "User Avatar", class: "w-10 h-10 rounded-full object-cover") %>
-      <% else %>
-        <%= heroicon("user-circle", variant: :solid, size: :xl, class: "fill-neutral-300 dark:fill-neutral-400") %>
-      <% end %>
+  <% end %>
+  <% c.with_toggle_close do %>
+    <% if Current&.user&.avatar.present? %>
+      <%= image_tag(Current.user.avatar, alt: "User Avatar", class: "w-10 h-10 rounded-full object-cover") %>
+    <% else %>
+      <%= heroicon("user-circle", variant: :solid, size: :xl, class: "fill-neutral-300 dark:fill-neutral-400") %>
     <% end %>
-    <% c.with_menu_item_link_to "Edit", edit_registration_path(Current.user), data: {turbo_frame: "modal"} %>
-    <% if Current.user %>
-      <% c.with_menu_item_link_to t("sign_out"), Current.session, method: :delete, "data-turbo-method": :delete, id: :sign_out %>
-      <% if Current.user&.admin? %>
-        <% c.with_menu_item_divider %>
-        <% c.with_menu_item_link_to "Admin", avo.root_path %>
-        <% c.with_menu_item_link_to t("Jobs"), mission_control_jobs_path %>
-        <% c.with_menu_item_link_to t("Upload Playlists"), avo.new_resources_playlist_path %>
-      <% end %>
+  <% end %>
+  <% c.with_menu_item_link_to "Edit", edit_registration_path(Current.user), data: {turbo_frame: "modal"} %>
+  <% if Current.user %>
+    <% c.with_menu_item_button_to t("sign_out"), Current.session, method: :delete, "data-turbo-method": :delete %>
+    <% if Current.user&.admin? %>
+      <% c.with_menu_item_divider %>
+      <% c.with_menu_item_link_to "Admin", avo.root_path %>
+      <% c.with_menu_item_link_to t("Jobs"), mission_control_jobs_path %>
+      <% c.with_menu_item_link_to t("Upload Playlists"), avo.new_resources_playlist_path %>
     <% end %>
+  <% end %>
 <% end %>
