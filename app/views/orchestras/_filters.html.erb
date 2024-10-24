@@ -3,14 +3,14 @@
     <% if filters_active = @filters.any? %>
       <%= link_to orchestra_path(@orchestra),
         data: { turbo_stream: true },
-        class: "px-3 py-1 rounded-full text-sm bg-red-500 text-white hover:bg-red-600 transition" do %>
+        class: "px-3 py-1 rounded-full text-xs md:text-sms bg-red-500 text-white hover:bg-red-600 transition" do %>
         <span class="flex items-center gap-1">
           <%= heroicon "x-mark", size: :xs %>
           Clear All Filters
         </span>
       <% end %>
     <% else %>
-      <div class="px-3 py-1 rounded-full text-sm opacity-0">
+      <div class="px-3 py-1 rounded-full text-xs md:text-sms opacity-0">
         <span class="flex items-center gap-1">
           <%= heroicon "x-mark", size: :xs %>
           Clear All Filters
