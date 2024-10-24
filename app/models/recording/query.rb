@@ -9,7 +9,7 @@ class Recording::Query
   attribute :orchestra_period, :string
   attribute :singer, :string
   attribute :page, :integer, default: 1
-  attribute :items, :integer, default: 20
+  attribute :items, :integer, default: 500
 
   validates :year, numericality: {only_integer: true}, allow_nil: true
 
