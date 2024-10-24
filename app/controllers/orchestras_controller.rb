@@ -1,4 +1,10 @@
 class OrchestrasController < ApplicationController
+  def index
+    @orchestras = policy_scope(Orchestra.ordered_by_recordings).limit(100).with_attached_image
+
+    authorize Orchestra
+  end
+
   def show
     @orchestra = policy_scope(
       Orchestra.includes(
@@ -20,13 +26,17 @@ class OrchestrasController < ApplicationController
     end
 
     if @filters[:genre].present?
-      @recordings = @recordings.joins(:genres).where(genres: {name: @filters[:genre]})
+      @recordings = @recordings.joins(:genre).where(genre: {name: @filters[:genre]})
     end
 
     if @filters[:orchestra_period].present?
-      @recordings = @recordings
-        .joins(orchestra: :orchestra_periods)
-        .where(orchestra_periods: {name: @filters[:orchestra_period]})
+      period = @orchestra.orchestra_periods.find_by(name: @filters[:orchestra_period])
+      if period.present?
+        date_range = period.start_date..period.end_date
+        @recordings = @recordings.where(recorded_date: date_range)
+      else
+        @recordings = @recordings.none
+      end
     end
 
     if @filters[:singer].present?

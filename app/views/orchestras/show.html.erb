@@ -11,6 +11,19 @@
         <%= @orchestra.name %>
       </h1>
     </div>
+    <!-- Determine if any filters are active -->
+    <% filters_active = @filters.any? %>
+    <!-- Clear All Filters Button -->
+    <% if filters_active %>
+      <div class="flex">
+        <%= link_to orchestra_path(@orchestra), class: "px-3 py-1 rounded-full text-sm bg-red-500 text-white hover:bg-red-600 transition" do %>
+          <span class="flex items-center gap-1">
+            <%= heroicon "x-mark", size: :xs %>
+            Clear All Filters
+          </span>
+        <% end %>
+      </div>
+    <% end %>
     <div class="flex flex-col gap-4">
       <!-- Years Filter -->
       <% if @years.any? %>
@@ -58,7 +71,7 @@
           <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Periods</h2>
           <div class="flex gap-2 flex-wrap">
             <% @orchestra_periods.each do |period| %>
-              <% selected = @filters[:orchestra_period] == period.name %>
+              <% selected = @filters[:orchestra_period].to_s == period.name %>
               <% new_filters = selected ? @filters.except(:orchestra_period) : @filters.merge(orchestra_period: period.name) %>
               <%= link_to orchestra_path(@orchestra, params: new_filters), class: "px-2 py-1 rounded-full text-sm transition #{selected ? 'bg-blue-500 text-white' : 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'}" do %>
                 <span class="flex items-center gap-1">
