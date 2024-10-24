@@ -799,6 +799,7 @@ DEPENDENCIES
   oj
   omniauth
   omniauth-rails_csrf_protection
+  pagy
   pg
   progress_bar
   propshaft

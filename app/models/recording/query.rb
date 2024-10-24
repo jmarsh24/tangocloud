@@ -8,6 +8,8 @@ class Recording::Query
   attribute :genre, :string
   attribute :orchestra_period, :string
   attribute :singer, :string
+  attribute :page, :integer, default: 1
+  attribute :items, :integer, default: 20
 
   validates :year, numericality: {only_integer: true}, allow_nil: true
 
@@ -24,7 +26,8 @@ class Recording::Query
     scope = filter_by_genre(scope)
     scope = filter_by_orchestra_period(scope)
     scope = filter_by_singer(scope)
-    scope.limit(100)
+
+    paginated_scope(scope)
   end
 
   def recording_ids
@@ -69,6 +72,13 @@ class Recording::Query
   end
 
   private
+
+  def paginated_scope(scope)
+    total_count = scope.count
+    pagy = Pagy.new(count: total_count, page: page, items: items)
+    records = scope.offset(pagy.offset).limit(pagy.items)
+    [pagy, records]
+  end
 
   def filter_by_year(scope)
     if year.present?
