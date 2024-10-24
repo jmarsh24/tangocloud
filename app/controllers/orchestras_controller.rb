@@ -32,5 +32,10 @@ class OrchestrasController < ApplicationController
     @genres = query.genres
     @orchestra_periods = query.orchestra_periods
     @singers = query.singers
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 end

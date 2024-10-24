@@ -10,109 +10,11 @@
         <%= @orchestra.name %>
       </h1>
     </div>
-    <div id="clear-all" class="flex flex-col gap-4">
-      <div class="flex">
-        <% if filters_active = @filters.any? %>
-          <%= link_to orchestra_path(@orchestra),
-        class: "px-3 py-1 rounded-full text-sm bg-red-500 text-white hover:bg-red-600 transition" do %>
-            <span class="flex items-center gap-1">
-              <%= heroicon "x-mark", size: :xs %>
-              Clear All Filters
-            </span>
-          <% end %>
-        <% else %>
-          <div class="px-3 py-1 rounded-full text-sm opacity-0">
-            <span class="flex items-center gap-1">
-              <%= heroicon "x-mark", size: :xs %>
-              Clear All Filters
-            </span>
-          </div>
-        <% end %>
-      </div>
-      <% if @orchestra_periods.any? %>
-        <div id="orchestra-period-filters" class="flex flex-col gap-1">
-          <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Periods</h2>
-          <div class="flex gap-2 overflow-x-auto no-scrollbar whitespace-nowrap flex-nowrap">
-            <% @orchestra_periods.each do |period| %>
-              <% selected = @filters[:orchestra_period].to_s == period.name %>
-              <% new_filters = selected ? @filters.except(:orchestra_period) : @filters.merge(orchestra_period: period.name) %>
-              <%= link_to orchestra_path(@orchestra, params: new_filters), class: "px-2 py-1 rounded-full text-sm transition #{selected ? 'bg-blue-500 text-white' : 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'}" do %>
-                <span class="flex items-center gap-1">
-                  <%= period.name %>
-                  <% if selected %>
-                    <%= heroicon "x-mark", size: :xs %>
-                  <% end %>
-                </span>
-              <% end %>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
-      <% if @singers.any? %>
-        <div id="singer-filters" class="flex flex-col gap-1">
-          <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Singers</h2>
-          <div class="flex gap-2 overflow-x-auto no-scrollbar whitespace-nowrap flex-nowrap">
-            <% @singers.each do |singer| %>
-              <% selected = @filters[:singer] == singer.name %>
-              <% new_filters = selected ? @filters.except(:singer) : @filters.merge(singer: singer.name) %>
-              <%= link_to orchestra_path(@orchestra, params: new_filters), class: "px-2 py-1 rounded-full text-sm transition #{selected ? 'bg-blue-500 text-white' : 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'}" do %>
-                <span class="flex items-center gap-1">
-                  <%= singer.name %>
-                  <% if selected %>
-                    <%= heroicon "x-mark", size: :xs %>
-                  <% end %>
-                </span>
-              <% end %>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
-      <% if @years.any? %>
-        <div id="year-filters" class="flex flex-col gap-1">
-          <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Years</h2>
-          <div class="flex gap-2 overflow-x-auto no-scrollbar whitespace-nowrap flex-nowrap">
-            <% @years.each do |year| %>
-              <% selected = @filters[:year].to_s == year.to_s %>
-              <% new_filters = selected ? @filters.except(:year) : @filters.merge(year: year) %>
-              <%= link_to orchestra_path(@orchestra, params: new_filters), class: "px-2 py-1 rounded-full text-sm transition #{selected ? 'bg-blue-500 text-white' : 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'}" do %>
-                <span class="flex items-center gap-1">
-                  <%= year %>
-                  <% if selected %>
-                    <%= heroicon "x-mark", size: :xs %>
-                  <% end %>
-                </span>
-              <% end %>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
-      <% if @genres.any? %>
-        <div id="genre-filters" class="flex flex-col gap-1">
-          <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Genres</h2>
-          <div class="flex gap-2 overflow-x-auto no-scrollbar whitespace-nowrap flex-nowrap">
-            <% @genres.each do |genre| %>
-              <% selected = @filters[:genre] == genre.name %>
-              <% new_filters = selected ? @filters.except(:genre) : @filters.merge(genre: genre.name) %>
-              <%= link_to orchestra_path(@orchestra, params: new_filters), class: "px-2 py-1 rounded-full text-sm transition #{selected ? 'bg-blue-500 text-white' : 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'}" do %>
-                <span class="flex items-center gap-1">
-                  <%= genre.name %>
-                  <% if selected %>
-                    <%= heroicon "x-mark", size: :xs %>
-                  <% end %>
-                </span>
-              <% end %>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
-    </div>
-    <% if @recordings.any? %>
-      <div id="recordings-list">
-        <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide mb-2">Recordings</h2>
-        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <%= render @recordings %>
-        </div>
-      </div>
+    <%= turbo_frame_tag "filters" do %>
+      <%= render partial: "filters", locals: { orchestra: @orchestra, filters: @filters, years: @years, genres: @genres, orchestra_periods: @orchestra_periods, singers: @singers } %>
+    <% end %>
+    <%= turbo_frame_tag "recordings" do %>
+      <%= render partial: "recordings", locals: { recordings: @recordings } %>
     <% end %>
   </div>
 <% end %>
