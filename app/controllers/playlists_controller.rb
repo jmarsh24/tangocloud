@@ -32,8 +32,8 @@ class PlaylistsController < ApplicationController
       .strict_loading
       .where(item_type: "Tanda", playlist_id: @playlist.id)
       .includes(
-        playlist: :user,
-        item: {
+        item: [
+          :user,
           recordings: [
             :composition,
             :orchestra,
@@ -48,7 +48,7 @@ class PlaylistsController < ApplicationController
               ]
             ]
           ]
-        }
+        ]
       )
 
     @playlist_items = (recordings + tandas).sort_by(&:position)
