@@ -70,6 +70,6 @@ class OrchestrasController < ApplicationController
       .select("people.*, COUNT(recording_singers.recording_id) AS recording_count")
       .order("recording_count DESC")
 
-    @recordings = @recordings.limit(40)
+    @recordings = @recordings.limit(100)
   end
 end
