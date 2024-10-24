@@ -10,42 +10,50 @@
         <%= @orchestra.name %>
       </h1>
     </div>
-    <div class="flex flex-col gap-4">
+    <% if @years %>
       <div class="flex flex-col gap-4">
-        <div class="flex flex-col gap-1">
-          <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Years</h2>
-          <div class="flex gap-2 flex-wrap">
-            <% @years.each do |year| %>
-              <%= link_to year.to_s, "#", class: "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 px-3 py-1 rounded-full text-sm hover:bg-neutral-200 dark:hover:bg-neutral-700 transition" %>
-            <% end %>
+        <div class="flex flex-col gap-4">
+          <div class="flex flex-col gap-1">
+            <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Years</h2>
+            <div class="flex gap-2 flex-wrap">
+              <% @years.each do |year| %>
+                <%= link_to year.to_s, orchestra_path(year:), class: "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 px-3 py-1 rounded-full text-sm hover:bg-neutral-200 dark:hover:bg-neutral-700 transition" %>
+              <% end %>
+            </div>
           </div>
         </div>
       </div>
+    <% end %>
+    <% if @genres %>
       <div class="flex flex-col gap-1">
         <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Genres</h2>
         <div class="flex gap-2 flex-wrap">
           <% @genres.each do |genre| %>
-            <%= link_to genre.name, "#", class: "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 px-3 py-1 rounded-full text-sm hover:bg-neutral-200 dark:hover:bg-neutral-700 transition" %>
+            <%= link_to genre.name, orchestra_path(genre: genre.name), class: "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 px-3 py-1 rounded-full text-sm hover:bg-neutral-200 dark:hover:bg-neutral-700 transition" %>
           <% end %>
         </div>
       </div>
+    <% end %>
+    <% if @orchestra_periods %>
       <div class="flex flex-col gap-1">
         <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Periods</h2>
         <div class="flex gap-2 flex-wrap">
           <% @orchestra_periods.each do |period| %>
-            <%= link_to period.name, "#", class: "bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300 px-3 py-1 rounded-full text-sm hover:bg-neutral-200 dark:hover:bg-blue-700 transition" %>
+            <%= link_to period.name, orchestra_path(period: period.name), class: "bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300 px-3 py-1 rounded-full text-sm hover:bg-neutral-200 dark:hover:bg-blue-700 transition" %>
           <% end %>
         </div>
       </div>
+    <% end %>
+    <% if @singers %>
       <div class="flex flex-col gap-1">
         <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Singers</h2>
         <div class="flex gap-2 flex-wrap">
           <% @singers.each do |singer| %>
-            <%= link_to singer.name, "#", class: "bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300 px-3 py-1 rounded-full text-sm hover:bg-neutral-200 dark:hover:bg-neutral-700 transition" %>
+            <%= link_to singer.name, orchestra_path(singer: singer.name), class: "bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300 px-3 py-1 rounded-full text-sm hover:bg-neutral-200 dark:hover:bg-neutral-700 transition" %>
           <% end %>
         </div>
       </div>
-    </div>
+    <% end %>
     <div>
       <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide mb-2">Recordings</h2>
       <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
