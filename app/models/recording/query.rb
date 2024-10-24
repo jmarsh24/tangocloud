@@ -1,4 +1,4 @@
-# app/models/recordings_query.rb
+# app/models/recording/query.rb
 class Recording::Query
   include ActiveModel::Model
   include ActiveModel::Attributes
@@ -8,14 +8,9 @@ class Recording::Query
   attribute :genre, :string
   attribute :orchestra_period, :string
   attribute :singer, :string
-  attribute :page, :integer, default: 1
-  attribute :items, :integer, default: 500
+  attribute :items, :integer, default: 100
 
   validates :year, numericality: {only_integer: true}, allow_nil: true
-
-  def initialize(attributes = {})
-    super
-  end
 
   def results
     return Recording.none unless valid?
@@ -26,8 +21,7 @@ class Recording::Query
     scope = filter_by_genre(scope)
     scope = filter_by_orchestra_period(scope)
     scope = filter_by_singer(scope)
-
-    paginated_scope(scope)
+    scope.limit(items)
   end
 
   def recording_ids
@@ -35,8 +29,7 @@ class Recording::Query
   end
 
   def years
-    Recording
-      .where(id: recording_ids)
+    results
       .where.not(recorded_date: nil)
       .distinct
       .pluck(Arel.sql("EXTRACT(YEAR FROM recorded_date)"))
@@ -46,7 +39,7 @@ class Recording::Query
 
   def genres
     Genre
-      .joins(compositions: :recordings)
+      .joins(:recordings)
       .where(recordings: {id: recording_ids})
       .group("genres.id")
       .order(Arel.sql(order_genres_sql))
@@ -55,11 +48,18 @@ class Recording::Query
   def orchestra_periods
     return OrchestraPeriod.none unless orchestra.present?
 
-    OrchestraPeriod
-      .joins(orchestra: :recordings)
-      .where(recordings: {id: recording_ids})
-      .group("orchestra_periods.id")
-      .order("orchestra_periods.start_date ASC, orchestra_periods.end_date ASC")
+    min_date, max_date = results.pluck(Arel.sql("MIN(recorded_date), MAX(recorded_date)")).first
+
+    if min_date && max_date
+      OrchestraPeriod
+        .joins(orchestra: :recordings)
+        .where(recordings: {id: recording_ids})
+        .where(start_date: ..max_date, end_date: min_date..)
+        .group("orchestra_periods.id")
+        .order("orchestra_periods.start_date ASC, orchestra_periods.end_date ASC")
+    else
+      OrchestraPeriod.none
+    end
   end
 
   def singers
@@ -73,51 +73,23 @@ class Recording::Query
 
   private
 
-  def paginated_scope(scope)
-    total_count = scope.count
-    pagy = Pagy.new(count: total_count, page: page, items: items)
-    records = scope.offset(pagy.offset).limit(pagy.items)
-    [pagy, records]
-  end
-
   def filter_by_year(scope)
-    if year.present?
-      scope.where("EXTRACT(YEAR FROM recorded_date) = ?", year)
-    else
-      scope
-    end
+    year.present? ? scope.where("EXTRACT(YEAR FROM recorded_date) = ?", year) : scope
   end
 
   def filter_by_genre(scope)
-    if genre.present?
-      scope.joins(composition: :genre).where(genres: {name: genre})
-    else
-      scope
-    end
+    genre.present? ? scope.joins(:genre).where(genres: {name: genre}) : scope
   end
 
   def filter_by_orchestra_period(scope)
-    if orchestra_period.present? && orchestra.present?
-      period = orchestra.orchestra_periods.find_by(name: orchestra_period)
-      if period.present?
-        date_range = period.start_date..period.end_date
-        scope.where(recorded_date: date_range)
-      else
-        scope.none
-      end
-    else
-      scope
-    end
+    return scope unless orchestra_period.present? && orchestra.present?
+
+    period = orchestra.orchestra_periods.find_by(name: orchestra_period)
+    period ? scope.where(recorded_date: period.start_date..period.end_date) : scope.none
   end
 
   def filter_by_singer(scope)
-    if singer.present?
-      scope
-        .joins(recording_singers: :person)
-        .where(people: {name: singer})
-    else
-      scope
-    end
+    singer.present? ? scope.joins(recording_singers: :person).where(people: {name: singer}) : scope
   end
 
   def order_genres_sql
