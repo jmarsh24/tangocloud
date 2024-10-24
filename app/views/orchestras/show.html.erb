@@ -1,6 +1,6 @@
 <% cache([@orchestra, @filters]) do %>
   <div class="container flex flex-col gap-8 p-8 rounded-lg shadow-lg">
-    <div class="flex flex-col items-center">
+    <div id="orchestra-image" class="flex flex-col items-center">
       <% if @orchestra.image.attached? %>
         <%= image_tag @orchestra.image, class: "w-36 h-36 md:w-48 md:h-48 rounded-full object-cover" %>
       <% else %>
@@ -10,7 +10,7 @@
         <%= @orchestra.name %>
       </h1>
     </div>
-    <div class="flex flex-col gap-4">
+    <div id="clear-all" class="flex flex-col gap-4">
       <div class="flex">
         <% if filters_active = @filters.any? %>
           <%= link_to orchestra_path(@orchestra),
@@ -30,7 +30,7 @@
         <% end %>
       </div>
       <% if @orchestra_periods.any? %>
-        <div class="flex flex-col gap-1">
+        <div id="orchestra-period-filters" class="flex flex-col gap-1">
           <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Periods</h2>
           <div class="flex gap-2 flex-wrap">
             <% @orchestra_periods.each do |period| %>
@@ -49,7 +49,7 @@
         </div>
       <% end %>
       <% if @singers.any? %>
-        <div class="flex flex-col gap-1">
+        <div id="singer-filters" class="flex flex-col gap-1">
           <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Singers</h2>
           <div class="flex gap-2 flex-wrap">
             <% @singers.each do |singer| %>
@@ -68,7 +68,7 @@
         </div>
       <% end %>
       <% if @years.any? %>
-        <div class="flex flex-col gap-1">
+        <div id="year=filters" class="flex flex-col gap-1">
           <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Years</h2>
           <div class="flex gap-2 flex-wrap">
             <% @years.each do |year| %>
@@ -87,7 +87,7 @@
         </div>
       <% end %>
       <% if @genres.any? %>
-        <div class="flex flex-col gap-1">
+        <div id="genre-filters" class="flex flex-col gap-1">
           <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Genres</h2>
           <div class="flex gap-2 flex-wrap">
             <% @genres.each do |genre| %>
@@ -107,7 +107,7 @@
       <% end %>
     </div>
     <% if @recordings.any? %>
-      <div>
+      <div id="recordings-list">
         <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide mb-2">Recordings</h2>
         <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <%= render @recordings %>
