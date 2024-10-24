@@ -69,14 +69,33 @@ class Recording::Query
 
   def singers
     if singer.present?
-      Person.where(name: singer)
+      if singer.downcase == "instrumental"
+        [OpenStruct.new(id: "instrumental", name: "Instrumental", recording_count: instrumental_count)]
+      else
+        Person.where(name: singer)
+      end
     else
-      Person
+      singers = Person
         .joins(:recording_singers)
         .where(recording_singers: {recording_id: recording_ids})
         .group("people.id")
         .select("people.*, COUNT(recording_singers.recording_id) AS recording_count")
         .order("recording_count DESC")
+
+      instrumental_count = Recording
+        .where(id: recording_ids)
+        .left_outer_joins(:recording_singers)
+        .where(recording_singers: {recording_id: nil})
+        .count
+
+      if instrumental_count > 0
+        instrumental = OpenStruct.new(id: "instrumental", name: "Instrumental", recording_count: instrumental_count)
+        singers = singers.to_a + [instrumental]
+      else
+        singers = singers.to_a
+      end
+
+      singers.sort_by { |s| -s.recording_count }
     end
   end
 
@@ -99,7 +118,11 @@ class Recording::Query
 
   def filter_by_singer(scope)
     if singer.present?
-      scope.joins(recording_singers: :person).where(people: {name: singer})
+      if singer.downcase == "instrumental"
+        scope.left_outer_joins(:recording_singers).where(recording_singers: {recording_id: nil})
+      else
+        scope.joins(recording_singers: :person).where(people: {name: singer})
+      end
     else
       scope
     end
