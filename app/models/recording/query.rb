@@ -70,6 +70,11 @@ class Recording::Query
   def singers
     if singer.present?
       if singer.downcase == "instrumental"
+        instrumental_count = Recording
+          .where(id: recording_ids)
+          .left_outer_joins(:recording_singers)
+          .where(recording_singers: {recording_id: nil})
+          .count
         [OpenStruct.new(id: "instrumental", name: "Instrumental", recording_count: instrumental_count)]
       else
         Person.where(name: singer)
