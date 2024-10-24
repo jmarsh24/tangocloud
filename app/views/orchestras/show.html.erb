@@ -29,44 +29,6 @@
           </div>
         <% end %>
       </div>
-      <% if @years.any? %>
-        <div class="flex flex-col gap-1">
-          <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Years</h2>
-          <div class="flex gap-2 flex-wrap">
-            <% @years.each do |year| %>
-              <% selected = @filters[:year].to_s == year.to_s %>
-              <% new_filters = selected ? @filters.except(:year) : @filters.merge(year: year) %>
-              <%= link_to orchestra_path(@orchestra, params: new_filters), class: "px-2 py-1 rounded-full text-sm transition #{selected ? 'bg-blue-500 text-white' : 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'}" do %>
-                <span class="flex items-center gap-1">
-                  <%= year %>
-                  <% if selected %>
-                    <%= heroicon "x-mark", size: :xs %>
-                  <% end %>
-                </span>
-              <% end %>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
-      <% if @genres.any? %>
-        <div class="flex flex-col gap-1">
-          <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Genres</h2>
-          <div class="flex gap-2 flex-wrap">
-            <% @genres.each do |genre| %>
-              <% selected = @filters[:genre] == genre.name %>
-              <% new_filters = selected ? @filters.except(:genre) : @filters.merge(genre: genre.name) %>
-              <%= link_to orchestra_path(@orchestra, params: new_filters), class: "px-2 py-1 rounded-full text-sm transition #{selected ? 'bg-blue-500 text-white' : 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'}" do %>
-                <span class="flex items-center gap-1">
-                  <%= genre.name %>
-                  <% if selected %>
-                    <%= heroicon "x-mark", size: :xs %>
-                  <% end %>
-                </span>
-              <% end %>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
       <% if @orchestra_periods.any? %>
         <div class="flex flex-col gap-1">
           <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Periods</h2>
@@ -96,6 +58,44 @@
               <%= link_to orchestra_path(@orchestra, params: new_filters), class: "px-2 py-1 rounded-full text-sm transition #{selected ? 'bg-blue-500 text-white' : 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'}" do %>
                 <span class="flex items-center gap-1">
                   <%= singer.name %>
+                  <% if selected %>
+                    <%= heroicon "x-mark", size: :xs %>
+                  <% end %>
+                </span>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+      <% if @years.any? %>
+        <div class="flex flex-col gap-1">
+          <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Years</h2>
+          <div class="flex gap-2 flex-wrap">
+            <% @years.each do |year| %>
+              <% selected = @filters[:year].to_s == year.to_s %>
+              <% new_filters = selected ? @filters.except(:year) : @filters.merge(year: year) %>
+              <%= link_to orchestra_path(@orchestra, params: new_filters), class: "px-2 py-1 rounded-full text-sm transition #{selected ? 'bg-blue-500 text-white' : 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'}" do %>
+                <span class="flex items-center gap-1">
+                  <%= year %>
+                  <% if selected %>
+                    <%= heroicon "x-mark", size: :xs %>
+                  <% end %>
+                </span>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+      <% if @genres.any? %>
+        <div class="flex flex-col gap-1">
+          <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Genres</h2>
+          <div class="flex gap-2 flex-wrap">
+            <% @genres.each do |genre| %>
+              <% selected = @filters[:genre] == genre.name %>
+              <% new_filters = selected ? @filters.except(:genre) : @filters.merge(genre: genre.name) %>
+              <%= link_to orchestra_path(@orchestra, params: new_filters), class: "px-2 py-1 rounded-full text-sm transition #{selected ? 'bg-blue-500 text-white' : 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'}" do %>
+                <span class="flex items-center gap-1">
+                  <%= genre.name %>
                   <% if selected %>
                     <%= heroicon "x-mark", size: :xs %>
                   <% end %>
