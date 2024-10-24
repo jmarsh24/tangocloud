@@ -10,18 +10,25 @@
         <%= @orchestra.name %>
       </h1>
     </div>
-    <% filters_active = @filters.any? %>
-    <% if filters_active %>
+    <div class="flex flex-col gap-4">
       <div class="flex">
-        <%= link_to orchestra_path(@orchestra), class: "px-3 py-1 rounded-full text-sm bg-red-500 text-white hover:bg-red-600 transition" do %>
-          <span class="flex items-center gap-1">
-            <%= heroicon "x-mark", size: :xs %>
-            Clear All Filters
-          </span>
+        <% if filters_active = @filters.any? %>
+          <%= link_to orchestra_path(@orchestra),
+        class: "px-3 py-1 rounded-full text-sm bg-red-500 text-white hover:bg-red-600 transition" do %>
+            <span class="flex items-center gap-1">
+              <%= heroicon "x-mark", size: :xs %>
+              Clear All Filters
+            </span>
+          <% end %>
+        <% else %>
+          <div class="px-3 py-1 rounded-full text-sm opacity-0">
+            <span class="flex items-center gap-1">
+              <%= heroicon "x-mark", size: :xs %>
+              Clear All Filters
+            </span>
+          </div>
         <% end %>
       </div>
-    <% end %>
-    <div class="flex flex-col gap-4">
       <% if @years.any? %>
         <div class="flex flex-col gap-1">
           <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Years</h2>
