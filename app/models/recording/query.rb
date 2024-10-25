@@ -31,15 +31,34 @@ class Recording::Query
 
     years_array = results
       .where.not(recorded_date: nil)
-      .distinct
-      .pluck(Arel.sql("EXTRACT(YEAR FROM recorded_date)"))
+      .pluck(Arel.sql("DISTINCT EXTRACT(YEAR FROM recorded_date)"))
       .map(&:to_i)
       .sort
-    return years_array if years_array.length == 1
 
-    years_array.in_groups(5).map do
-      _1.compact.minmax.compact.join("-")
-    end.compact_blank!
+    return years_array.map(&:to_s) if years_array.size <= 4
+
+    periods = []
+    current_range_start = years_array.first
+
+    years_array.each_cons(2) do |prev_year, next_year|
+      if next_year - current_range_start > 4 || next_year - prev_year > 1
+        periods << if current_range_start == prev_year
+          current_range_start.to_s
+        else
+          "#{current_range_start}-#{prev_year}"
+        end
+        current_range_start = next_year
+      end
+    end
+
+    last_year = years_array.last
+    if last_year - current_range_start < 4
+      periods[-1] = "#{current_range_start}-#{last_year}"
+    else
+      periods << last_year.to_s
+    end
+
+    periods
   end
 
   def genres
