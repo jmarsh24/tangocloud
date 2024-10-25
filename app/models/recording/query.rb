@@ -4,13 +4,11 @@ class Recording::Query
   include ActiveModel::Attributes
 
   attribute :orchestra
-  attribute :year, :integer
+  attribute :year, :string
   attribute :genre, :string
   attribute :orchestra_period, :string
   attribute :singer, :string
   attribute :items, :integer, default: 100
-
-  validates :year, numericality: {only_integer: true}, allow_nil: true
 
   def results
     return Recording.none unless valid?
@@ -29,12 +27,19 @@ class Recording::Query
   end
 
   def years
-    results
+    return [year] if year.present?
+
+    years_array = results
       .where.not(recorded_date: nil)
       .distinct
       .pluck(Arel.sql("EXTRACT(YEAR FROM recorded_date)"))
       .map(&:to_i)
       .sort
+    return years_array if years_array.length == 1
+
+    years_array.in_groups(5).map do
+      _1.compact.minmax.compact.join("-")
+    end.compact_blank!
   end
 
   def genres
@@ -107,7 +112,18 @@ class Recording::Query
   private
 
   def filter_by_year(scope)
-    year.present? ? scope.where("EXTRACT(YEAR FROM recorded_date) = ?", year) : scope
+    return scope unless year.present?
+
+    if year.include?("-")
+      min_year, max_year = year.split("-")
+      min_date = Date.new(min_year.to_i)
+      max_date = Date.new(max_year.to_i).end_of_year
+      scope.where(recorded_date: min_date..max_date)
+    elsif year.present?
+      min_date = Date.new(year.to_i)
+      max_date = Date.new(year.to_i).end_of_year
+      scope.where(recorded_date: min_date..max_date)
+    end
   end
 
   def filter_by_genre(scope)
