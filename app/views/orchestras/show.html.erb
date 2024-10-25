@@ -1,22 +1,22 @@
 <% cache([@orchestra, @filters]) do %>
-  <div class="relative container flex flex-col gap-4 py-4 px-2 rounded-lg shadow-lg">
+  <div class="container flex flex-col gap-4 py-4 px-2 rounded-lg shadow-lg">
     <div class="flex items-center gap-2 h-14">
       <%= link_to orchestras_path, class: "flex gap-2 text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300" do %>
         <%= heroicon "chevron-left", size: :sm %>
         <%= t(".back") %>
       <% end %>
-    </div>
-    <div class="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-4">
-      <div id="orchestra-image" class="flex items-center justify-center">
-        <% if @orchestra.image.attached? %>
-          <%= image_tag @orchestra.image, class: "w-24 aspect-square rounded-full object-cover" %>
-        <% else %>
-          <div class="w-12 aspect-square rounded-full bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center"></div>
-        <% end %>
+      <div class="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-4">
+        <div class="flex flex-shrink-0 items-center justify-center">
+          <% if @orchestra.image.attached? %>
+            <%= image_tag @orchestra.image, class: "w-12 aspect-square rounded-full object-cover" %>
+          <% else %>
+            <div class="w-12 aspect-square rounded-full bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center"></div>
+          <% end %>
+        </div>
+        <h1 class="text-2xl md:text-3xl text-nowrap font-semibold text-neutral-700 dark:text-neutral-200 text-center">
+          <%= @orchestra.name %>
+        </h1>
       </div>
-      <h1 class="text-2xl md:text-3xl text-nowrap font-semibold text-neutral-700 dark:text-neutral-200 text-center">
-        <%= @orchestra.name %>
-      </h1>
     </div>
     <%= turbo_frame_tag "filters" do %>
       <%= render partial: "filters", locals: { orchestra: @orchestra, filters: @filters, years: @years, genres: @genres, orchestra_periods: @orchestra_periods, singers: @singers } %>
