@@ -1,17 +1,20 @@
 <% cache([@orchestra, @filters]) do %>
-  <div class="container flex flex-col gap-8 py-8 px-2 rounded-lg shadow-lg">
-    <%= link_to orchestras_path, class: "flex gap-2 text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300" do %>
-      <%= heroicon "chevron-left", size: :sm %>
-      <%= t(".back") %>
-    <% end %>
-    <div id="orchestra-image" class="flex flex-col items-center">
-      <% if @orchestra.image.attached? %>
-        <%= image_tag @orchestra.image, class: "w-36 h-36 md:w-48 md:h-48 rounded-full object-cover" %>
-      <% else %>
-        <div class="w-36 h-36 md:w-48 md:h-48 rounded-full bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center">
-        </div>
+  <div class="relative container flex flex-col gap-4 py-4 px-2 rounded-lg shadow-lg">
+    <div class="flex items-center gap-2 h-14">
+      <%= link_to orchestras_path, class: "flex gap-2 text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300" do %>
+        <%= heroicon "chevron-left", size: :sm %>
+        <%= t(".back") %>
       <% end %>
-      <h1 class="text-2xl md:text-3xl font-semibold text-neutral-700 dark:text-neutral-200 mt-4">
+    </div>
+    <div class="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-4">
+      <div id="orchestra-image" class="flex items-center justify-center">
+        <% if @orchestra.image.attached? %>
+          <%= image_tag @orchestra.image, class: "w-24 aspect-square rounded-full object-cover" %>
+        <% else %>
+          <div class="w-12 aspect-square rounded-full bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center"></div>
+        <% end %>
+      </div>
+      <h1 class="text-2xl md:text-3xl text-nowrap font-semibold text-neutral-700 dark:text-neutral-200 text-center">
         <%= @orchestra.name %>
       </h1>
     </div>
