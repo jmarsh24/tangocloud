@@ -1,6 +1,12 @@
 tango:
   name: "Tango"
 
+milonga:
+  name: "Milonga"
+
+vals:
+  name: "Vals"
+
 # == Schema Information
 #
 # Table name: genres
