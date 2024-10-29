@@ -31,7 +31,7 @@
       <div class="form-control space-y-4 pb-4">
         <div>
           <label class="input input-bordered flex items-center gap-2 <%= error_class(@user, :email) %>"
-            <%= heroicon("envelope", variant: :solid) %>
+            <%= heroicon("envelope", variant: :solid, size: :sm) %>
             <%= f.email_field :email, class: "grow", id: "email-address", value: @user.email, readonly: true, placeholder: "Email", disabled: true %>
             <%= inline_errors_for(@user, :email) %>
           </label>
@@ -43,26 +43,45 @@
             </label>
           </div>
           <%= inline_errors_for(@user, :username) %>
-          <div>
-            <label class="input input-bordered flex items-center gap-2 <%= error_class(@user, [:password, :password_confirmation]) %>">
-              <%= heroicon("key", variant: :solid) %>
-              <%= f.password_field :password, class: "grow", id: "password", autocomplete: "new-password", placeholder: "Password", minlength: 8 %>
-            </label>
-            <%= inline_errors_for(@user, :password) %>
-          </div>
-          <div>
-            <label class="input input-bordered flex items-center gap-2 <%= error_class(@user, :password_confirmation) %>">
-              <%= heroicon("key", variant: :solid) %>
-              <%= f.password_field :password_confirmation, class: "grow", id: "password-confirmation", autocomplete: "new-password", placeholder: "Confirm Password", minlength: 8 %>
-            </label>
-            <%= inline_errors_for(@user, :password_confirmation) %>
-          </div>
-          <div class="flex justify-center mt-4">
-            <%= f.submit "Update", class: "btn btn-primary btn-block" %>
+          <div data-controller="password-visibility" class="flex flex-col gap-4">
+            <div>
+              <label class="input input-bordered flex items-center gap-2">
+                <%= heroicon("key", variant: :solid, size: :sm) %>
+                <%= f.password_field :password, required: true, autocomplete: "new-password", inputmode: "text", minlength: 8, placeholder: "Password", class: "grow", data: { password_visibility_target: "password" } %>
+                <button data-action="click->password-visibility#toggle:prevent" aria-label="Show password">
+                  <div data-password-visibility-target="eye">
+                    <%= heroicon("eye", size: :md) %>
+                  </div>
+                  <div data-password-visibility-target="eyeSlash" class="hidden">
+                    <%= heroicon("eye-slash", size: :md) %>
+                  </div>
+                </button>
+              </label>
+              <%= inline_errors_for(@user, :password) %>
+            </div>
+            <div>
+              <label class="input input-bordered flex items-center gap-2">
+                <%= heroicon("key", variant: :solid, size: :sm) %>
+                <%= f.password_field :password_confirmation, required: true, autocomplete: "new-password", inputmode: "text", minlength: 8, placeholder: "Confirm Password", class: "grow", data: { password_visibility_target: "password" } %>
+                <button data-action="click->password-visibility#toggle:prevent" aria-label="Show password">
+                  <div data-password-visibility-target="eye">
+                    <%= heroicon("eye", size: :md) %>
+                  </div>
+                  <div data-password-visibility-target="eyeSlash" class="hidden">
+                    <%= heroicon("eye-slash", size: :md) %>
+                  </div>
+                </button>
+              </label>
+              <%= inline_errors_for(@user, :password_confirmation) %>
+            </div>
           </div>
         </div>
-      <% end %>
-      <div class="flex justify-center">
-        <%= button_to "Delete your account", registration_path, data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class: "link link-hover" %>
+        <div class="flex justify-center mt-4">
+          <%= f.submit "Update", class: "btn btn-primary btn-block" %>
+        </div>
       </div>
     <% end %>
+    <div class="flex justify-center">
+      <%= button_to "Delete your account", registration_path, data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class: "link link-hover" %>
+    </div>
+  <% end %>
