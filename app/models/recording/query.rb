@@ -12,7 +12,7 @@ class Recording::Query
 
   def results
     return Recording.none unless valid?
-    debugger
+
     scope = Recording.with_associations
     scope = scope.where(orchestra: orchestra) if orchestra.present?
     scope = filter_by_year(scope)
@@ -71,7 +71,6 @@ class Recording::Query
 
   def orchestra_periods
     return OrchestraPeriod.none unless orchestra.present?
-    binding.irb
 
     if orchestra_period.present?
       period = orchestra.orchestra_periods.find_by(name: orchestra_period)
