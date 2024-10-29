@@ -17,11 +17,19 @@
         </div>
         <label class="input input-bordered flex items-center gap-2">
           <%= heroicon("envelope", variant: :solid) %>
-          <%= form.email_field :email, id: "email-address", value: @email_hint, required: true, autofocus: true, autocomplete: "email", inputmode: "email", spellcheck: "false", placeholder: "Email", class: "grow" %>
+          <%= form.email_field :email, value: @email_hint, required: true, autofocus: true, autocomplete: "email", inputmode: "email", spellcheck: "false", placeholder: "Email", class: "grow" %>
         </label>
-        <label class="input input-bordered flex items-center gap-2">
+        <label class="input input-bordered flex items-center gap-2" data-controller="password-visibility">
           <%= heroicon("key", variant: :solid) %>
-          <%= form.password_field :password, required: true, autocomplete: "new-password", minlength: 8, inputmode: "text", placeholder: "Password", class: "grow" %>
+          <%= form.password_field :password, required: true, autocomplete: "new-password", minlength: 8, inputmode: "text", placeholder: "Password", class: "grow", data: {password_visibility_target: "password" } %>
+          <div data-action="click->password-visibility#toggle">
+            <div data-password-visibility-target="eye">
+              <%= heroicon("eye", size: :md) %>
+            </div>
+            <div data-password-visibility-target="eyeSlash" class="hidden">
+              <%= heroicon("eye-slash", size: :md) %>
+            </div>
+          </div>
         </label>
         <div class="flex justify-center mt-4">
           <%= form.submit "Sign in to account", class: "btn btn-primary btn-block" %>
