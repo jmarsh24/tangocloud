@@ -21,7 +21,6 @@
     <% if Current.user.tester? || Current.user.admin? %>
       <% c.with_menu_item_divider %>
       <%= c.with_menu_item_link_to t(".home"), music_library_path %>
-      <%= c.with_menu_item_link_to t(".recordings"), recordings_path %>
       <%= c.with_menu_item_link_to t(".orchestras"), orchestras_path %>
       <%= c.with_menu_item_link_to t(".playlists"), playlists_path %>
       <%= c.with_menu_item_link_to t(".tandas"), tandas_path %>
