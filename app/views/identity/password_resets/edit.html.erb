@@ -1,6 +1,5 @@
 <%= turbo_frame_tag "new-session" do %>
   <div class="flex flex-col gap-8 py-8 max-w-md mx-auto">
-
     <div class="text-center">
       <%= inline_svg_tag("logos/tangocloud-logo-with-text.svg", class: "w-36 h-auto mx-auto dark:fill-neutral-100") %>
     </div>
@@ -10,14 +9,14 @@
       <div class="form-control space-y-4">
         <div>
           <label class="input input-bordered flex items-center gap-2 <%= error_class(@user, :password) %>">
-            <%= heroicon("key", variant: :solid) %>
+            <%= heroicon("key", variant: :solid, size: :sm) %>
             <%= form.password_field :password, required: true, autofocus: true, autocomplete: "new-password", placeholder: "New Password", class: "grow", minlength: 8 %>
           </label>
           <%= inline_errors_for(@user, :password) %>
         </div>
         <div>
           <label class="input input-bordered flex items-center gap-2 <%= error_class(@user, :password_confirmation) %>">
-            <%= heroicon("key", variant: :solid) %>
+            <%= heroicon("key", variant: :solid, size: :sm) %>
             <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Confirm New Password", class: "grow" %>
           </label>
           <%= inline_errors_for(@user, :password_confirmation) %>
