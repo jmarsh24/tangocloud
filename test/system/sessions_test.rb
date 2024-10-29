@@ -20,7 +20,7 @@ class SessionsTest < ApplicationSystemTestCase
     sign_in_as @user
 
     find("#user_navbar_toggle").click
-    find("#sign_out").click
+    click_on "Sign Out"
 
     assert_text "You have signed out successfully"
   end
