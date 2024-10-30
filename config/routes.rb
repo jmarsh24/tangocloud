@@ -45,6 +45,7 @@ Rails.application.routes.draw do
   end
 
   resources :digital_remaster, only: [:new, :create]
+  resources :recordings, only: [:show]
   resources :orchestras, only: [:index, :show]
   resources :playlists, only: [:index, :show]
   resources :tandas, only: [:index, :show]

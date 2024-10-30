@@ -1,5 +1,5 @@
 class RecordingPolicy < ApplicationPolicy
-  def index?
+  def show?
     user.admin? || user.tester? || user.editor?
   end
 

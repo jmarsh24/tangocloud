@@ -1,0 +1,14 @@
+el_choclo_es:
+  language: spanish
+  text: "Con este tango que es burlón y compadrito\r\nse ató dos alas la ambición de mi suburbio;\r\ncon este tango nació el tango, y como un grito\r\nsalió del sórdido barrial buscando el cielo;\r\nconjuro extraño de un amor hecho cadencia\r\nque abrió caminos sin más ley que la esperanza,\r\nmezcla de rabia, de dolor, de fe, de ausencia\r\nllorando en la inocencia de un ritmo juguetón.\r\n\r\nPor tu milagro de notas agoreras\r\nnacieron, sin pensarlo, las paicas y las grelas,\r\nluna de charcos, canyengue en las caderas\r\ny un ansia fiera en la manera de querer...\r\n\r\nAl evocarte, tango querido,\r\nsiento que tiemblan las baldosas de un bailongo\r\ny oigo el rezongo de mi pasado...\r\nHoy, que no tengo más a mi madre,\r\nsiento que llega en punta 'e pie para besarme\r\ncuando tu canto nace al son de un bandoneón.\r\n\r\nCarancanfunfa se hizo al mar con tu bandera\r\ny en un pernó mezcló a París con Puente Alsina.\r\nTriste compadre del gavión y de la mina\r\ny hasta comadre del bacán y la pebeta.\r\nPor vos shusheta, cana, reo y mishiadura\r\nse hicieron voces al nacer con tu destino...\r\n¡Misa de faldas, querosén, tajo y cuchillo,\r\nque ardió en los conventillos y ardió en mi corazón."
+
+# == Schema Information
+#
+# Table name: lyrics
+#
+#  id          :uuid             not null, primary key
+#  text        :text             not null
+#  language_id :uuid             not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
