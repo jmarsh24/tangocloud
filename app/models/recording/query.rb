@@ -3,7 +3,7 @@ class Recording::Query
   include ActiveModel::Model
   include ActiveModel::Attributes
 
-  attribute :orchestra
+  attribute :orchestra, :string
   attribute :year, :string
   attribute :genre, :string
   attribute :orchestra_period, :string
@@ -14,7 +14,7 @@ class Recording::Query
     return Recording.none unless valid?
 
     scope = Recording.with_associations
-    scope = scope.where(orchestra: orchestra) if orchestra.present?
+    scope = filter_by_orchestra(scope)
     scope = filter_by_year(scope)
     scope = filter_by_genre(scope)
     scope = filter_by_orchestra_period(scope)
@@ -73,8 +73,12 @@ class Recording::Query
     return OrchestraPeriod.none unless orchestra.present?
 
     if orchestra_period.present?
-      period = orchestra.orchestra_periods.find_by(name: orchestra_period)
-      period ? OrchestraPeriod.where(id: period.id) : OrchestraPeriod.none
+      period = OrchestraPeriod.find_by(slug: orchestra_period)
+      if period.present?
+        OrchestraPeriod.where(id: period.id)
+      else
+        OrchestraPeriod.none
+      end
     else
       min_date, max_date = results.pluck(Arel.sql("MIN(recorded_date), MAX(recorded_date)")).first
       if min_date && max_date
@@ -98,9 +102,9 @@ class Recording::Query
           .left_outer_joins(:recording_singers)
           .where(recording_singers: {recording_id: nil})
           .count
-        [OpenStruct.new(id: "instrumental", name: "Instrumental", recording_count: instrumental_count)]
+        [OpenStruct.new(id: "instrumental", name: "Instrumental", slug: "instrumental", recording_count: instrumental_count)]
       else
-        Person.where(name: singer)
+        Person.where(slug: singer)
       end
     else
       singers = Person
@@ -117,7 +121,7 @@ class Recording::Query
         .count
 
       if instrumental_count > 0
-        instrumental = OpenStruct.new(id: "instrumental", name: "Instrumental", recording_count: instrumental_count)
+        instrumental = OpenStruct.new(id: "instrumental", name: "Instrumental", slug: "instrumental", recording_count: instrumental_count)
         singers = singers.to_a + [instrumental]
       else
         singers = singers.to_a
@@ -128,6 +132,12 @@ class Recording::Query
   end
 
   private
+
+  def filter_by_orchestra(scope)
+    return scope unless orchestra.present?
+
+    scope.joins(:orchestra).where(orchestra: {slug: orchestra})
+  end
 
   def filter_by_year(scope)
     return scope unless year.present?
@@ -145,14 +155,19 @@ class Recording::Query
   end
 
   def filter_by_genre(scope)
-    genre.present? ? scope.joins(:genre).where(genres: {name: genre}) : scope
+    genre.present? ? scope.joins(:genre).where(genres: {slug: genre}) : scope
   end
 
   def filter_by_orchestra_period(scope)
     return scope unless orchestra_period.present?
 
     period = OrchestraPeriod.friendly.find(orchestra_period)
-    period ? scope.where(recorded_date: period.start_date..period.end_date) : scope.none
+
+    if period
+      scope.where(recorded_date: period.start_date..period.end_date)
+    else
+      scope.none
+    end
   end
 
   def filter_by_singer(scope)
@@ -160,7 +175,7 @@ class Recording::Query
       if singer.downcase == "instrumental"
         scope.left_outer_joins(:recording_singers).where(recording_singers: {recording_id: nil})
       else
-        scope.joins(recording_singers: :person).where(people: {name: singer})
+        scope.joins(recording_singers: :person).where(people: {slug: singer})
       end
     else
       scope

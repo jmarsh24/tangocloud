@@ -95,7 +95,7 @@ class Recording::QueryTest < ActiveSupport::TestCase
   end
 
   test "should filter recordings with no singers when singer is instrumental" do
-    query = initialize_query(singer: "Instrumental")
+    query = initialize_query(singer: "instrumental")
     results = query.results
 
     expected_recordings = Recording.left_outer_joins(:recording_singers)
@@ -151,7 +151,7 @@ class Recording::QueryTest < ActiveSupport::TestCase
   end
 
   test "singers method should return only the specified singer" do
-    query = initialize_query(singer: @hector_maure.name)
+    query = initialize_query(singer: @hector_maure.slug)
     singers = query.singers
 
     assert_equal 1, singers.count

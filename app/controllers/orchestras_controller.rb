@@ -19,7 +19,7 @@ class OrchestrasController < ApplicationController
     @filters = params.permit(:year, :genre, :orchestra_period, :singer).to_h
 
     query = Recording::Query.new(
-      orchestra: @orchestra,
+      orchestra: @orchestra.slug,
       year: @filters[:year],
       genre: @filters[:genre],
       orchestra_period: @filters[:orchestra_period],
