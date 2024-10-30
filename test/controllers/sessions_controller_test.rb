@@ -13,7 +13,8 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get new" do
-    get sign_in_url
+    get sign_in_url, headers: {"Turbo-Frame" => "modal"}
+
     assert_response :success
   end
 

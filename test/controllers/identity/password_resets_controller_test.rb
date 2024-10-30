@@ -7,7 +7,8 @@ class Identity::PasswordResetsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get new" do
-    get new_identity_password_reset_url
+    get new_identity_password_reset_url, headers: {"Turbo-Frame" => "modal"}
+
     assert_response :success
   end
 

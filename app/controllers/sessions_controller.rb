@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
   include RemoteModal
   allowed_remote_modal_actions :new, :index
-  force_frame_response only: :new
+  force_frame_response :new
 
   skip_before_action :authenticate_user!, only: %i[new create]
   skip_after_action :verify_authorized, :verify_policy_scoped

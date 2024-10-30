@@ -1,7 +1,7 @@
 class RegistrationsController < ApplicationController
   include RemoteModal
   allowed_remote_modal_actions :new, :edit
-  force_frame_response only: %i[new edit]
+  force_frame_response :new, :edit
 
   skip_before_action :authenticate_user!
   skip_after_action :verify_authorized, :verify_policy_scoped
