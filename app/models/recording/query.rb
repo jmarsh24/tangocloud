@@ -3,6 +3,9 @@ class Recording::Query
   include ActiveModel::Model
   include ActiveModel::Attributes
 
+  PRE_1935 = "<1935"
+  POST_1960 = "1960-present"
+
   attribute :orchestra, :string
   attribute :year, :string
   attribute :genre, :string
@@ -35,30 +38,14 @@ class Recording::Query
       .map(&:to_i)
       .sort
 
-    return years_array.map(&:to_s) if years_array.size <= 4
+    year_ranges = []
+    year_ranges << PRE_1935 if years_array.any? { |y| y < 1935 }
+    year_ranges << "1935-1939" if years_array.any? { |y| (1935..1939).cover?(y) }
+    year_ranges << "1940-1949" if years_array.any? { |y| (1940..1949).cover?(y) }
+    year_ranges << "1950-1954" if years_array.any? { |y| (1950..1954).cover?(y) }
+    year_ranges << POST_1960 if years_array.any? { |y| y >= 1960 }
 
-    periods = []
-    current_range_start = years_array.first
-
-    years_array.each_cons(2) do |prev_year, next_year|
-      if next_year - current_range_start > 4 || next_year - prev_year > 1
-        periods << if current_range_start == prev_year
-          current_range_start.to_s
-        else
-          "#{current_range_start}-#{prev_year}"
-        end
-        current_range_start = next_year
-      end
-    end
-
-    last_year = years_array.last
-    if last_year - current_range_start < 4
-      periods[-1] = "#{current_range_start}-#{last_year}"
-    else
-      periods << last_year.to_s
-    end
-
-    periods
+    year_ranges
   end
 
   def genres
@@ -142,12 +129,17 @@ class Recording::Query
   def filter_by_year(scope)
     return scope unless year.present?
 
-    if year.include?("-")
-      min_year, max_year = year.split("-")
-      min_date = Date.new(min_year.to_i)
-      max_date = Date.new(max_year.to_i).end_of_year
+    case year
+    when PRE_1935
+      scope.where("EXTRACT(YEAR FROM recorded_date) < ?", 1935)
+    when POST_1960
+      scope.where("EXTRACT(YEAR FROM recorded_date) >= ?", 1960)
+    when /-/
+      min_year, max_year = year.split("-").map(&:to_i)
+      min_date = Date.new(min_year)
+      max_date = Date.new(max_year).end_of_year
       scope.where(recorded_date: min_date..max_date)
-    elsif year.present?
+    else
       min_date = Date.new(year.to_i)
       max_date = Date.new(year.to_i).end_of_year
       scope.where(recorded_date: min_date..max_date)
