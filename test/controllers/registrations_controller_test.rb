@@ -2,7 +2,8 @@ require "test_helper"
 
 class RegistrationsControllerTest < ActionDispatch::IntegrationTest
   test "should get new" do
-    get sign_up_url
+    get sign_up_url, headers: {"Turbo-Frame" => "modal"}
+
     assert_response :success
   end
 

@@ -3,8 +3,8 @@ module Turbo
     extend ActiveSupport::Concern
 
     class_methods do
-      def force_frame_response(options = {})
-        before_action :force_frame_response, **options
+      def force_frame_response(*actions)
+        before_action :force_frame_response, only: actions
       end
     end
 
