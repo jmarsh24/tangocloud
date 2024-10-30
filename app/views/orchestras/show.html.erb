@@ -18,11 +18,11 @@
         </h1>
       </div>
     </div>
-    <%= turbo_frame_tag "filters" do %>
+    <div id="filters">
       <%= render partial: "filters", locals: { orchestra: @orchestra, filters: @filters, years: @years, genres: @genres, orchestra_periods: @orchestra_periods, singers: @singers } %>
-    <% end %>
-    <%= turbo_frame_tag "recordings" do %>
+    </div>
+    <div id="recordings">
       <%= render partial: "recordings", locals: { recordings: @recordings } %>
-    <% end %>
+    </div>
   </div>
 <% end %>
