@@ -11,6 +11,7 @@ export default class extends Controller {
     "playIcon",
     "pauseIcon",
     "hover",
+    "loadingIndicator",
   ];
 
   static values = {
@@ -54,30 +55,24 @@ export default class extends Controller {
   }
 
   createGradients() {
-    const canvasHeight = 100;
+    const canvasHeight = this.containerTarget.offsetHeight || 100;
     const canvas = document.createElement("canvas");
     canvas.height = canvasHeight;
     const ctx = canvas.getContext("2d");
     const heightFactor = canvasHeight * 1.35;
     const stopPosition1 = (canvasHeight * 0.7) / canvasHeight;
     const stopPosition2 = (canvasHeight * 0.7 + 1) / canvasHeight;
-    const stopPosition3 = (canvasHeight * 0.7 + 2) / canvasHeight;
-    const stopPosition4 = (canvasHeight * 0.7 + 3) / canvasHeight;
 
     this.waveGradient = ctx.createLinearGradient(0, 0, 0, heightFactor);
     this.waveGradient.addColorStop(0, "#656666");
     this.waveGradient.addColorStop(stopPosition1, "#656666");
     this.waveGradient.addColorStop(stopPosition2, "#ffffff");
-    this.waveGradient.addColorStop(stopPosition3, "#B1B1B1");
-    this.waveGradient.addColorStop(stopPosition4, "#B1B1B1");
     this.waveGradient.addColorStop(1, "#B1B1B1");
 
     this.progressGradient = ctx.createLinearGradient(0, 0, 0, heightFactor);
     this.progressGradient.addColorStop(0, "#EE772F");
     this.progressGradient.addColorStop(stopPosition1, "#EB4926");
     this.progressGradient.addColorStop(stopPosition2, "#ffffff");
-    this.progressGradient.addColorStop(stopPosition3, "#ffffff");
-    this.progressGradient.addColorStop(stopPosition4, "#F6B094");
     this.progressGradient.addColorStop(1, "#F6B094");
   }
 
@@ -90,7 +85,7 @@ export default class extends Controller {
       barWidth: 2,
       barRadius: 2,
       barGap: 1,
-      hideScrollbar: true,
+      responsive: true,
     });
   }
 
@@ -99,6 +94,8 @@ export default class extends Controller {
     this.wavesurfer.on("pause", this.onPause);
     this.wavesurfer.on("finish", this.onFinish);
     this.wavesurfer.on("decode", this.onDecode);
+    this.wavesurfer.on("ready", this.hideLoadingIndicator);
+    this.wavesurfer.on("audioprocess", this.showLoadingIndicator);
     this.wavesurfer.on("timeupdate", this.onTimeUpdate);
   }
 
@@ -120,5 +117,17 @@ export default class extends Controller {
 
   onTimeUpdate = (currentTime) => {
     this.timeTarget.textContent = this.formatTime(currentTime);
+  };
+
+  showLoadingIndicator = () => {
+    if (this.hasLoadingIndicatorTarget) {
+      this.loadingIndicatorTarget.classList.remove("hidden");
+    }
+  };
+
+  hideLoadingIndicator = () => {
+    if (this.hasLoadingIndicatorTarget) {
+      this.loadingIndicatorTarget.classList.add("hidden");
+    }
   };
 }
