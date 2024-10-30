@@ -5,7 +5,23 @@ def create_playlists_for_user(user)
     "dogac_la_coqueta.m3u8" => "dogac_ozen.jpeg",
     "dogac_petit_marathon.m3u8" => "dogac_ozen.jpeg",
     "pugliese_essentials.m3u8" => "osvaldo_pugliese.jpeg",
-    "troilo_essentials.m3u8" => "anibal_troilo.jpeg"
+    "troilo_essentials.m3u8" => "anibal_troilo.jpeg",
+    "Biagi_Liked_Tangos.m3u8" => "rodolfo_biagi.jpeg",
+    "Calo_Liked_Tangos.m3u8" => "miguel_calo.jpeg",
+    "Canaro_Liked_Tangos.m3u8" => "francisco_canaro.jpeg",
+    "D'Agostino_Liked_Tangos.m3u8" => "angel_d_agostino.jpeg",
+    "D'Arienzo_Liked_Tangos.m3u8" => "juan_d_arienzo.jpeg",
+    "Demare_Liked_Tangos.m3u8" => "lucio_demare.jpeg",
+    "Di Sarli_Liked_Tangos.m3u8" => "carlos_di_sarli.jpeg",
+    "Federico_Liked_Tangos.m3u8" => "domingo_federico.jpeg",
+    "Fresedo_Liked_Tangos.m3u8" => "osvaldo_fresedo.jpeg",
+    "Garcia_Liked_Tangos.m3u8" => "jose_garcia.jpeg",
+    "Gobbi_Liked_Tangos.m3u8" => "alfredo_gobbi.jpeg",
+    "Laurenz_Liked_Tangos.m3u8" => "pedro_laurenz.jpeg",
+    "Malerba_Liked_Tangos.m3u8" => "ricardo_malerba.jpeg",
+    "Pugliese_Liked_Tangos.m3u8" => "osvaldo_pugliese.jpeg",
+    "Rodriguez_Liked_Tangos.m3u8" => "enrique_rodriguez.jpeg",
+    "Tanturi_Liked_Tangos.m3u8" => "ricardo_tanturi.jpeg"
   }
 
   base_path = Rails.root.join("db/seeds/common/playlists")
