@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 #
 # include this module in your controller to respond with a remote modal
 # if the request is a turbo frame request with a turbo_frame_id="modal"
@@ -7,6 +5,7 @@
 #
 module RemoteModal
   extend ActiveSupport::Concern
+  include Turbo::ForceFrameResponse
   DEFAULT_ALLOWED_ACTIONS = %i[new show edit index].freeze
 
   included do
