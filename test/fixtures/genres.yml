@@ -1,11 +1,14 @@
 tango:
   name: "Tango"
+  slug: "tango"
 
 milonga:
   name: "Milonga"
+  slug: "milonga"
 
 vals:
   name: "Vals"
+  slug: "vals"
 
 # == Schema Information
 #
