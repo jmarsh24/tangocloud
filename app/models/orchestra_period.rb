@@ -1,4 +1,7 @@
 class OrchestraPeriod < ApplicationRecord
+  extend FriendlyId
+  friendly_id :name, use: :slugged
+
   belongs_to :orchestra, touch: true
 
   validates :start_date, presence: true

@@ -2,4 +2,5 @@ slowing_down:
   name: "Slowing Down"
   start_date: 1940-01-01
   end_date: 1945-12-31
+  slug: "slowing-down"
   orchestra: juan_darienzo

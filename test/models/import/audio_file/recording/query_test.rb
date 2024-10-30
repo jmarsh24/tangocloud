@@ -79,7 +79,9 @@ class Recording::QueryTest < ActiveSupport::TestCase
     results = query.results
 
     assert_equal 2, results.count
-    assert results.include?([@la_cumparsita, @tierrita])
+
+    assert_includes results, @la_cumparsita
+    assert_includes results, @tierrita
   end
 
   test "should filter recordings by singer" do

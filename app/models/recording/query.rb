@@ -149,9 +149,9 @@ class Recording::Query
   end
 
   def filter_by_orchestra_period(scope)
-    return scope unless orchestra_period.present? && orchestra.present?
+    return scope unless orchestra_period.present?
 
-    period = orchestra.orchestra_periods.find_by(name: orchestra_period)
+    period = OrchestraPeriod.friendly.find(orchestra_period)
     period ? scope.where(recorded_date: period.start_date..period.end_date) : scope.none
   end
 

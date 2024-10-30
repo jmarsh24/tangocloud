@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_10_24_010203) do
+ActiveRecord::Schema[8.0].define(version: 2024_10_30_184915) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -258,7 +258,9 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_24_010203) do
     t.uuid "orchestra_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "slug"
     t.index ["orchestra_id"], name: "index_orchestra_periods_on_orchestra_id"
+    t.index ["slug"], name: "index_orchestra_periods_on_slug", unique: true
   end
 
   create_table "orchestra_positions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
