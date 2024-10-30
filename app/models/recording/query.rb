@@ -57,8 +57,6 @@ class Recording::Query
   end
 
   def orchestra_periods
-    return OrchestraPeriod.none unless orchestra.present?
-
     if orchestra_period.present?
       period = OrchestraPeriod.find_by(slug: orchestra_period)
       if period.present?
@@ -147,7 +145,9 @@ class Recording::Query
   end
 
   def filter_by_genre(scope)
-    genre.present? ? scope.joins(:genre).where(genres: {slug: genre}) : scope
+    return scope unless genre.present?
+
+    scope.joins(:genre).where(genres: {slug: genre})
   end
 
   def filter_by_orchestra_period(scope)
