@@ -57,6 +57,7 @@ gem "view_component"
 gem "dry-types"
 gem "dry-initializer-rails"
 gem "turbo_power"
+gem "pagy"
 
 # Assets
 gem "stimulus-rails"

@@ -1,5 +1,14 @@
 tango:
   name: "Tango"
+  slug: "tango"
+
+milonga:
+  name: "Milonga"
+  slug: "milonga"
+
+vals:
+  name: "Vals"
+  slug: "vals"
 
 # == Schema Information
 #
@@ -9,4 +18,5 @@ tango:
 #  name       :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  slug       :string
 #

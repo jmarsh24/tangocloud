@@ -1,38 +1,28 @@
-<% cache(@orchestra) do %>
-  <div class="container flex flex-col gap-8 p-8 rounded-lg shadow-lg">
-    <div class="flex flex-col items-center">
-      <% if @orchestra.image.attached? %>
-        <%= image_tag @orchestra.image, class: "w-48 h-48 md:w-60 md:h-60 rounded-full object-cover" %>
-      <% else %>
-        <%= heroicon "user-circle", variant: :solid, class: "w-48 h-48 md:w-60 md:h-60 fill-neutral-300" %>
+<% cache([@orchestra, @filters]) do %>
+  <div class="container flex flex-col gap-4 py-4 px-2 rounded-lg shadow-lg">
+    <div class="flex items-center gap-2 h-14">
+      <%= link_to orchestras_path, class: "flex gap-2 text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300" do %>
+        <%= heroicon "chevron-left", size: :sm %>
+        <%= t(".back") %>
       <% end %>
-      <h1 class="mt-4 text-3xl font-bold text-neutral-900 dark:text-neutral-100">
-        <%= @orchestra.name %>
-      </h1>
-    </div>
-    <div class="flex flex-col gap-8">
-      <div class="flex gap-4 overflow-x-auto pb-4">
-        <h2 class="text-xl font-semibold text-neutral-800 dark:text-neutral-200">Genres:</h2>
-        <% @genres.each do |genre| %>
-          <%= link_to genre.name, "#", class: "bg-neutral-500 text-white px-4 py-2 rounded-full hover:bg-neutral-600 transition flex-shrink-0" %>
-        <% end %>
-      </div>
-      <div class="flex gap-4 overflow-x-auto pb-4">
-        <h2 class="text-xl font-semibold text-neutral-800 dark:text-neutral-200">Periods:</h2>
-        <% @orchestra_periods.each do |period| %>
-          <%= link_to period.name, "#", class: "bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition flex-shrink-0" %>
-        <% end %>
-      </div>
-      <div class="flex gap-4 overflow-x-auto pb-4 items-center">
-        <h2 class="text-xl font-semibold text-neutral-800 dark:text-neutral-200">Singers:</h2>
-        <%= render collection: @singers, partial: "people/person" %>
+      <div class="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-4">
+        <div class="flex flex-shrink-0 items-center justify-center">
+          <% if @orchestra.image.attached? %>
+            <%= image_tag @orchestra.image, class: "w-12 aspect-square rounded-full object-cover" %>
+          <% else %>
+            <div class="w-12 aspect-square rounded-full bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center"></div>
+          <% end %>
+        </div>
+        <h1 class="text-2xl md:text-3xl text-nowrap font-semibold text-neutral-700 dark:text-neutral-200 text-center">
+          <%= @orchestra.name %>
+        </h1>
       </div>
     </div>
-    <div class="mt-8">
-      <h2 class="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-4">Recordings</h2>
-      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <%= render @recordings %>
-      </div>
+    <div id="filters">
+      <%= render partial: "filters", locals: { orchestra: @orchestra, filters: @filters, years: @years, genres: @genres, orchestra_periods: @orchestra_periods, singers: @singers } %>
+    </div>
+    <div id="recordings">
+      <%= render partial: "recordings", locals: { recordings: @recordings } %>
     </div>
   </div>
 <% end %>

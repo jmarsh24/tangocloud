@@ -1,12 +1,9 @@
-class OrchestraPeriod < ApplicationRecord
-  extend FriendlyId
-  friendly_id :name, use: :slugged
-
-  belongs_to :orchestra, touch: true
-
-  validates :start_date, presence: true
-  validates :end_date, presence: true
-end
+slowing_down:
+  name: "Slowing Down"
+  start_date: 1940-01-01
+  end_date: 1945-12-31
+  slug: "slowing-down"
+  orchestra: juan_darienzo
 
 # == Schema Information
 #

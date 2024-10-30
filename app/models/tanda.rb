@@ -1,6 +1,7 @@
 class Tanda < ApplicationRecord
   include Playlistable
 
+  belongs_to :user, optional: true
   has_many :tanda_recordings, dependent: :destroy
   has_many :recordings, through: :tanda_recordings, inverse_of: :tandas
 end

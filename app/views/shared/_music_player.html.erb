@@ -1,31 +1,31 @@
 <%# locals: (recording: nil) -%>
 <% if recording %>
   <div class="fixed bottom-0 left-0 w-full bg-neutral-900 p-4 flex flex-col gap-4 z-50">
-    <div class="flex items-center gap-4">
-      <% if recording %>
-        <%= image_tag recording.digital_remasters.first.album.album_art, class: "w-24 h-24 rounded-lg" %>
+    <% if recording %>
+      <div class="flex items-center gap-4">
+        <%= image_tag recording.digital_remasters.first.album.album_art, class: "w-12 h-12 rounded-lg" %>
         <div class="flex flex-col justify-center">
-          <div class="whitespace-nowrap text-lg font-semibold text-white">
+          <div class="whitespace-nowrap text-sm font-semibold text-white">
             <%= recording.composition.title %>
           </div>
-          <div class="whitespace-nowrap text-sm text-gray-400">
+          <div class="whitespace-nowrap text-xs text-gray-400">
             <%= recording.orchestra.name %>
             <% if recording.singers.any? %>
               - <%= recording.singers.map(&:name).join(", ") %>
             <% end %>
           </div>
-          <div class="whitespace-nowrap text-sm text-gray-400">
+          <div class="whitespace-nowrap text-xs text-gray-400">
             <%= recording.genre.name %> - <%= recording.year %>
           </div>
         </div>
-      <% end %>
-    </div>
-    <audio
-      class="w-full flex justify-center items-center rounded-lg shadow-md"
-      controls
-      id="custom-audio"
-    >
-      <source src="<%= url_for(recording.digital_remasters.first.audio_variants.first.audio_file) %>" type="audio/mpeg" />
-    </audio>
+      </div>
+      <audio
+          class="w-full flex justify-center items-center rounded-lg shadow-md"
+          controls
+          data-controller="auto-play"
+        >
+        <source src="<%= url_for(recording.digital_remasters.first.audio_variants.first.audio_file) %>" type="audio/mpeg" />
+      </audio>
+    <% end %>
   </div>
 <% end %>

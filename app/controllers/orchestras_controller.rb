@@ -1,29 +1,41 @@
 class OrchestrasController < ApplicationController
   def index
     @orchestras = policy_scope(Orchestra.ordered_by_recordings).limit(100).with_attached_image
-
     authorize Orchestra
   end
 
   def show
-    @orchestra = policy_scope(Orchestra.includes(:genres, recordings: [:composition, digital_remasters: [album: [album_art_attachment: :blob]]])).friendly.find(params[:id])
-    @genres = Genre.joins(:recordings).where(recordings: {orchestra_id: @orchestra.id}).distinct
-    @orchestra_periods = OrchestraPeriod.joins(:orchestra).where(orchestra: {id: @orchestra.id}).distinct
-    @singers = Person.with_attached_image
-      .joins(:recording_singers)
-      .where(recording_singers: {recording_id: @orchestra.recordings.select(:id)})
-      .distinct
-
-    singers_with_counts = Person.with_attached_image
-      .joins(:recording_singers)
-      .where(recording_singers: {recording_id: @orchestra.recordings.select(:id)})
-      .select("people.*, COUNT(recording_singers.recording_id) AS recording_count")
-      .group("people.id")
-      .order("recording_count DESC")
-
-    @singers = singers_with_counts.sort_by(&:recording_count).reverse
-
-    @recordings = Recording.where(orchestra_id: @orchestra.id).with_associations
+    @orchestra = policy_scope(
+      Orchestra.includes(
+        :genres,
+        recordings: [
+          :composition,
+          digital_remasters: [album: [album_art_attachment: :blob]]
+        ]
+      )
+    ).friendly.find(params[:id])
     authorize @orchestra
+
+    @filters = params.permit(:year, :genre, :orchestra_period, :singer).to_h
+
+    query = Recording::Query.new(
+      orchestra: @orchestra.slug,
+      year: @filters[:year],
+      genre: @filters[:genre],
+      orchestra_period: @filters[:orchestra_period],
+      singer: @filters[:singer],
+      items: 200
+    )
+
+    @recordings = query.results
+    @years = query.years
+    @genres = query.genres
+    @orchestra_periods = query.orchestra_periods
+    @singers = query.singers
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 end

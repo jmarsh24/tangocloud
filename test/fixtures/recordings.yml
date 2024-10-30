@@ -3,12 +3,14 @@ la_cumparsita:
   orchestra: juan_darienzo
   genre: tango
   slug: "la-cumparsita"
+  recorded_date: 1943-11-23
 
 el_choclo:
   composition: el_choclo
   orchestra: juan_darienzo
   genre: tango
   slug: "el-choclo"
+  recorded_date: 1937-07-26
 
 # == Schema Information
 #
