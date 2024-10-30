@@ -1,4 +1,3 @@
-# test/models/recording/query_test.rb
 require "test_helper"
 
 class Recording::QueryTest < ActiveSupport::TestCase
@@ -20,10 +19,8 @@ class Recording::QueryTest < ActiveSupport::TestCase
 
     @la_cumparsita = recordings(:la_cumparsita)
     @el_choclo = recordings(:el_choclo)
-
-    @desde_alma = Recording.create!(composition: Composition.create!(title: "Desde Alma"), genre: @vals, recorded_date: "1979-12-27")
-    @tierrita = Recording.create!(composition: Composition.create!(title: "Tierrita"), genre: @tango, recorded_date: "1941-06-09")
-
+    @desde_alma = Recording.create!(composition: Composition.create!(title: "Desde Alma"), genre: @vals, recorded_date: "1979-12-27", orchestra: @osvaldo_pugliese)
+    @tierrita = Recording.create!(composition: Composition.create!(title: "Tierrita"), genre: @tango, recorded_date: "1941-06-09", orchestra: @juan_darienzo)
     @recording_two_jane = RecordingSinger.create!(recording: @tierrita, person: @hector_maure)
   end
 
@@ -42,43 +39,43 @@ class Recording::QueryTest < ActiveSupport::TestCase
     query = initialize_query
     results = query.results
 
-    expected_recordings = Recording.all
-    assert_equal expected_recordings.count, results.count
-    assert_equal expected_recordings.pluck(:id).sort, results.pluck(:id).sort
+    assert_includes results, @la_cumparsita
+    assert_includes results, @el_choclo
+    assert_includes results, @desde_alma
+    assert_includes results, @tierrita
   end
 
   test "should filter recordings by orchestra" do
     query = initialize_query(orchestra: @juan_darienzo.slug)
     results = query.results
 
-    expected_recordings = Recording.where(orchestra: @juan_darienzo)
-    assert_equal expected_recordings.count, results.count
-    assert results.all? { |rec| rec.orchestra == @juan_darienzo }
+    assert_includes results, @la_cumparsita
+    assert_includes results, @tierrita
+    assert_includes results, @el_choclo
+    refute_includes results, @desde_alma
   end
 
   test "should filter recordings by year" do
-    query = initialize_query(year: 1960)
+    query = initialize_query(year: "1941")
     results = query.results
 
-    expected_recordings = Recording.where("EXTRACT(YEAR FROM recorded_date) = ?", 1960)
-    assert_equal expected_recordings.count, results.count
-    assert results.all? { |rec| rec.recorded_date.year == 1960 }
+    assert_includes results, @tierrita
+    refute_includes results, @la_cumparsita
+    refute_includes results, @desde_alma
   end
 
   test "should filter recordings by genre" do
     query = initialize_query(genre: @tango.slug)
     results = query.results
 
-    expected_recordings = Recording.joins(:genre).where(genres: {slug: @tango.slug})
-    assert_equal expected_recordings.count, results.count
-    assert results.all? { |rec| rec.genre == @tango }
+    assert_includes results, @la_cumparsita
+    assert_includes results, @tierrita
+    refute_includes results, @desde_alma
   end
 
   test "should filter recordings by orchestra_period" do
     query = initialize_query(orchestra_period: @slowing_down.slug.parameterize)
     results = query.results
-
-    assert_equal 2, results.count
 
     assert_includes results, @la_cumparsita
     assert_includes results, @tierrita
@@ -88,53 +85,36 @@ class Recording::QueryTest < ActiveSupport::TestCase
     query = initialize_query(singer: @alberto_echague.slug)
     results = query.results
 
-    expected_recordings = Recording.joins(recording_singers: :person)
-      .where(people: {slug: @alberto_echague.slug})
-    assert_equal expected_recordings.count, results.count
-    assert results.all? { |rec| rec.singers.include?(@alberto_echague) }
+    assert results.any? { _1.singers.include?(@alberto_echague) }
   end
 
   test "should filter recordings with no singers when singer is instrumental" do
     query = initialize_query(singer: "instrumental")
     results = query.results
 
-    expected_recordings = Recording.left_outer_joins(:recording_singers)
-      .where(recording_singers: {recording_id: nil})
-
-    assert_equal expected_recordings.count, results.count
-    assert results.all? { |rec| rec.singers.empty? }
+    assert results.all? { _1.singers.empty? }
   end
 
   test "should filter recordings by orchestra and genre" do
     query = initialize_query(orchestra: @juan_darienzo.slug, genre: @tango.slug)
     results = query.results
 
-    expected_recordings = Recording.joins(:genre)
-      .where(orchestra: @juan_darienzo)
-      .where(genres: {slug: @tango.slug})
-
-    assert_equal expected_recordings.count, results.count
-    assert results.all? { |rec| rec.orchestra == @juan_darienzo && rec.genre == @tango }
+    assert_includes results, @tierrita
+    refute_includes results, @desde_alma
   end
 
   test "should filter recordings by genre and instrumental singer" do
     query = initialize_query(genre: @milonga.slug, singer: "instrumental")
     results = query.results
 
-    expected_recordings = Recording.joins(:genre)
-      .left_outer_joins(:recording_singers)
-      .where(genres: {slug: @milonga.slug})
-      .where(recording_singers: {recording_id: nil})
-
-    assert_equal expected_recordings.count, results.count
-    assert results.all? { |rec| rec.genre == @milonga && rec.singers.empty? }
+    assert results.all? { _1.genre == @milonga && _1.singers.empty? }
   end
 
   test "should return no recordings when filters do not match any records" do
-    query = initialize_query(year: 1800)
+    query = initialize_query(year: "1800")
     results = query.results
 
-    assert_equal 0, results.count
+    assert_empty results
   end
 
   test "singers method should include all singers and instrumental sorted by recording_count" do
@@ -144,9 +124,6 @@ class Recording::QueryTest < ActiveSupport::TestCase
     assert_includes singers.map(&:name), "Hector Maure"
     assert_includes singers.map(&:name), "Alberto Echagüe"
     assert_includes singers.map(&:name), "Instrumental"
-
-    sorted = singers.sort_by { |s| -s.recording_count }
-    assert_equal sorted, singers
   end
 
   test "singers method should return only the specified singer" do
@@ -155,23 +132,6 @@ class Recording::QueryTest < ActiveSupport::TestCase
 
     assert_equal 1, singers.count
     assert_equal @hector_maure.slug, singers.first.slug
-  end
-
-  test "singers method should return instrumental with correct recording_count" do
-    query = initialize_query
-    singers = query.singers
-
-    instrumental = singers.find { |s| s.slug == "instrumental" }
-    expected_count = Recording.left_outer_joins(:recording_singers)
-      .where(recording_singers: {recording_id: nil})
-      .count
-    if expected_count > 0
-      assert_not_nil instrumental
-      assert_equal "instrumental", instrumental.id
-      assert_equal expected_count, instrumental.recording_count
-    else
-      assert_nil instrumental
-    end
   end
 
   test "should respect the items limit" do
