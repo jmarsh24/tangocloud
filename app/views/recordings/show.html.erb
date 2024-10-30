@@ -4,14 +4,12 @@
     <%= t(".back") %>
   <% end %>
   <% @recording.digital_remasters.each do |remaster| %>
-    <div class="p-3 rounded-lg shadow-sm bg-neutral-100 dark:bg-neutral-800">
-      <% if remaster.album.album_art.attached? %>
-        <%= image_tag remaster.album.album_art, class: "w-full h-96 object-cover rounded-md" %>
-      <% else %>
-        <div class="w-full h-96 bg-neutral-200 dark:bg-neutral-700 text-neutral-500 dark:text-neutral-300">
-        </div>
-      <% end %>
-    </div>
+    <% if remaster.album.album_art.attached? %>
+      <%= image_tag remaster.album.album_art, class: "w-96 h-96 object-cover rounded-md" %>
+    <% else %>
+      <div class="w-full h-96 bg-neutral-200 dark:bg-neutral-700 text-neutral-500 dark:text-neutral-300">
+      </div>
+    <% end %>
   <% end %>
   <div>
     <h1 class="text-3xl font-bold text-neutral-800 dark:text-neutral-100"><%= @recording.title %></h1>
