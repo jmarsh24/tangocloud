@@ -6,10 +6,10 @@
         <%= image_tag recording.digital_remasters.first.album.album_art, class: "w-12 h-12 rounded-lg" %>
         <div class="flex flex-col justify-center">
           <div class="whitespace-nowrap text-sm font-semibold text-white">
-            <%= recording.composition.title %>
+            <%= link_to recording.composition.title, recording, class: "link link--hover" %>
           </div>
           <div class="whitespace-nowrap text-xs text-gray-400">
-            <%= recording.orchestra.name %>
+            <%= link_to recording.orchestra.name, recording.orchestra, class: "link link--hover" %>
             <% if recording.singers.any? %>
               - <%= recording.singers.map(&:name).join(", ") %>
             <% end %>

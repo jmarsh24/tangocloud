@@ -20,6 +20,17 @@
 normal:
   email: user@tangocloud.app
   password_digest: <%= BCrypt::Password.create("Secret1*3*5*")  %>
+  role: user
+
+tester:
+  email: tester@tangocloud.app
+  password_digest: <%= BCrypt::Password.create("Secret1*3*5*") %>
+  role: tester
+
+editor:
+  email: editor@tangocloud.app
+  password_digest: <%= BCrypt::Password.create("Secret1*3*5*") %>
+  role: editor
 
 admin:
   email: admin@tangocloud.app
