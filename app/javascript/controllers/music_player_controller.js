@@ -43,6 +43,11 @@ export default class extends Controller {
     }
   };
 
+  handleTouchStart = () => {
+    // Hide the hover overlay on touch start
+    this.hideHover();
+  };
+
   playingValueChanged() {
     if (this.hasPlayIconTarget && this.hasPauseIconTarget) {
       this.playIconTarget.classList.toggle("hidden", this.playingValue);
@@ -97,6 +102,13 @@ export default class extends Controller {
     this.wavesurfer.on("finish", this.onFinish);
     this.wavesurfer.on("decode", this.onDecode);
     this.wavesurfer.on("timeupdate", this.onTimeUpdate);
+
+    // Add touch event listeners
+    this.containerTarget.addEventListener("touchstart", this.handleTouchStart);
+  }
+
+  disconnect() {
+    this.containerTarget.removeEventListener("touchstart", this.handleTouchStart);
   }
 
   onPlay = () => {
