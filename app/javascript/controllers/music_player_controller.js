@@ -98,6 +98,12 @@ export default class extends Controller {
     }
   }
 
+  formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const secondsRemainder = Math.round(seconds % 60);
+    return `${minutes}:${secondsRemainder.toString().padStart(2, "0")}`;
+  }
+
   createGradients() {
     const canvasHeight = this.containerTarget.offsetHeight || 100;
     const canvas = document.createElement("canvas");
