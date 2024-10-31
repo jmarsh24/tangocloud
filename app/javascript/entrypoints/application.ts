@@ -6,21 +6,12 @@ TurboPower.initialize(Turbo.StreamActions);
 import { Application } from "@hotwired/stimulus";
 import { registerControllers } from "stimulus-vite-helpers";
 
-import Player from '../player'
-
 declare global {
   interface Window {
-    App: {
-      player: Player;
-    };
     Stimulus: Application;
   }
 }
 
-
-window.App = {
-  player: new Player(),
-}
 const application = Application.start();
 
 // Configure Stimulus development experience
