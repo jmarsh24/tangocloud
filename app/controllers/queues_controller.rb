@@ -5,8 +5,6 @@ class QueuesController < ApplicationController
 
   def show
     @queue = policy_scope(PlaybackQueue).find_or_create_by(user: current_user)
-    @recording = policy_scope(Recording).find(params[:recording_id]) if params[:recording_id].present?
-    authorize @recording if @recording.present?
     authorize @queue
 
     if @queue.queue_items.empty?
@@ -18,6 +16,21 @@ class QueuesController < ApplicationController
 
       @queue.save!
     end
+  end
+
+  def play
+    @recording = policy_scope(Recording).find(params[:recording_id])
+    authorize @recording, :play?
+
+    queue_item = @queue.queue_items.find_by(item: @recording)
+    if queue_item
+      queue_item.move_to_top
+    else
+      @queue.queue_items.create!(item: @recording, position: 1)
+    end
+
+    @queue.reload
+    render turbo_stream: turbo_stream.update("music-player", partial: "shared/music_player", locals: { recording: @recording })
   end
 
   def next
