@@ -18,7 +18,8 @@ export default class extends Controller {
     'favoriteButton',
     'unFavoriteButton',
     'modeButton',
-    'loader'
+    'loader',
+    'container'
   ];
 
   initialize() {
