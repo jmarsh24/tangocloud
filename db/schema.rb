@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_10_30_194631) do
+ActiveRecord::Schema[8.0].define(version: 2024_10_31_150428) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -322,6 +322,13 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_30_194631) do
     t.index ["sort_name"], name: "index_people_on_sort_name"
   end
 
+  create_table "playback_queues", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_playback_queues_on_user_id"
+  end
+
   create_table "playbacks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "duration", default: 0, null: false
     t.uuid "user_id", null: false
@@ -356,6 +363,18 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_30_194631) do
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_playlists_on_slug", unique: true
     t.index ["user_id"], name: "index_playlists_on_user_id"
+  end
+
+  create_table "queue_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "playback_queue_id", null: false
+    t.string "item_type", null: false
+    t.uuid "item_id", null: false
+    t.integer "position", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_type", "item_id"], name: "index_queue_items_on_item"
+    t.index ["playback_queue_id", "position"], name: "index_queue_items_on_playback_queue_id_and_position", unique: true
+    t.index ["playback_queue_id"], name: "index_queue_items_on_playback_queue_id"
   end
 
   create_table "record_labels", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -548,9 +567,11 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_30_194631) do
   add_foreign_key "orchestra_positions", "people"
   add_foreign_key "orchestras", "external_catalog_el_recodo_orchestras", column: "el_recodo_orchestra_id"
   add_foreign_key "people", "external_catalog_el_recodo_people", column: "el_recodo_person_id"
+  add_foreign_key "playback_queues", "users"
   add_foreign_key "playbacks", "recordings"
   add_foreign_key "playbacks", "users"
   add_foreign_key "playlist_items", "playlists"
+  add_foreign_key "queue_items", "playback_queues"
   add_foreign_key "recording_singers", "people"
   add_foreign_key "recording_singers", "recordings"
   add_foreign_key "recordings", "compositions"

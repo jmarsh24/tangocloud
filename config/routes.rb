@@ -51,6 +51,8 @@ Rails.application.routes.draw do
   resources :tandas, only: [:index, :show]
   resource :music_library, only: [:show]
   resource :player, only: [:create]
+  resource :queue, only: [:show]
+
   get "search", to: "search#index"
 
   get "service-worker" => "rails/pwa#service_worker", :as => :pwa_service_worker
