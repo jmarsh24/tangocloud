@@ -1,4 +1,8 @@
 class QueuesController < ApplicationController
+  include RemoteModal
+  allowed_remote_modal_actions :show
+  force_frame_response :show
+
   def show
     @queue = PlaybackQueue.new(user: current_user)
 

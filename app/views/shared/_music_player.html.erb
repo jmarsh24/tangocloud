@@ -35,7 +35,7 @@
         </div>
       </div>
       <div class="flex items-center gap-4">
-        <%= link_to "Queue", queue_path, class: "link" %>
+        <%= link_to "Queue", queue_path, class: "link", data: {turbo_frame: "modal"} %>
         <button
           data-action="music-player#playPause"
           data-music-player-target="playButton"
