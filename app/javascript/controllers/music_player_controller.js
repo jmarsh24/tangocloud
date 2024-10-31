@@ -24,6 +24,10 @@ export default class extends Controller {
     this.createGradients();
     this.initializeWaveSurfer();
     this.setupEventListeners();
+
+    this.wavesurfer.on("ready", () => {
+      this.wavesurfer.play();
+    });
   }
 
   playPause() {
