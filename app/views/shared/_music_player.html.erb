@@ -53,7 +53,9 @@
         <%= button_to next_queue_path, method: :post, class: "rounded bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600", data: { turbo_frame: "music-player" } do %>
           <%= heroicon("forward", variant: :solid) %>
         <% end %>
-        <%= link_to "Queue", queue_path(recording_id: recording.id), class: "hover:underline", data: { turbo_frame: "modal" } %>
+        <%= link_to queue_path(recording_id: recording.id), class: "hover:underline", data: { turbo_frame: "modal" } do %>
+          <%= heroicon("queue-list", variant: :solid, size: :md) %>
+        <% end %>
       </div>
     </div>
   </div>
