@@ -9,6 +9,7 @@ export default class extends Controller {
     "playIcon",
     "pauseIcon",
     "hover",
+    "albumArt",
   ];
 
   static values = {
@@ -48,7 +49,6 @@ export default class extends Controller {
   };
 
   handleTouchStart = () => {
-    // Hide the hover overlay on touch start
     this.hideHover();
   };
 
@@ -56,6 +56,14 @@ export default class extends Controller {
     if (this.hasPlayIconTarget && this.hasPauseIconTarget) {
       this.playIconTarget.classList.toggle("hidden", this.playingValue);
       this.pauseIconTarget.classList.toggle("hidden", !this.playingValue);
+    }
+
+    if (this.hasAlbumArtTarget) {
+      if (this.playingValue) {
+        this.albumArtTarget.classList.add("rotating");
+      } else {
+        this.albumArtTarget.classList.remove("rotating");
+      }
     }
   }
 
