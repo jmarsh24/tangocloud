@@ -17,10 +17,10 @@ declare global {
   }
 }
 
+
 window.App = {
   player: new Player(),
 }
-
 const application = Application.start();
 
 // Configure Stimulus development experience
