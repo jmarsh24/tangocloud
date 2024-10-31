@@ -1,6 +1,26 @@
 <% cache(@queue) do %>
   <div class="container flex flex-col p-4 gap-4 items-center dark:bg-black">
-    <h1 class="text-2xl font-bold dark:text-neutral-300">Queue</h1>
+  <% if @recording %>
+    <h1 class="text-2xl font-bold dark:text-neutral-300">Now Playing</h1>
+      <div class="flex gap-2">
+        <%= image_tag @recording.digital_remasters.first.album.album_art, class: "w-8 h-8 rounded-md object-cover" %>
+        <%= inline_svg_tag("icons/svg_loaders/audio.svg", class: "w-4 h-4 fill-orange-500") %>
+        <div class="flex flex-col items-start text-left">
+          <div class="text-sm font-semibold text-orange-500">
+            <%= @recording.composition.title %>
+          </div>
+          <div class="text-xs text-gray-500">
+            <%= @recording.orchestra.name %>
+            <% if @recording.singers.present? %>
+              &middot; <%= @recording.singers.map(&:name).compact.join(", ") %>
+            <% end %>
+          </div>
+          <div class="text-xs text-gray-500">
+            <%= @recording.genre.name %> - <%= @recording.year %>
+          </div>
+        </div>
+      </div>
+    <% end %>
     <div class="flex flex-col gap-4 w-full">
       <%= render collection: @queue.queue_items, partial: "queues/queue_item" %>
     </div>

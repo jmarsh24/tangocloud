@@ -5,7 +5,8 @@ class QueuesController < ApplicationController
 
   def show
     @queue = policy_scope(PlaybackQueue).find_or_create_by(user: current_user)
-
+    @recording = policy_scope(Recording).find(params[:recording_id]) if params[:recording_id].present?
+    authorize @recording if @recording.present?
     authorize @queue
 
     if @queue.queue_items.empty?
