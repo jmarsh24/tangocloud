@@ -1,17 +1,22 @@
-<nav  class="bg-neutral-200 dark:bg-neutral-900 p-4 relative z-50" >
-  <div class="container mx-auto flex justify-between items-center">
+<nav class="bg-neutral-200 dark:bg-neutral-900 p-4 relative z-50 flex justify-center items-center">
+  <div class="container flex justify-between items-center">
     <%= link_to "TangoCloud", root_path, class: "text-2xl font-extrabold text-neutral-800 dark:text-neutral-300 hover:text-neutral-600 dark:hover:text-neutral-200 transition ease-in-out duration-200" %>
-    <div class="items-center gap-6 hidden md:flex">
-      <ul class="desktop-menu">
-        <% signed_in do %>
+    <ul class="desktop-menu">
+      <% signed_in do %>
+        <div class="flex gap-4 left-1/2">
+          <%= link_to music_library_path, class: "h-12 w-12 flex justify-center items-center dark:bg-neutral-800 rounded-full dark:hover:bg-neutral-700" do %>
+            <%= heroicon("home", variant: :solid, size: :md) %>
+          <% end %>
           <%= form_with url: search_path, method: :get, data: {turbo_stream: true, turbo_permanent: true }, id: "search-bar" do |form| %>
             <div class="w-full md:w-64 lg:w-80 xl:w-96">
               <label class="input input-bordered flex items-center gap-2">
                 <%= heroicon("magnifying-glass", variant: :outline, size: :md) %>
-                <%= form.text_field :query, data: { controller: "auto-submit", action: "keydown->auto-submit#submit" }, autocorrect: false, class: "grow bg-transparent placeholder-neutral-500 dark:placeholder-neutral-400 focus:outline-none" %>
+                <%= form.text_field :query, data: { controller: "auto-submit", action: "keydown->auto-submit#submit" }, placeholder: "What do you want to listen to?",autocorrect: false, class: "grow bg-transparent placeholder-neutral-500 dark:placeholder-neutral-400 focus:outline-none" %>
               </label>
             </div>
           <% end %>
+        </div>
+        <div class="items-center gap-6 hidden md:flex">
           <%= render "shared/navbar/link", link_title: "Home", path: music_library_path %>
           <%= render "shared/navbar/link", link_title: "Orchestras", path: orchestras_path %>
           <%= render "shared/navbar/link", link_title: "Playlists", path: playlists_path %>
