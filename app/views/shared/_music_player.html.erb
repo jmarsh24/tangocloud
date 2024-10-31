@@ -22,24 +22,31 @@
           <div class="whitespace-nowrap text-lg font-semibold text-white">
             <%= link_to recording.composition.title, recording, class: "link link--hover" %>
           </div>
-          <div class="whitespace-nowrap text-sm text-gray-400">
+          <div class="whitespace-nowrap text-sm text-neutral-400">
             <%= link_to recording.orchestra.name, recording.orchestra, class: "link link--hover" %>
             <% if recording.singers.any? %>
               - <%= recording.singers.map(&:name).join(", ") %>
             <% end %>
           </div>
-          <div class="whitespace-nowrap text-sm text-gray-400">
+          <div class="whitespace-nowrap text-sm text-neutral-400">
             <%= recording.genre.name %> - <%= recording.year %>
           </div>
         </div>
       </div>
       <div class="flex items-center gap-4">
-        <%= link_to "Queue", queue_path(recording_id: recording.id), class: "hover:underline", data: { turbo_frame: "modal" } %>
+        <button
+          data-action="music-player#previous"
+          type="button"
+          class="rounded bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600"
+        >
+          <%= heroicon("rewind", variant: :solid) %>
+        </button>
+
         <button
           data-action="music-player#playPause"
           data-music-player-target="playButton"
           type="button"
-          class="rounded bg-gray-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-gray-600"
+          class="rounded bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600"
         >
           <div data-music-player-target="playIcon" class="w-6 h-6">
             <%= heroicon("play", variant: :solid) %>
@@ -48,6 +55,16 @@
             <%= heroicon("pause", variant: :solid) %>
           </div>
         </button>
+
+        <button
+          data-action="music-player#next"
+          type="button"
+          class="rounded bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600"
+        >
+          <%= heroicon("forward", variant: :solid) %>
+        </button>
+
+        <%= link_to "Queue", queue_path(recording_id: recording.id), class: "hover:underline", data: { turbo_frame: "modal" } %>
       </div>
     </div>
   </div>

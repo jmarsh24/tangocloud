@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus";
 import WaveSurfer from "wavesurfer.js";
+import Queue from "../queue";
 
 export default class extends Controller {
   static targets = [
@@ -17,6 +18,10 @@ export default class extends Controller {
     audioUrl: String,
   };
 
+  initialize() {
+    this.queue = new Queue();
+  }
+
   connect() {
     if (this.wavesurfer) {
       return;
@@ -33,6 +38,32 @@ export default class extends Controller {
 
   playPause() {
     this.wavesurfer?.playPause();
+  }
+
+  previous() {
+    const previousIndex = this.queue.currentIndex - 1;
+    if (previousIndex >= 0) {
+      this.loadSong(this.queue.songs[previousIndex]);
+    }
+  }
+
+  next() {
+    const nextIndex = this.queue.currentIndex + 1;
+    if (nextIndex < this.queue.length) {
+      this.loadSong(this.queue.songs[nextIndex]);
+    }
+  }
+
+  loadSong(song) {
+    this.audioUrlValue = song.audioUrl;
+    this.wavesurfer.load(song.audioUrl);
+    this.updateUI(song);
+  }
+
+  updateUI(song) {
+    this.albumArtTarget.src = song.albumArtUrl;
+    this.timeTarget.textContent = "0:00";
+    this.durationTarget.textContent = this.formatTime(song.duration);
   }
 
   handleHover = (e) => {
@@ -65,12 +96,6 @@ export default class extends Controller {
         this.albumArtTarget.classList.remove("rotating");
       }
     }
-  }
-
-  formatTime(seconds) {
-    const minutes = Math.floor(seconds / 60);
-    const secondsRemainder = Math.round(seconds % 60);
-    return `${minutes}:${secondsRemainder.toString().padStart(2, "0")}`;
   }
 
   createGradients() {
@@ -115,7 +140,6 @@ export default class extends Controller {
     this.wavesurfer.on("decode", this.onDecode);
     this.wavesurfer.on("timeupdate", this.onTimeUpdate);
 
-    // Add touch event listeners
     this.containerTarget.addEventListener("touchstart", this.handleTouchStart);
   }
 
@@ -133,6 +157,7 @@ export default class extends Controller {
 
   onFinish = () => {
     this.playingValue = false;
+    this.next();
   };
 
   onDecode = (duration) => {
