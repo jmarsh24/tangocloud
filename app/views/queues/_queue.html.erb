@@ -1,0 +1,50 @@
+<% cache(@queue) do %>
+  <div id="queue" class="container flex flex-col p-4 gap-4 items-center dark:bg-black">
+    <% current_item = @queue.queue_items.order(:position).first %>
+    <% if current_item %>
+      <h1 class="text-2xl font-bold dark:text-neutral-300">Now Playing</h1>
+      <div class="flex gap-2 items-center">
+        <%= image_tag current_item.item.digital_remasters.first.album.album_art, class: "w-8 h-8 rounded-md object-cover" %>
+        <%= inline_svg_tag("icons/svg_loaders/audio.svg", class: "w-4 h-4 fill-orange-500") %>
+        <div class="flex flex-col items-start text-left">
+          <div class="text-sm font-semibold text-orange-500">
+            <%= current_item.item.composition.title %>
+          </div>
+          <div class="text-xs text-gray-500">
+            <%= current_item.item.orchestra.name %>
+            <% if current_item.item.singers.present? %>
+              &middot; <%= current_item.item.singers.map(&:name).compact.join(", ") %>
+            <% end %>
+          </div>
+          <div class="text-xs text-gray-500">
+            <%= current_item.item.genre.name %> - <%= current_item.item.year %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <div class="flex items-center gap-4 mt-4">
+      <%= button_to previous_queue_path, method: :post, class: "rounded bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600", data: { turbo_frame: "music-player" } do %>
+        <%= heroicon("rewind", variant: :solid) %>
+      <% end %>
+      <button
+          data-action="music-player#playPause"
+          data-music-player-target="playButton"
+          type="button"
+          class="rounded bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600"
+        >
+        <div data-music-player-target="playIcon" class="w-6 h-6">
+          <%= heroicon("play", variant: :solid) %>
+        </div>
+        <div data-music-player-target="pauseIcon" class="hidden w-6 h-6">
+          <%= heroicon("pause", variant: :solid) %>
+        </div>
+      </button>
+      <%= button_to next_queue_path, method: :post, class: "rounded bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600", data: { turbo_frame: "music-player" } do %>
+        <%= heroicon("forward", variant: :solid) %>
+      <% end %>
+    </div>
+    <div class="flex flex-col gap-4 w-full">
+      <%= render collection: @queue.queue_items.order(:position).offset(1), partial: "queues/queue_item", as: :queue_item %>
+    </div>
+  </div>
+<% end %>

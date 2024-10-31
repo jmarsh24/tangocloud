@@ -1,7 +1,7 @@
 class QueuesController < ApplicationController
   include RemoteModal
   before_action :set_queue
-  skip_after_action :verify_authorized, only: [:show, :next, :previous] 
+  skip_after_action :verify_authorized, only: [:show, :next, :previous]
 
   def show
     @queue = policy_scope(PlaybackQueue).find_or_create_by(user: current_user)
@@ -9,11 +9,7 @@ class QueuesController < ApplicationController
 
     if @queue.queue_items.empty?
       recordings = policy_scope(Recording).limit(10)
-
-      recordings.each do |recording|
-        @queue.queue_items.build(item: recording)
-      end
-
+      recordings.each { |recording| @queue.queue_items.build(item: recording) }
       @queue.save!
     end
   end
@@ -30,7 +26,10 @@ class QueuesController < ApplicationController
     end
 
     @queue.reload
-    render turbo_stream: turbo_stream.update("music-player", partial: "shared/music_player", locals: { recording: @recording })
+    render turbo_stream: [
+      turbo_stream.update("music-player", partial: "shared/music_player", locals: { recording: @recording }),
+      turbo_stream.update("queue", partial: "queues/queue", locals: { queue: @queue })
+    ]
   end
 
   def next
@@ -40,7 +39,10 @@ class QueuesController < ApplicationController
     @queue.reload
     @recording = @queue.queue_items.order(:position).first&.item
 
-    render turbo_stream: turbo_stream.update("music-player", partial: "shared/music_player", locals: { recording: @recording })
+    render turbo_stream: [
+      turbo_stream.update("music-player", partial: "shared/music_player", locals: { recording: @recording }),
+      turbo_stream.update("queue", partial: "queues/queue", locals: { queue: @queue })
+    ]
   end
 
   def previous
@@ -50,7 +52,10 @@ class QueuesController < ApplicationController
     @queue.reload
     @recording = @queue.queue_items.order(:position).first&.item
 
-    render turbo_stream: turbo_stream.update("music-player", partial: "shared/music_player", locals: { recording: @recording })
+    render turbo_stream: [
+      turbo_stream.update("music-player", partial: "shared/music_player", locals: { recording: @recording }),
+      turbo_stream.update("queue", partial: "queues/queue", locals: { queue: @queue })
+    ]
   end
 
   private
