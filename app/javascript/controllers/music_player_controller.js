@@ -4,14 +4,11 @@ import WaveSurfer from "wavesurfer.js";
 export default class extends Controller {
   static targets = [
     "container",
-    "playButton",
-    "markerDescription",
     "time",
     "duration",
     "playIcon",
     "pauseIcon",
     "hover",
-    "loadingIndicator",
   ];
 
   static values = {
@@ -20,15 +17,17 @@ export default class extends Controller {
   };
 
   connect() {
-    if (!this.hasAudioUrlValue) return;
+    if (this.wavesurfer) {
+      return;
+    }
 
     this.createGradients();
     this.initializeWaveSurfer();
     this.setupEventListeners();
-  }
 
-  disconnect() {
-    this.wavesurfer?.destroy();
+    this.wavesurfer.on("ready", () => {
+      this.wavesurfer.play();
+    });
   }
 
   playPause() {
@@ -38,7 +37,19 @@ export default class extends Controller {
   handleHover = (e) => {
     if (this.hasHoverTarget) {
       this.hoverTarget.style.width = `${e.offsetX}px`;
+      this.hoverTarget.classList.remove("hidden");
     }
+  };
+
+  hideHover = () => {
+    if (this.hasHoverTarget) {
+      this.hoverTarget.classList.add("hidden");
+    }
+  };
+
+  handleTouchStart = () => {
+    // Hide the hover overlay on touch start
+    this.hideHover();
   };
 
   playingValueChanged() {
@@ -94,9 +105,14 @@ export default class extends Controller {
     this.wavesurfer.on("pause", this.onPause);
     this.wavesurfer.on("finish", this.onFinish);
     this.wavesurfer.on("decode", this.onDecode);
-    this.wavesurfer.on("ready", this.hideLoadingIndicator);
-    this.wavesurfer.on("audioprocess", this.showLoadingIndicator);
     this.wavesurfer.on("timeupdate", this.onTimeUpdate);
+
+    // Add touch event listeners
+    this.containerTarget.addEventListener("touchstart", this.handleTouchStart);
+  }
+
+  disconnect() {
+    this.containerTarget.removeEventListener("touchstart", this.handleTouchStart);
   }
 
   onPlay = () => {
@@ -117,17 +133,5 @@ export default class extends Controller {
 
   onTimeUpdate = (currentTime) => {
     this.timeTarget.textContent = this.formatTime(currentTime);
-  };
-
-  showLoadingIndicator = () => {
-    if (this.hasLoadingIndicatorTarget) {
-      this.loadingIndicatorTarget.classList.remove("hidden");
-    }
-  };
-
-  hideLoadingIndicator = () => {
-    if (this.hasLoadingIndicatorTarget) {
-      this.loadingIndicatorTarget.classList.add("hidden");
-    }
   };
 }
