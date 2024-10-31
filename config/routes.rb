@@ -51,7 +51,10 @@ Rails.application.routes.draw do
   resources :tandas, only: [:index, :show]
   resource :music_library, only: [:show]
   resource :player, only: [:create]
-  resource :queue, only: [:show]
+  resource :queue, only: [:show] do
+    post :next, on: :member
+    post :previous, on: :member
+  end
 
   get "search", to: "search#index"
 

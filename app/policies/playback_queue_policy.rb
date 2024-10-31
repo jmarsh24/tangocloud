@@ -1,6 +1,14 @@
 class PlaybackQueuePolicy < ApplicationPolicy
   def show?
-    user.admin? || user.tester? || user.editor?
+    record.user == user
+  end
+
+  def next?
+    record.user == user
+  end
+
+  def previous?
+    record.user == user
   end
 
   class Scope < Scope

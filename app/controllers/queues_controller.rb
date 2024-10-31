@@ -1,7 +1,7 @@
 class QueuesController < ApplicationController
   include RemoteModal
-  allowed_remote_modal_actions :show
-  force_frame_response :show
+  before_action :set_queue
+  skip_after_action :verify_authorized, only: [:show, :next, :previous] 
 
   def show
     @queue = policy_scope(PlaybackQueue).find_or_create_by(user: current_user)
@@ -11,17 +11,38 @@ class QueuesController < ApplicationController
 
     if @queue.queue_items.empty?
       recordings = policy_scope(Recording).limit(10)
-      tandas = policy_scope(Tanda).limit(10)
 
       recordings.each do |recording|
         @queue.queue_items.build(item: recording)
       end
 
-      tandas.each do |tanda|
-        @queue.queue_items.build(item: tanda)
-      end
-
       @queue.save!
     end
+  end
+
+  def next
+    current_item = @queue.queue_items.order(:position).first
+    current_item.move_to_bottom if current_item.present?
+
+    @queue.reload
+    @recording = @queue.queue_items.order(:position).first&.item
+
+    render turbo_stream: turbo_stream.update("music-player", partial: "shared/music_player", locals: { recording: @recording })
+  end
+
+  def previous
+    last_item = @queue.queue_items.order(:position).last
+    last_item.move_to_top if last_item.present?
+
+    @queue.reload
+    @recording = @queue.queue_items.order(:position).first&.item
+
+    render turbo_stream: turbo_stream.update("music-player", partial: "shared/music_player", locals: { recording: @recording })
+  end
+
+  private
+
+  def set_queue
+    @queue = policy_scope(PlaybackQueue).find_or_create_by(user: current_user)
   end
 end

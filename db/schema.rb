@@ -373,7 +373,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_31_150428) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["item_type", "item_id"], name: "index_queue_items_on_item"
-    t.index ["playback_queue_id", "position"], name: "index_queue_items_on_playback_queue_id_and_position", unique: true
     t.index ["playback_queue_id"], name: "index_queue_items_on_playback_queue_id"
   end
 
