@@ -3,50 +3,38 @@
   font-family: "Circular";
   font-weight: 900;
   font-style: italic;
-  src: url("../fonts/circular-black-italic.otf");
+  src: url_for("../fonts/circular-black-italic.otf");
 }
 
 @font-face {
   font-family: "Circular";
   font-weight: 900;
-  src: url("../fonts/circular-black.otf");
+  src: url_for("../fonts/circular-black.otf");
 }
 
 @font-face {
   font-family: "Circular";
   font-weight: 700;
   font-style: italic;
-  src: url("../fonts/circular-bold-italic.otf");
-}
-
-@font-face {
-  font-family: "Circular";
-  font-weight: 700;
-  src: url("../fonts/circular-bold.otf");
+  src: url_for("../fonts/circular-bold-italic.otf");
 }
 
 @font-face {
   font-family: "Circular";
   font-weight: 500;
   font-style: italic;
-  src: url("../fonts/circular-medium-italic.otf");
+  src: url_for("../fonts/circular-medium-italic.otf");
 }
 
 @font-face {
   font-family: "Circular";
   font-weight: 500;
-  src: url("../fonts/circular-medium.otf");
+  src: url_for("../fonts/circular-medium.otf");
 }
 
 @font-face {
   font-family: "Circular";
   font-weight: 400;
   font-style: italic;
-  src: url("../fonts/circular-book-italic.otf");
-}
-
-@font-face {
-  font-family: "Circular";
-  font-weight: 400;
-  src: url("../fonts/circular-book.otf");
+  src: url_for("../fonts/circular-book-italic.otf");
 }
