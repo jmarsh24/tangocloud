@@ -1,24 +1,23 @@
 <% cache(@queue) do %>
   <div id="queue" data-controller="mini-player" class="container flex flex-col p-4 gap-4 dark:bg-black">
-    <% current_item = @queue.queue_items.order(:position).first %>
-    <% if current_item %>
+    <% if @queue.current_item %>
       <h1 class="text-2xl font-bold dark:text-neutral-300">Now Playing</h1>
       <div class="flex gap-4">
-        <%= image_tag current_item.item.digital_remasters.first.album.album_art, class: "w-16 h-16 md:w-20 md:h-20 rounded-md object-cover" %>
+        <%= image_tag @queue.current_item.item.digital_remasters.first.album.album_art, class: "w-16 h-16 md:w-20 md:h-20 rounded-md object-cover" %>
         <div class="flex flex-col items-start justify-center text-left">
           <div class="flex gap-2 text-sm font-semibold text-orange-500">
             <%= inline_svg_tag("icons/svg_loaders/animated-audio.svg", class: class_names("w-4 h-4 fill-orange-500", "hidden": !@queue.playing), data: { mini_player_target: "playingIndicator" }) %>
             <%= inline_svg_tag("icons/svg_loaders/paused-audio.svg", class: class_names("w-4 h-4 fill-orange-500", "hidden": @queue.playing), data: { mini_player_target: "pauseIndicator" }) %>
-            <%= current_item.item.composition.title %>
+            <%= @queue.current_item.item.composition.title %>
           </div>
           <div class="text-xs text-gray-500">
-            <%= current_item.item.orchestra.name %>
-            <% if current_item.item.singers.present? %>
-              &middot; <%= current_item.item.singers.map(&:name).compact.join(", ") %>
+            <%= @queue.current_item.item.orchestra.name %>
+            <% if @queue.current_item.item.singers.present? %>
+              &middot; <%= @queue.current_item.item.singers.map(&:name).compact.join(", ") %>
             <% end %>
           </div>
           <div class="text-xs text-gray-500">
-            <%= current_item.item.genre.name %> - <%= current_item.item.year %>
+            <%= @queue.current_item.item.genre.name %> - <%= @queue.current_item.item.year %>
           </div>
         </div>
       </div>
@@ -46,4 +45,3 @@
     </div>
   </div>
 <% end %>
-<div class="flex flex-col items-start text-left">
