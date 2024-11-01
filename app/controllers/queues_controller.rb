@@ -38,7 +38,10 @@ class QueuesController < ApplicationController
     current_item.move_to_bottom if current_item.present?
 
     @queue.reload
-    @recording = @queue.queue_items.order(:position).first&.item
+    new_current_item = @queue.queue_items.order(:position).first
+    @queue.update!(current_item: new_current_item)
+
+    @recording = new_current_item&.item
 
     render turbo_stream: [
       turbo_stream.update("music-player", partial: "shared/music_player", locals: { recording: @recording, queue: @queue }),
@@ -51,7 +54,10 @@ class QueuesController < ApplicationController
     last_item.move_to_top if last_item.present?
 
     @queue.reload
-    @recording = @queue.queue_items.order(:position).first&.item
+    new_current_item = @queue.queue_items.order(:position).first
+    @queue.update!(current_item: new_current_item)
+
+    @recording = new_current_item&.item
 
     render turbo_stream: [
       turbo_stream.update("music-player", partial: "shared/music_player", locals: { recording: @recording, queue: @queue }),
