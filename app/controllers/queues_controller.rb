@@ -41,7 +41,7 @@ class QueuesController < ApplicationController
     @recording = @queue.queue_items.order(:position).first&.item
 
     render turbo_stream: [
-      turbo_stream.update("music-player", partial: "shared/music_player", locals: { recording: @recording }),
+      turbo_stream.update("music-player", partial: "shared/music_player", locals: { recording: @recording, queue: @queue }),
       turbo_stream.update("queue", partial: "queues/queue", locals: { queue: @queue })
     ]
   end
@@ -54,7 +54,7 @@ class QueuesController < ApplicationController
     @recording = @queue.queue_items.order(:position).first&.item
 
     render turbo_stream: [
-      turbo_stream.update("music-player", partial: "shared/music_player", locals: { recording: @recording }),
+      turbo_stream.update("music-player", partial: "shared/music_player", locals: { recording: @recording, queue: @queue }),
       turbo_stream.update("queue", partial: "queues/queue", locals: { queue: @queue })
     ]
   end
