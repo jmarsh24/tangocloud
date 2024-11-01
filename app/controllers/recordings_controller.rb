@@ -26,11 +26,21 @@ class RecordingsController < ApplicationController
 
     queue = policy_scope(PlaybackQueue).find_or_create_by(user: current_user)
     queue.update!(current_item: nil)
-    queue.queue_items.destroy_all
-    recordings.each_with_index do |recording, index|
-      queue.queue_items.create!(item: recording, position: index + 1)
+    queue.queue_items.delete_all
+
+    queue_items_data = recordings.each_with_index.map do |recording, index|
+      {
+        playback_queue_id: queue.id,
+        item_type: "Recording",
+        item_id: recording.id,
+        position: index + 1,
+        created_at: Time.current,
+        updated_at: Time.current
+      }
     end
 
+    QueueItem.insert_all(queue_items_data)
+    queue.reload
     queue.update!(current_item: queue.queue_items.first, playing: true)
 
     respond_to do |format|
