@@ -1,14 +1,14 @@
 <% cache(@queue) do %>
-  <div id="queue" data-controller="mini-player" class="container flex flex-col p-4 gap-4 items-center dark:bg-black">
+  <div id="queue" data-controller="mini-player" class="container flex flex-col p-4 gap-4 dark:bg-black">
     <% current_item = @queue.queue_items.order(:position).first %>
     <% if current_item %>
       <h1 class="text-2xl font-bold dark:text-neutral-300">Now Playing</h1>
-      <div class="flex gap-2 items-center">
-        <%= image_tag current_item.item.digital_remasters.first.album.album_art, class: "w-8 h-8 rounded-md object-cover" %>
-        <%= inline_svg_tag("icons/svg_loaders/animated-audio.svg", class: class_names("w-4 h-4 fill-orange-500", "hidden": !@queue.playing), data: { mini_player_target: "playingIndicator" }) %>
-        <%= inline_svg_tag("icons/svg_loaders/paused-audio.svg", class: class_names("w-4 h-4 fill-orange-500", "hidden": @queue.playing), data: { mini_player_target: "pauseIndicator" }) %>
-        <div class="flex flex-col items-start text-left">
-          <div class="text-sm font-semibold text-orange-500">
+      <div class="flex gap-4">
+        <%= image_tag current_item.item.digital_remasters.first.album.album_art, class: "w-16 h-16 md:w-20 md:h-20 rounded-md object-cover" %>
+        <div class="flex flex-col items-start justify-center text-left">
+          <div class="flex gap-2 text-sm font-semibold text-orange-500">
+            <%= inline_svg_tag("icons/svg_loaders/animated-audio.svg", class: class_names("w-4 h-4 fill-orange-500", "hidden": !@queue.playing), data: { mini_player_target: "playingIndicator" }) %>
+            <%= inline_svg_tag("icons/svg_loaders/paused-audio.svg", class: class_names("w-4 h-4 fill-orange-500", "hidden": @queue.playing), data: { mini_player_target: "pauseIndicator" }) %>
             <%= current_item.item.composition.title %>
           </div>
           <div class="text-xs text-gray-500">
