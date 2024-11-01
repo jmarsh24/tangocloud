@@ -51,7 +51,9 @@ Rails.application.routes.draw do
   resources :tandas, only: [:index, :show]
   resource :music_library, only: [:show]
   resource :queue, only: [:show] do
+    post :play_recording, on: :member
     post :play, on: :member
+    post :pause, on: :member
     post :next, on: :member
     post :previous, on: :member
   end

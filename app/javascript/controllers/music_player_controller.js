@@ -7,8 +7,8 @@ export default class extends Controller {
     "container",
     "time",
     "duration",
-    "playIcon",
-    "pauseIcon",
+    "playButton",
+    "pauseButton",
     "hover",
     "albumArt",
   ];
@@ -36,8 +36,14 @@ export default class extends Controller {
     });
   }
 
-  playPause() {
-    this.wavesurfer?.playPause();
+  play() {
+    this.wavesurfer?.play();
+    this.pauseButtonTarget.classList.remove("hidden");
+  }
+
+  pause() {
+    this.wavesurfer?.pause();
+    this.playButtonTarget.classList.remove("hidden");
   }
 
   loadSong(song) {
@@ -70,9 +76,9 @@ export default class extends Controller {
   };
 
   playingValueChanged() {
-    if (this.hasPlayIconTarget && this.hasPauseIconTarget) {
-      this.playIconTarget.classList.toggle("hidden", this.playingValue);
-      this.pauseIconTarget.classList.toggle("hidden", !this.playingValue);
+    if (this.hasPlayButtonTarget && this.hasPauseButtonTarget) {
+      this.playButtonTarget.classList.toggle("hidden", this.playingValue);
+      this.pauseButtonTarget.classList.toggle("hidden", !this.playingValue);
     }
 
     if (this.hasAlbumArtTarget) {
@@ -134,7 +140,6 @@ export default class extends Controller {
 
     this.handleEvent("musicPlayer:play", { with: () => this.wavesurfer.play() });
     this.handleEvent("musicPlayer:pause", { with: () => this.wavesurfer.pause() });
-    this.handleEvent("musicPlayer:playPause", { with: this.playPause });
 
     this.containerTarget.addEventListener("touchstart", this.handleTouchStart);
   }

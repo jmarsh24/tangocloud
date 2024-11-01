@@ -1,7 +1,7 @@
 class QueuesController < ApplicationController
   include RemoteModal
   before_action :set_queue
-  skip_after_action :verify_authorized, only: [:show, :next, :previous]
+  skip_after_action :verify_authorized, only: [:show, :next, :previous, :play, :pause, :play_recording]
 
   def show
     @queue = policy_scope(PlaybackQueue).find_or_create_by(user: current_user)
@@ -14,7 +14,7 @@ class QueuesController < ApplicationController
     end
   end
 
-  def play
+  def play_recording
     @recording = policy_scope(Recording).find(params[:recording_id])
     authorize @recording, :play?
 
@@ -22,10 +22,11 @@ class QueuesController < ApplicationController
     if queue_item
       queue_item.move_to_top
     else
-      @queue.queue_items.create!(item: @recording, position: 1)
+      queue_item = @queue.queue_items.create!(item: @recording, position: 1)
     end
 
-    @queue.reload
+    @queue.update!(current_item: queue_item, playing: true)
+
     render turbo_stream: [
       turbo_stream.update("music-player", partial: "shared/music_player", locals: { recording: @recording }),
       turbo_stream.update("queue", partial: "queues/queue", locals: { queue: @queue })
@@ -56,6 +57,16 @@ class QueuesController < ApplicationController
       turbo_stream.update("music-player", partial: "shared/music_player", locals: { recording: @recording }),
       turbo_stream.update("queue", partial: "queues/queue", locals: { queue: @queue })
     ]
+  end
+
+  def play
+    @queue.update!(playing: true)
+    head :ok
+  end
+
+  def pause
+    @queue.update!(playing: false)
+    head :ok
   end
 
   private

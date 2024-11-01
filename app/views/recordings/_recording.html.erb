@@ -1,6 +1,6 @@
 <% cache(recording) do %>
   <div class="w-full flex gap-4 items-center hover:bg-neutral-900 hover:cursor-pointer rounded-lg">
-    <%= form_with url: play_queue_path(recording_id: recording.id), class: "flex gap-4 items-center" do |form| %>
+    <%= form_with url: play_recording_queue_path(recording_id: recording.id), class: "flex gap-4 items-center" do |form| %>
       <%= form.hidden_field :recording_id, value: recording.id %>
       <%= button_tag type: :submit, class: "flex gap-4 items-center text-left" do %>
         <%= image_tag recording.digital_remasters.first.album.album_art, class: "w-16 h-16 md:w-20 md:h-24 rounded-lg object-cover" %>

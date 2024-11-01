@@ -9,6 +9,6 @@ class PlaybackQueue < ApplicationRecord
 
   belongs_to :current_item, class_name: "QueueItem", optional: true
 
-  attribute :is_playing, :boolean, default: false
+  attribute :playing, :boolean, default: false
   attribute :progress, :integer, default: 0
 end
