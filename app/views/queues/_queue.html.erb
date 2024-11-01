@@ -27,11 +27,15 @@
       <%= button_to previous_queue_path, class: "rounded bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
         <%= heroicon("rewind", variant: :solid) %>
       <% end %>
-      <%= button_to play_queue_path, data: {mini_player_target: "playButton", action: "mini-player#play"}, class: class_names("rounded-full bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600", hidden: @queue.playing) do %>
-        <%= heroicon("play", variant: :solid, size: :sm) %>
+      <%= form_with url: play_queue_path, method: :post, data: { mini_player_target: "playButton", action: "mini-player#play" }, class: class_names("hidden": @queue.playing) do %>
+        <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600">
+          <%= heroicon("play", variant: :solid, size: :sm) %>
+        </button>
       <% end %>
-      <%= button_to pause_queue_path, data: {mini_player_target: "pauseButton", action: "mini-player#pause"}, class: class_names("rounded-full bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600", hidden: !@queue.playing) do %>
-        <%= heroicon("pause", variant: :solid, size: :sm) %>
+      <%= form_with url: pause_queue_path, method: :post, data: { mini_player_target: "pauseButton", action: "mini-player#pause" }, class: class_names("hidden": !@queue.playing) do %>
+        <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600">
+          <%= heroicon("pause", variant: :solid, size: :sm) %>
+        </button>
       <% end %>
       <%= button_to next_queue_path, class: "rounded bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
         <%= heroicon("forward", variant: :solid) %>

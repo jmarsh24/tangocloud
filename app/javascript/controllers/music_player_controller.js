@@ -39,11 +39,13 @@ export default class extends Controller {
   play() {
     this.wavesurfer?.play();
     this.pauseButtonTarget.classList.remove("hidden");
+    this.playButtonTarget.classList.add("hidden");
   }
 
   pause() {
     this.wavesurfer?.pause();
     this.playButtonTarget.classList.remove("hidden");
+    this.pauseButtonTarget.classList.add("hidden");
   }
 
   loadSong(song) {
