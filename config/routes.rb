@@ -45,7 +45,9 @@ Rails.application.routes.draw do
   end
 
   resources :digital_remaster, only: [:new, :create]
-  resources :recordings, only: [:show]
+  resources :recordings, only: [:show] do
+    post :load_into_queue, on: :member
+  end
   resources :orchestras, only: [:index, :show]
   resources :playlists, only: [:index, :show]
   resources :tandas, only: [:index, :show]
