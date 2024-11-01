@@ -7,5 +7,7 @@ class CreateQueueItems < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
+
+    add_index :queue_items, :position, unique: true
   end
 end

@@ -19,7 +19,19 @@ class RecordingsController < ApplicationController
       items: 200
     )
 
-    @recording = query.results.find_by(slug: params[:id])
+    @recording = query.results
+      .includes(
+        :composition,
+        :orchestra,
+        :genre,
+        :singers,
+        digital_remasters: [
+          :album,
+          audio_variants: {audio_file_attachment: :blob},
+          album: {album_art_attachment: :blob}
+        ]
+      )
+      .find_by(slug: params[:id])
     authorize @recording, :play?
 
     recordings = query.results.where("recordings.id >= ?", @recording.id)
@@ -41,13 +53,31 @@ class RecordingsController < ApplicationController
 
     QueueItem.insert_all(queue_items_data)
     queue.reload
+
+    queue = PlaybackQueue.find(queue.id)
+    queue_items = queue.queue_items
+      .includes(
+        item: [
+          :composition,
+          :orchestra,
+          :genre,
+          :singers,
+          digital_remasters: [
+            audio_variants: {audio_file_attachment: :blob},
+            album: {album_art_attachment: :blob}
+          ]
+        ]
+      )
+      .order(:position)
+      .offset(1)
+
     queue.update!(current_item: queue.queue_items.first, playing: true)
 
     respond_to do |format|
       format.turbo_stream {
         render turbo_stream: [
-          turbo_stream.update("music-player", partial: "shared/music_player", locals: {recording: queue.current_item&.item, queue:}),
-          turbo_stream.update("queue", partial: "queues/queue", locals: {queue:})
+          turbo_stream.update("music-player", partial: "shared/music_player", locals: {recording: queue.current_item&.item, queue: queue}),
+          turbo_stream.update("queue", partial: "queues/queue", locals: {queue: queue, queue_items: queue_items})
         ]
       }
     end

@@ -378,6 +378,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_01_131403) do
     t.datetime "updated_at", null: false
     t.index ["item_type", "item_id"], name: "index_queue_items_on_item"
     t.index ["playback_queue_id"], name: "index_queue_items_on_playback_queue_id"
+    t.index ["position"], name: "index_queue_items_on_position", unique: true
   end
 
   create_table "record_labels", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
