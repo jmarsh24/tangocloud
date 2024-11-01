@@ -60,8 +60,15 @@ class QueuesController < ApplicationController
   end
 
   def next
-    current_item = @queue.queue_items.order(:position).first
-    current_item.move_to_bottom if current_item.present?
+    ActiveRecord::Base.transaction do
+      current_item = @queue.queue_items.order(:position).first
+      if current_item.present?
+        max_position = @queue.queue_items.maximum(:position) || 0
+        current_item.update!(position: max_position + 1)
+
+        @queue.queue_items.where("position > ?", current_item.position_was).update_all("position = position - 1")
+      end
+    end
 
     @queue.reload
     new_current_item = @queue.queue_items.order(:position).first
@@ -89,8 +96,15 @@ class QueuesController < ApplicationController
   end
 
   def previous
-    last_item = @queue.queue_items.order(:position).last
-    last_item.move_to_top if last_item.present?
+    ActiveRecord::Base.transaction do
+      last_item = @queue.queue_items.order(:position).last
+      if last_item.present?
+        min_position = @queue.queue_items.minimum(:position) || 0
+        last_item.update!(position: min_position - 1)
+
+        @queue.queue_items.where("position < ?", last_item.position_was).update_all("position = position + 1")
+      end
+    end
 
     @queue.reload
     new_current_item = @queue.queue_items.order(:position).first
