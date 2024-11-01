@@ -13,8 +13,6 @@ export default class extends Controller {
     this.handleEvent("musicPlayer:play", { with: this.#setPlayingStatus.bind(this) });
     this.handleEvent("musicPlayer:pause", { with: this.#setPauseStatus.bind(this) });
     this.handleEvent("musicPlayer:playPause", { with: this.#togglePlayPause.bind(this) });
-
-    debugger
   }
 
   playPause() {
