@@ -12,3 +12,16 @@ class PlaybackQueue < ApplicationRecord
   attribute :playing, :boolean, default: false
   attribute :progress, :integer, default: 0
 end
+
+# == Schema Information
+#
+# Table name: playback_queues
+#
+#  id              :uuid             not null, primary key
+#  user_id         :uuid             not null
+#  playing         :boolean          default(FALSE), not null
+#  progress        :integer          default(0), not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  current_item_id :uuid
+#
