@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus";
 import WaveSurfer from "wavesurfer.js";
-import Queue from "../queue";
+import { installEventHandler } from './mixins/event_handler'
 
 export default class extends Controller {
   static targets = [
@@ -19,7 +19,7 @@ export default class extends Controller {
   };
 
   initialize() {
-    this.queue = new Queue();
+    installEventHandler(this)
   }
 
   connect() {
@@ -38,20 +38,6 @@ export default class extends Controller {
 
   playPause() {
     this.wavesurfer?.playPause();
-  }
-
-  previous() {
-    const previousIndex = this.queue.currentIndex - 1;
-    if (previousIndex >= 0) {
-      this.loadSong(this.queue.songs[previousIndex]);
-    }
-  }
-
-  next() {
-    const nextIndex = this.queue.currentIndex + 1;
-    if (nextIndex < this.queue.length) {
-      this.loadSong(this.queue.songs[nextIndex]);
-    }
   }
 
   loadSong(song) {
@@ -146,6 +132,10 @@ export default class extends Controller {
     this.wavesurfer.on("decode", this.onDecode);
     this.wavesurfer.on("timeupdate", this.onTimeUpdate);
 
+    this.handleEvent("musicPlayer:play", { with: () => this.wavesurfer.play() });
+    this.handleEvent("musicPlayer:pause", { with: () => this.wavesurfer.pause() });
+    this.handleEvent("musicPlayer:playPause", { with: this.playPause });
+
     this.containerTarget.addEventListener("touchstart", this.handleTouchStart);
   }
 
@@ -163,7 +153,6 @@ export default class extends Controller {
 
   onFinish = () => {
     this.playingValue = false;
-    this.next();
   };
 
   onDecode = (duration) => {
