@@ -70,6 +70,7 @@ class RecordingsController < ApplicationController
       )
       .order(:position)
       .offset(1)
+      .load
 
     queue.update!(current_item: queue.queue_items.first, playing: true)
 
