@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_10_31_150428) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_01_131403) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -324,8 +324,12 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_31_150428) do
 
   create_table "playback_queues", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id", null: false
+    t.boolean "playing", default: false, null: false
+    t.integer "progress", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "current_item_id"
+    t.index ["current_item_id"], name: "index_playback_queues_on_current_item_id"
     t.index ["user_id"], name: "index_playback_queues_on_user_id"
   end
 
@@ -566,6 +570,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_31_150428) do
   add_foreign_key "orchestra_positions", "people"
   add_foreign_key "orchestras", "external_catalog_el_recodo_orchestras", column: "el_recodo_orchestra_id"
   add_foreign_key "people", "external_catalog_el_recodo_people", column: "el_recodo_person_id"
+  add_foreign_key "playback_queues", "queue_items", column: "current_item_id"
   add_foreign_key "playback_queues", "users"
   add_foreign_key "playbacks", "recordings"
   add_foreign_key "playbacks", "users"
