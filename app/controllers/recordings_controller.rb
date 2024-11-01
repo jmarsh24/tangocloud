@@ -8,7 +8,7 @@ class RecordingsController < ApplicationController
   end
 
   def load_into_queue
-    @filters = params.permit(:year, :genre, :orchestra, :orchestra_period, :singer).to_h
+    @filters = params.permit(:year, :genre, :orchestra, :orchestra_period, :singer).to_h.compact_blank
 
     query = Recording::Query.new(
       orchestra: @filters[:orchestra],
@@ -19,32 +19,24 @@ class RecordingsController < ApplicationController
       items: 200
     )
 
-    @recording = query.results
-      .includes(
-        :composition,
-        :orchestra,
-        :genre,
-        :singers,
-        digital_remasters: [
-          :album,
-          audio_variants: {audio_file_attachment: :blob},
-          album: {album_art_attachment: :blob}
-        ]
-      )
-      .find_by(slug: params[:id])
-    authorize @recording, :play?
+    recording = Recording.find(params[:id])
+    authorize recording, :play?
 
-    recordings = query.results.where("recordings.id >= ?", @recording.id)
+    all_recordings = query.results.to_a
+
+    recording_index = all_recordings.index { |r| r.id == recording.id }
+
+    rearranged_recordings = all_recordings.drop(recording_index) + all_recordings.take(recording_index)
 
     queue = policy_scope(PlaybackQueue).find_or_create_by(user: current_user)
     queue.update!(current_item: nil)
     queue.queue_items.delete_all
 
-    queue_items_data = recordings.each_with_index.map do |recording, index|
+    queue_items_data = rearranged_recordings.each_with_index.map do |rec, index|
       {
         playback_queue_id: queue.id,
         item_type: "Recording",
-        item_id: recording.id,
+        item_id: rec.id,
         position: index + 1,
         created_at: Time.current,
         updated_at: Time.current
@@ -54,7 +46,6 @@ class RecordingsController < ApplicationController
     QueueItem.insert_all(queue_items_data)
     queue.reload
 
-    queue = PlaybackQueue.find(queue.id)
     queue_items = queue.queue_items
       .includes(
         item: [
@@ -72,7 +63,7 @@ class RecordingsController < ApplicationController
       .offset(1)
       .load
 
-    queue.update!(current_item: queue.queue_items.first, playing: true)
+    queue.update!(current_item: queue.queue_items.order(:position).first, playing: true)
 
     respond_to do |format|
       format.turbo_stream {
