@@ -1,6 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
-import WaveSurfer from "wavesurfer.js";
-import { installEventHandler } from './mixins/event_handler'
+import Player from "../player";
+import { installEventHandler } from "./mixins/event_handler";
+import { formatDuration } from "../helper";
 
 export default class extends Controller {
   static targets = [
@@ -19,46 +20,84 @@ export default class extends Controller {
   };
 
   initialize() {
-    installEventHandler(this)
+    installEventHandler(this);
   }
 
   connect() {
-    if (this.wavesurfer) {
+    if (this.Player) {
       return;
     }
 
-    this.createGradients();
-    this.initializeWaveSurfer();
-    this.setupEventListeners();
+    this.Player = new Player(
+      this.containerTarget,
+      this.audioUrlValue,
+      this.onPlay.bind(this),
+      this.onPause.bind(this),
+      this.onFinish.bind(this),
+      this.onDecode.bind(this),
+      this.onTimeUpdate.bind(this)
+    );
 
-    this.wavesurfer.on("ready", () => {
-      this.wavesurfer.play();
-    });
+    this.Player.initialize();
+
+    this.handleEvent("musicPlayer:play", { with: () => this.Player.play() });
+    this.handleEvent("musicPlayer:pause", { with: () => this.Player.pause() });
+
+    this.containerTarget.addEventListener("touchstart", this.handleTouchStart);
   }
 
   play() {
-    this.wavesurfer?.play();
+    this.Player.play();
     this.pauseButtonTarget.classList.remove("hidden");
     this.playButtonTarget.classList.add("hidden");
   }
 
   pause() {
-    this.wavesurfer?.pause();
+    this.Player.pause();
     this.playButtonTarget.classList.remove("hidden");
     this.pauseButtonTarget.classList.add("hidden");
   }
 
   loadSong(song) {
     this.audioUrlValue = song.audioUrl;
-    this.wavesurfer.load(song.audioUrl);
+    this.Player.load(song.audioUrl);
     this.updateUI(song);
   }
 
   updateUI(song) {
     this.albumArtTarget.src = song.albumArtUrl;
     this.timeTarget.textContent = "0:00";
-    this.durationTarget.textContent = this.formatTime(song.duration);
+    this.durationTarget.textContent = formatDuration(song.duration);
   }
+
+  disconnect() {
+    this.Player.destroy();
+    this.containerTarget.removeEventListener("touchstart", this.handleTouchStart);
+  }
+
+  onPlay() {
+    this.playingValue = true;
+  }
+
+  onPause() {
+    this.playingValue = false;
+  }
+
+  onFinish() {
+    this.playingValue = false;
+  }
+
+  onDecode(duration) {
+    this.durationTarget.textContent = formatDuration(duration);
+  }
+
+  onTimeUpdate(currentTime) {
+    this.timeTarget.textContent = formatDuration(currentTime);
+  }
+
+  handleTouchStart = () => {
+    this.hideHover();
+  };
 
   handleHover = (e) => {
     if (this.hasHoverTarget) {
@@ -71,102 +110,5 @@ export default class extends Controller {
     if (this.hasHoverTarget) {
       this.hoverTarget.classList.add("hidden");
     }
-  };
-
-  handleTouchStart = () => {
-    this.hideHover();
-  };
-
-  playingValueChanged() {
-    if (this.hasPlayButtonTarget && this.hasPauseButtonTarget) {
-      this.playButtonTarget.classList.toggle("hidden", this.playingValue);
-      this.pauseButtonTarget.classList.toggle("hidden", !this.playingValue);
-    }
-
-    if (this.hasAlbumArtTarget) {
-      if (this.playingValue) {
-        this.albumArtTarget.classList.add("rotating");
-      } else {
-        this.albumArtTarget.classList.remove("rotating");
-      }
-    }
-  }
-
-  formatTime(seconds) {
-    const minutes = Math.floor(seconds / 60);
-    const secondsRemainder = Math.round(seconds % 60);
-    return `${minutes}:${secondsRemainder.toString().padStart(2, "0")}`;
-  }
-
-  createGradients() {
-    const canvasHeight = this.containerTarget.offsetHeight || 100;
-    const canvas = document.createElement("canvas");
-    canvas.height = canvasHeight;
-    const ctx = canvas.getContext("2d");
-    const heightFactor = canvasHeight * 1.35;
-    const stopPosition1 = (canvasHeight * 0.7) / canvasHeight;
-    const stopPosition2 = (canvasHeight * 0.7 + 1) / canvasHeight;
-
-    this.waveGradient = ctx.createLinearGradient(0, 0, 0, heightFactor);
-    this.waveGradient.addColorStop(0, "#656666");
-    this.waveGradient.addColorStop(stopPosition1, "#656666");
-    this.waveGradient.addColorStop(stopPosition2, "#ffffff");
-    this.waveGradient.addColorStop(1, "#B1B1B1");
-
-    this.progressGradient = ctx.createLinearGradient(0, 0, 0, heightFactor);
-    this.progressGradient.addColorStop(0, "#EE772F");
-    this.progressGradient.addColorStop(stopPosition1, "#EB4926");
-    this.progressGradient.addColorStop(stopPosition2, "#ffffff");
-    this.progressGradient.addColorStop(1, "#F6B094");
-  }
-
-  initializeWaveSurfer() {
-    this.wavesurfer = WaveSurfer.create({
-      container: this.containerTarget,
-      waveColor: this.waveGradient,
-      progressColor: this.progressGradient,
-      url: this.audioUrlValue,
-      barWidth: 2,
-      barRadius: 2,
-      barGap: 1,
-      responsive: true,
-    });
-  }
-
-  setupEventListeners() {
-    this.wavesurfer.on("play", this.onPlay);
-    this.wavesurfer.on("pause", this.onPause);
-    this.wavesurfer.on("finish", this.onFinish);
-    this.wavesurfer.on("decode", this.onDecode);
-    this.wavesurfer.on("timeupdate", this.onTimeUpdate);
-
-    this.handleEvent("musicPlayer:play", { with: () => this.wavesurfer.play() });
-    this.handleEvent("musicPlayer:pause", { with: () => this.wavesurfer.pause() });
-
-    this.containerTarget.addEventListener("touchstart", this.handleTouchStart);
-  }
-
-  disconnect() {
-    this.containerTarget.removeEventListener("touchstart", this.handleTouchStart);
-  }
-
-  onPlay = () => {
-    this.playingValue = true;
-  };
-
-  onPause = () => {
-    this.playingValue = false;
-  };
-
-  onFinish = () => {
-    this.playingValue = false;
-  };
-
-  onDecode = (duration) => {
-    this.durationTarget.textContent = this.formatTime(duration);
-  };
-
-  onTimeUpdate = (currentTime) => {
-    this.timeTarget.textContent = this.formatTime(currentTime);
   };
 }
