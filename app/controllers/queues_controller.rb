@@ -30,7 +30,7 @@ class QueuesController < ApplicationController
 
     @recording = @queue.current_item&.item
 
-    @queue_items = @queue.queue_items.including_item_associations.rank(:row_order)
+    @queue_items = @queue.queue_items.including_item_associations.rank(:row_order).offset(1)
 
     render turbo_stream: [
       turbo_stream.update("music-player", partial: "shared/music_player", locals: {recording: @recording, queue: @queue}),
@@ -43,7 +43,7 @@ class QueuesController < ApplicationController
 
     @recording = @queue.current_item&.item
 
-    @queue_items = @queue.queue_items.including_item_associations.rank(:row_order)
+    @queue_items = @queue.queue_items.including_item_associations.rank(:row_order).offset(1)
 
     render turbo_stream: [
       turbo_stream.update("music-player", partial: "shared/music_player", locals: {recording: @recording, queue: @queue}),
