@@ -1,7 +1,7 @@
 import WaveSurfer from "wavesurfer.js";
 
 export default class Player {
-  constructor(container, audioUrl, onPlay, onPause, onFinish, onDecode, onTimeUpdate) {
+  constructor({ container, audioUrl, onPlay, onPause, onFinish, onDecode, onTimeUpdate, autoplay = false }) {
     this.container = container;
     this.audioUrl = audioUrl;
     this.wavesurfer = null;
@@ -10,6 +10,7 @@ export default class Player {
     this.onFinish = onFinish;
     this.onDecode = onDecode;
     this.onTimeUpdate = onTimeUpdate;
+    this.autoplay = autoplay;
     this.createGradients();
   }
 
@@ -48,6 +49,12 @@ export default class Player {
     });
 
     this.setupEventListeners();
+
+    if (this.autoplay) {
+      this.wavesurfer.on("ready", () => {
+        this.play();
+      });
+    }
   }
 
   setupEventListeners() {

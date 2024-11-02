@@ -5,7 +5,7 @@ import { formatDuration } from "../helper";
 
 export default class extends Controller {
   static targets = [
-    "container",
+    "waveform",
     "time",
     "duration",
     "playButton",
@@ -28,15 +28,16 @@ export default class extends Controller {
       return;
     }
 
-    this.Player = new Player(
-      this.containerTarget,
-      this.audioUrlValue,
-      this.onPlay.bind(this),
-      this.onPause.bind(this),
-      this.onFinish.bind(this),
-      this.onDecode.bind(this),
-      this.onTimeUpdate.bind(this)
-    );
+    this.Player = new Player({
+      container: this.waveformTarget,
+      audioUrl: this.audioUrlValue,
+      onPlay: this.onPlay.bind(this),
+      onPause: this.onPause.bind(this),
+      onFinish: this.onFinish.bind(this),
+      onDecode: this.onDecode.bind(this),
+      onTimeUpdate: this.onTimeUpdate.bind(this),
+      autoplay: true,
+    });
 
     this.Player.initialize();
 
