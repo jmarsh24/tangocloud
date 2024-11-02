@@ -20,8 +20,8 @@ class QueuesController < ApplicationController
     @queue_items = @queue.queue_items.including_item_associations.rank(:row_order)
 
     render turbo_stream: [
-      turbo_stream.update("music-player", partial: "shared/music_player", locals: { recording: @queue.current_item&.item, queue: @queue }),
-      turbo_stream.update("queue", partial: "queues/queue", locals: { queue: @queue, queue_items: @queue_items })
+      turbo_stream.update("music-player", partial: "shared/music_player", locals: {recording: @queue.current_item&.item, queue: @queue}),
+      turbo_stream.update("queue", partial: "queues/queue", locals: {queue: @queue, queue_items: @queue_items})
     ]
   end
 
@@ -33,8 +33,8 @@ class QueuesController < ApplicationController
     @queue_items = @queue.queue_items.including_item_associations.rank(:row_order)
 
     render turbo_stream: [
-      turbo_stream.update("music-player", partial: "shared/music_player", locals: { recording: @recording, queue: @queue }),
-      turbo_stream.update("queue", partial: "queues/queue", locals: { queue: @queue, queue_items: @queue_items })
+      turbo_stream.update("music-player", partial: "shared/music_player", locals: {recording: @recording, queue: @queue}),
+      turbo_stream.update("queue", partial: "queues/queue", locals: {queue: @queue, queue_items: @queue_items})
     ]
   end
 
@@ -46,8 +46,8 @@ class QueuesController < ApplicationController
     @queue_items = @queue.queue_items.including_item_associations.rank(:row_order)
 
     render turbo_stream: [
-      turbo_stream.update("music-player", partial: "shared/music_player", locals: { recording: @recording, queue: @queue }),
-      turbo_stream.update("queue", partial: "queues/queue", locals: { queue: @queue, queue_items: @queue_items })
+      turbo_stream.update("music-player", partial: "shared/music_player", locals: {recording: @recording, queue: @queue}),
+      turbo_stream.update("queue", partial: "queues/queue", locals: {queue: @queue, queue_items: @queue_items})
     ]
   end
 

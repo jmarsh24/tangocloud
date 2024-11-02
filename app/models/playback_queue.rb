@@ -13,7 +13,7 @@ class PlaybackQueue < ApplicationRecord
   def load_recordings(recordings, start_with: nil)
     update!(current_item: nil)
     queue_items.delete_all
-    
+
     if start_with
       start_index = recordings.index(start_with)
       if start_index

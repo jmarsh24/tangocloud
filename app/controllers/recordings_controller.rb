@@ -1,9 +1,9 @@
 class RecordingsController < ApplicationController
   def show
     @recording = policy_scope(Recording)
-                  .with_associations
-                  .includes(composition: { composition_lyrics: :lyric })
-                  .friendly.find(params[:id])
+      .with_associations
+      .includes(composition: {composition_lyrics: :lyric})
+      .friendly.find(params[:id])
     authorize @recording
   end
 
@@ -26,8 +26,8 @@ class RecordingsController < ApplicationController
     respond_to do |format|
       format.turbo_stream {
         render turbo_stream: [
-          turbo_stream.update("music-player", partial: "shared/music_player", locals: { recording: queue.current_item&.item, queue: queue }),
-          turbo_stream.update("queue", partial: "queues/queue", locals: { queue: queue, queue_items: queue_items })
+          turbo_stream.update("music-player", partial: "shared/music_player", locals: {recording: queue.current_item&.item, queue: queue}),
+          turbo_stream.update("queue", partial: "queues/queue", locals: {queue: queue, queue_items: queue_items})
         ]
       }
     end
