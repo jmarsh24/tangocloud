@@ -45,7 +45,7 @@ export default class extends Controller {
     this.handleEvent("musicPlayer:play", { with: () => this.Player.play() });
     this.handleEvent("musicPlayer:pause", { with: () => this.Player.pause() });
 
-    this.containerTarget.addEventListener("touchstart", this.handleTouchStart);
+    this.waveformTarget.addEventListener("touchstart", this.handleTouchStart);
   }
 
   play() {
@@ -74,7 +74,7 @@ export default class extends Controller {
 
   disconnect() {
     this.Player.destroy();
-    this.containerTarget.removeEventListener("touchstart", this.handleTouchStart);
+    this.waveformTarget.removeEventListener("touchstart", this.handleTouchStart);
   }
 
   onPlay() {
