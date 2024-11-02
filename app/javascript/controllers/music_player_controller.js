@@ -12,7 +12,7 @@ export default class extends Controller {
     "pauseButton",
     "hover",
     "albumArt",
-    "nextButton", // Add nextButton target
+    "nextButton",
   ];
 
   static values = {
