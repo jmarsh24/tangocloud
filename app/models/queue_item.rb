@@ -7,6 +7,21 @@ class QueueItem < ApplicationRecord
 
   validates :playback_queue, presence: true
   validates :item, presence: true
+
+  scope :including_item_associations, -> {
+    includes(
+      item: [
+        :composition,
+        :orchestra,
+        :genre,
+        :singers,
+        digital_remasters: [
+          audio_variants: { audio_file_attachment: :blob },
+          album: { album_art_attachment: :blob }
+        ]
+      ]
+    )
+  }
 end
 
 # == Schema Information
