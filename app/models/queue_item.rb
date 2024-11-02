@@ -1,8 +1,9 @@
 class QueueItem < ApplicationRecord
+  include RankedModel
   belongs_to :playback_queue
   belongs_to :item, polymorphic: true
 
-  acts_as_list scope: :playback_queue
+  ranks :row_order, with_same: :playback_queue_id
 
   validates :playback_queue, presence: true
   validates :item, presence: true

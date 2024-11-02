@@ -24,7 +24,7 @@ class QueuesController < ApplicationController
           album: {album_art_attachment: :blob}
         ]
       ]
-    ).order(:position)
+    ).rank(:row_order)
   end
 
   def play_recording
@@ -33,9 +33,9 @@ class QueuesController < ApplicationController
 
     queue_item = @queue.queue_items.find_by(item: @recording)
     if queue_item
-      queue_item.move_to_top
+      queue_item.update!(row_order_position: :first)
     else
-      queue_item = @queue.queue_items.create!(item: @recording, position: 1)
+      queue_item = @queue.queue_items.create!(item: @recording, row_order_position: :first)
     end
 
     @queue.update!(current_item: queue_item, playing: true)
@@ -51,7 +51,7 @@ class QueuesController < ApplicationController
           album: {album_art_attachment: :blob}
         ]
       ]
-    ).order(:position)
+    ).rank(:row_order)
 
     render turbo_stream: [
       turbo_stream.update("music-player", partial: "shared/music_player", locals: {recording: @recording, queue: @queue}),
@@ -60,18 +60,11 @@ class QueuesController < ApplicationController
   end
 
   def next
-    ActiveRecord::Base.transaction do
-      current_item = @queue.queue_items.order(:position).first
-      if current_item.present?
-        max_position = @queue.queue_items.maximum(:position) || 0
-        current_item.update!(position: max_position + 1)
-
-        @queue.queue_items.where("position > ?", current_item.position_was).update_all("position = position - 1")
-      end
-    end
+    current_item = @queue.queue_items.rank(:row_order).first
+    current_item.update!(row_order_position: :last) if current_item.present?
 
     @queue.reload
-    new_current_item = @queue.queue_items.order(:position).first
+    new_current_item = @queue.queue_items.rank(:row_order).first
     @queue.update!(current_item: new_current_item)
 
     @recording = new_current_item&.item
@@ -87,7 +80,7 @@ class QueuesController < ApplicationController
           album: {album_art_attachment: :blob}
         ]
       ]
-    ).order(:position)
+    ).rank(:row_order)
 
     render turbo_stream: [
       turbo_stream.update("music-player", partial: "shared/music_player", locals: {recording: @recording, queue: @queue}),
@@ -96,18 +89,11 @@ class QueuesController < ApplicationController
   end
 
   def previous
-    ActiveRecord::Base.transaction do
-      last_item = @queue.queue_items.order(:position).last
-      if last_item.present?
-        min_position = @queue.queue_items.minimum(:position) || 0
-        last_item.update!(position: min_position - 1)
-
-        @queue.queue_items.where("position < ?", last_item.position_was).update_all("position = position + 1")
-      end
-    end
+    last_item = @queue.queue_items.rank(:row_order).last
+    last_item.update!(row_order_position: :first) if last_item.present?
 
     @queue.reload
-    new_current_item = @queue.queue_items.order(:position).first
+    new_current_item = @queue.queue_items.rank(:row_order).first
     @queue.update!(current_item: new_current_item)
 
     @recording = new_current_item&.item
@@ -123,7 +109,7 @@ class QueuesController < ApplicationController
           album: {album_art_attachment: :blob}
         ]
       ]
-    ).order(:position)
+    ).rank(:row_order)
 
     render turbo_stream: [
       turbo_stream.update("music-player", partial: "shared/music_player", locals: {recording: @recording, queue: @queue}),

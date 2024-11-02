@@ -37,7 +37,7 @@ class RecordingsController < ApplicationController
         playback_queue_id: queue.id,
         item_type: "Recording",
         item_id: rec.id,
-        position: index + 1,
+        row_order: (index + 1) * 100,
         created_at: Time.current,
         updated_at: Time.current
       }
@@ -59,11 +59,11 @@ class RecordingsController < ApplicationController
           ]
         ]
       )
-      .order(:position)
+      .rank(:row_order)
       .offset(1)
       .load
 
-    queue.update!(current_item: queue.queue_items.order(:position).first, playing: true)
+    queue.update!(current_item: queue.queue_items.rank(:row_order).first, playing: true)
 
     respond_to do |format|
       format.turbo_stream {

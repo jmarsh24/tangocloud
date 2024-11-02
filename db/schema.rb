@@ -373,12 +373,12 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_01_131403) do
     t.uuid "playback_queue_id", null: false
     t.string "item_type", null: false
     t.uuid "item_id", null: false
-    t.integer "position", null: false
+    t.integer "row_order", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["item_type", "item_id"], name: "index_queue_items_on_item"
     t.index ["playback_queue_id"], name: "index_queue_items_on_playback_queue_id"
-    t.index ["position"], name: "index_queue_items_on_position", unique: true
+    t.index ["row_order"], name: "index_queue_items_on_row_order", unique: true
   end
 
   create_table "record_labels", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
