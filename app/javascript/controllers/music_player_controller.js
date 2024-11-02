@@ -73,7 +73,6 @@ export default class extends Controller {
   }
 
   disconnect() {
-    this.Player.destroy();
     this.waveformTarget.removeEventListener("touchstart", this.handleTouchStart);
   }
 
