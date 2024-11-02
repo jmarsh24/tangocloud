@@ -12,6 +12,7 @@ export default class extends Controller {
     "pauseButton",
     "hover",
     "albumArt",
+    "nextButton", // Add nextButton target
   ];
 
   static values = {
@@ -86,6 +87,10 @@ export default class extends Controller {
 
   onFinish() {
     this.playingValue = false;
+
+    if (this.hasNextButtonTarget) {
+      this.nextButtonTarget.form.requestSubmit();
+    }
   }
 
   onDecode(duration) {
