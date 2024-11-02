@@ -8,7 +8,7 @@ class QueuesController < ApplicationController
 
     @queue.ensure_default_items
 
-    @queue_items = @queue.queue_items.including_item_associations.rank(:row_order)
+    @queue_items = @queue.queue_items.including_item_associations.rank(:row_order).offset(1)
   end
 
   def play_recording
@@ -17,7 +17,7 @@ class QueuesController < ApplicationController
 
     @queue.play_recording(@recording)
 
-    @queue_items = @queue.queue_items.including_item_associations.rank(:row_order)
+    @queue_items = @queue.queue_items.including_item_associations.rank(:row_order).offset(1)
 
     render turbo_stream: [
       turbo_stream.update("music-player", partial: "shared/music_player", locals: {recording: @queue.current_item&.item, queue: @queue}),
