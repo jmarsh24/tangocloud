@@ -324,13 +324,21 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_01_131403) do
 
   create_table "playback_queues", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id", null: false
-    t.boolean "playing", default: false, null: false
-    t.integer "progress", default: 0, null: false
+    t.integer "queue_items_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "current_item_id"
     t.index ["current_item_id"], name: "index_playback_queues_on_current_item_id"
     t.index ["user_id"], name: "index_playback_queues_on_user_id"
+  end
+
+  create_table "playback_sessions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.boolean "playing", default: false, null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_playback_sessions_on_user_id"
   end
 
   create_table "playbacks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -573,6 +581,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_01_131403) do
   add_foreign_key "people", "external_catalog_el_recodo_people", column: "el_recodo_person_id"
   add_foreign_key "playback_queues", "queue_items", column: "current_item_id"
   add_foreign_key "playback_queues", "users"
+  add_foreign_key "playback_sessions", "users"
   add_foreign_key "playbacks", "recordings"
   add_foreign_key "playbacks", "users"
   add_foreign_key "playlist_items", "playlists"
