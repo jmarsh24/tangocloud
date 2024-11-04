@@ -1,0 +1,15 @@
+<%# locals: (recording:, orchestra: nil, year: nil, genre: nil, orchestra_period: nil, singer: nil) %>
+<% cache([recording, orchestra, year, genre, orchestra_period, singer]) do %>
+  <div class="w-full flex gap-4 items-center hover:bg-neutral-900 hover:cursor-pointer rounded-lg">
+    <%= form_with url: load_into_queue_recording_path(recording.id), class: "flex gap-4 items-center" do |form| %>
+      <%= form.hidden_field :year, value: year %>
+      <%= form.hidden_field :genre, value: genre %>
+      <%= form.hidden_field :orchestra, value: orchestra %>
+      <%= form.hidden_field :orchestra_period, value: orchestra_period %>
+      <%= form.hidden_field :singer, value: singer %>
+      <%= button_tag type: :submit, class: "flex gap-4 items-center text-left" do %>
+        <%= render recording %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
