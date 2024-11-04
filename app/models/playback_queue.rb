@@ -32,7 +32,7 @@ class PlaybackQueue < ApplicationRecord
     update!(current_item: queue_items.rank(:row_order).first)
   end
 
-  def play_recording(recording, session)
+  def play_recording(recording, session:)
     queue_item = queue_items.find_by(item: recording)
 
     if queue_item
