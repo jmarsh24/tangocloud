@@ -5,7 +5,7 @@
     <% end %>
     <h1><%= @tanda.title %></h1>
     <div class="flex flex-col gap-4">
-      <%= render collection: @recordings, partial: "recordings/recording" %>
+      <%= render collection: @recordings, partial: "recording_form", as: :recording %>
     </div>
   </div>
 <% end %>
