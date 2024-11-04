@@ -24,20 +24,20 @@
       </div>
     <% end %>
     <div class="flex items-center justify-center gap-4 mt-4">
-      <%= button_to previous_queue_path, class: "rounded bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
+      <%= button_to previous_playback_path, class: "rounded bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
         <%= heroicon("rewind", variant: :solid) %>
       <% end %>
-      <%= form_with url: play_playback_session_path, method: :post, data: { mini_player_target: "playButton", action: "mini-player#play" }, class: class_names("hidden": playback_session.playing) do %>
+      <%= form_with url: play_playback_path, method: :post, data: { mini_player_target: "playButton", action: "mini-player#play" }, class: class_names("hidden": playback_session.playing) do %>
         <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600">
           <%= heroicon("play", variant: :solid, size: :sm) %>
         </button>
       <% end %>
-      <%= form_with url: pause_playback_session_path, method: :post, data: { mini_player_target: "pauseButton", action: "mini-player#pause" }, class: class_names("hidden": !playback_session.playing) do %>
+      <%= form_with url: pause_playback_path, method: :post, data: { mini_player_target: "pauseButton", action: "mini-player#pause" }, class: class_names("hidden": !playback_session.playing) do %>
         <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600">
           <%= heroicon("pause", variant: :solid, size: :sm) %>
         </button>
       <% end %>
-      <%= button_to next_queue_path, class: "rounded bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
+      <%= button_to next_playback_path, class: "rounded bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
         <%= heroicon("forward", variant: :solid) %>
       <% end %>
     </div>

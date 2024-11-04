@@ -52,14 +52,14 @@ Rails.application.routes.draw do
   resources :playlists, only: [:index, :show]
   resources :tandas, only: [:index, :show]
   resource :music_library, only: [:show]
-  resource :playback_session do
+  resource :playback do
     post :play, on: :member
     post :pause, on: :member
+    post :next, on: :member
+    post :previous, on: :member
   end
   resource :queue, only: [:show] do
     post :play_recording, on: :member
-    post :next, on: :member
-    post :previous, on: :member
   end
 
   get "search", to: "search#index"

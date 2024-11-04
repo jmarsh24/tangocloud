@@ -39,20 +39,20 @@
           </div>
         </div>
         <div class="flex items-center justify-center gap-2 md:gap-4 flex-grow">
-          <%= button_to previous_queue_path, class: "rounded bg-neutral-800 px-3 py-2 text-xs md:text-sm font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
+          <%= button_to previous_playback_path, class: "rounded bg-neutral-800 px-3 py-2 text-xs md:text-sm font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
             <%= heroicon("rewind", variant: :solid) %>
           <% end %>
-          <%= form_with url: play_playback_session_path, data: { music_player_target: "playButton", action: "music-player#play" }, class: class_names("hidden": playback_session.playing) do %>
+          <%= form_with url: play_playback_path, data: { music_player_target: "playButton", action: "music-player#play" }, class: class_names("hidden": playback_session.playing) do %>
             <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 px-3 py-2 text-xs md:text-sm font-semibold text-white shadow-sm hover:bg-neutral-600">
               <%= heroicon("play", variant: :solid, size: :sm) %>
             </button>
           <% end %>
-          <%= form_with url: pause_playback_session_path, data: { music_player_target: "pauseButton", action: "music-player#pause" }, class: class_names("hidden": !playback_session.playing) do %>
+          <%= form_with url: pause_playback_path, data: { music_player_target: "pauseButton", action: "music-player#pause" }, class: class_names("hidden": !playback_session.playing) do %>
             <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 px-3 py-2 text-xs md:text-sm font-semibold text-white shadow-sm hover:bg-neutral-600">
               <%= heroicon("pause", variant: :solid, size: :sm) %>
             </button>
           <% end %>
-          <%= button_to next_queue_path, data: { music_player_target: "nextButton" }, class: "rounded bg-neutral-800 px-3 py-2 text-xs md:text-sm font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
+          <%= button_to next_playback_path, data: { music_player_target: "nextButton" }, class: "rounded bg-neutral-800 px-3 py-2 text-xs md:text-sm font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
             <%= heroicon("forward", variant: :solid) %>
           <% end %>
           <%= link_to queue_path(recording_id: recording.id), class: "hover:underline", data: { turbo_frame: "modal" } do %>
