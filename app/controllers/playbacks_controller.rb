@@ -5,12 +5,12 @@ class PlaybacksController < ApplicationController
   skip_after_action :verify_policy_scoped, only: [:play, :pause, :next, :previous]
 
   def play
-    playback_session.update!(playing: true)
+    @playback_session.update!(playing: true)
     head :ok
   end
 
   def pause
-    playback_session.update!(playing: false)
+    @playback_session.update!(playing: false)
     head :ok
   end
 
