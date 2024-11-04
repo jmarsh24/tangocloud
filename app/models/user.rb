@@ -18,6 +18,7 @@ class User < ApplicationRecord
   has_many :playbacks, dependent: :destroy
 
   has_one :playback_queue, dependent: :delete
+  has_one :playback_session, dependent: :delete
 
   enum :role, {user: 0, tester: 1, editor: 2, admin: 3}
 

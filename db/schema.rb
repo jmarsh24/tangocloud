@@ -324,7 +324,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_01_131403) do
 
   create_table "playback_queues", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id", null: false
-    t.integer "queue_items_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "current_item_id"

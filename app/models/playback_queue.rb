@@ -7,19 +7,15 @@ class PlaybackQueue < ApplicationRecord
 
   validates :user, presence: true
 
-  attribute :playing, :boolean, default: false
-  attribute :progress, :integer, default: 0
-
   def load_recordings(recordings, start_with: nil)
     update!(current_item: nil)
     queue_items.delete_all
 
     if start_with
       start_index = recordings.index(start_with)
-      if start_index
-        recordings = recordings.drop(start_index) + recordings.take(start_index)
-      end
+      recordings = recordings.rotate(start_index) if start_index
     end
+
     queue_items_data = recordings.each_with_index.map do |rec, index|
       {
         playback_queue_id: id,
@@ -32,43 +28,41 @@ class PlaybackQueue < ApplicationRecord
     end
 
     QueueItem.insert_all(queue_items_data)
-
     reload
-
-    update!(current_item: queue_items.rank(:row_order).first, playing: true)
+    update!(current_item: queue_items.rank(:row_order).first)
   end
 
-  def play_recording(recording)
+  def play_recording(recording, session)
     queue_item = queue_items.find_by(item: recording)
+
     if queue_item
       queue_item.update!(row_order_position: :first)
     else
       queue_item = queue_items.create!(item: recording, row_order_position: :first)
     end
 
-    update!(current_item: queue_item, playing: true)
+    update!(current_item: queue_item)
+    session.play
   end
 
-  def next_item
+  def next_item(session)
     current_item&.update!(row_order_position: :last)
-
     reload
     update!(current_item: queue_items.rank(:row_order).first)
   end
 
-  def previous_item
+  def previous_item(session)
     queue_items.rank(:row_order).last&.update!(row_order_position: :first)
-
     reload
     update!(current_item: queue_items.rank(:row_order).first)
   end
 
   def ensure_default_items
-    if queue_items.empty?
-      recordings = Recording.limit(10)
-      recordings.each { |recording| queue_items.build(item: recording) }
-      save!
-    end
+    return unless queue_items.empty?
+
+    recordings = Recording.limit(10)
+    recordings.each { |recording| queue_items.build(item: recording) }
+    save!
   end
 end
 
@@ -78,8 +72,6 @@ end
 #
 #  id              :uuid             not null, primary key
 #  user_id         :uuid             not null
-#  playing         :boolean          default(FALSE), not null
-#  progress        :integer          default(0), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  current_item_id :uuid
