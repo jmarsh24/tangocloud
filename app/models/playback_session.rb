@@ -13,7 +13,7 @@ class PlaybackSession < ApplicationRecord
   end
 
   def seek(position)
-    update!(position: position)
+    update!(position:)
   end
 end
 
