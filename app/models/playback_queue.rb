@@ -50,14 +50,14 @@ class PlaybackQueue < ApplicationRecord
   end
 
   def next_item
-    session = PlaybackSession.find_or_create_by!(user:)
+    PlaybackSession.find_or_create_by!(user:)
     current_item&.update!(row_order_position: :last)
     reload
     update!(current_item: queue_items.rank(:row_order).first)
   end
 
   def previous_item
-    session = PlaybackSession.find_or_create_by!(user:)
+    PlaybackSession.find_or_create_by!(user:)
     queue_items.rank(:row_order).last&.update!(row_order_position: :first)
     reload
     update!(current_item: queue_items.rank(:row_order).first)

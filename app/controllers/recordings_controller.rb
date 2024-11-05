@@ -15,14 +15,14 @@ class RecordingsController < ApplicationController
     recording = Recording.find(params[:id])
     authorize recording, :play?
     all_recordings = query.results.to_a
-    
+
     playback_queue = policy_scope(PlaybackQueue).find_or_create_by!(user: current_user)
     playback_session = PlaybackSession.find_or_create_by!(user: current_user)
-    
+
     playback_queue.load_recordings(all_recordings, start_with: recording)
 
     playback_session.update!(playing: true, position: 0)
-    
+
     queue_items = playback_queue.queue_items.including_item_associations.rank(:row_order).offset(1)
 
     respond_to do |format|
