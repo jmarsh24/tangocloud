@@ -28,7 +28,8 @@ class PlaybackQueue < ApplicationRecord
     end
 
     QueueItem.insert_all(queue_items_data)
-    reload
+    queue_items.reload
+    
     update!(current_item: queue_items.rank(:row_order).first)
   end
 
