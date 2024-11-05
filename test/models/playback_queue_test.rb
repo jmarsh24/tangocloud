@@ -68,7 +68,14 @@ class PlaybackQueueTest < ActiveSupport::TestCase
   test "should remove a recording from the queue" do
     @playback_queue.load_recordings(@recordings)
     recording_to_remove = @recordings.first
-    @playback_queue.remove_recording(recording_to_remove)
+
+    if @playback_queue.current_item.item == recording_to_remove
+      @playback_queue.remove_recording(recording_to_remove)
+      assert_not_equal recording_to_remove, @playback_queue.current_item&.item
+    else
+      @playback_queue.remove_recording(recording_to_remove)
+    end
+
     assert_not_includes @playback_queue.recordings, recording_to_remove
   end
 
