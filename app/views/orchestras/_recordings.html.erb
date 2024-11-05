@@ -1,6 +1,6 @@
 <% if @recordings.any? %>
   <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide mb-2">Recordings</h2>
   <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-    <%= render @recordings %>
+    <%= render partial: "recording_form", collection: @recordings, as: :recording %>
   </div>
 <% end %>
