@@ -8,6 +8,7 @@ class PlaybackQueue < ApplicationRecord
   validates :user, presence: true
 
   def load_recordings(recordings, start_with: nil)
+    session = PlaybackSession.find_or_create_by!(user:)
     update!(current_item: nil)
     queue_items.delete_all
 
@@ -29,11 +30,13 @@ class PlaybackQueue < ApplicationRecord
 
     QueueItem.insert_all(queue_items_data)
     queue_items.reload
-    
+
     update!(current_item: queue_items.rank(:row_order).first)
+    session.play
   end
 
-  def play_recording(recording, session:)
+  def play_recording(recording)
+    session = PlaybackSession.find_or_create_by!(user:)
     queue_item = queue_items.find_by(item: recording)
 
     if queue_item
@@ -46,13 +49,15 @@ class PlaybackQueue < ApplicationRecord
     session.play
   end
 
-  def next_item(session)
+  def next_item
+    session = PlaybackSession.find_or_create_by!(user:)
     current_item&.update!(row_order_position: :last)
     reload
     update!(current_item: queue_items.rank(:row_order).first)
   end
 
-  def previous_item(session)
+  def previous_item
+    session = PlaybackSession.find_or_create_by!(user:)
     queue_items.rank(:row_order).last&.update!(row_order_position: :first)
     reload
     update!(current_item: queue_items.rank(:row_order).first)
@@ -66,14 +71,3 @@ class PlaybackQueue < ApplicationRecord
     save!
   end
 end
-
-# == Schema Information
-#
-# Table name: playback_queues
-#
-#  id              :uuid             not null, primary key
-#  user_id         :uuid             not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  current_item_id :uuid
-#

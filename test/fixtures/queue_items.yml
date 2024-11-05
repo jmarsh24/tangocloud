@@ -1,0 +1,17 @@
+tester:
+  playback_queue: tester
+  item: la_cumparsita (Recordings)
+  row_order: 100
+
+# == Schema Information
+#
+# Table name: queue_items
+#
+#  id                :uuid             not null, primary key
+#  playback_queue_id :uuid             not null
+#  item_type         :string           not null
+#  item_id           :uuid             not null
+#  row_order         :integer          not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#
