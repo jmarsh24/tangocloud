@@ -5,7 +5,7 @@
         <div class="md:w-1/4 flex flex-col gap-4">
           <h2 class="text-xl md:text-2xl font-semibold">Top Result</h2>
           <% if @top_result.is_a?(Recording) %>
-            <%= render partial: 'recordings/recording', locals: { recording: @top_result } %>
+            <%= render partial: "recording_form", locals: { recording: @top_result }, as: :recording %>
           <% elsif @top_result.is_a?(Orchestra) %>
             <%= render partial: 'orchestras/orchestra', locals: { orchestra: @top_result } %>
           <% elsif @top_result.is_a?(Playlist) %>
