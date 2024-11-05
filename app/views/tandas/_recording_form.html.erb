@@ -1,5 +1,5 @@
 <%# locals: (recording:) %>
-<% cache(recording) do %>
+<% cache(:tanda, :recording_form, recording) do %>
   <div class="w-full flex gap-4 items-center hover:bg-neutral-900 hover:cursor-pointer rounded-lg">
     <%= form_with url: load_into_queue_recording_path(recording.id), class: "flex gap-4 items-center" do |form| %>
       <%= button_tag type: :submit, class: "flex gap-4 items-center text-left" do %>
