@@ -1,4 +1,4 @@
-tester:
+tester_la_cumparsita:
   playback_queue: tester
   item: la_cumparsita (Recordings)
   row_order: 100
