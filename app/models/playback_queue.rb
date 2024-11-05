@@ -63,6 +63,35 @@ class PlaybackQueue < ApplicationRecord
     update!(current_item: queue_items.rank(:row_order).first)
   end
 
+  def add_recording(recording)
+    queue_item = queue_items.find_or_initialize_by(item: recording)
+    if queue_item.new_record?
+      queue_item.row_order_position = :last
+      queue_item.save!
+    end
+    queue_item
+  end
+
+  def select_recording(recording)
+    queue_item = queue_items.find_by(item: recording)
+    return unless queue_item
+
+    update!(current_item: queue_item)
+    PlaybackSession.find_or_create_by!(user:).play
+  end
+
+  def remove_recording(recording)
+    queue_item = queue_items.find_by(item: recording)
+    return unless queue_item
+
+    if current_item == queue_item
+      next_item = queue_items.where.not(id: queue_item.id).rank(:row_order).first
+      update!(current_item: next_item)
+    end
+
+    queue_item.destroy
+  end
+
   def ensure_default_items
     return unless queue_items.empty?
 
