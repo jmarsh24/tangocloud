@@ -45,6 +45,7 @@ export default class extends Controller {
     this.handleEvent("player:pause", { with: () => this.pause() });
     this.handleEvent("player:ready", { with: this.setDuration });
     this.handleEvent("player:progress", { with: this.updateTime });
+    this.handleEvent("player:finish", { with: () => this.next() });
   }
 
   play() {
@@ -55,6 +56,12 @@ export default class extends Controller {
   pause() {
     this.Player.pause();
     this.#onPause();
+  }
+
+  next() {
+    if (this.hasNextButtonTarget) {
+      this.nextButtonTarget.form.requestSubmit();
+    }
   }
 
   handleHover = (e) => {
@@ -78,9 +85,11 @@ export default class extends Controller {
   }
 
   updateTime(event) {
-    const { currentTime } = event.detail;
-    if (this.hasTimeTarget) {
-      this.timeTarget.textContent = formatDuration(currentTime);
+    if (!this.Player.seeking) { 
+      const { currentTime } = event.detail;
+      if (this.hasTimeTarget) {
+        this.timeTarget.textContent = formatDuration(currentTime);
+      }
     }
   }
 

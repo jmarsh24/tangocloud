@@ -36,14 +36,23 @@ export default class Player {
     });
 
     this.wavesurfer.on("audioprocess", (currentTime) => {
-      if (this.isReady) {
+      if (this.isReady && !this.seeking) {
         this.dispatchProgressEvent(currentTime);
       }
     });
 
+
     this.wavesurfer.on("seek", (progress) => {
+      this.seeking = true;
       const currentTime = progress * this.duration;
       this.dispatchProgressEvent(currentTime);
+      requestAnimationFrame(() => {
+        this.seeking = false;
+      });
+    });
+
+    this.wavesurfer.on("finish", () => {
+      dispatchEvent(document, "player:finish");
     });
   }
 
