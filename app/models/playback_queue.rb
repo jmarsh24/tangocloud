@@ -7,24 +7,97 @@ class PlaybackQueue < ApplicationRecord
 
   validates :user, presence: true
 
-  # Public methods for loading different types of content
   def load_recordings(recordings, start_with: nil)
-    clear_queue_and_load(recordings, start_with)
+    update!(current_item: nil)
+    queue_items.delete_all
+
+    if start_with
+      start_index = recordings.index(start_with)
+      recordings = recordings.rotate(start_index) if start_index
+    end
+
+    queue_items_data = recordings.each_with_index.map do |rec, index|
+      {
+        playback_queue_id: id,
+        item_type: rec.class.name,
+        item_id: rec.id,
+        row_order: (index + 1) * 100,
+        created_at: Time.current,
+        updated_at: Time.current
+      }
+    end
+
+    QueueItem.insert_all(queue_items_data)
+    queue_items.reload
+
+    update!(current_item: queue_items.rank(:row_order).first)
   end
 
   def load_playlist(playlist, start_with: nil)
+    update!(current_item: nil)
+    queue_items.delete_all
+
     recordings = playlist.recordings.order(:position).to_a
-    clear_queue_and_load(recordings, start_with)
+
+    if start_with
+      start_index = recordings.index(start_with)
+      recordings = recordings.rotate(start_index) if start_index
+    end
+
+    queue_items_data = recordings.each_with_index.map do |rec, index|
+      {
+        playback_queue_id: id,
+        item_type: rec.class.name,
+        item_id: rec.id,
+        row_order: (index + 1) * 100,
+        created_at: Time.current,
+        updated_at: Time.current
+      }
+    end
+
+    QueueItem.insert_all(queue_items_data)
+    queue_items.reload
+
+    update!(current_item: queue_items.rank(:row_order).first)
   end
 
   def load_tanda(tanda, start_with: nil)
+    update!(current_item: nil)
+    queue_items.delete_all
+
     recordings = tanda.recordings.order(:position).to_a
-    clear_queue_and_load(recordings, start_with)
+
+    if start_with
+      start_index = recordings.index(start_with)
+      recordings = recordings.rotate(start_index) if start_index
+    end
+
+    queue_items_data = recordings.each_with_index.map do |rec, index|
+      {
+        playback_queue_id: id,
+        item_type: rec.class.name,
+        item_id: rec.id,
+        row_order: (index + 1) * 100,
+        created_at: Time.current,
+        updated_at: Time.current
+      }
+    end
+
+    QueueItem.insert_all(queue_items_data)
+    queue_items.reload
+
+    update!(current_item: queue_items.rank(:row_order).first)
   end
 
-  # Playback control methods
   def play_recording(recording)
-    queue_item = find_or_create_queue_item(recording)
+    queue_item = queue_items.find_by(item: recording)
+
+    if queue_item
+      queue_item.update!(row_order_position: :first)
+    else
+      queue_item = queue_items.create!(item: recording, row_order_position: :first)
+    end
+
     update!(current_item: queue_item)
   end
 
@@ -40,9 +113,13 @@ class PlaybackQueue < ApplicationRecord
     update!(current_item: queue_items.rank(:row_order).first)
   end
 
-  # Queue management methods
   def add_recording(recording)
-    find_or_create_queue_item(recording)
+    queue_item = queue_items.find_or_initialize_by(item: recording)
+    if queue_item.new_record?
+      queue_item.row_order_position = :last
+      queue_item.save!
+    end
+    queue_item
   end
 
   def select_recording(recording)
@@ -71,42 +148,5 @@ class PlaybackQueue < ApplicationRecord
     recordings = Recording.limit(10)
     recordings.each { |recording| queue_items.build(item: recording) }
     save!
-  end
-
-  private
-
-  def clear_queue_and_load(recordings, start_with)
-    update!(current_item: nil)
-    queue_items.delete_all
-
-    if start_with
-      start_index = recordings.index(start_with)
-      recordings = recordings.rotate(start_index) if start_index
-    end
-
-    queue_items_data = recordings.each_with_index.map do |rec, index|
-      {
-        playback_queue_id: id,
-        item_type: rec.class.name,
-        item_id: rec.id,
-        row_order: (index + 1) * 100,
-        created_at: Time.current,
-        updated_at: Time.current
-      }
-    end
-
-    QueueItem.insert_all(queue_items_data)
-    queue_items.reload
-
-    update!(current_item: queue_items.rank(:row_order).first)
-  end
-
-  def find_or_create_queue_item(recording)
-    queue_item = queue_items.find_or_initialize_by(item: recording)
-    if queue_item.new_record?
-      queue_item.row_order_position = :last
-      queue_item.save!
-    end
-    queue_item
   end
 end
