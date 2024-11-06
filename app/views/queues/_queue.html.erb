@@ -1,5 +1,5 @@
 <%# locals: (playback_queue:, queue_items:, playback_session:) %>
-<% cache(playback_queue) do %>
+<% cache([playback_queue, queue_items, playback_session]) do %>
   <div id="queue" data-controller="mini-player" class="container flex flex-col p-4 gap-4 dark:bg-black">
     <% if playback_queue.current_item %>
       <h1 class="text-2xl font-bold dark:text-neutral-300">Now Playing</h1>
