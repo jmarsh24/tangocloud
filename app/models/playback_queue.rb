@@ -8,7 +8,6 @@ class PlaybackQueue < ApplicationRecord
   validates :user, presence: true
 
   def load_recordings(recordings, start_with: nil)
-    session = PlaybackSession.find_or_create_by!(user:)
     update!(current_item: nil)
     queue_items.delete_all
 
@@ -32,11 +31,65 @@ class PlaybackQueue < ApplicationRecord
     queue_items.reload
 
     update!(current_item: queue_items.rank(:row_order).first)
-    session.play
+  end
+
+  def load_playlist(playlist, start_with: nil)
+    update!(current_item: nil)
+    queue_items.delete_all
+
+    recordings = playlist.recordings.order(:position).to_a
+
+    if start_with
+      start_index = recordings.index(start_with)
+      recordings = recordings.rotate(start_index) if start_index
+    end
+
+    queue_items_data = recordings.each_with_index.map do |rec, index|
+      {
+        playback_queue_id: id,
+        item_type: rec.class.name,
+        item_id: rec.id,
+        row_order: (index + 1) * 100,
+        created_at: Time.current,
+        updated_at: Time.current
+      }
+    end
+
+    QueueItem.insert_all(queue_items_data)
+    queue_items.reload
+
+    update!(current_item: queue_items.rank(:row_order).first)
+  end
+
+  def load_tanda(tanda, start_with: nil)
+    update!(current_item: nil)
+    queue_items.delete_all
+
+    recordings = tanda.recordings.order(:position).to_a
+
+    if start_with
+      start_index = recordings.index(start_with)
+      recordings = recordings.rotate(start_index) if start_index
+    end
+
+    queue_items_data = recordings.each_with_index.map do |rec, index|
+      {
+        playback_queue_id: id,
+        item_type: rec.class.name,
+        item_id: rec.id,
+        row_order: (index + 1) * 100,
+        created_at: Time.current,
+        updated_at: Time.current
+      }
+    end
+
+    QueueItem.insert_all(queue_items_data)
+    queue_items.reload
+
+    update!(current_item: queue_items.rank(:row_order).first)
   end
 
   def play_recording(recording)
-    session = PlaybackSession.find_or_create_by!(user:)
     queue_item = queue_items.find_by(item: recording)
 
     if queue_item
@@ -46,18 +99,15 @@ class PlaybackQueue < ApplicationRecord
     end
 
     update!(current_item: queue_item)
-    session.play
   end
 
   def next_item
-    PlaybackSession.find_or_create_by!(user:)
     current_item&.update!(row_order_position: :last)
     reload
     update!(current_item: queue_items.rank(:row_order).first)
   end
 
   def previous_item
-    PlaybackSession.find_or_create_by!(user:)
     queue_items.rank(:row_order).last&.update!(row_order_position: :first)
     reload
     update!(current_item: queue_items.rank(:row_order).first)

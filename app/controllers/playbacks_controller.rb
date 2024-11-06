@@ -15,7 +15,7 @@ class PlaybacksController < ApplicationController
   end
 
   def next
-    @playback_queue.next_item(@playback_session)
+    @playback_queue.next_item
 
     @recording = @playback_queue.current_item&.item
 
@@ -28,7 +28,7 @@ class PlaybacksController < ApplicationController
   end
 
   def previous
-    @playback_queue.previous_item(@playback_session)
+    @playback_queue.previous_item
 
     @recording = @playback_queue.current_item&.item
 

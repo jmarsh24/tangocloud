@@ -4,8 +4,8 @@ class PlaybackSession < ApplicationRecord
 
   validates :user, presence: true
 
-  def play
-    update!(playing: true)
+  def play(reset_position: false)
+    update!(playing: true, position: reset_position ? 0 : position)
   end
 
   def pause

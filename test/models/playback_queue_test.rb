@@ -20,7 +20,6 @@ class PlaybackQueueTest < ActiveSupport::TestCase
   test "should load recordings and set current_item" do
     @playback_queue.load_recordings(@recordings)
     assert_equal @recordings.first, @playback_queue.current_item.item
-    assert @user.playback_session.playing?
     assert_equal @recordings.size, @playback_queue.queue_items.count
   end
 
@@ -34,7 +33,6 @@ class PlaybackQueueTest < ActiveSupport::TestCase
     recording = recordings(:la_cumparsita)
     @playback_queue.play_recording(recording)
     assert_equal recording, @playback_queue.current_item.item
-    assert @user.playback_session.playing?
   end
 
   test "should move to next item in the queue" do
@@ -62,7 +60,6 @@ class PlaybackQueueTest < ActiveSupport::TestCase
     recording = @recordings.last
     @playback_queue.select_recording(recording)
     assert_equal recording, @playback_queue.current_item.item
-    assert @user.playback_session.playing?
   end
 
   test "should remove a recording from the queue" do

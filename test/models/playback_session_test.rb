@@ -3,7 +3,6 @@ require "test_helper"
 class PlaybackSessionTest < ActiveSupport::TestCase
   def setup
     @user = users(:tester)
-    @queue_item = queue_items(:tester_la_cumparsita)
     @playback_session = PlaybackSession.new(user: @user)
   end
 
@@ -20,6 +19,20 @@ class PlaybackSessionTest < ActiveSupport::TestCase
   test "should be able to play" do
     @playback_session.play
     assert @playback_session.playing
+  end
+
+  test "should reset position to 0 when starting a new recording" do
+    @playback_session.position = 100
+    @playback_session.play(reset_position: true)
+    assert @playback_session.playing
+    assert_equal 0, @playback_session.position
+  end
+
+  test "should not reset position when playing without reset" do
+    @playback_session.position = 100
+    @playback_session.play
+    assert @playback_session.playing
+    assert_equal 100, @playback_session.position
   end
 
   test "should be able to pause" do
