@@ -55,8 +55,9 @@
           <%= button_to next_playback_path, data: { music_player_target: "nextButton" }, class: "rounded bg-neutral-800 px-3 py-2 text-xs md:text-sm font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
             <%= heroicon("forward", variant: :solid) %>
           <% end %>
-          <%= link_to queue_path(recording_id: recording.id), class: "hover:underline", data: { turbo_frame: "modal" } do %>
+          <%= link_to queue_path(recording_id: recording.id), class: "hover:underline", data: { turbo_frame: "modal" }, aria: { label: "Add to queue" } do %>
             <%= heroicon("queue-list", variant: :solid, size: :md) %>
+            <span class="sr-only">Add to queue</span>
           <% end %>
         </div>
       </div>
