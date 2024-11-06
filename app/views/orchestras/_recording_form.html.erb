@@ -7,7 +7,7 @@
       <%= form.hidden_field :orchestra_period, value: orchestra_period %>
       <%= form.hidden_field :singer, value: singer %>
       <%= button_tag type: :submit, class: "flex gap-4 items-center text-left" do %>
-        <%= render recording %>
+        <%= render partial: "recordings/recording", locals: { recording: recording } %>
       <% end %>
     <% end %>
   </div>

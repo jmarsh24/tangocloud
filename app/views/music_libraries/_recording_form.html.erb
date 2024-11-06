@@ -3,7 +3,7 @@
   <div class="w-full flex gap-4 items-center hover:bg-neutral-900 hover:cursor-pointer rounded-lg">
     <%= form_with url: load_music_library_recording_path(id: recording.id), class: "flex gap-4 items-center" do |form| %>
       <%= button_tag type: :submit, class: "flex gap-4 items-center text-left" do %>
-        <%= render recording %>
+        <%= render partial: "recordings/recording", locals: { recording: recording } %>
       <% end %>
     <% end %>
   </div>
