@@ -15,7 +15,7 @@ class Orchestras::RecordingsController < ApplicationController
 
     playback_session.play(reset_position: true)
 
-    queue_items = playback_queue.queue_items.including_item_associations.rank(:row_order).offset(1)
+    playback_queue.queue_items.including_item_associations.rank(:row_order).offset(1)
 
     respond_to do |format|
       format.turbo_stream do
