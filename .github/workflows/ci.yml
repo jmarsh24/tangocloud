@@ -81,6 +81,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Checkout LFS objects
+        run: git lfs pull --include "test/**,spec/**"
+
       - name: Install Vips
         run: |
           sudo apt-get update
