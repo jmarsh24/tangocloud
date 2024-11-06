@@ -1,5 +1,5 @@
 class Searches::RecordingsController < ApplicationController
-  skip_after_action :verify_authorized, only: :load
+  skip_after_action :verify_policy_scoped, only: :load
 
   def load
     recording = Recording.find(params[:id])
