@@ -6,16 +6,17 @@ import { dispatchEvent } from "./helper";
 export default class Player {
   constructor({ container, audioUrl, autoplay = false }) {
     this.container = container;
-    this._audioUrl = audioUrl; 
-    this.autoplay = autoplay; 
+    this._audioUrl = audioUrl;
+    this.autoplay = autoplay;
     this.createGradients();
+    this.isReady = false;
   }
 
   initialize() {
     this.wavesurfer = WaveSurfer.create({
       container: this.container,
       waveColor: this.waveGradient,
-      progressColor: this.progressGradient, 
+      progressColor: this.progressGradient,
       url: this._audioUrl,
       barWidth: 2,
       barRadius: 2,
@@ -24,15 +25,20 @@ export default class Player {
     });
 
     this.wavesurfer.once("ready", () => {
+      this.duration = this.wavesurfer.getDuration();
+      this.isReady = true;
+      
+      dispatchEvent(document, "player:ready", { duration: this.duration });
+
       if (this.autoplay) {
         this.play();
       }
-
-      this.duration = this.wavesurfer.getDuration();
     });
 
     this.wavesurfer.on("audioprocess", (currentTime) => {
-      this.dispatchProgressEvent(currentTime);
+      if (this.isReady) {
+        this.dispatchProgressEvent(currentTime);
+      }
     });
 
     this.wavesurfer.on("seek", (progress) => {

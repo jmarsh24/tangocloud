@@ -1,7 +1,9 @@
+// app/javascript/controllers/music_player_controller.js
+
 import { Controller } from "@hotwired/stimulus";
 import Player from "../player";
 import { installEventHandler } from "./mixins/event_handler";
-import { formatDuration } from "../helper";
+import { formatDuration } from "../helper"; // Assumes you have this helper function
 
 export default class extends Controller {
   static targets = [
@@ -30,14 +32,19 @@ export default class extends Controller {
 
     this.Player.initialize();
 
-    this.handleEvent("player:play", { with: () => this.play() });
-    this.handleEvent("player:pause", { with: () => this.pause() });
+    this.updateTime = this.updateTime.bind(this);
+    this.setDuration = this.setDuration.bind(this);
   }
 
   connect() {
-    if(this.audioUrlValue !== this.Player.audioUrl) {
+    if (this.audioUrlValue !== this.Player.audioUrl) {
       this.Player.load(this.audioUrlValue);
     }
+
+    this.handleEvent("player:play", { with: () => this.play() });
+    this.handleEvent("player:pause", { with: () => this.pause() });
+    this.handleEvent("player:ready", { with: this.setDuration });
+    this.handleEvent("player:progress", { with: this.updateTime });
   }
 
   play() {
@@ -49,19 +56,33 @@ export default class extends Controller {
     this.Player.pause();
     this.#onPause();
   }
-  
+
   handleHover = (e) => {
     if (this.hasHoverTarget) {
       this.hoverTarget.style.width = `${e.offsetX}px`;
       this.hoverTarget.classList.remove("hidden");
     }
   };
-  
+
   hideHover = () => {
     if (this.hasHoverTarget) {
       this.hoverTarget.classList.add("hidden");
     }
   };
+
+  setDuration(event) {
+    const { duration } = event.detail;
+    if (this.hasDurationTarget) {
+      this.durationTarget.textContent = formatDuration(duration);
+    }
+  }
+
+  updateTime(event) {
+    const { currentTime } = event.detail;
+    if (this.hasTimeTarget) {
+      this.timeTarget.textContent = formatDuration(currentTime);
+    }
+  }
 
   #onPause() {
     this.playButtonTarget.classList.remove("hidden");
