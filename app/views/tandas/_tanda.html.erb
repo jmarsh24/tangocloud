@@ -7,7 +7,7 @@
       </div>
     <% end %>
     <div class="space-y-6">
-      <%= render collection: tanda.recordings, partial: "recording_form", locals: { tanda: tanda }, as: :recording %>
+      <%= render collection: tanda.recordings, partial: "tandas/recording_form", locals: { tanda: }, as: :recording %>
     </div>
   </div>
 <% end %>
