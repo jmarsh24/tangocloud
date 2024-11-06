@@ -107,6 +107,7 @@ Rails.application.routes.draw do
 
   get "search", to: "search#index"
   post "search/recording/load", to: "searches/recordings#load", as: :load_search_recording
+  post "queue/recording/load", to: "queues/recordings#load", as: :load_queue_recording
 
   resources :digital_remaster, only: [:new, :create]
 
