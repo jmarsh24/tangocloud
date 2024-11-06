@@ -34,6 +34,8 @@ export default class extends Controller {
 
     this.updateTime = this.updateTime.bind(this);
     this.setDuration = this.setDuration.bind(this);
+
+    this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   }
 
   connect() {
@@ -65,14 +67,14 @@ export default class extends Controller {
   }
 
   handleHover = (e) => {
-    if (this.hasHoverTarget) {
+    if (!this.isTouchDevice && this.hasHoverTarget) {
       this.hoverTarget.style.width = `${e.offsetX}px`;
       this.hoverTarget.classList.remove("hidden");
     }
   };
 
   hideHover = () => {
-    if (this.hasHoverTarget) {
+    if (!this.isTouchDevice && this.hasHoverTarget) {
       this.hoverTarget.classList.add("hidden");
     }
   };
