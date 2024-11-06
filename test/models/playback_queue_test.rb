@@ -79,3 +79,14 @@ class PlaybackQueueTest < ActiveSupport::TestCase
     assert_not @playback_queue.queue_items.empty?
   end
 end
+
+# == Schema Information
+#
+# Table name: playback_queues
+#
+#  id              :uuid             not null, primary key
+#  user_id         :uuid             not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  current_item_id :uuid
+#
