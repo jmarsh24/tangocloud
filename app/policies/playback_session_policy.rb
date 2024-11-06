@@ -1,4 +1,4 @@
-class PlaybackQueuePolicy < ApplicationPolicy
+class PlaybackSessionPolicy < ApplicationPolicy
   def show?
     record.user == user
   end
