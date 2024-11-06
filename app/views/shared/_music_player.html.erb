@@ -6,12 +6,12 @@
       data-controller="music-player"
       data-music-player-audio-url-value="<%= url_for(recording.digital_remasters.first.audio_variants.first.audio_file) %>"
       class="fixed bottom-0 left-0 w-full flex flex-col gap-4 justify-between items-center p-4 dark:bg-neutral-900 z-50"
-      data-action="pointermove->music-player#handleHover mouseleave->music-player#hideHover"
       >
       <div
         data-music-player-target="waveform"
         class="relative w-full h-36 rounded-lg p-2 overflow-hidden"
-      >
+        data-action="pointermove->music-player#handleHover mouseleave->music-player#hideHover"
+        >
         <div data-music-player-target="hover" class="absolute left-0 top-0 w-0 h-full bg-neutral-200 opacity-10 z-50"></div>
         <div data-music-player-target="time" class="absolute left-2 top-1/2 transform -translate-y-1/2 text-white text-xs p-1 rounded-sm dark:bg-neutral-900 z-50">
           0:00
