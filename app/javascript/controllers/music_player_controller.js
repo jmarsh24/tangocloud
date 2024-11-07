@@ -15,28 +15,30 @@ export default class extends Controller {
     "hover",
     "albumArt",
     "nextButton",
+    "progress",
   ];
 
   static values = {
     audioUrl: String,
   };
 
-  initialize() {
-    installEventHandler(this);
+initialize() {
+  installEventHandler(this);
 
-    this.Player = new Player({
-      container: this.waveformTarget,
-      audioUrl: this.audioUrlValue,
-      autoplay: true,
-    });
+  this.Player = new Player({
+    container: this.waveformTarget,
+    audioUrl: this.audioUrlValue,
+    autoplay: true,
+  });
 
-    this.Player.initialize();
+  this.Player.initialize();
 
-    this.updateTime = this.updateTime.bind(this);
-    this.setDuration = this.setDuration.bind(this);
+  this.updateTime = this.updateTime.bind(this);
+  this.setDuration = this.setDuration.bind(this);
+  this.updateProgress = this.updateProgress.bind(this);
 
-    this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-  }
+  this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+}
 
   connect() {
     if (this.audioUrlValue !== this.Player.audioUrl) {
@@ -47,6 +49,7 @@ export default class extends Controller {
     this.handleEvent("player:pause", { with: () => this.pause() });
     this.handleEvent("player:ready", { with: this.setDuration });
     this.handleEvent("player:progress", { with: this.updateTime });
+    this.handleEvent("player:progress", { with: this.updateProgress });
     this.handleEvent("player:finish", { with: () => this.next() });
   }
 
@@ -88,10 +91,25 @@ export default class extends Controller {
 
   updateTime(event) {
     if (!this.Player.seeking) { 
-      const { currentTime } = event.detail;
+      const { currentTime, duration } = event.detail;
       if (this.hasTimeTarget) {
         this.timeTarget.textContent = formatDuration(currentTime);
       }
+      this.updateProgress(event); 
+    }
+  }
+
+  updateProgress(event) {
+    const { currentTime, duration } = event.detail;
+    this._progressPercentage = (currentTime / duration) * 100;
+
+    if (!this._animationFrameRequest) {
+      this._animationFrameRequest = requestAnimationFrame(() => {
+        if (this.hasProgressTarget) {
+          this.progressTarget.style.width = `${this._progressPercentage}%`;
+        }
+        this._animationFrameRequest = null; 
+      });
     }
   }
 
