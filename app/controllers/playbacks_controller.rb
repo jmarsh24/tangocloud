@@ -21,6 +21,8 @@ class PlaybacksController < ApplicationController
 
     @playback_queue_items = @playback_queue.queue_items.including_item_associations.rank(:row_order).offset(1)
 
+    @playback_session.play(reset_position: true)
+
     render turbo_stream: [
       turbo_stream.update("music-player", partial: "shared/music_player", locals: {playback_queue: @playback_queue, playback_session: @playback_session}),
       turbo_stream.update("queue", partial: "queues/queue", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @playback_queue_items}),
@@ -34,6 +36,8 @@ class PlaybacksController < ApplicationController
     @recording = @playback_queue.current_item&.item
 
     @playback_queue_items = @playback_queue.queue_items.including_item_associations.rank(:row_order).offset(1)
+
+    @playback_session.play(reset_position: true)
 
     render turbo_stream: [
       turbo_stream.update("music-player", partial: "shared/music_player", locals: {playback_queue: @playback_queue, playback_session: @playback_session}),
