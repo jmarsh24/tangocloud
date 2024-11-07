@@ -23,7 +23,8 @@ class PlaybacksController < ApplicationController
 
     render turbo_stream: [
       turbo_stream.update("music-player", partial: "shared/music_player", locals: {playback_queue: @playback_queue, playback_session: @playback_session}),
-      turbo_stream.update("queue", partial: "queues/queue", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @playback_queue_items})
+      turbo_stream.update("queue", partial: "queues/queue", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @playback_queue_items}),
+      turbo_stream.update("player", partial: "recordings/player", locals: {playback_queue: @playback_queue, playback_session: @playback_session, recording: @recording})
     ]
   end
 
@@ -36,7 +37,8 @@ class PlaybacksController < ApplicationController
 
     render turbo_stream: [
       turbo_stream.update("music-player", partial: "shared/music_player", locals: {playback_queue: @playback_queue, playback_session: @playback_session}),
-      turbo_stream.update("queue", partial: "queues/queue", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @playback_queue_items})
+      turbo_stream.update("queue", partial: "queues/queue", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @playback_queue_items}),
+      turbo_stream.update("player", partial: "recordings/player", locals: {playback_queue: @playback_queue, playback_session: @playback_session, recording: @recording})
     ]
   end
 
