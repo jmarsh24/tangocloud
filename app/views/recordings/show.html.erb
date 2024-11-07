@@ -1,8 +1,4 @@
 <div class="container p-4 space-y-6">
-  <%= link_to @recording.orchestra, class: "flex gap-2 text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300" do %>
-    <%= heroicon "chevron-left", size: :sm %>
-    <%= t(".back") %>
-  <% end %>
   <% @recording.digital_remasters.each do |remaster| %>
     <% if remaster.album.album_art.attached? %>
       <%= image_tag remaster.album.album_art, class: "w-96 h-96 object-cover rounded-md" %>
