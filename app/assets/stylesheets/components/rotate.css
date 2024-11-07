@@ -10,4 +10,8 @@
 
 .rotating {
   animation: rotate 60s linear infinite;
+
+  /* this fixes the rotation for mobile browsers */
+  will-change: transform;
+  transform: translateZ(0);
 }

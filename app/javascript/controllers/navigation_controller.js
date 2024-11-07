@@ -1,4 +1,3 @@
-
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
@@ -12,8 +11,7 @@ export default class extends Controller {
   toggleTabNavigation() {
     if (this.isMobileDevice && this.mediaQuery.matches) {
       this.element.classList.remove("hidden")
-    } else {
-      this.element.classList.add("hidden")
+      this.element.classList.add("flex")
     }
   }
 }

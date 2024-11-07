@@ -7,10 +7,12 @@
     <main class="flex flex-col grow dark:bg-black items-center">
       <%= yield %>
     </main>
-    <%= render "shared/tab_navigation" %>
   </div>
-  <div id="music-player" data-turbo-permanent>
-    <%= render partial: "shared/music_player" %>
+  <div class="fixed bottom-0 left-0 w-full z-50" id="stacked-music-player">
+    <div id="music-player" data-turbo-permanent>
+      <%= render partial: "shared/music_player" %>
+    </div>
+    <%= render "shared/tab_navigation" %>
   </div>
   <%= render "shared/footer" %>
   <%= turbo_frame_tag "modal", target: "_top" %>

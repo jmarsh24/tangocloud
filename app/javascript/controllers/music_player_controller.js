@@ -98,10 +98,16 @@ export default class extends Controller {
   #onPause() {
     this.playButtonTarget.classList.remove("hidden");
     this.pauseButtonTarget.classList.add("hidden");
+    if (this.hasAlbumArtTarget) {
+      this.albumArtTarget.classList.remove("rotating");
+    }
   }
 
   #onPlay() {
     this.playButtonTarget.classList.add("hidden");
     this.pauseButtonTarget.classList.remove("hidden");
+    if (this.hasAlbumArtTarget) {
+      this.albumArtTarget.classList.add("rotating");
+    }
   }
 }
