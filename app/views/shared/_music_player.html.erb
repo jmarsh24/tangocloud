@@ -56,7 +56,29 @@
             <%= heroicon("forward", variant: :solid) %>
           <% end %>
         </div>
-        <div class="hidden sm:flex justify-end">
+        <div class="hidden sm:flex items-center justify-end gap-4">
+          <button
+              data-music-player-target="muteButton"
+              data-action="click->music-player#toggleMute"
+            class="flex items-center justify-center rounded bg-neutral-800 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600"
+            >
+            <div data-music-player-target="speakerIcon">
+              <%= heroicon "speaker-wave", size: :md%>
+            </div>
+            <div data-music-player-target="muteIcon" class="hidden">
+              <%= heroicon "speaker-x-mark", size: :md %>
+            </div>
+          </button>
+          <input
+              type="range"
+              min="0"
+              max="100"
+              value="100"
+              data-music-player-target="volumeSlider"
+              data-action="input->music-player#changeVolume"
+            class="range range-primary w-36"
+            >
+          </input>
           <%= link_to queue_path(recording_id: recording.id), class: "hover:underline hidden md:block", data: { turbo_frame: "modal" }, aria: { label: "Add to queue" } do %>
             <%= heroicon("queue-list", variant: :solid, size: :md) %>
             <span class="sr-only">Add to queue</span>

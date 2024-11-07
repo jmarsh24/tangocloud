@@ -3,7 +3,7 @@
 import { Controller } from "@hotwired/stimulus";
 import Player from "../player";
 import { installEventHandler } from "./mixins/event_handler";
-import { formatDuration } from "../helper"; // Assumes you have this helper function
+import { formatDuration } from "../helper";
 
 export default class extends Controller {
   static targets = [
@@ -16,29 +16,33 @@ export default class extends Controller {
     "albumArt",
     "nextButton",
     "progress",
+    "volumeSlider",
+    "muteButton",
+    "speakerIcon",
+    "muteIcon"
   ];
 
   static values = {
     audioUrl: String,
   };
 
-initialize() {
-  installEventHandler(this);
+  initialize() {
+    installEventHandler(this);
 
-  this.Player = new Player({
-    container: this.waveformTarget,
-    audioUrl: this.audioUrlValue,
-    autoplay: true,
-  });
+    this.Player = new Player({
+      container: this.waveformTarget,
+      audioUrl: this.audioUrlValue,
+      autoplay: true,
+    });
 
-  this.Player.initialize();
+    this.Player.initialize();
 
-  this.updateTime = this.updateTime.bind(this);
-  this.setDuration = this.setDuration.bind(this);
-  this.updateProgress = this.updateProgress.bind(this);
+    this.updateTime = this.updateTime.bind(this);
+    this.setDuration = this.setDuration.bind(this);
+    this.updateProgress = this.updateProgress.bind(this);
 
-  this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-}
+    this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  }
 
   connect() {
     if (this.audioUrlValue !== this.Player.audioUrl) {
@@ -61,6 +65,22 @@ initialize() {
   pause() {
     this.Player.pause();
     this.#onPause();
+  }
+
+  changeVolume(event) {
+    const volume = event.target.value / 100;
+    this.Player.setVolume(volume);
+  }
+
+  toggleMute() {
+    this.Player.toggleMute();
+
+    if (this.hasMuteIconTarget) {
+      this.muteIconTarget.classList.toggle("hidden");
+    }
+    if (this.hasSpeakerIconTarget) {
+      this.speakerIconTarget.classList.toggle("hidden");
+    }
   }
 
   next() {
