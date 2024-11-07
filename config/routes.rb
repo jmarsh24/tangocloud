@@ -122,6 +122,6 @@ Rails.application.routes.draw do
   get "/data-deletion", to: "pages#data_deletion"
   get "/dashboard", to: "pages#dashboard"
 
-  root "music_libraries#show"
+  root "pages#landing"
   get "up", to: "rails/health#show", as: :rails_health_checkb
 end
