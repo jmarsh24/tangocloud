@@ -1,4 +1,4 @@
-<div id="player" data-controller="mini-player" class="container p-4 space-y-6">
+<turbo_frame id="player" data-controller="mini-player" class="container p-4 space-y-6">
   <% @recording.digital_remasters.each do |remaster| %>
     <% if remaster.album.album_art.attached? %>
       <%= image_tag remaster.album.album_art, class: "w-96 h-96 object-cover rounded-md" %>
@@ -64,4 +64,4 @@
       <% end %>
     </div>
   <% end %>
-</div>
+</turbo_frame>
