@@ -7,33 +7,33 @@ class PlaybackQueue < ApplicationRecord
 
   validates :user, presence: true
 
-    def load_recordings(recordings, start_with: nil)
-        ActiveRecord::Base.transaction do
-          update!(current_item: nil)
-          queue_items.delete_all
+  def load_recordings(recordings, start_with: nil)
+    ActiveRecord::Base.transaction do
+      update!(current_item: nil)
+      queue_items.delete_all
 
-          if start_with
-            start_index = recordings.index(start_with)
-            recordings = recordings.rotate(start_index) if start_index
-          end
+      if start_with
+        start_index = recordings.index(start_with)
+        recordings = recordings.rotate(start_index) if start_index
+      end
 
-          queue_items_data = recordings.each_with_index.map do |rec, index|
-            {
-              playback_queue_id: id,
-              item_type: rec.class.name,
-              item_id: rec.id,
-              row_order: (index + 1) * 100,
-              created_at: Time.current,
-              updated_at: Time.current
-            }
-          end
+      queue_items_data = recordings.each_with_index.map do |rec, index|
+        {
+          playback_queue_id: id,
+          item_type: rec.class.name,
+          item_id: rec.id,
+          row_order: (index + 1) * 100,
+          created_at: Time.current,
+          updated_at: Time.current
+        }
+      end
 
-          QueueItem.insert_all(queue_items_data)
-          queue_items.reload
+      QueueItem.insert_all(queue_items_data)
+      queue_items.reload
 
-          update!(current_item: queue_items.rank(:row_order).first)
-        end
+      update!(current_item: queue_items.rank(:row_order).first)
     end
+  end
 
   def load_playlist(playlist, start_with: nil)
     ActiveRecord::Base.transaction do
