@@ -38,7 +38,7 @@
             </div>
           </div>
         <% end %>
-        <div class="flex justify-end gap-2 col-span-1 sm:justify-center">
+        <div class="flex justify-end gap-2 col-span-1 md:justify-center">
           <%= button_to previous_playback_path, class: "hidden md:block rounded bg-neutral-800 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
             <%= heroicon("rewind", variant: :solid) %>
           <% end %>
@@ -56,7 +56,7 @@
             <%= heroicon("forward", variant: :solid) %>
           <% end %>
         </div>
-        <div class="hidden sm:flex items-center justify-end gap-4">
+        <div class="hidden md:flex items-center justify-end gap-4">
           <div class="flex items-center justify-center">
             <%= form_with url: mute_playback_path do %>
               <button
