@@ -76,7 +76,7 @@ export default class Player {
 
   load(audioUrl) {
     this.wavesurfer.destroy();
-    this.audioUrl = audioUrl;
+    this._audioUrl = audioUrl;
     this.initialize();
     dispatchEvent(document, "player:beforePlaying");
   }
