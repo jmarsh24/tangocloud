@@ -1,18 +1,20 @@
-<div data-controller="navigation" class="hidden w-full bg-neutral-900 text-white justify-between items-center px-4 z-30 md:hidden">
-  <%= link_to music_library_path, class: "flex flex-col items-center px-4 py-4 pb-10" do %>
-    <%= heroicon "home", size: :md, variant: (current_page?(music_library_path) ? :solid : :outline), class: (current_page?(music_library_path) ? "text-orange-500" : "text-gray-400") %>
-    <span class="text-xs <%= 'text-orange-500' if current_page?(music_library_path) %>">Library</span>
-  <% end %>
-  <%= link_to search_path, class: "flex flex-col items-center px-4 py-4 pb-10" do %>
-    <%= heroicon "magnifying-glass", size: :md, variant: (current_page?(search_path) ? :solid : :outline), class: (current_page?(search_path) ? "text-orange-500" : "text-gray-400") %>
-    <span class="text-xs <%= 'text-orange-500' if current_page?(search_path) %>">Search</span>
-  <% end %>
-  <%= link_to orchestras_path, class: "flex flex-col items-center px-4 py-4 pb-10" do %>
-    <%= heroicon "musical-note", size: :md, variant: (current_page?(orchestras_path) ? :solid : :outline), class: (current_page?(orchestras_path) ? "text-orange-500" : "text-gray-400") %>
-    <span class="text-xs <%= 'text-orange-500' if current_page?(orchestras_path) %>">Orchestras</span>
-  <% end %>
-  <%= link_to playlists_path, class: "flex flex-col items-center px-4 py-4 pb-10" do %>
-    <%= heroicon "book-open", size: :md, variant: (current_page?(playlists_path) ? :solid : :outline), class: (current_page?(playlists_path) ? "text-orange-500" : "text-gray-400") %>
-    <span class="text-xs <%= 'text-orange-500' if current_page?(playlists_path) %>">Playlists</span>
-  <% end %>
-</div>
+<% if Current.user.present? %>
+  <div data-controller="navigation" class="hidden w-full bg-neutral-900 text-white justify-between items-center px-4 z-30 md:hidden">
+    <%= link_to music_library_path, class: "flex flex-col items-center px-4 py-4 pb-10" do %>
+      <%= heroicon "home", size: :md, variant: (current_page?(music_library_path) ? :solid : :outline), class: (current_page?(music_library_path) ? "text-orange-500" : "text-gray-400") %>
+      <span class="text-xs <%= 'text-orange-500' if current_page?(music_library_path) %>">Library</span>
+    <% end %>
+    <%= link_to search_path, class: "flex flex-col items-center px-4 py-4 pb-10" do %>
+      <%= heroicon "magnifying-glass", size: :md, variant: (current_page?(search_path) ? :solid : :outline), class: (current_page?(search_path) ? "text-orange-500" : "text-gray-400") %>
+      <span class="text-xs <%= 'text-orange-500' if current_page?(search_path) %>">Search</span>
+    <% end %>
+    <%= link_to orchestras_path, class: "flex flex-col items-center px-4 py-4 pb-10" do %>
+      <%= heroicon "musical-note", size: :md, variant: (controller_name == 'orchestras' ? :solid : :outline), class: (controller_name == 'orchestras' ? "text-orange-500" : "text-gray-400") %>
+      <span class="text-xs <%= 'text-orange-500' if controller_name == 'orchestras' %>">Orchestras</span>
+    <% end %>
+    <%= link_to playlists_path, class: "flex flex-col items-center px-4 py-4 pb-10" do %>
+      <%= heroicon "book-open", size: :md, variant: (controller_name == 'playlists' ? :solid : :outline), class: (controller_name == 'playlists' ? "text-orange-500" : "text-gray-400") %>
+      <span class="text-xs <%= 'text-orange-500' if controller_name == 'playlists' %>">Playlists</span>
+    <% end %>
+  </div>
+<% end %>
