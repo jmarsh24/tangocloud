@@ -25,7 +25,7 @@
       </div>
       <div class="grid grid-cols-2 md:grid-cols-3 items-center sm:gap-4 w-full">
         <%= link_to player_path(recording_id: recording.id), data: { turbo_frame: "modal" }, class: "flex items-center gap-4 col-span-1" do %>
-          <%= image_tag recording.digital_remasters.first.album.album_art, class: "w-12 h-12 md:w-16 md:h-16 rounded-full object-cover rotating", data: { music_player_target: "albumArt" } %>
+          <%= image_tag recording.digital_remasters.first.album.album_art, class: class_names("w-12 h-12 md:w-16 md:h-16 rounded-full object-cover", "rotating": playback_session.playing?), data: { music_player_target: "albumArt" } %>
           <div class="flex flex-col flex-grow">
             <div class="text-sm md:text-lg font-semibold text-white truncate">
               <%= recording.composition.title %>
@@ -42,12 +42,12 @@
           <%= button_to previous_playback_path, class: "hidden md:block rounded bg-neutral-800 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
             <%= heroicon("rewind", variant: :solid) %>
           <% end %>
-          <%= form_with url: play_playback_path, data: { music_player_target: "playButton", action: "music-player#play" }, class: class_names("hidden": playback_session.playing) do %>
+          <%= form_with url: play_playback_path, data: { music_player_target: "playButton", action: "music-player#play" }, class: class_names("hidden": playback_session.playing?) do %>
             <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600">
               <%= heroicon("play", variant: :solid, size: :sm) %>
             </button>
           <% end %>
-          <%= form_with url: pause_playback_path, data: { music_player_target: "pauseButton", action: "music-player#pause" }, class: class_names("hidden": !playback_session.playing) do %>
+          <%= form_with url: pause_playback_path, data: { music_player_target: "pauseButton", action: "music-player#pause" }, class: class_names("hidden": !playback_session.playing?) do %>
             <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600">
               <%= heroicon("pause", variant: :solid, size: :sm) %>
             </button>
@@ -57,6 +57,9 @@
           <% end %>
         </div>
         <div class="hidden md:flex items-center justify-end gap-4">
+          <%= link_to queue_path(recording_id: recording.id), class: "w-10 h-10 items-center justify-center rounded text-white bg-neutral-800 hover:bg-neutral-600 hidden md:flex", data: { turbo_frame: "modal" }, aria: { label: "Add to queue" } do %>
+            <%= heroicon("queue-list", size: :md) %>
+          <% end %>
           <div class="flex items-center justify-center">
             <%= form_with url: mute_playback_path do %>
               <button
@@ -95,10 +98,6 @@
               class="range range-primary w-36"
               >
             </input>
-          <% end %>
-          <%= link_to queue_path(recording_id: recording.id), class: "hover:underline hidden md:block", data: { turbo_frame: "modal" }, aria: { label: "Add to queue" } do %>
-            <%= heroicon("queue-list", variant: :solid, size: :md) %>
-            <span class="sr-only">Add to queue</span>
           <% end %>
         </div>
       </div>
