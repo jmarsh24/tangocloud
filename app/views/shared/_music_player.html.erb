@@ -24,10 +24,10 @@
         <div data-music-player-target="progress" class="h-full bg-orange-500 rounded-full" style="width: 0%;"></div>
       </div>
       <div class="grid grid-cols-2 md:grid-cols-3 items-center sm:gap-4 w-full">
-        <%= link_to player_path(recording_id: recording.id), data: { turbo_frame: "modal" }, class: "flex items-center gap-4 col-span-1" do %>
+        <%= link_to player_path(recording_id: recording.id), data: { turbo_frame: "modal" }, class: "flex items-center gap-4 col-span-1 group" do %>
           <%= image_tag recording.digital_remasters.first.album.album_art, class: class_names("w-12 h-12 md:w-16 md:h-16 rounded-full object-cover", "rotating": playback_session.playing?), data: { music_player_target: "albumArt" } %>
           <div class="flex flex-col flex-grow">
-            <div class="text-sm md:text-lg font-semibold text-white truncate">
+            <div class="text-sm md:text-lg font-semibold text-white truncate group-hover:underline">
               <%= recording.composition.title %>
             </div>
             <div class="text-xs text-neutral-400 truncate">
@@ -38,18 +38,18 @@
             </div>
           </div>
         <% end %>
-        <div class="flex justify-end gap-2 col-span-1 md:justify-center">
+        <div class="flex justify-end gap-2 col-span-1 md:justify-center items-center">
           <%= button_to previous_playback_path, class: "hidden md:block rounded bg-neutral-800 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
             <%= heroicon("rewind", variant: :solid) %>
           <% end %>
           <%= form_with url: play_playback_path, data: { music_player_target: "playButton", action: "music-player#play" }, class: class_names("hidden": playback_session.playing?) do %>
-            <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600">
-              <%= heroicon("play", variant: :solid, size: :sm) %>
+            <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 px-4 py-4 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600">
+              <%= heroicon("play", variant: :solid, size: :md) %>
             </button>
           <% end %>
           <%= form_with url: pause_playback_path, data: { music_player_target: "pauseButton", action: "music-player#pause" }, class: class_names("hidden": !playback_session.playing?) do %>
-            <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600">
-              <%= heroicon("pause", variant: :solid, size: :sm) %>
+            <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 px-4 py-4 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600">
+              <%= heroicon("pause", variant: :solid, size: :md) %>
             </button>
           <% end %>
           <%= button_to next_playback_path, data: { music_player_target: "nextButton"}, class: "hidden md:block rounded bg-neutral-800 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
