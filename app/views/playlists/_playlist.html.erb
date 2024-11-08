@@ -1,9 +1,9 @@
 <% cache(playlist) do %>
   <%= link_to playlist, class: "flex gap-2 dark:bg-neutral-900 rounded-lg dark:hover:bg-neutral-800 p-2" do %>
     <% if playlist.image.present? %>
-      <%= image_tag playlist.image, class: "w-10 h-10 md:w-12 md:h-12 rounded-md object-cover" %>
+      <%= image_tag playlist.image, class: "w-14 h-14 md:w-16 md:h-16 rounded-md object-cover" %>
     <% else %>
-      <div class="w-12 h-12 md:w-20 md:h-20 bg-neutral-200 dark:bg-neutral-800 rounded-l-lg"></div>
+      <div class="w-17 h-12 md:w-20 md:h-20 bg-neutral-200 dark:bg-neutral-800 rounded-l-lg"></div>
     <% end %>
     <div class="flex flex-col py-1 px-2 justify-center">
       <h2 class="text-xs md:text-md font-semibold text-neutral-900 dark:text-neutral-100"><%= playlist.title %></h2>

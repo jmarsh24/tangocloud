@@ -1,6 +1,6 @@
 <%# locals: (recording:, orchestra: nil, year: nil, genre: nil, orchestra_period: nil, singer: nil) %>
 <% cache([recording, orchestra, year, genre, orchestra_period, singer]) do %>
-  <div class="w-full flex w-full gap-4 items-center hover:bg-neutral-900 hover:cursor-pointer rounded-lg">
+  <div class="w-full flex gap-4 items-center bg-neutral-900 hover:cursor-pointer rounded-lg">
     <%= form_with url: load_orchestra_recording_path(orchestra_id: orchestra, id: recording.id), class: "flex w-full gap-4 items-center" do |form| %>
       <%= form.hidden_field :year, value: year %>
       <%= form.hidden_field :genre, value: genre %>
