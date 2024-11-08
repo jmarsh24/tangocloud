@@ -20,7 +20,15 @@ class Identity::EmailVerificationsController < ApplicationController
 
     send_email_verification
     flash[:modal_notice] = "We sent a verification email to your email address"
-    redirect_to root_path, notice: "We sent a verification email to your email address"
+
+    respond_to do |format|
+      format.html do
+        redirect_to(root_path, notice: "We sent a verification email to your email address")
+      end
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.redirect_to(root_path)
+      end
+    end
   end
 
   private
