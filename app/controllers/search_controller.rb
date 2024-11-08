@@ -55,9 +55,9 @@ class SearchController < ApplicationController
       limit: 100
     )
 
-    @top_result = @results.first
+    # @top_result = @results.first
     @playlists = @results.select { |result| result.is_a?(Playlist) }
-    @recordings = @results.select { |result| result.is_a?(Recording) }.slice(0, 20)
+    @recordings = @results.select { |result| result.is_a?(Recording) }.slice(0, 16)
     @orchestras = @results.select { |result| result.is_a?(Orchestra) }
     @tandas = @results.select { |result| result.is_a?(Tanda) }
 

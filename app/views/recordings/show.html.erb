@@ -1,6 +1,6 @@
 <% cache @recording do %>
   <%= turbo_frame_tag @recording do %>
-    <div class="w-full flex gap-4 items-center hover:bg-neutral-900 hover:cursor-pointer rounded-lg">
+    <div class="w-full flex w-full gap-4 items-center hover:bg-neutral-900 hover:cursor-pointer rounded-lg">
       <%= image_tag @recording.digital_remasters.first.album.album_art, class: "w-16 h-16 md:w-20 md:h-20 rounded-lg object-cover" %>
       <div class="flex flex-col items-start text-left">
         <div class="text-sm font-semibold">
