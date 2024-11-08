@@ -44,6 +44,8 @@ Rails.application.routes.draw do
     resources :recordings, only: [:show]
   end
 
+  resource :player, only: [:show]
+
   resource :playback do
     post :play, on: :member
     post :pause, on: :member
@@ -65,7 +67,8 @@ Rails.application.routes.draw do
     delete "queue/remove", to: "queues#remove", as: :remove_from_queue
   end
 
-  resources :recordings, only: :show, concerns: :queueable
+  resources :recordings, only: :show
+  
   resources :playlists, only: [:index, :show] do
     resources :recordings, only: [] do
       member do
@@ -104,6 +107,8 @@ Rails.application.routes.draw do
       end
     end
   end
+
+
 
   get "search", to: "search#index"
   post "search/recording/load", to: "searches/recordings#load", as: :load_search_recording

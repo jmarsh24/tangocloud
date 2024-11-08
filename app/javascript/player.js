@@ -25,12 +25,13 @@ export default class Player {
       barGap: 1,
       responsive: true,
       volume: this.volume,
+      backend: "MediaElement"
     });
 
     this.wavesurfer.once("ready", () => {
       this.duration = this.wavesurfer.getDuration();
       this.isReady = true;
-      
+
       dispatchEvent(document, "player:ready", { duration: this.duration });
 
       if (this.autoplay) {
@@ -76,8 +77,9 @@ export default class Player {
   }
 
   load(audioUrl) {
+    this.wavesurfer.destroy();
     this.audioUrl = audioUrl;
-    this.wavesurfer.load(audioUrl);
+    this.initialize();
     dispatchEvent(document, "player:beforePlaying");
   }
 
@@ -92,7 +94,7 @@ export default class Player {
       dispatchEvent(document, "player:pause");
     }
   }
-
+  
   createGradients() {
     const canvasHeight = this.container.offsetHeight || 100;
     const canvas = document.createElement("canvas");

@@ -24,9 +24,9 @@ class PlaybacksController < ApplicationController
     @playback_session.play(reset_position: true)
 
     render turbo_stream: [
-      turbo_stream.update("music-player", partial: "shared/music_player", locals: {playback_queue: @playback_queue, playback_session: @playback_session}),
-      turbo_stream.update("queue", partial: "queues/queue", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @playback_queue_items}),
-      turbo_stream.update("player", partial: "recordings/player", locals: {playback_queue: @playback_queue, playback_session: @playback_session, recording: @recording})
+      turbo_stream.update("music-player", partial: "shared/music_player", locals: {playback_queue: @playback_queue, playback_session: @playback_session}, method: "morph"),
+      turbo_stream.update("queue", partial: "queues/queue", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @playback_queue_items}, method: "morph"),
+      turbo_stream.update("player", partial: "players/player", locals: {playback_queue: @playback_queue, playback_session: @playback_session, recording: @recording}, method: "morph")
     ]
   end
 
@@ -40,9 +40,9 @@ class PlaybacksController < ApplicationController
     @playback_session.play(reset_position: true)
 
     render turbo_stream: [
-      turbo_stream.update("music-player", partial: "shared/music_player", locals: {playback_queue: @playback_queue, playback_session: @playback_session}),
-      turbo_stream.update("queue", partial: "queues/queue", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @playback_queue_items}),
-      turbo_stream.update("player", partial: "recordings/player", locals: {playback_queue: @playback_queue, playback_session: @playback_session, recording: @recording})
+      turbo_stream.update("music-player", partial: "shared/music_player", locals: {playback_queue: @playback_queue, playback_session: @playback_session}, method: "morph"),
+      turbo_stream.update("queue", partial: "queues/queue", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @playback_queue_items}, method: "morph"),
+      turbo_stream.update("player", partial: "players/player", locals: {playback_queue: @playback_queue, playback_session: @playback_session, recording: @recording}, method: "morph")
     ]
   end
 

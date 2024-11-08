@@ -42,19 +42,17 @@ export default class extends Controller {
     this.updateProgress = this.updateProgress.bind(this);
 
     this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-  }
-
-  connect() {
-    if (this.audioUrlValue !== this.Player.audioUrl) {
-      this.Player.load(this.audioUrlValue);
-    }
-
+    
     this.handleEvent("player:play", { with: () => this.play() });
     this.handleEvent("player:pause", { with: () => this.pause() });
     this.handleEvent("player:ready", { with: this.setDuration });
     this.handleEvent("player:progress", { with: this.updateTime });
     this.handleEvent("player:progress", { with: this.updateProgress });
     this.handleEvent("player:finish", { with: () => this.next() });
+  }
+
+  audioUrlValueChanged() {
+    this.Player.load(this.audioUrlValue);
   }
 
   play() {
