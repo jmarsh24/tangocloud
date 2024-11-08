@@ -71,7 +71,7 @@ Rails.application.routes.draw do
   end
 
   resources :recordings, only: :show
-  
+
   resources :playlists, only: [:index, :show] do
     resources :recordings, only: [] do
       member do

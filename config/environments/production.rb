@@ -103,5 +103,5 @@ Rails.application.configure do
   # Log a warning when strict loading violations occur.
   config.active_record.action_on_strict_loading_violation = :log
 
-  config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
+  config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
 end

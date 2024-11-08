@@ -6,7 +6,7 @@ class PlaybackSessionPolicy < ApplicationPolicy
   def pause?
     record.user == user
   end
-  
+
   def show?
     record.user == user
   end
