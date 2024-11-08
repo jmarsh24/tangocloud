@@ -1,17 +1,15 @@
-// app/javascript/player.js
-
 import WaveSurfer from "wavesurfer.js";
 import { dispatchEvent } from "./helper";
 
 export default class Player {
-  constructor({ container, audioUrl, autoplay = false }) {
+  constructor({ container, audioUrl, volume = 1, muted = false, autoplay = false }) {
     this.container = container;
     this._audioUrl = audioUrl;
     this.autoplay = autoplay;
+    this.volume = volume;
+    this.isMuted = muted;
     this.createGradients();
     this.isReady = false;
-    this.isMuted = false;
-    this.volume = 1;
   }
 
   initialize() {
@@ -24,9 +22,10 @@ export default class Player {
       barRadius: 2,
       barGap: 1,
       responsive: true,
-      volume: this.volume,
       backend: "MediaElement"
     });
+
+    this.wavesurfer.setVolume(this.volume);
 
     this.wavesurfer.once("ready", () => {
       this.duration = this.wavesurfer.getDuration();
@@ -48,32 +47,31 @@ export default class Player {
     this.wavesurfer.on("finish", () => {
       dispatchEvent(document, "player:finish");
     });
-  }
 
-  dispatchProgressEvent(currentTime) {
-    dispatchEvent(document, "player:progress", {
-      currentTime,
-      duration: this.duration,
-    });
-  }
-
-  get audioUrl() {
-    return this._audioUrl;
-  }
-
-  set audioUrl(value) {
-    this._audioUrl = value;
+    if (this.isMuted) {
+      this.wavesurfer.setMuted(true);
+    }
   }
 
   setVolume(value) {
     this.volume = isFinite(value) ? value : 1;
-    this.wavesurfer.setVolume(this.isMuted ? 0 : this.volume);
+    this.wavesurfer.setVolume(this.volume);
   }
 
-  toggleMute() {
-    this.isMuted = !this.isMuted;
-    this.wavesurfer.setVolume(this.isMuted ? 0 : this.volume || 1);
-    dispatchEvent(document, "player:muteChange", { muted: this.isMuted });
+  mute() {
+    if (!this.isMuted) {
+      this.isMuted = true;
+      this.wavesurfer.setMuted(true);
+      dispatchEvent(document, "player:muteChange", { muted: true });
+    }
+  }
+
+  unmute() { 
+    if (this.isMuted) {
+      this.isMuted = false;
+      this.wavesurfer.setMuted(false);
+      dispatchEvent(document, "player:muteChange", { muted: false });
+    }
   }
 
   load(audioUrl) {
@@ -94,7 +92,14 @@ export default class Player {
       dispatchEvent(document, "player:pause");
     }
   }
-  
+
+  dispatchProgressEvent(currentTime) {
+    dispatchEvent(document, "player:progress", {
+      currentTime,
+      duration: this.duration,
+    });
+  }
+
   createGradients() {
     const canvasHeight = this.container.offsetHeight || 100;
     const canvas = document.createElement("canvas");

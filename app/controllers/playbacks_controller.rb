@@ -1,8 +1,8 @@
 class PlaybacksController < ApplicationController
   before_action :set_playback_session
   before_action :set_playback_queue
-  skip_after_action :verify_authorized, only: [:play, :pause, :next, :previous]
-  skip_after_action :verify_policy_scoped, only: [:play, :pause, :next, :previous]
+
+  skip_after_action :verify_policy_scoped, only: [:play, :pause, :next, :previous, :update_volume, :mute, :unmute]
 
   def play
     @playback_session.update!(playing: true)
@@ -46,10 +46,25 @@ class PlaybacksController < ApplicationController
     ]
   end
 
+  def update_volume
+    @playback_session.update!(volume: params[:volume].to_i)
+    head :ok
+  end
+
+  def mute
+    @playback_session.update!(muted: true)
+    head :ok
+  end
+
+  def unmute
+    @playback_session.update!(muted: false)
+    head :ok
+  end
+
   private
 
   def set_playback_session
-    @playback_session = PlaybackSession.find_or_create_by(user: current_user)
+    authorize @playback_session = PlaybackSession.find_or_create_by(user: current_user)
   end
 
   def set_playback_queue

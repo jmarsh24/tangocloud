@@ -58,4 +58,6 @@ end
 #  position   :integer          default(0), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  volume     :integer          default(100)
+#  muted      :boolean          default(FALSE)
 #

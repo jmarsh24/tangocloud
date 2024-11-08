@@ -52,33 +52,50 @@
               <%= heroicon("pause", variant: :solid, size: :sm) %>
             </button>
           <% end %>
-          <%= button_to next_playback_path, class: "hidden md:block rounded bg-neutral-800 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
+          <%= button_to next_playback_path, data: { music_player_target: "nextButton"}, class: "hidden md:block rounded bg-neutral-800 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
             <%= heroicon("forward", variant: :solid) %>
           <% end %>
         </div>
         <div class="hidden sm:flex items-center justify-end gap-4">
-          <button
-              data-music-player-target="muteButton"
-              data-action="click->music-player#toggleMute"
-            class="flex items-center justify-center rounded bg-neutral-800 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600"
-            >
-            <div data-music-player-target="speakerIcon">
-              <%= heroicon "speaker-wave", size: :md%>
-            </div>
-            <div data-music-player-target="muteIcon" class="hidden">
-              <%= heroicon "speaker-x-mark", size: :md %>
-            </div>
-          </button>
-          <input
+          <div class="flex items-center justify-center">
+            <%= form_with url: mute_playback_path do %>
+              <button
+                type="submit"
+                data-music-player-target="muteButton"
+                data-action="click->music-player#mute"
+                class="<%= class_names('w-10 h-10 flex items-center justify-center rounded bg-neutral-800 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600', 'hidden': playback_session.muted?) %>"
+                >
+                <%= heroicon "speaker-wave", size: :md %>
+              </button>
+            <% end %>
+            <%= form_with url: unmute_playback_path do %>
+              <button
+                type="submit"
+                data-music-player-target="unmuteButton"
+                data-action="click->music-player#unmute"
+                class="<%= class_names('w-10 h-10 flex items-center justify-center rounded bg-neutral-800 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600', 'hidden': !playback_session.muted?) %>"
+                >
+                <%= heroicon "speaker-x-mark", size: :md %>
+              </button>
+            <% end %>
+          </div>
+          <%= form_with url: mute_playback_path, class: "hidden" do %>
+            <input type="hidden" name="_method" value="put">
+          <% end %>
+          <%= form_with url: update_volume_playback_path do %>
+            <input
               type="range"
               min="0"
               max="100"
-              value="100"
+              name="volume"
+              value="<%= playback_session.volume || 100 %>"
+              data-controller="auto-submit"
               data-music-player-target="volumeSlider"
-              data-action="input->music-player#changeVolume"
-            class="range range-primary w-36"
-            >
-          </input>
+              data-action="input->music-player#changeVolume change->auto-submit#submit"
+              class="range range-primary w-36"
+              >
+            </input>
+          <% end %>
           <%= link_to queue_path(recording_id: recording.id), class: "hover:underline hidden md:block", data: { turbo_frame: "modal" }, aria: { label: "Add to queue" } do %>
             <%= heroicon("queue-list", variant: :solid, size: :md) %>
             <span class="sr-only">Add to queue</span>

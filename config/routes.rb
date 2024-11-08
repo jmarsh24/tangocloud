@@ -51,6 +51,9 @@ Rails.application.routes.draw do
     post :pause, on: :member
     post :next, on: :member
     post :previous, on: :member
+    post :update_volume, on: :member
+    post :mute, on: :member
+    post :unmute, on: :member
   end
 
   resource :queue, only: [:show] do
@@ -107,8 +110,6 @@ Rails.application.routes.draw do
       end
     end
   end
-
-
 
   get "search", to: "search#index"
   post "search/recording/load", to: "searches/recordings#load", as: :load_search_recording

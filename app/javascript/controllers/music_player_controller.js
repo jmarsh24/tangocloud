@@ -18,8 +18,7 @@ export default class extends Controller {
     "progress",
     "volumeSlider",
     "muteButton",
-    "speakerIcon",
-    "muteIcon"
+    "unmuteButton",
   ];
 
   static values = {
@@ -29,10 +28,14 @@ export default class extends Controller {
   initialize() {
     installEventHandler(this);
 
+    const initialVolume = (this.volumeSliderTarget.value || 100) / 100;
+
     this.Player = new Player({
       container: this.waveformTarget,
       audioUrl: this.audioUrlValue,
       autoplay: true,
+      volume: initialVolume,
+      muted: false,
     });
 
     this.Player.initialize();
@@ -70,15 +73,14 @@ export default class extends Controller {
     this.Player.setVolume(volume);
   }
 
-  toggleMute() {
-    this.Player.toggleMute();
+  mute() {
+    this.Player.mute();
+    this.#onMute();
+  }
 
-    if (this.hasMuteIconTarget) {
-      this.muteIconTarget.classList.toggle("hidden");
-    }
-    if (this.hasSpeakerIconTarget) {
-      this.speakerIconTarget.classList.toggle("hidden");
-    }
+  unmute() {
+    this.Player.unmute();
+    this.#onUnmute();
   }
 
   next() {
@@ -145,5 +147,15 @@ export default class extends Controller {
     if (this.hasAlbumArtTarget) {
       this.albumArtTarget.classList.add("rotating");
     }
+  }
+
+  #onMute() {
+    this.muteButtonTarget.classList.add("hidden");
+    this.unmuteButtonTarget.classList.remove("hidden");
+  }
+
+  #onUnmute() {
+    this.muteButtonTarget.classList.remove("hidden");
+    this.unmuteButtonTarget.classList.add("hidden");
   }
 }
