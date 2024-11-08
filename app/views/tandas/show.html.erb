@@ -5,8 +5,7 @@
     <% end %>
     <h1><%= @tanda.title %></h1>
     <div class="flex flex-col gap-4">
-      <%= render collection: @recordings, partial: "recordings/recording" %>
+      <%= render collection: @recordings, partial: "recording_form", locals: { tanda: @tanda }, as: :recording %>
     </div>
   </div>
-  <%= turbo_frame_tag "music-player", class: "fixed bottom-0 w-full bg-neutral-800 text-white shadow-lg p-4" %>
 <% end %>

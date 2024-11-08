@@ -44,14 +44,72 @@ Rails.application.routes.draw do
     resources :recordings, only: [:show]
   end
 
-  resources :digital_remaster, only: [:new, :create]
-  resources :recordings, only: [:show]
-  resources :orchestras, only: [:index, :show]
-  resources :playlists, only: [:index, :show]
-  resources :tandas, only: [:index, :show]
-  resource :music_library, only: [:show]
-  resource :player, only: [:create]
+  resource :playback do
+    post :play, on: :member
+    post :pause, on: :member
+    post :next, on: :member
+    post :previous, on: :member
+  end
+
+  resource :queue, only: [:show] do
+    collection do
+      post :add
+      post :select
+      delete :remove
+    end
+  end
+
+  concern :queueable do
+    post "queue/add", to: "queues#add", as: :add_to_queue
+    post "queue/select", to: "queues#select", as: :select_recording
+    delete "queue/remove", to: "queues#remove", as: :remove_from_queue
+  end
+
+  resources :recordings, only: :show, concerns: :queueable
+  resources :playlists, only: [:index, :show] do
+    resources :recordings, only: [] do
+      member do
+        post "load", to: "playlists/recordings#load"
+      end
+    end
+    resources :tandas, only: [:index, :show] do
+      resources :recordings, only: [] do
+        member do
+          post "load", to: "tandas/recordings#load"
+        end
+      end
+    end
+  end
+
+  resources :tandas, only: [:index, :show] do
+    resources :recordings, only: [] do
+      member do
+        post "load", to: "tandas/recordings#load"
+      end
+    end
+  end
+
+  resources :orchestras, only: [:index, :show] do
+    resources :recordings, only: [] do
+      member do
+        post "load", to: "orchestras/recordings#load"
+      end
+    end
+  end
+
+  resource :music_library, only: [:show] do
+    resources :recordings, only: [] do
+      member do
+        post "load", to: "music_libraries/recordings#load"
+      end
+    end
+  end
+
   get "search", to: "search#index"
+  post "search/recording/load", to: "searches/recordings#load", as: :load_search_recording
+  post "queue/recording/load", to: "queues/recordings#load", as: :load_queue_recording
+
+  resources :digital_remaster, only: [:new, :create]
 
   get "service-worker" => "rails/pwa#service_worker", :as => :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", :as => :pwa_manifest

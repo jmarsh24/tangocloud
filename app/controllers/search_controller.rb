@@ -2,10 +2,8 @@ class SearchController < ApplicationController
   skip_after_action :verify_policy_scoped, only: :index
 
   def index
-    query = params[:query]
-
     @results = Searchkick.search(
-      query,
+      params[:query].to_s.strip,
       models: [Playlist, Recording, Orchestra, Tanda],
       model_includes: {
         Playlist => [:user, image_attachment: :blob],

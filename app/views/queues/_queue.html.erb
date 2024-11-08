@@ -1,0 +1,49 @@
+<%# locals: (playback_queue:, queue_items:, playback_session:) %>
+<% cache([playback_queue, queue_items, playback_session]) do %>
+  <div id="queue" data-controller="mini-player" class="container flex flex-col p-4 gap-4 dark:bg-black">
+    <% if playback_queue.current_item %>
+      <h1 class="text-2xl font-bold dark:text-neutral-300">Now Playing</h1>
+      <div id="now-playing" class="flex gap-4">
+        <%= image_tag playback_queue.current_item.item.digital_remasters.first.album.album_art, class: "w-16 h-16 md:w-20 md:h-20 rounded-md object-cover" %>
+        <div class="flex flex-col items-start justify-center text-left">
+          <div class="flex gap-2 text-sm font-semibold text-orange-500">
+            <%= inline_svg_tag("icons/svg_loaders/animated-audio.svg", class: class_names("w-4 h-4 fill-orange-500", "hidden": !playback_session.playing), data: { mini_player_target: "playingIndicator" }) %>
+            <%= inline_svg_tag("icons/svg_loaders/paused-audio.svg", class: class_names("w-4 h-4 fill-orange-500", "hidden": playback_session.playing), data: { mini_player_target: "pauseIndicator" }) %>
+            <%= playback_queue.current_item.item.composition.title %>
+          </div>
+          <div class="text-xs text-gray-500">
+            <%= playback_queue.current_item.item.orchestra.name %>
+            <% if playback_queue.current_item.item.singers.present? %>
+              &middot; <%= playback_queue.current_item.item.singers.map(&:name).compact.join(", ") %>
+            <% end %>
+          </div>
+          <div class="text-xs text-gray-500">
+            <%= playback_queue.current_item.item.genre.name %> - <%= playback_queue.current_item.item.year %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <div data-mini-player-target="progress" class="bg-white h-1 w-0"></div>
+    <div class="flex items-center justify-center gap-4">
+      <%= button_to previous_playback_path, class: "rounded bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
+        <%= heroicon("rewind", variant: :solid) %>
+      <% end %>
+      <%= form_with url: play_playback_path, method: :post, data: { mini_player_target: "playButton", action: "mini-player#play" }, class: class_names("hidden": playback_session.playing) do %>
+        <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600">
+          <%= heroicon("play", variant: :solid, size: :sm) %>
+        </button>
+      <% end %>
+      <%= form_with url: pause_playback_path, method: :post, data: { mini_player_target: "pauseButton", action: "mini-player#pause" }, class: class_names("hidden": !playback_session.playing) do %>
+        <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600">
+          <%= heroicon("pause", variant: :solid, size: :sm) %>
+        </button>
+      <% end %>
+      <%= button_to next_playback_path, class: "rounded bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
+        <%= heroicon("forward", variant: :solid) %>
+      <% end %>
+    </div>
+    <div id="queue-items" class="flex flex-col gap-4 w-full">
+      <%= render collection: queue_items, partial: "queues/queue_item" %>
+    </div>
+  </div>
+<% end %>

@@ -58,6 +58,7 @@ gem "dry-types"
 gem "dry-initializer-rails"
 gem "turbo_power"
 gem "pagy"
+gem "ranked-model"
 
 # Assets
 gem "stimulus-rails"

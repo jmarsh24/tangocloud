@@ -531,6 +531,8 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.2.1)
+    ranked-model (0.4.10)
+      activerecord (>= 5.2)
     rb-fsevent (0.11.2)
     rb-inotify (0.11.1)
       ffi (~> 1.0)
@@ -812,6 +814,7 @@ DEPENDENCIES
   rails (~> 8.0.0.rc2)
   rails-controller-testing
   rails-i18n
+  ranked-model
   rb-fsevent
   redis
   rspec-rails
