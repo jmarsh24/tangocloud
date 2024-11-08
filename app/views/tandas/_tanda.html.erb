@@ -1,5 +1,5 @@
 <% cache(tanda) do %>
-  <div class="w-full flex flex-col gap-2 bg-neutral-900  text-white p-4 rounded-lg shadow-md">
+  <div class="w-full flex flex-col gap-2 bg-neutral-950 text-white p-4 rounded-lg shadow-md">
     <%= link_to tanda.title, tanda, class: "text-xl font-bold mb-4" %>
     <% if tanda.user&.present?%>
       <div class="text-sm dark:text-white">
