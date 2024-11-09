@@ -45,6 +45,8 @@ Rails.application.routes.draw do
   end
 
   resource :player, only: [:show]
+  resource :library, only: [:show]
+  resource :sidebar, only: [:show]
 
   resource :playback do
     post :play, on: :member

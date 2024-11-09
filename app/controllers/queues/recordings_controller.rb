@@ -18,7 +18,8 @@ class Queues::RecordingsController < ApplicationController
       format.turbo_stream do
         render turbo_stream: [
           turbo_stream.update("music-player", partial: "shared/music_player", locals: {playback_queue:, playback_session:}),
-          turbo_stream.update("queue", partial: "queues/queue", locals: {playback_queue:, queue_items:, playback_session:})
+          turbo_stream.update("queue", partial: "queues/queue", locals: {playback_queue:, queue_items:, playback_session:}),
+          turbo_stream.update("sidebar", partial: "sidebars/show", locals: {playback_queue:, queue_items:, playback_session:})
         ]
       end
     end

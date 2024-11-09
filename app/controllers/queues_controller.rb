@@ -1,5 +1,5 @@
 class QueuesController < ApplicationController
-  include RemoteModal
+  # include RemoteModal
 
   before_action :set_queue
   before_action :set_playback_session
@@ -16,6 +16,8 @@ class QueuesController < ApplicationController
       .including_item_associations
       .rank(:row_order)
       .offset(1)
+
+    render partial: "queues/queue", locals: {playback_queue: @playback_queue, queue_items: @playback_queue_items, playback_session: @playback_session}
   end
 
   def add

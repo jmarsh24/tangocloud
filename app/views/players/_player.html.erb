@@ -1,4 +1,4 @@
-<turbo_frame id="player" data-controller="mini-player" class="container p-4 flex flex-col gap-4 justify-center">
+<turbo_frame id="player" data-controller="mini-player" class="p-4 flex flex-col gap-4 justify-center">
   <% @recording.digital_remasters.each do |remaster| %>
     <% if remaster.album.album_art.attached? %>
       <%= image_tag remaster.album.album_art, class: "w-full h-auto object-cover rounded-md" %>
