@@ -1,5 +1,5 @@
 class QueuesController < ApplicationController
-  # include RemoteModal
+  include RemoteModal
 
   before_action :set_queue
   before_action :set_playback_session
