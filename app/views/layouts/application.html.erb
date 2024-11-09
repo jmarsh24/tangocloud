@@ -6,13 +6,13 @@
     <%= render "shared/flashes" %>
     <div class="row-span-4 gap-8">
       <div class="grid grid-cols-1 2xl:grid-cols-[auto,1fr,auto] h-full">
-        <nav class="hidden 2xl:block h-full overflow-y-auto p-4">
-          <%= turbo_frame_tag "library", src: library_path %>
+        <nav class="hidden 2xl:block h-full overflow-y-auto p-4 w-96">
+          <%= turbo_frame_tag "library", src: library_path, target: "_top" %>
         </nav>
         <main class="h-full overflow-y-auto">
           <%= yield %>
         </main>
-        <aside class="hidden 2xl:block col-span-1 h-full overflow-y-auto">
+        <aside class="hidden 2xl:block col-span-1 h-full overflow-y-auto w-96">
           <%= turbo_frame_tag "sidebar", src: sidebar_path %>
         </aside>
       </aside>
