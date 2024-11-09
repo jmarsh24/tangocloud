@@ -47,16 +47,16 @@
             <%= heroicon("rewind", variant: :solid) %>
           <% end %>
           <%= form_with url: play_playback_path, data: { music_player_target: "playButton", action: "music-player#play" }, class: class_names("hidden": playback_session.playing?) do %>
-            <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 px-4 py-4 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600">
+            <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 p-2 md:p-4 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600">
               <%= heroicon("play", variant: :solid, size: :md) %>
             </button>
           <% end %>
           <%= form_with url: pause_playback_path, data: { music_player_target: "pauseButton", action: "music-player#pause" }, class: class_names("hidden": !playback_session.playing?) do %>
-            <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 px-4 py-4 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600">
+            <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 p-2 md:p-4 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600">
               <%= heroicon("pause", variant: :solid, size: :md) %>
             </button>
           <% end %>
-          <%= button_to next_playback_path, data: { music_player_target: "nextButton"}, class: "hidden md:block rounded bg-neutral-800 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
+          <%= button_to next_playback_path, data: { music_player_target: "nextButton"}, class: "rounded bg-neutral-800 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
             <%= heroicon("forward", variant: :solid) %>
           <% end %>
         </div>
