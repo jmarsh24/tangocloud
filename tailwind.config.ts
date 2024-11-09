@@ -1,4 +1,5 @@
 module.exports = {
+  darkMode: 'class',
   content: [
     './app/views/**/*.html.erb',
     './app/components/**/*',
@@ -6,18 +7,17 @@ module.exports = {
     './app/assets/stylesheets/**/*.css',
     './app/javascript/**/*.js',
   ],
-
+  theme: {
+    extend: {
+      fontFamily: {
+        circular: ['Circular', 'sans-serif'],
+      },
+    },
+  },
   plugins: [
     require('daisyui'),
   ],
   daisyui: {
-    themes: [
-      {
-        dark: {
-          ...require("daisyui/src/theming/themes")["dark"],
-          primary: "ff7700",
-        },
-      }
-    ]
+    themes: ['dark'],
   },
 };
