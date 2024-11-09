@@ -1,5 +1,8 @@
 <% cache(@playlist) do %>
-  <div class="flex flex-col p-4 gap-4 items-center dark:bg-black">
+  <div class="relative flex flex-col p-4 gap-4 items-center dark:bg-black">
+    <%= link_to music_library_path, class: "absolute left-4 top-4 flex items-center gap-2 p-2 rounded-full bg-neutral-200 text-sm text-neutral-700 dark:bg-neutral-800 dark:text-neutral-400 hover:bg-neutral-300 dark:hover:bg-neutral-700" do %>
+      <%= heroicon "chevron-left", size: :sm, class: "text-neutral-500 dark:text-neutral-400" %>
+    <% end %>
     <% if @playlist.image.attached? %>
       <%= image_tag @playlist.image, class: "w-64 h-64 md:w-24 md:h-24 rounded-lg object-cover shadow-md" %>
     <% end %>
