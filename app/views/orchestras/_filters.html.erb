@@ -6,7 +6,7 @@
         <% @orchestra_periods.each do |period| %>
           <% selected = @filters[:orchestra_period] == period.slug %>
           <% new_filters = selected ? @filters.except(:orchestra_period) : @filters.merge(orchestra_period: period.slug) %>
-          <%= link_to orchestra_path(@orchestra, params: new_filters), data: { turbo_stream: true }, class: "px-2 py-1 rounded-full text-xs md:text-sm transition #{selected ? 'bg-blue-500 text-white' : 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'}" do %>
+          <%= link_to orchestra_path(@orchestra, params: new_filters), data: { turbo_stream: true }, class: "px-2 py-1 rounded-full text-xs md:text-sm transition #{selected ? 'bg-orange-500 text-white' : 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'}" do %>
             <span class="flex items-center gap-1">
               <%= period.name %>
               <% if selected %>
@@ -25,7 +25,7 @@
         <% @singers.each do |singer| %>
           <% selected = @filters[:singer] == singer.slug %>
           <% new_filters = selected ? @filters.except(:singer) : @filters.merge(singer: singer.slug) %>
-          <%= link_to orchestra_path(@orchestra, params: new_filters), data: { turbo_stream: true }, class: "px-2 py-1 rounded-full text-xs md:text-sm transition #{selected ? 'bg-blue-500 text-white' : 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'}" do %>
+          <%= link_to orchestra_path(@orchestra, params: new_filters), data: { turbo_stream: true }, class: "px-2 py-1 rounded-full text-xs md:text-sm transition #{selected ? 'bg-orange-500 text-white' : 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'}" do %>
             <span class="flex items-center gap-1">
               <%= singer.name %>
               <% if selected %>
@@ -44,7 +44,7 @@
         <% @years.each do |year| %>
           <% selected = @filters[:year].to_s == year.to_s %>
           <% new_filters = selected ? @filters.except(:year) : @filters.merge(year: year) %>
-          <%= link_to orchestra_path(@orchestra, params: new_filters), data: { turbo_stream: true }, class: "px-2 py-1 rounded-full text-xs md:text-sm transition #{selected ? 'bg-blue-500 text-white' : 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'}" do %>
+          <%= link_to orchestra_path(@orchestra, params: new_filters), data: { turbo_stream: true }, class: "px-2 py-1 rounded-full text-xs md:text-sm transition #{selected ? 'bg-orange-500 text-white' : 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'}" do %>
             <span class="flex items-center gap-1">
               <%= year %>
               <% if selected %>
@@ -63,7 +63,7 @@
         <% @genres.each do |genre| %>
           <% selected = @filters[:genre] == genre.slug %>
           <% new_filters = selected ? @filters.except(:genre) : @filters.merge(genre: genre.slug) %>
-          <%= link_to orchestra_path(@orchestra, params: new_filters), data: { turbo_stream: true }, class: "px-2 py-1 rounded-full text-xs md:text-sm transition #{selected ? 'bg-blue-500 text-white' : 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'}" do %>
+          <%= link_to orchestra_path(@orchestra, params: new_filters), data: { turbo_stream: true }, class: "px-2 py-1 rounded-full text-xs md:text-sm transition #{selected ? 'bg-orange-500 text-white' : 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'}" do %>
             <span class="flex items-center gap-1">
               <%= genre.name %>
               <% if selected %>
