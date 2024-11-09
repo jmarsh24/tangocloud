@@ -3,7 +3,7 @@ class PagesController < ApplicationController
   skip_before_action :authenticate_user!
 
   def landing
-    redirect_to music_library_path if Current.user.present?
+    redirect_to music_library_path if Current.user.tester? || Current.user.admin? || Current.user.editor?
   end
 
   def privacy
