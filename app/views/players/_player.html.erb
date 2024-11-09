@@ -1,68 +1,94 @@
-<turbo_frame id="player" data-controller="mini-player" class="p-4 flex flex-col gap-4 justify-center">
+<div data-controller="mini-player" class="pt-16 px-4 pb-4 flex flex-col gap-8 justify-center">
   <% @recording.digital_remasters.each do |remaster| %>
     <% if remaster.album.album_art.attached? %>
-      <%= image_tag remaster.album.album_art, class: "w-full h-auto object-cover rounded-md" %>
+      <%= image_tag remaster.album.album_art, class: "w-full h-auto object-cover rounded-lg" %>
     <% else %>
       <div class="w-full h-96 bg-neutral-200 dark:bg-neutral-700 text-neutral-500 dark:text-neutral-300">
       </div>
     <% end %>
   <% end %>
-  <div data-mini-player-target="progress" class="bg-white h-1 w-0"></div>
-  <div class="flex items-center justify-center gap-4">
-    <%= button_to previous_playback_path, class: "rounded bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
-      <%= heroicon("rewind", variant: :solid) %>
-    <% end %>
-    <%= form_with url: play_playback_path, method: :post, data: { mini_player_target: "playButton", action: "mini-player#play" }, class: class_names("hidden": @playback_session.playing) do %>
-      <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600">
-        <%= heroicon("play", variant: :solid, size: :sm) %>
-      </button>
-    <% end %>
-    <%= form_with url: pause_playback_path, method: :post, data: { mini_player_target: "pauseButton", action: "mini-player#pause" }, class: class_names("hidden": !@playback_session.playing) do %>
-      <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600">
-        <%= heroicon("pause", variant: :solid, size: :sm) %>
-      </button>
-    <% end %>
-    <%= button_to next_playback_path, class: "rounded bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
-      <%= heroicon("forward", variant: :solid) %>
-    <% end %>
-    <%= link_to queue_path, class: "w-10 h-10 flex items-center justify-center rounded text-white bg-neutral-800 hover:bg-neutral-600 sm:hidden", data: { turbo_frame: "modal" }, aria: { label: "Add to queue" } do %>
-      <%= heroicon("queue-list", size: :md) %>
-    <% end %>
-  </div>
-  <div class="flex flex-col gap-2 items-start">
-    <div>
-      <h1 class="text-3xl font-bold text-neutral-800 dark:text-neutral-100"><%= @recording.title %></h1>
-      <p class="text-neutral-600 dark:text-neutral-400">Recorded on: <%= @recording.recorded_date.strftime("%B %d, %Y") %></p>
+  <div class="flex flex-1 h-full w-full gap-4 items-center p-2 rounded-lg ">
+    <div class="flex flex-col items-start text-left w-full">
+      <div class="text-lg font-semibold w-full text-white">
+        <%= @recording.composition.title %>
+      </div>
+      <div class="text-md w-full text-neutral-300">
+        <%= @recording.orchestra.name %>
+        <% if @recording.singers.present? %>
+          &middot; <%= @recording.singers.map(&:name).compact.join(", ") %>
+        <% end %>
+      </div>
     </div>
-    <% if @recording.orchestra.present? %>
+  </div>
+  <div class="flex flex-col items-center justify-center gap-4">
+    <div class="w-full">
+      <div data-mini-player-target="progress" class="bg-white h-1 w-0"></div>
+      <div class="flex items-center justify-center gap-4">
+        <%= button_to previous_playback_path, class: "rounded bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
+          <%= heroicon("rewind", variant: :solid) %>
+        <% end %>
+        <%= form_with url: play_playback_path, method: :post, data: { mini_player_target: "playButton", action: "mini-player#play" }, class: class_names("hidden": @playback_session.playing) do %>
+          <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 p-6 font-semibold text-white shadow-sm hover:bg-neutral-600">
+            <%= heroicon("play", variant: :solid, size: :sm) %>
+          </button>
+        <% end %>
+        <%= form_with url: pause_playback_path, method: :post, data: { mini_player_target: "pauseButton", action: "mini-player#pause" }, class: class_names("hidden": !@playback_session.playing) do %>
+          <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 p-6 font-semibold text-white shadow-sm hover:bg-neutral-600">
+            <%= heroicon("pause", variant: :solid, size: :sm) %>
+          </button>
+        <% end %>
+        <%= button_to next_playback_path, class: "rounded bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
+          <%= heroicon("forward", variant: :solid) %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <%= link_to queue_path, class: "w-10 h-10 flex items-center justify-center rounded text-white bg-neutral-800 hover:bg-neutral-600 sm:hidden", data: { turbo_frame: "modal" }, aria: { label: "Add to queue" } do %>
+    <%= heroicon("queue-list", size: :md) %>
+  <% end %>
+  <div class="card bg-neutral-100 dark:bg-neutral-800 p-4 rounded-lg space-y-4 mt-4">
+    <div class="flex flex-col gap-4">
       <div>
-        <h2 class="text-xl font-semibold text-neutral-800 dark:text-neutral-200">Orchestra</h2>
-        <%= link_to @recording.orchestra.name, @recording.orchestra, class: "link link--hover" %>
+        <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-100"><%= @recording.title %></h2>
+        <p class="text-sm text-neutral-500 dark:text-neutral-400">Title</p>
       </div>
-    <% end %>
-    <div>
-      <h2 class="text-xl font-semibold text-neutral-800 dark:text-neutral-200">Singers</h2>
-      <ul class="list-disc ml-5 space-y-1 text-neutral-800 dark:text-neutral-300">
-        <% if @recording.singers.any? %>
+      <% if @recording.orchestra.present? %>
+        <div>
+          <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-200"><%= @recording.orchestra.name %></h2>
+          <p class="text-sm text-neutral-500 dark:text-neutral-400">Orchestra</p>
+        </div>
+      <% end %>
+      <% if @recording.singers.any? %>
+        <div>
           <% @recording.singers.each do |singer| %>
-            <li><%= singer.name %></li>
+            <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-200"><%= singer.name %></h2>
+            <p class="text-sm text-neutral-500 dark:text-neutral-400">Singer</p>
           <% end %>
-        <% else %>
-          <li>Instrumental</li>
-        <% end %>
-      </ul>
+        </div>
+      <% else %>
+        <div>
+          <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-200">Instrumental</h2>
+          <p class="text-sm text-neutral-500 dark:text-neutral-400">Type</p>
+        </div>
+      <% end %>
+      <div>
+        <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-200"><%= @recording.genre.name %></h2>
+        <p class="text-sm text-neutral-500 dark:text-neutral-400">Genre</p>
+      </div>
+      <div>
+        <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-200"><%= @recording.year %></h2>
+        <p class="text-sm text-neutral-500 dark:text-neutral-400">Year</p>
+      </div>
     </div>
-    <div class="space-y-2">
-      <p><strong>Title:</strong> <%= @recording.composition.title %></p>
-      <p><strong>Genre:</strong> <%= @recording.genre.name %></p>
-    </div>
-    <% if @recording.lyrics.any? %>
+  </div>
+  <% if @recording.lyrics.any? %>
+    <div class="card bg-neutral-100 dark:bg-neutral-800 p-4 rounded-lg space-y-2 mt-4">
       <h2 class="text-xl font-semibold text-neutral-800 dark:text-neutral-200">Lyrics</h2>
-      <div class="text-neutral-700 dark:text-neutral-300 bg-neutral-100 dark:bg-neutral-800 p-4 rounded-lg">
+      <div class="text-lg text-neutral-700 dark:text-neutral-300 text-center">
         <% @recording.lyrics.each do |lyric| %>
-          <p><%= lyric.text %></p>
+          <%= simple_format(lyric.text) %>
         <% end %>
       </div>
-    <% end %>
-  </div>
-</turbo_frame>
+    </div>
+  <% end %>
+</div>
