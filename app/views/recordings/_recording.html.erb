@@ -1,5 +1,5 @@
 <% cache(recording) do %>
-  <div class="flex flex-1 h-full w-full gap-4 items-center p-2 border border-neutral-700 hover:bg-neutral-800 rounded-lg min-w-[150px]">
+  <div class="flex flex-1 h-full w-full gap-4 items-center p-2 border border-neutral-700 hover:bg-neutral-800 rounded-lg">
     <%= image_tag recording.digital_remasters.first.album.album_art, class: "w-12 h-12 rounded-lg object-cover" %>
     <div class="flex flex-col items-start text-left w-full">
       <div class="text-sm font-semibold w-full truncate" style="max-width: 140px;" title="<%= recording.composition.title %>">
