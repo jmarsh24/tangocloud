@@ -1,5 +1,3 @@
-// app/javascript/controllers/music_player_controller.js
-
 import { Controller } from "@hotwired/stimulus";
 import Player from "../player";
 import { installEventHandler } from "./mixins/event_handler";
@@ -23,6 +21,9 @@ export default class extends Controller {
 
   static values = {
     audioUrl: String,
+    trackTitle: String,
+    detailsPrimary: String,
+    detailsSecondary: String,
   };
 
   initialize() {
@@ -45,17 +46,38 @@ export default class extends Controller {
     this.updateProgress = this.updateProgress.bind(this);
 
     this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    
+
     this.handleEvent("player:play", { with: () => this.play() });
     this.handleEvent("player:pause", { with: () => this.pause() });
     this.handleEvent("player:ready", { with: this.setDuration });
     this.handleEvent("player:progress", { with: this.updateTime });
     this.handleEvent("player:progress", { with: this.updateProgress });
     this.handleEvent("player:finish", { with: () => this.next() });
+
+    this.updateMediaSession();
   }
 
   audioUrlValueChanged() {
     this.Player.load(this.audioUrlValue);
+    this.updateMediaSession();
+  }
+
+  updateMediaSession() {
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: this.trackTitleValue,
+        artist: this.detailsPrimaryValue,
+        album: this.detailsSecondaryValue,
+        artwork: [
+          { src: this.albumArtTarget.src }
+        ]
+      });
+
+      navigator.mediaSession.setActionHandler('play', () => this.play());
+      navigator.mediaSession.setActionHandler('pause', () => this.pause());
+      navigator.mediaSession.setActionHandler('nexttrack', () => this.next());
+      navigator.mediaSession.setActionHandler('previoustrack', () => this.previous());
+    }
   }
 
   play() {
@@ -110,12 +132,12 @@ export default class extends Controller {
   }
 
   updateTime(event) {
-    if (!this.Player.seeking) { 
+    if (!this.Player.seeking) {
       const { currentTime, duration } = event.detail;
       if (this.hasTimeTarget) {
         this.timeTarget.textContent = formatDuration(currentTime);
       }
-      this.updateProgress(event); 
+      this.updateProgress(event);
     }
   }
 
@@ -128,7 +150,7 @@ export default class extends Controller {
         if (this.hasProgressTarget) {
           this.progressTarget.style.width = `${this._progressPercentage}%`;
         }
-        this._animationFrameRequest = null; 
+        this._animationFrameRequest = null;
       });
     }
   }

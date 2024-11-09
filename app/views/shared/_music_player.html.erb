@@ -5,6 +5,10 @@
     <div
       data-controller="music-player"
       data-music-player-audio-url-value="<%= url_for(recording.digital_remasters.first.audio_variants.first.audio_file) %>"
+      data-music-player-track-title-value="<%= recording.composition.title %>"
+      data-music-player-details-primary-value="<%= recording.orchestra.name %><% if recording.singers.present? %> &middot; <%= recording.singers.map(&:name).compact.join(", ") %><% end %>"
+      data-music-player-details-secondary-value="<%= recording.genre.name %> - <%= recording.year %>"
+      data-music-player-album-title-value="<%= recording.digital_remasters.first.album.title %>"
       class="relative w-full p-4 dark:bg-neutral-900 z-50"
     >
       <div
