@@ -26,7 +26,8 @@ class PlaybacksController < ApplicationController
     render turbo_stream: [
       turbo_stream.update("music-player", partial: "shared/music_player", locals: {playback_queue: @playback_queue, playback_session: @playback_session}, method: "morph"),
       turbo_stream.update("queue", partial: "queues/queue", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @playback_queue_items}, method: "morph"),
-      turbo_stream.update("player", partial: "players/player", locals: {playback_queue: @playback_queue, playback_session: @playback_session, recording: @recording}, method: "morph")
+      turbo_stream.update("player", partial: "players/player", locals: {playback_queue: @playback_queue, playback_session: @playback_session, recording: @recording}, method: "morph"),
+      turbo_stream.update("sidebar", partial: "shared/sidebar", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @playback_queue_items}, method: "morph")
     ]
   end
 
@@ -42,7 +43,8 @@ class PlaybacksController < ApplicationController
     render turbo_stream: [
       turbo_stream.update("music-player", partial: "shared/music_player", locals: {playback_queue: @playback_queue, playback_session: @playback_session}, method: "morph"),
       turbo_stream.update("queue", partial: "queues/queue", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @playback_queue_items}, method: "morph"),
-      turbo_stream.update("player", partial: "players/player", locals: {playback_queue: @playback_queue, playback_session: @playback_session, recording: @recording}, method: "morph")
+      turbo_stream.update("player", partial: "players/player", locals: {playback_queue: @playback_queue, playback_session: @playback_session, recording: @recording}, method: "morph"),
+      turbo_stream.update("sidebar", partial: "shared/sidebar", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @playback_queue_items}, method: "morph")
     ]
   end
 
