@@ -1,5 +1,5 @@
 <% if Current.user.present? %>
-  <div data-controller="navigation" class="flex w-full bg-neutral-900 text-white justify-between items-center px-4 z-30 md:hidden">
+  <div data-controller="navigation" class="hidden w-full bg-neutral-900 text-white justify-between items-center px-4 z-30 md:hidden">
     <% if current_page?(music_library_path) %>
       <span class="flex flex-col items-center px-4 py-4 pb-10 text-orange-500">
         <%= heroicon "home", size: :md, variant: :solid %>
