@@ -69,16 +69,16 @@ class SearchController < ApplicationController
         render turbo_stream:
           turbo_stream.update(
             "search-results",
-             partial: "search_results",
-             locals: {
-                query: params[:query],
-                top_result: @top_result,
-                playlists: @playlists,
-                recordings: @recordings,
-                orchestras: @orchestras,
-                tandas: @tandas
-              }
-            )
+            partial: "search_results",
+            locals: {
+              query: params[:query],
+              top_result: @top_result,
+              playlists: @playlists,
+              recordings: @recordings,
+              orchestras: @orchestras,
+              tandas: @tandas
+            }
+          )
       end
     end
   end
