@@ -27,7 +27,7 @@ module Playlistable
   end
 
   def attach_default_image
-    unique_album_arts = recordings.includes(digital_remasters: { album: { album_art_attachment: :blob } })
+    unique_album_arts = recordings.includes(digital_remasters: {album: {album_art_attachment: :blob}})
                                   .filter_map { _1.digital_remasters.first&.album&.album_art }
                                   .uniq
 
@@ -51,7 +51,7 @@ module Playlistable
       img = img.colourspace("srgb") if img.bands == 1
       img = img.bandjoin(255) if img.bands == 3
 
-      img = img.resize(part_width.to_f / img.width, vscale: part_height.to_f / img.height)
+      img.resize(part_width.to_f / img.width, vscale: part_height.to_f / img.height)
     end
 
     composite = Vips::Image.arrayjoin(images, across: 2)
@@ -60,7 +60,7 @@ module Playlistable
     composite.write_to_file(output_path)
 
     image.attach(io: File.open(output_path), filename: "composite_image.png", content_type: "image/png")
-    
+
     File.delete(output_path) if File.exist?(output_path)
   end
 

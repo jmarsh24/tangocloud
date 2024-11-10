@@ -16,7 +16,7 @@ module Import
           next unless match_data
 
           filename_prefix = match_data[1]
-          
+
           audio_file = ::AudioFile.where("filename ILIKE ?", "#{filename_prefix}.%").first
 
           next unless audio_file
