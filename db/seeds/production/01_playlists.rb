@@ -56,6 +56,6 @@ def attach_playlist_image(playlist, image_path)
   )
 end
 
-normal_user = User.find_by(email: "jmarsh24@gmail.com")
+normal_user = User.find_by(email: Rails.application.credentials.dig(:el_recodo_email))
 
 create_playlists_for_user(normal_user) if normal_user
