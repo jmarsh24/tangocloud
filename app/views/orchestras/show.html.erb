@@ -1,10 +1,9 @@
 <% cache([@orchestra, @filters]) do %>
-  <div class="container flex flex-col gap-4 py-4 px-2 rounded-lg shadow-lg">
+  <div class="relative flex flex-col gap-4 py-4 px-2 rounded-lg shadow-lg">
+    <%= link_to music_library_path, class: "absolute left-4 top-6 flex items-center gap-2 p-2 rounded-full bg-neutral-200 text-sm text-neutral-700 dark:bg-neutral-800 dark:text-neutral-400 hover:bg-neutral-300 dark:hover:bg-neutral-700" do %>
+      <%= heroicon "chevron-left", size: :sm, class: "text-neutral-500 dark:text-neutral-400" %>
+    <% end %>
     <div class="flex items-center gap-2 h-14">
-      <%= link_to orchestras_path, class: "flex gap-2 text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300" do %>
-        <%= heroicon "chevron-left", size: :sm %>
-        <%= t(".back") %>
-      <% end %>
       <div class="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-4">
         <div class="flex flex-shrink-0 items-center justify-center">
           <% if @orchestra.image.attached? %>
@@ -19,10 +18,27 @@
       </div>
     </div>
     <div id="filters">
-      <%= render partial: "filters", locals: { orchestra: @orchestra, filters: @filters, years: @years, genres: @genres, orchestra_periods: @orchestra_periods, singers: @singers } %>
+      <%= render partial: "filters", 
+        locals: { 
+          orchestra: @orchestra, 
+          filters: @filters, 
+          years: @years, 
+          genres: @genres, 
+          orchestra_periods: @orchestra_periods, 
+          singers: @singers } 
+      %>
     </div>
-    <div id="recordings">
-      <%= render partial: "recordings", locals: { recordings: @recordings } %>
+    <div id="recordings" class="flex flex-col gap-2">
+      <%= render partial: "orchestras/recording_form", 
+        collection: @recordings, 
+        locals: { 
+          orchestra: @orchestra.slug, 
+          year: @filters[:year], 
+          genre: @filters[:genre], 
+          orchestra_period: @filters[:orchestra_period], 
+          singer: @filters[:singer] 
+        }, as: :recording 
+      %>
     </div>
   </div>
 <% end %>

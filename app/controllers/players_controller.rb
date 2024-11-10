@@ -1,13 +1,15 @@
 class PlayersController < ApplicationController
-  def create
-    @recording = policy_scope(Recording).find(params[:recording_id])
+  include RemoteModal
+  allowed_remote_modal_actions :show
+  force_frame_response :show
 
-    authorize @recording, :play?
-
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: turbo_stream.update("music-player", partial: "shared/music_player", locals: {recording: @recording})
-      end
-    end
+  def show
+    @playback_queue = PlaybackQueue.find_or_initialize_by(user: current_user)
+    @playback_session = PlaybackSession.find_or_initialize_by(user: current_user)
+    @recording = policy_scope(Recording)
+      .with_associations
+      .includes(composition: {composition_lyrics: :lyric})
+      .friendly.find(params[:recording_id])
+    authorize @recording
   end
 end

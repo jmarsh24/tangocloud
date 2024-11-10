@@ -2,10 +2,8 @@ class SearchController < ApplicationController
   skip_after_action :verify_policy_scoped, only: :index
 
   def index
-    query = params[:query]
-
     @results = Searchkick.search(
-      query,
+      params[:query].to_s.strip,
       models: [Playlist, Recording, Orchestra, Tanda],
       model_includes: {
         Playlist => [:user, image_attachment: :blob],
@@ -59,10 +57,29 @@ class SearchController < ApplicationController
 
     @top_result = @results.first
     @playlists = @results.select { |result| result.is_a?(Playlist) }
-    @recordings = @results.select { |result| result.is_a?(Recording) }.slice(0, 20)
+    @recordings = @results.select { |result| result.is_a?(Recording) }.slice(0, 16)
     @orchestras = @results.select { |result| result.is_a?(Orchestra) }
     @tandas = @results.select { |result| result.is_a?(Tanda) }
 
     authorize :search, :index?
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream do
+        render turbo_stream:
+          turbo_stream.update(
+            "search-results",
+            partial: "search_results",
+            locals: {
+              query: params[:query],
+              top_result: @top_result,
+              playlists: @playlists,
+              recordings: @recordings,
+              orchestras: @orchestras,
+              tandas: @tandas
+            }
+          )
+      end
+    end
   end
 end

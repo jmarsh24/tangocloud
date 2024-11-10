@@ -1,0 +1,48 @@
+<% if Current.user.present? %>
+  <div data-controller="navigation" class="hidden w-full bg-neutral-900 text-white justify-between items-center px-4 z-30 md:hidden">
+    <% if current_page?(music_library_path) %>
+      <span class="flex flex-col items-center px-4 py-4 pb-10 text-orange-500">
+        <%= heroicon "home", size: :md, variant: :solid %>
+        <span class="text-xs">Library</span>
+      </span>
+    <% else %>
+      <%= link_to music_library_path, class: "flex flex-col items-center px-4 py-4 pb-10" do %>
+        <%= heroicon "home", size: :md, variant: :outline, class: "text-gray-400" %>
+        <span class="text-xs text-gray-400">Library</span>
+      <% end %>
+    <% end %>
+    <% if current_page?(search_path) %>
+      <span class="flex flex-col items-center px-4 py-4 pb-10 text-orange-500">
+        <%= heroicon "magnifying-glass", size: :md, variant: :outline %>
+        <span class="text-xs">Search</span>
+      </span>
+    <% else %>
+      <%= link_to search_path, class: "flex flex-col items-center px-4 py-4 pb-10" do %>
+        <%= heroicon "magnifying-glass", size: :md, variant: :outline, class: "text-gray-400" %>
+        <span class="text-xs text-gray-400">Search</span>
+      <% end %>
+    <% end %>
+    <% if controller_name == 'orchestras' %>
+      <span class="flex flex-col items-center px-4 py-4 pb-10 text-orange-500">
+        <%= heroicon "musical-note", size: :md, variant: :solid %>
+        <span class="text-xs">Orchestras</span>
+      </span>
+    <% else %>
+      <%= link_to orchestras_path, class: "flex flex-col items-center px-4 py-4 pb-10" do %>
+        <%= heroicon "musical-note", size: :md, variant: :outline, class: "text-gray-400" %>
+        <span class="text-xs text-gray-400">Orchestras</span>
+      <% end %>
+    <% end %>
+    <% if controller_name == 'playlists' %>
+      <span class="flex flex-col items-center px-4 py-4 pb-10 text-orange-500">
+        <%= heroicon "book-open", size: :md, variant: :solid %>
+        <span class="text-xs">Playlists</span>
+      </span>
+    <% else %>
+      <%= link_to playlists_path, class: "flex flex-col items-center px-4 py-4 pb-10" do %>
+        <%= heroicon "book-open", size: :md, variant: :outline, class: "text-gray-400" %>
+        <span class="text-xs text-gray-400">Playlists</span>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

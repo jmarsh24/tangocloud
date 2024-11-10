@@ -1,0 +1,15 @@
+@layer components {
+
+  /* Hide scrollbar for WebKit browsers */
+  .overflow-x-auto::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for other browsers */
+  .overflow-x-auto {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+}

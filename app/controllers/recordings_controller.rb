@@ -1,9 +1,8 @@
 class RecordingsController < ApplicationController
+  include Turbo::ForceFrameResponse
+  force_frame_response :show
+
   def show
-    @recording = policy_scope(Recording)
-      .with_associations
-      .includes(composition: {composition_lyrics: :lyric})
-      .friendly.find(params[:id])
-    authorize @recording
+    authorize @recording = policy_scope(Recording).friendly.find(params[:id])
   end
 end

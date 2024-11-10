@@ -1,165 +1,183 @@
 import { Controller } from "@hotwired/stimulus";
-import WaveSurfer from "wavesurfer.js";
-import RegionsPlugin from "wavesurfer.js/dist/plugins/regions.esm.js";
+import Player from "../player";
+import { installEventHandler } from "./mixins/event_handler";
+import { formatDuration } from "../helper";
 
 export default class extends Controller {
   static targets = [
-    "audio",
-    "container",
-    "playButton",
-    "markerDescription",
+    "waveform",
     "time",
     "duration",
-    "playIcon",
-    "pauseIcon",
+    "playButton",
+    "pauseButton",
     "hover",
+    "albumArt",
+    "nextButton",
+    "progress",
+    "volumeSlider",
+    "muteButton",
+    "unmuteButton",
   ];
+
   static values = {
-    markers: { type: Array, default: [] },
-    playing: { type: Boolean, default: false },
+    audioUrl: String,
+    trackTitle: String,
+    detailsPrimary: String,
+    detailsSecondary: String,
   };
 
   initialize() {
-    requestAnimationFrame(() => {
-      const canvas = document.createElement("canvas");
-      canvas.height = 100;
-      const ctx = canvas.getContext("2d");
+    installEventHandler(this);
 
-      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height * 1.35);
-      gradient.addColorStop(0, "#656666");
-      gradient.addColorStop((canvas.height * 0.7) / canvas.height, "#656666");
-      gradient.addColorStop((canvas.height * 0.7 + 1) / canvas.height, "#ffffff");
-      gradient.addColorStop((canvas.height * 0.7 + 2) / canvas.height, "#B1B1B1");
-      gradient.addColorStop((canvas.height * 0.7 + 3) / canvas.height, "#B1B1B1");
-      gradient.addColorStop(1, "#B1B1B1");
+    const initialVolume = (this.volumeSliderTarget.value || 100) / 100;
 
-      const progressGradient = ctx.createLinearGradient(
-        0,
-        0,
-        0,
-        canvas.height * 1.35
-      );
-      progressGradient.addColorStop(0, "#EE772F");
-      progressGradient.addColorStop(
-        (canvas.height * 0.7) / canvas.height,
-        "#EB4926"
-      );
-      progressGradient.addColorStop(
-        (canvas.height * 0.7 + 1) / canvas.height,
-        "#ffffff"
-      );
-      progressGradient.addColorStop(
-        (canvas.height * 0.7 + 2) / canvas.height,
-        "#ffffff"
-      );
-      progressGradient.addColorStop(
-        (canvas.height * 0.7 + 3) / canvas.height,
-        "#F6B094"
-      );
-      progressGradient.addColorStop(1, "#F6B094");
-
-      this.wavesurfer = WaveSurfer.create({
-        container: this.containerTarget,
-        waveColor: gradient,
-        progressColor: progressGradient,
-        media: this.audioTarget,
-        barWidth: 2,
-        barRadius: 2,
-        barGap: 1,
-        hideScrollbar: true,
-        backend: 'MediaElement'
-      });
-
-      this.regions = this.wavesurfer.registerPlugin(RegionsPlugin.create());
-
-      this.wavesurfer.on("play", () => {
-        this.playingValue = true;
-      });
-
-      this.wavesurfer.on("pause", () => {
-        this.playingValue = false;
-      });
-
-      this.wavesurfer.on("finish", () => {
-        this.playingValue = false;
-      });
-
-      this.wavesurfer.on("decode", (duration) => {
-        this.durationTarget.textContent = this.formatTime(duration);
-      });
-
-      this.wavesurfer.on("timeupdate", (currentTime) => {
-        this.timeTarget.textContent = this.formatTime(currentTime);
-      });
+    this.Player = new Player({
+      container: this.waveformTarget,
+      audioUrl: this.audioUrlValue,
+      autoplay: true,
+      volume: initialVolume,
+      muted: false,
     });
+
+    this.Player.initialize();
+
+    this.updateTime = this.updateTime.bind(this);
+    this.setDuration = this.setDuration.bind(this);
+    this.updateProgress = this.updateProgress.bind(this);
+
+    this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    this.handleEvent("player:play", { with: () => this.play() });
+    this.handleEvent("player:pause", { with: () => this.pause() });
+    this.handleEvent("player:ready", { with: this.setDuration });
+    this.handleEvent("player:progress", { with: this.updateTime });
+    this.handleEvent("player:progress", { with: this.updateProgress });
+    this.handleEvent("player:finish", { with: () => this.next() });
+
+    this.updateMediaSession();
   }
 
-  connect() {
+  audioUrlValueChanged() {
+    this.Player.load(this.audioUrlValue);
+    this.updateMediaSession();
   }
 
-  handleHover = (e) => {
-    this.hoverTarget.style.width = `${e.offsetX}px`;
-  }
+  updateMediaSession() {
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: this.trackTitleValue,
+        artist: this.detailsPrimaryValue,
+        album: this.detailsSecondaryValue,
+        artwork: [
+          { src: this.albumArtTarget.src }
+        ]
+      });
 
-  disconnect() {
-    this.wavesurfer.destroy();
-    this.regions.destroy();
-  }
-
-  playPause() {
-    this.wavesurfer.playPause();
-  }
-
-  playingValueChanged() {
-    const playIcon = this.playIconTarget
-    const pauseIcon = this.pauseIconTarget
-
-    if (this.playingValue) {
-      playIcon.classList.add('hidden');
-      pauseIcon.classList.remove('hidden');
-    } else {
-      playIcon.classList.remove('hidden');
-      pauseIcon.classList.add('hidden');
+      navigator.mediaSession.setActionHandler('play', () => this.play());
+      navigator.mediaSession.setActionHandler('pause', () => this.pause());
+      navigator.mediaSession.setActionHandler('nexttrack', () => this.next());
+      navigator.mediaSession.setActionHandler('previoustrack', () => this.previous());
     }
   }
 
-  markersValueChanged(markers, previousMarkers) {
-    const addedMarkers = markers.filter(
-      (marker) =>
-        !new Set(previousMarkers.map((prevMarker) => prevMarker.time)).has(
-          marker.time
-        )
-    );
-
-    addedMarkers?.forEach((m) => this.#handleAddition(m));
+  play() {
+    this.Player.play();
+    this.#onPlay();
   }
 
-  addMarkerAtCurrentTime() {
-    this.markersValue = [
-      ...this.markersValue,
-      {
-        time: this.wavesurfer.getCurrentTime(),
-        description: this.markerDescriptionTarget.value,
-      },
-    ];
-
-    this.markerDescriptionTarget.value = "";
+  pause() {
+    this.Player.pause();
+    this.#onPause();
   }
 
-  #handleAddition(value) {
-    this.regions?.addRegion({
-      start: value.time,
-      content: value.description,
-      color: "rgba(255, 0, 0, 0.5)",
-      drag: false,
-      resize: false,
-    });
+  changeVolume(event) {
+    const volume = event.target.value / 100;
+    this.Player.setVolume(volume);
   }
 
-  formatTime(seconds) {
-    const minutes = Math.floor(seconds / 60);
-    const secondsRemainder = Math.round(seconds) % 60;
-    const paddedSeconds = `0${secondsRemainder}`.slice(-2);
-    return `${minutes}:${paddedSeconds}`;
+  mute() {
+    this.Player.mute();
+    this.#onMute();
+  }
+
+  unmute() {
+    this.Player.unmute();
+    this.#onUnmute();
+  }
+
+  next() {
+    if (this.hasNextButtonTarget) {
+      this.nextButtonTarget.form.requestSubmit();
+    }
+  }
+
+  handleHover = (e) => {
+    if (!this.isTouchDevice && this.hasHoverTarget) {
+      this.hoverTarget.style.width = `${e.offsetX}px`;
+      this.hoverTarget.classList.remove("hidden");
+    }
+  };
+
+  hideHover = () => {
+    if (!this.isTouchDevice && this.hasHoverTarget) {
+      this.hoverTarget.classList.add("hidden");
+    }
+  };
+
+  setDuration(event) {
+    const { duration } = event.detail;
+    if (this.hasDurationTarget) {
+      this.durationTarget.textContent = formatDuration(duration);
+    }
+  }
+
+  updateTime(event) {
+    if (!this.Player.seeking) {
+      const { currentTime, duration } = event.detail;
+      if (this.hasTimeTarget) {
+        this.timeTarget.textContent = formatDuration(currentTime);
+      }
+      this.updateProgress(event);
+    }
+  }
+
+  updateProgress(event) {
+    const { currentTime, duration } = event.detail;
+    this._progressPercentage = (currentTime / duration) * 100;
+
+    if (!this._animationFrameRequest) {
+      this._animationFrameRequest = requestAnimationFrame(() => {
+        if (this.hasProgressTarget) {
+          this.progressTarget.style.width = `${this._progressPercentage}%`;
+        }
+        this._animationFrameRequest = null;
+      });
+    }
+  }
+
+  #onPause() {
+    this.playButtonTarget.classList.remove("hidden");
+    this.pauseButtonTarget.classList.add("hidden");
+    if (this.hasAlbumArtTarget) {
+      this.albumArtTarget.classList.remove("rotating");
+    }
+  }
+
+  #onPlay() {
+    this.playButtonTarget.classList.add("hidden");
+    this.pauseButtonTarget.classList.remove("hidden");
+    if (this.hasAlbumArtTarget) {
+      this.albumArtTarget.classList.add("rotating");
+    }
+  }
+
+  #onMute() {
+    this.muteButtonTarget.classList.add("hidden");
+    this.unmuteButtonTarget.classList.remove("hidden");
+  }
+
+  #onUnmute() {
+    this.muteButtonTarget.classList.remove("hidden");
+    this.unmuteButtonTarget.classList.add("hidden");
   }
 }

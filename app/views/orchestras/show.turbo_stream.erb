@@ -1,3 +1,3 @@
 <%= turbo_stream.update "filters", partial: "orchestras/filters", locals: {filters: @filters, years: @years, genres: @genres, orchestra_periods: @orchestra_periods, singers: @singers} %>
-<%= turbo_stream.update "recordings", partial: "orchestras/recordings", locals: {recordings: @recordings} %>
+<%= turbo_stream.update "recordings", partial: "orchestras/recordings", locals: {recordings: @recordings, filters: @filters} %>
 <%= turbo_stream.push_state url_for(params.permit!) %>

@@ -100,8 +100,8 @@ Rails.application.configure do
     enable_starttls_auto: true
   }
 
-  config.active_storage.resolve_model_to_route = :rails_storage_proxy
-
   # Log a warning when strict loading violations occur.
   config.active_record.action_on_strict_loading_violation = :log
+
+  config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
 end

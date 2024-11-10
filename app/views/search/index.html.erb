@@ -1,52 +1,18 @@
-<% cache([params[:query], @top_result, @recordings, @orchestras, @playlists, @tandas]) do %>
-  <div class="container p-4 flex flex-col gap-8">
-    <div class="flex flex-col md:flex-row gap-4">
-      <% if @top_result.present? %>
-        <div class="md:w-1/4 flex flex-col gap-4">
-          <h2 class="text-xl md:text-2xl font-semibold">Top Result</h2>
-          <% if @top_result.is_a?(Recording) %>
-            <%= render partial: 'recordings/recording', locals: { recording: @top_result } %>
-          <% elsif @top_result.is_a?(Orchestra) %>
-            <%= render partial: 'orchestras/orchestra', locals: { orchestra: @top_result } %>
-          <% elsif @top_result.is_a?(Playlist) %>
-            <%= render partial: 'playlists/playlist', locals: { playlist: @top_result } %>
-          <% elsif @top_result.is_a?(Tanda) %>
-            <%= render partial: 'tandas/tanda', locals: { tanda: @top_result } %>
-          <% end %>
-        </div>
-      <% end %>
-      <% if @recordings.present? %>
-        <div class="md:w-3/4 flex flex-col gap-4">
-          <h2 class="text-xl md:text-2xl font-semibold">Recordings</h2>
-          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2">
-            <%= render collection: @recordings, partial: 'recordings/recording' %>
-          </div>
-        </div>
-      <% end %>
-    </div>
-    <% if @orchestras.present? %>
-      <div class="flex flex-col gap-4">
-        <h2 class="text-xl md:text-2xl font-semibold">Orchestras</h2>
-        <div class="flex space-x-4 overflow-x-auto scrollbar-hide">
-          <%= render collection: @orchestras, partial: 'orchestras/orchestra' %>
-        </div>
-      </div>
-    <% end %>
-    <% if @playlists.present? %>
-      <div class="flex flex-col gap-4">
-        <h2 class="text-xl md:text-2xl font-semibold">Playlists</h2>
-        <div class="flex space-x-4 overflow-x-auto scrollbar-hide">
-          <% render collection: @playlists, partial: 'playlists/playlist' %>
-        </div>
-      </div>
-    <% end %>
-    <% if @tandas.present? %>
-      <div class="flex flex-col gap-4">
-        <h2 class="text-xl md:text-2xl font-semibold">Tandas</h2>
-        <div class="flex space-x-4 overflow-x-auto scrollbar-hide">
-          <% render collection: @tandas, partial: 'tandas/tanda' %>
-        </div>
-      </div>
-    <% end %>
+<%= form_with url: search_path, method: :get, data: { turbo_stream: true }, id: "search-bar" do |form| %>
+  <div class="w-full p-4 md:hidden">
+    <label class="input input-bordered flex items-center gap-2 bg-neutral-800 rounded-md p-2">
+      <%= heroicon("magnifying-glass", variant: :outline, size: :md) %>
+      <%= form.text_field :query, 
+                         type: "search", 
+                         inputmode: "search",
+                         spellcheck: false, 
+                         autocorrect: "off",
+                         data: { controller: "auto-submit", action: "keydown->auto-submit#submit" }, 
+                         placeholder: "Search for music...", 
+                         class: "w-full placeholder-neutral-500 dark:placeholder-neutral-400 text-sm focus:outline-none bg-transparent" %>
+    </label>
   </div>
 <% end %>
+<div id="search-results">
+  <%= render partial: "search_results", locals: { query: params[:query], top_result: @top_result, recordings: @recordings, orchestras: @orchestras, playlists: @playlists, tandas: @tandas } %>
+</div>

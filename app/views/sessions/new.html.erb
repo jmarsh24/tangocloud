@@ -22,7 +22,7 @@
         <label class="input input-bordered flex items-center gap-2" data-controller="password-visibility">
           <%= heroicon("key", variant: :solid, size: :sm) %>
           <%= form.password_field :password, required: true, autocomplete: "new-password", minlength: 8, inputmode: "text", placeholder: "Password", class: "grow", data: {password_visibility_target: "password" } %>
-          <button data-action="click->password-visibility#toggle:prevent" aria-label="Show password">
+          <button data-action="click->password-visibility#toggle:prevent" aria-label="Show password" tabindex="-1">
             <div data-password-visibility-target="eye">
               <%= heroicon("eye", size: :md) %>
             </div>

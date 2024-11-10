@@ -1,6 +1,6 @@
 <%= content_tag :dialog, class: classes, **attributes do %>
-  <div class="modal-box bg-black" data-modal-target="modalBox">
-    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" data-action="click->modal#close">✕</button>
+  <div class="h-full w-full overflow-y-auto bg-black sm:modal-box sm:bg-black" data-modal-target="modalBox">
+    <button class="btn btn-sm btn-circle absolute right-2 top-2" data-action="click->modal#close">✕</button>
     <%= content %>
   </div>
 <% end %>

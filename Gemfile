@@ -3,7 +3,7 @@ ruby File.read(File.join(__dir__, ".ruby-version")).strip
 
 # Core
 gem "puma"
-gem "rails", "~> 8.0.0.rc2"
+gem "rails", "~> 8.0.0"
 
 # Database
 gem "pg"
@@ -36,7 +36,6 @@ gem "omniauth-rails_csrf_protection"
 gem "progress_bar"
 gem "pundit"
 gem "rack-cors"
-gem "rails-i18n"
 gem "socialization"
 gem "translate_client"
 gem "solid_cache"
@@ -58,6 +57,7 @@ gem "dry-types"
 gem "dry-initializer-rails"
 gem "turbo_power"
 gem "pagy"
+gem "ranked-model"
 
 # Assets
 gem "stimulus-rails"

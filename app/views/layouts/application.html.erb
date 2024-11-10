@@ -1,16 +1,29 @@
 <!DOCTYPE html >
-<html lang="<%= I18n.locale %>" class="h-dvh">
+<html lang="<%= I18n.locale %>">
   <%= render "components/head" %>
-  <body class="flex min-h-full flex-col font-circular dark">
-    <%= render "shared/navbar" %>
+  <body class="grid grid-rows-[auto,1fr,auto] h-dvh font-circular dark bg-black">
+    <%= render "shared/header" %>
     <%= render "shared/flashes" %>
-    <main class="flex flex-col grow dark:bg-black items-center">
-      <%= yield %>
-    </main>
+    <div class="row-span-4 gap-8">
+      <div class="grid grid-cols-1 2xl:grid-cols-[auto,1fr,auto] h-full">
+        <nav class="hidden 2xl:block h-full overflow-y-auto p-4 w-96">
+          <%= turbo_frame_tag "library", src: library_path, target: "_top" %>
+        </nav>
+        <main class="h-full overflow-y-auto">
+          <%= yield %>
+        </main>
+        <aside class="hidden 2xl:block col-span-1 h-full overflow-y-auto w-96">
+          <%= turbo_frame_tag "sidebar", src: sidebar_path %>
+        </aside>
+      </aside>
+    </div>
+  </div>
+  <footer id="stacked-music-player" class="row-span-1">
     <div id="music-player" data-turbo-permanent>
       <%= render partial: "shared/music_player" %>
     </div>
-    <%= render "shared/footer" %>
-    <%= turbo_frame_tag "modal", target: "_top" %>
-  </body>
+    <%= render "shared/tab_navigation" %>
+  </footer>
+  <%= turbo_frame_tag "modal", target: "_top" %>
+</body>
 </html>

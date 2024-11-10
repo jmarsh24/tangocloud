@@ -40,5 +40,7 @@ module Tangocloud
     # config.eager_load_paths << Rails.root.join("extras")
 
     config.mission_control.jobs.base_controller_class = "AdminController"
+
+    config.active_storage.resolve_model_to_route = :rails_storage_proxy
   end
 end
