@@ -66,7 +66,7 @@ class SearchController < ApplicationController
     respond_to do |format|
       format.html
       format.turbo_stream do
-        render turbo_stream: 
+        render turbo_stream:
           turbo_stream.update(
             "search-results",
              partial: "search_results",
