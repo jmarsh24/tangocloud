@@ -23,11 +23,10 @@ class OrchestrasController < ApplicationController
       year: @filters[:year],
       genre: @filters[:genre],
       orchestra_period: @filters[:orchestra_period],
-      singer: @filters[:singer],
-      items: 200
+      singer: @filters[:singer]
     )
 
-    @recordings = query.results
+    @recordings = query.results.order(recorded_date: :asc).limit(200)
     @years = query.years
     @genres = query.genres
     @orchestra_periods = query.orchestra_periods

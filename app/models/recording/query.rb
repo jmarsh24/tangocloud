@@ -11,7 +11,6 @@ class Recording::Query
   attribute :genre, :string
   attribute :orchestra_period, :string
   attribute :singer, :string
-  attribute :items, :integer, default: 100
 
   def results
     return Recording.none unless valid?
@@ -22,7 +21,6 @@ class Recording::Query
     scope = filter_by_genre(scope)
     scope = filter_by_orchestra_period(scope)
     scope = filter_by_singer(scope)
-    scope.limit(items)
   end
 
   def recording_ids
@@ -163,6 +161,8 @@ class Recording::Query
   end
 
   def filter_by_singer(scope)
+    return scope unless singer.present?
+  
     if singer.present?
       if singer.downcase == "instrumental"
         scope.left_outer_joins(:recording_singers).where(recording_singers: {recording_id: nil})
