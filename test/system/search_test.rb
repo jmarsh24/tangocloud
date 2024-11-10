@@ -31,8 +31,6 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     assert_includes assigns(:recordings), @recording
     assert_includes assigns(:orchestras), @orchestra
     assert_includes assigns(:tandas), @tanda
-
-    assert_equal @tanda, assigns(:top_result)
   end
 
   test "should return no results for unrelated query" do

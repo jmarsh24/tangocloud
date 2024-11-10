@@ -3,6 +3,10 @@ class PlaybackSession < ApplicationRecord
   belongs_to :current_item, class_name: "QueueItem", optional: true
 
   validates :user, presence: true
+  attribute :volume, :integer, default: 100
+  attribute :muted, :boolean, default: false
+  attribute :playing, :boolean, default: false
+  attribute :position, :integer, default: 0
 
   def play(reset_position: false)
     update!(playing: true, position: reset_position ? 0 : position)
@@ -14,6 +18,10 @@ class PlaybackSession < ApplicationRecord
 
   def seek(position)
     update!(position:)
+  end
+
+  def volume=(new_volume)
+    super(new_volume.clamp(0, 100))
   end
 end
 
@@ -27,4 +35,6 @@ end
 #  position   :integer          default(0), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  volume     :integer          default(100)
+#  muted      :boolean          default(FALSE)
 #

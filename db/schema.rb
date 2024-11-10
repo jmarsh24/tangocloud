@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_01_131403) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_08_082514) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -337,6 +337,8 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_01_131403) do
     t.integer "position", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "volume", default: 100
+    t.boolean "muted", default: false
     t.index ["user_id"], name: "index_playback_sessions_on_user_id"
   end
 
@@ -380,7 +382,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_01_131403) do
     t.uuid "playback_queue_id", null: false
     t.string "item_type", null: false
     t.uuid "item_id", null: false
-    t.integer "row_order", null: false
+    t.integer "row_order"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["item_type", "item_id"], name: "index_queue_items_on_item"

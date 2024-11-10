@@ -9,14 +9,14 @@ export default class extends Controller {
     useDebounce(this)
   }
 
-submit() {
-  const currentValue = this.element.value.trim();
+  submit() {
+    const currentValue = this.element.value.trim();
 
-  if (currentValue.length === 0 || currentValue === this.lastValue) {
-    return;
+    if (currentValue.length === 0 || currentValue === this.lastValue) {
+      return;
+    }
+
+    this.lastValue = currentValue;
+    this.element.form.requestSubmit();
   }
-
-  this.lastValue = currentValue;
-  this.element.form.requestSubmit();
-}
 }

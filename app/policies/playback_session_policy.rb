@@ -1,4 +1,12 @@
 class PlaybackSessionPolicy < ApplicationPolicy
+  def play?
+    record.user == user
+  end
+
+  def pause?
+    record.user == user
+  end
+
   def show?
     record.user == user
   end
@@ -12,6 +20,18 @@ class PlaybackSessionPolicy < ApplicationPolicy
   end
 
   def load_recording?
+    record.user == user
+  end
+
+  def update_volume?
+    record.user == user
+  end
+
+  def mute?
+    record.user == user
+  end
+
+  def unmute?
     record.user == user
   end
 

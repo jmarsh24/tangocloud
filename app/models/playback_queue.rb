@@ -8,109 +8,121 @@ class PlaybackQueue < ApplicationRecord
   validates :user, presence: true
 
   def load_recordings(recordings, start_with: nil)
-    update!(current_item: nil)
-    queue_items.delete_all
+    ActiveRecord::Base.transaction do
+      update!(current_item: nil)
+      queue_items.delete_all
 
-    if start_with
-      start_index = recordings.index(start_with)
-      recordings = recordings.rotate(start_index) if start_index
+      if start_with
+        start_index = recordings.index(start_with)
+        recordings = recordings.rotate(start_index) if start_index
+      end
+
+      queue_items_data = recordings.each_with_index.map do |rec, index|
+        {
+          playback_queue_id: id,
+          item_type: rec.class.name,
+          item_id: rec.id,
+          row_order: (index + 1) * 100,
+          created_at: Time.current,
+          updated_at: Time.current
+        }
+      end
+
+      QueueItem.insert_all(queue_items_data)
+      queue_items.reload
+
+      update!(current_item: queue_items.rank(:row_order).first)
     end
-
-    queue_items_data = recordings.each_with_index.map do |rec, index|
-      {
-        playback_queue_id: id,
-        item_type: rec.class.name,
-        item_id: rec.id,
-        row_order: (index + 1) * 100,
-        created_at: Time.current,
-        updated_at: Time.current
-      }
-    end
-
-    QueueItem.insert_all(queue_items_data)
-    queue_items.reload
-
-    update!(current_item: queue_items.rank(:row_order).first)
   end
 
   def load_playlist(playlist, start_with: nil)
-    update!(current_item: nil)
-    queue_items.delete_all
+    ActiveRecord::Base.transaction do
+      update!(current_item: nil)
+      queue_items.delete_all
 
-    recordings = playlist.recordings.order(:position).to_a
+      recordings = playlist.recordings.order(:position).to_a
 
-    if start_with
-      start_index = recordings.index(start_with)
-      recordings = recordings.rotate(start_index) if start_index
+      if start_with
+        start_index = recordings.index(start_with)
+        recordings = recordings.rotate(start_index) if start_index
+      end
+
+      queue_items_data = recordings.each_with_index.map do |rec, index|
+        {
+          playback_queue_id: id,
+          item_type: rec.class.name,
+          item_id: rec.id,
+          row_order: (index + 1) * 100,
+          created_at: Time.current,
+          updated_at: Time.current
+        }
+      end
+
+      QueueItem.insert_all(queue_items_data)
+      queue_items.reload
+
+      update!(current_item: queue_items.rank(:row_order).first)
     end
-
-    queue_items_data = recordings.each_with_index.map do |rec, index|
-      {
-        playback_queue_id: id,
-        item_type: rec.class.name,
-        item_id: rec.id,
-        row_order: (index + 1) * 100,
-        created_at: Time.current,
-        updated_at: Time.current
-      }
-    end
-
-    QueueItem.insert_all(queue_items_data)
-    queue_items.reload
-
-    update!(current_item: queue_items.rank(:row_order).first)
   end
 
   def load_tanda(tanda, start_with: nil)
-    update!(current_item: nil)
-    queue_items.delete_all
+    ActiveRecord::Base.transaction do
+      update!(current_item: nil)
+      queue_items.delete_all
 
-    recordings = tanda.recordings.order(:position).to_a
+      recordings = tanda.recordings.order(:position).to_a
 
-    if start_with
-      start_index = recordings.index(start_with)
-      recordings = recordings.rotate(start_index) if start_index
+      if start_with
+        start_index = recordings.index(start_with)
+        recordings = recordings.rotate(start_index) if start_index
+      end
+
+      queue_items_data = recordings.each_with_index.map do |rec, index|
+        {
+          playback_queue_id: id,
+          item_type: rec.class.name,
+          item_id: rec.id,
+          row_order: (index + 1) * 100,
+          created_at: Time.current,
+          updated_at: Time.current
+        }
+      end
+
+      QueueItem.insert_all(queue_items_data)
+      queue_items.reload
+
+      update!(current_item: queue_items.rank(:row_order).first)
     end
-
-    queue_items_data = recordings.each_with_index.map do |rec, index|
-      {
-        playback_queue_id: id,
-        item_type: rec.class.name,
-        item_id: rec.id,
-        row_order: (index + 1) * 100,
-        created_at: Time.current,
-        updated_at: Time.current
-      }
-    end
-
-    QueueItem.insert_all(queue_items_data)
-    queue_items.reload
-
-    update!(current_item: queue_items.rank(:row_order).first)
   end
 
   def play_recording(recording)
-    queue_item = queue_items.find_by(item: recording)
+    ActiveRecord::Base.transaction do
+      queue_item = queue_items.find_by(item: recording)
 
-    if queue_item
-      queue_item.update!(row_order_position: :first)
-    else
-      queue_item = queue_items.create!(item: recording, row_order_position: :first)
+      if queue_item
+        queue_item.update!(row_order_position: :first)
+      else
+        queue_item = queue_items.create!(item: recording, row_order_position: :first)
+      end
+
+      update!(current_item: queue_item)
     end
-
-    update!(current_item: queue_item)
   end
 
   def next_item
-    current_item&.update!(row_order_position: :last)
-    reload
-    update!(current_item: queue_items.rank(:row_order).first)
+    ActiveRecord::Base.transaction do
+      current_item&.update!(row_order_position: :last)
+      reload
+      update!(current_item: queue_items.rank(:row_order).first)
+    end
   end
 
   def previous_item
-    queue_items.rank(:row_order).last&.update!(row_order_position: :first)
-    reload
-    update!(current_item: queue_items.rank(:row_order).first)
+    ActiveRecord::Base.transaction do
+      queue_items.rank(:row_order).last&.update!(row_order_position: :first)
+      reload
+      update!(current_item: queue_items.rank(:row_order).first)
+    end
   end
 
   def add_recording(recording)
@@ -131,15 +143,17 @@ class PlaybackQueue < ApplicationRecord
   end
 
   def remove_recording(recording)
-    queue_item = queue_items.find_by(item: recording)
-    return unless queue_item
+    ActiveRecord::Base.transaction do
+      queue_item = queue_items.find_by(item: recording)
+      return unless queue_item
 
-    if current_item == queue_item
-      next_item = queue_items.where.not(id: queue_item.id).rank(:row_order).first
-      update!(current_item: next_item)
+      if current_item == queue_item
+        next_item = queue_items.where.not(id: queue_item.id).rank(:row_order).first
+        update!(current_item: next_item)
+      end
+
+      queue_item.destroy
     end
-
-    queue_item.destroy
   end
 
   def ensure_default_items

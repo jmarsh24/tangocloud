@@ -19,10 +19,18 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should sign in" do
+    @user.update!(role: :tester)
+
     post sign_in_url, params: {email: @user.email, password: "Secret1*3*5*"}
+
     assert_redirected_to root_url
 
-    get root_url
+    follow_redirect!
+
+    assert_redirected_to music_library_url
+
+    follow_redirect!
+
     assert_response :success
   end
 

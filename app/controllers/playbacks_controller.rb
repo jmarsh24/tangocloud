@@ -1,8 +1,8 @@
 class PlaybacksController < ApplicationController
   before_action :set_playback_session
   before_action :set_playback_queue
-  skip_after_action :verify_authorized, only: [:play, :pause, :next, :previous]
-  skip_after_action :verify_policy_scoped, only: [:play, :pause, :next, :previous]
+
+  skip_after_action :verify_policy_scoped, only: [:play, :pause, :next, :previous, :update_volume, :mute, :unmute]
 
   def play
     @playback_session.update!(playing: true)
@@ -21,9 +21,13 @@ class PlaybacksController < ApplicationController
 
     @playback_queue_items = @playback_queue.queue_items.including_item_associations.rank(:row_order).offset(1)
 
+    @playback_session.play(reset_position: true)
+
     render turbo_stream: [
-      turbo_stream.update("music-player", partial: "shared/music_player", locals: {playback_queue: @playback_queue, playback_session: @playback_session}),
-      turbo_stream.update("queue", partial: "queues/queue", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @playback_queue_items})
+      turbo_stream.update("music-player", partial: "shared/music_player", locals: {playback_queue: @playback_queue, playback_session: @playback_session}, method: "morph"),
+      turbo_stream.update("queue", partial: "queues/queue", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @playback_queue_items}, method: "morph"),
+      turbo_stream.update("player", partial: "players/player", locals: {playback_queue: @playback_queue, playback_session: @playback_session, recording: @recording}, method: "morph"),
+      turbo_stream.update("sidebar", partial: "sidebars/show", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @playback_queue_items}, method: "morph")
     ]
   end
 
@@ -34,16 +38,35 @@ class PlaybacksController < ApplicationController
 
     @playback_queue_items = @playback_queue.queue_items.including_item_associations.rank(:row_order).offset(1)
 
+    @playback_session.play(reset_position: true)
+
     render turbo_stream: [
-      turbo_stream.update("music-player", partial: "shared/music_player", locals: {playback_queue: @playback_queue, playback_session: @playback_session}),
-      turbo_stream.update("queue", partial: "queues/queue", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @playback_queue_items})
+      turbo_stream.update("music-player", partial: "shared/music_player", locals: {playback_queue: @playback_queue, playback_session: @playback_session}, method: "morph"),
+      turbo_stream.update("queue", partial: "queues/queue", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @playback_queue_items}, method: "morph"),
+      turbo_stream.update("player", partial: "players/player", locals: {playback_queue: @playback_queue, playback_session: @playback_session, recording: @recording}, method: "morph"),
+      turbo_stream.update("sidebar", partial: "sidebars/show", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @playback_queue_items}, method: "morph")
     ]
+  end
+
+  def update_volume
+    @playback_session.update!(volume: params[:volume].to_i)
+    head :ok
+  end
+
+  def mute
+    @playback_session.update!(muted: true)
+    head :ok
+  end
+
+  def unmute
+    @playback_session.update!(muted: false)
+    head :ok
   end
 
   private
 
   def set_playback_session
-    @playback_session = PlaybackSession.find_or_create_by(user: current_user)
+    authorize @playback_session = PlaybackSession.find_or_create_by(user: current_user)
   end
 
   def set_playback_queue

@@ -5,11 +5,15 @@
     <div
       data-controller="music-player"
       data-music-player-audio-url-value="<%= url_for(recording.digital_remasters.first.audio_variants.first.audio_file) %>"
-      class="fixed bottom-0 left-0 w-full flex flex-col gap-4 justify-between items-center p-4 dark:bg-neutral-900 z-50"
-      >
+      data-music-player-track-title-value="<%= recording.composition.title %>"
+      data-music-player-details-primary-value="<%= recording.orchestra.name %><% if recording.singers.present? %> &middot; <%= recording.singers.map(&:name).compact.join(", ") %><% end %>"
+      data-music-player-details-secondary-value="<%= recording.genre.name %> - <%= recording.year %>"
+      data-music-player-album-title-value="<%= recording.digital_remasters.first.album.title %>"
+      class="relative w-full p-4 dark:bg-neutral-900 z-50"
+    >
       <div
         data-music-player-target="waveform"
-        class="relative w-full h-36 rounded-lg p-2 overflow-hidden"
+        class="relative w-full h-36 rounded-lg p-2 overflow-hidden hidden sm:block mb-4"
         data-action="pointermove->music-player#handleHover mouseleave->music-player#hideHover"
         >
         <div data-music-player-target="hover" class="absolute left-0 top-0 w-0 h-full bg-neutral-200 opacity-10 z-50"></div>
@@ -20,44 +24,81 @@
           0:00
         </div>
       </div>
-      <div class="flex flex-wrap justify-between items-center w-full gap-4">
-        <div class="flex items-center gap-4 flex-shrink-0">
-          <%= image_tag recording.digital_remasters.first.album.album_art, class: "w-16 h-16 md:w-24 md:h-24 rounded-full object-cover", data: { music_player_target: "albumArt" } %>
-          <div class="flex flex-col justify-center">
-            <div class="text-base md:text-lg font-semibold text-white truncate">
-              <%= link_to recording.composition.title, recording, class: "link link--hover" %>
+      <div class="absolute bottom-0 left-0 sm:hidden w-full h-1 bg-gray-300 rounded-full">
+        <div data-music-player-target="progress" class="h-full bg-orange-500 rounded-full" style="width: 0%;"></div>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 items-center sm:gap-4 w-full">
+        <%= link_to player_path(recording_id: recording.id), data: { turbo_frame: "modal" }, class: "flex items-center gap-4 col-span-1 group" do %>
+          <%= image_tag recording.digital_remasters.first.album.album_art, class: class_names("w-12 h-12 md:w-16 md:h-16 rounded-full object-cover", "rotating": playback_session.playing?), data: { music_player_target: "albumArt" } %>
+          <div class="flex flex-col flex-grow">
+            <div class="text-sm md:text-lg font-semibold text-white truncate group-hover:underline">
+              <%= recording.composition.title %>
             </div>
-            <div class="text-xs md:text-sm text-neutral-400 truncate">
-              <%= link_to recording.orchestra.name, recording.orchestra, class: "link link--hover" %>
+            <div class="text-xs text-neutral-400 truncate">
+              <%= recording.orchestra.name %>
               <% if recording.singers.any? %>
                 - <%= recording.singers.map(&:name).join(", ") %>
               <% end %>
             </div>
-            <div class="text-xs md:text-sm text-neutral-400">
-              <%= recording.genre.name %> - <%= recording.year %>
-            </div>
           </div>
-        </div>
-        <div class="flex items-center justify-center gap-2 md:gap-4 flex-grow">
-          <%= button_to previous_playback_path, class: "rounded bg-neutral-800 px-3 py-2 text-xs md:text-sm font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
+        <% end %>
+        <div class="flex justify-end gap-2 col-span-1 md:justify-center items-center">
+          <%= button_to previous_playback_path, class: "hidden md:block rounded bg-neutral-800 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
             <%= heroicon("rewind", variant: :solid) %>
           <% end %>
-          <%= form_with url: play_playback_path, data: { music_player_target: "playButton", action: "music-player#play" }, class: class_names("hidden": playback_session.playing) do %>
-            <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 px-3 py-2 text-xs md:text-sm font-semibold text-white shadow-sm hover:bg-neutral-600">
-              <%= heroicon("play", variant: :solid, size: :sm) %>
+          <%= form_with url: play_playback_path, data: { music_player_target: "playButton", action: "music-player#play" }, class: class_names("hidden": playback_session.playing?) do %>
+            <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 p-2 md:p-4 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600">
+              <%= heroicon("play", variant: :solid, size: :md) %>
             </button>
           <% end %>
-          <%= form_with url: pause_playback_path, data: { music_player_target: "pauseButton", action: "music-player#pause" }, class: class_names("hidden": !playback_session.playing) do %>
-            <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 px-3 py-2 text-xs md:text-sm font-semibold text-white shadow-sm hover:bg-neutral-600">
-              <%= heroicon("pause", variant: :solid, size: :sm) %>
+          <%= form_with url: pause_playback_path, data: { music_player_target: "pauseButton", action: "music-player#pause" }, class: class_names("hidden": !playback_session.playing?) do %>
+            <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 p-2 md:p-4 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600">
+              <%= heroicon("pause", variant: :solid, size: :md) %>
             </button>
           <% end %>
-          <%= button_to next_playback_path, data: { music_player_target: "nextButton" }, class: "rounded bg-neutral-800 px-3 py-2 text-xs md:text-sm font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
+          <%= button_to next_playback_path, data: { music_player_target: "nextButton"}, class: "rounded bg-neutral-800 px-2 py-2 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
             <%= heroicon("forward", variant: :solid) %>
           <% end %>
-          <%= link_to queue_path(recording_id: recording.id), class: "hover:underline", data: { turbo_frame: "modal" }, aria: { label: "Add to queue" } do %>
-            <%= heroicon("queue-list", variant: :solid, size: :md) %>
-            <span class="sr-only">Add to queue</span>
+        </div>
+        <div class="hidden md:flex items-center justify-end gap-4">
+          <div class="flex items-center justify-center">
+            <%= form_with url: mute_playback_path do %>
+              <button
+                type="submit"
+                data-music-player-target="muteButton"
+                data-action="click->music-player#mute"
+                class="<%= class_names('w-10 h-10 flex items-center justify-center rounded bg-neutral-800 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600', 'hidden': playback_session.muted?) %>"
+                >
+                <%= heroicon "speaker-wave", size: :md %>
+              </button>
+            <% end %>
+            <%= form_with url: unmute_playback_path do %>
+              <button
+                type="submit"
+                data-music-player-target="unmuteButton"
+                data-action="click->music-player#unmute"
+                class="<%= class_names('w-10 h-10 flex items-center justify-center rounded bg-neutral-800 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600', 'hidden': !playback_session.muted?) %>"
+                >
+                <%= heroicon "speaker-x-mark", size: :md %>
+              </button>
+            <% end %>
+          </div>
+          <%= form_with url: mute_playback_path, class: "hidden" do %>
+            <input type="hidden" name="_method" value="put">
+          <% end %>
+          <%= form_with url: update_volume_playback_path do %>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              name="volume"
+              value="<%= playback_session.volume || 100 %>"
+              data-controller="auto-submit"
+              data-music-player-target="volumeSlider"
+              data-action="input->music-player#changeVolume change->auto-submit#submit"
+              class="range range-primary w-36"
+              >
+            </input>
           <% end %>
         </div>
       </div>

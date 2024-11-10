@@ -1,13 +1,13 @@
-// app/javascript/player.js
-
 import WaveSurfer from "wavesurfer.js";
 import { dispatchEvent } from "./helper";
 
 export default class Player {
-  constructor({ container, audioUrl, autoplay = false }) {
+  constructor({ container, audioUrl, volume = 1, muted = false, autoplay = false }) {
     this.container = container;
     this._audioUrl = audioUrl;
     this.autoplay = autoplay;
+    this.volume = volume;
+    this.isMuted = muted;
     this.createGradients();
     this.isReady = false;
   }
@@ -22,12 +22,15 @@ export default class Player {
       barRadius: 2,
       barGap: 1,
       responsive: true,
+      backend: "MediaElement"
     });
+
+    this.wavesurfer.setVolume(this.volume);
 
     this.wavesurfer.once("ready", () => {
       this.duration = this.wavesurfer.getDuration();
       this.isReady = true;
-      
+
       dispatchEvent(document, "player:ready", { duration: this.duration });
 
       if (this.autoplay) {
@@ -35,36 +38,46 @@ export default class Player {
       }
     });
 
-    this.wavesurfer.on("audioprocess", (currentTime) => {
+    this.wavesurfer.on("timeupdate", (currentTime) => {
       if (this.isReady) {
         this.dispatchProgressEvent(currentTime);
       }
     });
 
-    this.wavesurfer.on("seek", (progress) => {
-      const currentTime = progress * this.duration;
-      this.dispatchProgressEvent(currentTime);
+    this.wavesurfer.on("finish", () => {
+      dispatchEvent(document, "player:finish");
     });
+
+    if (this.isMuted) {
+      this.wavesurfer.setMuted(true);
+    }
   }
 
-  dispatchProgressEvent(currentTime) {
-    dispatchEvent(document, "player:progress", {
-      currentTime,
-      duration: this.duration,
-    });
+  setVolume(value) {
+    this.volume = isFinite(value) ? value : 1;
+    this.wavesurfer.setVolume(this.volume);
   }
 
-  get audioUrl() {
-    return this._audioUrl;
+  mute() {
+    if (!this.isMuted) {
+      this.isMuted = true;
+      this.wavesurfer.setMuted(true);
+      dispatchEvent(document, "player:muteChange", { muted: true });
+    }
   }
 
-  set audioUrl(value) {
-    this._audioUrl = value;
+  unmute() { 
+    if (this.isMuted) {
+      this.isMuted = false;
+      this.wavesurfer.setMuted(false);
+      dispatchEvent(document, "player:muteChange", { muted: false });
+    }
   }
 
   load(audioUrl) {
-    this.audioUrl = audioUrl;
-    this.wavesurfer.load(audioUrl);
+    this.wavesurfer.destroy();
+    this._audioUrl = audioUrl;
+    this.initialize();
     dispatchEvent(document, "player:beforePlaying");
   }
 
@@ -78,6 +91,13 @@ export default class Player {
       this.wavesurfer.pause();
       dispatchEvent(document, "player:pause");
     }
+  }
+
+  dispatchProgressEvent(currentTime) {
+    dispatchEvent(document, "player:progress", {
+      currentTime,
+      duration: this.duration,
+    });
   }
 
   createGradients() {

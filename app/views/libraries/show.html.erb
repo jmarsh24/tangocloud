@@ -1,0 +1,58 @@
+<%= turbo_frame_tag "library" do %>
+  <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-2">
+      <h1 class="text-2xl font-bold dark:text-neutral-300">Your Library</h1>
+      <div class="flex flex-col gap-1">
+        <% Rails.logger.info "Current path: #{request.path}" %>
+        <% if current_page?(music_library_path) %>
+          <span class="flex items-center gap-2 text-base text-orange-500 dark:text-orange-400">
+            <%= heroicon "home", variant: :solid, size: :md %>
+            <span><%= t(".home") %></span>
+          </span>
+        <% else %>
+          <%= link_to music_library_path, class: "flex items-center gap-2 text-base text-neutral-700 dark:text-neutral-400 hover:underline" do %>
+            <%= heroicon "home", variant: :outline, size: :md %>
+            <span><%= t(".home") %></span>
+          <% end %>
+        <% end %>
+        <% if current_page?(orchestras_path) %>
+          <span class="flex items-center gap-2 text-base text-orange-500 dark:text-orange-400">
+            <%= heroicon "musical-note", variant: :solid, size: :md %>
+            <span><%= t(".orchestras") %></span>
+          </span>
+        <% else %>
+          <%= link_to orchestras_path, class: "flex items-center gap-2 text-base text-neutral-700 dark:text-neutral-400 hover:underline" do %>
+            <%= heroicon "musical-note", variant: :outline, size: :md %>
+            <span><%= t(".orchestras") %></span>
+          <% end %>
+        <% end %>
+        <% if current_page?(playlists_path) %>
+          <span class="flex items-center gap-2 text-base text-orange-500 dark:text-orange-400">
+            <%= heroicon "collection", variant: :solid, size: :md %>
+            <span><%= t(".playlists") %></span>
+          </span>
+        <% else %>
+          <%= link_to playlists_path, class: "flex items-center gap-2 text-base text-neutral-700 dark:text-neutral-400 hover:underline" do %>
+            <%= heroicon "collection", variant: :outline, size: :md %>
+            <span><%= t(".playlists") %></span>
+          <% end %>
+        <% end %>
+        <% if current_page?(tandas_path) %>
+          <span class="flex items-center gap-2 text-base text-orange-500 dark:text-orange-400">
+            <%= heroicon "musical-note", variant: :solid, size: :md %>
+            <span><%= t(".tandas") %></span>
+          </span>
+        <% else %>
+          <%= link_to tandas_path, class: "flex items-center gap-2 text-base text-neutral-700 dark:text-neutral-400 hover:underline" do %>
+            <%= heroicon "musical-note", variant: :outline, size: :md %>
+            <span><%= t(".tandas") %></span>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <div class="flex flex-col gap-2">
+      <h2 class="text-xl font-semibold dark:text-neutral-300">Playlists</h2>
+      <%= render @playlists %>
+    </div>
+  </div>
+<% end %>
