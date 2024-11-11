@@ -15,6 +15,7 @@
   <%= vite_client_tag %>
   <%= vite_typescript_tag "application", media: "all", "data-turbo-track": "reload" %>
   <%= vite_stylesheet_tag "application.css", media: "all", "data-turbo-track": "reload" %>
+  <%= yield :meta_tags if content_for? :meta_tags %>
   <%= yield :additional_head_tags if content_for? :additional_head_tags %>
   <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
   <%= yield :head %>

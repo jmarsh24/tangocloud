@@ -1,4 +1,19 @@
 <% cache(@playlist) do %>
+  <% content_for :meta_tags do %>
+    <meta property="og:title" content="<%= @playlist.title %>">
+    <meta property="og:description" content="<%= @playlist.description.presence || 'Listen to this playlist curated just for you.' %>">
+    <% if @playlist.image.attached? %>
+      <meta property="og:image" content="<%= url_for(@playlist.image) %>">
+    <% end %>
+    <meta property="og:type" content="music.playlist">
+    <meta property="og:url" content="<%= playlist_url(@playlist) %>">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<%= @playlist.title %>">
+    <meta name="twitter:description" content="<%= @playlist.description.presence || 'Listen to this playlist curated just for you.' %>">
+    <% if @playlist.image.attached? %>
+      <meta name="twitter:image" content="<%= url_for(@playlist.image) %>">
+    <% end %>
+  <% end %>
   <div class="relative flex flex-col gap-4 items-center dark:bg-black">
     <%= link_to music_library_path, class: "absolute left-4 top-4 flex items-center gap-2 p-2 rounded-full bg-neutral-200 text-sm text-neutral-700 dark:bg-neutral-800 dark:text-neutral-400 hover:bg-neutral-300 dark:hover:bg-neutral-700" do %>
       <%= heroicon "chevron-left", size: :sm, class: "text-neutral-500 dark:text-neutral-400" %>
