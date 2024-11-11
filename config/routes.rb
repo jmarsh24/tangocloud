@@ -74,11 +74,13 @@ Rails.application.routes.draw do
 
   resources :recordings, only: :show
 
-  resources :playlists, only: [:index, :show] do
-    resources :recordings, only: [] do
+  resources :playlists, only: [:new, :index, :create, :show, :update, :destroy] do
+    resources :recordings, only: [:index, :create, :destroy], module: "playlists" do
       member do
         post "load", to: "playlists/recordings#load"
+        put "move"
       end
+      delete "/", action: :destroy_all, on: :collection
     end
     resources :tandas, only: [:index, :show] do
       resources :recordings, only: [] do
@@ -111,6 +113,10 @@ Rails.application.routes.draw do
         post "load", to: "music_libraries/recordings#load"
       end
     end
+  end
+
+  namespace :modal do
+    resources :playlists, only: [:index, :new, :edit]
   end
 
   get "search", to: "search#index"

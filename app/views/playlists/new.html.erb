@@ -1,0 +1,10 @@
+<%# page_title_tag t("label.create_playlist") %>
+<%= form_with model: @playlist, class: "space-y-6", data: { "turbo-frame" => "_top" } do |form| %>
+  <div class="form-control w-full">
+    <%= form.label :title, t("field.name"), class: "label font-semibold text-neutral-800 dark:text-neutral-200" %>
+    <%= form.text_field :title, class: "input input-bordered w-full dark:bg-neutral-800 dark:text-neutral-100" %>
+  </div>
+  <div class="form-control mt-4">
+    <%= form.submit "Save", class: "btn btn-primary w-full" %>
+  </div>
+<% end %>

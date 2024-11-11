@@ -3,7 +3,10 @@
     <div class="flex flex-col gap-2">
       <h1 class="text-2xl font-bold dark:text-neutral-300">Your Library</h1>
       <div class="flex flex-col gap-1">
-        <% Rails.logger.info "Current path: #{request.path}" %>
+        <%= link_to new_playlist_path, class: "flex items-center gap-2 text-base text-neutral-700 dark:text-neutral-400 hover:underline", data: {turbo_frame: "modal"} do %>
+          <%= heroicon "plus", variant: :outline, size: :md %>
+          <span>New Playlist</span>
+        <% end %>
         <% if current_page?(orchestras_path) %>
           <span class="flex items-center gap-2 text-base text-orange-500 dark:text-orange-400">
             <%= heroicon "musical-note", variant: :solid, size: :md %>
