@@ -48,6 +48,10 @@ class User < ApplicationRecord
     approved_at.present?
   end
 
+  def liked?(likeable)
+    likes.exists?(likeable: likeable)
+  end
+
   private
 
   def search_data

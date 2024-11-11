@@ -1,5 +1,6 @@
+<%# locals: (recording:, playback_session:) %>
 <div data-controller="mini-player" class="pt-16 px-4 pb-4 flex flex-col gap-8 justify-center">
-  <% @recording.digital_remasters.each do |remaster| %>
+  <% recording.digital_remasters.each do |remaster| %>
     <% if remaster.album.album_art.attached? %>
       <%= image_tag remaster.album.album_art, class: "w-full h-auto object-cover rounded-lg" %>
     <% else %>
@@ -10,29 +11,29 @@
   <div class="flex flex-1 h-full w-full gap-4 items-center p-2 rounded-lg ">
     <div class="flex flex-col items-start text-left w-full">
       <div class="text-lg font-semibold w-full text-white">
-        <%= @recording.composition.title %>
+        <%= recording.composition.title %>
       </div>
       <div class="text-md w-full text-neutral-300">
-        <%= @recording.orchestra.name %>
-        <% if @recording.singers.present? %>
-          &middot; <%= @recording.singers.map(&:name).compact.join(", ") %>
+        <%= recording.orchestra.name %>
+        <% if recording.singers.present? %>
+          &middot; <%= recording.singers.map(&:name).compact.join(", ") %>
         <% end %>
       </div>
     </div>
   </div>
   <div class="flex flex-col items-center justify-center gap-4">
-    <div class="w-full flex flex-col gap-4">
+    <div class="w-full flex flex-col gap-2">
       <div data-mini-player-target="progress" class="bg-white h-1 w-0"></div>
       <div class="flex items-center justify-center gap-4">
         <%= button_to previous_playback_path, class: "rounded bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
           <%= heroicon("rewind", variant: :solid) %>
         <% end %>
-        <%= form_with url: play_playback_path, method: :post, data: { mini_player_target: "playButton", action: "mini-player#play" }, class: class_names("hidden": @playback_session.playing) do %>
+        <%= form_with url: play_playback_path, method: :post, data: { mini_player_target: "playButton", action: "mini-player#play" }, class: class_names("hidden": playback_session.playing) do %>
           <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 p-6 font-semibold text-white shadow-sm hover:bg-neutral-600">
             <%= heroicon("play", variant: :solid, size: :sm) %>
           </button>
         <% end %>
-        <%= form_with url: pause_playback_path, method: :post, data: { mini_player_target: "pauseButton", action: "mini-player#pause" }, class: class_names("hidden": !@playback_session.playing) do %>
+        <%= form_with url: pause_playback_path, method: :post, data: { mini_player_target: "pauseButton", action: "mini-player#pause" }, class: class_names("hidden": !playback_session.playing) do %>
           <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 p-6 font-semibold text-white shadow-sm hover:bg-neutral-600">
             <%= heroicon("pause", variant: :solid, size: :sm) %>
           </button>
@@ -48,26 +49,34 @@
       <%= link_to queue_path, class: "w-10 h-10 flex items-center justify-center rounded text-white bg-neutral-800 hover:bg-neutral-600 sm:hidden", data: { turbo_frame: "modal" }, aria: { label: "Add to queue" } do %>
         <%= heroicon("queue-list", size: :md) %>
       <% end %>
-      <%= button_tag type: "button", class: "w-10 h-10 flex items-center justify-center rounded text-white bg-neutral-800 hover:bg-neutral-600", aria: { label: "Share recording" }, data: { controller: "social-share", action: "click->social-share#share:prevent", "social-share-url-value": recording_path(@recording.id) } do %>
+      <%= button_tag type: "button", class: "w-10 h-10 flex items-center justify-center rounded text-white bg-neutral-800 hover:bg-neutral-600", aria: { label: "Share recording" }, data: { controller: "social-share", action: "click->social-share#share:prevent", "social-share-url-value": recording_path(recording.id) } do %>
         <%= heroicon("arrow-up-on-square", size: :md) %>
       <% end %>
+      <div id="like-button-<%= dom_id(@recording) %>">
+        <%= button_to recording_like_path(recording.id), method: :post, class: class_names("text-neutral-300", "hidden": recording.liked_by?(Current.user)), data: { turbo_method: :post } do %>
+          <%= heroicon "heart", variant: :outline, size: :lg %>
+        <% end %>
+        <%= button_to recording_like_path(recording.id), method: :delete, class: class_names("hidden": !recording.liked_by?(Current.user)), data: { turbo_method: :delete } do %>
+          <%= heroicon "heart", variant: :solid, size: :lg, class: "fill-orange-500" %>
+        <% end %>
+      </div>
     </div>
   </div>
   <div class="card bg-neutral-100 dark:bg-neutral-800 p-4 rounded-lg space-y-4 mt-4">
     <div class="flex flex-col gap-4">
       <div>
-        <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-100"><%= @recording.title %></h2>
+        <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-100"><%= recording.title %></h2>
         <p class="text-sm text-neutral-500 dark:text-neutral-400">Title</p>
       </div>
-      <% if @recording.orchestra.present? %>
+      <% if recording.orchestra.present? %>
         <div>
-          <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-200"><%= @recording.orchestra.name %></h2>
+          <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-200"><%= recording.orchestra.name %></h2>
           <p class="text-sm text-neutral-500 dark:text-neutral-400">Orchestra</p>
         </div>
       <% end %>
-      <% if @recording.singers.any? %>
+      <% if recording.singers.any? %>
         <div>
-          <% @recording.singers.each do |singer| %>
+          <% recording.singers.each do |singer| %>
             <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-200"><%= singer.name %></h2>
             <p class="text-sm text-neutral-500 dark:text-neutral-400">Singer</p>
           <% end %>
@@ -79,20 +88,20 @@
         </div>
       <% end %>
       <div>
-        <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-200"><%= @recording.genre.name %></h2>
+        <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-200"><%= recording.genre.name %></h2>
         <p class="text-sm text-neutral-500 dark:text-neutral-400">Genre</p>
       </div>
       <div>
-        <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-200"><%= @recording.year %></h2>
+        <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-200"><%= recording.year %></h2>
         <p class="text-sm text-neutral-500 dark:text-neutral-400">Year</p>
       </div>
     </div>
   </div>
-  <% if @recording.lyrics.any? %>
+  <% if recording.lyrics.any? %>
     <div class="card bg-neutral-100 dark:bg-neutral-800 p-4 rounded-lg space-y-2 mt-4">
       <h2 class="text-xl font-semibold text-neutral-800 dark:text-neutral-200">Lyrics</h2>
       <div class="text-lg text-neutral-700 dark:text-neutral-300 text-center">
-        <% @recording.lyrics.each do |lyric| %>
+        <% recording.lyrics.each do |lyric| %>
           <%= simple_format(lyric.text) %>
         <% end %>
       </div>

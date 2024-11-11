@@ -72,7 +72,9 @@ Rails.application.routes.draw do
     delete "queue/remove", to: "queues#remove", as: :remove_from_queue
   end
 
-  resources :recordings, only: :show
+  resources :recordings, only: [:show, :index] do
+    resource :like, only: [:create, :destroy], module: :recordings
+  end
 
   resources :playlists, only: [:index, :show] do
     resources :recordings, only: [] do

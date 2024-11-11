@@ -1,0 +1,9 @@
+<%# Expected locals: likeable:, liked:, like_path: %>
+<div id="like-button-<%= dom_id(likeable) %>">
+  <%= button_to like_path, method: :post, class: class_names("text-neutral-300", "hidden": liked), data: { turbo_method: :post } do %>
+    <%= heroicon "heart", variant: :outline, size: :lg %>
+  <% end %>
+  <%= button_to like_path, method: :delete, class: class_names("hidden": !liked), data: { turbo_method: :delete } do %>
+    <%= heroicon "heart", variant: :solid, size: :lg, class: "fill-orange-500" %>
+  <% end %>
+</div>
