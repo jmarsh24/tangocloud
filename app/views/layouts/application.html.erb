@@ -5,11 +5,11 @@
     <%= render "shared/header" %>
     <%= render "shared/flashes" %>
     <div class="row-span-4">
-      <div class="grid grid-cols-1 2xl:grid-cols-[auto,1fr,auto] h-full gap-4 pt-4">
+      <div class="grid grid-cols-1 2xl:grid-cols-[auto,1fr,auto] h-full gap-4">
         <nav class="hidden 2xl:block h-full overflow-y-auto w-96 pl-4">
           <%= turbo_frame_tag "library", src: library_path, target: "_top" %>
         </nav>
-        <main class="h-full overflow-y-auto">
+        <main class="h-full overflow-y-auto pt-2">
           <%= yield %>
         </main>
         <aside class="hidden 2xl:block col-span-1 h-full overflow-y-auto w-96 pr-4">
