@@ -55,6 +55,10 @@ class Recording < ApplicationRecord
     recorded_date&.year
   end
 
+  def liked_by?(user)
+    likes.exists?(user:)
+  end
+
   private
 
   def search_data
