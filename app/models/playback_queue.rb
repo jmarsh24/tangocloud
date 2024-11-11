@@ -159,7 +159,7 @@ class PlaybackQueue < ApplicationRecord
   def ensure_default_items
     return unless queue_items.empty?
 
-    recordings = Recording.limit(10)
+    recordings = Recording.random.limit(10)
     recordings.each { |recording| queue_items.build(item: recording) }
     save!
   end
