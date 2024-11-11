@@ -61,7 +61,10 @@
           <% end %>
         </div>
         <div class="hidden md:flex items-center justify-end gap-4">
-          <div class="flex items-center justify-center">
+          <div class="flex items-center justify-center gap-2">
+            <%= button_tag type: "button", class: "w-10 h-10 flex items-center justify-center rounded text-white bg-neutral-800 hover:bg-neutral-600", aria: { label: "Share recording" }, data: { controller: "social-share", action: "click->social-share#share:prevent", "social-share-url-value": recording_path(recording.id) } do %>
+              <%= heroicon("arrow-up-on-square", size: :md) %>
+            <% end %>
             <%= form_with url: mute_playback_path do %>
               <button
                 type="submit"

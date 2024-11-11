@@ -11,6 +11,7 @@ class Recording::Query
   attribute :genre, :string
   attribute :orchestra_period, :string
   attribute :singer, :string
+  attribute :items, :integer, default: 200
 
   def results
     return Recording.none unless valid?
