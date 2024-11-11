@@ -1,10 +1,13 @@
 class SidebarsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:show]
-  before_action :set_queue
-  before_action :set_playback_session
+  before_action :set_queue, :set_playback_session
   skip_after_action :verify_authorized, only: [:show]
+  skip_after_action :verify_policy_scoped, only: [:show]
 
   def show
+    # Return nothing if no user is logged in
+    return render plain: "", status: :ok unless Current.user
+
     authorize @playback_queue
 
     @playback_session = PlaybackSession.find_or_create_by(user: current_user)
@@ -21,10 +24,14 @@ class SidebarsController < ApplicationController
   private
 
   def set_queue
-    @playback_queue = policy_scope(PlaybackQueue).find_or_create_by(user: current_user)
+    return unless Current.user
+
+    @playback_queue = PlaybackQueue.find_or_create_by(user: current_user)
   end
 
   def set_playback_session
+    return unless Current.user
+
     @playback_session = PlaybackSession.find_or_create_by(user: current_user)
   end
 end

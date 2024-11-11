@@ -5,9 +5,9 @@ class MusicLibrariesController < ApplicationController
   def show
     authorize :music_library, :show?
 
-    @recordings = policy_scope(Recording).random.limit(128).strict_loading.includes(:composition, :orchestra, :singers, :genre, digital_remasters: [audio_variants: [audio_file_attachment: :blob], album: [album_art_attachment: :blob]])
-    @playlists = policy_scope(Playlist).random.limit(64).with_attached_image
-    @tandas = policy_scope(Tanda).strict_loading
+    @recordings = Recording.random.limit(128).strict_loading.includes(:composition, :orchestra, :singers, :genre, digital_remasters: [audio_variants: [audio_file_attachment: :blob], album: [album_art_attachment: :blob]])
+    @playlists = Playlist.random.limit(64).with_attached_image
+    @tandas = Tanda.strict_loading
       .includes(
         :user,
         recordings: [

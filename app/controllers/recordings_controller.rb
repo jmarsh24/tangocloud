@@ -1,11 +1,13 @@
 class RecordingsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:index, :show]
+  skip_before_action :authenticate_user!, only: [:show]
+  skip_after_action :verify_authorized, only: [:show]
+  skip_after_action :verify_policy_scoped, only: [:show]
   
   def show
     playback_queue = PlaybackQueue.find_or_create_by(user: current_user)
     playback_session = PlaybackSession.find_or_create_by(user: current_user)
 
-    authorize @recording = policy_scope(Recording).friendly.find(params[:id])
+    @recording = Recording.friendly.find(params[:id])
 
     respond_to do |format|
       format.html
