@@ -1,4 +1,5 @@
 class SidebarsController < ApplicationController
+  skip_before_action :authenticate_user!, only: [:show]
   before_action :set_queue
   before_action :set_playback_session
   skip_after_action :verify_authorized, only: [:show]

@@ -1,4 +1,6 @@
 class TandasController < ApplicationController
+  skip_before_action :authenticate_user!, only: [:index, :show]
+  
   def index
     @tandas = policy_scope(Tanda.all)
       .strict_loading

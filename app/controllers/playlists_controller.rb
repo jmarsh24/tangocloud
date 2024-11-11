@@ -1,4 +1,6 @@
 class PlaylistsController < ApplicationController
+  skip_before_action :authenticate_user!, only: [:index, :show]
+  
   def index
     @playlists = policy_scope(Playlist).with_attached_image.limit(100)
     authorize Playlist

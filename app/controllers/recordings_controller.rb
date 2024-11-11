@@ -1,4 +1,6 @@
 class RecordingsController < ApplicationController
+  skip_before_action :authenticate_user!, only: [:index, :show]
+  
   def show
     playback_queue = PlaybackQueue.find_or_create_by(user: current_user)
     playback_session = PlaybackSession.find_or_create_by(user: current_user)
