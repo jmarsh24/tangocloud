@@ -3,6 +3,10 @@ class PlaylistPolicy < ApplicationPolicy
     user.admin? || user.tester? || user.editor?
   end
 
+  def create?
+    user.admin? || user.tester? || user.editor?
+  end
+
   def index?
     user.admin? || user.tester? || user.editor?
   end
