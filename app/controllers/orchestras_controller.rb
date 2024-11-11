@@ -1,4 +1,6 @@
 class OrchestrasController < ApplicationController
+  skip_before_action :authenticate_user!, only: %i[index show]
+  
   def index
     @orchestras = policy_scope(Orchestra.ordered_by_recordings).limit(100).with_attached_image
     authorize Orchestra

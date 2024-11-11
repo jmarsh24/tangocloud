@@ -1,6 +1,6 @@
 class PlaylistPolicy < ApplicationPolicy
   def index?
-    user.admin? || user.tester? || user.editor?
+    true
   end
 
   def show?
