@@ -13,11 +13,11 @@ module Import
         File.open(@path).each_line do |line|
           trimmed_line = line.strip
           match_data = trimmed_line.match(/^.*[\/\\]([^\/\\]+)\.(#{SUPPORTED_FORMATS.join("|")})$/i)
-
           next unless match_data
 
-          filename = "#{match_data[1]}.#{match_data[2]}"
-          audio_file = ::AudioFile.find_by(filename:)
+          filename_prefix = match_data[1]
+
+          audio_file = ::AudioFile.where("filename ILIKE ?", "#{filename_prefix}.%").first
 
           next unless audio_file
 

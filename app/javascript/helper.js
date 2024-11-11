@@ -1,9 +1,16 @@
-function formatDuration (secs) {
-  const date = new Date(null)
-  date.setSeconds(secs)
-  const dateString = date.toISOString()
+function formatDuration(secs) {
+  const date = new Date(null);
+  date.setSeconds(secs);
 
-  return secs > 60 * 60 ? dateString.substring(11, 19) : dateString.substring(14, 19)
+  const hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes();
+  const seconds = date.getUTCSeconds();
+
+  if (secs >= 3600) {
+    return `${hours}:${minutes}:${seconds.toString().padStart(2, '0')}`;
+  } else {
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  }
 }
 
 function dispatchEvent (element, type, data = null) {

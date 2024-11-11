@@ -107,8 +107,8 @@ export default class Player {
     const ctx = canvas.getContext("2d");
 
     const heightFactor = canvasHeight * 1.35;
-    const stopPosition1 = 0.7;
-    const stopPosition2 = (0.7 * canvasHeight + 1) / canvasHeight;
+    const stopPosition1 = 0.675;
+    const stopPosition2 = (0.675 * canvasHeight + 1) / canvasHeight;
 
     this.waveGradient = ctx.createLinearGradient(0, 0, 0, heightFactor);
     this.waveGradient.addColorStop(0, "#656666");

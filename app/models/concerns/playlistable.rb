@@ -22,18 +22,19 @@ module Playlistable
     scope :system_playlists, -> { where(system: true) }
   end
 
-  # Methods that can be reused in any class including this concern
   def set_default_title
     self.title = playlist_file.filename.to_s.split(".").first if title.blank?
   end
 
   def attach_default_image
     unique_album_arts = recordings.includes(digital_remasters: {album: {album_art_attachment: :blob}})
-      .filter_map { _1.digital_remasters.first.album.album_art }
-      .uniq
+                                  .filter_map { _1.digital_remasters.first&.album&.album_art }
+                                  .uniq
+
+    return if unique_album_arts.empty?
 
     if unique_album_arts.size < 4
-      image.attach(unique_album_arts.first.blob)
+      image.attach(unique_album_arts.first.blob) if unique_album_arts.first&.blob
       return
     end
 
@@ -46,6 +47,10 @@ module Playlistable
 
     images = album_arts.map do |album_art|
       img = Vips::Image.new_from_buffer(album_art.download, "")
+
+      img = img.colourspace("srgb") if img.bands == 1
+      img = img.bandjoin(255) if img.bands == 3
+
       img.resize(part_width.to_f / img.width, vscale: part_height.to_f / img.height)
     end
 

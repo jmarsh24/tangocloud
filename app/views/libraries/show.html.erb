@@ -4,17 +4,6 @@
       <h1 class="text-2xl font-bold dark:text-neutral-300">Your Library</h1>
       <div class="flex flex-col gap-1">
         <% Rails.logger.info "Current path: #{request.path}" %>
-        <% if current_page?(music_library_path) %>
-          <span class="flex items-center gap-2 text-base text-orange-500 dark:text-orange-400">
-            <%= heroicon "home", variant: :solid, size: :md %>
-            <span><%= t(".home") %></span>
-          </span>
-        <% else %>
-          <%= link_to music_library_path, class: "flex items-center gap-2 text-base text-neutral-700 dark:text-neutral-400 hover:underline" do %>
-            <%= heroicon "home", variant: :outline, size: :md %>
-            <span><%= t(".home") %></span>
-          <% end %>
-        <% end %>
         <% if current_page?(orchestras_path) %>
           <span class="flex items-center gap-2 text-base text-orange-500 dark:text-orange-400">
             <%= heroicon "musical-note", variant: :solid, size: :md %>

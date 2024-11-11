@@ -1,5 +1,5 @@
 <%= form_with url: search_path, method: :get, data: { turbo_stream: true }, id: "search-bar" do |form| %>
-  <div class="w-full p-4 md:hidden">
+  <div class="w-full md:hidden">
     <label class="input input-bordered flex items-center gap-2 bg-neutral-800 rounded-md p-2">
       <%= heroicon("magnifying-glass", variant: :outline, size: :md) %>
       <%= form.text_field :query, 
