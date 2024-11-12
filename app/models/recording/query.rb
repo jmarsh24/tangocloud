@@ -21,7 +21,8 @@ class Recording::Query
     scope = filter_by_year(scope)
     scope = filter_by_genre(scope)
     scope = filter_by_orchestra_period(scope)
-    filter_by_singer(scope)
+    scope = filter_by_singer(scope)
+    scope.limit(items)
   end
 
   def recording_ids
@@ -80,7 +81,7 @@ class Recording::Query
 
   def singers
     if singer.present?
-      if singer.downcase == "instrumental"
+      if singer.casecmp("instrumental").zero?
         instrumental_count = Recording
           .where(id: recording_ids)
           .left_outer_joins(:recording_singers)
@@ -165,7 +166,7 @@ class Recording::Query
     return scope unless singer.present?
 
     if singer.present?
-      if singer.downcase == "instrumental"
+      if singer.casecmp("instrumental").zero?
         scope.left_outer_joins(:recording_singers).where(recording_singers: {recording_id: nil})
       else
         scope.joins(recording_singers: :person).where(people: {slug: singer})
