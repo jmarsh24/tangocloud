@@ -1,8 +1,6 @@
 class QueuesController < ApplicationController
   include RemoteModal
 
-  before_action :set_queue
-  before_action :set_playback_session
   before_action :set_recording, only: [:add, :select, :remove]
   skip_after_action :verify_authorized, only: [:show]
 
