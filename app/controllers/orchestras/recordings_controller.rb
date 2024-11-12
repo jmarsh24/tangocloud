@@ -2,7 +2,7 @@ class Orchestras::RecordingsController < ApplicationController
   def load
     @filters = params.permit(:year, :genre, :orchestra_period, :singer).to_h.compact_blank
 
-    query = Recording::Query.new(@filters.merge(orchestra: params[:orchestra_id], items: 200))
+    query = Recording::Query.new(@filters.merge(orchestra: params[:orchestra_id], items: 20))
 
     recording = Recording.find(params[:id])
     authorize recording, :play?
