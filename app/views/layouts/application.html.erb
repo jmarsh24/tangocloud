@@ -2,23 +2,33 @@
 <html lang="<%= I18n.locale %>">
   <%= render "components/head" %>
   <body class="grid grid-rows-[auto,1fr,auto] h-dvh font-circular dark bg-black">
-    <%= render "shared/header" %>
+    <div id="header" data-turbo-permanent>
+      <%= render "shared/header" %>
+    </div>
     <%= render "shared/flashes" %>
     <div class="row-span-4">
       <div class="grid grid-cols-1 2xl:grid-cols-[auto,1fr,auto] h-full gap-4">
-        <nav class="hidden 2xl:block h-full overflow-y-auto w-96 pl-4">
-          <%= turbo_frame_tag "library", src: library_path, target: "_top" %>
+        <nav id="sidebar-navigation" class="hidden 2xl:block h-full overflow-y-auto w-96 pl-4 py-2" data-turbo-permanent>
+          <%= render partial: "libraries/show", 
+            locals: { playlists: @playlists } 
+          %>
         </nav>
-        <main class="h-full overflow-y-auto pt-2">
+        <main id="main-content" class="h-full overflow-y-auto pt-2">
           <%= yield %>
         </main>
-        <aside class="hidden 2xl:block col-span-1 h-full overflow-y-auto w-96 pr-4">
-          <%= turbo_frame_tag "sidebar", src: sidebar_path %>
+        <aside id="sidebar-queue" class="hidden 2xl:block col-span-1 h-full overflow-y-auto w-96 pr-4 py-2" data-turbo-permanent>
+          <%= render partial: "queues/queue", 
+            locals: { 
+              playback_queue: @playback_queue, 
+              queue_items: @queue_items, 
+              playback_session: @playback_session
+            } 
+          %>
         </aside>
       </aside>
     </div>
   </div>
-  <footer id="stacked-music-player" class="row-span-1">
+  <footer class="row-span-1">
     <div id="music-player" data-turbo-permanent>
       <%= render partial: "shared/music_player" %>
     </div>

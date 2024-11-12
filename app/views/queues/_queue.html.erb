@@ -1,6 +1,6 @@
 <%# locals: (playback_queue:, queue_items:, playback_session:) %>
 <% cache([playback_queue, queue_items, playback_session]) do %>
-  <turbo_frame id="player" data-controller="mini-player" class="flex flex-col p-4 gap-4 dark:bg-black py-16">
+  <div data-controller="mini-player" class="flex flex-col gap-4 dark:bg-black">
     <% if playback_queue.current_item %>
       <%= link_to player_path(recording_id: playback_queue.current_item.item.id), data: { turbo_frame: "modal" }, class: "absolute left-4 top-4 flex items-center gap-2 p-2 rounded-full bg-neutral-200 text-sm text-neutral-700 dark:bg-neutral-800 dark:text-neutral-400 hover:bg-neutral-300 dark:hover:bg-neutral-700" do %>
         <%= heroicon "chevron-left", size: :sm, class: "text-neutral-500 dark:text-neutral-400" %>
@@ -48,5 +48,5 @@
     <div id="queue-items" class="flex flex-col gap-4 w-full">
       <%= render collection: queue_items, partial: "queues/queue_item" %>
     </div>
-  </turbo_frame>
+  </div>
 <% end %>
