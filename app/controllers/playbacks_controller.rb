@@ -1,17 +1,21 @@
 class PlaybacksController < ApplicationController
-  skip_after_action :verify_policy_scoped, only: [:play, :pause, :next, :previous, :update_volume, :mute, :unmute]
+  skip_after_action :verify_policy_scoped
 
   def play
+    authorize @playback_session
     @playback_session.update!(playing: true)
     head :ok
   end
 
   def pause
+    authorize @playback_session
     @playback_session.update!(playing: false)
     head :ok
   end
 
   def next
+    authorize @playback_queue
+
     @playback_queue.next_item
 
     @recording = @playback_queue.current_item&.item
@@ -29,6 +33,8 @@ class PlaybacksController < ApplicationController
   end
 
   def previous
+    authorize @playback_queue
+
     @playback_queue.previous_item
 
     @recording = @playback_queue.current_item&.item
@@ -46,16 +52,21 @@ class PlaybacksController < ApplicationController
   end
 
   def update_volume
+    authorize @playback_session
     @playback_session.update!(volume: params[:volume].to_i)
     head :ok
   end
 
   def mute
+    authorize @playback_session
+
     @playback_session.update!(muted: true)
     render turbo_stream: turbo_stream.update("mute-button", partial: "shared/mute_button", locals: {playback_session: @playback_session}, method: :morph)
   end
 
   def unmute
+    authorize @playback_session
+
     @playback_session.update!(muted: false)
     render turbo_stream: turbo_stream.update("mute-button", partial: "shared/mute_button", locals: {playback_session: @playback_session}, method: :morph)
   end
