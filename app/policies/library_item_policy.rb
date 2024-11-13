@@ -1,6 +1,6 @@
 class LibraryItemPolicy < ApplicationPolicy
   def reorder?
-    user == record.library.user
+    user == record.user_library.user
   end
   
   class Scope < Scope

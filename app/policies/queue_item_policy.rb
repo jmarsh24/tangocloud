@@ -1,6 +1,6 @@
 class QueueItemPolicy < ApplicationPolicy
   def reorder?
-    user == record.user
+    user == record.playback_queue.user
   end
 
   class Scope < Scope
