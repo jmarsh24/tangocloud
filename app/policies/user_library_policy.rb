@@ -1,6 +1,6 @@
-class QueueItemPolicy < ApplicationPolicy
-  def reorder?
-    user == record.user
+class UserLibraryPolicy < ApplicationPolicy
+  def create?
+    user.admin? || user.tester? || user.editor?
   end
 
   class Scope < Scope

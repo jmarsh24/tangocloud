@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_13_111205) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_13_204044) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -230,6 +230,17 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_13_111205) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["code"], name: "index_languages_on_code", unique: true
+  end
+
+  create_table "library_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_library_id", null: false
+    t.string "item_type", null: false
+    t.uuid "item_id", null: false
+    t.integer "row_order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_type", "item_id"], name: "index_library_items_on_item"
+    t.index ["user_library_id"], name: "index_library_items_on_user_library_id"
   end
 
   create_table "likes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -523,6 +534,13 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_13_111205) do
     t.index ["slug"], name: "index_time_periods_on_slug", unique: true
   end
 
+  create_table "user_libraries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_libraries_on_user_id"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.citext "email", null: false
     t.citext "username"
@@ -576,6 +594,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_13_111205) do
   add_foreign_key "external_catalog_el_recodo_person_roles", "external_catalog_el_recodo_songs", column: "song_id"
   add_foreign_key "external_catalog_el_recodo_songs", "external_catalog_el_recodo_orchestras", column: "el_recodo_orchestra_id"
   add_foreign_key "external_catalog_el_recodo_songs", "external_catalog_el_recodo_orchestras", column: "orchestra_id"
+  add_foreign_key "library_items", "user_libraries"
   add_foreign_key "likes", "users"
   add_foreign_key "lyrics", "languages"
   add_foreign_key "orchestra_periods", "orchestras"
@@ -605,6 +624,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_13_111205) do
   add_foreign_key "taggings", "users"
   add_foreign_key "tanda_recordings", "recordings"
   add_foreign_key "tanda_recordings", "tandas"
+  add_foreign_key "user_libraries", "users"
   add_foreign_key "waveforms", "digital_remasters"
   add_foreign_key "waveforms", "waveform_data"
 end

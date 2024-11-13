@@ -19,6 +19,7 @@
       <%= image_tag @tanda.image, class: "w-64 h-64 md:w-24 md:h-24 rounded-lg object-cover shadow-md" %>
     <% end %>
     <h1><%= @tanda.title %></h1>
+    <%= button_to 'Add to Library', add_to_library_tanda_path(@tanda), method: :post, class: "btn btn-primary" %>
     <div class="flex flex-col gap-4">
       <%= render collection: @recordings, partial: "recording_form", locals: { tanda: @tanda }, as: :recording %>
     </div>

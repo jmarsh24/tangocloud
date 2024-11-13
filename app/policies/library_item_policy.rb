@@ -1,8 +1,8 @@
-class QueueItemPolicy < ApplicationPolicy
-  def reorder?
-    user == record.user
+class LibraryItemPolicy < ApplicationPolicy
+  def reorder
+    user == record.library.user
   end
-
+  
   class Scope < Scope
     # NOTE: Be explicit about which records you allow access to!
     def resolve
