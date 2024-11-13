@@ -8,7 +8,7 @@
     <% if queue_item.item.is_a?(Tanda) %>
       <%= render partial: 'tandas/tanda', locals: { tanda: queue_item.item } %>
     <% elsif queue_item.item.is_a?(Recording) %>
-      <%= render partial: 'queues/recording_form', locals: { recording: queue_item.item, sortable: true }, as: :recording %>
+      <%= render partial: 'queues/recording_form', locals: { recording: queue_item.item}, as: :recording %>
     <% end %>
   </div>
 <% end %>
