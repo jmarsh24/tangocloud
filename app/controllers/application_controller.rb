@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
       @playback_session = PlaybackSession.find_or_create_by(user: current_user)
       @playback_queue = policy_scope(PlaybackQueue).find_or_create_by(user: current_user)
       @playback_queue.ensure_default_items
-      @playback_queue_items = @playback_queue.queue_items
+      @queue_items = @playback_queue.queue_items
                               .including_item_associations
                               .rank(:row_order)
                               .offset(1)
