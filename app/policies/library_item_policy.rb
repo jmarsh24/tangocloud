@@ -1,5 +1,5 @@
 class LibraryItemPolicy < ApplicationPolicy
-  def reorder
+  def reorder?
     user == record.library.user
   end
   
