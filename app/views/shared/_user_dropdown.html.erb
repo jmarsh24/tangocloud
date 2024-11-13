@@ -18,7 +18,7 @@
     <% c.with_menu_item_button_to t("sign_out"), Current.session, method: :delete, "data-turbo-method": :delete %>
     <% if Current.user&.admin? %>
       <% c.with_menu_item_divider %>
-      <% c.with_menu_item_link_to "Admin", avo.root_path %>
+      <% c.with_menu_item_link_to "Admin", avo.root_path, target: "_blank" %>
       <% c.with_menu_item_link_to t("Jobs"), mission_control_jobs_path %>
       <% c.with_menu_item_link_to t("Upload Playlists"), avo.new_resources_playlist_path %>
     <% end %>
