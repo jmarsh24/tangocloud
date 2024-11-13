@@ -30,7 +30,7 @@
   </div>
   <footer class="row-span-1">
     <div id="music-player" data-turbo-permanent>
-      <%= render partial: "shared/music_player" %>
+      <%= render partial: "shared/music_player", locals: { playback_session: @playback_session, playback_queue: @playback_queue } %>
     </div>
     <%= render "shared/tab_navigation" %>
   </footer>
