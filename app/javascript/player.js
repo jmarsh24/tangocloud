@@ -30,6 +30,7 @@ export default class Player {
     this.wavesurfer.once("ready", () => {
       this.duration = this.wavesurfer.getDuration();
       this.isReady = true;
+      this.container.classList.add("sm:block");
 
       dispatchEvent(document, "player:ready", { duration: this.duration });
 
@@ -75,6 +76,7 @@ export default class Player {
   }
 
   load(audioUrl) {
+    this.container.classList.remove("sm:block");
     this.wavesurfer.destroy();
     this._audioUrl = audioUrl;
     this.initialize();
