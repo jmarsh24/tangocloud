@@ -19,8 +19,8 @@
     <% if Current.user&.admin? %>
       <% c.with_menu_item_divider %>
       <% c.with_menu_item_link_to "Admin", avo.root_path, target: "_blank" %>
-      <% c.with_menu_item_link_to t("Jobs"), mission_control_jobs_path %>
-      <% c.with_menu_item_link_to t("Upload Playlists"), avo.new_resources_playlist_path %>
+      <% c.with_menu_item_link_to t("Jobs"), mission_control_jobs_path, target: "_blank" %>
+      <% c.with_menu_item_link_to t("Upload Playlists"), avo.new_resources_playlist_path, target: "_blank" %>
     <% end %>
   <% end %>
 <% end %>
