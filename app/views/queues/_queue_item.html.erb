@@ -1,5 +1,13 @@
+<%# locales(queue_item:) %>
 <% cache(queue_item) do %>
-  <div class="w-full flex flex-col gap-2 rounded-lg shadow-md">
+  <div 
+    data-sortable-id=<%= queue_item.id %> 
+    data-sortable-position=<%= queue_item.row_order %>
+    class="w-full flex items-center gap-2 rounded-lg shadow-md"
+  >
+    <div data-sortable-handle>
+      <%= heroicon("ellipsis-vertical", size: :md) %>
+    </div>
     <% if queue_item.item.is_a?(Tanda) %>
       <%= render partial: 'tandas/tanda', locals: { tanda: queue_item.item } %>
     <% elsif queue_item.item.is_a?(Recording) %>

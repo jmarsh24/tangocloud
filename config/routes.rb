@@ -66,6 +66,10 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :queue_items, only: [] do
+    patch :reorder, on: :member
+  end
+
   concern :queueable do
     post "queue/add", to: "queues#add", as: :add_to_queue
     post "queue/select", to: "queues#select", as: :select_recording
