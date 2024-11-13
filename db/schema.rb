@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_08_082514) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_13_111205) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -423,6 +423,9 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_08_082514) do
     t.uuid "time_period_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "playlists_count", default: 0, null: false
+    t.integer "tandas_count", default: 0, null: false
+    t.decimal "popularity_score", precision: 5, scale: 2, default: "0.0", null: false
     t.index ["composition_id"], name: "index_recordings_on_composition_id"
     t.index ["el_recodo_song_id"], name: "index_recordings_on_el_recodo_song_id"
     t.index ["genre_id"], name: "index_recordings_on_genre_id"
@@ -503,6 +506,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_08_082514) do
     t.uuid "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "playlists_count", default: 0, null: false
     t.index ["slug"], name: "index_tandas_on_slug", unique: true
     t.index ["user_id"], name: "index_tandas_on_user_id"
   end

@@ -1,6 +1,6 @@
 class TandaRecording < ApplicationRecord
   belongs_to :tanda
-  belongs_to :recording
+  belongs_to :recording, counter_cache: :tandas_count
 
   acts_as_list scope: :tanda
 end

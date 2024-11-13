@@ -26,7 +26,7 @@ class OrchestrasController < ApplicationController
       singer: @filters[:singer]
     )
 
-    @recordings = query.results.order(recorded_date: :asc).limit(200)
+    @recordings = query.results.order(popularity_score: :desc).limit(200)
     @years = query.years
     @genres = query.genres
     @orchestra_periods = query.orchestra_periods

@@ -23,6 +23,8 @@ class Recording < ApplicationRecord
   has_many :playlist_items, as: :item, dependent: :destroy
   has_many :tandas, through: :playlist_items
   has_many :waveforms, through: :digital_remasters
+  has_many :tanda_recordings, dependent: :destroy
+  has_many :tandas, through: :tanda_recordings
 
   validates :recorded_date, presence: true
 

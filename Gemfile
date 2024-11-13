@@ -58,6 +58,7 @@ gem "dry-initializer-rails"
 gem "turbo_power"
 gem "pagy"
 gem "ranked-model"
+gem "counter_culture"
 
 # Assets
 gem "stimulus-rails"

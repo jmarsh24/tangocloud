@@ -14,6 +14,27 @@
       <div class="text-xs text-gray-500 w-full md:w-56 truncate" title="<%= recording.genre.name %> - <%= recording.year %>">
         <%= recording.genre.name %> - <%= recording.year %>
       </div>
+      <div class="flex items-center w-full md:w-56 mt-1">
+        <!-- SVG Wave Popularity Indicator -->
+        <% popularity_level = (recording.popularity_score / 20.0).ceil %>
+        <svg width="24" height="12" aria-label="Popularity" class="text-neutral-500 fill-current">
+          <% if popularity_level >= 1 %>
+            <rect x="0" y="6" width="3" height="6"></rect>
+          <% end %>
+          <% if popularity_level >= 2 %>
+            <rect x="5" y="4" width="3" height="8"></rect>
+          <% end %>
+          <% if popularity_level >= 3 %>
+            <rect x="10" y="2" width="3" height="10"></rect>
+          <% end %>
+          <% if popularity_level >= 4 %>
+            <rect x="15" y="1" width="3" height="11"></rect>
+          <% end %>
+          <% if popularity_level >= 5 %>
+            <rect x="20" y="0" width="3" height="12"></rect>
+          <% end %>
+        </svg>
+      </div>
     </div>
   </div>
 <% end %>
