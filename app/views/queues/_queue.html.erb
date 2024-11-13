@@ -49,7 +49,12 @@
     </div>
     <% if queue_items.present? %>
       <h3 class="text-lg font-bold dark:text-neutral-300">Up Next</h3>
-      <div id="queue-items" class="flex flex-col gap-4 w-full">
+      <div 
+        id="queue-items" 
+        data-controller="sortable" 
+        data-sortable-url-value="<%= reorder_queue_item_path(id: ":id") %>" 
+        class="flex flex-col gap-4 w-full"
+      >
         <%= render collection: queue_items, partial: "queues/queue_item" %>
       </div>
     <% end %>

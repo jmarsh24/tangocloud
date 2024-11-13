@@ -382,7 +382,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_13_111205) do
     t.uuid "playback_queue_id", null: false
     t.string "item_type", null: false
     t.uuid "item_id", null: false
-    t.integer "row_order"
+    t.integer "row_order", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["item_type", "item_id"], name: "index_queue_items_on_item"

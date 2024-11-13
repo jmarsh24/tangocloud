@@ -22,7 +22,7 @@ class PlaybackQueue < ApplicationRecord
           playback_queue_id: id,
           item_type: rec.class.name,
           item_id: rec.id,
-          row_order: (index + 1) * 100,
+          row_order: index + 1,
           created_at: Time.current,
           updated_at: Time.current
         }
