@@ -1,13 +1,45 @@
-<div class="bg-neutral-950 text-neutral-400 text-center py-2 px-4 flex items-center justify-center gap-4">
-  <p class="text-sm flex items-center gap-4">
-    <span>If you believe in the work we're doing, please consider supporting us.</span>
-    <a href="https://github.com/jmarsh24/tangocloud" class="flex items-center gap-2 hover:text-neutral-300">
-      <%= inline_svg_tag "icons/brands/github.svg", class: "w-5 h-5 dark:fill-neutral-400" %>
-      <span>GitHub</span>
-    </a>
-    <a href="https://patreon.com/tangotube" class="flex items-center gap-2 hover:text-neutral-300">
-      <%= inline_svg_tag "icons/brands/patreon.svg", class: "w-4 h-4 dark:fill-neutral-400" %>
-      <span>Patreon</span>
-    </a>
-  </p>
+<div class="bg-neutral-950 text-neutral-400 text-center py-2 px-6 flex flex-col items-center justify-center gap-2 md:flex-row md:gap-4" 
+     data-controller="quote-cycler" 
+     data-quote-cycler-interval-value="5000">
+  <div class="quote-section flex flex-col items-center">
+    <p data-quote-cycler-target="content" class="text-md font-medium text-neutral-200 mb-2 md:mb-0">
+      The people who are crazy enough to think they can change the world are the ones who do
+    </p>
+    <p data-quote-cycler-target="content" class="text-md font-medium text-neutral-200 mb-2 md:mb-0 hidden">
+      Your work is going to fill a large part of your life, and the only way to be truly satisfied is to do what you believe is great work
+    </p>
+    <p data-quote-cycler-target="content" class="text-md font-medium text-neutral-200 mb-2 md:mb-0 hidden">
+      Innovation distinguishes between a leader and a follower
+    </p>
+    <p data-quote-cycler-target="content" class="text-md font-medium text-neutral-200 mb-2 md:mb-0 hidden">
+      Stay hungry, stay foolish
+    </p>
+    <p data-quote-cycler-target="content" class="text-md font-medium text-neutral-200 mb-2 md:mb-0 hidden">
+      When something is important enough, you do it even if the odds are not in your favor
+    </p>
+    <p data-quote-cycler-target="content" class="text-md font-medium text-neutral-200 mb-2 md:mb-0 hidden">
+      I think it is possible for ordinary people to choose to be extraordinary
+    </p>
+    <p data-quote-cycler-target="content" class="text-md font-medium text-neutral-200 mb-2 md:mb-0 hidden">
+      Some people don't like change, but you need to embrace change if the alternative is disaster
+    </p>
+    <p data-quote-cycler-target="content" class="text-md font-medium text-neutral-200 mb-2 md:mb-0 hidden">
+      Failure is an option here. If things are not failing, you are not innovating enough
+    </p>
+  </div>
+  <div data-quote-cycler-target="content" class="flex flex-col items-center md:items-start md:flex-row gap-4 hidden">
+    <p class="text-sm">
+      If you believe in the work we're doing, please consider supporting us:
+    </p>
+    <div class="flex gap-4">
+      <a href="https://github.com/jmarsh24/tangocloud" class="flex items-center gap-2 hover:text-neutral-300">
+        <%= inline_svg_tag "icons/brands/github.svg", class: "w-5 h-5 dark:fill-neutral-400" %>
+        <span>GitHub</span>
+      </a>
+      <a href="https://patreon.com/tangotube" class="flex items-center gap-2 hover:text-neutral-300">
+        <%= inline_svg_tag "icons/brands/patreon.svg", class: "w-4 h-4 dark:fill-neutral-400" %>
+        <span>Patreon</span>
+      </a>
+    </div>
+  </div>
 </div>
