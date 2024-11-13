@@ -32,6 +32,6 @@ class ApplicationController < ActionController::Base
   end
 
   def set_user_library
-    @user_library = policy_scope(UserLibrary).first_or_create(user: Current.user) if Current&.user
+    @user_library = policy_scope(UserLibrary).find_or_create_by!(user: Current.user) if Current&.user
   end
 end
