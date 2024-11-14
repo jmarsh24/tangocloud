@@ -11,6 +11,10 @@ class TandaPolicy < ApplicationPolicy
     user.admin? || user.tester? || user.editor?
   end
 
+  def add_to_library?
+    user.admin? || user.tester? || user.editor?
+  end
+
   class Scope < Scope
     # NOTE: Be explicit about which records you allow access to!
     def resolve

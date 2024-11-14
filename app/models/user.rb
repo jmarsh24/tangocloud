@@ -17,6 +17,7 @@ class User < ApplicationRecord
   has_many :shared_tandas, through: :shares, source: :shareable, source_type: "Tanda"
   has_many :playbacks, dependent: :destroy
 
+  has_one :user_library, dependent: :destroy
   has_one :playback_queue, dependent: :destroy
   has_one :playback_session, dependent: :destroy
 

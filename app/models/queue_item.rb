@@ -1,5 +1,6 @@
 class QueueItem < ApplicationRecord
   include RankedModel
+
   belongs_to :playback_queue
   belongs_to :item, polymorphic: true
 
@@ -7,6 +8,7 @@ class QueueItem < ApplicationRecord
 
   validates :playback_queue, presence: true
   validates :item, presence: true
+  validates :item_type, presence: true
 
   scope :including_item_associations, -> {
     includes(

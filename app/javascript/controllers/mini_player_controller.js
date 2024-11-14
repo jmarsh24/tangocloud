@@ -17,6 +17,9 @@ export default class extends Controller {
     this.handleEvent("player:progress", { with: this.updateProgress });
     this._progressPercentage = 0;
     this._animationFrameRequest = null;
+
+    document.addEventListener("player:playing", this.#onPlay.bind(this));
+    document.addEventListener("player:pause", this.#onPause.bind(this));
   }
 
   play() {
