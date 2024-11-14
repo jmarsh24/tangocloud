@@ -1,0 +1,24 @@
+<%# locals: (playback_session: nil) %>
+<% if playback_session.muted? %>
+  <%= form_with url: unmute_playback_path do %>
+    <button
+                type="submit"
+                data-music-player-target="unmuteButton"
+                data-action="click->music-player#unmute"
+      class="<%= class_names('w-10 h-10 flex items-center justify-center rounded bg-neutral-800 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600', 'hidden': !playback_session.muted?) %>"
+      >
+      <%= heroicon "speaker-x-mark", size: :md %>
+    </button>
+  <% end %>
+<% else %>
+  <%= form_with url: mute_playback_path do %>
+    <button
+                type="submit"
+                data-music-player-target="muteButton"
+                data-action="click->music-player#mute"
+      class="<%= class_names('w-10 h-10 flex items-center justify-center rounded bg-neutral-800 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600', 'hidden': playback_session.muted?) %>"
+      >
+      <%= heroicon "speaker-wave", size: :md %>
+    </button>
+  <% end %>
+<% end %>

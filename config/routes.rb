@@ -66,13 +66,19 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :queue_items, only: [] do
+    patch :reorder, on: :member
+  end
+
   concern :queueable do
     post "queue/add", to: "queues#add", as: :add_to_queue
     post "queue/select", to: "queues#select", as: :select_recording
     delete "queue/remove", to: "queues#remove", as: :remove_from_queue
   end
 
-  resources :recordings, only: :show
+  resources :recordings, only: [:show, :index] do
+    resource :like, only: [:create, :destroy], module: :recordings
+  end
 
   resources :playlists, only: [:new, :index, :create, :show, :update, :destroy] do
     resources :recordings, only: [:index, :create, :destroy], module: "playlists" do

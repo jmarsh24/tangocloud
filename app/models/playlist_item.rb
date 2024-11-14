@@ -7,6 +7,11 @@ class PlaylistItem < ApplicationRecord
   validates :position, presence: true, numericality: {only_integer: true}
 
   scope :ordered, -> { order(position: :asc) }
+
+  counter_culture(
+    [:item],
+    column_name: "playlists_count"
+  )
 end
 
 # == Schema Information

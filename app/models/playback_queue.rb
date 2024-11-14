@@ -22,7 +22,7 @@ class PlaybackQueue < ApplicationRecord
           playback_queue_id: id,
           item_type: rec.class.name,
           item_id: rec.id,
-          row_order: (index + 1) * 100,
+          row_order: index + 1,
           created_at: Time.current,
           updated_at: Time.current
         }
@@ -159,7 +159,7 @@ class PlaybackQueue < ApplicationRecord
   def ensure_default_items
     return unless queue_items.empty?
 
-    recordings = Recording.limit(10)
+    recordings = Recording.random.limit(10)
     recordings.each { |recording| queue_items.build(item: recording) }
     save!
   end

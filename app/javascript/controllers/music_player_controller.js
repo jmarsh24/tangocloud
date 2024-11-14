@@ -15,8 +15,6 @@ export default class extends Controller {
     "nextButton",
     "progress",
     "volumeSlider",
-    "muteButton",
-    "unmuteButton",
   ];
 
   static values = {
@@ -97,12 +95,10 @@ export default class extends Controller {
 
   mute() {
     this.Player.mute();
-    this.#onMute();
   }
 
   unmute() {
     this.Player.unmute();
-    this.#onUnmute();
   }
 
   next() {
@@ -169,15 +165,5 @@ export default class extends Controller {
     if (this.hasAlbumArtTarget) {
       this.albumArtTarget.classList.add("rotating");
     }
-  }
-
-  #onMute() {
-    this.muteButtonTarget.classList.add("hidden");
-    this.unmuteButtonTarget.classList.remove("hidden");
-  }
-
-  #onUnmute() {
-    this.muteButtonTarget.classList.remove("hidden");
-    this.unmuteButtonTarget.classList.add("hidden");
   }
 }

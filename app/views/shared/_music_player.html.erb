@@ -65,30 +65,11 @@
             <%= button_tag type: "button", class: "w-10 h-10 flex items-center justify-center rounded text-white bg-neutral-800 hover:bg-neutral-600", aria: { label: "Share recording" }, data: { controller: "social-share", action: "click->social-share#share:prevent", "social-share-url-value": recording_path(recording.id) } do %>
               <%= heroicon("arrow-up-on-square", size: :md) %>
             <% end %>
-            <%= form_with url: mute_playback_path do %>
-              <button
-                type="submit"
-                data-music-player-target="muteButton"
-                data-action="click->music-player#mute"
-                class="<%= class_names('w-10 h-10 flex items-center justify-center rounded bg-neutral-800 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600', 'hidden': playback_session.muted?) %>"
-                >
-                <%= heroicon "speaker-wave", size: :md %>
-              </button>
-            <% end %>
-            <%= form_with url: unmute_playback_path do %>
-              <button
-                type="submit"
-                data-music-player-target="unmuteButton"
-                data-action="click->music-player#unmute"
-                class="<%= class_names('w-10 h-10 flex items-center justify-center rounded bg-neutral-800 text-sm font-semibold text-white shadow-sm hover:bg-neutral-600', 'hidden': !playback_session.muted?) %>"
-                >
-                <%= heroicon "speaker-x-mark", size: :md %>
-              </button>
-            <% end %>
+            <div id="mute-button">
+              <%= render "shared/mute_button", playback_session: %>
+            </div>
           </div>
-          <%= form_with url: mute_playback_path, class: "hidden" do %>
-            <input type="hidden" name="_method" value="put">
-          <% end %>
+          <input type="hidden" name="_method" value="put">
           <%= form_with url: update_volume_playback_path do %>
             <input
               type="range"
@@ -99,7 +80,7 @@
               data-controller="auto-submit"
               data-music-player-target="volumeSlider"
               data-action="input->music-player#changeVolume change->auto-submit#submit"
-              class="range range-primary w-36"
+              class="range range-xs w-36"
               >
             </input>
           <% end %>

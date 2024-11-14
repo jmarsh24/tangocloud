@@ -1,3 +1,4 @@
+<%# locals: { playlist_item: } %>
 <% cache(playlist_item) do %>
   <div class="w-full flex flex-col gap-2 rounded-lg shadow-md">
     <% if playlist_item.item.is_a?(Tanda) %>
