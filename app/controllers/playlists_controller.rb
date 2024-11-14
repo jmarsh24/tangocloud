@@ -3,6 +3,8 @@ class PlaylistsController < ApplicationController
   skip_after_action :verify_policy_scoped, only: [:new, :create]
   skip_before_action :authenticate_user!, only: [:new]
 
+  allowed_remote_modal_actions :add_to, :new
+
   def new
     authorize @playlist = Playlist.new
   end
@@ -70,6 +72,11 @@ class PlaylistsController < ApplicationController
 
     @playlist_items = (recordings + tandas).sort_by(&:position)
 
+    authorize @playlist
+  end
+
+  def add_to
+    @playlist = policy_scope(Playlist).friendly.find(params[:id])
     authorize @playlist
   end
 

@@ -81,6 +81,9 @@ Rails.application.routes.draw do
   resources :playlists, only: [:new, :index, :create, :show, :update, :destroy] do
     member do
       post 'add_to_library', to: 'user_libraries#add_playlist'
+      get :add_to
+      post :add_recording
+      post :add_tanda
     end
     resources :recordings, only: [:index, :create, :destroy], module: :playlists do
       member do
@@ -123,7 +126,13 @@ Rails.application.routes.draw do
     resources :playlists, only: [:index, :new, :edit]
   end
 
-  get "search", to: "search#index"
+  resources :search, only: [:index] do
+    collection do
+      post :recordings
+      post :tandas
+    end
+  end
+  
   post "search/recording/load", to: "searches/recordings#load", as: :load_search_recording
   post "queue/recording/load", to: "queues/recordings#load", as: :load_queue_recording
 

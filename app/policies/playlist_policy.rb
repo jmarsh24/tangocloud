@@ -10,6 +10,10 @@ class PlaylistPolicy < ApplicationPolicy
   def index?
     user.admin? || user.tester? || user.editor?
   end
+  
+  def edit?
+    (record.user == user) && (user.admin? || user.tester? || user.editor?)
+  end
 
   def show?
     user.admin? || user.tester? || user.editor?
@@ -19,8 +23,8 @@ class PlaylistPolicy < ApplicationPolicy
     user.admin? || user.tester? || user.editor?
   end
 
-  def add_to_library?
-    user.admin? || user.tester? || user.editor?
+  def add_to?
+    edit?
   end
 
   class Scope < Scope

@@ -1,5 +1,5 @@
 class PlaylistItem < ApplicationRecord
-  belongs_to :playlist
+  belongs_to :playlist, touch: true
   belongs_to :item, polymorphic: true
 
   acts_as_list scope: :playlist
