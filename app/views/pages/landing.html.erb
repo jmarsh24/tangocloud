@@ -7,12 +7,12 @@
         <p class="max-w-xl mx-auto text-center text-xl text-gray-700 dark:text-gray-300 xl:max-w-2xl">
           TangoCloud elevates your listening experience like never before. Enjoy the world's largest tango music catalog, a powerful search designed specifically for its nuances, and the highest audio quality available — up to 192kHz/24-bit Hi-Res Lossless.
         </p>
-        <%= link_to "Download now", root_path, class: "font-medium text-blue-600 dark:text-blue-500 hover:underline transition ease-in-out duration-200" %>
+        <%= link_to "Sign Up", sign_up_path, class: "font-medium text-blue-600 dark:text-blue-500 hover:underline transition ease-in-out duration-200" %>
       </div>
     </div>
     <%= image_tag("landing/tango-orchestra.jpg", alt:"violin-hero-hd", class: "block w-full sm:rounded-3xl") %>
   </div>
-
+  to
   <div class="py-8 px-4">
     <div class="flex flex-col p-8 mx-auto max-w-6xl bg-neutral-200 dark:bg-neutral-800 items-center gap-4 rounded-3xl">
       <div class="flex justify-center space-x-4">
@@ -25,10 +25,9 @@
       <p class="text-lg font-light text-center text-gray-700 dark:text-gray-300 mt-4">
         TangoCloud provides an experience that revolutionizes the way you listen/dance to tango. If you're not a subscriber yet, join today and start exploring the world of TangoCloud.
       </p>
-      <%= link_to "Download now", root_path, class: "font-medium text-blue-600 dark:text-blue-500 hover:underline transition ease-in-out duration-200" %>
+      <%= link_to "Sign Up", sign_up_path, class: "font-medium text-blue-600 dark:text-blue-500 hover:underline transition ease-in-out duration-200" %>
     </div>
   </div>
-
   <div class="space-y-16">
     <%= render partial: "feature_highlight_section",
       locals: {
@@ -36,63 +35,57 @@
         alt_text: "apple-grid",
         title: "The world's largest Tango catalog.",
         description: "Over 5 thousand tracks. Discover the very best recordings of Pugliese's discography. Or outstanding performances from the world's most renowned orchestras. Just about anything you'd ever want to hear — all of it just a few taps away.",
-        link: root_path,
+        link: sign_up_path,
         link_title: "Listen Now",
         reverse: true
       }
     %>
-
     <%= render partial: "feature_highlight_section",
       locals: {
         image: "landing/iphone-search.png",
         alt_text: "iphone-search",
         title: "Easily search by composition, orchestra, singer, and more.",
         description: "TangoCloud features a search created specifically for the nuances of Tango. You can find the exact recording you want, whether you search by composer, ERT number, or genre.",
-        link: root_path,
+        link: sign_up_path,
         link_title: "Listen Now"
       }
     %>
-
     <%= render partial: "feature_highlight_section",
       locals: {
         image: "landing/record-player.jpg",
         alt_text: "fazil-say-cover",
         title: "Experience the highest audio quality.",
         description: "With tango music, every nuance matters, so TangoCloud offers the highest audio quality available — up to 192kHz/24-bit Hi-Res Lossless.",
-        link: root_path,
+        link: sign_up_path,
         link_title: "Listen Now",
         reverse: true
       }
     %>
-
     <%= render partial: "feature_highlight_section",
       locals: {
         image: "landing/iphone-playlist.png",
         alt_text: "module-5-updated",
         title: "Benefit from expert recommendations.",
         description: "TangoCloud is curated by Tango music experts who are passionate about helping both beginner and seasoned music lovers discover great recordings.",
-        link: root_path,
+        link: sign_up_path,
         link_title: "Listen Now"
       }
     %>
-
     <%= render partial: "feature_highlight_section",
       locals: {
         image: "landing/iphone-home.png",
         alt_text: "browse_module_updated",
         title: "Browse endlessly and learn as you go.",
         description: "The Browse tab helps you discover more about Tango music, guiding you through orchestras, periods, genres, composers, and more.",
-        link: root_path,
+        link: sign_up_path,
         link_title: "Listen Now",
         reverse: true
       }
     %>
   </div>
-
   <div class="flex flex-col items-center w-full max-w-4xl">
     <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/FMRGOTfKUwg?mode=opaque&rel=0&autohide=1&showinfo=0&wmode=transparent" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
   </div>
-
   <div class="w-full max-w-7xl px-8 sm:px-12 flex flex-col gap-6 pb-20">
     <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">In case you missed something...</h3>
     <div class="space-y-6">
