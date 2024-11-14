@@ -30,6 +30,7 @@ export default class Player {
     this.wavesurfer.once("ready", () => {
       this.duration = this.wavesurfer.getDuration();
       this.isReady = true;
+      this.container.classList.add("sm:block");
 
       dispatchEvent(document, "player:ready", { duration: this.duration });
 
@@ -75,6 +76,7 @@ export default class Player {
   }
 
   load(audioUrl) {
+    this.container.classList.remove("sm:block");
     this.wavesurfer.destroy();
     this._audioUrl = audioUrl;
     this.initialize();
@@ -106,9 +108,9 @@ export default class Player {
     canvas.height = canvasHeight;
     const ctx = canvas.getContext("2d");
 
-    const heightFactor = canvasHeight * 1.35;
+    const heightFactor = 144 * 1.35;
     const stopPosition1 = 0.675;
-    const stopPosition2 = (0.675 * canvasHeight + 1) / canvasHeight;
+    const stopPosition2 = (0.675 * 77 + 1) / 77;
 
     this.waveGradient = ctx.createLinearGradient(0, 0, 0, heightFactor);
     this.waveGradient.addColorStop(0, "#656666");

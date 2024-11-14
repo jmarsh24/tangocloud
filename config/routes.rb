@@ -65,8 +65,12 @@ Rails.application.routes.draw do
       delete :remove
     end
   end
-
+  
   resources :queue_items, only: [] do
+    patch :reorder, on: :member
+  end
+  
+  resources :library_items, only: [] do
     patch :reorder, on: :member
   end
 
@@ -75,6 +79,19 @@ Rails.application.routes.draw do
     post "queue/select", to: "queues#select", as: :select_recording
     delete "queue/remove", to: "queues#remove", as: :remove_from_queue
   end
+
+  resources :playlists do
+    member do
+      post 'add_to_library', to: 'user_libraries#add_playlist'
+    end
+  end
+
+  resources :tandas do
+    member do
+      post 'add_to_library', to: 'user_libraries#add_tanda'
+    end
+  end
+
 
   resources :recordings, only: [:show, :index] do
     resource :like, only: [:create, :destroy], module: :recordings

@@ -1,4 +1,4 @@
-<%# locals: { playlist:} %>
+<%# locals: { playlist: } %>
 <% cache(playlist) do %>
   <%= link_to playlist, class: "flex gap-2 dark:bg-neutral-900 rounded-lg dark:hover:bg-neutral-800 p-2" do %>
     <% if playlist.image.present? %>
@@ -8,7 +8,7 @@
     <% end %>
     <div class="flex flex-col py-1 px-2 justify-center">
       <h2 class="text-xs md:text-md font-semibold text-neutral-900 dark:text-neutral-100"><%= playlist.title %></h2>
-      <p class="text-xxs text-neutral-500 dark:text-neutral-400 hidden"><%= playlist.description %></p>
+      <p class="text-xs text-neutral-500 dark:text-neutral-400"><%= playlist.subtitle %></p>
     </div>
   <% end %>
 <% end %>

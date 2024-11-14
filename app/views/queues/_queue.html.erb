@@ -53,7 +53,7 @@
         id="queue-items" 
         data-controller="sortable" 
         data-sortable-url-value="<%= reorder_queue_item_path(id: ":id") %>" 
-        class="flex flex-col gap-4 w-full"
+        class="flex flex-col gap-2 w-full"
       >
         <%= render collection: queue_items, partial: "queues/queue_item" %>
       </div>

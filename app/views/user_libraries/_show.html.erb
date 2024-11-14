@@ -1,4 +1,4 @@
-<%# locals: { playlists: } %>
+<%# locals: { user_library: } %>
 <div class="flex flex-col gap-4">
   <div class="flex flex-col gap-2">
     <h1 class="text-2xl font-bold dark:text-neutral-300">Your Library</h1>
@@ -38,8 +38,12 @@
       <% end %>
     </div>
   </div>
-  <div class="flex flex-col gap-2">
-    <h2 class="text-xl font-semibold dark:text-neutral-300">Playlists</h2>
-    <%= render playlists %>
+  <div
+    id="library-items"
+    class="flex flex-col gap-2"
+    data-controller="sortable"
+    data-sortable-url-value="<%= reorder_library_item_path(id: ":id") %>"
+  >
+    <%= render collection: user_library.library_items.includes(item: { image_attachment: :blob }).rank(:row_order), partial: "library_items/library_item" %>
   </div>
 </div>

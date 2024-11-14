@@ -1,8 +1,8 @@
-class QueueItemPolicy < ApplicationPolicy
+class LibraryItemPolicy < ApplicationPolicy
   def reorder?
-    user == record.playback_queue.user
+    user == record.user_library.user
   end
-
+  
   class Scope < Scope
     # NOTE: Be explicit about which records you allow access to!
     def resolve

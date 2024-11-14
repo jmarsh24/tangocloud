@@ -2,7 +2,6 @@
 <% cache(queue_item) do %>
   <div 
     data-sortable-id=<%= queue_item.id %> 
-    data-sortable-position=<%= queue_item.row_order %>
     class="w-full flex items-center gap-2 rounded-lg shadow-md"
   >
     <% if queue_item.item.is_a?(Tanda) %>
