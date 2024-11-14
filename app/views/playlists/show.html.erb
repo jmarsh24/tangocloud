@@ -15,7 +15,7 @@
       <meta name="twitter:image" content="<%= url_for(@playlist.image) %>">
     <% end %>
   <% end %>
-  <div class="relative flex flex-col gap-4 items-center dark:bg-black">
+  <div class="relative flex flex-col gap-2 items-center dark:bg-black">
     <!-- Back to Music Library Button -->
     <%= link_to music_library_path, class: "absolute left-4 top-4 flex items-center gap-2 p-2 rounded-full bg-neutral-200 text-sm text-neutral-700 dark:bg-neutral-800 dark:text-neutral-400 hover:bg-neutral-300 dark:hover:bg-neutral-700" do %>
       <%= heroicon "chevron-left", size: :sm, class: "text-neutral-500 dark:text-neutral-400" %>
