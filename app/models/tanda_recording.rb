@@ -1,8 +1,10 @@
 class TandaRecording < ApplicationRecord
+  include RankedModel
+
   belongs_to :tanda
   belongs_to :recording, counter_cache: :tandas_count
 
-  acts_as_list scope: :tanda
+  ranks :position, with_same: :tanda_id
 end
 
 # == Schema Information

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_13_204044) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_14_221428) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -20,6 +20,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_13_204044) do
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "audio_file_status", ["pending", "processing", "completed", "failed"]
   create_enum "composition_role_type", ["composer", "lyricist"]
+  create_enum "playlist_type", ["system", "like", "editor", "user", "milonga"]
   create_enum "recording_type", ["studio", "live"]
 
   create_table "active_storage_attachments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -381,10 +382,10 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_13_204044) do
     t.text "description"
     t.string "slug"
     t.boolean "public", default: true, null: false
-    t.boolean "system", default: false, null: false
     t.uuid "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.enum "playlist_type", default: "user", null: false, enum_type: "playlist_type"
     t.index ["slug"], name: "index_playlists_on_slug", unique: true
     t.index ["user_id"], name: "index_playlists_on_user_id"
   end
@@ -393,7 +394,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_13_204044) do
     t.uuid "playback_queue_id", null: false
     t.string "item_type", null: false
     t.uuid "item_id", null: false
-    t.integer "row_order", null: false
+    t.integer "row_order"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["item_type", "item_id"], name: "index_queue_items_on_item"

@@ -1,10 +1,12 @@
 class PlaylistItem < ApplicationRecord
+  include RankedModel
+
   belongs_to :playlist
   belongs_to :item, polymorphic: true
 
-  acts_as_list scope: :playlist
+  ranks :position, with_same: :playlist_id
 
-  validates :position, presence: true, numericality: {only_integer: true}
+  validates :position, numericality: {only_integer: true}
 
   scope :ordered, -> { order(position: :asc) }
 

@@ -3,7 +3,7 @@ module Playlistable
 
   included do
     extend FriendlyId
-    friendly_id :title, use: :slugged
+    friendly_id :slug_candidates, use: :slugged
 
     searchkick word_start: [:title, :description]
 
@@ -19,7 +19,17 @@ module Playlistable
     has_one_attached :playlist_file, dependent: :purge_later
 
     scope :public_playlists, -> { where(public: true) }
-    scope :system_playlists, -> { where(system: true) }
+  end
+
+  def slug_candidates
+    [
+      :title,
+      [:title, -> { SecureRandom.hex(4) }]
+    ]
+  end
+
+  def should_generate_new_friendly_id?
+    title_changed? || slug.blank?
   end
 
   def set_default_title

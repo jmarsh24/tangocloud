@@ -4,6 +4,8 @@ class Playlist < ApplicationRecord
   has_many :playlist_items, dependent: :destroy
   has_many :recordings, through: :playlist_items, source: :item, source_type: "Recording"
   has_many :tandas, through: :playlist_items, source: :item, source_type: "Tanda"
+
+  enum :playlist_type, { system: "system", like: "like", editor: "editor", user: "user", milonga: "milonga" }
 end
 
 # == Schema Information

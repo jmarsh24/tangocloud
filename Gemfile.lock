@@ -622,7 +622,7 @@ GEM
     searchkick (5.4.0)
       activemodel (>= 6.1)
       hashie
-    securerandom (0.3.1)
+    securerandom (0.3.2)
     sentry-rails (5.21.0)
       railties (>= 5.0)
       sentry-ruby (~> 5.21.0)
@@ -716,7 +716,7 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.6.0)
-    uri (1.0.1)
+    uri (1.0.2)
     useragent (0.16.10)
     vcr (6.3.1)
       base64
