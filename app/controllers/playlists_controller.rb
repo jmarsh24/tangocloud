@@ -1,7 +1,6 @@
 class PlaylistsController < ApplicationController
   include RemoteModal
   skip_after_action :verify_policy_scoped, only: [:new, :create]
-  skip_after_action :verify_authorized, only: [:new]
   skip_before_action :authenticate_user!, only: [:new]
 
   def new
@@ -15,8 +14,11 @@ class PlaylistsController < ApplicationController
 
   def create
     authorize @playlist = Playlist.new(user: current_user)
-    @playlist.update(playlist_params)
-    redirect_to @playlist
+    if @playlist.update!(playlist_params)
+      redirect_to @playlist
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def show

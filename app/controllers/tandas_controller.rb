@@ -1,4 +1,12 @@
 class TandasController < ApplicationController
+  include RemoteModal
+
+  skip_after_action :verify_policy_scoped, only: [:new]
+
+  def new
+    authorize @tanda = Tanda.new
+  end
+  
   def index
     @tandas = policy_scope(Tanda.all)
       .strict_loading

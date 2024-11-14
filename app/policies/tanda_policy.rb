@@ -1,4 +1,8 @@
 class TandaPolicy < ApplicationPolicy
+  def new?
+    user.admin? || user.tester? || user.editor?
+  end
+
   def index?
     user.admin? || user.tester? || user.editor?
   end
