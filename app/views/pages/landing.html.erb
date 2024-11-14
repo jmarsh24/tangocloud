@@ -7,7 +7,7 @@
         <p class="max-w-xl mx-auto text-center text-xl text-gray-700 dark:text-gray-300 xl:max-w-2xl">
           TangoCloud elevates your listening experience like never before. Enjoy the world's largest tango music catalog, a powerful search designed specifically for its nuances, and the highest audio quality available — up to 192kHz/24-bit Hi-Res Lossless.
         </p>
-        <%= link_to "Sign Up", sign_up_path, class: "font-medium text-blue-600 dark:text-blue-500 hover:underline transition ease-in-out duration-200" %>
+        <%= link_to "Sign Up", sign_up_path, data: {turbo_frame: "modal"}, class: "font-medium text-blue-600 dark:text-blue-500 hover:underline transition ease-in-out duration-200" %>
       </div>
     </div>
     <%= image_tag("landing/tango-orchestra.jpg", alt:"violin-hero-hd", class: "block w-full sm:rounded-3xl") %>
@@ -25,7 +25,7 @@
       <p class="text-lg font-light text-center text-gray-700 dark:text-gray-300 mt-4">
         TangoCloud provides an experience that revolutionizes the way you listen/dance to tango. If you're not a subscriber yet, join today and start exploring the world of TangoCloud.
       </p>
-      <%= link_to "Sign Up", sign_up_path, class: "font-medium text-blue-600 dark:text-blue-500 hover:underline transition ease-in-out duration-200" %>
+      <%= link_to "Sign Up", sign_up_path, data: {turbo_frame: "modal"}, class: "font-medium text-blue-600 dark:text-blue-500 hover:underline transition ease-in-out duration-200" %>
     </div>
   </div>
   <div class="space-y-16">
