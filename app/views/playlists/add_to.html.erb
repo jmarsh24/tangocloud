@@ -1,0 +1,12 @@
+<div class="w-full mt-6">
+  <%= form_with url: recordings_search_index_path, data: { turbo_frame: "recording_search_results" }, class: "mb-4" do |f| %>
+    <div class="form-control">
+      <%= f.label :query, "Search Recordings", class: "label font-semibold text-neutral-800 dark:text-neutral-200" %>
+      <%= f.text_field :query, placeholder: "Search by title...", class: "input input-bordered w-full dark:bg-neutral-800 dark:text-neutral-100" %>
+    </div>
+    <div class="form-control mt-4">
+      <%= f.submit "Search", class: "btn btn-primary w-full" %>
+    </div>
+  <% end %>
+</div>
+<%= turbo_frame_tag "playlist-search-results" %>

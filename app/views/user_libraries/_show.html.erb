@@ -38,6 +38,14 @@
       <% end %>
     </div>
   </div>
+  <%= link_to new_playlist_path, class: "flex items-center gap-2 text-base text-neutral-700 dark:text-neutral-400 hover:underline", data: {turbo_frame: "modal"} do %>
+    <%= heroicon "plus", variant: :outline, size: :md %>
+    <span>New Playlist</span>
+  <% end %>
+  <%= link_to new_tanda_path, class: "flex items-center gap-2 text-base text-neutral-700 dark:text-neutral-400 hover:underline", data: {turbo_frame: "modal"} do %>
+    <%= heroicon "plus", variant: :outline, size: :md %>
+    <span>New Tanda</span>
+  <% end %>
   <div
     id="library-items"
     class="flex flex-col gap-2"
