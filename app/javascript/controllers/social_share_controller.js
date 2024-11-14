@@ -1,8 +1,11 @@
-// app/javascript/controllers/social_share_controller.js
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static values = { url: String }
+  static values = {
+    url: String,
+    title: String,
+    text: String
+  }
 
   connect() {
     if (!navigator.share) {
@@ -10,7 +13,13 @@ export default class extends Controller {
     }
   }
 
-  share(event) {
-    navigator.share({url: this.urlValue});
+  share() {  
+    navigator.share({
+      title: this.titleValue,
+      text: this.textValue,
+      url: this.urlValue
+    }).catch((error) => {
+      console.error("Error sharing:", error);
+    });
   }
 }

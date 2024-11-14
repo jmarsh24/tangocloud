@@ -62,7 +62,13 @@
         </div>
         <div class="hidden md:flex items-center justify-end gap-4">
           <div class="flex items-center justify-center gap-2">
-            <%= button_tag type: "button", class: "w-10 h-10 flex items-center justify-center rounded text-white bg-neutral-800 hover:bg-neutral-600", aria: { label: "Share recording" }, data: { controller: "social-share", action: "click->social-share#share:prevent", "social-share-url-value": recording_path(recording.id) } do %>
+            <%= button_tag type: "button", 
+            class: "w-10 h-10 flex items-center justify-center rounded text-white bg-neutral-800 hover:bg-neutral-600", 
+            aria: { label: "Share recording" }, 
+            data: { controller: "social-share", 
+            action: "click->social-share#share:prevent", 
+              "social-share-url-value": recording_path(recording.id), 
+              "social-share-text-value": "#{recording.title} · #{recording.orchestra.name} · #{recording.genre.name} · #{recording.year}" } do %>
               <%= heroicon("arrow-up-on-square", size: :md) %>
             <% end %>
             <div id="mute-button">
