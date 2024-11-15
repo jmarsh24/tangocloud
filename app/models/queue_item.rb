@@ -20,7 +20,8 @@ class QueueItem < ApplicationRecord
         digital_remasters: [
           audio_variants: {audio_file_attachment: :blob},
           album: {album_art_attachment: :blob}
-        ]
+        ],
+        waveforms: [:waveform_datum]
       ]
     )
   }
