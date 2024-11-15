@@ -21,15 +21,21 @@
     <% if @playlist.image.attached? %>
       <%= image_tag @playlist.image, class: "w-64 h-64 md:w-24 md:h-24 rounded-lg object-cover shadow-md" %>
     <% end %>
-    <h1 class="text-2xl font-bold dark:text-neutral-300"><%= @playlist.title %></h1>
+    <h1 class="text-2xl font-bold dark:text-neutral-300">
+      <%= @playlist.title %>
+    </h1>
     <% if @playlist.description.present? %>
-      <p class="text-sm text-center dark:text-neutral-400"><%= @playlist.description %></p>
+      <p class="text-sm text-center dark:text-neutral-400">
+        <%= @playlist.description %>
+      </p>
     <% end %>
     <% if @playlist.user %>
-      <p class="text-sm text-center dark:text-neutral-400"><%= @playlist.user.username || @playlist.user.email %></p>
+      <p class="text-sm text-center dark:text-neutral-400">
+        <%= @playlist.user.username %>
+      </p>
     <% end %>
     <%= button_to 'Add to Library', add_to_library_playlist_path(@playlist), method: :post, class: "btn btn-primary" %>
-    <div class="flex w-full flex-col gap-4">
+    <div class="flex w-full flex-col gap-2">
       <%= render collection: @playlist_items, partial: "playlists/playlist_item" %>
     </div>
   </div>

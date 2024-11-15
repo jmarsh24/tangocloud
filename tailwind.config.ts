@@ -10,9 +10,9 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        circular: ['Circular', 'sans-serif'],
-      },
-    },
+        montserrat: ['Montserrat', 'sans-serif']
+      }
+    }
   },
   plugins: [
     require('daisyui'),

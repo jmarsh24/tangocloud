@@ -1,6 +1,6 @@
 <%# locals: (playback_queue:, queue_items:, playback_session:) %>
 <% cache([playback_queue, queue_items, playback_session]) do %>
-  <aside class="hidden 2xl:block h-full overflow-y-auto">
+  <aside class="hidden 2xl:block h-full overflow-y-auto no-scrollbar">
     <div class="flex flex-col gap-4 dark:bg-black">
       <% if playback_queue.current_item %>
         <h1 class="text-2xl font-bold dark:text-neutral-300">Now Playing</h1>

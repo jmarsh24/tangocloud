@@ -1,40 +1,120 @@
-/** Circular Font Definitions */
 @font-face {
-  font-family: "Circular";
+  font-family: "Montserrat";
   font-weight: 900;
-  font-style: italic;
-  src: url_for("../fonts/circular-black-italic.otf");
+  font-style: normal;
+  src: url("../fonts/Montserrat-Black.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: "Circular";
-  font-weight: 900;
-  src: url_for("../fonts/circular-black.otf");
+  font-family: "Montserrat";
+  font-weight: 800;
+  font-style: normal;
+  src: url("../fonts/Montserrat-ExtraBold.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: "Circular";
+  font-family: "Montserrat";
   font-weight: 700;
-  font-style: italic;
-  src: url_for("../fonts/circular-bold-italic.otf");
+  font-style: normal;
+  src: url("../fonts/Montserrat-Bold.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: "Circular";
+  font-family: "Montserrat";
+  font-weight: 600;
+  font-style: italic;
+  src: url("../fonts/Montserrat-SemiBoldItalic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat";
+  font-weight: 600;
+  font-style: normal;
+  src: url("../fonts/Montserrat-SemiBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat";
   font-weight: 500;
   font-style: italic;
-  src: url_for("../fonts/circular-medium-italic.otf");
+  src: url("../fonts/Montserrat-MediumItalic.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: "Circular";
+  font-family: "Montserrat";
   font-weight: 500;
-  src: url_for("../fonts/circular-medium.otf");
+  font-style: normal;
+  src: url("../fonts/Montserrat-Medium.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: "Circular";
+  font-family: "Montserrat";
   font-weight: 400;
-  font-style: italic;
-  src: url_for("../fonts/circular-book-italic.otf");
+  font-style: normal;
+  src: url("../fonts/Montserrat-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat";
+  font-weight: 300;
+  font-style: normal;
+  src: url("../fonts/Montserrat-Light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat";
+  font-weight: 200;
+  font-style: normal;
+  src: url("../fonts/Montserrat-ExtraLight.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat";
+  font-weight: 100;
+  font-style: normal;
+  src: url("../fonts/Montserrat-Thin.ttf") format("truetype");
+}
+
+:root {
+  font-family: 'Montserrat', sans-serif;
+  font-feature-settings: "liga" 1, "calt" 1;
+  /* Ensures Montserrat is the base font for the entire app */
+}
+
+@layer base {
+  body {
+    @apply bg-base-100 leading-relaxed text-base-content;
+    font-family: inherit;
+    /* Inherits Montserrat from :root */
+  }
+}
+
+@layer components {
+
+  h1,
+  .h1 {
+    @apply text-3xl font-bold text-primary;
+    /* No need for explicit font-family unless you want a serif fallback */
+  }
+
+  h2,
+  .h2 {
+    @apply text-xl font-bold;
+    /* No need for explicit font-family unless required */
+  }
+
+  p.secondary {
+    @apply text-neutral-content;
+  }
+
+  a.link-ghost {
+    @apply hover:underline;
+    text-decoration: none;
+  }
+}
+
+@supports (font-variation-settings: normal) {
+  :root {
+    font-family: 'Montserrat', sans-serif;
+  }
 }

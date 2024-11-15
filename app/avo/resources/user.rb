@@ -9,6 +9,7 @@ class Avo::Resources::User < Avo::BaseResource
     field :id, as: :id, readonly: true, only_on: :show
     field :avatar, as: :file, is_image: true, display_filename: false, required: false
     field :email, as: :text
+    field :username, as: :text
     field :verified, as: :boolean
     field :provider, as: :text
     field :uid, as: :text
