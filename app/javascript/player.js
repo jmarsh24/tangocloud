@@ -46,7 +46,7 @@ export default class Player {
 
       dispatchEvent(document, "player:ready", { duration: this.duration });
 
-      if (this.autoplay) {
+      if (this.autoplay && this.userHasInteracted) {
         this.play();
       }
     });
@@ -88,8 +88,9 @@ export default class Player {
   }
 
   load(audioUrl) {
-    this.container.classList.remove("sm:block");
-    this.wavesurfer.destroy();
+    if (this.wavesurfer && this.isReady) {
+      this.wavesurfer.destroy();
+    }
     this._audioUrl = audioUrl;
     this.initialize();
     dispatchEvent(document, "player:beforePlaying");
