@@ -11,15 +11,15 @@
     <%= render "shared/flashes" %>
     <div class="row-span-4">
       <div class="grid grid-cols-1 2xl:grid-cols-[auto,1fr,auto] h-full gap-4">
-        <nav id="sidebar-navigation" class="hidden 2xl:block h-full overflow-y-auto w-96 pl-4 py-2" data-turbo-permanent>
+        <nav id="sidebar-navigation" class="hidden 2xl:block h-full overflow-y-auto no-scrollbar w-96 pl-4 py-2" data-turbo-permanent>
           <%= render partial: "user_libraries/show", 
             locals: { user_library: @user_library }
           %>
         </nav>
-        <main id="main-content" class="h-full overflow-y-auto pt-2">
+        <main id="main-content" class="h-full overflow-y-auto no-scrollbar pt-2">
           <%= yield %>
         </main>
-        <aside id="sidebar-queue" class="hidden 2xl:block col-span-1 h-full overflow-y-auto w-96 pr-4 py-2" data-turbo-permanent>
+        <aside id="sidebar-queue" class="hidden 2xl:block col-span-1 h-full overflow-y-auto no-scrollbar w-96 pr-4 py-2" data-turbo-permanent>
           <%= render partial: "queues/queue", 
             locals: { 
               playback_queue: @playback_queue, 
