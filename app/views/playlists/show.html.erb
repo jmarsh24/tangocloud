@@ -24,11 +24,11 @@
     <h1 class="text-2xl font-bold dark:text-neutral-300">
       <%= @playlist.title %>
     </h1>
-    <% if @playlist.description.present? %>
-      <p class="text-sm text-center dark:text-neutral-400">
-        <%= @playlist.description %>
-      </p>
-    <% end %>
+    <%# if @playlist.description.present? %>
+    <!--      <p class="text-sm text-center dark:text-neutral-400">-->
+    <%#= @playlist.description %>
+    <!--      </p>-->
+    <%# end %>
     <% if @playlist.user %>
       <p class="text-sm text-center dark:text-neutral-400">
         <%= @playlist.user.username %>
