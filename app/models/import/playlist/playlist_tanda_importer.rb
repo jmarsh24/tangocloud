@@ -16,7 +16,7 @@ module Import
             if recording_group.size == 1
               @playlist.playlist_items.create!(
                 item: recording_group.first,
-                position: position
+                position:
               )
             else
               tanda = Tanda.create!(title: "Playlist #{@playlist.title} Tanda #{position}")
@@ -25,7 +25,7 @@ module Import
 
               @playlist.playlist_items.create!(
                 item: tanda,
-                position: position
+                position:
               )
             end
 

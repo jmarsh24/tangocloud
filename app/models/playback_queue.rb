@@ -40,7 +40,7 @@ class PlaybackQueue < ApplicationRecord
       update!(current_item: nil)
       queue_items.delete_all
 
-      recordings = playlist.recordings.rank(:row_order).to_a
+      recordings = playlist.recordings.order(:position).to_a
 
       if start_with
         start_index = recordings.index(start_with)
