@@ -7,9 +7,10 @@ module Playlistable
 
     searchkick word_start: [:title, :description]
 
-    before_validation :set_default_title
+    before_validation :set_default_title, prepend: true
 
     validates :title, presence: true
+    validates :slug, uniqueness: true
 
     has_many :likes, as: :likeable, dependent: :destroy
     has_many :shares, as: :shareable, dependent: :destroy
@@ -40,6 +41,13 @@ module Playlistable
     unique_album_arts = recordings.includes(digital_remasters: {album: {album_art_attachment: :blob}})
                                   .filter_map { _1.digital_remasters.first&.album&.album_art }
                                   .uniq
+
+    if unique_album_arts.empty?
+      unique_album_arts = tandas.includes(recordings: {digital_remasters: {album: {album_art_attachment: :blob}}})
+                                .flat_map { |tanda| tanda.recordings }
+                                .filter_map { _1.digital_remasters.first&.album&.album_art }
+                                .uniq
+    end
 
     return if unique_album_arts.empty?
 
