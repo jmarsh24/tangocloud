@@ -1,6 +1,6 @@
 <%# locals: { playlist: } %>
 <% cache(playlist) do %>
-  <%= link_to playlist, class: "flex gap-2 dark:bg-neutral-900 rounded-lg dark:hover:bg-neutral-800 p-2 snap-center" do %>
+  <%= link_to playlist, class: "flex gap-2 dark:bg-neutral-900 rounded-lg dark:hover:bg-neutral-800 p-2 snap-start" do %>
     <% if playlist.image.present? %>
       <%= image_tag playlist.image, class: "w-14 h-14 md:w-16 md:h-16 rounded-md object-cover" %>
     <% else %>
