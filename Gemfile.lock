@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/andynu/annotate_models.git
+  revision: 2c72ee8995ae8c1b9f5cf8690e8e3d22b7bd080d
+  branch: rails-8-0
+  specs:
+    annotate (3.2.0)
+      activerecord (>= 3.2, < 9.0)
+      rake (>= 10.4, < 14.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -85,9 +94,6 @@ GEM
       activesupport (>= 6.1)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
-    annotate (2.6.5)
-      activerecord (>= 2.3.0)
-      rake (>= 0.8.7)
     apollo_upload_server (2.1.6)
       actionpack (>= 6.1.6)
       graphql (>= 1.8)
@@ -766,7 +772,7 @@ PLATFORMS
 DEPENDENCIES
   active_storage_validations
   acts_as_list
-  annotate
+  annotate!
   apollo_upload_server
   authentication-zero
   avo

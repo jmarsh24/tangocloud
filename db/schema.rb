@@ -20,7 +20,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_14_221428) do
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "audio_file_status", ["pending", "processing", "completed", "failed"]
   create_enum "composition_role_type", ["composer", "lyricist"]
-  create_enum "playlist_type", ["system", "like", "editor", "user", "milonga"]
   create_enum "recording_type", ["studio", "live"]
 
   create_table "active_storage_attachments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -376,6 +375,11 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_14_221428) do
     t.index ["position"], name: "index_playlist_items_on_position"
   end
 
+  create_table "playlist_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.index ["name"], name: "index_playlist_types_on_name", unique: true
+  end
+
   create_table "playlists", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title", null: false
     t.string "subtitle"
@@ -385,7 +389,9 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_14_221428) do
     t.uuid "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.enum "playlist_type", default: "user", null: false, enum_type: "playlist_type"
+    t.uuid "playlist_type_id"
+    t.boolean "import_as_tandas", default: false, null: false
+    t.index ["playlist_type_id"], name: "index_playlists_on_playlist_type_id"
     t.index ["slug"], name: "index_playlists_on_slug", unique: true
     t.index ["user_id"], name: "index_playlists_on_user_id"
   end
@@ -610,6 +616,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_14_221428) do
   add_foreign_key "playbacks", "recordings"
   add_foreign_key "playbacks", "users"
   add_foreign_key "playlist_items", "playlists"
+  add_foreign_key "playlists", "playlist_types"
   add_foreign_key "queue_items", "playback_queues"
   add_foreign_key "recording_singers", "people"
   add_foreign_key "recording_singers", "recordings"

@@ -94,7 +94,7 @@ end
 
 group :development do
   gem "authentication-zero"
-  gem "annotate"
+  gem "annotate", git: "https://github.com/andynu/annotate_models.git", branch: "rails-8-0"
   gem "chusaku"
   gem "listen"
   gem "letter_opener"

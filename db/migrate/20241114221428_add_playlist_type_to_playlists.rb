@@ -1,7 +1,14 @@
 class AddPlaylistTypeToPlaylists < ActiveRecord::Migration[8.0]
-  def up
-    create_enum :playlist_type, %w[system like editor user milonga]
-    add_column :playlists, :playlist_type, :playlist_type, default: "user", null: false
-    remove_column :playlists, :system
+  def change
+    create_table :playlist_types, id: :uuid do |t|
+      t.string :name, null: false
+      t.index :name, unique: true
+    end
+
+    add_reference :playlists, :playlist_type, type: :uuid, foreign_key: true
+
+    add_column :playlists, :import_as_tandas, :boolean, default: false, null: false
+
+    remove_column :playlists, :system, :boolean
   end
 end

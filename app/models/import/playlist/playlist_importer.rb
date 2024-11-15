@@ -6,8 +6,8 @@ module Import
       end
 
       def import
-        if @playlist.playlist_type == "milonga"
-          MilongaImporter.new(@playlist).import
+        if @playlist.import_as_tandas
+          PlaylistTandaImporter.new(@playlist).import
         else
           row_order = 1
 
