@@ -3,7 +3,7 @@ class Waveform < ApplicationRecord
   belongs_to :waveform_datum, optional: true, dependent: :destroy
   has_one_attached :image
 
-  delegate :data, :data=, to: :waveform_datum
+  delegate :data, :data=, to: :waveform_datum, allow_nil: true
 
   before_save :ensure_waveform_datum
 

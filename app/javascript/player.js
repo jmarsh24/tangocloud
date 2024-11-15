@@ -27,6 +27,18 @@ export default class Player {
 
     this.wavesurfer.setVolume(this.volume);
 
+    if (this._waveformData) {
+      try {
+        const peaks = JSON.parse(this._waveformData);
+        this.wavesurfer.load(this._audioUrl, peaks);
+      } catch (e) {
+        console.error("Failed to parse waveform data", e);
+        this.wavesurfer.load(this._audioUrl);
+      }
+    } else {
+      this.wavesurfer.load(this._audioUrl);
+    }
+
     this.wavesurfer.once("ready", () => {
       this.duration = this.wavesurfer.getDuration();
       this.isReady = true;

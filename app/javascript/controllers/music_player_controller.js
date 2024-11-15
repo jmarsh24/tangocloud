@@ -14,7 +14,7 @@ export default class extends Controller {
     "albumArt",
     "nextButton",
     "progress",
-    "volumeSlider",
+    "volumeSlider"
   ];
 
   static values = {
@@ -22,6 +22,7 @@ export default class extends Controller {
     trackTitle: String,
     detailsPrimary: String,
     detailsSecondary: String,
+    waveformData: String
   };
 
   initialize() {
@@ -56,6 +57,7 @@ export default class extends Controller {
   }
 
   audioUrlValueChanged() {
+    this.Player._waveformData = this.waveformDataValue || null;
     this.Player.load(this.audioUrlValue);
     this.updateMediaSession();
   }

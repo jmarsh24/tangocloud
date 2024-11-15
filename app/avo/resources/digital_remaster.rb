@@ -19,5 +19,6 @@ class Avo::Resources::DigitalRemaster < Avo::BaseResource
     field :remaster_agent, as: :belongs_to, readonly: true
     field :audio_variants, as: :has_many, readonly: true
     field :waveform, as: :has_one, readonly: true, hide_on: :index
+    field :created_at, as: :date_time, sortable: true, only_on: [:index, :show]
   end
 end

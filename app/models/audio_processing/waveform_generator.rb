@@ -34,7 +34,19 @@ module AudioProcessing
     end
 
     def generate_image(path, width: 800, height: 150)
-      waveform_data = generate(path).data
+      waveform = generate(path)
+      waveform_data = waveform.data
+      channels = waveform.channels
+
+      if channels > 1
+        data_length = waveform_data.map(&:length).min
+        waveform_data = (0...data_length).map do |i|
+          sum = waveform_data.reduce(0.0) { |acc, ch_data| acc + ch_data[i].to_f }
+          sum / channels
+        end
+      else
+        waveform_data = waveform_data.map(&:to_f)
+      end
 
       Tempfile.create(["waveform-", ".png"]) do |tempfile|
         image = ChunkyPNG::Image.new(width, height, ChunkyPNG::Color::TRANSPARENT)
@@ -55,16 +67,53 @@ module AudioProcessing
 
     def generate_waveform_json(audio_path)
       Tempfile.create(["audios", ".json"]) do |json_tempfile|
-        command = ["audiowaveform", "-i", audio_path, "-o", json_tempfile.path, "-z", "1024", "--amplitude-scale", "3.5"]
+        command = [
+          "audiowaveform",
+          "-i", audio_path,
+          "-o", json_tempfile.path,
+          "-z", "1024",
+          "--amplitude-scale", "3.5",
+          "--split-channels"
+        ]
         _stdout, stderr, status = Open3.capture3(*command)
         if status.success?
           data = JSON.parse(File.read(json_tempfile.path))
-          data["data"].map! { |value| value.to_f / 32768 }
+
+          data_array = data["data"]
+          max_val = data_array.max.to_f
+          digits = 2
+          new_data = data_array.map { |x| (x.to_f / max_val).round(digits) }
+
+          channels = data["channels"].to_i
+          if channels > 1
+            new_data = deinterleave(new_data, channels)
+          end
+
+          data["data"] = new_data
           return data
         else
           raise "Command failed with error: #{stderr}"
         end
       end
+    end
+
+    def deinterleave(data, channel_count)
+      deinterleaved = (0...(channel_count * 2)).map do |idx|
+        data.each_slice(channel_count * 2).map { |slice| slice[idx] }.compact
+      end
+
+      new_data = []
+
+      channel_count.times do |ch|
+        idx1 = 2 * ch
+        idx2 = 2 * ch + 1
+        deinterleaved_idx1 = deinterleaved[idx1]
+        deinterleaved_idx2 = deinterleaved[idx2]
+        ch_data = deinterleaved_idx1.zip(deinterleaved_idx2).flatten.compact
+        new_data << ch_data
+      end
+
+      new_data
     end
   end
 end
