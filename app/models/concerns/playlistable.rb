@@ -3,13 +3,14 @@ module Playlistable
 
   included do
     extend FriendlyId
-    friendly_id :title, use: :slugged
+    friendly_id :slug_candidates, use: :slugged
 
     searchkick word_start: [:title, :description]
 
-    before_validation :set_default_title
+    before_validation :set_default_title, prepend: true
 
     validates :title, presence: true
+    validates :slug, uniqueness: true
 
     has_many :likes, as: :likeable, dependent: :destroy
     has_many :shares, as: :shareable, dependent: :destroy
@@ -19,7 +20,17 @@ module Playlistable
     has_one_attached :playlist_file, dependent: :purge_later
 
     scope :public_playlists, -> { where(public: true) }
-    scope :system_playlists, -> { where(system: true) }
+  end
+
+  def slug_candidates
+    [
+      :title,
+      [:title, -> { SecureRandom.hex(4) }]
+    ]
+  end
+
+  def should_generate_new_friendly_id?
+    title_changed? || slug.blank?
   end
 
   def set_default_title
@@ -30,6 +41,13 @@ module Playlistable
     unique_album_arts = recordings.includes(digital_remasters: {album: {album_art_attachment: :blob}})
                                   .filter_map { _1.digital_remasters.first&.album&.album_art }
                                   .uniq
+
+    if unique_album_arts.empty?
+      unique_album_arts = tandas.includes(recordings: {digital_remasters: {album: {album_art_attachment: :blob}}})
+                                .flat_map { |tanda| tanda.recordings }
+                                .filter_map { _1.digital_remasters.first&.album&.album_art }
+                                .uniq
+    end
 
     return if unique_album_arts.empty?
 

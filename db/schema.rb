@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_13_204044) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_14_221428) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -375,16 +375,23 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_13_204044) do
     t.index ["position"], name: "index_playlist_items_on_position"
   end
 
+  create_table "playlist_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.index ["name"], name: "index_playlist_types_on_name", unique: true
+  end
+
   create_table "playlists", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title", null: false
     t.string "subtitle"
     t.text "description"
     t.string "slug"
     t.boolean "public", default: true, null: false
-    t.boolean "system", default: false, null: false
     t.uuid "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "playlist_type_id"
+    t.boolean "import_as_tandas", default: false, null: false
+    t.index ["playlist_type_id"], name: "index_playlists_on_playlist_type_id"
     t.index ["slug"], name: "index_playlists_on_slug", unique: true
     t.index ["user_id"], name: "index_playlists_on_user_id"
   end
@@ -393,7 +400,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_13_204044) do
     t.uuid "playback_queue_id", null: false
     t.string "item_type", null: false
     t.uuid "item_id", null: false
-    t.integer "row_order", null: false
+    t.integer "row_order"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["item_type", "item_id"], name: "index_queue_items_on_item"
@@ -609,6 +616,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_13_204044) do
   add_foreign_key "playbacks", "recordings"
   add_foreign_key "playbacks", "users"
   add_foreign_key "playlist_items", "playlists"
+  add_foreign_key "playlists", "playlist_types"
   add_foreign_key "queue_items", "playback_queues"
   add_foreign_key "recording_singers", "people"
   add_foreign_key "recording_singers", "recordings"
