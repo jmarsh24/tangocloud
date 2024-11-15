@@ -1,19 +1,18 @@
 <% cache(tanda) do %>
-  <div class=flex-col gap-4>
-    <%= link_to tanda, class: "w-full flex flex-col gap-4 bg-neutral-950 text-white p-4 rounded-lg shadow-md" do %>
+  <div class="flex flex-col gap-4 bg-neutral-950 text-white p-4 rounded-lg shadow-md snap-center">
+    <%= link_to tanda, class: "flex flex-col gap-2 items-center" do %>
       <div class="flex gap-2 items-center">
-        <% if tanda.image.attached? %>
-          <%= image_tag tanda.image, class: "w-14 h-14 md:w-16 md:h-16 rounded-md object-cover" %>
-        <% end %>
         <div class="text-xl font-bold">
           <%= tanda.title %>
         </div>
-        <div class="text-md font-medium">
-          <%= tanda.subtitle %>
-        </div>
+        <% if tanda.subtitle.present? %>
+          <div class="text-md font-medium">
+            <%= tanda.subtitle %>
+          </div>
+        <% end %>
       </div>
     <% end %>
-    <% if tanda.user&.present?%>
+    <% if tanda.user&.username.present?%>
       <div class="text-sm dark:text-white">
         <%= tanda.user.username %>
       </div>
