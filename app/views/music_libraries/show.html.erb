@@ -25,8 +25,8 @@
   </section>
   <section class="space-y-6">
     <h2 class="text-2xl font-bold text-gray-900 dark:text-neutral-300 px-4">Featured Tandas</h2>
-    <div class="overflow-x-auto scrollbar-hide snap-x scroll-px-2">
-      <div class="grid grid-flow-col auto-cols-max grid-rows-1 gap-3 px-4 py-4">
+    <div class="overflow-x-auto no-scrollbar snap-x scroll-px-2">
+      <div class="grid grid-flow-col auto-cols-[320px] grid-rows-1 gap-3 px-4 py-4">
         <%= render collection: @tandas, partial: "tandas/tanda" %>
       </div>
     </div>

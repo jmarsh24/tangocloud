@@ -1,13 +1,13 @@
 <%# locals(recording:) %>
 <% cache(recording) do %>
   <div class="flex flex-1 h-full w-full gap-2 items-center">
-    <%= image_tag recording.digital_remasters.first.album.album_art, class: "w-12 h-12 rounded-lg object-cover" %>
-    <div class="flex flex-col items-start text-left w-full">
+    <%= image_tag recording.digital_remasters.first.album.album_art, class: "h-20 aspect-square object-cover" %>
+    <div class="flex flex-col items-start text-left w-full p-1">
       <div class="text-sm font-semibold w-full md:w-56 truncate" title="<%= recording.composition.title %>">
         <%= recording.composition.title %>
       </div>
-      <div class="text-xs text-gray-500 w-full md:w-56 truncate" title="<%= recording.orchestra.display_name %><% if recording.singers.present? %> - <%= recording.singers.map(&:name).join(', ') %><% end %>">
-        <%= recording.orchestra.display_name %>
+      <div class="text-xs text-gray-500 w-full md:w-56 truncate" title="<%= recording.orchestra.name %><% if recording.singers.present? %> - <%= recording.singers.map(&:name).join(', ') %><% end %>">
+        <%= recording.orchestra.name %>
         <% if recording.singers.present? %>
           &middot; <%= recording.singers.map(&:name).join(", ") %>
         <% end %>
@@ -15,28 +15,20 @@
       <div class="text-xs text-gray-500 w-full md:w-56 truncate" title="<%= recording.genre.name %> - <%= recording.year %>">
         <%= recording.genre.name %> - <%= recording.year %>
       </div>
-      <% if recording.popularity_score > 0 %>
-        <div class="flex items-center w-full md:w-56 mt-1">
-          <% popularity_level = (recording.popularity_score / 20.0).ceil %>
-          <svg width="24" height="12" aria-label="Popularity" class="text-neutral-500 fill-current">
-            <% if popularity_level >= 1 %>
-              <rect x="0" y="6" width="3" height="6"></rect>
-            <% end %>
-            <% if popularity_level >= 2 %>
-              <rect x="5" y="4" width="3" height="8"></rect>
-            <% end %>
-            <% if popularity_level >= 3 %>
-              <rect x="10" y="2" width="3" height="10"></rect>
-            <% end %>
-            <% if popularity_level >= 4 %>
-              <rect x="15" y="1" width="3" height="11"></rect>
-            <% end %>
-            <% if popularity_level >= 5 %>
-              <rect x="20" y="0" width="3" height="12"></rect>
-            <% end %>
-          </svg>
-        </div>
-      <% end %>
+      <div class="flex items-center w-full md:w-56">
+        <% popularity_level = (recording.popularity_score / 12.5).ceil %>
+        <svg width="80" height="10" aria-label="Popularity" class="text-neutral-500">
+          <% 8.times do |i| %>
+            <rect 
+              x="<%= i * 5 %>" 
+              y="0" 
+              width="2" 
+              height="7" 
+              class="<%= i < popularity_level ? 'fill-current text-neutral-400' : 'fill-current text-neutral-600' %>">
+            </rect>
+          <% end %>
+        </svg>
+      </div>
     </div>
   </div>
 <% end %>
