@@ -1,32 +1,6 @@
 <%# locals: { user_library: } %>
 <div class="flex flex-col gap-4">
-  <div class="flex flex-col gap-2">
-    <h1 class="text-2xl font-bold dark:text-neutral-300">Your Library</h1>
-    <div class="flex gap-4">
-      <% if current_page?(playlists_path) %>
-        <span class="flex items-center gap-2 text-base text-orange-500 dark:text-orange-400">
-          <%= heroicon "collection", variant: :solid, size: :md %>
-          <span><%= t(".playlists") %></span>
-        </span>
-      <% else %>
-        <%= link_to playlists_path, class: "flex items-center gap-2 text-base text-neutral-700 dark:text-neutral-400 hover:underline" do %>
-          <%= heroicon "collection", variant: :outline, size: :md %>
-          <span><%= t(".playlists") %></span>
-        <% end %>
-      <% end %>
-      <% if current_page?(tandas_path) %>
-        <span class="flex items-center gap-2 text-base text-orange-500 dark:text-orange-400">
-          <%= heroicon "musical-note", variant: :solid, size: :md %>
-          <span><%= t(".tandas") %></span>
-        </span>
-      <% else %>
-        <%= link_to tandas_path, class: "flex items-center gap-2 text-base text-neutral-700 dark:text-neutral-400 hover:underline" do %>
-          <%= heroicon "musical-note", variant: :outline, size: :md %>
-          <span><%= t(".tandas") %></span>
-        <% end %>
-      <% end %>
-    </div>
-  </div>
+  <h1 class="text-2xl font-bold dark:text-neutral-300">Your Library</h1>
   <div
     id="library-items"
     class="flex flex-col gap-2"
