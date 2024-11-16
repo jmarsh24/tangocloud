@@ -22,9 +22,14 @@
       <% end %>
     </div>
   </div>
-  <div class="flex items-center gap-6">
+  <div class="desktop-menu flex items-center gap-6">
     <% signed_in do %>
-      <%= render "shared/user_dropdown" %>
+      <div class="items-center gap-6 hidden md:flex">
+        <%= render "shared/navbar/link", link_title: "Orchestras", path: orchestras_path %>
+        <%= render "shared/navbar/link", link_title: "Playlists", path: playlists_path %>
+        <%= render "shared/navbar/link", link_title: "Tandas", path: tandas_path %>
+        <%= render "shared/user_dropdown" %>
+      </div>
     <% end %>
     <% signed_out do %>
       <%= link_to "Login", sign_in_path, data: { turbo_frame: "modal" }, class: "btn btn-primary" %>
