@@ -27,7 +27,7 @@
           <% new_filters = selected ? @filters.except(:singer) : @filters.merge(singer: singer.slug) %>
           <%= link_to orchestra_path(@orchestra, params: new_filters), data: { turbo_stream: true }, class: "px-2 py-1 rounded-full text-xs md:text-sm transition #{selected ? 'bg-orange-500 text-white' : 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'}" do %>
             <span class="flex items-center gap-1">
-              <%= singer.name %>
+              <%= singer.display_name %>
               <% if selected %>
                 <%= heroicon "x-mark", size: :xs %>
               <% end %>

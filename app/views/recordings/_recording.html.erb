@@ -6,8 +6,8 @@
       <div class="text-sm font-semibold w-full md:w-56 truncate" title="<%= recording.composition.title %>">
         <%= recording.composition.title %>
       </div>
-      <div class="text-xs text-gray-500 w-full md:w-56 truncate" title="<%= recording.orchestra.name %><% if recording.singers.present? %> - <%= recording.singers.map(&:name).join(', ') %><% end %>">
-        <%= recording.orchestra.name %>
+      <div class="text-xs text-gray-500 w-full md:w-56 truncate" title="<%= recording.orchestra.display_name %><% if recording.singers.present? %> - <%= recording.singers.map(&:name).join(', ') %><% end %>">
+        <%= recording.orchestra.display_name %>
         <% if recording.singers.present? %>
           &middot; <%= recording.singers.map(&:name).join(", ") %>
         <% end %>

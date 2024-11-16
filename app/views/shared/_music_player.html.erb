@@ -6,7 +6,7 @@
       data-controller="music-player"
       data-music-player-audio-url-value="<%= url_for(recording.digital_remasters.first.audio_variants.first.audio_file) %>"
       data-music-player-track-title-value="<%= recording.composition.title %>"
-      data-music-player-details-primary-value="<%= recording.orchestra.name %><% if recording.singers.present? %> &middot; <%= recording.singers.map(&:name).compact.join(", ") %><% end %>"
+      data-music-player-details-primary-value="<%= recording.orchestra.display_name %><% if recording.singers.present? %> &middot; <%= recording.singers.map(&:name).compact.join(", ") %><% end %>"
       data-music-player-details-secondary-value="<%= recording.genre.name %> - <%= recording.year %>"
       data-music-player-album-title-value="<%= recording.digital_remasters.first.album.title %>"
       data-music-player-waveform-data-value="<%= recording.digital_remasters.first.waveform.data %>"
@@ -36,7 +36,7 @@
               <%= recording.composition.title %>
             </div>
             <div class="text-xs text-neutral-400 truncate">
-              <%= recording.orchestra.name %>
+              <%= recording.orchestra.display_name %>
               <% if recording.singers.any? %>
                 - <%= recording.singers.map(&:name).join(", ") %>
               <% end %>
@@ -69,7 +69,7 @@
             data: { controller: "social-share", 
             action: "click->social-share#share:prevent", 
               "social-share-url-value": recording_path(recording.id), 
-              "social-share-text-value": "#{recording.title} · #{recording.orchestra.name} · #{recording.genre.name} · #{recording.year}" } do %>
+              "social-share-text-value": "#{recording.title} · #{recording.orchestra.display_name} · #{recording.genre.name} · #{recording.year}" } do %>
               <%= heroicon("arrow-up-on-square", size: :md) %>
             <% end %>
             <div id="mute-button">
