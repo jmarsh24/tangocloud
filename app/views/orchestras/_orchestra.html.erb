@@ -1,5 +1,5 @@
 <% cache(orchestra) do %>
-  <%= link_to orchestra, class: "flex flex-col items-center p-2 md:p-4 bg-white dark:bg-neutral-900 rounded-lg shadow-lg hover:bg-gray-100 dark:hover:bg-neutral-700 transition duration-300 snap-start" do %>
+  <%= link_to orchestra, class: "flex flex-col items-center p-2 md:p-2 bg-white dark:bg-neutral-900 rounded-lg shadow-lg hover:bg-gray-100 dark:hover:bg-neutral-700 transition duration-300 snap-start" do %>
     <% if orchestra.image.attached? %>
       <%= image_tag orchestra.image, class: "w-full h-auto rounded-lg object-cover" %>
     <% else %>
