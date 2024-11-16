@@ -1,20 +1,15 @@
 <% cache(tanda) do %>
   <div class="flex flex-col gap-4 bg-neutral-950 text-white p-4 rounded-lg shadow-md snap-start">
     <%= link_to tanda, class: "flex flex-col gap-2 items-center" do %>
-      <div class="flex gap-2 items-center">
-        <div class="text-xl font-bold">
+      <div class="flex flex-col gap-1 items-center text-center">
+        <div class="text-xl font-bold line-clamp-1" title="<%= tanda.title %>">
           <%= tanda.title %>
         </div>
         <% if tanda.subtitle.present? %>
-          <div class="text-md font-medium">
+          <div class="text-md font-medium truncate" title="<%= tanda.subtitle %>">
             <%= tanda.subtitle %>
           </div>
         <% end %>
-      </div>
-    <% end %>
-    <% if tanda.user&.username.present?%>
-      <div class="text-sm dark:text-white">
-        <%= tanda.user.username %>
       </div>
     <% end %>
     <div class="flex flex-col gap-2">
