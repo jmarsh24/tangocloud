@@ -1,21 +1,21 @@
 <%# locals: { library_item: } %>
 <% cache(library_item) do %>
-  <div 
+  <%= link_to library_item.item do %>
+    <div 
     data-sortable-handle
     data-sortable-id="<%= library_item.id %>" 
     class="flex items-center gap-4 bg-neutral-900 text-white shadow-lg rounded-lg p-1 hover:bg-neutral-800 transition"
   >
-    <% if library_item.item.image&.attached? %>
-      <div class="w-10 h-10 rounded-md overflow-hidden flex-shrink-0">
-        <%= link_to library_item.item do %>
+      <% if library_item.item.image&.attached? %>
+        <div class="w-10 h-10 rounded-md overflow-hidden flex-shrink-0">
           <%= image_tag library_item.item.image, class: "w-full h-full object-cover" %>
         <% end %>
       </div>
-    <% end %>
-    <div class="flex-1">
-      <h2 class="text-sm font-medium">
-        <%= link_to library_item.item.title, library_item.item, class: "text-white hover:text-orange-400" %>
-      </h2>
+      <div class="flex-1">
+        <h2 class="text-sm font-medium text-white hover:text-orange-400">
+          <%= library_item.item.title  %>
+        </h2>
+      </div>
     </div>
-  </div>
+  <% end %>
 <% end %>
