@@ -19,7 +19,13 @@ module Import
                 position:
               )
             else
-              tanda = Tanda.create!(title: "Playlist #{@playlist.title} Tanda #{position}")
+              tanda_title = orchestra_names = recording_group.map(&:orchestra).uniq
+              if orchestra_names.size == 1
+                "#{orchestra_names.first} Tanda #{position}"
+              else
+                "Mixed Tanda #{position} (#{orchestra_names.join(", ")})"
+              end
+              tanda = Tanda.create!(title: tanda_title)
 
               tanda.recordings << recording_group
 
@@ -37,6 +43,9 @@ module Import
       end
 
       private
+
+      def generate_tanda_title(recording_group, position)
+      end
 
       def group_recordings_by_orchestra_and_genre_in_order(recordings)
         # Step 1: Group recordings by orchestra while maintaining order
