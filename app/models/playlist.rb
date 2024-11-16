@@ -2,6 +2,7 @@ class Playlist < ApplicationRecord
   include Playlistable
 
   has_many :playlist_items, dependent: :destroy
+  has_many :tanda_items, through: :playlist_items, source: :item, source_type: "TandaItem", dependent: :destroy
   has_many :recordings, through: :playlist_items, source: :item, source_type: "Recording"
   has_many :tandas, through: :playlist_items, source: :item, source_type: "Tanda"
 
