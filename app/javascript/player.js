@@ -46,7 +46,7 @@ export default class Player {
 
       dispatchEvent(document, "player:ready", { duration: this.duration });
 
-      if (this.autoplay && this.userHasInteracted) {
+      if (this.autoplay) {
         this.play();
       }
     });
