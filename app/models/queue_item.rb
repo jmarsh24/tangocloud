@@ -35,7 +35,7 @@ end
 #  playback_queue_id :uuid             not null
 #  item_type         :string           not null
 #  item_id           :uuid             not null
-#  row_order         :integer          not null
+#  row_order         :integer
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #

@@ -22,4 +22,5 @@ end
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  recordings_count       :integer
+#  display_name           :string
 #

@@ -12,14 +12,15 @@ end
 #
 # Table name: playlists
 #
-#  id          :uuid             not null, primary key
-#  title       :string           not null
-#  subtitle    :string
-#  description :text
-#  slug        :string
-#  public      :boolean          default(TRUE), not null
-#  system      :boolean          default(FALSE), not null
-#  user_id     :uuid
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id               :uuid             not null, primary key
+#  title            :string           not null
+#  subtitle         :string
+#  description      :text
+#  slug             :string
+#  public           :boolean          default(TRUE), not null
+#  user_id          :uuid
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  playlist_type_id :uuid
+#  import_as_tandas :boolean          default(FALSE), not null
 #

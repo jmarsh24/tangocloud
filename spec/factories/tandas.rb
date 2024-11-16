@@ -44,14 +44,15 @@ end
 #
 # Table name: tandas
 #
-#  id          :uuid             not null, primary key
-#  title       :string           not null
-#  subtitle    :string
-#  description :text
-#  slug        :string
-#  public      :boolean          default(TRUE), not null
-#  system      :boolean          default(FALSE), not null
-#  user_id     :uuid
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id              :uuid             not null, primary key
+#  title           :string           not null
+#  subtitle        :string
+#  description     :text
+#  slug            :string
+#  public          :boolean          default(TRUE), not null
+#  system          :boolean          default(FALSE), not null
+#  user_id         :uuid
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  playlists_count :integer          default(0), not null
 #

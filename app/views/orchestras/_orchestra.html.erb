@@ -1,12 +1,12 @@
 <% cache(orchestra) do %>
   <%= link_to orchestra, class: "flex flex-col items-center p-2 md:p-4 bg-white dark:bg-neutral-900 rounded-lg shadow-lg hover:bg-gray-100 dark:hover:bg-neutral-700 transition duration-300 snap-start" do %>
     <% if orchestra.image.attached? %>
-      <%= image_tag orchestra.image, class: "w-full h-auto rounded-lg object-cover" %>
+      <%= image_tag orchestra.image, class: "w-full aspect-square rounded-lg object-cover" %>
     <% else %>
       <div class="w-full aspect-square bg-neutral-200 dark:bg-neutral-800 rounded-lg"></div>
     <% end %>
     <div class="flex flex-col text-center mt-2">
-      <h2 class="text-xs md:text-sm font-semibold text-neutral-900 dark:text-neutral-100 break-words">
+      <h2 class="text-xs md:text-sm font-md text-neutral-900 dark:text-neutral-100 break-words">
         <%= orchestra.display_name %>
       </h2>
     </div>
