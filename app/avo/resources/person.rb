@@ -20,7 +20,8 @@ class Avo::Resources::Person < Avo::BaseResource
   def fields
     field :image, as: :file, is_image: true, accept: "image/*"
     field :id, as: :id, readonly: true, only_on: :show
-    field :name, as: :text
+    field :display_name, as: :text
+    field :name, as: :text, readonly: true
     field :slug, as: :text, readonly: true, only_on: :show
     field :bio, as: :text, hide_on: :index
     field :birth_date, as: :date

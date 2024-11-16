@@ -100,4 +100,7 @@ end
 #  time_period_id    :uuid
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  playlists_count   :integer          default(0), not null
+#  tandas_count      :integer          default(0), not null
+#  popularity_score  :decimal(5, 2)    default(0.0), not null
 #

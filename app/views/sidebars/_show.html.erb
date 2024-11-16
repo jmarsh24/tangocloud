@@ -13,7 +13,7 @@
               <%= playback_queue.current_item.item.composition.title %>
             </div>
             <div class="text-xs text-gray-500">
-              <%= playback_queue.current_item.item.orchestra.name %>
+              <%= playback_queue.current_item.item.orchestra.display_name %>
               <% if playback_queue.current_item.item.singers.present? %>
                 &middot; <%= playback_queue.current_item.item.singers.map(&:name).compact.join(", ") %>
               <% end %>

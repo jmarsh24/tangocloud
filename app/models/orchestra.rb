@@ -24,10 +24,14 @@ class Orchestra < ApplicationRecord
 
   scope :search_import, -> { includes(:orchestra_periods, :orchestra_roles, :singers, :genres) }
 
-  def self.find_or_create_by_normalized_name!(name)
-    normalized_name = NameUtils::NameNormalizer.normalize(name)
-    find_or_create_by!(normalized_name:) do |orchestra|
-      orchestra.name = NameUtils::NameFormatter.format(name)
+  before_save :set_display_name, if: -> { display_name.blank? }
+
+  class << self
+    def find_or_create_by_normalized_name!(name)
+      normalized_name = NameUtils::NameNormalizer.normalize(name)
+      find_or_create_by!(normalized_name:) do |orchestra|
+        orchestra.name = NameUtils::NameFormatter.format(name)
+      end
     end
   end
 
@@ -51,6 +55,12 @@ class Orchestra < ApplicationRecord
       genres: genres.pluck(:name)
     }
   end
+
+  private
+
+  def set_display_name
+    self.display_name = name
+  end
 end
 
 # == Schema Information
@@ -66,4 +76,5 @@ end
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  recordings_count       :integer
+#  display_name           :string
 #

@@ -1,12 +1,12 @@
 <% content_for :meta_tags do %>
   <meta property="og:title" content="<%= @recording.composition.title %>">
-  <meta property="og:description" content="Listen to <%= @recording.composition.title %> by <%= @recording.orchestra.name %>.">
+  <meta property="og:description" content="Listen to <%= @recording.composition.title %> by <%= @recording.orchestra.display_name %>.">
   <meta property="og:image" content="<%= url_for(@recording.digital_remasters.first.album.album_art) if @recording.digital_remasters.first.album.album_art.attached? %>">
   <meta property="og:type" content="music.song">
   <meta property="og:url" content="<%= recording_url(@recording) %>">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="<%= @recording.composition.title %>">
-  <meta name="twitter:description" content="Listen to <%= @recording.composition.title %> by <%= @recording.orchestra.name %>.">
+  <meta name="twitter:description" content="Listen to <%= @recording.composition.title %> by <%= @recording.orchestra.display_name %>.">
   <meta name="twitter:image" content="<%= url_for(@recording.digital_remasters.first.album.album_art) if @recording.digital_remasters.first.album.album_art.attached? %>">
 <% end %>
 <%= form_with url: load_orchestra_recording_path(orchestra_id: @recording.orchestra, id: @recording.id), class: "hidden" do |form| %>
