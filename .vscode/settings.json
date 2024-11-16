@@ -3,7 +3,6 @@
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
   "editor.minimap.enabled": false,
-  "editor.multiCursorModifier": "ctrlCmd",
   "editor.insertSpaces": true,
   "editor.tabSize": 2,
   "editor.rulers": [80, 120],
@@ -18,7 +17,7 @@
     "html.erb": "html",
     "erb": "html"
   },
-  "files.associations": {
+    "files.associations": {
     "*.html.erb": "erb"
   },
   "[ruby]": {
