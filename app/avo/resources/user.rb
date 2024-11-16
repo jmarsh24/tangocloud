@@ -1,6 +1,7 @@
 class Avo::Resources::User < Avo::BaseResource
   self.title = :email
   self.includes = [:playbacks, :playlists, :tandas]
+  self.index_query = -> { query.where(role: [:tester, :admin]) }
   self.search = {
     query: -> { query.search(params[:q]).results }
   }
