@@ -39,6 +39,6 @@ module RemoteModal
   def define_layout
     return "modal" if turbo_frame_request_id == "modal" && allowed_action?
 
-    "application"
+    "authentication"
   end
 end
