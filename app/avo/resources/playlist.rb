@@ -25,5 +25,7 @@ class Avo::Resources::Playlist < Avo::BaseResource
     field :user, as: :belongs_to
     field :playlist_items, as: :has_many
     field :playlist_type, as: :belongs_to
+    field :created_at, as: :date, sortable: true
+    field :updated_at, as: :date, only_on: :index, sortable: true
   end
 end

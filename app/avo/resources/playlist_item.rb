@@ -1,5 +1,5 @@
 class Avo::Resources::PlaylistItem < Avo::BaseResource
-  self.includes = [:playlist, :item]
+  self.includes = [:playlist, item: {image_attachment: :blob}]
 
   def fields
     field :id, hide_on: :index
