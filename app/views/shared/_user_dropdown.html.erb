@@ -13,8 +13,8 @@
       <%= heroicon("user-circle", variant: :solid, size: :xl, class: "fill-neutral-300 dark:fill-neutral-400") %>
     <% end %>
   <% end %>
-  <% c.with_menu_item_link_to "Edit", edit_registration_path(Current.user), data: {turbo_frame: "modal"} %>
   <% if Current.user %>
+    <% c.with_menu_item_link_to "Edit", edit_registration_path(Current.user), data: {turbo_frame: "modal"} %>
     <% c.with_menu_item_button_to t("sign_out"), Current.session, method: :delete, "data-turbo-method": :delete %>
     <% if Current.user&.admin? %>
       <% c.with_menu_item_divider %>
