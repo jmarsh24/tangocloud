@@ -87,7 +87,7 @@ class Recording::Query
           .left_outer_joins(:recording_singers)
           .where(recording_singers: {recording_id: nil})
           .count
-        [OpenStruct.new(id: "instrumental", name: "Instrumental", slug: "instrumental", recording_count: instrumental_count)]
+        [OpenStruct.new(id: "instrumental", display_name: "Instrumental", slug: "instrumental", recording_count: instrumental_count)]
       else
         Person.where(slug: singer)
       end
@@ -106,7 +106,7 @@ class Recording::Query
         .count
 
       if instrumental_count > 0
-        instrumental = OpenStruct.new(id: "instrumental", name: "Instrumental", slug: "instrumental", recording_count: instrumental_count)
+        instrumental = OpenStruct.new(id: "instrumental", display_name: "Instrumental", slug: "instrumental", recording_count: instrumental_count)
         singers = singers.to_a + [instrumental]
       else
         singers = singers.to_a
