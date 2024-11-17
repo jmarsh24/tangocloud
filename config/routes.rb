@@ -69,7 +69,7 @@ Rails.application.routes.draw do
     patch :reorder, on: :member
   end
 
-  resources :library_items, only: [] do
+  resources :library_items, only: [:destroy] do
     patch :reorder, on: :member
     collection do
       post :index

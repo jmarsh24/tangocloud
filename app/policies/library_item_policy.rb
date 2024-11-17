@@ -1,4 +1,8 @@
 class LibraryItemPolicy < ApplicationPolicy
+  def destroy?
+    user == record.user_library.user
+  end
+
   def reorder?
     user == record.user_library.user
   end
