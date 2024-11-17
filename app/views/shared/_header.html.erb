@@ -4,35 +4,45 @@
       <%= inline_svg_tag "logos/tangocloud-logo.svg", class: "h-12 w-12 fill-white" %>
     <% end %>
   </div>
-  <div class="hidden md:flex justify-center gap-4">
-    <%= link_to music_library_path, class: "h-12 w-12 flex justify-center items-center dark:bg-neutral-800 rounded-full dark:hover:bg-neutral-700" do %>
-      <%= heroicon("home", variant: :solid, size: :md) %>
-    <% end %>
-    <%= form_with url: search_path, method: :get, data: { turbo_permanent: true }, id: "search-bar" do |form| %>
-      <div class="w-full md:w-64 lg:w-80 xl:w-96">
-        <label class="input input-bordered flex items-center gap-2 bg-neutral-800 rounded-md p-2">
-          <%= heroicon("magnifying-glass", variant: :outline, size: :md) %>
-          <%= form.text_field :query, 
+  <div class="hidden xl:flex justify-center gap-4">
+    <% signed_in do %>
+      <%= link_to music_library_path, class: "h-12 w-12 flex justify-center items-center dark:bg-neutral-800 rounded-full dark:hover:bg-neutral-700" do %>
+        <%= heroicon("home", variant: :solid, size: :md) %>
+      <% end %>
+      <%= form_with url: search_path, method: :get, data: { turbo_permanent: true }, id: "search-bar" do |form| %>
+        <div class="w-full md:w-64 lg:w-80 xl:w-96">
+          <label class="input input-bordered flex items-center gap-2 bg-neutral-800 rounded-md p-2">
+            <%= heroicon("magnifying-glass", variant: :outline, size: :md) %>
+            <%= form.text_field :query, 
                               data: { controller: "auto-submit", action: "keydown->auto-submit#submit" }, 
                               placeholder: "What do you want to listen to?", 
                               autocorrect: "off", 
-                              spellcheck: "false", 
+                              spellcheck: "false",  
                               class: "grow placeholder-neutral-500 dark:placeholder-neutral-400 focus:outline-none bg-transparent" %>
-        </label>
-      </div>
+          </label>
+        </div>
+      <% end %>
     <% end %>
   </div>
   <div class="desktop-menu flex justify-end items-center gap-6">
-    <% signed_in do %>
-      <div class="hidden md:flex items-center gap-6">
+    <div class="hidden xl:flex items-center gap-6">
+      <% signed_in do %>
         <%= render "shared/navbar/link", link_title: "Orchestras", path: orchestras_path %>
         <%= render "shared/navbar/link", link_title: "Playlists", path: playlists_path %>
         <%= render "shared/navbar/link", link_title: "Tandas", path: tandas_path %>
         <%= render "shared/user_dropdown" %>
-      </div>
-    <% end %>
+      <% end %>
+      <% signed_out do %>
+        <%= link_to "Login", sign_in_path, data: { turbo_frame: "modal" }, class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+  <div class="flex md:hidden flex-col items-end justify-end">
     <% signed_out do %>
       <%= link_to "Login", sign_in_path, data: { turbo_frame: "modal" }, class: "btn btn-primary" %>
+    <% end %>
+    <% signed_in do %>
+      <%= render "shared/user_mobile_dropdown" %>
     <% end %>
   </div>
 </header>
