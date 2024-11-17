@@ -19,11 +19,12 @@ module Import
                 position: position
               )
             else
-              tanda_title = Playlist::TandaTitleGenerator.generate(recording_group, position)
-              tanda = Tanda.create!(title: tanda_title)
-              tanda.attach_default_image
+              title = Playlist::TandaTitleGenerator.generate(recording_group, position)
+              tanda = Tanda.create!(title:)
 
               tanda.recordings << recording_group
+
+              tanda.attach_default_image
 
               @playlist.playlist_items.create!(
                 item: tanda,

@@ -7,6 +7,20 @@ class Playlist < ApplicationRecord
   has_many :tandas, through: :playlist_items, source: :item, source_type: "Tanda"
 
   belongs_to :playlist_type, optional: true
+
+    def attach_default_image
+    unique_album_arts = recordings.includes(digital_remasters: { album: { album_art_attachment: :blob } })
+                                  .filter_map { _1.digital_remasters.first&.album&.album_art }
+                                  .uniq
+
+    return if unique_album_arts.empty?
+
+    if unique_album_arts.size < 4
+      image.attach(unique_album_arts.first.blob) if unique_album_arts.first&.blob
+    else
+      create_and_attach_composite_image(unique_album_arts.take(4))
+    end
+  end
 end
 
 # == Schema Information
