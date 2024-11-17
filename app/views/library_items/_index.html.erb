@@ -1,0 +1,24 @@
+<%# locals: { library_items: } %>
+<div id="library-items" class="flex flex-col gap-4">
+  <h1 class="text-2xl font-bold dark:text-neutral-300">Your Library</h1>
+  <div class="flex gap-2">
+    <%= button_to "All", library_items_path(type: "all"), method: :post, remote: true,
+      class: class_names(
+        "px-4 py-2 text-sm font-medium rounded-md transition-all duration-300 hover:bg-neutral-700",
+        "bg-orange-500 text-white" => params[:type] == "all" || params[:type].nil?
+      ) %>
+    <%= button_to "Playlists", library_items_path(type: "playlists"), method: :post, remote: true,
+      class: class_names(
+        "px-4 py-2 text-sm font-medium rounded-md transition-all duration-300 hover:bg-neutral-700",
+        "bg-orange-500 text-white" => params[:type] == "playlists"
+      ) %>
+    <%= button_to "Tandas", library_items_path(type: "tandas"), method: :post, remote: true,
+      class: class_names(
+        "px-4 py-2 text-sm font-medium rounded-md transition-all duration-300 hover:bg-neutral-700",
+        "bg-orange-500 text-white" => params[:type] == "tandas"
+      ) %>
+  </div>
+  <div class="flex flex-col gap-4 transition-all duration-300">
+    <%= render library_items %>
+  </div>
+</div>

@@ -45,7 +45,6 @@ Rails.application.routes.draw do
   end
 
   resource :player, only: [:show]
-  resource :library, only: [:show]
   resource :sidebar, only: [:show]
 
   resource :playback do
@@ -65,13 +64,16 @@ Rails.application.routes.draw do
       delete :remove
     end
   end
-  
+
   resources :queue_items, only: [] do
     patch :reorder, on: :member
   end
-  
+
   resources :library_items, only: [] do
     patch :reorder, on: :member
+    collection do
+      post :index
+    end
   end
 
   concern :queueable do
@@ -82,16 +84,15 @@ Rails.application.routes.draw do
 
   resources :playlists do
     member do
-      post 'add_to_library', to: 'user_libraries#add_playlist'
+      post "add_to_library", to: "user_libraries#add_playlist"
     end
   end
 
   resources :tandas do
     member do
-      post 'add_to_library', to: 'user_libraries#add_tanda'
+      post "add_to_library", to: "user_libraries#add_tanda"
     end
   end
-
 
   resources :recordings, only: [:show, :index] do
     resource :like, only: [:create, :destroy], module: :recordings

@@ -1,4 +1,8 @@
 class UserLibraryPolicy < ApplicationPolicy
+  def show?
+    user.admin? || user.tester? || user.tester?
+  end
+
   def create?
     user.admin? || user.tester? || user.editor?
   end

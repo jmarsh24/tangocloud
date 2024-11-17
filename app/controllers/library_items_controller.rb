@@ -1,4 +1,29 @@
 class LibraryItemsController < ApplicationController
+  def index
+    authorize @user_library, :show?
+
+    library_items = @user_library.library_items
+
+    @library_items = case params[:type]
+    when "playlists"
+      library_items.where(item_type: "Playlist")
+    when "tandas"
+      library_items.where(item_type: "Tanda")
+    else
+      library_items
+    end
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream:
+          turbo_stream.replace("library-items",
+            partial: "library_items/index",
+            locals: {library_items: @library_items},
+            method: :morph)
+      end
+    end
+  end
+
   def reorder
     library_item = @user_library.library_items.find(params[:id])
 
