@@ -1,18 +1,18 @@
 <%# locals: { library_items:, active_filter: nil } %>
-<div id="library-items" class="flex flex-col gap-4">
+<div class="flex flex-col gap-4">
   <h1 class="text-2xl font-bold dark:text-neutral-300">Your Library</h1>
   <div class="flex gap-2">
-    <%= button_to "All", library_items_path(type: "all"), method: :post, remote: true,
+    <%= button_to "All", library_items_path(type: "all"),
       class: class_names(
         "px-4 py-2 text-sm font-medium rounded-md transition-all duration-300 hover:bg-neutral-700",
         "bg-orange-500 text-white" => active_filter == "all" || active_filter.nil?
       ) %>
-    <%= button_to "Playlists", library_items_path(type: "playlists"), method: :post, remote: true,
+    <%= button_to "Playlists", library_items_path(type: "playlists"),
       class: class_names(
         "px-4 py-2 text-sm font-medium rounded-md transition-all duration-300 hover:bg-neutral-700",
         "bg-orange-500 text-white" => active_filter == "playlists"
       ) %>
-    <%= button_to "Tandas", library_items_path(type: "tandas"), method: :post, remote: true,
+    <%= button_to "Tandas", library_items_path(type: "tandas"),
       class: class_names(
         "px-4 py-2 text-sm font-medium rounded-md transition-all duration-300 hover:bg-neutral-700",
         "bg-orange-500 text-white" => active_filter == "tandas"
