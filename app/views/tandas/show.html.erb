@@ -19,7 +19,7 @@
       <%= heroicon "chevron-left", size: :sm, class: "text-neutral-500 dark:text-neutral-400" %>
     <% end %>
     <% if @tanda.image.attached? %>
-      <%= image_tag @tanda.image, class: "w-64 h-64 md:w-24 md:h-24 rounded-lg object-cover shadow-md" %>
+      <%= image_tag @tanda.image, class: "w-64 h-64 md:w-24 md:h-24 rounded-lg object-cover" %>
     <% end %>
     <h1><%= @tanda.title %></h1>
     <%= button_to 'Add to Library', add_to_library_tanda_path(@tanda), method: :post, class: "btn btn-primary" %>

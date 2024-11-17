@@ -19,7 +19,7 @@
       <%= heroicon "chevron-left", size: :sm, class: "text-neutral-500 dark:text-neutral-400" %>
     <% end %>
     <% if @playlist.image.attached? %>
-      <%= image_tag @playlist.image, class: "w-64 h-64 md:w-24 md:h-24 rounded-lg object-cover shadow-md" %>
+      <%= image_tag @playlist.image, class: "w-64 h-64 md:w-24 md:h-24 rounded-lg object-cover" %>
     <% end %>
     <h1 class="text-2xl font-bold dark:text-neutral-300">
       <%= @playlist.title %>

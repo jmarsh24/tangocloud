@@ -1,6 +1,6 @@
 <%# locals: { playlist_item: } %>
 <% cache(playlist_item) do %>
-  <div class="w-full flex flex-col gap-2 rounded-lg shadow-md">
+  <div class="w-full flex flex-col gap-2 rounded-lg">
     <% if playlist_item.item.is_a?(Tanda) %>
       <%= render partial: 'tandas/tanda', locals: { tanda: playlist_item.item } %>
     <% elsif playlist_item.item.is_a?(Recording) %>

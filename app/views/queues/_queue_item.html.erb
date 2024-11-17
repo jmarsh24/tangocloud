@@ -2,7 +2,7 @@
 <% cache(queue_item) do %>
   <div 
     data-sortable-id=<%= queue_item.id %> 
-    class="w-full flex items-center gap-2 rounded-lg shadow-md"
+    class="w-full flex items-center gap-2 rounded-lg"
   >
     <% if queue_item.item.is_a?(Tanda) %>
       <%= render partial: 'tandas/tanda', locals: { tanda: queue_item.item } %>
