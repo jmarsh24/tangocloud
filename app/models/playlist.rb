@@ -13,13 +13,21 @@ class Playlist < ApplicationRecord
       .filter_map { _1.digital_remasters.first&.album&.album_art }
       .uniq
 
+    if unique_album_arts.empty?
+      unique_album_arts = tandas.includes(recordings: {digital_remasters: {album: {album_art_attachment: :blob}}})
+        .flat_map { |tanda| tanda.recordings }
+        .filter_map { _1.digital_remasters.first&.album&.album_art }
+        .uniq
+    end
+
     return if unique_album_arts.empty?
 
     if unique_album_arts.size < 4
       image.attach(unique_album_arts.first.blob) if unique_album_arts.first&.blob
-    else
-      create_and_attach_composite_image(unique_album_arts.take(4))
+      return
     end
+
+    create_and_attach_composite_image(unique_album_arts.take(4))
   end
 end
 
