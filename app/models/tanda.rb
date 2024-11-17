@@ -29,7 +29,6 @@ end
 #  title           :string           not null
 #  subtitle        :string
 #  description     :text
-#  slug            :string
 #  public          :boolean          default(TRUE), not null
 #  system          :boolean          default(FALSE), not null
 #  user_id         :uuid

@@ -4,10 +4,9 @@ module Playlistable
   included do
     searchkick word_start: [:title, :description]
 
-    before_validation :set_default_title, prepend: true
+    before_validation :set_default_title
 
     validates :title, presence: true
-    validates :slug, uniqueness: true
 
     has_many :likes, as: :likeable, dependent: :destroy
     has_many :shares, as: :shareable, dependent: :destroy
@@ -17,10 +16,6 @@ module Playlistable
     has_one_attached :playlist_file, dependent: :purge_later
 
     scope :public_playlists, -> { where(public: true) }
-  end
-
-  def should_generate_new_friendly_id?
-    title_changed? || slug.blank?
   end
 
   def set_default_title

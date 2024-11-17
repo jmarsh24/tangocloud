@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_16_120516) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_17_201227) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -386,7 +386,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_16_120516) do
     t.string "title", null: false
     t.string "subtitle"
     t.text "description"
-    t.string "slug"
     t.boolean "public", default: true, null: false
     t.uuid "user_id"
     t.datetime "created_at", null: false
@@ -394,7 +393,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_16_120516) do
     t.uuid "playlist_type_id"
     t.boolean "import_as_tandas", default: false, null: false
     t.index ["playlist_type_id"], name: "index_playlists_on_playlist_type_id"
-    t.index ["slug"], name: "index_playlists_on_slug", unique: true
     t.index ["user_id"], name: "index_playlists_on_user_id"
   end
 
@@ -520,14 +518,12 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_16_120516) do
     t.string "title", null: false
     t.string "subtitle"
     t.text "description"
-    t.string "slug"
     t.boolean "public", default: true, null: false
     t.boolean "system", default: false, null: false
     t.uuid "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "playlists_count", default: 0, null: false
-    t.index ["slug"], name: "index_tandas_on_slug", unique: true
     t.index ["user_id"], name: "index_tandas_on_user_id"
   end
 

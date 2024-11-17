@@ -48,7 +48,6 @@ end
 #  title            :string           not null
 #  subtitle         :string
 #  description      :text
-#  slug             :string
 #  public           :boolean          default(TRUE), not null
 #  user_id          :uuid
 #  created_at       :datetime         not null

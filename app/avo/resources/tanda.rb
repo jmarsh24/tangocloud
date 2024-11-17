@@ -22,7 +22,6 @@ class Avo::Resources::Tanda < Avo::BaseResource
     field :title, as: :text
     field :subtitle, as: :text, hide_on: :index
     field :description, as: :textarea
-    field :slug, as: :text, hide_on: :index
     field :user, as: :belongs_to
     field :public, as: :boolean
     field :system, as: :boolean
