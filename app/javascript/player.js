@@ -88,9 +88,10 @@ export default class Player {
   }
 
   load(audioUrl) {
-    if (this.wavesurfer && this.isReady) {
-      this.wavesurfer.destroy();
+    if (this.wavesurfer) {
+    this.wavesurfer.destroy();
     }
+
     this._audioUrl = audioUrl;
     this.initialize();
     dispatchEvent(document, "player:beforePlaying");

@@ -81,7 +81,9 @@ export default class extends Controller {
   }
 
   play() {
-    this.Player.play();
+    this.Player.wavesurfer.once("ready", () => {
+      this.play();
+    });
     this.#onPlay();
   }
 
