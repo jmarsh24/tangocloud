@@ -1,5 +1,5 @@
 <%# locals: { library_item:, active_filter: } %>
-<% cache(library_item) do %>
+<% cache([library_item, active_filter]) do %>
   <div 
     id=<%= dom_id(library_item) %>
     class="flex items-stretch align-stetch gap-4 bg-neutral-900 text-white rounded-sm overflow-hidden hover:bg-neutral-800 transition group"
