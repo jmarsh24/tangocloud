@@ -26,7 +26,7 @@ class TandasController < ApplicationController
   end
 
   def show
-    @tanda = policy_scope(Tanda).friendly.find(params[:id])
+    @tanda = policy_scope(Tanda).find(params[:id])
 
     tanda_recordings = @tanda
       .tanda_recordings

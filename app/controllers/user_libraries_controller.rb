@@ -19,7 +19,7 @@ class UserLibrariesController < ApplicationController
   end
 
   def add_playlist
-    playlist = Playlist.friendly.find(params[:id])
+    playlist = Playlist.find(params[:id])
     authorize playlist, :add_to_library?
 
     library_item = current_user.user_library.library_items.create!(item: playlist)
@@ -31,7 +31,7 @@ class UserLibrariesController < ApplicationController
   end
 
   def add_tanda
-    tanda = Tanda.friendly.find(params[:id])
+    tanda = Tanda.find(params[:id])
     authorize tanda, :add_to_library?
 
     library_item = current_user.user_library.library_items.create!(item: tanda)

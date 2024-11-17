@@ -5,7 +5,7 @@ class PlaylistsController < ApplicationController
   end
 
   def show
-    @playlist = policy_scope(Playlist).friendly.find(params[:id])
+    @playlist = policy_scope(Playlist).find(params[:id])
 
     recordings = PlaylistItem
       .strict_loading

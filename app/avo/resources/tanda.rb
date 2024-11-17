@@ -5,13 +5,6 @@ class Avo::Resources::Tanda < Avo::BaseResource
   self.search = {
     query: -> { query.search(params[:q]).results }
   }
-  self.find_record_method = -> {
-    if id.is_a?(Array)
-      query.where(slug: id)
-    else
-      query.friendly.find id
-    end
-  }
 
   self.ordering = {
     visible_on: :index,

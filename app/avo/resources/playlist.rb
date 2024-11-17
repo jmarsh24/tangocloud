@@ -5,13 +5,7 @@ class Avo::Resources::Playlist < Avo::BaseResource
   self.search = {
     query: -> { query.search(params[:q]).results }
   }
-  self.find_record_method = -> {
-    if id.is_a?(Array)
-      query.where(slug: id)
-    else
-      query.friendly.find id
-    end
-  }
+
   def fields
     field :id, as: :id, readonly: true, only_on: :show
     field :import_as_tandas, as: :boolean

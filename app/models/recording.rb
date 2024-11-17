@@ -1,7 +1,4 @@
 class Recording < ApplicationRecord
-  extend FriendlyId
-  friendly_id :title, use: :slugged
-
   searchkick word_start: [:title, :orchestra_name, :singer_name]
 
   belongs_to :orchestra, optional: true, counter_cache: true
