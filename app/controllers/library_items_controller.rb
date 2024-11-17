@@ -4,7 +4,7 @@ class LibraryItemsController < ApplicationController
 
     library_items = @user_library.library_items
 
-    @library_items = case params[:type]
+    library_items = case params[:type]
     when "playlists"
       library_items.where(item_type: "Playlist")
     when "tandas"
@@ -18,7 +18,8 @@ class LibraryItemsController < ApplicationController
         render turbo_stream:
           turbo_stream.replace("library-items",
             partial: "library_items/index",
-            locals: {library_items: @library_items},
+            locals: {library_items:,
+                     active_filter: params[:type]},
             method: :morph)
       end
     end

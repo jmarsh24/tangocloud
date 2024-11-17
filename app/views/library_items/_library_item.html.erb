@@ -1,4 +1,4 @@
-<%# locals: { library_item: } %>
+<%# locals: { library_item:, active_filter: } %>
 <% cache(library_item) do %>
   <div 
     id=<%= dom_id(library_item) %>
@@ -17,6 +17,11 @@
           <h2 class="text-sm font-medium text-white hover:text-orange-400">
             <%= library_item.item.title %>
           </h2>
+          <% if active_filter.nil? || active_filter == "all" %>
+            <p class="text-xs text-neutral-400">
+              <%= library_item.item.is_a?(Tanda) ? "Tanda" : "Playlist" %>
+            </p>
+          <% end %>
         </div>
       </div>
     <% end %>
