@@ -24,6 +24,21 @@ class LibraryItemsController < ApplicationController
     end
   end
 
+  def destroy
+    library_item = @user_library.library_items.find(params[:id])
+
+    authorize library_item
+
+    library_item.destroy!
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream:
+          turbo_stream.remove("library_item_#{library_item.id}")
+      end
+    end
+  end
+
   def reorder
     library_item = @user_library.library_items.find(params[:id])
 

@@ -1,19 +1,34 @@
 <%# locals: { library_item: } %>
 <% cache(library_item) do %>
-  <%= link_to library_item.item do %>
-    <div 
-    data-sortable-handle
-    data-sortable-id="<%= library_item.id %>" 
-    class="flex items-center gap-4 bg-neutral-900 text-white shadow-lg rounded-sm overflow-hidden hover:bg-neutral-800 transition"
+  <div 
+    id=<%= dom_id(library_item) %>
+    class="flex items-stretch align-stetch gap-4 bg-neutral-900 text-white rounded-sm overflow-hidden hover:bg-neutral-800 transition group"
   >
-      <% if library_item.item.image&.attached? %>
-        <%= image_tag library_item.item.image, class: "w-10 aspect-square object-cover" %>
-      <% end%>
-      <div class="flex-1">
-        <h2 class="text-sm font-medium text-white hover:text-orange-400">
-          <%= library_item.item.title  %>
-        </h2>
+    <%= link_to library_item.item, class: "flex-1" do %>
+      <div 
+        data-sortable-handle
+        data-sortable-id="<%= library_item.id %>" 
+        class="flex items-center gap-4"
+      >
+        <% if library_item.item.image&.attached? %>
+          <%= image_tag library_item.item.image, class: "w-10 aspect-square object-cover" %>
+        <% end %>
+        <div class="flex-1">
+          <h2 class="text-sm font-medium text-white hover:text-orange-400">
+            <%= library_item.item.title %>
+          </h2>
+        </div>
       </div>
-    </div>
-  <% end %>
+    <% end %>
+    <%= form_with url: library_item_path(library_item), method: :delete do %>
+      <button 
+        type="submit" 
+        class="h-full bg-red-600 hover:bg-red-500 text-white text-sm rounded-sm flex items-center justify-center"
+      >
+        <span class="hidden px-2 py-1 group-hover:block">
+          <%= heroicon "trash", size: :xs %>
+        </span>
+      </button>
+    <% end %>
+  </div>
 <% end %>
