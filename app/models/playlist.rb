@@ -2,16 +2,16 @@ class Playlist < ApplicationRecord
   include Playlistable
 
   has_many :playlist_items, dependent: :destroy
-  has_many :tanda_items, through: :playlist_items, source: :item, source_type: "TandaItem", dependent: :destroy
   has_many :recordings, through: :playlist_items, source: :item, source_type: "Recording"
   has_many :tandas, through: :playlist_items, source: :item, source_type: "Tanda"
+  has_many :library_items, as: :item, dependent: :destroy
 
   belongs_to :playlist_type, optional: true
 
-    def attach_default_image
-    unique_album_arts = recordings.includes(digital_remasters: { album: { album_art_attachment: :blob } })
-                                  .filter_map { _1.digital_remasters.first&.album&.album_art }
-                                  .uniq
+  def attach_default_image
+    unique_album_arts = recordings.includes(digital_remasters: {album: {album_art_attachment: :blob}})
+      .filter_map { _1.digital_remasters.first&.album&.album_art }
+      .uniq
 
     return if unique_album_arts.empty?
 

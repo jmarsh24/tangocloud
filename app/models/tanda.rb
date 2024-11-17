@@ -3,8 +3,8 @@ class Tanda < ApplicationRecord
 
   belongs_to :user, optional: true
   has_many :tanda_recordings, dependent: :destroy
-  has_many :tanda_items, through: :tanda_recordings, source: :item, source_type: "TandaItem", dependent: :destroy
   has_many :recordings, through: :tanda_recordings, inverse_of: :tandas
+  has_many :library_items, as: :item, dependent: :destroy
 
   def attach_default_image
     unique_album_arts = recordings.includes(digital_remasters: { album: { album_art_attachment: :blob } })
