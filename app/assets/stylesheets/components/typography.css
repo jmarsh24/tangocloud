@@ -76,8 +76,10 @@
 }
 
 :root {
-  font-family: 'Montserrat', sans-serif;
-  font-feature-settings: "liga" 1, "calt" 1;
+  font-family: "Montserrat", sans-serif;
+  font-feature-settings:
+    "liga" 1,
+    "calt" 1;
   /* Ensures Montserrat is the base font for the entire app */
 }
 
@@ -90,10 +92,9 @@
 }
 
 @layer components {
-
   h1,
   .h1 {
-    @apply text-3xl font-bold text-primary;
+    @apply text-3xl font-bold;
     /* No need for explicit font-family unless you want a serif fallback */
   }
 
@@ -115,6 +116,6 @@
 
 @supports (font-variation-settings: normal) {
   :root {
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Montserrat", sans-serif;
   }
 }
