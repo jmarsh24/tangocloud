@@ -61,10 +61,7 @@ export default class extends Controller {
 
   async audioUrlValueChanged() {
     await this.loadAudio();
-
-    if (this.hasInitialized) { 
-      this.play();
-    }
+    this.Player.play();
   }
 
   async loadAudio() {
