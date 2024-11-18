@@ -19,6 +19,6 @@
 <div 
   data-controller="sortable"
   data-sortable-url-value="<%= reorder_library_item_path(id: ":id") %>" 
-  class="flex flex-col gap-4 transition-all duration-300">
+  class="flex flex-col gap-2 transition-all duration-300">
   <%= render partial: "library_items/library_item", collection: library_items, locals: { active_filter: } %>
 </div>
