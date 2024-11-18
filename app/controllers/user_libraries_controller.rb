@@ -14,7 +14,7 @@ class UserLibrariesController < ApplicationController
     end
 
     respond_to do |format|
-      format.turbo_stream.update("user-library", partial: "user_library/show", locals: {library_items: @library_items})
+      format.turbo_stream.update("library-items", partial: "user_library/show", locals: {library_items: @library_items})
     end
   end
 
@@ -25,7 +25,7 @@ class UserLibrariesController < ApplicationController
     library_item = current_user.user_library.library_items.create!(item: playlist)
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: turbo_stream.append("user-library", partial: "library_items/library_item", locals: {library_item:, active_filter: "playlists"})
+        render turbo_stream: turbo_stream.append("library-items", partial: "library_items/library_item", locals: {library_item:, active_filter: "playlists"})
       end
     end
   end
@@ -38,7 +38,7 @@ class UserLibrariesController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: turbo_stream.append("user-library", partial: "library_items/library_item", locals: {library_item:, active_filter: "tandas"})
+        render turbo_stream: turbo_stream.append("library-items", partial: "library_items/library_item", locals: {library_item:, active_filter: "tandas"})
       end
     end
   end
