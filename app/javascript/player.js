@@ -8,6 +8,7 @@ export default class Player {
     this.isMuted = muted;
     this.createGradients();
     this.isReady = false;
+    this.duration = 0;
     this.initialize();
   }
 
@@ -37,7 +38,6 @@ export default class Player {
     this.wavesurfer.on("ready", () => {
       this.duration = this.wavesurfer.getDuration();
       this.isReady = true;
-      this.container.classList.add("sm:block");
       dispatchEvent(document, "player:ready", { duration: this.duration });
     });
 
@@ -48,10 +48,37 @@ export default class Player {
     this.wavesurfer.on("finish", () => {
       dispatchEvent(document, "player:finish");
     });
+
+    this.wavesurfer.on("error", (error) => {
+      console.error("WaveSurfer error:", error);
+      dispatchEvent(document, "player:error", { error });
+    });
   }
 
-  destroy() {
-    this.wavesurfer.destroy();
+  async load(audioUrl, peaks, duration) {
+    try {
+      this.wavesurfer.destroy();
+      this.initialize();
+
+      if (peaks) {
+        this.wavesurfer.load(audioUrl, peaks, duration);
+      } else {
+        this.wavesurfer.load(audioUrl, null, duration);
+      }
+    } catch (error) {
+      console.error("Error loading audio:", error);
+      throw error;
+    }
+  }
+
+  play() {
+    this.wavesurfer.play();
+    dispatchEvent(document, "player:playing");
+  }
+
+  pause() {
+    this.wavesurfer.pause();
+    dispatchEvent(document, "player:paused");
   }
 
   setVolume(value) {
@@ -75,62 +102,8 @@ export default class Player {
     }
   }
 
-  async load(audioUrl, waveformData, duration) {
-    this._audioUrl = audioUrl;
-    this._waveformData = waveformData;
-    this._duration = duration;
-
-    this.wavesurfer.destroy();
-    this.initialize();
-
-    try {
-      if (this._waveformData) {
-        const peaks = JSON.parse(this._waveformData);
-        await this.loadAudioWithEvents(this._audioUrl, peaks, this._duration);
-      } else {
-        await this.loadAudioWithEvents(this._audioUrl, null, this._duration);
-      }
-    } catch (error) {
-      console.error("Error loading audio:", error);
-      throw error;
-    }
-  }
-
-  loadAudioWithEvents(audioUrl, peaks) {
-    return new Promise((resolve, reject) => {
-      const onReady = () => {
-        this.wavesurfer.un("error", onError);
-        resolve();
-      };
-
-      const onError = (error) => {
-        this.wavesurfer.un("ready", onReady);
-        reject(error);
-      };
-
-      this.wavesurfer.once("ready", onReady);
-      this.wavesurfer.once("error", onError);
-
-      if (peaks) {
-        this.wavesurfer.load(audioUrl, peaks);
-      } else {
-        this.wavesurfer.load(audioUrl);
-      }
-    });
-  }
-
   destroy() {
     this.wavesurfer.destroy();
-  }
-
-  play() {
-    this.wavesurfer.play();
-    dispatchEvent(document, "player:playing");
-  }
-
-  pause() {
-    this.wavesurfer.pause();
-    dispatchEvent(document, "player:pause");
   }
 
   dispatchProgressEvent(currentTime) {

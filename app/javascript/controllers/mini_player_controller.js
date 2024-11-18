@@ -8,7 +8,7 @@ export default class extends Controller {
     "pauseButton",
     "playingIndicator",
     "pauseIndicator",
-    "progress"
+    "progress",
   ];
 
   initialize() {
@@ -47,14 +47,22 @@ export default class extends Controller {
   #onPlay() {
     this.playButtonTarget.classList.add("hidden");
     this.pauseButtonTarget.classList.remove("hidden");
-    this.playingIndicatorTarget.classList.remove("hidden");
-    this.pauseIndicatorTarget.classList.add("hidden");
+    if (this.hasPlayingIndicatorTarget) {
+      this.playingIndicatorTarget.classList.remove("hidden");
+    }
+    if (this.hasPauseIndicatorTarget) {
+      this.pauseIndicatorTarget.classList.add("hidden");
+    }
   }
 
   #onPause() {
     this.playButtonTarget.classList.remove("hidden");
     this.pauseButtonTarget.classList.add("hidden");
-    this.playingIndicatorTarget.classList.add("hidden");
-    this.pauseIndicatorTarget.classList.remove("hidden");
+    if (this.hasPlayingIndicatorTarget) {
+      this.playingIndicatorTarget.classList.add("hidden");
+    }
+    if (this.hasPauseIndicatorTarget) {
+      this.pauseIndicatorTarget.classList.remove("hidden");
+    }
   }
 }

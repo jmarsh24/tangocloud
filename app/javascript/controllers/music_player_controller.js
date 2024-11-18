@@ -28,7 +28,6 @@ export default class extends Controller {
   };
 
   initialize() {
-    this.#onPause()
     installEventHandler(this);
 
     const initialVolume = (this.volumeSliderTarget.value || 100) / 100;
@@ -39,21 +38,22 @@ export default class extends Controller {
       muted: this.mutedValue,
     });
 
-    this.updateTime = this.updateTime.bind(this);
-    this.setDuration = this.setDuration.bind(this);
-    this.updateProgress = this.updateProgress.bind(this);
-
     this.isTouchDevice =
       "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
-    this.handleEvent("player:play", { with: () => this.play() });
-    this.handleEvent("player:pause", { with: () => this.pause() });
-    this.handleEvent("player:ready", { with: this.setDuration });
-    this.handleEvent("player:progress", { with: this.updateTime });
-    this.handleEvent("player:progress", { with: this.updateProgress });
+    this.loadAudio();
+
+    this.handleEvent("player:ready", { with: this.setDuration.bind(this) });
+    this.handleEvent("player:progress", { with: this.updateTime.bind(this) });
+    this.handleEvent("player:progress", {
+      with: this.updateProgress.bind(this),
+    });
     this.handleEvent("player:finish", { with: () => this.next() });
 
-    this.loadAudio();
+    document.addEventListener("player:play", () => this.play());
+    document.addEventListener("player:pause", () => this.pause());
+    document.addEventListener("player:playing", this.#onPlay.bind(this));
+    document.addEventListener("player:paused", this.#onPause.bind(this));
   }
 
   async audioUrlValueChanged() {
@@ -63,28 +63,14 @@ export default class extends Controller {
 
   async loadAudio() {
     try {
-      await this.Player.load(this.audioUrlValue, this.waveformDataValue, this.durationValue);
+      await this.Player.load(
+        this.audioUrlValue,
+        this.waveformDataValue ? JSON.parse(this.waveformDataValue) : null,
+        this.durationValue
+      );
       this.updateMediaSession();
     } catch (error) {
       console.error("Error loading audio:", error);
-    }
-  }
-
-  updateMediaSession() {
-    if ("mediaSession" in navigator) {
-      navigator.mediaSession.metadata = new MediaMetadata({
-        title: this.trackTitleValue,
-        artist: this.detailsPrimaryValue,
-        album: this.detailsSecondaryValue,
-        artwork: [{ src: this.albumArtTarget.src }],
-      });
-
-      navigator.mediaSession.setActionHandler("play", () => this.play());
-      navigator.mediaSession.setActionHandler("pause", () => this.pause());
-      navigator.mediaSession.setActionHandler("nexttrack", () => this.next());
-      navigator.mediaSession.setActionHandler("previoustrack", () =>
-        this.previous()
-      );
     }
   }
 
@@ -132,32 +118,41 @@ export default class extends Controller {
 
   setDuration(event) {
     const { duration } = event.detail;
+
     if (this.hasDurationTarget) {
       this.durationTarget.textContent = formatDuration(duration);
     }
   }
 
   updateTime(event) {
-    if (!this.Player.seeking) {
-      const { currentTime, duration } = event.detail;
-      if (this.hasTimeTarget) {
-        this.timeTarget.textContent = formatDuration(currentTime);
-      }
-      this.updateProgress(event);
+    const { currentTime } = event.detail;
+
+    if (this.hasTimeTarget) {
+      this.timeTarget.textContent = formatDuration(currentTime);
     }
   }
 
   updateProgress(event) {
     const { currentTime, duration } = event.detail;
-    this._progressPercentage = (currentTime / duration) * 100;
+    const progress = (currentTime / duration) * 100;
 
-    if (!this._animationFrameRequest) {
-      this._animationFrameRequest = requestAnimationFrame(() => {
-        if (this.hasProgressTarget) {
-          this.progressTarget.style.width = `${this._progressPercentage}%`;
-        }
-        this._animationFrameRequest = null;
+    if (this.hasProgressTarget) {
+      this.progressTarget.style.width = `${progress}%`;
+    }
+  }
+
+  updateMediaSession() {
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: this.trackTitleValue,
+        artist: this.detailsPrimaryValue,
+        album: this.detailsSecondaryValue,
+        artwork: [{ src: this.albumArtTarget.src }],
       });
+
+      navigator.mediaSession.setActionHandler("play", () => this.play());
+      navigator.mediaSession.setActionHandler("pause", () => this.pause());
+      navigator.mediaSession.setActionHandler("nexttrack", () => this.next());
     }
   }
 
