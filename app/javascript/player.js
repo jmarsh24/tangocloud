@@ -52,9 +52,9 @@ export default class Player {
     });
 
     this.wavesurfer.on("timeupdate", (currentTime) => {
-      if (this.isReady) {
+      // if (this.isReady) {
         this.dispatchProgressEvent(currentTime);
-      }
+      // }
     });
 
     this.wavesurfer.on("finish", () => {
