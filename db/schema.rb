@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_17_201227) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_18_225911) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -430,7 +430,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_17_201227) do
 
   create_table "recordings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.date "recorded_date"
-    t.string "slug", null: false
     t.enum "recording_type", default: "studio", null: false, enum_type: "recording_type"
     t.integer "playbacks_count", default: 0, null: false
     t.uuid "el_recodo_song_id"
@@ -450,7 +449,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_17_201227) do
     t.index ["orchestra_id"], name: "index_recordings_on_orchestra_id"
     t.index ["record_label_id"], name: "index_recordings_on_record_label_id"
     t.index ["recorded_date"], name: "index_recordings_on_recorded_date"
-    t.index ["slug"], name: "index_recordings_on_slug", unique: true
     t.index ["time_period_id"], name: "index_recordings_on_time_period_id"
   end
 
