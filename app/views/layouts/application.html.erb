@@ -12,29 +12,32 @@
     <div class="row-span-4">
       <div class="grid grid-cols-1 2xl:grid-cols-[auto,1fr,auto] h-full gap-4">
         <nav id="user-library" class="hidden 2xl:block h-full overflow-y-auto no-scrollbar w-96 pl-4 py-2" data-turbo-permanent>
-          <%= render partial: "library_items/index", locals: { library_items: @user_library.library_items, active_filter: nil } %>
-        </nav>
-        <main id="main-content" class="h-full overflow-y-auto no-scrollbar pt-2">
-          <%= yield %>
-        </main>
-        <aside id="sidebar-queue" class="hidden 2xl:block col-span-1 h-full overflow-y-auto no-scrollbar w-96 pr-4 py-2" data-turbo-permanent>
-          <%= render partial: "queues/queue", 
+          <h1 class="text-2xl font-bold dark:text-neutral-300">Your Library</h1>
+          <div id="library-items" class="flex flex-col gap-4"
+            <%= render partial: "library_items/index", locals: { library_items: @user_library.library_items, active_filter: nil } %>
+          </div>
+          </nav>
+          <main id="main-content" class="h-full overflow-y-auto no-scrollbar pt-2">
+            <%= yield %>
+          </main>
+          <aside id="sidebar-queue" class="hidden 2xl:block col-span-1 h-full overflow-y-auto no-scrollbar w-96 pr-4 py-2" data-turbo-permanent>
+            <%= render partial: "queues/queue", 
             locals: { 
               playback_queue: @playback_queue, 
               queue_items: @queue_items, 
               playback_session: @playback_session
             } 
           %>
+          </aside>
         </aside>
-      </aside>
+      </div>
     </div>
-  </div>
-  <footer class="row-span-1">
-    <div id="music-player" data-turbo-permanent>
-      <%= render partial: "shared/music_player", locals: { playback_session: @playback_session, playback_queue: @playback_queue } %>
-    </div>
-    <%= render "shared/tab_navigation" %>
-  </footer>
-  <%= turbo_frame_tag "modal", target: "_top" %>
-</body>
+    <footer class="row-span-1">
+      <div id="music-player" data-turbo-permanent>
+        <%= render partial: "shared/music_player", locals: { playback_session: @playback_session, playback_queue: @playback_queue } %>
+      </div>
+      <%= render "shared/tab_navigation" %>
+    </footer>
+    <%= turbo_frame_tag "modal", target: "_top" %>
+  </body>
 </html>

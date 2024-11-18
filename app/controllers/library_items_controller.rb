@@ -16,7 +16,7 @@ class LibraryItemsController < ApplicationController
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream:
-          turbo_stream.update("user-library",
+          turbo_stream.update("library-items",
             partial: "library_items/index",
             locals: {library_items:,
                      active_filter: params[:type]},
