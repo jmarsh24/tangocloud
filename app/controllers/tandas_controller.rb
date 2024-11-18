@@ -19,8 +19,13 @@ class TandasController < ApplicationController
           ]
         ]
       )
-      .random
-      .limit(100)
+
+    if params[:genre].present?
+      @tandas = @tandas
+        .joins(recordings: :genre)
+        .where(genres: {slug: params[:genre]})
+        .distinct
+    end
 
     authorize Tanda
   end
