@@ -24,6 +24,7 @@ export default class extends Controller {
     detailsSecondary: String,
     waveformData: String,
     muted: Boolean,
+    duration: Number,
   };
 
   initialize() {
@@ -62,7 +63,7 @@ export default class extends Controller {
 
   async loadAudio() {
     try {
-      await this.Player.load(this.audioUrlValue, this.waveformDataValue);
+      await this.Player.load(this.audioUrlValue, this.waveformDataValue, this.durationValue);
       this.updateMediaSession();
     } catch (error) {
       console.error("Error loading audio:", error);

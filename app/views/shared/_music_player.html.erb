@@ -3,15 +3,16 @@
   <% recording = playback_queue.current_item&.item %>
   <% if recording %>
     <div
+      class="relative flex flex-col gap-2 w-full p-2 dark:bg-neutral-900 z-50"
       data-controller="music-player"
       data-music-player-audio-url-value="<%= url_for(recording.digital_remasters.first.audio_variants.first.audio_file) %>"
       data-music-player-track-title-value="<%= recording.composition.title %>"
       data-music-player-details-primary-value="<%= recording.orchestra.display_name %><% if recording.singers.present? %> &middot; <%= recording.singers.map(&:name).compact.join(", ") %><% end %>"
       data-music-player-details-secondary-value="<%= recording.genre.name %> - <%= recording.year %>"
       data-music-player-album-title-value="<%= recording.digital_remasters.first.album.title %>"
-      data-music-player-waveform-data-value="<%= recording.digital_remasters.first.waveform.data %>"
       data-music-player-mute-value="<%= playback_session.muted? %>"
-      class="relative flex flex-col gap-2 w-full p-2 dark:bg-neutral-900 z-50"
+      data-music-player-duration-value="<%= recording.digital_remasters.first.duration %>"
+      data-music-player-waveform-data-value="<%= recording.digital_remasters.first.waveform.data %>"
     >
       <div
         data-music-player-target="waveform"

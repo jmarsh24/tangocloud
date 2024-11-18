@@ -75,9 +75,10 @@ export default class Player {
     }
   }
 
-  async load(audioUrl, waveformData) {
+  async load(audioUrl, waveformData, duration) {
     this._audioUrl = audioUrl;
     this._waveformData = waveformData;
+    this._duration = duration;
 
     this.wavesurfer.destroy();
     this.initialize();
@@ -85,9 +86,9 @@ export default class Player {
     try {
       if (this._waveformData) {
         const peaks = JSON.parse(this._waveformData);
-        await this.loadAudioWithEvents(this._audioUrl, peaks);
+        await this.loadAudioWithEvents(this._audioUrl, peaks, this._duration);
       } else {
-        await this.loadAudioWithEvents(this._audioUrl);
+        await this.loadAudioWithEvents(this._audioUrl, null, this._duration);
       }
     } catch (error) {
       console.error("Error loading audio:", error);
