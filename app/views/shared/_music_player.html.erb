@@ -10,11 +10,11 @@
       data-music-player-details-secondary-value="<%= recording.genre.name %> - <%= recording.year %>"
       data-music-player-album-title-value="<%= recording.digital_remasters.first.album.title %>"
       data-music-player-waveform-data-value="<%= recording.digital_remasters.first.waveform.data %>"
-      class="relative w-full p-4 dark:bg-neutral-900 z-50"
+      class="relative flex flex-col gap-2 w-full p-2 dark:bg-neutral-900 z-50"
     >
       <div
         data-music-player-target="waveform"
-        class="relative w-full h-36 rounded-lg p-2 overflow-hidden hidden"
+        class="relative w-full h-16"
         data-action="pointermove->music-player#handleHover mouseleave->music-player#hideHover"
         >
         <div data-music-player-target="hover" class="absolute left-0 top-0 w-0 h-full bg-neutral-200 opacity-10 z-50"></div>

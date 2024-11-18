@@ -15,6 +15,7 @@ export default class Player {
   initialize() {
     this.wavesurfer = WaveSurfer.create({
       container: this.container,
+      height: 64,
       waveColor: this.waveGradient,
       progressColor: this.progressGradient,
       url: this._audioUrl,
@@ -120,7 +121,7 @@ export default class Player {
     canvas.height = canvasHeight;
     const ctx = canvas.getContext("2d");
 
-    const heightFactor = 144 * 1.35;
+    const heightFactor = 64 * 1.35;
     const stopPosition1 = 0.675;
     const stopPosition2 = (0.675 * 77 + 1) / 77;
 
