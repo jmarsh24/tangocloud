@@ -55,10 +55,6 @@ export default class extends Controller {
     this.loadAudio();
   }
 
-  disconnect() {
-    this.Player.destroy();
-  }
-
   async audioUrlValueChanged() {
     await this.loadAudio();
     this.Player.play();
