@@ -14,7 +14,7 @@ export default class extends Controller {
     "albumArt",
     "nextButton",
     "progress",
-    "volumeSlider"
+    "volumeSlider",
   ];
 
   static values = {
@@ -22,29 +22,28 @@ export default class extends Controller {
     trackTitle: String,
     detailsPrimary: String,
     detailsSecondary: String,
-    waveformData: String
+    waveformData: String,
+    muted: Boolean,
   };
 
   initialize() {
+    this.#onPause()
     installEventHandler(this);
 
     const initialVolume = (this.volumeSliderTarget.value || 100) / 100;
 
     this.Player = new Player({
       container: this.waveformTarget,
-      audioUrl: this.audioUrlValue,
-      autoplay: true,
       volume: initialVolume,
-      muted: false,
+      muted: this.mutedValue,
     });
-
-    this.Player.initialize();
 
     this.updateTime = this.updateTime.bind(this);
     this.setDuration = this.setDuration.bind(this);
     this.updateProgress = this.updateProgress.bind(this);
 
-    this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    this.isTouchDevice =
+      "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
     this.handleEvent("player:play", { with: () => this.play() });
     this.handleEvent("player:pause", { with: () => this.pause() });
@@ -53,29 +52,42 @@ export default class extends Controller {
     this.handleEvent("player:progress", { with: this.updateProgress });
     this.handleEvent("player:finish", { with: () => this.next() });
 
-    this.updateMediaSession();
+    this.loadAudio();
+  }
+
+  disconnect() {
+    this.Player.destroy();
   }
 
   audioUrlValueChanged() {
-    this.Player.load(this.audioUrlValue);
-    this.updateMediaSession();
+    this.loadAudio();
+  }
+
+  async loadAudio() {
+    try {
+      await this.Player.load(this.audioUrlValue, this.waveformDataValue);
+      this.updateMediaSession();
+      this.Player.play();
+    } catch (error) {
+      console.error("Error loading audio:", error);
+    }
   }
 
   updateMediaSession() {
-    if ('mediaSession' in navigator) {
+    if ("mediaSession" in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: this.trackTitleValue,
         artist: this.detailsPrimaryValue,
         album: this.detailsSecondaryValue,
-        artwork: [
-          { src: this.albumArtTarget.src }
-        ]
+        artwork: [{ src: this.albumArtTarget.src }],
       });
 
-      navigator.mediaSession.setActionHandler('play', () => this.play());
-      navigator.mediaSession.setActionHandler('pause', () => this.pause());
-      navigator.mediaSession.setActionHandler('nexttrack', () => this.next());
-      navigator.mediaSession.setActionHandler('previoustrack', () => this.previous());
+      navigator.mediaSession.setActionHandler("play", () => this.play());
+      navigator.mediaSession.setActionHandler("pause", () => this.pause());
+      navigator.mediaSession.setActionHandler("nexttrack", () => this.next());
+      navigator.mediaSession.setActionHandler("previoustrack", () =>
+        this.previous()
+      );
     }
   }
 

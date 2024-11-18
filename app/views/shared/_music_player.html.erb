@@ -10,6 +10,7 @@
       data-music-player-details-secondary-value="<%= recording.genre.name %> - <%= recording.year %>"
       data-music-player-album-title-value="<%= recording.digital_remasters.first.album.title %>"
       data-music-player-waveform-data-value="<%= recording.digital_remasters.first.waveform.data %>"
+      data-music-player-mute-value="<%= playback_session.muted? %>"
       class="relative flex flex-col gap-2 w-full p-2 dark:bg-neutral-900 z-50"
     >
       <div
