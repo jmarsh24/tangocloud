@@ -7,7 +7,7 @@ class PlayersController < ApplicationController
     @recording = policy_scope(Recording)
       .with_associations
       .includes(composition: {composition_lyrics: :lyric})
-      .friendly.find(params[:recording_id])
+      .find(params[:recording_id])
     authorize @recording
   end
 end
