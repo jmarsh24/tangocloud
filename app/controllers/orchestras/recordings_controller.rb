@@ -6,7 +6,7 @@ class Orchestras::RecordingsController < ApplicationController
 
     recording = Recording.find(params[:id])
     authorize recording, :play?
-    all_recordings = query.results.to_a
+    all_recordings = query.results.order(popularity_score: :desc)
 
     playback_queue = policy_scope(PlaybackQueue).find_or_create_by!(user: current_user)
     playback_session = PlaybackSession.find_or_create_by!(user: current_user)
