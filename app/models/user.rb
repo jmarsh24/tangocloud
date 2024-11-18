@@ -25,6 +25,8 @@ class User < ApplicationRecord
 
   has_one_attached :avatar
 
+  after_create_commit :setup_library_and_playlist
+
   validates :username,
     uniqueness: {case_sensitive: false},
     length: {minimum: 3, maximum: 20},
@@ -54,6 +56,21 @@ class User < ApplicationRecord
   end
 
   private
+
+  def setup_library_and_playlist
+    User.transaction do
+      create_user_library! unless user_library
+      create_liked_playlist unless playlists.joins(:playlist_type).where("playlist_types.name = ?", "Liked").exists?
+    end
+  end
+
+  def create_liked_playlist
+    return unless user_library
+
+    playlist_type = PlaylistType.find_or_create_by!(name: "Liked")
+    liked_playlist = playlists.create!(title: "Liked", playlist_type:)
+    user_library.library_items.create!(item: liked_playlist, position: 0)
+  end
 
   def search_data
     {
