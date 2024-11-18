@@ -8,6 +8,12 @@ class Playlist < ApplicationRecord
 
   belongs_to :playlist_type, optional: true
 
+  scope :exclude_liked, -> {
+    left_joins(:playlist_type)
+      .where(playlist_types: {name: nil})
+      .or(left_joins(:playlist_type).where.not(playlist_types: {name: "Liked"}))
+  }
+
   def attach_default_image
     unique_album_arts = recordings.includes(digital_remasters: {album: {album_art_attachment: :blob}})
       .filter_map { _1.digital_remasters.first&.album&.album_art }

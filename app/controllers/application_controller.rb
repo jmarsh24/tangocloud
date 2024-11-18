@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   after_action :verify_authorized, :verify_policy_scoped
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  before_action :set_playback_session_and_queue, :set_playlists
+  before_action :set_playback_session_and_queue
   before_action :set_user_library
 
   private
@@ -21,14 +21,10 @@ class ApplicationController < ActionController::Base
       @playback_queue = policy_scope(PlaybackQueue).find_or_create_by(user: current_user)
       @playback_queue.ensure_default_items
       @queue_items = @playback_queue.queue_items
-                              .including_item_associations
-                              .rank(:row_order)
-                              .offset(1)
+        .including_item_associations
+        .rank(:row_order)
+        .offset(1)
     end
-  end
-
-  def set_playlists
-    @playlists = policy_scope(Playlist).with_attached_image.limit(64) if Current&.user
   end
 
   def set_user_library
