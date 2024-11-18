@@ -57,7 +57,7 @@ export default class extends Controller {
   }
 
   audioUrlValueChanged() {
-    this.Player.load(this.audioUrlValue);
+    this.Player.load(this.audioUrlValue, this.waveformDataValue);
     this.updateMediaSession();
   }
 
