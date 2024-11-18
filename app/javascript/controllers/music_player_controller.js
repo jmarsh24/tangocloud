@@ -59,15 +59,18 @@ export default class extends Controller {
     this.Player.destroy();
   }
 
-  audioUrlValueChanged() {
-    this.loadAudio();
+  async audioUrlValueChanged() {
+    await this.loadAudio();
+
+    if (this.hasInitialized) { 
+      this.play();
+    }
   }
 
   async loadAudio() {
     try {
       await this.Player.load(this.audioUrlValue, this.waveformDataValue);
       this.updateMediaSession();
-      this.Player.play();
     } catch (error) {
       console.error("Error loading audio:", error);
     }

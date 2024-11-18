@@ -44,5 +44,16 @@
         <span class="text-xs text-gray-400">Playlists</span>
       <% end %>
     <% end %>
+    <% if controller_name == 'tandas' %>
+      <span class="flex flex-col items-center px-4 py-4 pb-10 text-orange-500">
+        <%= heroicon "circle-stack", size: :md, variant: :solid %>
+        <span class="text-xs">Tandas</span>
+      </span>
+    <% else %>
+      <%= link_to tandas_path, class: "flex flex-col items-center px-4 py-4 pb-10" do %>
+        <%= heroicon "circle-stack", size: :md, variant: :outline, class: "text-gray-400" %>
+        <span class="text-xs text-gray-400">Tandas</span>
+      <% end %>
+    <% end %>
   </div>
 <% end %>
