@@ -1,6 +1,6 @@
 class Identity::EmailVerificationsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:new, :show, :create]
-  skip_after_action :verify_authorized, :verify_policy_scoped
+  skip_after_action :verify_authorized
 
   before_action :set_user, only: :show
 
