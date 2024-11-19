@@ -1,7 +1,7 @@
 class RecordingsController < ApplicationController
   before_action :redirect_crawlers, only: :show
   skip_before_action :authenticate_user!, only: [:meta_tags]
-  skip_after_action :verify_authorized, only: [:meta_tags]
+  skip_after_action :verify_authorized, :verify_policy_scoped, only: [:meta_tags]
 
   def show
     playback_queue = PlaybackQueue.find_or_create_by(user: current_user)
