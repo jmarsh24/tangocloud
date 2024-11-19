@@ -1,33 +1,37 @@
 class RecordingsController < ApplicationController
-  before_action :redirect_crawlers, only: :show
-  skip_before_action :authenticate_user!, only: [:meta_tags]
-  skip_after_action :verify_authorized, :verify_policy_scoped, only: [:meta_tags]
+  before_action :set_recording, only: :show
+  skip_before_action :authenticate_user!, only: :show
+  skip_after_action :verify_authorized, :verify_policy_scoped, only: :show
 
   def show
-    playback_queue = PlaybackQueue.find_or_create_by(user: current_user)
-    playback_session = PlaybackSession.find_or_create_by(user: current_user)
+    if crawler_request?
+      render template: "recordings/meta_tags", layout: false
+    else
+      authorize @recording
 
-    authorize @recording = policy_scope(Recording).with_associations.find(params[:id])
+      playback_queue = PlaybackQueue.find_or_create_by(user: current_user)
+      playback_session = PlaybackSession.find_or_create_by(user: current_user)
 
-    respond_to do |format|
-      format.html
-      format.turbo_stream do
-        render turbo_stream: turbo_stream.update("music-player", partial: "shared/music_player", locals: {playback_queue:, playback_session:})
+      respond_to do |format|
+        format.html
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update(
+            "music-player",
+            partial: "shared/music_player",
+            locals: {playback_queue:, playback_session:}
+          )
+        end
       end
     end
   end
 
-  def meta_tags
-    @recording = Recording.with_associations.find(params[:id])
-
-    render template: "recordings/meta_tags", layout: false
-  end
-
   private
 
-  def redirect_crawlers
-    if /facebookexternalhit|Twitterbot|Pinterest|Slackbot|Googlebot/i.match?(request.user_agent)
-      redirect_to meta_tags_recording_path(id: params[:id])
-    end
+  def set_recording
+    @recording = Recording.with_associations.find(params[:id])
+  end
+
+  def crawler_request?
+    request.user_agent =~ /facebookexternalhit|Twitterbot|Pinterest|Slackbot|Googlebot|WhatsApp|MetaTags/i
   end
 end

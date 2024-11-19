@@ -96,7 +96,6 @@ Rails.application.routes.draw do
 
   resources :recordings, only: [:show, :index] do
     resource :like, only: [:create, :destroy], module: :recordings
-    get :meta_tags, on: :member
   end
 
   resources :playlists, only: [:index, :show] do
