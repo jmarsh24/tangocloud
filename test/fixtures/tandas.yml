@@ -2,9 +2,7 @@ juan_darienzo:
   title: "Juan D'Arienzo Tanda"
   public: true
   system: false
-  slug: "juan-darienzo-tanda"
   user: user
-
 # == Schema Information
 #
 # Table name: tandas

@@ -59,6 +59,7 @@ gem "turbo_power"
 gem "pagy"
 gem "ranked-model"
 gem "counter_culture"
+gem "browser"
 
 # Assets
 gem "stimulus-rails"

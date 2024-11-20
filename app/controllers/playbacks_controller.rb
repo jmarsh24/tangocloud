@@ -1,6 +1,4 @@
 class PlaybacksController < ApplicationController
-  skip_after_action :verify_policy_scoped
-
   def play
     authorize @playback_session
     @playback_session.update!(playing: true)

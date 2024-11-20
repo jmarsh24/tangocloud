@@ -1,7 +1,7 @@
 module Recordings
   class LikesController < ApplicationController
     before_action :set_recording
-    skip_after_action :verify_policy_scoped, only: [:create, :destroy]
+    skip_after_action only: [:create, :destroy]
 
     def create
       authorize @recording, :like?

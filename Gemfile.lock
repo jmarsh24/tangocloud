@@ -149,6 +149,7 @@ GEM
       msgpack (~> 1.2)
     brakeman (6.2.2)
       racc
+    browser (6.1.0)
     builder (3.3.0)
     capybara (3.40.0)
       addressable
@@ -780,6 +781,7 @@ DEPENDENCIES
   bcrypt
   bootsnap
   brakeman
+  browser
   capybara
   capybara-playwright-driver
   chunky_png

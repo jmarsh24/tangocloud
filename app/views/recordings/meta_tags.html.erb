@@ -1,0 +1,18 @@
+<% title = @recording.composition.title %>
+<% orchestra_name = @recording.orchestra.display_name %>
+<% singer_names = @recording.singers.present? ? @recording.singers.map(&:name).join(', ') : nil %>
+<% genre_name = @recording.genre.name %>
+<% release_year = @recording.year %>
+<% album_art_url = @recording.digital_remasters.first.album&.album_art&.attached? ? url_for(@recording.digital_remasters.first.album.album_art) : nil %>
+<% singer_section = singer_names ? " • #{singer_names}" : "" %>
+<meta property="og:title" content="<%= title %>">
+<meta name="twitter:description" content="<%= title %> • <%= orchestra_name %><%= singer_section %> • <%= genre_name %> • <%= release_year %>.">
+<meta property="og:image" content="<%= album_art_url %>">
+<meta property="og:type" content="music.song">
+<meta property="og:url" content="<%= recording_url(@recording) %>">
+<meta property="og:genre" content="<%= genre_name %>">
+<meta property="og:release_date" content="<%= release_year %>">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="<%= title %>">
+<meta name="twitter:description" content="<%= title %> • <%= orchestra_name %><%= singer_section %> • <%= genre_name %> • <%= release_year %>.">
+<meta name="twitter:image" content="<%= album_art_url %>">

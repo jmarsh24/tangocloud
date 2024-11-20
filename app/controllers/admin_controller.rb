@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
-  skip_after_action :verify_policy_scoped, :verify_authorized
+  skip_after_action :verify_authorized
   before_action :require_admin!
 
   def require_admin!

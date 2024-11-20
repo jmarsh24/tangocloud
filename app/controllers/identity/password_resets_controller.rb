@@ -4,7 +4,7 @@ class Identity::PasswordResetsController < ApplicationController
   force_frame_response :new
 
   skip_before_action :authenticate_user!
-  skip_after_action :verify_authorized, :verify_policy_scoped
+  skip_after_action :verify_authorized
 
   rate_limit to: 10, within: 1.hour, only: :create, with: -> { redirect_to root_path, alert: "Try again later" }
   before_action :set_user, only: %i[edit update]
