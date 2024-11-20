@@ -32,6 +32,6 @@ class RecordingsController < ApplicationController
   end
 
   def crawler_request?
-    request.user_agent =~ /facebookexternalhit|Twitterbot|Pinterest|Slackbot|Googlebot|WhatsApp|MetaTags/i
+    request.user_agent =~ /(facebook|Facebot|Messenger|Twitterbot|Pinterest|Slackbot|Googlebot|WhatsApp|MetaTags|MetaScraper)/i
   end
 end
