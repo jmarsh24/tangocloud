@@ -72,8 +72,7 @@ class Recording < ApplicationRecord
       created_at:,
       updated_at:,
       time_period: time_period&.name,
-      record_label: record_label&.name,
-      slug:
+      record_label: record_label&.name
     }
   end
 
@@ -88,7 +87,6 @@ end
 #
 #  id                :uuid             not null, primary key
 #  recorded_date     :date
-#  slug              :string           not null
 #  recording_type    :enum             default("studio"), not null
 #  playbacks_count   :integer          default(0), not null
 #  el_recodo_song_id :uuid
@@ -102,4 +100,5 @@ end
 #  playlists_count   :integer          default(0), not null
 #  tandas_count      :integer          default(0), not null
 #  popularity_score  :decimal(5, 2)    default(0.0), not null
+#  year              :integer
 #

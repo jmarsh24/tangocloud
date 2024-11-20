@@ -1,19 +1,17 @@
 class OrchestrasController < ApplicationController
+  before_action :set_orchestra, only: :show
+  skip_before_action :authenticate_user!, only: :show
+  skip_after_action :verify_authorized, only: :show
+
   def index
     @orchestras = policy_scope(Orchestra.ordered_by_recordings).limit(100).with_attached_image
     authorize Orchestra
   end
 
   def show
-    @orchestra = policy_scope(
-      Orchestra.includes(
-        :genres,
-        recordings: [
-          :composition,
-          digital_remasters: [album: [album_art_attachment: :blob]]
-        ]
-      )
-    ).friendly.find(params[:id])
+    return render template: "orchestras/meta_tags", layout: false if crawler_request?
+
+    authenticate_user! && return
     authorize @orchestra
 
     @filters = params.permit(:year, :genre, :orchestra_period, :singer, :sort, :order).to_h
@@ -46,5 +44,22 @@ class OrchestrasController < ApplicationController
       format.html
       format.turbo_stream
     end
+  end
+
+  private
+
+  def set_orchestra
+    @orchestra = Orchestra.includes(
+      :genres,
+      recordings: [
+        :composition,
+        digital_remasters: [album: [album_art_attachment: :blob]]
+      ]
+    ).friendly.find(params[:id])
+  end
+
+  def crawler_request?
+    browser = Browser.new(request.user_agent)
+    browser.bot?
   end
 end

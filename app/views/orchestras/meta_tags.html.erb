@@ -1,15 +1,14 @@
-<% content_for :meta_tags do %>
-  <meta property="og:title" content="<%= @orchestra.display_name %>">
-  <meta property="og:description" content="Discover music from <%= @orchestra.display_name %> and explore various recordings.">
-  <% if @orchestra.image.attached? %>
-    <meta property="og:image" content="<%= url_for(@orchestra.image) %>">
-  <% end %>
-  <meta property="og:type" content="music.group">
-  <meta property="og:url" content="<%= orchestra_url(@orchestra) %>">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="<%= @orchestra.display_name %>">
-  <meta name="twitter:description" content="Discover music from <%= @orchestra.display_name %> and explore various recordings.">
-  <% if @orchestra.image.attached? %>
-    <meta name="twitter:image" content="<%= url_for(@orchestra.image) %>">
-  <% end %>
+hello
+<meta property="og:title" content="<%= @orchestra.display_name %>">
+<meta property="og:description" content="Discover music from <%= @orchestra.display_name %> and explore various recordings.">
+<% if @orchestra.image.attached? %>
+  <meta property="og:image" content="<%= url_for(@orchestra.image) %>">
+<% end %>
+<meta property="og:type" content="music.group">
+<meta property="og:url" content="<%= orchestra_url(@orchestra) %>">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="<%= @orchestra.display_name %>">
+<meta name="twitter:description" content="Discover music from <%= @orchestra.display_name %> and explore various recordings.">
+<% if @orchestra.image.attached? %>
+  <meta name="twitter:image" content="<%= url_for(@orchestra.image) %>">
 <% end %>
