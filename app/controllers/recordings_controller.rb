@@ -32,6 +32,7 @@ class RecordingsController < ApplicationController
   end
 
   def crawler_request?
-    request.user_agent =~ /(facebook|Facebot|Messenger|Twitterbot|Pinterest|Slackbot|Googlebot|WhatsApp|MetaTags|MetaScraper)/i
+    browser = Browser.new(request.user_agent)
+    browser.bot?
   end
 end
