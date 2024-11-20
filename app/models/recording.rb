@@ -23,6 +23,8 @@ class Recording < ApplicationRecord
   has_many :tanda_recordings, dependent: :destroy
   has_many :tandas, through: :tanda_recordings
 
+  after_create_commit :set_year
+
   validates :recorded_date, presence: true
 
   enum :recording_type, {studio: "studio", live: "live"}
@@ -50,10 +52,6 @@ class Recording < ApplicationRecord
     composition.title
   end
 
-  def year
-    recorded_date&.year
-  end
-
   def liked_by?(user)
     likes.exists?(user:)
   end
@@ -74,9 +72,12 @@ class Recording < ApplicationRecord
       created_at:,
       updated_at:,
       time_period: time_period&.name,
-      record_label: record_label&.name,
-      slug:
+      record_label: record_label&.name
     }
+  end
+
+  def set_year
+    self.year = recorded_date&.year
   end
 end
 
@@ -86,7 +87,6 @@ end
 #
 #  id                :uuid             not null, primary key
 #  recorded_date     :date
-#  slug              :string           not null
 #  recording_type    :enum             default("studio"), not null
 #  playbacks_count   :integer          default(0), not null
 #  el_recodo_song_id :uuid
@@ -100,4 +100,5 @@ end
 #  playlists_count   :integer          default(0), not null
 #  tandas_count      :integer          default(0), not null
 #  popularity_score  :decimal(5, 2)    default(0.0), not null
+#  year              :integer
 #

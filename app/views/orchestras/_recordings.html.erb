@@ -1,6 +1,5 @@
 <%# locals: (recordings:, filters:) %>
 <% if recordings.any? %>
-  <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide mb-2">Recordings</h2>
   <div class="flex flex-col gap-2">
     <%= render partial: "orchestras/recording_form", 
         collection: @recordings, 

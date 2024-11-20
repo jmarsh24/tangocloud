@@ -34,7 +34,7 @@ class Recording::Query
 
     years_array = results
       .where.not(recorded_date: nil)
-      .pluck(Arel.sql("DISTINCT EXTRACT(YEAR FROM recorded_date)"))
+      .pluck(:year)
       .map(&:to_i)
       .sort
 
@@ -130,9 +130,9 @@ class Recording::Query
 
     case year
     when PRE_1935
-      scope.where("EXTRACT(YEAR FROM recorded_date) < ?", 1935)
+      scope.where("year< ?", 1935)
     when POST_1960
-      scope.where("EXTRACT(YEAR FROM recorded_date) >= ?", 1960)
+      scope.where("year >= ?", 1960)
     when /-/
       min_year, max_year = year.split("-").map(&:to_i)
       min_date = Date.new(min_year)

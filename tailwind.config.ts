@@ -11,11 +11,15 @@ module.exports = {
     extend: {
       fontFamily: {
         montserrat: ['Montserrat', 'sans-serif']
-      }
+      },
+      container: {
+        query: true,
+      },
     }
   },
   plugins: [
     require('daisyui'),
+    require('@tailwindcss/container-queries'),
   ],
   daisyui: {
     themes: [
