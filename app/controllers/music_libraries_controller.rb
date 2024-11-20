@@ -1,5 +1,5 @@
 class MusicLibrariesController < ApplicationController
-  skip_after_action :verify_policy_scoped, only: [:show]
+  skip_after_action only: [:show]
 
   def show
     authorize :music_library, :show?

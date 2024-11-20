@@ -4,7 +4,7 @@ module Api
 
     before_action :set_audio_variant, only: :show
     skip_before_action :authenticate_user!
-    skip_after_action :verify_authorized, :verify_policy_scoped
+    skip_after_action :verify_authorized
 
     def show
       redirect_to url_for(@audio_variant.audio_file)

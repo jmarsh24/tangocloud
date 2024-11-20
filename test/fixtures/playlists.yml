@@ -1,11 +1,8 @@
 darienzo_essentials:
   title: "D'Arienzo Essentials"
   subtitle: The Best of Juan D'Arienzo
-  slug: "darienzo-essentials"
   public: true
-  system: false
   user: user
-
 # == Schema Information
 #
 # Table name: playlists
