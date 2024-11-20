@@ -4,23 +4,22 @@ class RecordingsController < ApplicationController
   skip_after_action :verify_authorized, only: :show
 
   def show
-    if crawler_request?
-      render template: "recordings/meta_tags", layout: false
-    else
-      authorize @recording
+    return render template: "recordings/meta_tags", layout: false if crawler_request?
 
-      playback_queue = PlaybackQueue.find_or_create_by(user: current_user)
-      playback_session = PlaybackSession.find_or_create_by(user: current_user)
+    authenticate_user! && return
+    authorize @recording
 
-      respond_to do |format|
-        format.html
-        format.turbo_stream do
-          render turbo_stream: turbo_stream.update(
-            "music-player",
-            partial: "shared/music_player",
-            locals: {playback_queue:, playback_session:}
-          )
-        end
+    playback_queue = PlaybackQueue.find_or_create_by(user: current_user)
+    playback_session = PlaybackSession.find_or_create_by(user: current_user)
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.update(
+          "music-player",
+          partial: "shared/music_player",
+          locals: {playback_queue:, playback_session:}
+        )
       end
     end
   end

@@ -2,7 +2,6 @@ darienzo_essentials:
   title: "D'Arienzo Essentials"
   subtitle: The Best of Juan D'Arienzo
   public: true
-  system: false
   user: user
 # == Schema Information
 #
