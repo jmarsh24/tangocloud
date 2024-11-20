@@ -94,4 +94,30 @@
       </div>
     <% end %>
   </div>
+  <div class="flex justify-end px-2">
+    <div class="flex items-center gap-2">
+      <%= link_to orchestra_path(@orchestra, @filters.merge(sort: "popularity", order: @filters[:sort] == "popularity" && @filters[:order] == "asc" ? "desc" : "asc")), 
+        class: class_names(
+          "flex items-center gap-1 px-2 py-1 rounded-md text-sm font-medium bg-neutral-200 text-neutral-700 hover:bg-neutral-300",
+          "dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700",
+          { "dark:bg-neutral-600 text-white": @filters[:sort] == "popularity" }
+        ) do %>
+        Popularity
+        <% if @filters[:sort] == "popularity" %>
+          <%= heroicon @filters[:order] == "asc" ? "chevron-up" : "chevron-down", size: :xs %>
+        <% end %>
+      <% end %>
+      <%= link_to orchestra_path(@orchestra, @filters.merge(sort: "year", order: @filters[:sort] == "year" && @filters[:order] == "asc" ? "desc" : "asc")), 
+        class: class_names(
+          "flex items-center gap-1 px-2 py-1 rounded-md text-sm font-medium bg-neutral-200 text-neutral-700 hover:bg-neutral-300",
+          "dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700",
+          { "dark:bg-neutral-600 text-white": @filters[:sort] == "year" }
+        ) do %>
+        Year
+        <% if @filters[:sort] == "year" %>
+          <%= heroicon @filters[:order] == "asc" ? "chevron-up" : "chevron-down", size: :xs %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
 </div>

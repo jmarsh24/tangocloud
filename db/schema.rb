@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_18_225911) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_20_193520) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -443,6 +443,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_18_225911) do
     t.integer "playlists_count", default: 0, null: false
     t.integer "tandas_count", default: 0, null: false
     t.decimal "popularity_score", precision: 5, scale: 2, default: "0.0", null: false
+    t.integer "year"
     t.index ["composition_id"], name: "index_recordings_on_composition_id"
     t.index ["el_recodo_song_id"], name: "index_recordings_on_el_recodo_song_id"
     t.index ["genre_id"], name: "index_recordings_on_genre_id"
@@ -450,6 +451,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_18_225911) do
     t.index ["record_label_id"], name: "index_recordings_on_record_label_id"
     t.index ["recorded_date"], name: "index_recordings_on_recorded_date"
     t.index ["time_period_id"], name: "index_recordings_on_time_period_id"
+    t.index ["year"], name: "index_recordings_on_year"
   end
 
   create_table "remaster_agents", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

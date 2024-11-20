@@ -16,7 +16,7 @@ class OrchestrasController < ApplicationController
     ).friendly.find(params[:id])
     authorize @orchestra
 
-    @filters = params.permit(:year, :genre, :orchestra_period, :singer).to_h
+    @filters = params.permit(:year, :genre, :orchestra_period, :singer, :sort, :order).to_h
 
     query = Recording::Query.new(
       orchestra: @orchestra.slug,
@@ -26,7 +26,17 @@ class OrchestrasController < ApplicationController
       singer: @filters[:singer]
     )
 
-    @recordings = query.results.order(popularity_score: :desc).limit(200)
+    sort_column = case @filters[:sort]
+    when "year" then "recordings.year"
+    when "popularity" then "recordings.popularity_score"
+    else "recordings.popularity_score"
+    end
+    sort_direction = (@filters[:order] == "asc") ? :asc : :desc
+
+    @recordings = query.results
+      .order("#{sort_column} #{sort_direction}")
+      .limit(200)
+
     @years = query.years
     @genres = query.genres
     @orchestra_periods = query.orchestra_periods
