@@ -7,9 +7,9 @@ class Tanda < ApplicationRecord
   has_many :library_items, as: :item, dependent: :destroy
 
   def attach_default_image
-    unique_album_arts = recordings.includes(digital_remasters: { album: { album_art_attachment: :blob } })
-                                  .filter_map { _1.digital_remasters.first&.album&.album_art }
-                                  .uniq
+    unique_album_arts = recordings.includes(digital_remasters: {album: {album_art_attachment: :blob}})
+      .filter_map { _1.digital_remasters.first&.album&.album_art }
+      .uniq
 
     return if unique_album_arts.empty?
 

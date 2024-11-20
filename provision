@@ -21,7 +21,6 @@ install_essentials = <<~EOF
 EOF
 
 # Prepare storage
-prepare_storage = <<~EOF
   mkdir -p /storage;
   chmod 700 /storage;
   chown 1000:1000 /storage

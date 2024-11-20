@@ -1,6 +1,6 @@
 class LibraryItem < ApplicationRecord
   include RankedModel
-  
+
   belongs_to :user_library
   belongs_to :item, polymorphic: true
 
