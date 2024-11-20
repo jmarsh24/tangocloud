@@ -28,17 +28,8 @@
           singers: @singers } 
       %>
     </div>
-    <div id="recordings" class="flex flex-col gap-2">
-      <%= render partial: "orchestras/recording_form", 
-        collection: @recordings, 
-        locals: { 
-          orchestra: @orchestra.slug, 
-          year: @filters[:year], 
-          genre: @filters[:genre], 
-          orchestra_period: @filters[:orchestra_period], 
-          singer: @filters[:singer] 
-        }, as: :recording 
-      %>
+    <div id="recordings">
+      <%= render partial: "recordings", locals: { recordings: @recordings, filters: @filters} %>
     </div>
   </div>
 <% end %>
