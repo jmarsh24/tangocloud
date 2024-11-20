@@ -1,19 +1,4 @@
 <% cache([@orchestra, @filters]) do %>
-  <% content_for :meta_tags do %>
-    <meta property="og:title" content="<%= @orchestra.display_name %>">
-    <meta property="og:description" content="Discover music from <%= @orchestra.display_name %> and explore various recordings.">
-    <% if @orchestra.image.attached? %>
-      <meta property="og:image" content="<%= url_for(@orchestra.image) %>">
-    <% end %>
-    <meta property="og:type" content="music.group">
-    <meta property="og:url" content="<%= orchestra_url(@orchestra) %>">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="<%= @orchestra.display_name %>">
-    <meta name="twitter:description" content="Discover music from <%= @orchestra.display_name %> and explore various recordings.">
-    <% if @orchestra.image.attached? %>
-      <meta name="twitter:image" content="<%= url_for(@orchestra.image) %>">
-    <% end %>
-  <% end %>
   <div class="relative flex flex-col gap-4 rounded-lg shadow-lg">
     <%= link_to music_library_path, class: "absolute left-4 top-6 flex items-center gap-2 p-2 rounded-full bg-neutral-200 text-sm text-neutral-700 dark:bg-neutral-800 dark:text-neutral-400 hover:bg-neutral-300 dark:hover:bg-neutral-700" do %>
       <%= heroicon "chevron-left", size: :sm, class: "text-neutral-500 dark:text-neutral-400" %>
@@ -43,17 +28,8 @@
           singers: @singers } 
       %>
     </div>
-    <div id="recordings" class="flex flex-col gap-2">
-      <%= render partial: "orchestras/recording_form", 
-        collection: @recordings, 
-        locals: { 
-          orchestra: @orchestra.slug, 
-          year: @filters[:year], 
-          genre: @filters[:genre], 
-          orchestra_period: @filters[:orchestra_period], 
-          singer: @filters[:singer] 
-        }, as: :recording 
-      %>
+    <div id="recordings">
+      <%= render partial: "recordings", locals: { recordings: @recordings, filters: @filters} %>
     </div>
   </div>
 <% end %>
