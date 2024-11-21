@@ -1,0 +1,213 @@
+tango_artists:
+  Francisco_Canaro:
+    - Francisco Lomuto
+    - Edgardo Donato
+    - Típica Victor
+    - Juan D'Arienzo
+    - Alfredo De Angelis
+  Osvaldo_Fresedo:
+    - Carlos Di Sarli
+    - Miguel Caló
+    - Roberto Firpo
+    - Julio De Caro
+    - Francisco Canaro
+  Julio_De_Caro:
+    - Pedro Laurenz
+    - Osvaldo Pugliese
+    - Aníbal Troilo
+    - Astor Piazzolla
+    - Osvaldo Fresedo
+  Juan_D'Arienzo:
+    - Rodolfo Biagi
+    - Ricardo Tanturi
+    - Enrique Rodríguez
+    - Ángel D'Agostino
+    - Héctor Varela
+    - Francisco Canaro
+    - Alfredo De Angelis
+  Aníbal_Troilo:
+    - Pedro Laurenz
+    - Osvaldo Pugliese
+    - Astor Piazzolla
+    - Alfredo Gobbi
+    - José Basso
+    - Miguel Caló
+    - Horacio Salgán
+    - Francini-Pontier
+  Carlos_Di_Sarli:
+    - Miguel Caló
+    - Osvaldo Fresedo
+    - Florindo Sassone
+    - Lucio Demare
+    - Ángel D'Agostino
+    - Alfredo Gobbi
+    - Domingo Federico
+  Osvaldo_Pugliese:
+    - Pedro Laurenz
+    - Aníbal Troilo
+    - Astor Piazzolla
+    - Alfredo Gobbi
+    - Horacio Salgán
+    - Carlos Di Sarli
+    - Julio De Caro
+  Miguel_Caló:
+    - Domingo Federico
+    - Osmar Maderna
+    - Ángel D'Agostino
+    - Lucio Demare
+    - José Garcia
+    - Francini-Pontier
+  Rodolfo_Biagi:
+    - Juan D'Arienzo
+    - Ángel D'Agostino
+    - Lucio Demare
+    - Carlos Di Sarli
+    - Ricardo Tanturi
+  Ricardo_Tanturi:
+    - Juan D'Arienzo
+    - Lucio Demare
+    - Miguel Caló
+    - Aníbal Troilo
+    - Ángel D'Agostino
+  Enrique_Rodríguez:
+    - Juan D'Arienzo
+    - Edgardo Donato
+    - Alfredo De Angelis
+    - Ángel D'Agostino
+    - Miguel Caló
+  Ángel_D'Agostino:
+    - Juan D'Arienzo
+    - Lucio Demare
+    - Aníbal Troilo
+    - Domingo Federico
+    - Ricardo Tanturi
+  Lucio_Demare:
+    - Aníbal Troilo
+    - Miguel Caló
+    - Alfredo De Angelis
+    - Ricardo Tanturi
+    - Pedro Laurenz
+  Pedro_Laurenz:
+    - Osvaldo Pugliese
+    - Aníbal Troilo
+    - Lucio Demare
+    - Horacio Salgán
+    - Julio De Caro
+  José_Garcia:
+    - Lucio Demare
+    - Miguel Caló
+    - Ángel D'Agostino
+    - Ricardo Tanturi
+    - Aníbal Troilo
+    - Carlos Di Sarli
+  Ricardo_Malerba:
+    - Miguel Caló
+    - Ángel D'Agostino
+    - Enrique Rodríguez
+    - Ricardo Tanturi
+    - José Garcia
+  Manuel_Buzón:
+    - Pedro Laurenz
+    - Alfredo Gobbi
+    - Aníbal Troilo
+    - Lucio Demare
+    - Ricardo Tanturi
+    - Osvaldo Pugliese
+  Alfredo_De_Angelis:
+    - Francisco Canaro
+    - Enrique Rodríguez
+    - Miguel Caló
+    - Osvaldo Fresedo
+    - Aníbal Troilo
+  Horacio_Salgán:
+    - Osvaldo Pugliese
+    - Pedro Laurenz
+    - Aníbal Troilo
+    - Astor Piazzolla
+    - Alfredo Gobbi
+    - Osvaldo Fresedo
+  Alfredo_Gobbi:
+    - Carlos Di Sarli
+    - Osvaldo Pugliese
+    - Francini-Pontier
+    - José Basso
+    - Aníbal Troilo
+  Astor_Piazzolla:
+    - Horacio Salgán
+    - Osvaldo Pugliese
+    - Pedro Laurenz
+    - Aníbal Troilo
+    - José Basso
+  Aníbal_Troilo_Y_Astor_Piazzolla:
+    - Aníbal Troilo
+    - Astor Piazzolla
+    - José Basso
+    - Osvaldo Pugliese
+    - Horacio Salgán
+    - Pedro Laurenz
+  Domingo_Federico:
+    - Miguel Caló
+    - Osmar Maderna
+    - Ángel D'Agostino
+    - Enrique Francini
+    - Armando Pontier
+  Fulvio_Salamanca:
+    - Juan D'Arienzo
+    - Carlos Di Sarli
+    - Osmar Maderna
+    - Rodolfo Biagi
+    - Héctor Varela
+  José_Basso:
+    - Aníbal Troilo
+    - Astor Piazzolla
+    - Alfredo Gobbi
+    - Francini-Pontier
+    - Pedro Laurenz
+  Francini-Pontier:
+    - Miguel Caló
+    - Aníbal Troilo
+    - Armando Pontier
+    - Enrique Francini
+    - Osmar Maderna
+  Francisco_Rotundo:
+    - Aníbal Troilo
+    - José Basso
+    - Miguel Caló
+    - Francini-Pontier
+    - Alfredo Gobbi
+  Armando_Pontier:
+    - Francini-Pontier
+    - Miguel Caló
+    - Enrique Francini
+    - José Basso
+    - Osmar Maderna
+  Enrique_Francini:
+    - Francini-Pontier
+    - Miguel Caló
+    - Armando Pontier
+    - José Basso
+    - Osmar Maderna
+  Florindo_Sassone:
+    - Carlos Di Sarli
+    - Osvaldo Fresedo
+    - Héctor Varela
+    - Osmar Maderna
+    - Astor Piazzolla
+  Héctor_Varela:
+    - Florindo Sassone
+    - Fulvio Salamanca
+    - Juan D'Arienzo
+    - Alfredo De Angelis
+    - Miguel Caló
+  Osmar_Maderna:
+    - Miguel Caló
+    - Francini-Pontier
+    - Domingo Federico
+    - Florindo Sassone
+    - Símbolo Osmar Maderna
+  Donato_Racciatti:
+    - Juan D'Arienzo
+    - Edgardo Donato
+    - Rodolfo Biagi
+    - Alfredo De Angelis
+    - Héctor Varela
