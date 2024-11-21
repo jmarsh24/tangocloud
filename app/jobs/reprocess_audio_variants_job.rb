@@ -22,6 +22,8 @@ class ReprocessAudioVariantsJob < ApplicationJob
             bit_rate: bit_rate
           )
 
+          audio_variant.audio_file.purge if audio_variant.audio_file.attached?
+
           audio_variant.audio_file.attach(
             io: File.open(compressed_audio),
             filename: File.basename(compressed_audio, File.extname(compressed_audio)) + file_extension,
