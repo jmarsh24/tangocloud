@@ -1,7 +1,7 @@
 class ReprocessAudioVariantsJob < ApplicationJob
   queue_as :background
 
-  def perform(audio_file, format: :aac)
+  def perform(audio_file, format: :opus)
     return unless audio_file.digital_remaster
 
     Rails.logger.info "Starting reprocessing for AudioFile ##{audio_file.id} in format: #{format}"
@@ -12,9 +12,10 @@ class ReprocessAudioVariantsJob < ApplicationJob
 
         converter.convert(tempfile.path, format: format) do |compressed_audio|
           # Set format-specific attributes
-          audio_format = (format == :opus) ? "opus" : "mp3"
-          content_type = (format == :opus) ? "audio/ogg" : "audio/mpeg"
-          bit_rate = (format == :opus) ? 128 : 256
+          audio_format = (format == :opus) ? "opus" : "aac"
+          content_type = (format == :opus) ? "audio/ogg" : "audio/mp4"
+          file_extension = (format == :opus) ? ".opus" : ".m4a"
+          bit_rate = (format == :opus) ? 128 : 192
 
           audio_variant = audio_file.digital_remaster.audio_variants.first_or_initialize(
             format: audio_format,
@@ -23,7 +24,7 @@ class ReprocessAudioVariantsJob < ApplicationJob
 
           audio_variant.audio_file.attach(
             io: File.open(compressed_audio),
-            filename: File.basename(compressed_audio),
+            filename: File.basename(compressed_audio, File.extname(compressed_audio)) + file_extension,
             content_type: content_type
           )
 
