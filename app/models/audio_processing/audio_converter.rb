@@ -3,18 +3,17 @@ module AudioProcessing
     def convert(path, strip_metadata: true)
       @output_dir ||= File.dirname(path)
       movie = FFMPEG::Movie.new(path)
-      Tempfile.create(["converted-audio", ".mp3"]) do |tempfile|
+      Tempfile.create(["converted-audio", ".m4a"]) do |tempfile|
         custom_options = [
-          "-map", "0:a:0",             # Map the first audio stream
-          "-codec:a", "mp3",           # Use MP3 codec
-          "-b:a", "256k",              # Bitrate: 256 kbps
-          "-ar", "48000",              # Sample rate: 48 kHz
-          "-ac", "1",                  # Mono output
-          "-id3v2_version", "3",       # Use ID3v2.3 metadata format
-          "-write_xing", "1"           # Ensure Xing header for seekability
+          "-map", "0:a:0",            # Map the first audio stream
+          "-codec:a", "aac",          # Use AAC codec for wide compatibility
+          "-b:a", "192k",             # Bitrate: 192 kbps (adjustable for quality)
+          "-movflags", "+faststart",  # Optimize for streaming and seeking
+          "-ar", "48000",             # Sample rate: 48 kHz
+          "-ac", "1"                  # Stereo output (adjust as needed)
         ]
 
-        # Strip non-essential metadata but preserve seekability
+        # Strip metadata if requested
         custom_options += ["-map_metadata", "-1"] if strip_metadata
 
         movie.transcode(tempfile.path, custom_options) do |progress|
