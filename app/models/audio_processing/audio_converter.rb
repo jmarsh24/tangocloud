@@ -22,7 +22,7 @@ module AudioProcessing
           "-b:a", "192k",             # Bitrate: 192 kbps
           "-movflags", "+faststart",  # Optimize for streaming and seeking
           "-ar", "44100",             # Sample rate: 44.1 kHz for better compatibility
-          "-ac", "2"                  # Stereo output
+          "-ac", "1"                  # Stereo output
         ]
         # Strip metadata if requested
         custom_options += ["-map_metadata", "-1"] if strip_metadata
@@ -39,7 +39,7 @@ module AudioProcessing
           "-b:a", "128k",             # Target bitrate for high-quality Opus
           "-vbr", "on",               # Enable variable bitrate
           "-ar", "48000",             # Use 48 kHz sample rate for Opus
-          "-ac", "2"                  # Stereo output
+          "-ac", "1"                  # Stereo output
         ]
         # Strip metadata if requested
         custom_options += ["-map_metadata", "-1"] if strip_metadata
