@@ -2,7 +2,6 @@ class ReprocessAudioVariantsJob < ApplicationJob
   queue_as :default
 
   def perform(audio_file)
-    audio_file = AudioFile.find(audio_file)
     return unless audio_file.digital_remaster
 
     Rails.logger.info "Starting reprocessing for AudioFile ##{audio_file.id}"
@@ -14,7 +13,6 @@ class ReprocessAudioVariantsJob < ApplicationJob
         converter.convert(tempfile.path) do |compressed_audio|
           audio_file.digital_remaster.audio_variants.destroy_all
 
-          # Add a new audio_variant
           audio_variant = audio_file.digital_remaster.audio_variants.create!(
             variant_file: compressed_audio,
             format: "m4a",
