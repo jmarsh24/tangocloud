@@ -1,7 +1,7 @@
 class ReprocessAudioVariantsJob < ApplicationJob
   queue_as :background
 
-  def perform(audio_file, format: :opus)
+  def perform(audio_file, format: :m4a)
     return unless audio_file.digital_remaster
 
     Rails.logger.info "Starting reprocessing for AudioFile ##{audio_file.id} in format: #{format}"

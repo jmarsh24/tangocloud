@@ -1,6 +1,6 @@
 module AudioProcessing
   class AudioConverter
-    def convert(path, format: :opus, strip_metadata: true)
+    def convert(path, format: :m4a, strip_metadata: true)
       @output_dir ||= File.dirname(path)
       case format
       when :aac
