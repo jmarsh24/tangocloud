@@ -1,36 +1,25 @@
 class ReprocessAudioVariantsJob < ApplicationJob
-  queue_as :background
+  queue_as :default
 
-  def perform(audio_file, format: :aac)
+  def perform(audio_file)
+    audio_file = AudioFile.find(audio_file)
     return unless audio_file.digital_remaster
 
-    Rails.logger.info "Starting reprocessing for AudioFile ##{audio_file.id} in format: #{format}"
+    Rails.logger.info "Starting reprocessing for AudioFile ##{audio_file.id}"
 
     ActiveRecord::Base.transaction do
       audio_file.file.blob.open do |tempfile|
         converter = AudioProcessing::AudioConverter.new
 
-        converter.convert(tempfile.path, format: format) do |compressed_audio|
-          # Set format-specific attributes
-          audio_format = (format == :opus) ? "opus" : "aac"
-          content_type = (format == :opus) ? "audio/ogg" : "audio/mp4"
-          file_extension = (format == :opus) ? ".opus" : ".m4a"
-          bit_rate = (format == :opus) ? 128 : 192
+        converter.convert(tempfile.path) do |compressed_audio|
+          audio_file.digital_remaster.audio_variants.destroy_all
 
-          audio_variant = audio_file.digital_remaster.audio_variants.first_or_initialize(
-            format: audio_format,
-            bit_rate: bit_rate
+          # Add a new audio_variant
+          audio_variant = audio_file.digital_remaster.audio_variants.create!(
+            variant_file: compressed_audio,
+            format: "m4a",
+            bitrate: 192
           )
-
-          audio_variant.audio_file.purge if audio_variant.audio_file.attached?
-
-          audio_variant.audio_file.attach(
-            io: File.open(compressed_audio),
-            filename: File.basename(compressed_audio, File.extname(compressed_audio)) + file_extension,
-            content_type: content_type
-          )
-
-          audio_variant.save!
 
           Rails.logger.info "Updated audio_variant ##{audio_variant.id} for AudioFile ##{audio_file.id}"
         end
