@@ -1,0 +1,11 @@
+<%# locals: (tanda:, recording:) %>
+<% cache([:tanda, :recording_form, recording]) do %>
+  <div class="flex gap-2 items-center w-full overflow-hidden">
+    <div class="text-sm font-semibold truncate" title="<%= recording.composition.title %>">
+      <%= recording.composition.title %>
+    </div>
+    <div class="text-xs text-gray-500 truncate" title="<%= recording.year %>">
+      <%= recording.year %>
+    </div>
+  </div>
+<% end %>
