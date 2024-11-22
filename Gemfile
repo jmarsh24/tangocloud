@@ -60,6 +60,7 @@ gem "pagy"
 gem "ranked-model"
 gem "counter_culture"
 gem "browser"
+gem "store_attribute"
 
 # Assets
 gem "stimulus-rails"

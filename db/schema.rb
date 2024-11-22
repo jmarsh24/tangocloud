@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_20_193520) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_22_125350) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -18,9 +18,19 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_20_193520) do
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "acr_cloud_recognition_status", ["pending", "processing", "completed", "failed"]
   create_enum "audio_file_status", ["pending", "processing", "completed", "failed"]
   create_enum "composition_role_type", ["composer", "lyricist"]
   create_enum "recording_type", ["studio", "live"]
+
+  create_table "acr_cloud_recognitions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "digital_remaster_id", null: false
+    t.enum "status", default: "pending", null: false, enum_type: "acr_cloud_recognition_status"
+    t.jsonb "metadata", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["digital_remaster_id"], name: "index_acr_cloud_recognitions_on_digital_remaster_id"
+  end
 
   create_table "active_storage_attachments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
@@ -67,6 +77,9 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_20_193520) do
     t.string "error_message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "acrcloud_status"
+    t.string "acrcloud_fingerprint_id"
+    t.jsonb "acrcloud_metadata"
     t.index ["filename"], name: "index_audio_files_on_filename", unique: true
   end
 
@@ -202,6 +215,19 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_20_193520) do
     t.index ["orchestra_id"], name: "index_external_catalog_el_recodo_songs_on_orchestra_id"
     t.index ["page_updated_at"], name: "index_external_catalog_el_recodo_songs_on_page_updated_at"
     t.index ["synced_at"], name: "index_external_catalog_el_recodo_songs_on_synced_at"
+  end
+
+  create_table "external_identifiers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "recording_id", null: false
+    t.uuid "acr_cloud_recognition_id"
+    t.string "service_name", null: false
+    t.string "external_id", null: false
+    t.jsonb "metadata", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["acr_cloud_recognition_id"], name: "index_external_identifiers_on_acr_cloud_recognition_id"
+    t.index ["recording_id"], name: "index_external_identifiers_on_recording_id"
+    t.index ["service_name", "external_id"], name: "index_external_identifiers_on_service_name_and_external_id", unique: true
   end
 
   create_table "friendly_id_slugs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -392,6 +418,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_20_193520) do
     t.datetime "updated_at", null: false
     t.uuid "playlist_type_id"
     t.boolean "import_as_tandas", default: false, null: false
+    t.string "slug"
     t.index ["playlist_type_id"], name: "index_playlists_on_playlist_type_id"
     t.index ["user_id"], name: "index_playlists_on_user_id"
   end
@@ -444,6 +471,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_20_193520) do
     t.integer "tandas_count", default: 0, null: false
     t.decimal "popularity_score", precision: 5, scale: 2, default: "0.0", null: false
     t.integer "year"
+    t.string "slug"
     t.index ["composition_id"], name: "index_recordings_on_composition_id"
     t.index ["el_recodo_song_id"], name: "index_recordings_on_el_recodo_song_id"
     t.index ["genre_id"], name: "index_recordings_on_genre_id"
@@ -524,6 +552,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_20_193520) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "playlists_count", default: 0, null: false
+    t.string "slug"
     t.index ["user_id"], name: "index_tandas_on_user_id"
   end
 

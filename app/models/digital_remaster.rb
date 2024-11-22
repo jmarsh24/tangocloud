@@ -6,9 +6,18 @@ class DigitalRemaster < ApplicationRecord
 
   has_many :audio_variants, dependent: :destroy
   has_one :waveform, dependent: :destroy
+  has_one :acr_cloud_recognition, dependent: :delete
 
   validates :duration, presence: true, numericality: {greater_than_or_equal_to: 0}
   validates :tango_cloud_id, presence: true, uniqueness: true
+
+  def perform_acr_cloud_recognition(async: true)
+    if async
+      ::AcrCloudRecognitionJob.perform_later(self)
+    else
+      ::AcrCloudRecognitionJob.perform_now(self)
+    end
+  end
 end
 
 # == Schema Information

@@ -22,6 +22,8 @@ class Recording < ApplicationRecord
   has_many :waveforms, through: :digital_remasters
   has_many :tanda_recordings, dependent: :destroy
   has_many :tandas, through: :tanda_recordings
+  has_many :external_identifiers, dependent: :destroy
+  has_many :recording_services, dependent: :destroy
 
   after_create_commit :set_year
 
@@ -101,4 +103,5 @@ end
 #  tandas_count      :integer          default(0), not null
 #  popularity_score  :decimal(5, 2)    default(0.0), not null
 #  year              :integer
+#  slug              :string
 #

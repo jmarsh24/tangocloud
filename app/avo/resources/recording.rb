@@ -11,7 +11,8 @@ class Avo::Resources::Recording < Avo::BaseResource
     :audio_variants,
     :recording_singers,
     :singers,
-    :lyrics
+    :lyrics,
+    :acr_cloud_recognitions
   ]
   self.search = {
     query: -> { query.search(params[:q]).results }
@@ -36,9 +37,7 @@ class Avo::Resources::Recording < Avo::BaseResource
     field :recording_singers, as: :has_many
     field :singers, as: :has_many, through: :recording_singers
     field :lyrics, as: :has_many, through: :compositions
-    # field :playlist_items, as: :has_many, hide_on: :index
-    # field :tandas, as: :has_many, through: :playlist_items, hide_on: :index
-    # field :waveform, as: :has_many, through: :digital_remasters
+    field :acr_cloud_recognitions, as: :has_many
     field :playbacks, as: :has_many
   end
 end

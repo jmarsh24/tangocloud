@@ -1,5 +1,5 @@
 class Avo::Resources::DigitalRemaster < Avo::BaseResource
-  self.includes = [:audio_file, :album, :remaster_agent, :audio_variants, :waveform, recording: [:composition]]
+  self.includes = [:audio_file, :album, :remaster_agent, :audio_variants, :waveform, recording: [:composition], acr_cloud_recognition: [:external_identifiers]]
   self.search = {
     query: -> { query.search(params[:q]).results }
   }
@@ -19,6 +19,8 @@ class Avo::Resources::DigitalRemaster < Avo::BaseResource
     field :remaster_agent, as: :belongs_to, readonly: true
     field :audio_variants, as: :has_many, readonly: true
     field :waveform, as: :has_one, readonly: true, hide_on: :index
+    field :acr_cloud_recognition, as: :has_one, readonly: true, hide_on: :index
+    field :external_identifiers, as: :has_many, readonly: true, hide_on: :index
     field :created_at, as: :date_time, sortable: true, only_on: [:index, :show]
   end
 end

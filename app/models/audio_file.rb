@@ -11,6 +11,7 @@ class AudioFile < ApplicationRecord
 
   has_one_attached :file
   has_one :digital_remaster, dependent: :destroy
+  has_one :acr_cloud_recognition, dependent: :destroy
 
   validates :file, content_type: SUPPORTED_MIME_TYPES
 
@@ -36,11 +37,14 @@ end
 #
 # Table name: audio_files
 #
-#  id            :uuid             not null, primary key
-#  filename      :string           not null
-#  format        :string           not null
-#  status        :string           default("pending"), not null
-#  error_message :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
+#  id                      :uuid             not null, primary key
+#  filename                :string           not null
+#  format                  :string           not null
+#  status                  :string           default("pending"), not null
+#  error_message           :string
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  acrcloud_status         :string
+#  acrcloud_fingerprint_id :string
+#  acrcloud_metadata       :jsonb
 #

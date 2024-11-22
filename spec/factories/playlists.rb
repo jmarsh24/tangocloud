@@ -54,4 +54,5 @@ end
 #  updated_at       :datetime         not null
 #  playlist_type_id :uuid
 #  import_as_tandas :boolean          default(FALSE), not null
+#  slug             :string
 #

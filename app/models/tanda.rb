@@ -35,4 +35,5 @@ end
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  playlists_count :integer          default(0), not null
+#  slug            :string
 #

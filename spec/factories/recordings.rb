@@ -32,4 +32,5 @@ end
 #  tandas_count      :integer          default(0), not null
 #  popularity_score  :decimal(5, 2)    default(0.0), not null
 #  year              :integer
+#  slug              :string
 #
