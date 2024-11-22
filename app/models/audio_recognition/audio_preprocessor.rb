@@ -21,7 +21,7 @@ class AudioPreprocessor
       audio_bitrate: "128k",     # Adjust bitrate if needed
       audio_sample_rate: 44100,  # Sample rate
       seek_time: 0,              # Start trimming from 0 seconds
-      duration: 30               # Trim to 30 seconds
+      duration: 20               # Trim to 20 seconds
     }
   end
 end
