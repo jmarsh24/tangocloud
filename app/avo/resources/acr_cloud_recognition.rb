@@ -10,4 +10,8 @@ class Avo::Resources::AcrCloudRecognition < Avo::BaseResource
       end
     end
   end
+
+  def filters
+    filter Avo::Filters::StatusFilter
+  end
 end

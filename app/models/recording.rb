@@ -31,6 +31,8 @@ class Recording < ApplicationRecord
 
   enum :recording_type, {studio: "studio", live: "live"}
 
+  delegate :title, to: :composition
+
   scope :with_associations, -> {
     includes(:composition, :orchestra, :singers, :genre, digital_remasters:
     [audio_variants: [audio_file_attachment: :blob],
@@ -49,10 +51,6 @@ class Recording < ApplicationRecord
                             orchestra: [:orchestra_periods]
                           )
                         }
-
-  def title
-    composition.title
-  end
 
   def liked_by?(user)
     likes.exists?(user:)

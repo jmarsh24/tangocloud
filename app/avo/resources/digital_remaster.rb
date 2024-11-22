@@ -4,7 +4,7 @@ class Avo::Resources::DigitalRemaster < Avo::BaseResource
     query: -> { query.search(params[:q]).results }
   }
   self.title = -> {
-    record.recording.composition.title
+    record.recording.title
   }
 
   def fields
