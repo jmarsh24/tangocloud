@@ -1,6 +1,8 @@
 class AcrCloudRecognitionJob < ApplicationJob
   queue_as :background
 
+  limits_concurrency to: 20, key: "acr_cloud_recognition", duration: 1.minute
+
   def perform(digital_remaster)
     audio_file = digital_remaster.audio_file
     result = audio_file.file.open do |file|
