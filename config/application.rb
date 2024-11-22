@@ -45,6 +45,9 @@ module Tangocloud
 
     config.active_storage.resolve_model_to_route = :rails_storage_proxy
 
-    config.active_storage.queue = :background
+    config.active_storage.queues = {
+      analyze: :active_storage_analyze,
+      purge: :active_storage_purge
+    }
   end
 end
