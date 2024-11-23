@@ -119,6 +119,11 @@ Rails.application.routes.draw do
         post "load", to: "tandas/recordings#load"
       end
     end
+    resources :tags, only: [:create, :destroy], module: :tandas do
+      collection do
+        get :user, to: "tags#user_tags"
+      end
+    end
   end
 
   resources :orchestras, only: [:index, :show] do

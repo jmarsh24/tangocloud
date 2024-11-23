@@ -1,6 +1,6 @@
 <%# locals: (recording:) %>
 <% cache([:queue, :recording_form, recording]) do %>
-  <div data-sortable-handle class="w-full flex gap-2 items-center bg-neutral-900 hover:cursor-pointer rounded-lg overflow-hidden hover:bg-neutral-800">
+  <div data-sortable-handle class="w-full flex gap-2 p-2 items-center bg-neutral-900 hover:cursor-pointer rounded-lg overflow-hidden hover:bg-neutral-800">
     <%= form_with url: load_queue_recording_path(id: recording.id), class: "flex w-full gap-4 items-center" do |form| %>
       <%= button_tag type: :submit, class: "flex w-full gap-4 items-center text-left" do %>
         <%= render "recordings/recording", recording: %>

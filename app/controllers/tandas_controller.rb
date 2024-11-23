@@ -9,6 +9,7 @@ class TandasController < ApplicationController
           :orchestra,
           :genre,
           :singers,
+          :tags,
           digital_remasters: [
             audio_variants: [
               audio_file_attachment: :blob

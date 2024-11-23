@@ -1,0 +1,27 @@
+<%# locals: { tanda:, user_taggings: } %>
+<%= turbo_frame_tag dom_id(tanda, :tags), class: "flex gap-2 flex-shrink-1" do %>
+  <% 
+     tag_mapping = {
+       "sparkles" => "playful",
+       "bolt" => "energetic",
+       "fire" => "dramatic",
+       "clock" => "clock"
+     } %>
+  <% tag_mapping.each do |symbol, tag_name| %>
+    <% user_tagging = user_taggings.find { |tagging| tagging.taggable_id == tanda.id && tagging.tag.name == tag_name } %>
+    <% if user_tagging %>
+      <%= form_with url: tanda_tag_path(tanda, user_tagging.tag), method: :delete, class: "inline-flex" do %>
+        <%= button_tag class: "bg-transparent border-none p-0" do %>
+          <%= heroicon symbol.to_sym, variant: :solid, size: :md, class: "cursor-pointer text-neutral-300 transition-colors duration-150 hover:text-neutral-400" %>
+        <% end %>
+      <% end %>
+    <% else %>
+      <%= form_with url: tanda_tags_path(tanda), class: "inline-flex" do %>
+        <%= hidden_field_tag :name, tag_name %>
+        <%= button_tag class: "bg-transparent border-none p-0" do %>
+          <%= heroicon symbol.to_sym, size: :md, class: "cursor-pointer text-neutral-300 transition-colors duration-150 hover:text-neutral-500" %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

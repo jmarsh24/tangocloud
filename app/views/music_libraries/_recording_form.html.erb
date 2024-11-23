@@ -1,6 +1,6 @@
 <%# locals: (recording:) %>
 <% cache([:music_library, recording]) do %>
-  <div class="flex gap-2 items-center bg-neutral-900 hover:cursor-pointer rounded-lg overflow-hidden hover:bg-neutral-800 snap-start">
+  <div class="flex gap-2 p-2 items-center bg-neutral-900 hover:cursor-pointer rounded-lg overflow-hidden hover:bg-neutral-800 snap-start">
     <%= form_with url: load_music_library_recording_path(id: recording.id), class: "flex flex-1 w-full h-full gap-4 items-stretch" do |form| %>
       <%= button_tag type: :submit, class: "flex flex-1 w-full h-full gap-4 items-center text-left" do %>
         <%= render partial: "recordings/recording", locals: { recording: recording } %>

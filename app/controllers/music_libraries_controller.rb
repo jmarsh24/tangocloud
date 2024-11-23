@@ -9,6 +9,7 @@ class MusicLibrariesController < ApplicationController
     @tandas = policy_scope(Tanda).strict_loading
       .includes(
         :user,
+        :tags,
         recordings: [
           :composition,
           :orchestra,
@@ -25,5 +26,8 @@ class MusicLibrariesController < ApplicationController
         ]
       ).limit(64).random.with_attached_image
     @orchestras = policy_scope(Orchestra).ordered_by_recordings.with_attached_image
+
+    @user_taggings = Tagging.where(user: current_user, taggable_type: "Tanda", taggable_id: @tandas.select(:id))
+      .includes(:tag)
   end
 end
