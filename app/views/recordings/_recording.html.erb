@@ -1,19 +1,21 @@
 <%# locals(recording:) %>
 <% cache(recording) do %>
   <div class="flex flex-auto gap-2 items-center overflow-hidden relative">
-    <%= image_tag recording.digital_remasters.first.album.album_art, class: "h-20 aspect-square object-cover" %>
+    <%= image_tag recording.digital_remasters.first.album.album_art, class: "h-20 rounded-full aspect-square object-cover" %>
     <div class="flex flex-auto flex-col items-start text-left m-2 overflow-hidden">
       <div class="text-sm font-semibold text-nowrap" title="<%= recording.composition.title %>">
         <%= recording.composition.title %>
       </div>
-      <div class="text-xs text-gray-500 text-nowrap" title="<%= recording.orchestra.name %><% if recording.singers.present? %> - <%= recording.singers.map(&:name).join(', ') %><% end %>">
+      <div class="text-xs text-gray-500 text-nowrap" title="<%= recording.orchestra.name %>">
         <%= recording.orchestra.name %>
+      </div>
+      <div class="text-xs text-gray-500 text-nowrap" title="<% if recording.singers.present? %> - <%= recording.singers.map(&:name).join(', ') %><% end %>">
         <% if recording.singers.present? %>
-          &middot; <%= recording.singers.map(&:name).join(", ") %>
+          <%= recording.singers.map(&:name).join(", ") %>
         <% end %>
       </div>
       <div class="text-xs text-gray-500 text-nowrap" title="<%= recording.genre.name %> - <%= recording.year %>">
-        <%= recording.genre.name %> - <%= recording.year %>
+        <%= recording.genre.name[0]&.upcase %> - <%= recording.year %>
       </div>
     </div>
     <div class="absolute bottom-2 right-2 flex justify-end">

@@ -25,12 +25,12 @@
         </div>
       </button>
     <% end %>
-    <%= turbo_frame_tag dom_id(tanda, :tags), src: user_tanda_tags_path(tanda), loading: "lazy", class: "flex gap-2 flex-shrink-1" do %>
-      <% ["sparkles", "bolt", "fire", "clock"].each do |tag_name| %>
-        <button class="bg-transparent border-none p-0 cursor-pointer animate-pulse">
-          <%= heroicon tag_name.to_sym, size: :md, class: "cursor-pointer text-neutral-300" %>
-        </button>
-      <% end %>
+    <%#= turbo_frame_tag dom_id(tanda, :tags), src: user_tanda_tags_path(tanda), loading: "lazy", class: "flex gap-2 flex-shrink-1" do %>
+      <%# ["sparkles", "bolt", "fire", "clock"].each do |tag_name| %>
+        <!--        <button class="bg-transparent border-none p-0 cursor-pointer animate-pulse">-->
+        <%#= heroicon tag_name.to_sym, size: :md, class: "cursor-pointer text-neutral-300" %>
+        <!--        </button>-->
+        <%# end %>
+        <%# end %>
+      </div>
     <% end %>
-  </div>
-<% end %>
