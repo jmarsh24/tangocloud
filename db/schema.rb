@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_22_125350) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_23_193539) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -29,6 +29,8 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_22_125350) do
     t.jsonb "metadata", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "error_code"
+    t.string "error_message"
     t.index ["digital_remaster_id"], name: "index_acr_cloud_recognitions_on_digital_remaster_id"
   end
 
