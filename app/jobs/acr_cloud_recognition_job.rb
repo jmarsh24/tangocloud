@@ -28,7 +28,8 @@ class AcrCloudRecognitionJob < ApplicationJob
         ::ExternalIdentifier.find_or_create_by!(
           recording: recording,
           service_name: "YouTube",
-          external_id: youtube_vid
+          external_id: youtube_vid,
+          acr_cloud_recognition:
         ) do |identifier|
           identifier.metadata = {
             track_title: music_metadata[:title],
@@ -43,7 +44,8 @@ class AcrCloudRecognitionJob < ApplicationJob
         ::ExternalIdentifier.find_or_create_by!(
           recording: recording,
           service_name: "Spotify",
-          external_id: spotify_id
+          external_id: spotify_id,
+          acr_cloud_recognition:
         ) do |identifier|
           identifier.metadata = {
             track_title: music_metadata[:title],
