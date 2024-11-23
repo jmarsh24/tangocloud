@@ -2,7 +2,7 @@
 <% cache(recording) do %>
   <div class="flex flex-auto gap-2 items-center overflow-hidden relative">
     <%= image_tag recording.digital_remasters.first.album.album_art, class: "h-20 rounded-full aspect-square object-cover" %>
-    <div class="flex flex-auto flex-col items-start text-left m-2 overflow-hidden">
+    <div class="flex flex-auto flex-col items-start text-left overflow-hidden">
       <div class="text-sm font-semibold text-nowrap" title="<%= recording.composition.title %>">
         <%= recording.composition.title %>
       </div>
