@@ -1,6 +1,6 @@
 <%# locals: (tanda:, recording:) %>
 <% cache([:tanda, :recording_form, recording]) do %>
-  <div class="flex gap-2 items-center w-full bg-neutral-900 overflow-hidden">
+  <div class="flex flex-1 gap-2 items-center w-full bg-neutral-900 rounded-lg overflow-hidden">
     <%= image_tag "recordings/vinyl_album.png", alt: "Vinyl Album", class: "h-20 aspect-square object-cover" %>
     <div class="flex flex-auto flex-col items-start text-left m-2 overflow-hidden">
       <div class="text-sm font-semibold truncate" title="<%= recording.composition.title %>">
