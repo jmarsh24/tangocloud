@@ -1,8 +1,8 @@
 <%# locals: (tanda:, recording:) %>
 <% cache(recording) do %>
   <div class="flex flex-auto p-2 gap-2 items-center bg-neutral-800 rounded-lg overflow-hidden relative">
-    <%= image_tag "recordings/vinyl_album.png", alt: "Vinyl Album", class: "h-20 aspect-square object-cover" %>
-    <div class="flex flex-auto flex-col items-start text-left m-2 overflow-hidden">
+    <%= image_tag "recordings/vinyl_album.png", alt: "Vinyl Album", class: "h-16 aspect-square object-cover" %>
+    <div class="flex flex-auto flex-col items-start text-left overflow-hidden">
       <div class="text-sm font-semibold text-nowrap" title="<%= recording.composition.title %>">
         <%= recording.composition.title %>
       </div>
