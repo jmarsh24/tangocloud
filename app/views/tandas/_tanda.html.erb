@@ -1,5 +1,5 @@
 <% cache(tanda) do %>
-  <div class="group flex flex-col justify-around gap-4 bg-neutral-950 text-white p-4 rounded-lg snap-start hover:bg-neutral-800 transition-colors duration-200 h-full">
+  <div class="group flex flex-col justify-around gap-4 bg-neutral-900 text-white p-4 rounded-lg snap-start hover:bg-neutral-800 transition-colors duration-200 h-full">
     <%= form_with url: load_tanda_recording_path(tanda_id: tanda.id, id: tanda.recordings.first.id), class: "flex flex-col gap-2 w-full flex-grow" do %>
       <button type="submit" class="flex flex-col gap-2 text-left w-full">
         <div class="flex w-full justify-between gap-2">
