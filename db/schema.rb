@@ -32,6 +32,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_23_193539) do
     t.integer "error_code"
     t.string "error_message"
     t.index ["digital_remaster_id"], name: "index_acr_cloud_recognitions_on_digital_remaster_id"
+    t.index ["error_code"], name: "index_acr_cloud_recognitions_on_error_code"
   end
 
   create_table "active_storage_attachments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
