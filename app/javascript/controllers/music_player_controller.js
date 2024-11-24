@@ -176,6 +176,11 @@ export default class extends Controller {
     if (this.hasMiniPlayerOutlet) {
       const currentTime = this.wavesurfer.getCurrentTime();
       const duration = this.wavesurfer.getDuration();
+
+      if (this.hasProgressTarget) {
+        this.progressTarget.style.width = `${(currentTime / duration) * 100}%`;
+      }
+      
       this.miniPlayerOutlet.updateProgress({ currentTime, duration });
     }
   }
