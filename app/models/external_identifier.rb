@@ -21,11 +21,12 @@ end
 #
 # Table name: external_identifiers
 #
-#  id           :uuid             not null, primary key
-#  recording_id :uuid             not null
-#  service_name :string           not null
-#  external_id  :string           not null
-#  metadata     :jsonb
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  id                       :uuid             not null, primary key
+#  recording_id             :uuid             not null
+#  acr_cloud_recognition_id :uuid
+#  service_name             :string           not null
+#  external_id              :string           not null
+#  metadata                 :jsonb
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
 #

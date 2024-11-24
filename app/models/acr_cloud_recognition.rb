@@ -31,3 +31,17 @@ class AcrCloudRecognition < ApplicationRecord
     status == "completed" && recognition_score.present? && recognition_score > 0.8
   end
 end
+
+# == Schema Information
+#
+# Table name: acr_cloud_recognitions
+#
+#  id                  :uuid             not null, primary key
+#  digital_remaster_id :uuid             not null
+#  status              :enum             default("pending"), not null
+#  metadata            :jsonb
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  error_code          :integer
+#  error_message       :string
+#

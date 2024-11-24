@@ -4,6 +4,8 @@ class Avo::Resources::AcrCloudRecognition < Avo::BaseResource
   def fields
     field :digital_remaster, as: :belongs_to
     field :status, as: :text
+    field :error_code, as: :text
+    field :error_message, as: :text
     field :metadata, as: :code, language: "javascript" do
       if record.metadata.present?
         JSON.pretty_generate(record.metadata.as_json)
