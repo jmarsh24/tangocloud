@@ -1,5 +1,7 @@
 class AcrCloud
   BASE_URL = "https://identify-eu-west-1.acrcloud.com/v1/identify"
+  MAX_RETRIES = 3
+  RETRY_SEEK_OFFSETS = [0, 10, -10, 30, -30]
 
   def initialize
     @client = Faraday.new(url: BASE_URL) do |conn|
@@ -11,7 +13,36 @@ class AcrCloud
   end
 
   def recognize(audio_file)
-    AudioPreprocessor.new.process(audio_file) do |audio_snippet|
+    movie = FFMPEG::Movie.new(audio_file.path)
+    duration = movie.duration
+
+    safe_start = [10, duration * 0.05].max
+    safe_end = [duration - 10, duration * 0.95].min
+    center = duration / 2
+
+    seek_times = [
+      center,
+      safe_start,
+      safe_end
+    ] + RETRY_SEEK_OFFSETS.map { |offset| (center + offset).clamp(safe_start, safe_end) }
+
+    seek_times.uniq.first(MAX_RETRIES).each_with_index do |seek_time, index|
+      Rails.logger.info("ACRCloud attempt #{index + 1}: Seeking #{seek_time} seconds")
+
+      result = process_and_recognize(audio_file, seek_time)
+
+      return result if result[:success]
+
+      Rails.logger.warn("Recognition failed for attempt #{index + 1}: #{result[:error] || "No result"}")
+    end
+
+    {success: false, error: "No match found after #{MAX_RETRIES} attempts"}
+  end
+
+  private
+
+  def process_and_recognize(audio_file, seek_time)
+    AudioPreprocessor.new.process(audio_file, seek_time) do |audio_snippet|
       sample_bytes = File.size(audio_snippet.path)
 
       response = @client.post do |req|
@@ -31,21 +62,19 @@ class AcrCloud
       parsed_response = JSON.parse(response.body).deep_symbolize_keys
 
       if parsed_response[:status][:code] == 0
-        return {
-          success: true,
-          metadata: parsed_response[:metadata]
-        }
+        {success: true, metadata: parsed_response[:metadata]}
       else
-        Rails.logger.warn("ACRCloud returned error code #{parsed_response[:status][:code]}: #{parsed_response[:status][:msg]}")
-        next {success: false, error: parsed_response[:status][:msg], error_code: parsed_response[:status][:code]}
+        {
+          success: false,
+          error: parsed_response[:status][:msg],
+          error_code: parsed_response[:status][:code]
+        }
       end
     end
-  rescue Faraday::Error => error
-    Rails.logger.error("ACRCloud Faraday Error: #{error.message}")
-    {success: false, error: error.message}
+  rescue => e
+    Rails.logger.error("Error during recognition process: #{e.message}")
+    {success: false, error: "Recognition process failed: #{e.message}", error_code: 1001}
   end
-
-  private
 
   def generate_signature
     access_key = Rails.application.credentials.dig(:acr_cloud, :access_key)
