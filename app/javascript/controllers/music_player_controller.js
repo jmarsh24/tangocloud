@@ -182,8 +182,11 @@ export default class extends Controller {
     const currentTime = this.wavesurfer.getCurrentTime();
     const duration = this.wavesurfer.getDuration();
     
-    if (this.hasMiniPlayerOutlet) {
-      this.miniPlayerOutlet.updateProgress({ currentTime, duration });
+    if (this.hasMiniPlayerOutlets) {
+      this.miniPlayerOutlets.each((outlet) => {
+        outlet.currentTime = currentTime;
+        outlet.duration = duration;
+      });
     }
     
     if (this.hasProgressTarget) {

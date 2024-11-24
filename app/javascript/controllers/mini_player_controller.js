@@ -17,12 +17,16 @@ export default class extends Controller {
 
   play() {
     this.playingValue = true;
-    this.musicPlayerOutlet.play();
+    if (this.hasMusicPlayerOutlet) {
+      this.musicPlayerOutlet.play();
+    }
   }
 
   pause() {
     this.playingValue = false;
-    this.musicPlayerOutlet.pause();
+    if (this.hasMusicPlayerOutlet) {
+      this.musicPlayerOutlet.pause();
+    }
   }
 
   updateProgress({ currentTime, duration }) {

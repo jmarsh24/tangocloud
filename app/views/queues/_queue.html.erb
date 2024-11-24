@@ -1,6 +1,11 @@
 <%# locals: (playback_queue:, queue_items:, playback_session:) %>
 <% cache([playback_queue, queue_items, playback_session]) do %>
-  <div data-controller="mini-player" class="flex flex-col gap-4 dark:bg-black pt-16 sm:pt-0">
+  <div 
+    data-controller="mini-player" 
+    data-mini-player-music-player-outlet="#music-player"
+    data-mini-player-playing-value="<%= playback_session.playing %>"
+    class="mini-player flex flex-col gap-4 dark:bg-black pt-16 sm:pt-0 group"
+  >
     <% if playback_queue.current_item %>
       <%= link_to player_path(recording_id: playback_queue.current_item.item.id), data: { turbo_frame: "modal" }, class: "absolute left-4 top-4 flex items-center gap-2 p-2 rounded-full bg-neutral-200 text-sm text-neutral-700 dark:bg-neutral-800 dark:text-neutral-400 hover:bg-neutral-300 dark:hover:bg-neutral-700" do %>
         <%= heroicon "chevron-left", size: :sm, class: "text-neutral-500 dark:text-neutral-400" %>
@@ -29,20 +34,20 @@
     <div class="sm:hidden">
       <div data-mini-player-target="progress" class="bg-white h-1 w-0"></div>
       <div class="flex items-center justify-center gap-4">
-        <%= button_to previous_player_path, class: "rounded bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
+        <%= button_to previous_player_path, class: "btn btn-neutral" do %>
           <%= heroicon("rewind", variant: :solid) %>
         <% end %>
-        <%= form_with url: play_player_path, data: { action: "mini-player#play" }, class: class_names("hidden": playback_session.playing) do %>
-          <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600">
+        <%= form_with url: play_player_path, data: { action: "mini-player#play" }, class: "hidden group-data-[mini-player-playing-value=false]:block" do %>
+          <button type="submit" class="btn btn-neutral btn-circle">
             <%= heroicon("play", variant: :solid, size: :sm) %>
           </button>
         <% end %>
-        <%= form_with url: pause_player_path, data: { action: "mini-player#pause" }, class: class_names("hidden": !playback_session.playing) do %>
-          <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600">
+        <%= form_with url: pause_player_path, data: { action: "mini-player#pause" }, class: "hidden group-data-[mini-player-playing-value=true]:block" do %>
+          <button type="submit" class="btn btn-neutral btn-circle">
             <%= heroicon("pause", variant: :solid, size: :sm) %>
           </button>
         <% end %>
-        <%= button_to next_player_path, class: "rounded bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
+        <%= button_to next_player_path, class: "btn btn-neutral" do %>
           <%= heroicon("forward", variant: :solid) %>
         <% end %>
       </div>
