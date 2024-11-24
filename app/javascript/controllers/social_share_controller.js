@@ -13,13 +13,15 @@ export default class extends Controller {
     }
   }
 
-  share() {  
+  share() {
     navigator.share({
       title: this.titleValue,
       text: this.textValue,
-      url: this.urlValue
+      url: this.urlValue,
     }).catch((error) => {
-      console.error("Error sharing:", error);
+      if (error.name !== "AbortError") {
+        console.error("Error during sharing:", error);
+      }
     });
   }
 }
