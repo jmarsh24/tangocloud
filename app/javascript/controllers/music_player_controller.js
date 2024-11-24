@@ -8,8 +8,6 @@ export default class extends Controller {
     "waveform",
     "time",
     "duration",
-    "playButton",
-    "pauseButton",
     "hover",
     "albumArt",
     "nextButton",
@@ -25,6 +23,7 @@ export default class extends Controller {
     waveformData: String,
     muted: Boolean,
     duration: Number,
+    playing: Boolean,
   };
 
   initialize() {
@@ -54,11 +53,17 @@ export default class extends Controller {
     document.addEventListener("player:pause", () => this.pause());
     document.addEventListener("player:playing", this.#onPlay.bind(this));
     document.addEventListener("player:paused", this.#onPause.bind(this));
+
+    this.pause();
   }
 
   async audioUrlValueChanged() {
     await this.loadAudio();
-    this.Player.play();
+    if (this.playingValue) {
+      this.play();
+    } else {
+      this.pause();
+    }
   }
 
   async loadAudio() {
@@ -68,18 +73,31 @@ export default class extends Controller {
         this.waveformDataValue ? JSON.parse(this.waveformDataValue) : null,
         this.durationValue
       );
-      this.updateMediaSession();
+      if ("mediaSession" in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: this.trackTitleValue,
+          artist: this.detailsPrimaryValue,
+          album: this.detailsSecondaryValue,
+          artwork: [{ src: this.albumArtTarget.src }],
+        });
+
+        navigator.mediaSession.setActionHandler("play", () => this.play());
+        navigator.mediaSession.setActionHandler("pause", () => this.pause());
+        navigator.mediaSession.setActionHandler("nexttrack", () => this.next());
+      }
     } catch (error) {
       console.error("Error loading audio:", error);
     }
   }
 
   play() {
+    this.playingValue = true;
     this.Player.play();
     this.#onPlay();
   }
 
   pause() {
+    this.playingValue = false;
     this.Player.pause();
     this.#onPause();
   }
@@ -141,32 +159,13 @@ export default class extends Controller {
     }
   }
 
-  updateMediaSession() {
-    if ("mediaSession" in navigator) {
-      navigator.mediaSession.metadata = new MediaMetadata({
-        title: this.trackTitleValue,
-        artist: this.detailsPrimaryValue,
-        album: this.detailsSecondaryValue,
-        artwork: [{ src: this.albumArtTarget.src }],
-      });
-
-      navigator.mediaSession.setActionHandler("play", () => this.play());
-      navigator.mediaSession.setActionHandler("pause", () => this.pause());
-      navigator.mediaSession.setActionHandler("nexttrack", () => this.next());
-    }
-  }
-
   #onPause() {
-    this.playButtonTarget.classList.remove("hidden");
-    this.pauseButtonTarget.classList.add("hidden");
     if (this.hasAlbumArtTarget) {
       this.albumArtTarget.classList.remove("rotating");
     }
   }
 
   #onPlay() {
-    this.playButtonTarget.classList.add("hidden");
-    this.pauseButtonTarget.classList.remove("hidden");
     if (this.hasAlbumArtTarget) {
       this.albumArtTarget.classList.add("rotating");
     }

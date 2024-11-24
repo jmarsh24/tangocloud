@@ -1,6 +1,6 @@
 <%# locals: (playback_session: nil) %>
 <% if playback_session.muted? %>
-  <%= form_with url: unmute_playback_path do %>
+  <%= form_with url: unmute_player_path do %>
     <button
                 type="submit"
                 data-music-player-target="unmuteButton"
@@ -11,7 +11,7 @@
     </button>
   <% end %>
 <% else %>
-  <%= form_with url: mute_playback_path do %>
+  <%= form_with url: mute_player_path do %>
     <button
                 type="submit"
                 data-music-player-target="muteButton"

@@ -44,10 +44,9 @@ Rails.application.routes.draw do
     resources :recordings, only: [:show]
   end
 
-  resource :player, only: [:show]
   resource :sidebar, only: [:show]
 
-  resource :playback do
+  resource :player, only: [:show] do
     post :play, on: :member
     post :pause, on: :member
     post :next, on: :member
