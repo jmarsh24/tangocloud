@@ -34,7 +34,7 @@
         <%= @playlist.user.username %>
       </p>
     <% end %>
-    <%= button_to 'Add to Library', add_to_library_playlist_path(@playlist), method: :post, class: "btn btn-primary" %>
+    <%= button_to 'Add to Library', add_to_library_playlist_path(@playlist), class: "btn btn-primary" %>
     <div class="flex w-full flex-col gap-2">
       <%= render collection: @playlist_items, partial: "playlists/playlist_item" %>
     </div>

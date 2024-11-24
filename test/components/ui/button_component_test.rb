@@ -29,7 +29,7 @@ class Ui::ButtonComponentTest < ViewComponent::TestCase
   end
 
   def test_render_button_to_form
-    render_inline(Ui::ButtonComponent.new("click me", url: "https://example.com", method: :post))
+    render_inline(Ui::ButtonComponent.new("click me", url: "https://example.com"))
     assert_selector("form[action=\"https://example.com\"][method=post]")
   end
 

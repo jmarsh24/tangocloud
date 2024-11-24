@@ -44,12 +44,12 @@
           <%= heroicon("rewind", variant: :solid) %>
         <% end %>
         <%= form_with url: play_player_path, data: { action: "mini-player#play" }, class: "hidden group-data-[mini-player-playing-value=false]:block" do %>
-          <button type="submit" class="btn btn-primary btn-lg btn-circle">
+          <button type="submit" class="btn btn-neutral btn-lg btn-circle">
             <%= heroicon("play", variant: :solid, size: :md) %>
           </button>
         <% end %>
         <%= form_with url: pause_player_path, data: { action: "mini-player#pause" }, class: "hidden group-data-[mini-player-playing-value=true]:block" do %>
-          <button type="submit" class="btn btn-primary btn-lg btn-circle">
+          <button type="submit" class="btn btn-neutral btn-lg btn-circle">
             <%= heroicon("pause", variant: :solid, size: :md) %>
           </button>
         <% end %>
