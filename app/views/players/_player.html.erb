@@ -2,6 +2,7 @@
 <div 
   data-controller="mini-player"
   data-mini-player-music-player-outlet="#music-player"
+  data-mini-player-mute-value="<%= playback_session.muted? %>"
   data-mini-player-playing-value="<%= playback_session.playing %>"
   class="mini-player pt-16 px-4 pb-4 flex flex-col gap-8 justify-center group"
   >

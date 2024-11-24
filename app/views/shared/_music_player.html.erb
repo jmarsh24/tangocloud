@@ -13,7 +13,7 @@
       data-music-player-details-primary-value="<%= recording.orchestra.display_name %><% if recording.singers.present? %> &middot; <%= recording.singers.map(&:name).compact.join(", ") %><% end %>"
       data-music-player-details-secondary-value="<%= recording.genre.name %> - <%= recording.year %>"
       data-music-player-album-title-value="<%= recording.digital_remasters.first.album.title %>"
-      data-music-player-mute-value="<%= playback_session.muted? %>"
+      data-music-player-muted-value="<%= playback_session.muted? %>"
       data-music-player-duration-value="<%= recording.digital_remasters.first.duration %>"
       data-music-player-waveform-data-value="<%= recording.digital_remasters.first.waveform.data %>"
     >
@@ -69,17 +69,31 @@
         <div class="hidden md:flex items-center justify-end gap-4">
           <div class="flex items-center justify-center gap-2">
             <%= button_tag type: "button", 
-            class: "w-10 h-10 flex items-center justify-center rounded text-white bg-neutral-800 hover:bg-neutral-600", 
+            class: "btn btn-neutral btn-md btn-square", 
             aria: { label: "Share recording" }, 
             data: { controller: "social-share", 
-            action: "click->social-share#share:prevent", 
-              "social-share-url-value": recording_path(recording.id), 
-              "social-share-text-value": "#{recording.title} · #{recording.orchestra.display_name} · #{recording.genre.name} · #{recording.year}" } do %>
+            action: "keydown->social-share#share:prevent", 
+              "social-share-url-value": recording_path(recording.id) } do %>
               <%= heroicon("arrow-up-on-square", size: :md) %>
             <% end %>
-            <div id="mute-button">
-              <%= render "shared/mute_button", playback_session: %>
-            </div>
+              <%= form_with url: unmute_player_path, class: "hidden group-data-[music-player-muted-value=true]:block" do %>
+              <button
+                type="submit"
+                data-action="click->music-player#unmute"
+                class="<%= class_names("btn btn-neutral btn-md btn-square") %>"
+                >
+                <%= heroicon "speaker-x-mark", size: :md %>
+              </button>
+            <% end %>
+            <%= form_with url: mute_player_path, class: "hidden group-data-[music-player-muted-value=false]:block" do %>
+              <button
+                type="submit"
+                data-action="click->music-player#mute"
+                class="<%= class_names("btn btn-neutral btn-md btn-square") %>"
+                >
+                <%= heroicon "speaker-wave", size: :md %>
+              </button>
+            <% end %>
           </div>
           <input type="hidden" name="_method" value="put">
           <%= form_with url: update_volume_player_path do %>

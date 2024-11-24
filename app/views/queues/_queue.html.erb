@@ -31,8 +31,7 @@
         </div>
       </div>
     <% end %>
-    <div class="sm:hidden">
-      <div data-mini-player-target="progress" class="bg-white h-1 w-0"></div>
+    <div class="flex flex-col gap-8 sm:hidden">
       <div class="flex items-center justify-center gap-4">
         <%= button_to previous_player_path, class: "btn btn-neutral" do %>
           <%= heroicon("rewind", variant: :solid) %>
@@ -51,6 +50,16 @@
           <%= heroicon("forward", variant: :solid) %>
         <% end %>
       </div>
+      <input
+        type="range"
+        data-mini-player-target="progress"
+        data-action="input->mini-player#seek"
+        class="range range-xs w-full"
+        min="0"
+        max="1"
+        step="0.0001"
+        value="0"
+      />
     </div>
     <% if queue_items.present? %>
       <h3 class="text-lg font-bold dark:text-neutral-300">Up Next</h3>

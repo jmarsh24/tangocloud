@@ -29,6 +29,9 @@ export default class extends Controller {
   };
 
   initialize() {
+    this.mutedValue = this.mutedValue || false;
+    this.volumeValue = this.volumeValue || 1;
+
     this.isTouchDevice =
       "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
@@ -126,15 +129,34 @@ export default class extends Controller {
 
   changeVolume() {
     const volume = this.volumeSliderTarget.value / 100;
+    this.setVolume(volume);
+  }
+
+  setVolume(volume) {
+    this.volumeValue = volume;
     this.wavesurfer.setVolume(volume);
+
+    this.miniPlayerOutlets.forEach((outlet) => {
+      outlet.updateVolume(volume);
+    });
   }
 
   mute() {
+    this.mutedValue = true;
     this.wavesurfer.setMuted(true);
+
+    this.miniPlayerOutlets.forEach((outlet) => {
+      outlet.updateMuteState(true);
+    });
   }
 
   unmute() {
+    this.mutedValue = false;
     this.wavesurfer.setMuted(false);
+
+    this.miniPlayerOutlets.forEach((outlet) => {
+      outlet.updateMuteState(false);
+    });
   }
 
   next() {
@@ -181,11 +203,10 @@ export default class extends Controller {
   updateProgress() {
     const currentTime = this.wavesurfer.getCurrentTime();
     const duration = this.wavesurfer.getDuration();
-    
-    if (this.hasMiniPlayerOutlets) {
-      this.miniPlayerOutlets.each((outlet) => {
-        outlet.currentTime = currentTime;
-        outlet.duration = duration;
+
+    if (this.hasMiniPlayerOutlet) {
+      this.miniPlayerOutlets.forEach(outlet => {
+        outlet.updateProgress({ currentTime, duration });
       });
     }
     

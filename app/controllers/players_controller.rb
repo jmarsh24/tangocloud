@@ -71,14 +71,16 @@ class PlayersController < ApplicationController
     authorize @playback_session
 
     @playback_session.update!(muted: true)
-    render turbo_stream: turbo_stream.update("mute-button", partial: "shared/mute_button", locals: {playback_session: @playback_session}, method: :morph)
+
+    head :ok
   end
 
   def unmute
     authorize @playback_session
 
     @playback_session.update!(muted: false)
-    render turbo_stream: turbo_stream.update("mute-button", partial: "shared/mute_button", locals: {playback_session: @playback_session}, method: :morph)
+
+    head :ok
   end
 
   def reset

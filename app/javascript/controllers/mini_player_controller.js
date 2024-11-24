@@ -1,12 +1,13 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["progress"];
+  static targets = ["progress", "volumeSlider"];
 
   static outlets = ["music-player"];
 
   static values = {
     playing: Boolean,
+    muted: Boolean,
   };
 
   initialize() {
@@ -15,8 +16,33 @@ export default class extends Controller {
     this._animationFrameRequest = null;
   }
 
+  mute() {
+    this.mutedValue = true;
+
+    if (this.hasMusicPlayerOutlet) {
+      this.musicPlayerOutlet.mute();
+    }
+  }
+
+  unmute() {
+    this.mutedValue = false;
+
+    if (this.hasMusicPlayerOutlet) {
+      this.musicPlayerOutlet.unmute();
+    }
+  }
+
+  changeVolume() {
+    const volume = this.volumeSliderTarget.value / 100;
+
+    if (this.hasMusicPlayerOutlet) {
+      this.musicPlayerOutlet.setVolume(volume);
+    }
+  }
+
   play() {
     this.playingValue = true;
+
     if (this.hasMusicPlayerOutlet) {
       this.musicPlayerOutlet.play();
     }
@@ -24,6 +50,7 @@ export default class extends Controller {
 
   pause() {
     this.playingValue = false;
+
     if (this.hasMusicPlayerOutlet) {
       this.musicPlayerOutlet.pause();
     }
@@ -31,6 +58,7 @@ export default class extends Controller {
 
   updateProgress({ currentTime, duration }) {
     const percentage = currentTime / duration;
+
     if (this.hasProgressTarget) {
       this.progressTarget.value = percentage;
     }
@@ -38,8 +66,30 @@ export default class extends Controller {
 
   seek(event) {
     const percentage = parseFloat(event.target.value);
+
     if (this.hasMusicPlayerOutlet) {
       this.musicPlayerOutlet.seekToPercentage(percentage);
+    }
+  }
+
+  changeVolume() {
+    const volume = this.volumeSliderTarget.value / 100;
+    this.volumeValue = volume;
+
+    if (this.hasMusicPlayerOutlet) {
+      this.musicPlayerOutlet.setVolume(volume);
+    }
+  }
+
+  updateMuteState(muted) {
+    this.mutedValue = muted;
+  }
+
+  updateVolume(volume) {
+    this.volumeValue = volume;
+
+    if (this.hasVolumeSliderTarget) {
+      this.volumeSliderTarget.value = volume * 100;
     }
   }
 }
