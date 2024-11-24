@@ -11,24 +11,6 @@ class AcrCloud
   end
 
   def recognize(audio_file)
-    access_key = Rails.application.credentials.dig(:acr_cloud, :access_key)
-    access_secret = Rails.application.credentials.dig(:acr_cloud, :access_secret)
-    data_type = "audio"
-    signature_version = "1"
-    timestamp = Time.now.to_i
-
-    string_to_sign = [
-      "POST",
-      "/v1/identify",
-      access_key,
-      data_type,
-      signature_version,
-      timestamp
-    ].join("\n")
-
-    digest = OpenSSL::Digest.new("sha1")
-    signature = Base64.strict_encode64(OpenSSL::HMAC.digest(digest, access_secret, string_to_sign))
-
     AudioPreprocessor.new.process(audio_file) do |audio_snippet|
       sample_bytes = File.size(audio_snippet.path)
 
@@ -37,37 +19,41 @@ class AcrCloud
 
         req.body = {
           "sample" => Faraday::UploadIO.new(audio_snippet.path, "audio/mpeg"),
-          "access_key" => access_key,
-          "data_type" => data_type,
-          "signature_version" => signature_version,
-          "signature" => signature,
+          "access_key" => Rails.application.credentials.dig(:acr_cloud, :access_key),
+          "data_type" => "audio",
+          "signature_version" => "1",
+          "signature" => generate_signature,
           "sample_bytes" => sample_bytes,
-          "timestamp" => timestamp
+          "timestamp" => Time.now.to_i
         }
       end
 
       parsed_response = JSON.parse(response.body).deep_symbolize_keys
 
       if parsed_response[:status][:code] == 0
-        {
+        return {
           success: true,
           metadata: parsed_response[:metadata]
         }
       else
-        {
-          success: false,
-          error_code: parsed_response[:status][:code],
-          error: parsed_response[:status][:msg],
-          status: parsed_response[:status][:code]
-        }
+        Rails.logger.warn("ACRCloud returned error code #{parsed_response[:status][:code]}: #{parsed_response[:status][:msg]}")
+        next {success: false, error: parsed_response[:status][:msg], error_code: parsed_response[:status][:code]}
       end
     end
   rescue Faraday::Error => error
-    Rails.logger.error("ACRCloud Error: #{error.message}")
-    {
-      success: false,
-      error: error.message,
-      status: nil
-    }
+    Rails.logger.error("ACRCloud Faraday Error: #{error.message}")
+    {success: false, error: error.message}
+  end
+
+  private
+
+  def generate_signature
+    access_key = Rails.application.credentials.dig(:acr_cloud, :access_key)
+    access_secret = Rails.application.credentials.dig(:acr_cloud, :access_secret)
+    timestamp = Time.now.to_i
+    data = ["POST", "/v1/identify", access_key, "audio", "1", timestamp].join("\n")
+
+    digest = OpenSSL::Digest.new("sha1")
+    Base64.strict_encode64(OpenSSL::HMAC.digest(digest, access_secret, data))
   end
 end
