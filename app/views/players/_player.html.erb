@@ -108,11 +108,11 @@
     </div>
   </div>
   <% if recording.lyrics.any? %>
-    <div class="card bg-neutral-100 dark:bg-neutral-800 p-4 rounded-lg space-y-2 mt-4">
-      <h2 class="text-xl font-semibold text-neutral-800 dark:text-neutral-200">Lyrics</h2>
-      <div class="text-lg text-neutral-700 dark:text-neutral-300 text-center">
-        <% recording.lyrics.each do |lyric| %>
-          <%= simple_format(lyric.text) %>
+    <div class="card flex gap-8 bg-neutral-100 dark:bg-neutral-800 p-4 rounded-lg">
+      <h2 class="text-xl font-black text-neutral-800 dark:text-neutral-200">Lyrics</h2>
+      <div class="text-lg font-bold text-neutral-700 dark:text-neutral-300 text-center">
+        <% recording.lyrics.first.text.split("\n\n").each do |paragraph| %>
+          <p><%= paragraph.gsub("\n", "<br>").html_safe %></p>
         <% end %>
       </div>
     </div>

@@ -8,7 +8,6 @@ export default class extends Controller {
     "time",
     "duration",
     "hover",
-    "albumArt",
     "nextButton",
     "previousButton",
     "progress",
@@ -19,6 +18,7 @@ export default class extends Controller {
 
   static values = {
     audioUrl: String,
+    albumArtUrl: String,
     trackTitle: String,
     detailsPrimary: String,
     detailsSecondary: String,
@@ -26,11 +26,12 @@ export default class extends Controller {
     muted: Boolean,
     duration: Number,
     playing: Boolean,
+    volume: Number,
   };
 
   initialize() {
     this.mutedValue = this.mutedValue || false;
-    this.volumeValue = this.volumeValue || 1;
+    this.volumeValue = (this.volumeValue / 100) || 1;
 
     this.isTouchDevice =
       "ontouchstart" in window || navigator.maxTouchPoints > 0;
@@ -97,9 +98,7 @@ export default class extends Controller {
         title: this.trackTitleValue,
         artist: this.detailsPrimaryValue,
         album: this.detailsSecondaryValue,
-        artwork: this.hasAlbumArtTarget
-          ? [{ src: this.albumArtTarget.src }]
-          : [],
+        artwork: [{ src: this.albumArtUrlValue }],
       });
 
       navigator.mediaSession.setActionHandler("play", () => this.play());
@@ -114,17 +113,11 @@ export default class extends Controller {
   play() {
     this.playingValue = true;
     this.wavesurfer.play();
-    if (this.hasAlbumArtTarget) {
-      this.albumArtTarget.classList.add("rotating");
-    }
   }
 
   pause() {
     this.playingValue = false;
     this.wavesurfer.pause();
-    if (this.hasAlbumArtTarget) {
-      this.albumArtTarget.classList.remove("rotating");
-    }
   }
 
   changeVolume() {

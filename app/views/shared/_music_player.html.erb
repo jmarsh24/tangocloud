@@ -8,12 +8,14 @@
       data-controller="music-player"
       data-music-player-mini-player-outlet=".mini-player"
       data-music-player-audio-url-value="<%= url_for(recording.digital_remasters.first.audio_variants.first.audio_file) %>"
+      data-music-player-album-art-url-value="<%= url_for(recording.digital_remasters.first.album.album_art) %>"
       data-music-player-playing-value="<%= playback_session.playing? %>"
       data-music-player-track-title-value="<%= recording.composition.title %>"
       data-music-player-details-primary-value="<%= recording.orchestra.display_name %><% if recording.singers.present? %> &middot; <%= recording.singers.map(&:name).compact.join(", ") %><% end %>"
       data-music-player-details-secondary-value="<%= recording.genre.name %> - <%= recording.year %>"
       data-music-player-album-title-value="<%= recording.digital_remasters.first.album.title %>"
       data-music-player-muted-value="<%= playback_session.muted? %>"
+      data-music-player-volume-value="<%= playback_session.volume || 100 %>"
       data-music-player-duration-value="<%= recording.digital_remasters.first.duration %>"
       data-music-player-waveform-data-value="<%= recording.digital_remasters.first.waveform.data %>"
     >
@@ -35,7 +37,7 @@
       </div>
       <div class="grid grid-cols-2 md:grid-cols-3 items-center sm:gap-4 w-full">
         <%= link_to player_path(recording_id: recording.id), data: { turbo_frame: "modal" }, class: "flex items-center gap-4 col-span-1 group" do %>
-          <%= image_tag recording.digital_remasters.first.album.album_art, class: class_names("w-12 h-12 md:w-16 md:h-16 rounded-full object-cover", "rotating": playback_session.playing?), data: { music_player_target: "albumArt" } %>
+          <%= image_tag recording.digital_remasters.first.album.album_art, class: class_names("w-12 h-12 md:w-16 md:h-16 rounded-full object-cover group-data-[music-player-playing-value=true]:animate-[spin_60s_linear_infinite]"), data: { music_player_target: "albumArt" } %>
           <div class="flex flex-col flex-grow">
             <div class="text-sm md:text-lg font-semibold text-white truncate">
               <%= recording.composition.title %>
