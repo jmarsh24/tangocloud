@@ -57,7 +57,7 @@ env:
     REDIS_HOST: tangocloud-redis
     CLOUDFLARE_BUCKET: tangocloud
     IMGPROXY_ENDPOINT: tangocloud-imgproxy
-    JOB_CONCURRENCY: 16
+    JOB_CONCURRENCY: 8
     CDN_HOST: b23e5ff0654b18a5b20bd3016cc32b35.r2.cloudflarestorage.com
     RAILS_LOG_LEVEL: debug
     RAILS_SERVE_STATIC_FILES: true
