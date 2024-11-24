@@ -57,7 +57,7 @@ class AcrCloudRecognitionJob < ApplicationJob
         external_identifier.save!
       end
     else
-      error_code = result[:error_code]
+      error_code = result[:error_code] || 1001
       error_message = result[:error] || "Unknown recognition error"
 
       acr_cloud_recognition.update!(
