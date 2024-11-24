@@ -17,7 +17,9 @@ class AcrCloudRecognitionJob < ApplicationJob
     if result[:success] && result[:metadata][:music].present?
       acr_cloud_recognition.update!(
         status: "completed",
-        metadata: result[:metadata]
+        metadata: result[:metadata],
+        error_code: 0,
+        error_message: "No error message"
       )
 
       music_metadata = result[:metadata][:music].first
