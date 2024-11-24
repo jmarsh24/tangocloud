@@ -36,7 +36,7 @@ class AcrCloud
       Rails.logger.warn("Recognition failed for attempt #{index + 1}: #{result[:error] || "No result"}")
     end
 
-    {success: false, error: "No match found after #{MAX_RETRIES} attempts"}
+    {success: false, error: "No match found after #{MAX_RETRIES} attempts", error_code: 1001}
   end
 
   private
@@ -71,9 +71,6 @@ class AcrCloud
         }
       end
     end
-  rescue => e
-    Rails.logger.error("Error during recognition process: #{e.message}")
-    {success: false, error: "Recognition process failed: #{e.message}", error_code: 1001}
   end
 
   def generate_signature
