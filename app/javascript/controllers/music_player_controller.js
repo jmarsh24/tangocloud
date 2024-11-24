@@ -62,10 +62,12 @@ export default class extends Controller {
     if (this.mutedValue) {
       this.wavesurfer.setMuted(true);
     }
+    
+    this.durationTarget.textContent = formatDuration(this.durationValue);
 
     this.updateProgress = this.updateProgress.bind(this);
     this.wavesurfer?.on("timeupdate", this.updateProgress);
-    this.durationTarget.textContent = formatDuration(this.durationValue);
+    this.wavesurfer?.on("finish", () => this.next());
   }
 
   async loadAudio() {
