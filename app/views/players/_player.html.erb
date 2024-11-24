@@ -1,5 +1,11 @@
 <%# locals: (recording:, playback_session:) %>
-<div data-controller="mini-player" class="pt-16 px-4 pb-4 flex flex-col gap-8 justify-center">
+<div 
+  id="mini-player"
+  data-controller="mini-player"
+  data-mini-player-music-player-outlet="#music-player"
+  data-mini-player-playing-value="<%= playback_session.playing %>"
+  class="pt-16 px-4 pb-4 flex flex-col gap-8 justify-center group"
+  >
   <% recording.digital_remasters.each do |remaster| %>
     <% if remaster.album.album_art.attached? %>
       <%= image_tag remaster.album.album_art, class: "w-full h-auto object-cover rounded-lg" %>
@@ -22,23 +28,32 @@
     </div>
   </div>
   <div class="flex flex-col items-center justify-center gap-4">
-    <div class="w-full flex flex-col gap-2 sm:hidden">
-      <div data-mini-player-target="progress" class="bg-white h-1 w-0"></div>
+    <div class="w-full flex flex-col gap-8 sm:hidden">
+      <input
+        type="range"
+        data-mini-player-target="progress"
+        data-action="input->mini-player#seek"
+        class="range range-xs w-full"
+        min="0"
+        max="1"
+        step="0.0001"
+        value="0"
+      />
       <div class="flex items-center justify-center gap-4">
-        <%= button_to previous_player_path, class: "rounded bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
+        <%= button_to previous_player_path, class: "btn btn-neutral" do %>
           <%= heroicon("rewind", variant: :solid) %>
         <% end %>
-        <%= form_with url: play_player_path, method: :post, data: { mini_player_target: "playButton", action: "mini-player#play" }, class: class_names("hidden": playback_session.playing) do %>
-          <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 p-6 font-semibold text-white shadow-sm hover:bg-neutral-600">
-            <%= heroicon("play", variant: :solid, size: :sm) %>
+        <%= form_with url: play_player_path, data: { action: "mini-player#play" }, class: "hidden group-data-[mini-player-playing-value=false]:block" do %>
+          <button type="submit" class="btn btn-primary btn-lg btn-circle">
+            <%= heroicon("play", variant: :solid, size: :md) %>
           </button>
         <% end %>
-        <%= form_with url: pause_player_path, method: :post, data: { mini_player_target: "pauseButton", action: "mini-player#pause" }, class: class_names("hidden": !playback_session.playing) do %>
-          <button type="submit" class="flex items-center justify-center rounded-full bg-neutral-800 p-6 font-semibold text-white shadow-sm hover:bg-neutral-600">
-            <%= heroicon("pause", variant: :solid, size: :sm) %>
+        <%= form_with url: pause_player_path, data: { action: "mini-player#pause" }, class: "hidden group-data-[mini-player-playing-value=true]:block" do %>
+          <button type="submit" class="btn btn-primary btn-lg btn-circle">
+            <%= heroicon("pause", variant: :solid, size: :md) %>
           </button>
         <% end %>
-        <%= button_to next_player_path, class: "rounded bg-neutral-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-600" do %>
+        <%= button_to next_player_path, class: "btn btn-neutral" do %>
           <%= heroicon("forward", variant: :solid) %>
         <% end %>
       </div>
@@ -46,10 +61,10 @@
   </div>
   <div class="flex gap-2">
     <div class="flex gap-2">
-      <%= link_to queue_path, class: "w-10 h-10 flex items-center justify-center rounded text-white bg-neutral-800 hover:bg-neutral-600 sm:hidden", data: { turbo_frame: "modal" }, aria: { label: "Add to queue" } do %>
+      <%= link_to queue_path, class: "btn btn-neutral btn-square sm:hidden", data: { turbo_frame: "modal" }, aria: { label: "Add to queue" } do %>
         <%= heroicon("queue-list", size: :md) %>
       <% end %>
-      <%= button_tag type: "button", class: "w-10 h-10 flex items-center justify-center rounded text-white bg-neutral-800 hover:bg-neutral-600", aria: { label: "Share recording" }, data: { controller: "social-share", action: "click->social-share#share:prevent", "social-share-url-value": recording_path(recording.id) } do %>
+      <%= button_tag type: "button", class: "btn btn-neutral btn-square", aria: { label: "Share recording" }, data: { controller: "social-share", action: "click->social-share#share:prevent", "social-share-url-value": recording_path(recording.id) } do %>
         <%= heroicon("arrow-up-on-square", size: :md) %>
       <% end %>
       <div id="like-button">

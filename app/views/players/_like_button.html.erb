@@ -1,9 +1,9 @@
 <%# locals: (recording:, user:) %>
 <div id="like-button-<%= dom_id(recording) %>">
-  <%= button_to recording_like_path(recording.id), method: :post, class: class_names("text-neutral-300", "hidden": recording.liked_by?(user)), data: { turbo_method: :post } do %>
+  <%= button_to recording_like_path(recording.id), class: class_names("p-2 text-neutral-300", "hidden": recording.liked_by?(user)) do %>
     <%= heroicon "heart", variant: :outline, size: :lg %>
   <% end %>
-  <%= button_to recording_like_path(recording.id), method: :delete, class: class_names("hidden": !recording.liked_by?(user)), data: { turbo_method: :delete } do %>
+  <%= button_to recording_like_path(recording.id), method: :delete, class: class_names("p-2", "hidden": !recording.liked_by?(user)), data: { turbo_method: :delete } do %>
     <%= heroicon "heart", variant: :solid, size: :lg, class: "fill-orange-500" %>
   <% end %>
 </div>
