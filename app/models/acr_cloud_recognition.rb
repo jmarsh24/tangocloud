@@ -3,7 +3,6 @@ class AcrCloudRecognition < ApplicationRecord
   has_many :external_identifiers, dependent: :destroy
 
   validates :status, presence: true, inclusion: {in: %w[pending processing completed failed]}
-  validates :metadata, presence: true, if: -> { status == "completed" }
 
   store_attribute :metadata, :track_title, :string
   store_attribute :metadata, :artist_name, :string

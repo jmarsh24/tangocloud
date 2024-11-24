@@ -5,7 +5,7 @@ class AcrCloudRecognitionJob < ApplicationJob
 
   def perform(digital_remaster)
     acr_cloud_recognition = digital_remaster.acr_cloud_recognition ||
-      digital_remaster.build_acr_cloud_recognition(status: "pending")
+      digital_remaster.create_acr_cloud_recognition!(status: "pending")
 
     acr_cloud_recognition.update_column(:status, "processing")
 
