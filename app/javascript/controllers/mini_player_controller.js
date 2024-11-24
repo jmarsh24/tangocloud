@@ -35,7 +35,6 @@ export default class extends Controller {
   seek(event) {
     const percentage = parseFloat(event.target.value);
     if (this.hasMusicPlayerOutlet) {
-      console.log("Seeking to", percentage);
       this.musicPlayerOutlet.seekToPercentage(percentage);
     }
   }

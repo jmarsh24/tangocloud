@@ -65,6 +65,7 @@ export default class extends Controller {
 
     this.updateProgress = this.updateProgress.bind(this);
     this.wavesurfer?.on("timeupdate", this.updateProgress);
+    this.durationTarget.textContent = formatDuration(this.durationValue);
   }
 
   async loadAudio() {
@@ -121,6 +122,11 @@ export default class extends Controller {
     }
   }
 
+  changeVolume() {
+    const volume = this.volumeSliderTarget.value / 100;
+    this.wavesurfer.setVolume(volume);
+  }
+
   mute() {
     this.wavesurfer.setMuted(true);
   }
@@ -154,15 +160,13 @@ export default class extends Controller {
     }
   };
 
-  setDuration(event) {
-    const { duration } = event.detail;
+  setDuration() {
     if (this.hasDurationTarget) {
-      this.durationTarget.textContent = formatDuration(duration);
+      this.durationTarget.textContent = formatDuration(this.wavesurfer.getDuration());
     }
   }
 
-  updateTime(event) {
-    const { currentTime } = event.detail;
+  updateTime(currentTime) {
     if (this.hasTimeTarget) {
       this.timeTarget.textContent = formatDuration(currentTime);
     }
@@ -173,8 +177,9 @@ export default class extends Controller {
   }
 
   updateProgress() {
+    const currentTime = this.wavesurfer.getCurrentTime();
+    
     if (this.hasMiniPlayerOutlet) {
-      const currentTime = this.wavesurfer.getCurrentTime();
       const duration = this.wavesurfer.getDuration();
 
       if (this.hasProgressTarget) {
@@ -183,6 +188,8 @@ export default class extends Controller {
       
       this.miniPlayerOutlet.updateProgress({ currentTime, duration });
     }
+
+    this.updateTime(currentTime);
   }
 
   createGradient(color1, color2, color3) {
