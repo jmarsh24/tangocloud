@@ -11,7 +11,7 @@ servers:
   # worker configuration using the `cmd` key for job processing
   job:
     hosts:
-    - 37.27.221.99
+      - 37.27.221.99
     cmd: bin/jobs
 
 # Enable SSL auto certification via Let's Encrypt (and allow for multiple apps on one server).
@@ -50,7 +50,7 @@ env:
     RUBY_YJIT_ENABLE: 1
     WEB_CONCURRENCY: 2
     RAILS_MAX_THREADS: 16
-    SOLID_QUEUE_IN_PUMA: true
+    SOLID_QUEUE_IN_PUMA: false
     DB_HOST: tangocloud-db
     ELASTICSEARCH_URL: http://tangocloud-elasticsearch:9200
     EL_RECODO_REQUEST_DELAY: 20
