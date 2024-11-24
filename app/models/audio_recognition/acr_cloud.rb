@@ -56,6 +56,7 @@ class AcrCloud
       else
         {
           success: false,
+          error_code: parsed_response[:status][:code],
           error: parsed_response[:status][:msg],
           status: parsed_response[:status][:code]
         }
