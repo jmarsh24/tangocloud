@@ -13,6 +13,8 @@ class LibraryItemsController < ApplicationController
       library_items
     end
 
+    library_items = library_items.includes(:item).order(:row_order).all
+
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream:
@@ -45,7 +47,7 @@ class LibraryItemsController < ApplicationController
 
     authorize library_item
 
-    library_item.update!(row_order_position: params[:position])
+    library_item.update!(row_order_position: params[:position], user_library_id: @user_library.id)
     head :ok
   end
 end

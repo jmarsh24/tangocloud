@@ -4,7 +4,7 @@ class QueueItemsController < ApplicationController
 
     authorize queue_item
 
-    queue_item.update!(row_order_position: params[:position] + 1)
+    queue_item.update!(row_order_position: params[:position] + 1, playback_queue_id: @playback_queue.id)
     head :ok
   end
 end
