@@ -28,8 +28,8 @@
         </div>
       </div>
       <%= form_with url: load_tanda_recording_path(tanda_id: tanda.id, id: tanda.recordings.first.id) do %>
-        <button type="submit" class="btn btn-neutral btn-lg btn-circle flex items-center justify-center">
-          <%= heroicon "play", size: :lg, variant: :solid, class: "fill-black" %>
+        <button type="submit" class="btn btn-neutral btn-md btn-circle flex items-center justify-center">
+          <%= heroicon "play", size: :sm, variant: :solid, class: "fill-black" %>
         </button>
       <% end %>
     </div>
