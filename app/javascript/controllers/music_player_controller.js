@@ -113,11 +113,19 @@ export default class extends Controller {
   play() {
     this.playingValue = true;
     this.wavesurfer.play();
+
+    this.miniPlayerOutlets.forEach((outlet) => {
+      outlet.updatePlayingState(true);
+    });
   }
 
   pause() {
     this.playingValue = false;
     this.wavesurfer.pause();
+
+    this.miniPlayerOutlets.forEach((outlet) => {
+      outlet.updatePlayingState(false);
+    });
   }
 
   changeVolume() {

@@ -15,8 +15,8 @@
         <%= image_tag playback_queue.current_item.item.digital_remasters.first.album.album_art, class: "w-16 h-16 md:w-20 md:h-20 rounded-md object-cover" %>
         <div class="flex flex-col items-start justify-center text-left">
           <div class="flex gap-2 text-sm font-semibold text-orange-500">
-            <%= inline_svg_tag("icons/svg_loaders/animated-audio.svg", class: class_names("w-4 h-4 fill-orange-500", "hidden": !playback_session.playing), data: { mini_player_target: "playingIndicator" }) %>
-            <%= inline_svg_tag("icons/svg_loaders/paused-audio.svg", class: class_names("w-4 h-4 fill-orange-500", "hidden": playback_session.playing), data: { mini_player_target: "pauseIndicator" }) %>
+            <%= inline_svg_tag("icons/svg_loaders/animated-audio.svg", class: class_names("hidden w-4 h-4 fill-orange-500 group-data-[mini-player-playing-value=true]:block")) %>
+            <%= inline_svg_tag("icons/svg_loaders/paused-audio.svg", class: class_names("hidden w-4 h-4 fill-orange-500 group-data-[mini-player-playing-value=false]:block")) %>
             <%= playback_queue.current_item.item.composition.title %>
           </div>
           <div class="text-xs text-gray-500">

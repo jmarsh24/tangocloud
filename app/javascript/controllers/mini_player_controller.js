@@ -85,6 +85,10 @@ export default class extends Controller {
     this.mutedValue = muted;
   }
 
+  updatePlayingState(playing) {
+    this.playingValue = playing;
+  }
+
   updateVolume(volume) {
     this.volumeValue = volume;
 
