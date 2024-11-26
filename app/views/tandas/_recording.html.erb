@@ -15,19 +15,19 @@
       </svg>
     </div>
     <div class="flex flex-grow flex-col items-start text-left overflow-hidden">
-      <div class="text-sm font-semibold text-nowrap" title="<%= recording.composition.title %>">
+      <div class="text-sm text-neutral-200 font-semibold text-nowrap" title="<%= recording.composition.title %>">
         <%= recording.composition.title %>
       </div>
-      <div class="text-xs text-gray-500 text-nowrap" title="<%= recording.orchestra.name %>">
+      <div class="text-xs text-neutral-500 text-nowrap" title="<%= recording.orchestra.name %>">
         <%= recording.orchestra.name %>
       </div>
-      <div class="text-xs text-gray-500 text-nowrap" title="<% if recording.singers.present? %> - <%= recording.singers.map(&:name).join(', ') %><% end %>">
+      <div class="text-xs text-neutral-500 text-nowrap" title="<% if recording.singers.present? %> - <%= recording.singers.map(&:name).join(', ') %><% end %>">
         <% if recording.singers.present? %>
           <%= recording.singers.map(&:name).join(", ") %>
         <% end %>
       </div>
     </div>
-    <div class="text-xs text-gray-500 text-nowrap">
+    <div class="text-sm text-neutral-200 text-nowrap">
       <%= recording.year %>
     </div>
   </div>
