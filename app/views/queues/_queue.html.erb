@@ -7,7 +7,7 @@
     class="mini-player flex flex-col gap-4 dark:bg-black pt-16 sm:pt-0 group"
   >
     <% if playback_queue.current_item %>
-      <%= link_to "javascript:history.back()", data: { turbo_frame: "modal" }, class: "absolute left-4 top-4 flex items-center gap-2 p-2 rounded-full bg-neutral-200 text-sm text-neutral-700 dark:bg-neutral-800 dark:text-neutral-400 hover:bg-neutral-300 dark:hover:bg-neutral-700" do %>
+      <%= link_to player_path(recording_id: playback_queue.current_item.item.id), data: { turbo_frame: "modal" }, class: "absolute left-4 top-4 flex items-center gap-2 p-2 rounded-full bg-neutral-200 text-sm text-neutral-700 dark:bg-neutral-800 dark:text-neutral-400 hover:bg-neutral-300 dark:hover:bg-neutral-700" do %>
         <%= heroicon "chevron-left", size: :sm, class: "text-neutral-500 dark:text-neutral-400" %>
       <% end %>
       <h1 class="text-2xl font-bold dark:text-neutral-300">Now Playing</h1>
