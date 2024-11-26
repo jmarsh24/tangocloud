@@ -40,11 +40,11 @@
             <div class="overflow-x-auto no-scrollbar snap-x scroll-px-2">
               <% case type %>
               <% when :playlists %>
-                <div class="grid grid-flow-col auto-cols-[192px] md:auto-cols-[224px] grid-rows-4 gap-3 px-4 py-4">
+                <div class="grid grid-flow-col auto-cols-[192px] md:auto-cols-[224px] grid-rows-2 gap-3 px-4 py-4">
                   <%= render collection: items.take(filter_type == "all" ? 8 : items.size), partial: "playlists/playlist" %>
                 </div>
               <% when :orchestras %>
-                <div class="grid grid-flow-col auto-cols-[96px] md:auto-cols-[156px] grid-rows-2 gap-3 px-4 py-4">
+                <div class="grid grid-flow-col auto-cols-[96px] md:auto-cols-[156px] grid-rows-1 gap-3 px-4 py-4">
                   <%= render collection: items, partial: "orchestras/orchestra" %>
                 </div>
               <% when :recordings %>
