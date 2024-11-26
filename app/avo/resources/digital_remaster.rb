@@ -1,7 +1,23 @@
 class Avo::Resources::DigitalRemaster < Avo::BaseResource
   self.includes = [:audio_file, :album, :remaster_agent, :audio_variants, :waveform, recording: [:composition], acr_cloud_recognition: [:external_identifiers]]
   self.search = {
-    query: -> { query.search(params[:q]).results }
+    query: -> do
+      DigitalRemaster.search(params[:q], includes: [:album, recording: [:genre, :orchestra, :composition]]).map do |result|
+        {
+          _id: result.id,
+          _label: result.recording.title,
+          _url: avo.resources_digital_remasters_path(result),
+          _description: "#{result.recording.genre.name} - #{result.recording.orchestra.name} - #{result.recording.year}",
+          _avatar: result.album.album_art.url
+        }
+      end
+    end,
+    item: -> do
+      {
+        title: "[#{record.id}] #{record.title}",
+        subtitle: record.subtitle
+      }
+    end
   }
   self.title = -> {
     record.recording.title
@@ -9,7 +25,6 @@ class Avo::Resources::DigitalRemaster < Avo::BaseResource
 
   def fields
     field :id, as: :id, only_on: :show
-    field :external_id, as: :text, only_on: [:show, :edit, :new], readonly: true
     field :duration, as: :number, only_on: [:show, :edit, :new], readonly: true
     field :bpm, as: :number, only_on: [:show, :edit, :new], readonly: true
     field :replay_gain, as: :number, only_on: [:show, :edit, :new], readonly: true

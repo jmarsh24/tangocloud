@@ -2,8 +2,6 @@ module Playlistable
   extend ActiveSupport::Concern
 
   included do
-    searchkick word_start: [:title, :description]
-
     before_validation :set_default_title
 
     validates :title, presence: true
@@ -41,14 +39,5 @@ module Playlistable
     image.attach(io: File.open(output_path), filename: "composite_image.png", content_type: "image/png")
 
     File.delete(output_path) if File.exist?(output_path)
-  end
-
-  private
-
-  def search_data
-    {
-      title:,
-      description:
-    }
   end
 end

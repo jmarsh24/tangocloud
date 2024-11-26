@@ -3,7 +3,17 @@ class Avo::Resources::Tanda < Avo::BaseResource
   self.includes = [:user, :tanda_recordings, :recordings]
   self.attachments = [:image, :playlist_file]
   self.search = {
-    query: -> { query.search(params[:q]).results }
+    query: -> do
+      Tanda.search(params[:q], fields: [:title, :subtitle, :description], match: :word_start).map do |result|
+        {
+          _id: result.id,
+          _label: result.title,
+          _url: "/admin/resources/tandas/#{result.id}",
+          _description: result.subtitle,
+          _avatar: result.image&.url
+        }
+      end
+    end
   }
 
   self.ordering = {

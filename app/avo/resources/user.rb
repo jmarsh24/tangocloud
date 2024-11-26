@@ -3,7 +3,23 @@ class Avo::Resources::User < Avo::BaseResource
   self.includes = [:playbacks, :playlists, :tandas]
   self.index_query = -> { query.where(role: [:tester, :admin]) }
   self.search = {
-    query: -> { query.search(params[:q]).results }
+    query: -> do
+      User.search(params[:q]).map do |result|
+        {
+          _id: result.id,
+          _label: result.email,
+          _url: avo.resources_users_path(result),
+          _description: result.username,
+          _avatar: result.avatar&.url
+        }
+      end
+    end,
+    item: -> do
+      {
+        title: "[#{record.id}] #{record.email}",
+        subtitle: record.subtitle
+      }
+    end
   }
 
   def fields

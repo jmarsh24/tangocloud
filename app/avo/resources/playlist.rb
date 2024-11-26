@@ -3,7 +3,17 @@ class Avo::Resources::Playlist < Avo::BaseResource
   self.includes = [:playlist_items, :user]
   self.attachments = [:playlist_file, :image]
   self.search = {
-    query: -> { query.search(params[:q]).results }
+    query: -> do
+      Playlist.search(params[:q], fields: [:title, :subtitle, :description], match: :word_start).map do |result|
+        {
+          _id: result.id,
+          _label: result.title,
+          _url: avo.resources_playlists_path(result),
+          _description: result.subtitle,
+          _avatar: result.image&.url
+        }
+      end
+    end
   }
   self.index_query = -> { query.exclude_liked }
 

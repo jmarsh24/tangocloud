@@ -1,7 +1,22 @@
 class Avo::Resources::AudioFile < Avo::BaseResource
   self.includes = [:digital_remaster]
   self.search = {
-    query: -> { AudioFile.search(params[:q]).results }
+    query: -> do
+      AudioFile.search(
+        params[:q],
+        fields: [:filename, :title, :orchestra, :status],
+        includes: [digital_remaster: [:album]],
+        match: :word_middle,
+        operator: "or"
+      ).map do |result|
+        {
+          _id: result.id,
+          _label: result.filename,
+          _url: avo.resources_audio_file_path(result),
+          _avatar: result.digital_remaster&.album&.album_art&.url
+        }
+      end
+    end
   }
   self.title = :filename
 

@@ -1,7 +1,7 @@
 class Avo::Resources::AudioVariant < Avo::BaseResource
   self.includes = [digital_remaster: [album: [album_art_attachment: :blob], recording: [:composition]]]
   self.search = {
-    query: -> { query.search(params[:q]).results }
+    query: -> { query.search(params[:q]) }
   }
 
   def fields

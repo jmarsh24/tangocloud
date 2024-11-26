@@ -1,4 +1,6 @@
 class DigitalRemaster < ApplicationRecord
+  searchkick word_start: [:title, :orchestra, :singers, :year]
+
   belongs_to :album
   belongs_to :remaster_agent, optional: true
   belongs_to :recording
@@ -17,6 +19,21 @@ class DigitalRemaster < ApplicationRecord
     else
       ::AcrCloudRecognitionJob.perform_now(self)
     end
+  end
+
+  private
+
+  def search_includes
+    [recording: [:orchestra, :singers, :composition]]
+  end
+
+  def search_data
+    {
+      title: recording.title,
+      orchestra: recording.orchestra&.name,
+      singers: recording.singers.map(&:name).join(", "),
+      year: recording.year
+    }
   end
 end
 

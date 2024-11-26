@@ -10,9 +10,6 @@ class Avo::Resources::OrchestraPosition < Avo::BaseResource
     field :start_date, as: :date
     field :end_date, as: :date
     field :principal, as: :boolean
-    field :orchestra_id, as: :text
-    field :orchestra_role_id, as: :text
-    field :person_id, as: :text
     field :orchestra, as: :belongs_to
     field :orchestra_role, as: :belongs_to
     field :person, as: :belongs_to

@@ -1,6 +1,8 @@
 class Tanda < ApplicationRecord
   include Playlistable
 
+  searchkick word_start: [:title, :subtitle, :description, :recordings, :orchestras, :singers]
+
   belongs_to :user, optional: true
   has_many :tanda_recordings, dependent: :destroy
   has_many :recordings, through: :tanda_recordings, inverse_of: :tandas
@@ -31,6 +33,17 @@ class Tanda < ApplicationRecord
   end
 
   private
+
+  def search_data
+    {
+      title: title,
+      subtitle: subtitle,
+      description: description,
+      recordings: recordings.map(&:title),
+      orchestras: recordings.map(&:orchestra).uniq,
+      singers: recordings.map(&:singers).flatten.uniq
+    }
+  end
 
   def update_duration
     self.duration = recordings.includes(:digital_remasters)
