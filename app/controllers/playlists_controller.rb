@@ -1,6 +1,6 @@
 class PlaylistsController < ApplicationController
   def index
-    @playlists = policy_scope(Playlist).exclude_liked.with_attached_image.limit(100)
+    @playlists = policy_scope(Playlist).exclude_liked.public_playlists.with_attached_image.limit(100)
     authorize Playlist
   end
 

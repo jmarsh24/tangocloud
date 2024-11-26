@@ -14,8 +14,6 @@ module Playlistable
 
     has_one_attached :image, dependent: :purge_later
     has_one_attached :playlist_file, dependent: :purge_later
-
-    scope :public_playlists, -> { where(public: true) }
   end
 
   def set_default_title

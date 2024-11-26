@@ -1,8 +1,20 @@
-<%# locals: (tanda:, recording:) %>
 <% cache(recording) do %>
-  <div class="flex flex-auto p-2 gap-2 items-center rounded-lg overflow-hidden relative">
-    <%= image_tag "recordings/vinyl_album.png", alt: "Vinyl Album", class: "h-16 aspect-square object-cover" %>
-    <div class="flex flex-auto flex-col items-start text-left overflow-hidden">
+  <div class="flex flex-auto py-2 gap-2 items-center overflow-hidden relative border-t border-neutral-500 last:border-b-0">
+    <div class="flex flex-col items-center justify-center gap-1">
+      <% popularity_level = (recording.popularity_score / 16.67).ceil %>
+      <svg height="30" width="10" aria-label="Popularity" class="text-neutral-500">
+        <% 6.times do |i| %>
+          <rect 
+          x="0" 
+          y="<%= 25 - (i * 5) %>"
+            width="7" 
+            height="2" 
+            class="<%= i < popularity_level ? 'fill-current text-neutral-400' : 'fill-current text-neutral-600' %>">
+          </rect>
+        <% end %>
+      </svg>
+    </div>
+    <div class="flex flex-grow flex-col items-start text-left overflow-hidden">
       <div class="text-sm font-semibold text-nowrap" title="<%= recording.composition.title %>">
         <%= recording.composition.title %>
       </div>
@@ -14,23 +26,9 @@
           <%= recording.singers.map(&:name).join(", ") %>
         <% end %>
       </div>
-      <div class="text-xs text-gray-500 text-nowrap" title="<%= recording.genre.name %> - <%= recording.year %>">
-        <%= recording.genre.name[0]&.upcase %> - <%= recording.year %>
-      </div>
     </div>
-    <div class="absolute bottom-2 right-2 flex justify-end">
-      <% popularity_level = (recording.popularity_score / 16.67).ceil %>
-      <svg width="30" height="10" aria-label="Popularity" class="text-neutral-500">
-        <% 6.times do |i| %>
-          <rect 
-          x="<%= i * 5 %>" 
-          y="0" 
-          width="2" 
-          height="7" 
-          class="<%= i < popularity_level ? 'fill-current text-neutral-400' : 'fill-current text-neutral-600' %>">
-          </rect>
-        <% end %>
-      </svg>
+    <div class="text-xs text-gray-500 text-nowrap">
+      <%= recording.year %>
     </div>
   </div>
 <% end %>

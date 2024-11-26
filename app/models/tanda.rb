@@ -8,6 +8,8 @@ class Tanda < ApplicationRecord
   has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings
 
+  scope :public_tandas, -> { where(public: true) }
+
   def attach_default_image
     unique_album_arts = recordings.includes(digital_remasters: {album: {album_art_attachment: :blob}})
       .filter_map { _1.digital_remasters.first&.album&.album_art }
