@@ -17,6 +17,7 @@ class Playlist < ApplicationRecord
   }
 
   scope :public_playlists, -> { where(public: true) }
+  scope :mood_playlists, -> { where(playlist_type: PlaylistType.find_by(name: "Mood")) }
 
   def attach_default_image
     unique_album_arts = recordings.includes(digital_remasters: {album: {album_art_attachment: :blob}})
