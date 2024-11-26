@@ -36,8 +36,7 @@
       </div>
       <div class="flex w-full justify-end">
         <div class="text-sm text-gray-400 line-clamp-1">
-          <% total_seconds = recordings.sum { |recording| recording.digital_remasters.first&.duration || 0 } %>
-          <% total_minutes, remaining_seconds = total_seconds.divmod(60) %>
+          <% total_minutes, remaining_seconds = tanda.duration.divmod(60) %>
           <%= "#{tanda.recordings_count} recordings, #{total_minutes} min #{remaining_seconds} sec" %>
         </div>
       </div>
