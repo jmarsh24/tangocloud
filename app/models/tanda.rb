@@ -10,6 +10,8 @@ class Tanda < ApplicationRecord
 
   scope :public_tandas, -> { where(public: true) }
 
+  before_save :update_duration
+
   def attach_default_image
     unique_album_arts = recordings.includes(digital_remasters: {album: {album_art_attachment: :blob}})
       .filter_map { _1.digital_remasters.first&.album&.album_art }
@@ -22,6 +24,14 @@ class Tanda < ApplicationRecord
     else
       create_and_attach_composite_image(unique_album_arts.take(4))
     end
+  end
+
+  private
+
+  def update_duration
+    self.duration = recordings.includes(:digital_remasters)
+      .filter_map { _1.digital_remasters.first&.duration }
+      .sum / 60
   end
 end
 
