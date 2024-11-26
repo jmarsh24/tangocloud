@@ -6,7 +6,10 @@ class MusicLibrariesController < ApplicationController
 
     @playlists = policy_scope(Playlist).exclude_liked.public_playlists.with_attached_image.limit(64)
     @recordings = policy_scope(Recording).random.limit(128).strict_loading.includes(:composition, :orchestra, :singers, :genre, digital_remasters: [audio_variants: [audio_file_attachment: :blob], album: [album_art_attachment: :blob]])
-    @tandas = policy_scope(Tanda).public_tandas.strict_loading
+    @tandas = policy_scope(Tanda)
+      .public_tandas
+      .public_in_playlists
+      .strict_loading
       .includes(
         :user,
         :tags,

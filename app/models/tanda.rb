@@ -7,8 +7,12 @@ class Tanda < ApplicationRecord
   has_many :library_items, as: :item, dependent: :destroy
   has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings
+  has_many :playlist_items, as: :item, dependent: :destroy
 
   scope :public_tandas, -> { where(public: true) }
+  scope :public_in_playlists, -> {
+    joins(playlist_items: :playlist).where(playlists: {public: true})
+  }
 
   before_save :update_duration
 

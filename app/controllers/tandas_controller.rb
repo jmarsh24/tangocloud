@@ -2,6 +2,7 @@ class TandasController < ApplicationController
   def index
     @tandas = policy_scope(Tanda.all)
       .public_tandas
+      .public_in_playlists
       .strict_loading
       .includes(
         :user,
