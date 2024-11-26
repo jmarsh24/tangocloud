@@ -5,6 +5,7 @@ class Avo::Resources::Playlist < Avo::BaseResource
   self.search = {
     query: -> { query.search(params[:q]).results }
   }
+  self.index_query = -> { query.exclude_liked }
 
   def fields
     field :id, as: :id, readonly: true, only_on: :show
