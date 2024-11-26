@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_26_004027) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_26_012614) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -558,6 +558,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_26_004027) do
     t.integer "playlists_count", default: 0, null: false
     t.string "slug"
     t.integer "recordings_count", default: 0, null: false
+    t.integer "duration", default: 0, null: false
     t.index ["public"], name: "index_tandas_on_public"
     t.index ["user_id"], name: "index_tandas_on_user_id"
   end

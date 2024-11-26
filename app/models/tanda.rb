@@ -28,6 +28,7 @@ class Tanda < ApplicationRecord
 
   private
 
+  # Calculates the total duration in minutes and updates the `duration` column
   def update_duration
     self.duration = recordings.includes(:digital_remasters)
       .filter_map { _1.digital_remasters.first&.duration }
@@ -39,15 +40,17 @@ end
 #
 # Table name: tandas
 #
-#  id              :uuid             not null, primary key
-#  title           :string           not null
-#  subtitle        :string
-#  description     :text
-#  public          :boolean          default(TRUE), not null
-#  system          :boolean          default(FALSE), not null
-#  user_id         :uuid
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  playlists_count :integer          default(0), not null
-#  slug            :string
+#  id               :uuid             not null, primary key
+#  title            :string           not null
+#  subtitle         :string
+#  description      :text
+#  public           :boolean          default(TRUE), not null
+#  system           :boolean          default(FALSE), not null
+#  user_id          :uuid
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  playlists_count  :integer          default(0), not null
+#  slug             :string
+#  recordings_count :integer          default(0), not null
+#  duration         :integer          default(0), not null
 #
