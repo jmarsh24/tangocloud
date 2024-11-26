@@ -28,11 +28,10 @@ class Tanda < ApplicationRecord
 
   private
 
-  # Calculates the total duration in minutes and updates the `duration` column
   def update_duration
     self.duration = recordings.includes(:digital_remasters)
       .filter_map { _1.digital_remasters.first&.duration }
-      .sum / 60
+      .sum
   end
 end
 
