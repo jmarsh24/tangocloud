@@ -1,53 +1,71 @@
-<%# locals: { query:, top_result: nil, recordings: [], orchestras: [], playlists: [], tandas: [] } %>
-<% cache([query, top_result, recordings, orchestras, playlists, tandas]) do %>
-  <div class="flex flex-col gap-4">
-    <div class="flex flex-col md:flex-row gap-4">
-      <% if @top_result.present? %>
-        <div class="md:w-1/4 flex flex-col gap-4">
-          <h2 class="text-xl md:text-2xl font-semibold">Top Result</h2>
-          <% if @top_result.is_a?(Recording) %>
-            <%= render partial: "recording_form", locals: { recording: @top_result }, as: :recording %>
-          <% elsif @top_result.is_a?(Orchestra) %>
-            <%= render partial: 'orchestras/orchestra', locals: { orchestra: @top_result } %>
-          <% elsif @top_result.is_a?(Playlist) %>
-            <%= render partial: 'playlists/playlist', locals: { playlist: @top_result } %>
-          <% elsif @top_result.is_a?(Tanda) %>
-            <%= render partial: 'tandas/tanda', locals: { tanda: @top_result } %>
-          <% end %>
-        </div>
-      <% end %>
-      <% if @recordings.present? %>
-        <div class="flex flex-col gap-4">
-          <h2 class="text-xl md:text-2xl font-semibold">Recordings</h2>
-          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2">
-            <%= render partial: "recording_form", collection: @recordings, as: :recording %>
-          </div>
-        </div>
+<%# locals: { query:, grouped_results:, filter_type: "all" } %>
+<% cache([query, grouped_results, filter_type]) do %>
+  <div class="w-full flex flex-col gap-2">
+    <div class="flex justify-start sm:justify-center gap-2 px-2 sm:px-0 py-2">
+      <% filters = [:all, :playlists, :orchestras, :recordings, :tandas] %>
+      <% filters.each do |type| %>
+        <% if filter_type == type.to_s.singularize || type == :all && filter_type == "all" %>
+          <span class="btn btn-sm btn-primary"><%= type.to_s.titleize %></span>
+        <% else %>
+          <a href="<%= search_path(query: query, filter: type.to_s.singularize) %>" 
+             class="btn btn-sm btn-neutral"><%= type.to_s.titleize %></a>
+        <% end %>
       <% end %>
     </div>
-    <% if @orchestras.present? %>
-      <div class="flex flex-col gap-4">
-        <h2 class="text-xl md:text-2xl font-semibold">Orchestras</h2>
-        <div class="flex space-x-4 overflow-x-auto scrollbar-hide">
-          <%= render collection: @orchestras, partial: 'orchestras/orchestra' %>
-        </div>
+    <% if query.blank? %>
+      <div class="flex flex-col items-center justify-center py-16">
+        <%= inline_svg_tag "logos/tangocloud-logo.svg", class: "w-48 h-48 mb-4 fill-neutral-100" %>
+        <p class="text-lg font-medium text-neutral-700 dark:text-neutral-300 mb-4">
+          Search TangoCloud for recordings, orchestras, tandas, and playlists.
+        </p>
+        <a href="<%= root_path %>" class="btn btn-primary">
+          Go Back to Home
+        </a>
       </div>
-    <% end %>
-    <% if @playlists.present? %>
-      <div class="flex flex-col gap-4">
-        <h2 class="text-xl md:text-2xl font-semibold">Playlists</h2>
-        <div class="flex space-x-4 overflow-x-auto scrollbar-hide">
-          <% render collection: @playlists, partial: 'playlists/playlist' %>
-        </div>
+    <% elsif grouped_results.values.flatten.empty? %>
+      <div class="flex flex-col items-center justify-center py-16">
+        <%= inline_svg_tag "logos/tangocloud-logo.svg", class: "w-48 h-48 mb-4 fill-neutral-100" %>
+        <p class="text-lg font-medium text-neutral-700 dark:text-neutral-300 mb-4">
+          No results found for "<%= query %>"
+        </p>
+        <a href="<%= music_library_path %>" class="btn btn-primary">
+          Back to Music Library
+        </a>
       </div>
-    <% end %>
-    <% if @tandas.present? %>
-      <div class="flex flex-col gap-4">
-        <h2 class="text-xl md:text-2xl font-semibold">Tandas</h2>
-        <div class="flex space-x-4 overflow-x-auto scrollbar-hide">
-          <% render collection: @tandas, partial: 'tandas/tanda' %>
-        </div>
-      </div>
+    <% else %>
+      <% grouped_results.each do |type, items| %>
+        <% if items.present? %>
+          <section>
+            <h2 class="text-2xl font-bold text-neutral-900 dark:text-neutral-300 px-4"><%= type.to_s.titleize %></h2>
+            <div class="overflow-x-auto no-scrollbar snap-x scroll-px-2">
+              <% case type %>
+              <% when :playlists %>
+                <div class="grid grid-flow-col auto-cols-[192px] md:auto-cols-[224px] grid-rows-4 gap-3 px-4 py-4">
+                  <%= render collection: items.take(filter_type == "all" ? 8 : items.size), partial: "playlists/playlist" %>
+                </div>
+              <% when :orchestras %>
+                <div class="grid grid-flow-col auto-cols-[96px] md:auto-cols-[156px] grid-rows-2 gap-3 px-4 py-4">
+                  <%= render collection: items, partial: "orchestras/orchestra" %>
+                </div>
+              <% when :recordings %>
+                <div class="grid grid-flow-col auto-cols-[296px] grid-rows-4 gap-3 px-4 py-4">
+                  <%= render collection: items.take(filter_type == "all" ? 8 : items.size), partial: "music_libraries/recording_form", as: :recording %>
+                </div>
+              <% when :tandas %>
+                <div class="grid grid-flow-col auto-cols-[396px] grid-rows-1 gap-8 px-4 py-4">
+                  <%= render collection: items.take(filter_type == "all" ? 8 : items.size), partial: "tandas/tanda" %>
+                </div>
+              <% end %>
+            </div>
+            <% if filter_type == "all" && items.length > 8 && type != :orchestras %>
+              <div class="text-center mt-4">
+                <a href="<%= search_path(query: query, filter: type.to_s.singularize) %>" 
+                   class="btn btn-sm btn-neutral">Show More <%= type.to_s.titleize %></a>
+              </div>
+            <% end %>
+          </section>
+        <% end %>
+      <% end %>
     <% end %>
   </div>
 <% end %>

@@ -14,6 +14,8 @@
           <label class="input input-bordered flex items-center gap-2 bg-neutral-800 rounded-md p-2">
             <%= heroicon("magnifying-glass", variant: :outline, size: :md) %>
             <%= form.text_field :query, 
+                              type: "search", 
+                              inputmode: "search",
                               data: { controller: "auto-submit", action: "keydown->auto-submit#submit" }, 
                               placeholder: "What do you want to listen to?", 
                               autocorrect: "off", 

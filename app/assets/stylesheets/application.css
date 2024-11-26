@@ -8,3 +8,8 @@
 @import "./components/progress-bar.css";
 @import "./components/utilities.css";
 @import "./components/dropdown.css";
+
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}

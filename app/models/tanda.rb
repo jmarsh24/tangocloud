@@ -1,7 +1,7 @@
 class Tanda < ApplicationRecord
   include Playlistable
 
-  searchkick word_start: [:title, :subtitle, :description, :recordings, :orchestras, :singers]
+  searchkick word_start: [:title, :subtitle, :description, :recordings, :orchestras, :singers, :recording_titles]
 
   belongs_to :user, optional: true
   has_many :tanda_recordings, dependent: :destroy
@@ -34,6 +34,10 @@ class Tanda < ApplicationRecord
 
   private
 
+  scope :search_import, -> {
+    includes(recordings: [:composition, :orchestra, :singers])
+  }
+
   def search_data
     {
       title: title,
@@ -41,7 +45,8 @@ class Tanda < ApplicationRecord
       description: description,
       recordings: recordings.map(&:title),
       orchestras: recordings.map(&:orchestra).uniq,
-      singers: recordings.map(&:singers).flatten.uniq
+      singers: recordings.map(&:singers).flatten.uniq,
+      recording_titles: recordings.map(&:title)
     }
   end
 
