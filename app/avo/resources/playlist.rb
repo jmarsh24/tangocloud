@@ -1,6 +1,6 @@
 class Avo::Resources::Playlist < Avo::BaseResource
   self.title = :title
-  self.includes = [:playlist_items, :user]
+  self.includes = [:playlist_items, :user, :playlist_type]
   self.attachments = [:playlist_file, :image]
   self.search = {
     query: -> do
