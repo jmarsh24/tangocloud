@@ -1,5 +1,5 @@
 class Avo::Resources::OrchestraPosition < Avo::BaseResource
-  # self.includes = []
+  self.includes = [:orchestra, :orchestra_role, :person]
   # self.attachments = []
   # self.search = {
   #   query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
