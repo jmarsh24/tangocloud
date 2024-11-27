@@ -15,6 +15,10 @@ class TandaPolicy < ApplicationPolicy
     user.admin? || user.tester? || user.editor?
   end
 
+  def update?
+    record.user == user && (user.admin? || user.tester? || user.editor?)
+  end
+
   def show?
     user.admin? || user.tester? || user.editor?
   end

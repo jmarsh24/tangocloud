@@ -1,6 +1,6 @@
 class TandasController < ApplicationController
   include RemoteModal
-  respond_with_remote_modal only: [:new]
+  respond_with_remote_modal only: [:new, :edit]
 
   def index
     @tandas = policy_scope(Tanda.all)
@@ -58,7 +58,23 @@ class TandasController < ApplicationController
     authorize Tanda, :create?
 
     @tanda = Tanda.create!(user: current_user, title: tanda_params[:title])
-    @user_library.library_items.create!(item: @tanda, item: @tanda)
+    @user_library.library_items.create!(item: @tanda)
+
+    redirect_to tanda_path(@tanda)
+  end
+
+  def edit
+    @tanda = policy_scope(Tanda).find(params[:id])
+    authorize @tanda
+
+    redirect_to tanda_path(@tanda)
+  end
+
+  def update
+    @tanda = policy_scope(Tanda).find(params[:id])
+    authorize @tanda
+
+    @tanda.update!(tanda_params)
 
     redirect_to tanda_path(@tanda)
   end
@@ -66,6 +82,6 @@ class TandasController < ApplicationController
   private
 
   def tanda_params
-    params.require(:tanda).permit(:title)
+    params.require(:tanda).permit(:title, :subtitle, :description, :public)
   end
 end

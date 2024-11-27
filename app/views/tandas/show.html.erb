@@ -22,7 +22,11 @@
       <%= image_tag @tanda.image, class: "w-64 h-64 md:w-24 md:h-24 rounded-lg object-cover" %>
     <% end %>
     <h1><%= @tanda.title %></h1>
-    <%= button_to 'Add to Library', add_to_library_tanda_path(@tanda), class: "btn btn-primary" %>
+    <% if Current.user == @tanda.user %>
+      <%= link_to "Edit", edit_tanda_path(@tanda), class: "btn btn-primary", data: { turbo_frame: "modal" } %>
+    <% elsif @user_library.library_items.where(item_id: @tanda.id).any? %>
+      <%= button_to "Add to Library", add_to_library_tanda_path(@tanda), class: "btn btn-primary" %>
+    <% end %>
   </div>
   <div class="flex flex-col items-center py-8">
     <div class="w-full md:max-w-screen-md">
