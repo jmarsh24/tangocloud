@@ -1,9 +1,25 @@
 <% cache(tanda) do %>
   <%= form_with url: load_tanda_recording_path(tanda_id: tanda.id, id: tanda.recordings.first.id) do %>
-    <button type="submit"
-        class="w-full group snap-start hover:scale-[1.01] bg-neutral-900 hover:bg-neutral-800 flex flex-col rounded-xl text-white transition-transform duration-200 p-4 gap-4">
+    <% genre_name = tanda.recordings.first.genre.name.downcase %>
+    <% background_class =
+      if genre_name == "tango"
+        "bg-tango"
+      elsif genre_name == "milonga"
+        "bg-milonga"
+      elsif genre_name == "vals"
+        "bg-vals"
+      else
+        "bg-default"
+      end %>
+    <div class="<%= class_names(
+              'w-full group snap-start flex flex-col rounded-xl text-neutral-200 transition-transform duration-200 p-4 gap-4 relative',
+              background_class
+            ) %>">
       <div class="w-full flex flex-col gap-4 z-20">
-        <div class="w-full flex justify-between gap-2">
+        <div class="w-full flex justify-start gap-4">
+          <div class="relative w-24 flex items-center justify-center">
+            <%= image_tag tanda.recordings.first.orchestra.image, alt: tanda.recordings.first.orchestra.name, class: "rounded-lg object-cover aspect-square h-full" %>
+          </div>
           <div class="flex flex-col gap-4">
             <div class="flex items-start flex-col gap-1">
               <div class="text-xl font-bold line-clamp-1" title="<%= tanda.title %>">
@@ -19,27 +35,24 @@
               </div>
             </div>
           </div>
-          <div class="relative w-36 flex items-center justify-center transition-transform duration-200 group">
-            <div class="relative w-full">
-              <%= image_tag tanda.recordings.first.orchestra.image, alt: tanda.recordings.first.orchestra.name, class: "rounded-lg object-cover aspect-square w-full group-hover:opacity-60 transition-opacity duration-200" %>
-              <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                <div class="btn btn-primary btn-md btn-circle flex items-center justify-center">
-                  <%= heroicon "play", size: :sm, variant: :solid, class: "fill-white-500" %>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
       <div class="flex w-full flex-col z-20 relative border-b border-neutral-500">
         <%= render collection: tanda.recordings, partial: "tandas/recording", locals: { tanda: }, as: :recording %>
       </div>
-      <div class="flex w-full justify-end">
+      <div class="flex w-full justify-between items-center mt-2">
+        <!-- Play Button -->
+        <%= form_with url: load_tanda_recording_path(tanda_id: tanda.id, id: tanda.recordings.first.id), method: :post do %>
+          <button type="submit" class="btn btn-neutral btn-md btn-circle flex items-center justify-center opacity-85">
+            <%= heroicon "play", size: :sm, variant: :solid, class: "fill-white-500" %>
+          </button>
+        <% end %>
+        <!-- Recording Details -->
         <div class="text-sm text-gray-400 line-clamp-1">
           <% total_minutes, remaining_seconds = tanda.duration.divmod(60) %>
           <%= "#{tanda.recordings_count} recordings, #{total_minutes} min #{remaining_seconds} sec" %>
         </div>
       </div>
-    </button>
+    </div>
   <% end %>
 <% end %>
