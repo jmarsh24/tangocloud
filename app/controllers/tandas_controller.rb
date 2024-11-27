@@ -60,14 +60,7 @@ class TandasController < ApplicationController
     @tanda = Tanda.create!(user: current_user, title: tanda_params[:title])
     @user_library.library_items.create!(item: @tanda, item: @tanda)
 
-    redirect_to edit_tanda_path(@tanda)
-  end
-
-  def edit
-    @tanda = policy_scope(Tanda).find(params[:id])
-    authorize @tanda
-
-    @tanda_recordings = @tanda.tanda_recordings.includes(:recording).order(:position)
+    redirect_to tanda_path(@tanda)
   end
 
   private

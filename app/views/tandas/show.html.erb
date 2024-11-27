@@ -23,8 +23,40 @@
     <% end %>
     <h1><%= @tanda.title %></h1>
     <%= button_to 'Add to Library', add_to_library_tanda_path(@tanda), class: "btn btn-primary" %>
-    <div class="flex flex-col gap-2">
-      <%= render collection: @recordings, partial: "recording_form", locals: { tanda: @tanda }, as: :recording %>
+  </div>
+  <div class="flex flex-col items-center py-8">
+    <div class="w-full md:max-w-screen-md">
+      <div class="flex flex-col gap-6">
+        <h1 class="text-2xl font-semibold">Build Your Tanda</h1>
+        <div id="tanda-recordings" class="flex flex-col gap-4">
+          <% if @tanda.tanda_recordings.any? %>
+            <ul>
+              <%= render @tanda.tanda_recordings %>
+            </ul>
+          <% else %>
+            <p class="text-neutral-500">No songs added to the Tanda yet. Use the search below to add songs.</p>
+          <% end %>
+        </div>
+        <div>
+          <%= form_with url: recordings_path, method: :get, data: { turbo_stream: true } do |form| %>
+            <%= form.hidden_field :tanda_id, value: @tanda.id %>
+            <div class="flex items-center gap-2 rounded-lg bg-neutral-200 dark:bg-neutral-800 px-2 relative">
+              <%= heroicon("magnifying-glass", size: :md, class: "text-neutral-600 dark:text-neutral-300") %>
+              <%= form.text_field :query,
+                            autofocus: true,
+                            autocomplete: "off",
+                            placeholder: "Search for recordings...",
+                            class: "w-full p-2 bg-neutral-200 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 outline-none",
+                            data: { controller: "auto-submit", action: "keydown->auto-submit#submit" } %>
+              <%= heroicon("x-mark", size: :sm, 
+                     class: "absolute right-2 top-1/2 -translate-y-1/2 hidden cursor-pointer text-neutral-600 dark:text-neutral-300", 
+                     data: { action: "click->spotlight-search#clear", spotlight_search_target: "clear" }) %>
+            </div>
+          <% end %>
+        </div>
+        <div id="recording-results" role="listbox" aria-live="polite" class="dark:bg-neutral-900 dark:text-neutral-100">
+        </div>
+      </div>
     </div>
   </div>
 <% end %>

@@ -87,7 +87,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :tandas, only: [:new, :create, :edit] do
+  resources :tandas, only: [:new, :create, :show] do
     resources :tanda_recordings, only: [:create]
     resources :recordings, only: [:index]
     member do
