@@ -2,7 +2,7 @@ class Orchestra < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :slugged
 
-  searchkick word_start: [:name]
+  searchkick word_start: [:name, :first_name, :last_name]
 
   belongs_to :el_recodo_orchestra, class_name: "ExternalCatalog::ElRecodo::Orchestra", optional: true
   has_many :orchestra_periods, dependent: :destroy
@@ -45,18 +45,16 @@ class Orchestra < ApplicationRecord
     self.normalized_name = NameUtils::NameNormalizer.normalize(name)
   end
 
+  private
+
   def search_data
     {
       id:,
-      name:,
-      periods: orchestra_periods.pluck(:name),
-      roles: orchestra_roles.pluck(:name),
-      singers: singers.pluck(:name),
-      genres: genres.pluck(:name)
+      name: normalized_name,
+      first_name: normalized_name.split.first,
+      last_name: normalized_name.split.last
     }
   end
-
-  private
 
   def set_display_name
     self.display_name = name

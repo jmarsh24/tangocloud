@@ -3,13 +3,17 @@ class Avo::Resources::ExternalCatalogElRecodoSong < Avo::BaseResource
   # self.attachments = []
   self.model_class = ::ExternalCatalog::ElRecodo::Song
   self.search = {
-    query: -> {
-      query.search(
-        params[:q],
-        fields: [:title, :style, :label, :orchestra, :singer],
-        match: :word_start, misspellings: {below: 5}
-      )
-    }
+    query: -> do
+      ExternalCatalog::ElRecodo::Song.search(params[:q], includes: [:orchestra]).map do |result|
+        {
+          _id: result.id,
+          _label: result.title,
+          _url: avo.resources_external_catalog_el_recodo_songs_path(result),
+          _description: "#{result.style} - #{result.date.year} - #{result.orchestra&.name}",
+          _avatar: result.orchestra&.image&.url
+        }
+      end
+    end
   }
 
   self.title = :formatted_title

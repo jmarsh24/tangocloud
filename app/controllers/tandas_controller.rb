@@ -1,6 +1,8 @@
 class TandasController < ApplicationController
   def index
     @tandas = policy_scope(Tanda.all)
+      .public_tandas
+      .public_in_playlists
       .strict_loading
       .includes(
         :user,
@@ -32,7 +34,7 @@ class TandasController < ApplicationController
   end
 
   def show
-    @tanda = policy_scope(Tanda).find(params[:id])
+    @tanda = policy_scope(Tanda).public_tandas.find(params[:id])
 
     tanda_recordings = @tanda
       .tanda_recordings

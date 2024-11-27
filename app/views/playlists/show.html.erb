@@ -15,28 +15,26 @@
     <% end %>
   <% end %>
   <div class="relative flex flex-col gap-4 items-center dark:bg-black">
-    <%= link_to music_library_path, class: "absolute left-4 top-4 flex items-center gap-2 p-2 rounded-full bg-neutral-200 text-sm text-neutral-700 dark:bg-neutral-800 dark:text-neutral-400 hover:bg-neutral-300 dark:hover:bg-neutral-700" do %>
+    <%= link_to "javascript:history.back()", 
+      class: "absolute left-4 top-4 flex items-center gap-2 p-2 rounded-full bg-neutral-200 text-sm text-neutral-700 dark:bg-neutral-800 dark:text-neutral-400 hover:bg-neutral-300 dark:hover:bg-neutral-700" do %>
       <%= heroicon "chevron-left", size: :sm, class: "text-neutral-500 dark:text-neutral-400" %>
     <% end %>
-    <% if @playlist.image.attached? %>
-      <%= image_tag @playlist.image, class: "w-64 h-64 md:w-24 md:h-24 rounded-lg object-cover" %>
-    <% end %>
-    <h1 class="text-2xl font-bold dark:text-neutral-300">
-      <%= @playlist.title %>
-    </h1>
-    <%# if @playlist.description.present? %>
-    <!--      <p class="text-sm text-center dark:text-neutral-400">-->
-    <%#= @playlist.description %>
-    <!--      </p>-->
-    <%# end %>
-    <% if @playlist.user %>
-      <p class="text-sm text-center dark:text-neutral-400">
-        <%= @playlist.user.username %>
-      </p>
-    <% end %>
-    <%= button_to 'Add to Library', add_to_library_playlist_path(@playlist), class: "btn btn-primary" %>
-    <div class="flex w-full flex-col gap-2">
-      <%= render collection: @playlist_items, partial: "playlists/playlist_item" %>
+    <div class="w-full md:max-w-screen-md flex flex-col gap-4 items-center pt-4">
+      <% if @playlist.image.attached? %>
+        <%= image_tag @playlist.image, class: "w-64 h-64 md:w-24 md:h-24 rounded-lg object-cover" %>
+      <% end %>
+      <h1 class="text-2xl font-bold dark:text-neutral-300">
+        <%= @playlist.title %>
+      </h1>
+      <% if @playlist.user %>
+        <p class="text-sm text-center dark:text-neutral-400">
+          <%= @playlist.user.username %>
+        </p>
+      <% end %>
+      <%= button_to 'Add to Library', add_to_library_playlist_path(@playlist), class: "btn btn-primary" %>
+      <div class="flex w-full flex-col gap-2">
+        <%= render collection: @playlist_items, partial: "playlists/playlist_item" %>
+      </div>
     </div>
   </div>
 <% end %>

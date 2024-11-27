@@ -12,10 +12,10 @@ class Avo::Resources::Recording < Avo::BaseResource
     :recording_singers,
     :singers,
     :lyrics,
-    :acr_cloud_recognitions
+    :external_identifiers
   ]
   self.search = {
-    query: -> { query.search(params[:q]).results }
+    query: -> { query.search(params[:q]) }
   }
 
   def fields
@@ -37,7 +37,7 @@ class Avo::Resources::Recording < Avo::BaseResource
     field :recording_singers, as: :has_many
     field :singers, as: :has_many, through: :recording_singers
     field :lyrics, as: :has_many, through: :compositions
-    field :acr_cloud_recognitions, as: :has_many
+    field :external_identifiers, as: :has_many
     field :playbacks, as: :has_many
   end
 end

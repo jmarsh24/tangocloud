@@ -1,6 +1,8 @@
 class Playlist < ApplicationRecord
   include Playlistable
 
+  searchkick word_start: [:title, :subtitle, :description, :recording_titles, :tanda_titles, :playlist_type]
+
   has_many :playlist_items, dependent: :destroy
   has_many :recordings, through: :playlist_items, source: :item, source_type: "Recording"
   has_many :tandas, through: :playlist_items, source: :item, source_type: "Tanda"
@@ -13,6 +15,10 @@ class Playlist < ApplicationRecord
       .where(playlist_types: {name: nil})
       .or(left_joins(:playlist_type).where.not(playlist_types: {name: "Liked"}))
   }
+
+  scope :public_playlists, -> { where(public: true) }
+  scope :mood_playlists, -> { where(playlist_type: PlaylistType.find_by(name: "Mood")) }
+  scope :excluding_mood_playlists, -> { where.not(playlist_type: PlaylistType.find_by(name: "Mood")) }
 
   def attach_default_image
     unique_album_arts = recordings.includes(digital_remasters: {album: {album_art_attachment: :blob}})
@@ -34,6 +40,34 @@ class Playlist < ApplicationRecord
     end
 
     create_and_attach_composite_image(unique_album_arts.take(4))
+  end
+
+  private
+
+  scope :search_import, -> {
+    includes(
+      recordings: :composition,
+      tandas: {recordings: :composition},
+      playlist_items: [:item]
+    )
+  }
+
+  def search_data
+    {
+      title: title,
+      subtitle: subtitle,
+      description: description,
+      recording_titles: recordings.filter_map { |recording| recording.composition&.title },
+      tanda_titles: tandas.flat_map { |tanda| tanda.recordings.map { |recording| recording.composition&.title } }.compact,
+      playlist_type: playlist_type&.name,
+      playlist_items: playlist_items.map do |item|
+        if item.item_type == "Recording"
+          item.item.composition&.title
+        elsif item.item_type == "Tanda"
+          item.item.recordings.map { |recording| recording.composition&.title }
+        end
+      end.flatten.compact
+    }
   end
 end
 

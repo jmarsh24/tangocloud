@@ -1,7 +1,7 @@
 class AcrCloudRecognitionJob < ApplicationJob
   queue_as :background
 
-  limits_concurrency to: 20, key: "acr_cloud_recognition", duration: 1.minute
+  limits_concurrency to: 10, key: "acr_cloud_recognition", duration: 1.minute
 
   def perform(digital_remaster)
     acr_cloud_recognition = digital_remaster.acr_cloud_recognition ||
