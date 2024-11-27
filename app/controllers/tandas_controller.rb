@@ -39,12 +39,10 @@ class TandasController < ApplicationController
   def show
     @tanda = policy_scope(Tanda).find(params[:id])
 
-    tanda_recordings = @tanda
+    @tanda_recordings = @tanda
       .tanda_recordings
       .includes(recording: [:composition, :orchestra, :genre, :singers, digital_remasters: [audio_variants: [audio_file_attachment: :blob], album: [album_art_attachment: :blob]]])
       .order(:position)
-
-    @recordings = tanda_recordings.map(&:recording)
 
     authorize @tanda
   end

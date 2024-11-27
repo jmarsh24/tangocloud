@@ -27,9 +27,9 @@
       <div class="flex flex-col gap-6">
         <h2 class="text-2xl font-semibold text-center">Tanda Recordings</h2>
         <div id="tanda-recordings" class="flex flex-col gap-4">
-          <% if @tanda.tanda_recordings.any? %>
+          <% if @tanda_recordings.any? %>
             <ul class="list-none space-y-4">
-              <%= render @tanda.tanda_recordings %>
+              <%= render @tanda_recordings %>
             </ul>
           <% else %>
             <p class="text-center text-neutral-500">No songs added to the Tanda yet. Use the search below to add songs.</p>
