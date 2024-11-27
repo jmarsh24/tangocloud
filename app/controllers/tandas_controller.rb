@@ -53,7 +53,7 @@ class TandasController < ApplicationController
           ]
         ]
       )
-      .order(:position)
+      .rank(:position)
   end
 
   def new
