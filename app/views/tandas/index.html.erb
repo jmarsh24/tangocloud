@@ -1,10 +1,12 @@
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 rounded-lg shadow-lg overflow-hidden">
-  <h1 class="col-span-full text-3xl font-semibold text-neutral-900 dark:text-neutral-100">Tandas</h1>
-  <div class="col-span-full mb-4">
-    <%= link_to "All", tandas_path, class: "px-4 py-2 dark:bg-neutral-800 rounded #{'font-bold' unless params[:genre].present?}" %>
-    <%= link_to "Tango", tandas_path(genre: 'tango'), class: "px-4 py-2 dark:bg-neutral-800 rounded #{'font-bold' if params[:genre] == 'tango'}" %>
-    <%= link_to "Milonga", tandas_path(genre: 'milonga'), class: "px-4 py-2 dark:bg-neutral-800 rounded #{'font-bold' if params[:genre] == 'milonga'}" %>
-    <%= link_to "Vals", tandas_path(genre: 'vals'), class: "px-4 py-2 dark:bg-neutral-800 rounded #{'font-bold' if params[:genre] == 'vals'}" %>
+<div class="flex flex-col items-center">
+  <div class="md:max-w-screen-lg grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 rounded-lg shadow-lg overflow-hidden">
+    <h1 class="col-span-full text-3xl font-semibold text-neutral-900 dark:text-neutral-100">Tandas</h1>
+    <div class="col-span-full mb-4">
+      <%= link_to "All", tandas_path, class: "px-4 py-2 dark:bg-neutral-800 rounded #{'font-bold' unless params[:genre].present?}" %>
+      <%= link_to "Tango", tandas_path(genre: 'tango'), class: "px-4 py-2 dark:bg-neutral-800 rounded #{'font-bold' if params[:genre] == 'tango'}" %>
+      <%= link_to "Milonga", tandas_path(genre: 'milonga'), class: "px-4 py-2 dark:bg-neutral-800 rounded #{'font-bold' if params[:genre] == 'milonga'}" %>
+      <%= link_to "Vals", tandas_path(genre: 'vals'), class: "px-4 py-2 dark:bg-neutral-800 rounded #{'font-bold' if params[:genre] == 'vals'}" %>
+    </div>
+    <%= render @tandas %>
   </div>
-  <%= render @tandas %>
 </div>

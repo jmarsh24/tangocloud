@@ -1,7 +1,7 @@
 <%# locals: { query:, grouped_results:, filter_type: "all" } %>
 <% cache([query, grouped_results, filter_type]) do %>
   <div class="w-full max-w-screen-md mx-auto flex flex-col gap-4">
-    <div class="flex justify-start gap-2 px-2 py-2">
+    <div class="flex justify-start gap-2 px-2 py-2 overflow-x-auto no-scrollbar whitespace-nowrap">
       <% filters = [:all, :playlists, :orchestras, :recordings, :tandas] %>
       <% filters.each do |type| %>
         <% if filter_type == type.to_s.singularize || type == :all && filter_type == "all" %>
@@ -37,18 +37,16 @@
         <% if items.present? %>
           <section>
             <h2 class="text-2xl font-bold text-neutral-900 dark:text-neutral-300 px-4"><%= type.to_s.titleize %></h2>
-            <div class="grid grid-cols-1 gap-3 px-4 py-4">
-              <% case type %>
-              <% when :playlists %>
-                <%= render collection: items.take(filter_type == "all" ? 8 : items.size), partial: "playlists/playlist" %>
-              <% when :orchestras %>
-                <%= render collection: items, partial: "orchestras/orchestra" %>
-              <% when :recordings %>
+            <% case type %>
+            <% when :playlists, :orchestras, :tandas %>
+              <div class="flex flex-wrap gap-4 px-4 py-4">
+                <%= render collection: items.take(filter_type == "all" ? 8 : items.size), partial: "#{type.to_s.pluralize}/#{type.to_s.singularize}" %>
+              </div>
+            <% when :recordings %>
+              <div class="grid grid-cols-1 gap-3 px-4 py-4">
                 <%= render collection: items.take(filter_type == "all" ? 8 : items.size), partial: "music_libraries/recording_form", as: :recording %>
-              <% when :tandas %>
-                <%= render collection: items.take(filter_type == "all" ? 8 : items.size), partial: "tandas/tanda" %>
-              <% end %>
-            </div>
+              </div>
+            <% end %>
             <% if filter_type == "all" && items.length > 8 %>
               <div class="text-center mt-4">
                 <a href="<%= search_path(query: query, filter: type.to_s.singularize) %>" 
