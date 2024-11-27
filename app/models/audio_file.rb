@@ -1,4 +1,6 @@
 class AudioFile < ApplicationRecord
+  searchkick word_start: [:filename], word_middle: [:filename]
+
   SUPPORTED_MIME_TYPES = [
     "audio/x-aiff",
     "audio/x-flac",
@@ -30,6 +32,30 @@ class AudioFile < ApplicationRecord
     else
       Import::AudioFile::ImportJob.perform_now(self)
     end
+  end
+
+  private
+
+  def search_data
+    {
+      filename: filename,
+      title: extract_title_from_filename,
+      orchestra: extract_orchestra_from_filename,
+      date: extract_date_from_filename,
+      status: status
+    }
+  end
+
+  def extract_date_from_filename
+    filename[/\A(\d{8})/, 1] # Extracts 'YYYYMMDD' from the start of the filename
+  end
+
+  def extract_orchestra_from_filename
+    filename.split("__")[1] # Assumes orchestra name is the second part
+  end
+
+  def extract_title_from_filename
+    filename.split("__")[3] # Assumes title is the fourth part
   end
 end
 

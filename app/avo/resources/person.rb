@@ -2,12 +2,17 @@ class Avo::Resources::Person < Avo::BaseResource
   self.includes = [:orchestra_positions, :recording_singers, :composition_roles]
   self.attachments = [:image]
   self.search = {
-    query: -> {
-             query.search(params[:q],
-               fields: [:name],
-               match: :word_start,
-               misspellings: {below: 5})
-           }
+    query: -> do
+      Person.search(params[:q]).map do |result|
+        {
+          _id: result.id,
+          _label: result.name,
+          _url: avo.resources_people_path(result),
+          _description: result.display_name,
+          _avatar: result.image&.url
+        }
+      end
+    end
   }
   self.find_record_method = -> {
     if id.is_a?(Array)

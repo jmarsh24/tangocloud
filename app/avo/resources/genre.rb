@@ -1,7 +1,7 @@
 class Avo::Resources::Genre < Avo::BaseResource
   self.includes = [:recordings]
   self.search = {
-    query: -> { query.search(params[:q]).results }
+    query: -> { query.search(params[:q]) }
   }
 
   def fields

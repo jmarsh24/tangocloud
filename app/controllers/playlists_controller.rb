@@ -1,11 +1,15 @@
 class PlaylistsController < ApplicationController
   def index
-    @playlists = policy_scope(Playlist).exclude_liked.with_attached_image.limit(100)
+    @playlists = policy_scope(Playlist)
+      .exclude_liked
+      .public_playlists
+      .excluding_mood_playlists
+      .with_attached_image.limit(100)
     authorize Playlist
   end
 
   def show
-    @playlist = policy_scope(Playlist).find(params[:id])
+    @playlist = policy_scope(Playlist).public_playlists.find(params[:id])
 
     recordings = PlaylistItem
       .strict_loading

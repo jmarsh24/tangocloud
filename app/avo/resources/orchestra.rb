@@ -2,7 +2,17 @@ class Avo::Resources::Orchestra < Avo::BaseResource
   self.includes = [:recordings, :singers, :compositions, :orchestra_roles, :orchestra_periods]
   self.attachments = [:image]
   self.search = {
-    query: -> { query.search(params[:q]).results }
+    query: -> do
+      Orchestra.search(params[:q]).map do |result|
+        {
+          _id: result.id,
+          _label: result.name,
+          _url: avo.resources_orchestras_path(result),
+          _description: result.display_name,
+          _avatar: result.image&.url
+        }
+      end
+    end
   }
   self.find_record_method = -> {
     if id.is_a?(Array)

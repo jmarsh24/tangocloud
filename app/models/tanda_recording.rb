@@ -1,7 +1,7 @@
 class TandaRecording < ApplicationRecord
   include RankedModel
 
-  belongs_to :tanda
+  belongs_to :tanda, counter_cache: :recordings_count
   belongs_to :recording, counter_cache: :tandas_count
 
   ranks :position, with_same: :tanda_id

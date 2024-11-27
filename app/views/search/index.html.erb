@@ -1,5 +1,5 @@
 <%= form_with url: search_path, method: :get, data: { turbo_stream: true }, id: "search-bar" do |form| %>
-  <div class="w-full md:hidden">
+  <div class="w-full md:hidden px-2">
     <label class="input input-bordered flex items-center gap-2 bg-neutral-800 rounded-md p-2">
       <%= heroicon("magnifying-glass", variant: :outline, size: :md) %>
       <%= form.text_field :query, 
@@ -13,6 +13,7 @@
     </label>
   </div>
 <% end %>
-<div id="search-results">
-  <%= render partial: "search_results", locals: { query: params[:query], top_result: @top_result, recordings: @recordings, orchestras: @orchestras, playlists: @playlists, tandas: @tandas } %>
+<div id="search-results" class="flex justify-center">
+  <%= render partial: "search_results", 
+    locals: { query: params[:query], grouped_results: @grouped_results, filter_type: @filter_type } %>
 </div>

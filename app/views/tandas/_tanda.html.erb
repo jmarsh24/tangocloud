@@ -1,47 +1,58 @@
 <% cache(tanda) do %>
-  <div class="group flex flex-col justify-start gap-4 bg-neutral-900 text-white p-4 rounded-lg snap-start transition-colors duration-200 h-full">
-    <div class="flex flex-col gap-4">
-      <div class="flex w-full justify-between gap-2">
-        <div class="flex flex-col gap-4">
-          <div class="flex flex-1 flex-col gap-1">
-            <div class="text-xl font-bold line-clamp-1" title="<%= tanda.title %>">
-              <%= tanda.recordings.first.orchestra.display_name %>
-            </div>
-            <% singers = tanda.recordings.map { _1.singers.map(&:name) }.flatten.compact.uniq %>
-            <% if singers.any? %>
-              <div class="text-sm text-gray-400 line-clamp-1" title="<%= singers.join(', ') %>">
-                <%= singers.join(', ') %>
+  <%= form_with url: load_tanda_recording_path(tanda_id: tanda.id, id: tanda.recordings.first.id) do %>
+    <% genre_name = tanda.recordings.first.genre.name.downcase %>
+    <% background_class =
+      if genre_name == "tango"
+        "bg-tango"
+      elsif genre_name == "milonga"
+        "bg-milonga"
+      elsif genre_name == "vals"
+        "bg-vals"
+      else
+        "bg-default"
+      end %>
+    <div class="<%= class_names(
+              'w-full group snap-start flex flex-col rounded-xl text-neutral-200 transition-transform duration-200 p-4 gap-4 relative',
+              background_class
+            ) %>">
+      <div class="w-full flex flex-col gap-4 z-20">
+        <div class="w-full flex justify-start gap-4">
+          <div class="relative w-24 flex items-center justify-center">
+            <%= image_tag tanda.recordings.first.orchestra.image, alt: tanda.recordings.first.orchestra.name, class: "rounded-lg object-cover aspect-square h-full" %>
+          </div>
+          <div class="flex flex-col gap-4">
+            <div class="flex items-start flex-col gap-1">
+              <div class="text-xl font-bold line-clamp-1" title="<%= tanda.title %>">
+                <%= tanda.recordings.first.orchestra.display_name %>
               </div>
-            <% end %>
-            <div class="text-sm text-gray-400 line-clamp-1" title="<%= tanda.recordings.first.genre.name %>">
-              <%= tanda.recordings.first.genre.name %>
-            </div>
-            <div class="text-sm text-gray-400 line-clamp-1">
-              <% recordings = tanda.recordings.to_a %>
-              <% year_range = "#{recordings.map(&:year).min} - #{recordings.map(&:year).max}" %>
-              <%= year_range %>
+              <div class="text-sm text-gray-400 line-clamp-1" title="<%= tanda.recordings.first.genre.name %>">
+                <%= tanda.recordings.first.genre.name %>
+              </div>
+              <div class="text-sm text-gray-400 line-clamp-1">
+                <% recordings = tanda.recordings.to_a %>
+                <% year_range = "#{recordings.map(&:year).min} - #{recordings.map(&:year).max}" %>
+                <%= year_range %>
+              </div>
             </div>
           </div>
         </div>
-        <div class="w-16 flex items-center justify-center">
-          <%= image_tag tanda.recordings.first.orchestra.image, alt: tanda.recordings.first.orchestra.name,  class: "rounded-lg object-cover aspect-square w-full" %>
+      </div>
+      <div class="flex w-full flex-col z-20 relative border-b border-neutral-500">
+        <%= render collection: tanda.recordings, partial: "tandas/recording", locals: { tanda: }, as: :recording %>
+      </div>
+      <div class="flex w-full justify-between items-center mt-2">
+        <!-- Play Button -->
+        <%= form_with url: load_tanda_recording_path(tanda_id: tanda.id, id: tanda.recordings.first.id), method: :post do %>
+          <button type="submit" class="btn btn-neutral btn-md btn-circle flex items-center justify-center opacity-85">
+            <%= heroicon "play", size: :sm, variant: :solid, class: "fill-white-500" %>
+          </button>
+        <% end %>
+        <!-- Recording Details -->
+        <div class="text-sm text-gray-400 line-clamp-1">
+          <% total_minutes, remaining_seconds = tanda.duration.divmod(60) %>
+          <%= "#{tanda.recordings_count} recordings, #{total_minutes} min #{remaining_seconds} sec" %>
         </div>
       </div>
-      <%= form_with url: load_tanda_recording_path(tanda_id: tanda.id, id: tanda.recordings.first.id) do %>
-        <button type="submit" class="btn btn-neutral btn-md btn-circle flex items-center justify-center">
-          <%= heroicon "play", size: :sm, variant: :solid, class: "fill-black" %>
-        </button>
-      <% end %>
     </div>
-    <div class="flex w-full flex-col gap-2 bg-neutral-950 rounded-lg">
-      <%= render collection: tanda.recordings, partial: "tandas/recording", locals: { tanda: }, as: :recording %>
-    </div>
-    <%#= turbo_frame_tag dom_id(tanda, :tags), src: user_tanda_tags_path(tanda), loading: "lazy", class: "flex gap-2 flex-shrink-1" do %>
-      <%# ["sparkles", "bolt", "fire", "clock"].each do |tag_name| %>
-        <!--        <button class="bg-transparent border-none p-0 cursor-pointer animate-pulse">-->
-        <%#= heroicon tag_name.to_sym, size: :md, class: "cursor-pointer text-neutral-300" %>
-        <!--        </button>-->
-        <%# end %>
-        <%# end %>
-      </div>
-    <% end %>
+  <% end %>
+<% end %>

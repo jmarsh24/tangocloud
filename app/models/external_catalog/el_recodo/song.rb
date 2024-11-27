@@ -23,6 +23,8 @@ class ExternalCatalog::ElRecodo::Song < ApplicationRecord
 
   private
 
+  scope :search_import, -> { includes(:orchestra, :people) }
+
   def search_data
     {
       date:,

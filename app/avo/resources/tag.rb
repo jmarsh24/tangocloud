@@ -1,18 +1,14 @@
 class Avo::Resources::Tag < Avo::BaseResource
   self.title = :name
-  self.includes = [:taggable, :user]
+  self.includes = [:taggings]
   self.search = {
-    query: -> { query.search(params[:q]).results }
+    query: -> { query.search(params[:q]) }
   }
 
   def fields
-    field :id, as: :id
-    field :tag, as: :belongs_to
-    field :taggable,
-      as: :belongs_to,
-      polymorphic_as: :taggable,
-      types: [::Recording, ::Tanda, ::Orchestra, ::Playlist, ::Composition, ::Person, ::User]
-    field :user, as: :belongs_to
+    field :id, as: :id, hide_on: [:index]
+    field :name, as: :text
+    field :taggings, as: :has_many
 
     field :created_at, as: :date_time
     field :updated_at, as: :date_time

@@ -1,5 +1,5 @@
 class Recording < ApplicationRecord
-  searchkick word_start: [:title, :orchestra_name, :singer_name]
+  searchkick word_start: [:title, :orchestra_name, :singer_name, :composers, :lyricists, :orchestra_periods, :genre]
 
   belongs_to :orchestra, optional: true, counter_cache: true
   belongs_to :composition
@@ -64,15 +64,11 @@ class Recording < ApplicationRecord
       composers: composition&.composers&.map(&:name),
       lyricists: composition&.lyricists&.map(&:name),
       orchestra_periods: orchestra&.orchestra_periods&.map(&:name),
-      orchestra: orchestra&.name,
-      singers: singers.present? ? singers.map(&:name) : "Inst",
+      orchestra_name: orchestra&.name,
+      singer_name: singers.present? ? singers.map(&:name) : "Instrumental",
       genre: genre&.name,
-      playbacks_count:,
-      year:,
-      created_at:,
-      updated_at:,
-      time_period: time_period&.name,
-      record_label: record_label&.name
+      year: year,
+      popularity_score: popularity_score
     }
   end
 

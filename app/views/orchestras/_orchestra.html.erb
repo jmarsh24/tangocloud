@@ -1,12 +1,15 @@
 <% cache(orchestra) do %>
-  <%= link_to orchestra, class: "flex flex-col items-center bg-white dark:bg-neutral-900 rounded-lg overflow-hidden shadow-lg hover:bg-gray-100 dark:hover:bg-neutral-700 transition duration-300 snap-start" do %>
+  <%= link_to orchestra, class: "relative block w-32 h-32 rounded-lg overflow-hidden snap-start group" do %>
     <% if orchestra.image.attached? %>
-      <%= image_tag orchestra.image, class: "w-full aspect-square object-cover" %>
+      <%= image_tag orchestra.image, class: "absolute inset-0 w-full h-full object-cover" %>
     <% else %>
-      <div class="w-full aspect-square bg-neutral-200 dark:bg-neutral-800"></div>
+      <div class="absolute inset-0 w-full h-full bg-neutral-200 dark:bg-neutral-800"></div>
     <% end %>
-    <h2 class="p-2 text-xs md:text-sm font-md text-center text-neutral-900 dark:text-neutral-100 break-words">
-      <%= orchestra.display_name %>
-    </h2>
+    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-75 group-hover:opacity-50 transition"></div>
+    <div class="absolute bottom-0 left-0 right-0 px-2 py-1 bg-gradient-to-t from-black to-transparent">
+      <h2 class="text-xs font-semibold text-white truncate">
+        <%= orchestra.display_name %>
+      </h2>
+    </div>
   <% end %>
 <% end %>
