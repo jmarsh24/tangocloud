@@ -1,14 +1,14 @@
 <%# locals: { query:, grouped_results:, filter_type: "all" } %>
 <% cache([query, grouped_results, filter_type]) do %>
   <div class="w-full flex flex-col gap-2">
-    <div class="flex justify-start sm:justify-center gap-2 px-2 sm:px-0 py-2">
+    <div class="flex overflow-x-auto no-scrollbar gap-2 px-2 py-2">
       <% filters = [:all, :playlists, :orchestras, :recordings, :tandas] %>
       <% filters.each do |type| %>
         <% if filter_type == type.to_s.singularize || type == :all && filter_type == "all" %>
-          <span class="btn btn-sm btn-primary"><%= type.to_s.titleize %></span>
+          <span class="btn btn-sm btn-primary flex-shrink-0"><%= type.to_s.titleize %></span>
         <% else %>
           <a href="<%= search_path(query: query, filter: type.to_s.singularize) %>" 
-             class="btn btn-sm btn-neutral"><%= type.to_s.titleize %></a>
+         class="btn btn-sm btn-neutral flex-shrink-0"><%= type.to_s.titleize %></a>
         <% end %>
       <% end %>
     </div>

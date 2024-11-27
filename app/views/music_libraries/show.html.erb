@@ -1,28 +1,28 @@
 <div class="flex flex-col gap-2">
   <section>
-    <div class="flex gap-4 px-4 py-2 overflow-x-auto no-scrollbar snap-x">
+    <div class="flex gap-2 px-2 py-2 overflow-x-auto no-scrollbar snap-x snap-mandatory">
       <%= render collection: @mood_playlists, partial: "mood_playlist" %>
     </div>
   </section>
   <section>
     <h2 class="text-2xl font-bold text-gray-900 dark:text-neutral-300 px-4">Featured Playlists</h2>
-    <div class="overflow-x-auto no-scrollbar snap-x scroll-px-2">
-      <div class="grid grid-flow-col auto-cols-[192px] md:auto-cols-[224px] grid-rows-4 gap-3 px-4 py-4">
+    <div class="overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-px-2">
+      <div class="grid grid-flow-col auto-cols-[128px] grid-rows-3 gap-3 px-4 py-4">
         <%= render collection: @playlists, partial: "playlists/playlist" %>
       </div>
     </div>
   </section>
   <section>
     <h2 class="text-2xl font-bold text-gray-900 dark:text-neutral-300 px-4">Popular Orchestras</h2>
-    <div class="overflow-x-auto no-scrollbar snap-x scroll-px-2">
-      <div class="grid grid-flow-col auto-cols-[96px] md:auto-cols-[156px] grid-rows-2 gap-3 px-4 py-4">
+    <div class="overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-px-2">
+      <div class="grid grid-flow-col auto-cols-[128px] grid-rows-2 gap-3 px-4 py-4">
         <%= render collection: @orchestras, partial: "orchestras/orchestra" %>
       </div>
     </div>
   </section>
   <section>
     <h2 class="text-2xl font-bold text-gray-900 dark:text-neutral-300 px-4">Trending Recordings</h2>
-    <div class="overflow-x-auto no-scrollbar snap-x scroll-px-2">
+    <div class="overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-px-2">
       <div class="grid grid-flow-col auto-cols-[296px] grid-rows-4 gap-3 px-4 py-4">
         <%= render collection: @recordings, partial: "music_libraries/recording_form", as: :recording %>
       </div>
@@ -30,7 +30,7 @@
   </section>
   <section>
     <h2 class="text-2xl font-bold text-gray-900 dark:text-neutral-300 px-4">Featured Tandas</h2>
-    <div class="overflow-x-auto no-scrollbar snap-x scroll-px-2">
+    <div class="overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-px-2">
       <div class="grid grid-flow-col auto-cols-[396px] grid-rows-1 gap-8 px-4 py-4">
         <%= render collection: @tandas, partial: "tandas/tanda" %>
       </div>
