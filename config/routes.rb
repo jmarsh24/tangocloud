@@ -87,10 +87,10 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :tanda_recordings, only: [:create, :destroy]
+
   resources :tandas, only: [:new, :create, :show, :edit, :update] do
-    resources :tanda_recordings, only: [:create, :destroy] do
-      patch :update_order, on: :member
-    end
+    patch :update_order, on: :member
     member do
       post "add_to_library", to: "user_libraries#add_tanda"
     end

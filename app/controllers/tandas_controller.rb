@@ -2,8 +2,10 @@ class TandasController < ApplicationController
   include RemoteModal
   respond_with_remote_modal only: [:new, :edit]
 
+  before_action :set_tanda, only: [:show, :edit, :update]
+
   def index
-    @tandas = policy_scope(Tanda.all)
+    @tandas = policy_scope(Tanda)
       .public_tandas
       .public_in_playlists
       .strict_loading
@@ -37,14 +39,21 @@ class TandasController < ApplicationController
   end
 
   def show
-    @tanda = policy_scope(Tanda).find(params[:id])
-
     @tanda_recordings = @tanda
       .tanda_recordings
-      .includes(recording: [:composition, :orchestra, :genre, :singers, digital_remasters: [audio_variants: [audio_file_attachment: :blob], album: [album_art_attachment: :blob]]])
+      .includes(
+        recording: [
+          :composition,
+          :orchestra,
+          :genre,
+          :singers,
+          digital_remasters: [
+            audio_variants: [audio_file_attachment: :blob],
+            album: [album_art_attachment: :blob]
+          ]
+        ]
+      )
       .order(:position)
-
-    authorize @tanda
   end
 
   def new
@@ -53,25 +62,18 @@ class TandasController < ApplicationController
   end
 
   def create
-    authorize Tanda, :create?
-
-    @tanda = Tanda.create!(user: current_user, title: tanda_params[:title])
+    @tanda = Tanda.new(tanda_params.merge(user: current_user))
+    authorize @tanda
+    @tanda.save!
     @user_library.library_items.create!(item: @tanda)
-
     redirect_to tanda_path(@tanda)
   end
 
   def edit
-    @tanda = policy_scope(Tanda).find(params[:id])
-    authorize @tanda
   end
 
   def update
-    @tanda = policy_scope(Tanda).find(params[:id])
-    authorize @tanda
-
     @tanda.update!(tanda_params)
-
     redirect_to tanda_path(@tanda)
   end
 
@@ -79,5 +81,9 @@ class TandasController < ApplicationController
 
   def tanda_params
     params.require(:tanda).permit(:title, :subtitle, :description, :public, :image)
+  end
+
+  def set_tanda
+    authorize @tanda = policy_scope(Tanda).find(params[:id])
   end
 end
