@@ -13,22 +13,22 @@
       <% end %>
     </div>
     <% if query.blank? %>
-      <div class="flex flex-col items-center justify-center py-16">
-        <%= inline_svg_tag "logos/tangocloud-logo.svg", class: "w-48 h-48 mb-4 fill-neutral-100" %>
-        <p class="text-lg font-medium text-neutral-700 dark:text-neutral-300 mb-4">
+      <div class="flex flex-col items-center justify-center gap-4 py-12 px-4 sm:px-8">
+        <%= inline_svg_tag "logos/tangocloud-logo.svg", class: "w-36 h-36 sm:w-48 sm:h-48 fill-neutral-100" %>
+        <p class="text-sm sm:text-lg font-medium text-neutral-700 dark:text-neutral-300 text-center">
           Search TangoCloud for recordings, orchestras, tandas, and playlists.
         </p>
-        <a href="<%= root_path %>" class="btn btn-primary">
+        <a href="<%= root_path %>" class="btn btn-sm btn-primary">
           Go Back to Home
         </a>
       </div>
     <% elsif grouped_results.values.flatten.empty? %>
-      <div class="flex flex-col items-center justify-center py-16">
-        <%= inline_svg_tag "logos/tangocloud-logo.svg", class: "w-48 h-48 mb-4 fill-neutral-100" %>
-        <p class="text-lg font-medium text-neutral-700 dark:text-neutral-300 mb-4">
+      <div class="flex flex-col items-center justify-center gap-4 py-12 px-4 sm:px-8">
+        <%= inline_svg_tag "logos/tangocloud-logo.svg", class: "w-36 h-36 sm:w-48 sm:h-48 fill-neutral-100" %>
+        <p class="text-sm sm:text-lg font-medium text-neutral-700 dark:text-neutral-300 text-center">
           No results found for "<%= query %>"
         </p>
-        <a href="<%= music_library_path %>" class="btn btn-primary">
+        <a href="<%= music_library_path %>" class="btn btn-sm btn-primary">
           Back to Music Library
         </a>
       </div>
