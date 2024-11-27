@@ -1,0 +1,19 @@
+<%# locals: {recordings:, tanda:} %>
+<div class="flex flex-col gap-4">
+  <% if recordings.any? %>
+    <ul>
+      <% recordings.each do |recording| %>
+        <li class="flex justify-between items-center p-2 bg-neutral-100 dark:bg-neutral-800 rounded-lg">
+          <%= form_with url: tanda_tanda_recordings_path(tanda), method: :post, data: { turbo_stream: true } do |form| %>
+            <%= form.hidden_field :recording_id, value: recording.id %>
+            <button type="submit" class="w-full text-left px-4 py-2 bg-neutral-500 text-white rounded hover:bg-neutral-600">
+              <%= render recording %>
+            </button>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-neutral-500">No recordings found.</p>
+  <% end %>
+</div>

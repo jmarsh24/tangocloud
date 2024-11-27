@@ -3,15 +3,15 @@ module Turbo
     extend ActiveSupport::Concern
 
     class_methods do
-      def force_frame_response(*actions)
-        before_action :force_frame_response, only: actions
+      def force_frame_response(options = {})
+        before_action :force_frame_response, **options
       end
     end
 
     def force_frame_response
       return if turbo_frame_request?
 
-      redirect_to(request.referer || root_path)
+      redirect_back(fallback_location: root_path)
     end
   end
 end

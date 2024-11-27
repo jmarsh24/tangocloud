@@ -3,6 +3,28 @@ class RecordingsController < ApplicationController
   skip_before_action :authenticate_user!, only: :show
   skip_after_action :verify_authorized, only: :show
 
+  def index
+    authorize Recording
+
+    @recordings = if params[:query].present?
+      Recording.search(params[:query], limit: 10)
+    else
+      Recording.all.limit(10)
+    end
+
+    tanda = Tanda.find_by(id: params[:tanda_id])
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.update(
+          "recording-results",
+          partial: "recordings/results",
+          locals: {recordings: @recordings, tanda:}
+        )
+      end
+    end
+  end
+
   def show
     return render template: "recordings/meta_tags", layout: false if crawler_request?
 

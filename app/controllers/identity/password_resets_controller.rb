@@ -1,6 +1,6 @@
 class Identity::PasswordResetsController < ApplicationController
   include RemoteModal
-  allowed_remote_modal_actions :new, :edit
+  respond_with_remote_modal only [:new, :edit]
   force_frame_response :new
 
   skip_before_action :authenticate_user!

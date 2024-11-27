@@ -1,6 +1,6 @@
 class Authentications::EventsController < ApplicationController
   include RemoteModal
-  allowed_remote_modal_actions :index
+  respond_with_remote_modal only: [:index]
   skip_after_action :verify_authorized
 
   def index

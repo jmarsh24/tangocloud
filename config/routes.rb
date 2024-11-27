@@ -87,7 +87,9 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :tandas do
+  resources :tandas, only: [:new, :create, :edit] do
+    resources :tanda_recordings, only: [:create]
+    resources :recordings, only: [:index]
     member do
       post "add_to_library", to: "user_libraries#add_tanda"
     end

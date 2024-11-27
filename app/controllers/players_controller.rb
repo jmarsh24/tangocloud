@@ -1,7 +1,6 @@
 class PlayersController < ApplicationController
   include RemoteModal
-  allowed_remote_modal_actions :show
-  force_frame_response :show
+  respond_with_remote_modal only: [:show]
 
   def show
     @recording = policy_scope(Recording)
