@@ -1,14 +1,14 @@
 <%# locals: { query:, grouped_results:, filter_type: "all" } %>
 <% cache([query, grouped_results, filter_type]) do %>
-  <div class="w-full flex flex-col gap-2">
-    <div class="flex overflow-x-auto no-scrollbar gap-2 px-2 py-2">
+  <div class="w-full max-w-screen-md mx-auto flex flex-col gap-4">
+    <div class="flex justify-start gap-2 px-2 py-2">
       <% filters = [:all, :playlists, :orchestras, :recordings, :tandas] %>
       <% filters.each do |type| %>
         <% if filter_type == type.to_s.singularize || type == :all && filter_type == "all" %>
-          <span class="btn btn-sm btn-primary flex-shrink-0"><%= type.to_s.titleize %></span>
+          <span class="btn btn-sm btn-primary"><%= type.to_s.titleize %></span>
         <% else %>
           <a href="<%= search_path(query: query, filter: type.to_s.singularize) %>" 
-         class="btn btn-sm btn-neutral flex-shrink-0"><%= type.to_s.titleize %></a>
+             class="btn btn-sm btn-neutral"><%= type.to_s.titleize %></a>
         <% end %>
       <% end %>
     </div>
@@ -37,27 +37,19 @@
         <% if items.present? %>
           <section>
             <h2 class="text-2xl font-bold text-neutral-900 dark:text-neutral-300 px-4"><%= type.to_s.titleize %></h2>
-            <div class="overflow-x-auto no-scrollbar snap-x scroll-px-2">
+            <div class="grid grid-cols-1 gap-3 px-4 py-4">
               <% case type %>
               <% when :playlists %>
-                <div class="grid grid-flow-col auto-cols-[192px] md:auto-cols-[224px] grid-rows-2 gap-3 px-4 py-4">
-                  <%= render collection: items.take(filter_type == "all" ? 8 : items.size), partial: "playlists/playlist" %>
-                </div>
+                <%= render collection: items.take(filter_type == "all" ? 8 : items.size), partial: "playlists/playlist" %>
               <% when :orchestras %>
-                <div class="grid grid-flow-col auto-cols-[96px] md:auto-cols-[156px] grid-rows-1 gap-3 px-4 py-4">
-                  <%= render collection: items, partial: "orchestras/orchestra" %>
-                </div>
+                <%= render collection: items, partial: "orchestras/orchestra" %>
               <% when :recordings %>
-                <div class="grid grid-flow-col auto-cols-[296px] grid-rows-4 gap-3 px-4 py-4">
-                  <%= render collection: items.take(filter_type == "all" ? 8 : items.size), partial: "music_libraries/recording_form", as: :recording %>
-                </div>
+                <%= render collection: items.take(filter_type == "all" ? 8 : items.size), partial: "music_libraries/recording_form", as: :recording %>
               <% when :tandas %>
-                <div class="grid grid-flow-col auto-cols-[396px] grid-rows-1 gap-8 px-4 py-4">
-                  <%= render collection: items.take(filter_type == "all" ? 8 : items.size), partial: "tandas/tanda" %>
-                </div>
+                <%= render collection: items.take(filter_type == "all" ? 8 : items.size), partial: "tandas/tanda" %>
               <% end %>
             </div>
-            <% if filter_type == "all" && items.length > 8 && type != :orchestras %>
+            <% if filter_type == "all" && items.length > 8 %>
               <div class="text-center mt-4">
                 <a href="<%= search_path(query: query, filter: type.to_s.singularize) %>" 
                    class="btn btn-sm btn-neutral">Show More <%= type.to_s.titleize %></a>
