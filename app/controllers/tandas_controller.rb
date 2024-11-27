@@ -37,7 +37,7 @@ class TandasController < ApplicationController
   end
 
   def show
-    @tanda = policy_scope(Tanda).public_tandas.find(params[:id])
+    @tanda = policy_scope(Tanda).find(params[:id])
 
     tanda_recordings = @tanda
       .tanda_recordings
@@ -66,8 +66,6 @@ class TandasController < ApplicationController
   def edit
     @tanda = policy_scope(Tanda).find(params[:id])
     authorize @tanda
-
-    redirect_to tanda_path(@tanda)
   end
 
   def update
@@ -82,6 +80,6 @@ class TandasController < ApplicationController
   private
 
   def tanda_params
-    params.require(:tanda).permit(:title, :subtitle, :description, :public)
+    params.require(:tanda).permit(:title, :subtitle, :description, :public, :image)
   end
 end

@@ -1,60 +1,50 @@
 <% cache(@tanda) do %>
-  <% content_for :meta_tags do %>
-    <meta property="og:title" content="<%= @tanda.title %>">
-    <meta property="og:description" content="Explore this tanda featuring selected recordings.">
-    <% if @tanda.image.attached? %>
-      <meta property="og:image" content="<%= url_for(@tanda.image) %>">
-    <% end %>
-    <meta property="og:type" content="music.playlist">
-    <meta property="og:url" content="<%= tanda_url(@tanda) %>">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="<%= @tanda.title %>">
-    <meta name="twitter:description" content="Explore this tanda featuring selected recordings.">
-    <% if @tanda.image.attached? %>
-      <meta name="twitter:image" content="<%= url_for(@tanda.image) %>">
-    <% end %>
-  <% end %>
-  <div class="relative flex flex-col p-6 gap-8 items-center dark:bg-black">
-    <%= link_to "javascript:history.back()", class: "absolute left-4 top-6 flex items-center gap-2 p-2 rounded-full bg-neutral-200 text-sm text-neutral-700 dark:bg-neutral-800 dark:text-neutral-400 hover:bg-neutral-300 dark:hover:bg-neutral-700" do %>
+  <%= render "meta_tags", tanda: @tanda %>
+  <div class="relative flex flex-col items-center gap-6 p-6 bg-neutral-100 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 rounded-xl shadow-md">
+    <%= link_to "javascript:history.back()", class: "absolute left-4 top-6 flex items-center gap-2 p-2 rounded-full bg-neutral-200 dark:bg-neutral-800 text-sm text-neutral-700 dark:text-neutral-400 hover:bg-neutral-300 dark:hover:bg-neutral-700" do %>
       <%= heroicon "chevron-left", size: :sm, class: "text-neutral-500 dark:text-neutral-400" %>
     <% end %>
     <% if @tanda.image.attached? %>
-      <%= image_tag @tanda.image, class: "w-64 h-64 md:w-24 md:h-24 rounded-lg object-cover" %>
+      <%= image_tag @tanda.image, class: "w-32 h-32 md:w-48 md:h-48 rounded-xl object-cover shadow-lg" %>
+    <% else %>
+      <div class="w-32 h-32 md:w-48 md:h-48 rounded-xl bg-neutral-300 dark:bg-neutral-800 flex items-center justify-center text-neutral-500">
+        No Image
+      </div>
     <% end %>
-    <h1><%= @tanda.title %></h1>
+    <h1 class="text-3xl font-bold text-center"><%= @tanda.title %></h1>
+    <p class="text-sm text-neutral-500 dark:text-neutral-400">
+      <%= @tanda.public? ? "Public Playlist" : "Private Playlist" %>
+    </p>
+    <p class="text-center text-neutral-600 dark:text-neutral-300">Explore this tanda featuring selected recordings curated for your enjoyment.</p>
     <% if Current.user == @tanda.user %>
-      <%= link_to "Edit", edit_tanda_path(@tanda), class: "btn btn-primary", data: { turbo_frame: "modal" } %>
-    <% elsif @user_library.library_items.where(item_id: @tanda.id).any? %>
-      <%= button_to "Add to Library", add_to_library_tanda_path(@tanda), class: "btn btn-primary" %>
+      <%= link_to "Edit Tanda", edit_tanda_path(@tanda), class: "btn btn-primary", data: { turbo_frame: "modal" } %>
+    <% else %>
+      <%= button_to "Add to Library", add_to_library_tanda_path(@tanda), method: :post, class: "btn btn-secondary" %>
     <% end %>
   </div>
   <div class="flex flex-col items-center py-8">
     <div class="w-full md:max-w-screen-md">
       <div class="flex flex-col gap-6">
-        <h1 class="text-2xl font-semibold">Build Your Tanda</h1>
+        <h2 class="text-2xl font-semibold text-center">Tanda Recordings</h2>
         <div id="tanda-recordings" class="flex flex-col gap-4">
           <% if @tanda.tanda_recordings.any? %>
-            <ul>
+            <ul class="list-none space-y-4">
               <%= render @tanda.tanda_recordings %>
             </ul>
           <% else %>
-            <p class="text-neutral-500">No songs added to the Tanda yet. Use the search below to add songs.</p>
+            <p class="text-center text-neutral-500">No songs added to the Tanda yet. Use the search below to add songs.</p>
           <% end %>
         </div>
-        <div>
-          <%= form_with url: recordings_path, method: :get, data: { turbo_stream: true } do |form| %>
+        <div class="w-full">
+          <%= form_with url: recordings_path, method: :get, data: { turbo_stream: true }, class: "flex flex-col gap-4" do |form| %>
             <%= form.hidden_field :tanda_id, value: @tanda.id %>
-            <div class="flex items-center gap-2 rounded-lg bg-neutral-200 dark:bg-neutral-800 px-2 relative">
-              <%= heroicon("magnifying-glass", size: :md, class: "text-neutral-600 dark:text-neutral-300") %>
+            <div class="flex items-center gap-2 p-2 bg-neutral-200 dark:bg-neutral-800 rounded-lg shadow-md">
+              <%= heroicon("magnifying-glass", size: :md, class: "text-neutral-600 dark:text-neutral-300" ) %>
               <%= form.text_field :query,
-                            autofocus: true,
-                            autocomplete: "off",
-                            placeholder: "Search for recordings...",
-                            class: "w-full p-2 bg-neutral-200 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 outline-none",
-                            data: { controller: "auto-submit", action: "keydown->auto-submit#submit" } %>
-              <%= heroicon("x-mark", size: :sm, 
-                     class: "absolute right-2 top-1/2 -translate-y-1/2 hidden cursor-pointer text-neutral-600 dark:text-neutral-300", 
-                     data: { action: "click->spotlight-search#clear", spotlight_search_target: "clear" }) %>
+                                  autofocus: true,
+                                  autocomplete: "off",
+                                  placeholder: "Search for recordings...",
+                                  class: "w-full p-2 bg-neutral-200 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 outline-none" %>
             </div>
           <% end %>
         </div>

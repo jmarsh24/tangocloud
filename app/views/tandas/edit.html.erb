@@ -18,6 +18,16 @@
     <% end %>
   </div>
   <div class="form-control">
+    <%= form.label :image, "Upload Image", class: "label font-semibold text-neutral-600 dark:text-neutral-200" %>
+    <%= form.file_field :image, class: "file-input file-input-bordered w-full dark:bg-neutral-800 dark:text-white" %>
+    <% if @tanda.image.attached? %>
+      <div class="mt-4">
+        <p class="text-sm text-neutral-500 dark:text-neutral-400">Current Image:</p>
+        <%= image_tag @tanda.image, class: "w-32 h-32 rounded-lg object-cover shadow-md" %>
+      </div>
+    <% end %>
+  </div>
+  <div class="form-control">
     <%= form.submit "Update Tanda", class: "btn btn-primary w-full" %>
   </div>
 <% end %>
