@@ -44,6 +44,7 @@
                                   autofocus: true,
                                   autocomplete: "off",
                                   placeholder: "Search for recordings...",
+                                  data: { controller: "auto-submit", action: "keydown->auto-submit#submit" },
                                   class: "w-full p-2 bg-neutral-200 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 outline-none" %>
             </div>
           <% end %>
