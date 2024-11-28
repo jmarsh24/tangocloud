@@ -1,9 +1,9 @@
 <%# locals: (playlist:, recording:) %>
-<% cache([:playlist, :recording_form, recording]) do %>
+<% cache([playlist, recording]) do %>
   <div class="w-full flex gap-2 p-2 items-center hover:cursor-pointer rounded-lg overflow-hidden hover:bg-neutral-800">
-    <%= form_with url: tanda_recordings_path(tanda, recording), class: "flex flex-1 gap-4 items-center w-full" do |form| %>
+    <%= form_with url: tanda_recordings_path(playlist, recording), class: "flex flex-1 gap-4 items-center w-full" do |form| %>
       <%= button_tag type: :submit, class: "flex w-full gap-4 items-center text-left w-full" do %>
-        <%= render partial: "recordings/recording", locals: { recording: recording } %>
+        <%= render partial: "recordings/recording", locals: { recording: } %>
       <% end %>
     <% end %>
   </div>
