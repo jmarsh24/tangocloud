@@ -1,19 +1,19 @@
 <%# locals: { tanda_recording: } %>
-<% cache(tanda_recording) do %>
-  <div 
-    id="<%= dom_id(tanda_recording) %>"
-    data-sortable-handle
-    data-sortable-id=<%= tanda_recording.id %>
-    class="w-full flex p-2 gap-2 items-center bg-neutral-900 hover:cursor-pointer rounded-lg overflow-hidden hover:bg-neutral-800">
-    <%= form_with url: load_tanda_recording_path(tanda_recording.tanda, id: tanda_recording.recording.id), class: "flex w-full gap-4 items-center" do |form| %>
-      <%= button_tag type: :submit, class: "flex w-full gap-4 items-center text-left" do %>
-        <%= render partial: "recordings/recording", locals: { recording: tanda_recording.recording } %>
-      <% end %>
+<div 
+  id="<%= dom_id(tanda_recording) %>"
+  data-sortable-handle
+  data-sortable-id=<%= tanda_recording.id %>
+  class="w-full flex p-2 gap-2 items-center bg-neutral-900 hover:cursor-pointer rounded-lg overflow-hidden hover:bg-neutral-800">
+  <%= form_with url: load_tanda_recording_path(tanda_recording.tanda, id: tanda_recording.recording.id), class: "flex w-full gap-4 items-center" do |form| %>
+    <%= button_tag type: :submit, class: "flex w-full gap-4 items-center text-left" do %>
+      <%= render partial: "recordings/recording", locals: { recording: tanda_recording.recording } %>
     <% end %>
+  <% end %>
+  <% if policy(tanda_recording).destroy? %>
     <%= form_with url: tanda_recording_path(tanda_recording), method: :delete, class: "h-full flex items-center" do %>
       <button type="submit" class="h-full bg-red-600 hover:bg-red-500 text-white text-sm rounded-sm flex items-center justify-center px-2 py-1">
         <%= heroicon "trash", size: :xs %>
       </button>
     <% end %>
-  </div>
-<% end %>
+  <% end %>
+</div>

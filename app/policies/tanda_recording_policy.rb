@@ -4,11 +4,11 @@ class TandaRecordingPolicy < ApplicationPolicy
   end
 
   def destroy?
-    record.tanda.user == user && (user.admin? || user.tester? || user.editor?)
+    record.tanda&.user == user && (user.admin? || user.tester? || user.editor?)
   end
 
   def reorder?
-    record.tanda.user == user && (user.admin? || user.tester? || user.editor?)
+    record.tanda&.user == user && (user.admin? || user.tester? || user.editor?)
   end
 
   class Scope < Scope
