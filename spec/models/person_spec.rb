@@ -92,4 +92,5 @@ end
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #  display_name        :string
+#  recordings_count    :integer          default(0), not null
 #
