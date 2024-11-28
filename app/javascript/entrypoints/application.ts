@@ -6,6 +6,8 @@ Sentry.init({
 
 export default Sentry;
 
+Sentry.captureException(new Error("Test error from Sentry setup verification"));
+
 import * as Turbo from "@hotwired/turbo";
 import TurboPower from "turbo_power";
 TurboPower.initialize(Turbo.StreamActions);
