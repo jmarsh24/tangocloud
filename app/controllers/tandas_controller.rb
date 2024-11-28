@@ -1,5 +1,6 @@
 class TandasController < ApplicationController
   include RemoteModal
+
   respond_with_remote_modal only: [:new, :edit]
 
   before_action :set_tanda, only: [:show, :edit, :update]

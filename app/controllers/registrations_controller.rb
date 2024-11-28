@@ -1,5 +1,6 @@
 class RegistrationsController < ApplicationController
   include RemoteModal
+
   respond_with_remote_modal only: [:new, :edit]
 
   skip_before_action :authenticate_user!

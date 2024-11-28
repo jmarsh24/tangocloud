@@ -1,5 +1,6 @@
 class PlayersController < ApplicationController
   include RemoteModal
+
   respond_with_remote_modal only: [:show]
 
   def show

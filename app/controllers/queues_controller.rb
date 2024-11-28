@@ -1,6 +1,8 @@
 class QueuesController < ApplicationController
   include RemoteModal
 
+  respond_with_remote_modal only: [:show]
+
   before_action :set_recording, only: [:add, :select, :remove]
   skip_after_action :verify_authorized, only: [:show]
 
