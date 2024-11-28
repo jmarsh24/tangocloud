@@ -4,7 +4,7 @@
     id="<%= dom_id(tanda_recording) %>"
     data-sortable-handle
     data-sortable-id=<%= tanda_recording.id %>
-    class="w-full flex gap-2 items-center bg-neutral-900 hover:cursor-pointer rounded-lg overflow-hidden hover:bg-neutral-800">
+    class="w-full flex p-2 gap-2 items-center bg-neutral-900 hover:cursor-pointer rounded-lg overflow-hidden hover:bg-neutral-800">
     <%= form_with url: load_tanda_recording_path(tanda_recording.tanda, id: tanda_recording.recording.id), class: "flex w-full gap-4 items-center" do |form| %>
       <%= button_tag type: :submit, class: "flex w-full gap-4 items-center text-left" do %>
         <%= render partial: "recordings/recording", locals: { recording: tanda_recording.recording } %>

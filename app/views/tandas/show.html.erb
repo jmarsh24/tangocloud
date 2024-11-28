@@ -37,7 +37,8 @@
             <p class="text-center text-neutral-500">No songs added to the Tanda yet. Use the search below to add songs.</p>
           <% end %>
         </div>
-        <div class="w-full">
+        <div class="flex flex-col gap-4 w-full">
+          <h2> Let's find something for your Tanda </h2>
           <%= form_with url: recordings_path, method: :get, data: { turbo_stream: true }, class: "flex flex-col gap-4" do |form| %>
             <%= form.hidden_field :tanda_id, value: @tanda.id %>
             <div class="flex items-center gap-2 p-2 bg-neutral-200 dark:bg-neutral-800 rounded-lg shadow-md">
@@ -52,7 +53,7 @@
             </div>
           <% end %>
         </div>
-        <div id="recording-results" role="listbox" aria-live="polite" class="dark:bg-neutral-900 dark:text-neutral-100">
+        <div id="recording-results" role="listbox" aria-live="polite" class="flex flex-col gap-2">
         </div>
       </div>
     </div>
