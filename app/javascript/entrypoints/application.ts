@@ -1,5 +1,12 @@
-import * as Turbo from "@hotwired/turbo";
+import * as Sentry from "@sentry/browser";
 
+Sentry.init({
+  dsn: "https://50ad11560b139ac596b2b1f5155bce94@o4504470653173760.ingest.us.sentry.io/4506663407124480",
+});
+
+export default Sentry;
+
+import * as Turbo from "@hotwired/turbo";
 import TurboPower from "turbo_power";
 TurboPower.initialize(Turbo.StreamActions);
 
@@ -14,7 +21,6 @@ declare global {
 
 const application = Application.start();
 
-// Configure Stimulus development experience
 application.debug = false;
 window.Stimulus = application;
 
