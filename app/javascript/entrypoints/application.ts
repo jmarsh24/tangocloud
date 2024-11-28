@@ -2,12 +2,11 @@ import * as Sentry from "@sentry/browser";
 
 Sentry.init({
   dsn: "https://50ad11560b139ac596b2b1f5155bce94@o4504470653173760.ingest.us.sentry.io/4506663407124480",
-  debug: true,
 });
 
 export default Sentry;
 
-Sentry.captureException(new Error("Test error from Sentry setup verification"));
+Sentry.captureMessage("Hello, world!");
 
 import * as Turbo from "@hotwired/turbo";
 import TurboPower from "turbo_power";
