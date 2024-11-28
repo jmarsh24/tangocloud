@@ -1,5 +1,6 @@
 class Avo::Resources::AudioFile < Avo::BaseResource
   self.includes = [:digital_remaster]
+  self.attachments = [:file]
   self.search = {
     query: -> do
       AudioFile.search(

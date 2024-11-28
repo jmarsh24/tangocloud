@@ -13,6 +13,8 @@ class DigitalRemaster < ApplicationRecord
   validates :duration, presence: true, numericality: {greater_than_or_equal_to: 0}
   validates :tango_cloud_id, presence: true, uniqueness: true
 
+  default_scope { includes(:recording) }
+
   def perform_acr_cloud_recognition(async: true)
     if async
       ::AcrCloudRecognitionJob.perform_later(self)

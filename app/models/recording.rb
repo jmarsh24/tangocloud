@@ -33,6 +33,8 @@ class Recording < ApplicationRecord
 
   delegate :title, to: :composition
 
+  default_scope { includes(:composition) }
+
   scope :with_associations, -> {
     includes(:composition, :orchestra, :singers, :genre, digital_remasters:
     [audio_variants: [audio_file_attachment: :blob],

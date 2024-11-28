@@ -1,0 +1,1 @@
+UpdatePopularityScoresJob.perform_now
