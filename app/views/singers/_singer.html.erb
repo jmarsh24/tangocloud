@@ -1,0 +1,15 @@
+<% cache(singer) do %>
+  <div class="relative block w-32 h-32 rounded-lg overflow-hidden opacity-80 snap-start group">
+    <% if singer.image.attached? %>
+      <%= image_tag singer.image, class: "absolute inset-0 w-full h-full object-cover" %>
+    <% else %>
+      <div class="absolute inset-0 w-full h-full bg-neutral-200 dark:bg-neutral-800"></div>
+    <% end %>
+    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent transition"></div>
+    <div class="absolute bottom-0 left-0 right-0 px-2 py-1 bg-gradient-to-t from-black to-transparent">
+      <h2 class="text-xs font-semibold text-white truncate">
+        <%= singer.name %>
+      </h2>
+    </div>
+  </div>
+<% end %>
