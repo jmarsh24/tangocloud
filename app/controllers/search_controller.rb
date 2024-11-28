@@ -36,19 +36,18 @@ class SearchController < ApplicationController
     @results = Searchkick.search(@query, **search_options)
     @grouped_results = @results.group_by { |result| result.class.name.downcase.pluralize.to_sym }
 
-    if request.format.turbo_stream?
-      render turbo_stream: turbo_stream.update(
-        "search-results",
-        partial: "search_results",
-        locals: {
-          query: @query,
-          grouped_results: @grouped_results,
-          filter_type: @filter_type
-        }
-      )
-    else
-      respond_to do |format|
-        format.html
+    respond_to do |format|
+      format.html
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.update(
+          "search-results",
+          partial: "search_results",
+          locals: {
+            query: @query,
+            grouped_results: @grouped_results,
+            filter_type: @filter_type
+          }
+        )
       end
     end
   end

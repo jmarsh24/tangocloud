@@ -9,14 +9,17 @@
       <%= link_to music_library_path, class: "h-12 w-12 flex justify-center items-center dark:bg-neutral-800 rounded-full dark:hover:bg-neutral-700" do %>
         <%= heroicon("home", variant: :solid, size: :md) %>
       <% end %>
-      <%= form_with url: search_path, method: :get, data: { turbo_permanent: true }, id: "search-bar" do |form| %>
+      <%= form_with url: search_path, method: :get, data: { turbo_stream: true, turbo_permanent: true }, id: "search-bar" do |form| %>
         <div class="w-full md:w-64 lg:w-80 xl:w-96">
           <label class="input input-bordered flex items-center gap-2 bg-neutral-800 rounded-md p-2">
             <%= heroicon("magnifying-glass", variant: :outline, size: :md) %>
             <%= form.text_field :query, 
                               type: "search", 
                               inputmode: "search",
-                              data: { controller: "auto-submit", action: "keydown->auto-submit#submit" }, 
+                              data: { 
+                                controller: "search", 
+                                action: "keydown->search#submit focus->search#focus",
+                                "search-search-path-value": search_path }, 
                               placeholder: "What do you want to listen to?", 
                               autocorrect: "off", 
                               spellcheck: "false",  
