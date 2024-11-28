@@ -25,8 +25,7 @@ class SearchController < ApplicationController
       limit: 100,
       indices_boost: indices_boost,
       order: {_score: :desc},
-      match: :word_start,
-      misspellings: {below: 5}
+      misspellings: {below: 10}
     }
 
     if @filter_type != "all"
