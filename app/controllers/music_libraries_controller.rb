@@ -9,6 +9,11 @@ class MusicLibrariesController < ApplicationController
       .public_playlists
       .excluding_mood_playlists
       .with_attached_image.limit(64)
+    @singers = Person.joins(:recording_singers)
+      .distinct
+      .with_attached_image
+      .order(recordings_count: :desc)
+      .limit(64)
     @mood_playlists = policy_scope(Playlist)
       .exclude_liked
       .mood_playlists

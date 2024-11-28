@@ -1,5 +1,5 @@
 class RecordingSinger < ApplicationRecord
-  belongs_to :recording
+  belongs_to :recording, counter_cache: true
   belongs_to :person
 end
 
