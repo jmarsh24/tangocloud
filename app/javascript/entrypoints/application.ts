@@ -6,8 +6,6 @@ Sentry.init({
 
 export default Sentry;
 
-Sentry.captureMessage("Hello, world!");
-
 import * as Turbo from "@hotwired/turbo";
 import TurboPower from "turbo_power";
 TurboPower.initialize(Turbo.StreamActions);
