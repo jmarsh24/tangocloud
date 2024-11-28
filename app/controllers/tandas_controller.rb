@@ -54,6 +54,8 @@ class TandasController < ApplicationController
         ]
       )
       .rank(:position)
+
+    @recommended_recordings = RecordingRecommendation.new(@tanda.recordings.order(position: :asc)).recommend_recordings
   end
 
   def new

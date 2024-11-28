@@ -23,22 +23,32 @@
     <% end %>
   </div>
   <div class="flex flex-col items-center py-8">
-    <div class="w-full md:max-w-screen-md">
-      <div class="flex flex-col gap-6">
-        <h2 class="text-2xl font-semibold text-center">Tanda Recordings</h2>
-        <div 
-          id="tanda-recordings" 
-          data-controller="sortable" 
-          data-sortable-url-value="<%= reorder_tanda_recording_path(id: ":id") %>" 
-          class="flex flex-col gap-4">
-          <% if @tanda_recordings.any? %>
-            <%= render @tanda_recordings %>
-          <% else %>
-            <p class="text-center text-neutral-500">No songs added to the Tanda yet. Use the search below to add songs.</p>
+    <div class="w-full md:max-w-screen-lg flex flex-col gap-6">
+      <h2 class="text-2xl font-semibold text-center">Tanda Recordings</h2>
+      <div 
+        id="tanda-recordings" 
+        data-controller="sortable" 
+        data-sortable-url-value="<%= reorder_tanda_recording_path(id: ":id") %>" 
+        class="flex flex-col gap-4">
+        <% if @tanda_recordings.any? %>
+          <%= render @tanda_recordings %>
+        <% else %>
+          <p class="text-center text-neutral-500">No songs added to the Tanda yet. Use the search below to add songs.</p>
+        <% end %>
+      </div>
+    </div>
+    <div class="w-full md:max-w-screen-lg flex flex-col md:flex-row gap-8 py-8">
+      <div class="w-full md:w-1/2 flex flex-col gap-4">
+        <h2 class="text-2xl font-semibold">Suggested Recordings</h2>
+        <div id="recording-suggestions" class="flex flex-col gap-4">
+          <% if @recommended_recordings.present? %>
+            <%= render partial: "recordings/results", locals: { recordings: @recommended_recordings, tanda: @tanda } %>
           <% end %>
         </div>
+      </div>
+      <div class="w-full md:w-1/2 flex flex-col gap-4">
+        <h2 class="text-2xl font-semibold">Search Recordings</h2>
         <div class="flex flex-col gap-4 w-full">
-          <h2> Let's find something for your Tanda </h2>
           <%= form_with url: recordings_path, method: :get, data: { turbo_stream: true }, class: "flex flex-col gap-4" do |form| %>
             <%= form.hidden_field :tanda_id, value: @tanda.id %>
             <div class="flex items-center gap-2 p-2 bg-neutral-200 dark:bg-neutral-800 rounded-lg shadow-md">
@@ -53,7 +63,7 @@
             </div>
           <% end %>
         </div>
-        <div id="recording-results" role="listbox" aria-live="polite" class="flex flex-col gap-2">
+        <div id="recording-results" role="listbox" aria-live="polite" class="flex flex-col gap-4 mt-4">
         </div>
       </div>
     </div>
