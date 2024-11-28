@@ -33,7 +33,7 @@ normal_user = User.find_by(email: "user@tangocloud.app")
 
 # Process DJ Sets
 dj_sets_path = Rails.root.join("db/seeds/common/playlists/dj_sets")
-process_playlists_for_user(normal_user, dj_sets_path, import_as_tandas: false, playlist_type_name: "DJ Set")
+process_playlists_for_user(normal_user, dj_sets_path, import_as_tandas: true, playlist_type_name: "DJ Set")
 
 # Process Essentials
 essentials_path = Rails.root.join("db/seeds/common/playlists/essentials")
