@@ -7,8 +7,6 @@ Sentry.init({
   tracesSampleRate: 0.5,
 });
 
-Sentry.captureException(new Error("Test error from Vite frontend!"));
-
 import * as Turbo from "@hotwired/turbo";
 import TurboPower from "turbo_power";
 TurboPower.initialize(Turbo.StreamActions);
