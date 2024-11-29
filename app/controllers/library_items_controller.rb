@@ -2,7 +2,7 @@ class LibraryItemsController < ApplicationController
   def index
     authorize @user_library, :show?
 
-    library_items = @user_library.library_items
+    library_items = @user_library.library_items.rank(row_order: :desc)
 
     library_items = case params[:type]
     when "playlists"
