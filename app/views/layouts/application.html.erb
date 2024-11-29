@@ -18,6 +18,9 @@
           </div>
         </nav>
         <main id="main-content" class="h-full overflow-y-auto no-scrollbar pt-2 pb-16">
+          <h1 onClick="throw new Error('Test')">
+            My Website
+          </h1>
           <%= yield %>
         </main>
         <aside id="sidebar-queue" class="hidden xl:block col-span-1 h-full overflow-y-auto no-scrollbar w-80 pr-4 py-2" data-turbo-permanent>

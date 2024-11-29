@@ -1,10 +1,12 @@
 import * as Sentry from "@sentry/browser";
 
 Sentry.init({
-  dsn: "https://50ad11560b139ac596b2b1f5155bce94@o4504470653173760.ingest.us.sentry.io/4506663407124480",
+  dsn: "https://9c05314e6245fe639ae37da76e3da346@o4504470653173760.ingest.us.sentry.io/4506663407124480",
+  environment: process.env.RAILS_ENV,
+  tracesSampleRate: 0.5,
 });
 
-export default Sentry;
+Sentry.captureException(new Error("Test error from Vite frontend!"));
 
 import * as Turbo from "@hotwired/turbo";
 import TurboPower from "turbo_power";
