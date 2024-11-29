@@ -3,6 +3,7 @@ import * as Sentry from "@sentry/browser";
 Sentry.init({
   dsn: "https://9c05314e6245fe639ae37da76e3da346@o4504470653173760.ingest.us.sentry.io/4506663407124480",
   environment: process.env.RAILS_ENV,
+  integrations: [Sentry.browserTracingIntegration()],
   tracesSampleRate: 0.5,
 });
 
