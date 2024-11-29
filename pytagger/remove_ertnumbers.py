@@ -19,4 +19,4 @@ def rename_files_in_directory(root_dir):
                     os.rename(old_filepath, new_filepath)
                     print(f'Renamed: {old_filepath} to {new_filepath}')
 
-rename_files_in_directory('C:\\Users\\ext.dozen\\Music\\tc-tagged')
+rename_files_in_directory('C:\\Users\\dogac\\Music\\TTT12')
