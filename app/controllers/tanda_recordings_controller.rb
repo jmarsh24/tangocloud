@@ -3,6 +3,26 @@ class TandaRecordingsController < ApplicationController
 
   before_action :set_tanda_recording, only: [:destroy, :reorder]
 
+  def index
+    authorize tanda = Tanda.find(params[:tanda_id])
+
+    @recordings = if params[:query].present?
+      Recording.search(params[:query], limit: 10)
+    else
+      Recording.all.limit(10)
+    end
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.update(
+          "recording-results",
+          partial: "tanda_recordings/results",
+          locals: {recordings: @recordings, tanda:}
+        )
+      end
+    end
+  end
+
   def create
     @tanda = Tanda.find(params[:tanda_id])
     @recording = Recording.find(params[:recording_id])

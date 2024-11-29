@@ -1,14 +1,7 @@
 <%= render "meta_tags", tanda: @tanda %>
-<div class="relative flex flex-col items-center gap-6 p-6 bg-neutral-100 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 rounded-xl shadow-md">
+<div class="relative flex flex-col items-center gap-6 p-6 rounded-xl">
   <%= link_to "javascript:history.back()", class: "absolute left-4 top-6 flex items-center gap-2 p-2 rounded-full bg-neutral-200 dark:bg-neutral-800 text-sm text-neutral-700 dark:text-neutral-400 hover:bg-neutral-300 dark:hover:bg-neutral-700" do %>
     <%= heroicon "chevron-left", size: :sm, class: "text-neutral-500 dark:text-neutral-400" %>
-  <% end %>
-  <% if @tanda.image.attached? %>
-    <%= image_tag @tanda.image, class: "w-32 h-32 md:w-48 md:h-48 rounded-xl object-cover shadow-lg" %>
-  <% else %>
-    <div class="w-32 h-32 md:w-48 md:h-48 rounded-xl bg-neutral-300 dark:bg-neutral-800 flex items-center justify-center text-neutral-500">
-      No Image
-    </div>
   <% end %>
   <h1 class="text-3xl font-bold text-center"><%= @tanda.title %></h1>
   <p class="text-sm text-neutral-500 dark:text-neutral-400">
@@ -21,8 +14,42 @@
     <%= button_to "Add to Library", add_to_library_tanda_path(@tanda), method: :post, class: "btn btn-secondary" %>
   <% end %>
 </div>
-<div class="flex flex-col items-center py-8">
-  <div class="w-full md:max-w-screen-lg flex flex-col gap-6">
+<div class="flex flex-col-reverse md:flex-row justify-center py-8 gap-8">
+  <% if policy(@tanda).edit? %>
+    <div class="flex-1 flex flex-col sm:flex-row gap-4">
+      <div class="w-full flex flex-col md:flex-row gap-8">
+        <div class="w-full flex flex-col gap-4">
+          <h2 class="text-2xl font-semibold">Search Recordings</h2>
+          <div class="flex flex-col gap-4 w-full">
+            <%= form_with url: tanda_recordings_path, method: :get, data: { turbo_stream: true }, class: "flex flex-col gap-4" do |form| %>
+              <%= form.hidden_field :tanda_id, value: @tanda.id %>
+              <div class="flex items-center gap-2 p-2 bg-neutral-200 dark:bg-neutral-800 rounded-lg">
+                <%= heroicon("magnifying-glass", size: :md, class: "text-neutral-600 dark:text-neutral-300" ) %>
+                <%= form.text_field :query,
+                                    autofocus: true,
+                                    autocomplete: "off",
+                                    id: "tanda-recording-search",
+                                    placeholder: "Search for recordings...",
+                                    data: { controller: "auto-submit", action: "keydown->auto-submit#submit" },
+                                    class: "w-full p-2 bg-neutral-200 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 outline-none" %>
+              </div>
+            <% end %>
+          </div>
+          <div id="recording-results" role="listbox" aria-live="polite" class="flex flex-col gap-4 mt-4">
+            <div class="w-full flex flex-col gap-4">
+              <% if @recommended_recordings.present? %>
+                <h2 class="text-2xl font-semibold">Suggested Recordings</h2>
+                <div id="recording-suggestions" class="flex flex-col gap-4">
+                  <%= render partial: "recordings/results", locals: { recordings: @recommended_recordings, tanda: @tanda } %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <div class="flex-1 flex flex-col gap-6">
     <h2 class="text-2xl font-semibold text-center">Tanda Recordings</h2>
     <% if policy(@tanda).edit? %>
       <div 
@@ -38,46 +65,20 @@
       </div>
     <% else %>
       <div id="tanda-recordings" class="flex flex-col gap-4">
-        <% if @tanda_recordings.any? %>
-          <%= render @tanda_recordings %>
-        <% else %>
-          <p class="text-center text-neutral-500">No songs added to the Tanda yet.</p>
-        <% end %>
+        <div 
+        id="tanda-recordings" 
+        data-controller="sortable" 
+        data-sortable-url-value="<%= reorder_tanda_recording_path(id: ":id") %>" 
+        class="flex flex-col gap-4">
+          <% if @tanda_recodings.present? %>
+            <%= render @tanda_recordings %>
+          <% end %>
+        </div>
       </div>
     <% end %>
-  </div>
-  <% if policy(@tanda).edit? %>
-    <div class="w-full md:max-w-screen-lg flex flex-col md:flex-row gap-8 py-8">
-      <div class="w-full md:w-1/2 flex flex-col gap-4">
-        <h2 class="text-2xl font-semibold">Suggested Recordings</h2>
-        <div id="recording-suggestions" class="flex flex-col gap-4">
-          <% if @recommended_recordings.present? %>
-            <%= render partial: "recordings/results", locals: { recordings: @recommended_recordings, tanda: @tanda } %>
-          <% end %>
-        </div>
+    <%# (4 - (@tanda_recordings&.size || 0)).times do %>
+      <!--      <div class="w-full items-center justify-center border-2 border-dotted border-neutral-400 rounded-lg min-h-[96px] text-neutral-500">
       </div>
-      <div class="w-full md:w-1/2 flex flex-col gap-4">
-        <h2 class="text-2xl font-semibold">Search Recordings</h2>
-        <div class="flex flex-col gap-4 w-full">
-          <%= form_with url: recordings_path, method: :get, data: { turbo_stream: true }, class: "flex flex-col gap-4" do |form| %>
-            <%= form.hidden_field :tanda_id, value: @tanda.id %>
-            <div class="flex items-center gap-2 p-2 bg-neutral-200 dark:bg-neutral-800 rounded-lg shadow-md">
-              <%= heroicon("magnifying-glass", size: :md, class: "text-neutral-600 dark:text-neutral-300" ) %>
-              <%= form.text_field :query,
-                                    autofocus: true,
-                                    autocomplete: "off",
-                                    id: "tanda-recording-search",
-                                    placeholder: "Search for recordings...",
-                                    data: { controller: "auto-submit", action: "keydown->auto-submit#submit" },
-                                    class: "w-full p-2 bg-neutral-200 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 outline-none" %>
-            </div>
-          <% end %>
-        </div>
-        <div id="recording-results" role="listbox" aria-live="polite" class="flex flex-col gap-4 mt-4">
-        </div>
-      </div>
+    <%# end %>-->
     </div>
-  <% else %>
-    <p class="text-neutral-500 text-center">You don't have permission to view or modify suggested recordings for this tanda.</p>
-  <% end %>
-</div>
+  </div>

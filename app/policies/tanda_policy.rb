@@ -31,6 +31,10 @@ class TandaPolicy < ApplicationPolicy
     user.admin? || user.tester? || user.editor?
   end
 
+  def add_recordings?
+    record.user == user && (user.admin? || user.tester? || user.editor?)
+  end
+
   class Scope < Scope
     # NOTE: Be explicit about which records you allow access to!
     def resolve

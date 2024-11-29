@@ -1,8 +1,14 @@
 <%# locals: { tanda:, recording: } %>
-<div class="w-full flex gap-2 p-2 items-center hover:cursor-pointer rounded-lg overflow-hidden bg-neutral-900 hover:bg-neutral-800">
-  <%= form_with url: tanda_recordings_path(tanda_id: tanda.id, recording_id: recording.id), class: "flex flex-1 gap-4 items-center w-full" do |form| %>
-    <%= button_tag type: :submit, class: "flex w-full gap-4 items-center text-left w-full" do %>
-      <%= render partial: "recordings/recording", locals: { recording: } %>
+<div class="w-full flex items-center gap-4 p-2 rounded-lg overflow-hidden bg-neutral-900 hover:bg-neutral-800">
+  <div class="flex flex-1">
+    <%= form_with url: load_music_library_recording_path(recording), method: :post, class: "flex w-full items-center gap-4" do |form| %>
+      <%= render partial: "recordings/recording", locals: { recording: recording } %>
+      <%= form.submit "preview", class: "btn btn-secondary btn-sm" %>
     <% end %>
-  <% end %>
+  </div>
+  <div>
+    <%= form_with url: tanda_recordings_path(tanda_id: tanda.id, recording_id: recording.id), method: :post, class: "flex items-center" do |form| %>
+      <%= form.submit "Add", class: "btn btn-primary btn-sm" %>
+    <% end %>
+  </div>
 </div>

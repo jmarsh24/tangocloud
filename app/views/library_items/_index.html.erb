@@ -1,5 +1,5 @@
 <%# locals: { library_items:, active_filter: nil } %>
-<%= link_to "Create Tanda", new_tanda_path, class: "link", data: { turbo_frame: "modal" } %>
+<%= link_to "Create Tanda", new_tanda_path, class: "link" %>
 <div class="flex gap-2">
   <%= button_to "All", library_items_path(type: "all"),
       class: class_names(

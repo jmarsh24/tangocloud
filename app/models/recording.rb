@@ -70,8 +70,9 @@ class Recording < ApplicationRecord
       singer_name: singers.present? ? singers.map(&:name) : "Instrumental",
       genre: genre&.name,
       year: year,
+      year_suffix: year ? year.to_s[-2..] : nil,
       popularity_score: popularity_score,
-      combined: "#{composition.title} #{composition.composers.map(&:name).join(" ")} #{orchestra.name} #{singers.present? ? singers.map(&:name) : "Instrumental"} #{genre.name} #{year}"
+      combined: "#{composition.title} #{composition.composers.map(&:name).join(" ")} #{orchestra.name} #{singers.present? ? singers.map(&:name) : "Instrumental"} #{genre.name} #{year} #{year.to_s[-2..]}"
     }
   end
 
