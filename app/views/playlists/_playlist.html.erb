@@ -6,12 +6,12 @@
     <% else %>
       <div class="absolute inset-0 w-full h-full bg-neutral-200 dark:bg-neutral-800"></div>
     <% end %>
-    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-75 group-hover:opacity-50 transition"></div>
-    <div class="absolute bottom-0 left-0 right-0 px-2 py-1 bg-gradient-to-t from-black to-transparent">
-      <h2 class="text-xs  font-semibold text-white truncate">
+    <div class="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-black to-transparent pointer-events-none"></div>
+    <div class="absolute bottom-0 left-0 right-0 px-2 py-1">
+      <h2 class="relative text-xs font-semibold text-white truncate">
         <%= playlist.title %>
       </h2>
-      <p class="text-xs font-extralight truncate">
+      <p class="relative text-xs font-extralight text-white truncate">
         <%= playlist.subtitle %>
       </p>
     </div>
