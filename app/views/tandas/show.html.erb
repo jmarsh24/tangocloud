@@ -7,7 +7,6 @@
   <p class="text-sm text-neutral-500 dark:text-neutral-400">
     <%= @tanda.public? ? "Public Playlist" : "Private Playlist" %>
   </p>
-  <p class="text-center text-neutral-600 dark:text-neutral-300">Explore this tanda featuring selected recordings curated for your enjoyment.</p>
   <% if Current.user == @tanda.user %>
     <%= link_to "Edit Tanda", edit_tanda_path(@tanda), class: "btn btn-primary", data: { turbo_frame: "modal" } %>
   <% else %>
@@ -42,6 +41,8 @@
                 <div id="recording-suggestions" class="flex flex-col gap-4">
                   <%= render partial: "recordings/results", locals: { recordings: @recommended_recordings, tanda: @tanda } %>
                 </div>
+              <% else %>
+                <p class="text-neutral-500">Use the search above in order to find recordings to add to the Tanda. Once you add a recording TangoCloud will provide recommendations</p>
               <% end %>
             </div>
           </div>
@@ -60,7 +61,7 @@
         <% if @tanda_recordings.any? %>
           <%= render @tanda_recordings %>
         <% else %>
-          <p class="text-center text-neutral-500">No songs added to the Tanda yet. Use the search below to add songs.</p>
+          <p class="text-center text-neutral-500">No songs added to the Tanda yet.</p>
         <% end %>
       </div>
     <% else %>
@@ -76,9 +77,5 @@
         </div>
       </div>
     <% end %>
-    <%# (4 - (@tanda_recordings&.size || 0)).times do %>
-      <!--      <div class="w-full items-center justify-center border-2 border-dotted border-neutral-400 rounded-lg min-h-[96px] text-neutral-500">
-      </div>
-    <%# end %>-->
-    </div>
   </div>
+</div>
