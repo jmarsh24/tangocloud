@@ -12,6 +12,7 @@ import pyuca
 import sys
 import os
 import json
+import unicodedata
 
 from mutagen.mp3 import MP3
 from mutagen.flac import FLAC
@@ -21,6 +22,10 @@ from mutagen.id3 import ID3, GRID, TEXT, USLT, TIT2, TALB, TPE1, TPE2, TCOM, TCO
 from recording import Recording
 from databaseconnection import DatabaseConnection
 
+
+NEXT_UNIQUE_ID = 8243 # Last used unique id is TC 8242
+
+
 DATE_ZERO_TIME = '-01-01 00:00:00+00:00'
 DEFAULT_PATH = "C:/Users/ext.dozen/Music/TT-TTT-tagged"
 DATABASE_JSON_FILENAME = 'el_recodo_db.json'
@@ -29,10 +34,11 @@ COLOR_MATCH = Qt.GlobalColor.darkGreen
 COLOR_SELECT = "#F58A2C"
 ALBUM_ART_PATH = "backup_album.jpg"
 
-ORCHESTRA_LIST = ["Enrique RODRÍGUEZ", "Adolfo CARABELLI", 'Roberto CALO', 'Donato RACCIATTI', "Julio DE CARO", "Rodolfo BIAGI", "Antonio RODIO", "Alfredo DE ANGELIS",
-                  "Osvaldo FRESEDO", "Ricardo TANTURI", "Alfredo GOBBI", "Juan MAGLIO", "Francisco CANARO", "Roberto FIRPO", "José BASSO",
-                  "Florindo SASSONE", "Héctor VARELA","Astor PIAZZOLLA", "Francisco ROTUNDO", "Francisco LOMUTO", "Orquesta TÍPICA VICTOR", 
-                  "Edgardo DONATO", "FRANCINI-PONTIER",
+ORCHESTRA_LIST = ["Orquesta Típica FERVOR DE BUENOS AIRES","Aníbal TROILO", "Miguel CALO", "COLOR TANGO (Roberto Alvarez)", "Miguel VILLASBOAS", "Astor PIAZZOLLA", "Lucio DEMARE",
+                "Enrique RODRÍGUEZ", "Julio DE CARO", "Rodolfo BIAGI", "Antonio RODIO",
+                  "Osvaldo FRESEDO", "Ricardo TANTURI", "Alfredo GOBBI", "Juan MAGLIO", "Francisco CANARO", "Roberto FIRPO", "José BASSO", "Rafael CANARO",
+                #   "Florindo SASSONE", "Héctor VARELA", "Francisco ROTUNDO", "Francisco LOMUTO",
+                #   "FRANCINI-PONTIER", 'Roberto CALO', 'Donato RACCIATTI', 
                 # "Antonio BONAVENA", "FRANCINI-PONTIER",
                   '--','--','--','--','--','--','--',
                 # "Juan D'ARIENZO", "Carlos DI SARLI", "Osvaldo PUGLIESE", "Aníbal TROILO", 
@@ -745,6 +751,49 @@ class MainWindow(QMainWindow):
         song.save()
         return albumart_found
 
+    def remove_accents(self, input_str):
+        # Normalize the string to decompose accents
+        nfkd_form = unicodedata.normalize('NFKD', input_str)
+        # Filter out combining characters (accents)
+        return ''.join([c for c in nfkd_form if not unicodedata.combining(c)])
+
+
+
+
+    def read_and_increment_id(self):
+        file_path = "last_tc_id"
+        try:
+            # Read the current ID from the file
+            with open(file_path, 'r') as file:
+                current_id = file.read().strip()
+            
+            # Increment the ID by converting to an integer and back to a string
+            next_id = str(int(current_id) + 1)
+
+            # Save the updated ID back to the file
+            with open(file_path, 'w') as file:
+                file.write(next_id)
+            
+            print(f"Current ID: {current_id}, Next ID: {next_id}")
+            return next_id
+        except FileNotFoundError:
+            print(f"File '{file_path}' not found. Creating a new file with ID '1'.")
+            # If the file doesn't exist, initialize it with '1'
+            with open(file_path, 'w') as file:
+                file.write('1')
+            return '1'
+        except ValueError:
+            print(f"File '{file_path}' contains invalid data. Resetting ID to '1'.")
+            # If the file contains invalid data, reset it to '1'
+            with open(file_path, 'w') as file:
+                file.write('1')
+            return '1'
+
+
+    def extract_tc_id(self, filename):
+        match = re.search(r'TC\d+', filename)
+        return match.group(0) if match else None
+
     def handle_tag_all(self):
         for item in range(self.list_widget_matchings.count()):
             matchTextItems = self.list_widget_matchings.item(item).text().split('|')
@@ -760,6 +809,12 @@ class MainWindow(QMainWindow):
 
             fdate = self.parseDate(recording.date)
             year = self.parseYear(recording.date) 
+
+            tangocloudId = "TC"+self.read_and_increment_id() #self.extract_tc_id(filename)
+
+            if tangocloudId == "TC"+str(1):
+                print(f"Error: Could not read or increment the ID for {filename}")
+                break
 
             if extension == 'mp3':
                 song = MP3(filename, ID3=ID3)
@@ -789,10 +844,16 @@ class MainWindow(QMainWindow):
                 mp3tags['TPE2'] = TPE2(encoding=3, text=first_artist)
 
                 # mp3tags['TSOP'] = TSOP(encoding=3, text=os.path.basename(self.current_directory))
-                mp3tags['TXXX:ALBUMARTISTSORT'] = TXXX(encoding=3, desc='ALBUMARTISTSORT', text=os.path.basename(root))
+                mp3tags['TXXX:ALBUMARTISTSORT'] = TXXX(encoding=3, desc='ALBUMARTISTSORT', text=os.path.basename(self.current_directory))
 
-                if self.source == 'FREE':
-                    mp3tags['TALB'] = TALB(encoding=3, text=self.album_textbox.text())
+                # if self.source == 'FREE':
+                mp3tags['TALB'] = TALB(encoding=3, text=self.album_textbox.text())
+
+
+
+                mp3tags['TXXX:CatalogNumber'] = TXXX(encoding=3, desc='CatalogNumber', text=tangocloudId)
+
+
 
                 mp3tags['TCOM'] = TCOM(encoding=3, text=', '.join(aa for aa in composer))
                 mp3tags['TCON'] = TCON(encoding=3, text=recording.style.title())
@@ -826,6 +887,12 @@ class MainWindow(QMainWindow):
                 flac['genre'] = recording.style.title()
                 flac['composer'] = ', '.join(aa for aa in composer)
 
+
+
+                flac['CatalogNumber'] = tangocloudId
+
+
+
                 flac['date'] = fdate
                 flac['year'] = year
                 flac['originaldate'] = fdate
@@ -834,13 +901,13 @@ class MainWindow(QMainWindow):
                 flac['grouping'] = self.source
                 flac['organization'] = label
 
-                if self.source == 'FREE':
-                    flac['album'] = self.album_textbox.text()
+                # if self.source == 'FREE':
+                flac['album'] = self.album_textbox.text()
 
                 if not self.is_mode_orchestra or (self.is_mode_orchestra and second_artist != 'Instrumental'):
                     flac["lyricist"] = ', '.join(aa for aa in lyricist)
-                    flac["unsyncedlyrics"] = recording.lyrics  # FLAC, MP3
-
+                    flac["unsyncedlyrics"] = recording.lyrics  
+                    
                 flac.save()
 
             else:
@@ -848,7 +915,11 @@ class MainWindow(QMainWindow):
                 continue
 
             second_artist_name = recording.singers if self.is_mode_orchestra else recording.director.title()
-            new_filename = unidecode(f'{self.parseDate(recording.date).replace("-", "")}__{recording.title.replace(" ", "_").lower()}__{second_artist_name.replace(" ", "_").lower()}__{recording.style.replace(" ", "_").lower()}__{recording.id}.{extension}')
+
+            # orchestra name in filename separated by _. with no accents
+            # TC id in filename instead of recordingId
+            # source in filename
+            new_filename = unidecode(f'{self.parseDate(recording.date).replace("-", "")}__{self.remove_accents(first_artist).lower().replace(" ", "_")}__{recording.title.replace(" ", "_").lower()}__{second_artist_name.replace(" ", "_").lower()}__{recording.style.replace(" ", "_").lower()}__{tangocloudId}_{self.source}.{extension}')
             new_filepath = os.path.join(self.current_directory, new_filename.replace('dir._', '').replace("?", ""))            
 
             os.rename(filename, new_filepath)
@@ -936,10 +1007,6 @@ class MainWindow(QMainWindow):
     def handle_file_click(self, item):
         # fullpath = os.path.join(self.current_directory, item.text())
         return
-
-    # def handle_database_row_click(self, row, column):
-    #     item_1 = self.table_widget_db.item(row, 0)
-    #     item_2 = self.table_widget_db.item(row, 1)
 
     def replaceSingleTick(self, input):
         return input.replace("'", "''")
@@ -1039,22 +1106,6 @@ class MainWindow(QMainWindow):
     def parseYear(self, input):
         date_object = datetime.fromisoformat(input)
         return str(date_object.year)
-
-    # def closeEvent(self, event):
-    #     reply = QMessageBox.question(self, 'Confirm Exit',
-    #                                  'Are you sure?',
-    #                                  QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
-    #     if reply == QMessageBox.StandardButton.Yes:
-    #         event.accept()
-    #     else:
-    #         event.ignore()
-
-    # def clickEventHandler(self):
-    #     print("Clicked!")
-
-    # def toggleEventHandler(self, checked):
-    #     self.button_is_checked = checked
-    #     print("Checked?", self.button_is_checked)
 
     def read_recordings_from_json(self, file_path):
         try:
