@@ -13,7 +13,35 @@
     <%= button_to "Add to Library", add_to_library_tanda_path(@tanda), method: :post, class: "btn btn-secondary" %>
   <% end %>
 </div>
-<div class="flex flex-col-reverse md:flex-row justify-center py-8 gap-8">
+<div class="flex flex-col justify-center py-8 gap-8">
+  <div class="flex flex-col gap-6">
+    <h2 class="text-2xl font-semibold text-center">Tanda Recordings</h2>
+    <% if policy(@tanda).edit? %>
+      <div 
+          id="tanda-recordings" 
+          data-controller="sortable" 
+          data-sortable-url-value="<%= reorder_tanda_recording_path(id: ":id") %>" 
+          class="flex flex-col gap-4">
+        <% if @tanda_recordings.any? %>
+          <%= render @tanda_recordings %>
+        <% else %>
+          <p class="text-center text-neutral-500">No songs added to the Tanda yet.</p>
+        <% end %>
+      </div>
+    <% else %>
+      <div id="tanda-recordings" class="flex flex-col gap-4">
+        <div 
+        id="tanda-recordings" 
+        data-controller="sortable" 
+        data-sortable-url-value="<%= reorder_tanda_recording_path(id: ":id") %>" 
+        class="flex flex-col gap-4">
+          <% if @tanda_recodings.present? %>
+            <%= render @tanda_recordings %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
   <% if policy(@tanda).edit? %>
     <div class="flex-1 flex flex-col sm:flex-row gap-4">
       <div class="w-full flex flex-col md:flex-row gap-8">
@@ -50,32 +78,4 @@
       </div>
     </div>
   <% end %>
-  <div class="flex-1 flex flex-col gap-6">
-    <h2 class="text-2xl font-semibold text-center">Tanda Recordings</h2>
-    <% if policy(@tanda).edit? %>
-      <div 
-          id="tanda-recordings" 
-          data-controller="sortable" 
-          data-sortable-url-value="<%= reorder_tanda_recording_path(id: ":id") %>" 
-          class="flex flex-col gap-4">
-        <% if @tanda_recordings.any? %>
-          <%= render @tanda_recordings %>
-        <% else %>
-          <p class="text-center text-neutral-500">No songs added to the Tanda yet.</p>
-        <% end %>
-      </div>
-    <% else %>
-      <div id="tanda-recordings" class="flex flex-col gap-4">
-        <div 
-        id="tanda-recordings" 
-        data-controller="sortable" 
-        data-sortable-url-value="<%= reorder_tanda_recording_path(id: ":id") %>" 
-        class="flex flex-col gap-4">
-          <% if @tanda_recodings.present? %>
-            <%= render @tanda_recordings %>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
-  </div>
 </div>
