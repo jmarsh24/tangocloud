@@ -12,6 +12,8 @@
       <div class="text-xs text-gray-500 text-nowrap" title="<% if recording.singers.present? %> - <%= recording.singers.map(&:name).join(', ') %><% end %>">
         <% if recording.singers.present? %>
           <%= recording.singers.map(&:name).join(", ") %>
+        <% else %>
+          Instrumental
         <% end %>
       </div>
       <div class="text-xs text-gray-500 text-nowrap" title="<%= recording.genre.name %> - <%= recording.year %>">

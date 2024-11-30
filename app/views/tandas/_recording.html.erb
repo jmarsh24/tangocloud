@@ -17,7 +17,7 @@
           <% if recording.singers.present? %>
             <%= recording.singers.map(&:name).join(", ") %>
           <% else %>
-            &nbsp;
+            Instrumental
           <% end %>
         </div>
         <div class="flex items-center justify-end">
