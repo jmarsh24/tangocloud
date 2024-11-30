@@ -1,5 +1,5 @@
 <% cache(orchestra) do %>
-  <%= link_to orchestra, class: "relative block w-32 h-32 rounded-lg overflow-hidden snap-start group" do %>
+  <div class="relative block w-32 h-32 rounded-lg overflow-hidden snap-start">
     <% if orchestra.image.attached? %>
       <%= image_tag orchestra.image, class: "absolute inset-0 w-full h-full object-cover" %>
     <% else %>
@@ -11,5 +11,5 @@
         <%= orchestra.display_name %>
       </h2>
     </div>
-  <% end %>
+  </div>
 <% end %>
