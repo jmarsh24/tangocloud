@@ -27,7 +27,7 @@ class Avo::Resources::Orchestra < Avo::BaseResource
     field :image, as: :file, is_image: true, accept: "image/*"
     field :display_name, as: :text
     field :name, as: :text, readonly: true
-    field :sort_name, as: :text, only_on: :show
+    field :sort_name, as: :text, hide_on: :index
     field :slug, as: :text, readonly: true, only_on: :show
     field :recordings, as: :has_many
     field :singers, as: :has_many, through: :recordings

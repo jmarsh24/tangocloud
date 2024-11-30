@@ -10,7 +10,7 @@
     <% end %>
     <div class="flex flex-col justify-between gap-2">
       <p class="text-sm text-neutral-500 dark:text-neutral-400">
-        <%= @tanda.public? ? "Public Playlist" : "Private Playlist" %>
+        <%= @tanda.public? ? "Public Tanda" : "Private Tanda" %>
       </p>
       <% if Current.user == @tanda.user %>
         <%= link_to "Edit Tanda", edit_tanda_path(@tanda), class: "btn btn-primary", data: { turbo_frame: "modal" } %>
