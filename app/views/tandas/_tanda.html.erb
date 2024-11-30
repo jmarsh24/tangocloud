@@ -51,7 +51,7 @@
           <% end %>
           <div class="text-sm text-gray-400 line-clamp-1">
             <% total_minutes, remaining_seconds = tanda.duration.divmod(60) %>
-            <%= "#{tanda.recordings_count} recordings, #{total_minutes} min #{remaining_seconds} sec" %>
+            <%= "#{total_minutes} min #{remaining_seconds} sec" %>
           </div>
         </div>
       </div>
