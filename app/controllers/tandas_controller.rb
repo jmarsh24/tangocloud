@@ -82,7 +82,7 @@ class TandasController < ApplicationController
         .reverse
         .take(10)
 
-      @recommended_recordings = (recommended_recordings + additional_recommendations).take(5)
+      @recommended_recordings = (recommended_recordings + additional_recommendations).shuffle.take(5)
     end
   end
 
