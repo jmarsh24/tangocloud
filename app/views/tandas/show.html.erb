@@ -13,7 +13,7 @@
     <%= button_to "Add to Library", add_to_library_tanda_path(@tanda), method: :post, class: "btn btn-secondary" %>
   <% end %>
 </div>
-<div class="flex flex-col justify-center py-8 gap-8">
+<div class="container max-w-lg flex flex-col justify-center py-8 gap-8">
   <div class="flex flex-col gap-6">
     <h2 class="text-2xl font-semibold text-center">Tanda Recordings</h2>
     <% if policy(@tanda).edit? %>
@@ -62,7 +62,19 @@
               </div>
             <% end %>
           </div>
-          <%= turbo_frame_tag "recording-results", src: tanda_recordings_path(tanda_id: @tanda.id), refresh: :morph, target: "_top" %>
+          <%= turbo_frame_tag "recording-results", src: tanda_recordings_path(tanda_id: @tanda.id), refresh: :morph, target: "_top" do %>
+            <div class="animate-pulse flex flex-col gap-4">
+              <% 10.times do %>
+                <div class="flex items-center gap-4 p-4 bg-neutral-200 dark:bg-neutral-800 rounded-lg">
+                  <div class="w-10 h-10 bg-neutral-300 dark:bg-neutral-700 rounded-full"></div>
+                  <div class="flex-1 space-y-2">
+                    <div class="h-4 bg-neutral-300 dark:bg-neutral-700 rounded"></div>
+                    <div class="h-3 bg-neutral-300 dark:bg-neutral-700 rounded w-5/6"></div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>
