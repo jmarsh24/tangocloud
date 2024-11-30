@@ -19,7 +19,7 @@ module Import
                 position: position
               )
             else
-              title = Playlist::TandaTitleGenerator.generate(recording_group, position)
+              title = TandaTitleGenerator.generate(recording_group, position)
               tanda = Tanda.create!(title:)
 
               tanda.recordings << recording_group

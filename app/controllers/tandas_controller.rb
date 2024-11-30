@@ -59,6 +59,7 @@ class TandasController < ApplicationController
 
   def new
     @tanda = Tanda.create!(title: "My New Tanda", user: current_user)
+    @user_library.library_items.create!(item: @tanda)
     authorize @tanda
     redirect_to tanda_path(@tanda)
   end

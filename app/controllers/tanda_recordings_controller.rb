@@ -11,25 +11,26 @@ class TandaRecordingsController < ApplicationController
       Recording.search(
         params[:query],
         limit: 10,
-        misspellings: {below: 10}
+        misspellings: {below: 10},
+        order: {_score: :desc}
       )
-    else
-      tanda_recordings = tanda.tanda_recordings.includes(:recording)
-
-      return [] if tanda_recordings.blank?
-
+    elsif tanda.tanda_recordings.present?
       TandaRecommendation.new(tanda).recommend_recordings
+    else
+      Recording.none
     end
+
+    orchestras = Orchestra.all.order(recordings_count: :desc)
 
     respond_to do |format|
       format.html do
-        render partial: "results", locals: {recordings:, tanda:}
+        render partial: "results", locals: {recordings:, tanda:, orchestras:}
       end
       format.turbo_stream do
         render turbo_stream: turbo_stream.replace(
           "recording-results",
           partial: "results",
-          locals: {recordings:, tanda:},
+          locals: {recordings:, tanda:, orchestras:},
           method: :morph
         )
       end
@@ -39,41 +40,22 @@ class TandaRecordingsController < ApplicationController
   def create
     tanda = Tanda.find(params[:tanda_id])
     recording = Recording.find(params[:recording_id])
-    authorize tanda_recording = tanda.tanda_recordings.create!(recording:)
-    recordings = RecordingRecommendation.new(tanda).recommend_recordings
+    authorize tanda.tanda_recordings.create!(recording:)
+    recordings = TandaRecommendation.new(tanda).recommend_recordings
+    tanda.update!(title: TandaTitleGenerator.generate(recordings))
+    tanda.attach_default_image unless tanda.image.attached?
 
-    respond_to do |format|
-      format.turbo_stream do
-        if recordings.any?
-          render turbo_stream: [
-            turbo_stream.append("tanda-recordings", partial: "tanda_recordings/tanda_recording", locals: {tanda_recording:}),
-            turbo_stream.replace("recording-results", partial: "results", locals: {recordings:, tanda:})
-          ]
-        else
-          render turbo_stream: turbo_stream.append("tanda-recordings", partial: "tanda_recordings/tanda_recording", locals: {tanda_recording:})
-        end
-      end
-    end
+    redirect_to tanda_path(tanda)
   end
 
   def destroy
     authorize tanda_recording = TandaRecording.find(params[:id])
     tanda = tanda_recording.tanda
-    recordings = RecordingRecommendation.new(tanda).recommend_recordings
+    recordings = TandaRecommendation.new(tanda).recommend_recordings
+    tanda.update!(title: TandaTitleGenerator.generate(recordings))
     tanda_recording.destroy
 
-    respond_to do |format|
-      format.turbo_stream do
-        if recordings.present?
-          render turbo_stream: [
-            turbo_stream.remove(dom_id(tanda_recording)),
-            turbo_stream.replace("recording-results", partial: "results", locals: {recordings:, tanda:})
-          ]
-        else
-          render turbo_stream: turbo_stream.remove(dom_id(tanda_recording))
-        end
-      end
-    end
+    redirect_to tanda_path(tanda)
   end
 
   def reorder

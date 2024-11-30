@@ -1,10 +1,32 @@
-<%# locals: {recordings:, tanda:} %>
-<%= turbo_frame_tag "recording-results" do %>
+<%# locals: {recordings:, tanda:, orchestras: [] %>
+<%= turbo_frame_tag "recording-results", refresh: :morph, target: "_top" do %>
   <div class="flex flex-col gap-4">
     <% if recordings.present? %>
       <%= render collection: recordings, partial: 'recording_form', locals: { tanda: }, as: :recording %>
+    <% elsif params[:query].present? && recordings.empty? %>
+      <p class="text-neutral-500">
+        No results found for your search. Try adjusting your query or view suggested recordings below.
+      </p>
+      <%= button_to "View Suggested Recordings", tanda_recordings_path, 
+                    params: { tanda_id: tanda.id }, 
+                    method: :get, 
+                    data: { turbo_stream: true }, 
+                    class: "btn btn-primary" %>
     <% else %>
-      <p class="text-neutral-500">Use the search above in order to find recordings to add to the Tanda. Once you add a recording TangoCloud will provide recommendations</p>
+      <section>
+        <h3 class="text-neutral-500"> Unsure about what you want to add? Quickly start creating a tanda by choosing an orchestra below!</h3>
+        <div class="flex flex-wrap gap-4 px-4 py-4">
+          <% orchestras.each do |orchestra| %>
+            <button type="button"
+                      class="flex flex-col items-center justify-center w-32 h-40 p-4 rounded-l hover:shadow-lg"
+                      data-controller="suggestion"
+                      data-action="click->suggestion#fill"
+              data-suggestion-value="<%= orchestra.display_name %>">
+              <%= render orchestra %>
+            </button>
+          <% end %>
+        </div>
+      </section>
     <% end %>
   </div>
 <% end %>

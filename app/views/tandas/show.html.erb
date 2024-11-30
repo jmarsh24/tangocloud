@@ -25,7 +25,7 @@
         <% if @tanda_recordings.any? %>
           <%= render @tanda_recordings %>
         <% else %>
-          <p class="text-center text-neutral-500">No songs added to the Tanda yet.</p>
+          <p class="text-center text-neutral-500">No songs added to the Tanda yet. Use the search below in order to find recordings to add to the Tanda.</p>
         <% end %>
       </div>
     <% else %>
@@ -56,14 +56,13 @@
                                     autofocus: true,
                                     autocomplete: "off",
                                     id: "tanda-recording-search",
-                                    placeholder: "Search for recordings...",
-                                    data: { controller: "auto-submit", action: "keydown->auto-submit#submit" },
+                                    placeholder: "Search by orchestra, year, or singers...",
+                                    data: { controller: "auto-submit", action: "keydown->auto-submit#submit", suggestion_target: "input" },
                                     class: "w-full p-2 bg-neutral-200 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 outline-none" %>
               </div>
             <% end %>
           </div>
-          <%= turbo_frame_tag "recording-results", src: tanda_recordings_path(tanda_id: @tanda.id) do %>
-          <% end %>
+          <%= turbo_frame_tag "recording-results", src: tanda_recordings_path(tanda_id: @tanda.id), refresh: :morph, target: "_top" %>
         </div>
       </div>
     </div>

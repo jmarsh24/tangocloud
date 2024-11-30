@@ -11,7 +11,7 @@
     <%= render "shared/flashes" %>
     <div class="row-span-4">
       <div class="grid grid-cols-1 xl:grid-cols-[auto,1fr,auto] h-full gap-4">
-        <nav id="user-library" class="hidden xl:block h-full overflow-y-auto no-scrollbar w-80 pl-4 py-2" data-turbo-permanent>
+        <nav id="user-library" class="hidden xl:block h-full overflow-y-auto no-scrollbar w-80 pl-4 py-2">
           <h1 class="text-xl font-bold dark:text-neutral-300">Your Library</h1>
           <div id="library-items" class="flex flex-col gap-4">
             <%= render partial: "library_items/index", locals: { library_items: @user_library.library_items, active_filter: nil } %>

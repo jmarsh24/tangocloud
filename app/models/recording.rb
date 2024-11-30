@@ -1,5 +1,5 @@
 class Recording < ApplicationRecord
-  searchkick word_start: [:title, :orchestra_name, :singer_name, :composers, :lyricists, :orchestra_periods, :genre], text_middle: [:combined], callbacks: :async
+  searchkick word_start: [:title, :orchestra_name, :orchestra_display_name, :singer_name, :composers, :lyricists, :orchestra_periods, :genre], text_middle: [:combined], callbacks: :async
 
   belongs_to :orchestra, optional: true, counter_cache: true
   belongs_to :composition
@@ -41,6 +41,12 @@ class Recording < ApplicationRecord
      album: [album_art_attachment: :blob]])
   }
 
+  def liked_by?(user)
+    likes.exists?(user:)
+  end
+
+  private
+
   scope :search_import, -> {
                           includes(
                             :composition,
@@ -54,12 +60,6 @@ class Recording < ApplicationRecord
                           )
                         }
 
-  def liked_by?(user)
-    likes.exists?(user:)
-  end
-
-  private
-
   def search_data
     {
       title: composition.title,
@@ -67,12 +67,13 @@ class Recording < ApplicationRecord
       lyricists: composition&.lyricists&.map(&:name),
       orchestra_periods: orchestra&.orchestra_periods&.map(&:name),
       orchestra_name: orchestra&.name,
+      orchestra_display_name: orchestra&.display_name,
       singer_name: singers.present? ? singers.map(&:name) : "Instrumental",
       genre: genre&.name,
       year: year,
       year_suffix: year ? year.to_s[-2..] : nil,
       popularity_score: popularity_score,
-      combined: "#{composition.title} #{composition.composers.map(&:name).join(" ")} #{orchestra.name} #{singers.present? ? singers.map(&:name) : "Instrumental"} #{genre.name} #{year} #{year.to_s[-2..]}"
+      combined: "#{composition.title} #{composition.composers.map(&:name).join(" ")}#{orchestra.display_name} #{orchestra.name} #{singers.present? ? singers.map(&:name) : "Instrumental"} #{genre.name} #{year} #{year.to_s[-2..]}"
     }
   end
 

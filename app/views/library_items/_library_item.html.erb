@@ -4,15 +4,15 @@
     id=<%= dom_id(library_item) %>
     data-sortable-handle
     data-sortable-id="<%= library_item.id %>" 
-    class="flex items-stretch align-stetch gap-4 bg-neutral-900 text-white rounded-sm overflow-hidden hover:bg-neutral-800 transition group"
+    class="flex items-stretch align-stetch bg-neutral-900 text-white rounded-sm overflow-hidden hover:bg-neutral-800 transition group"
   >
     <%= link_to library_item.item, class: "flex-1" do %>
       <div class="flex items-center gap-4">
         <% if library_item.item.image&.attached? %>
           <%= image_tag library_item.item.image, class: "w-10 aspect-square object-cover" %>
         <% end %>
-        <div class="flex-1">
-          <h2 class="text-sm font-medium text-white hover:text-orange-400">
+        <div class="flex-1 p-2">
+          <h2 class="text-xs font-medium text-white hover:text-orange-400 line-clamp-2">
             <%= library_item.item.title %>
           </h2>
           <% if active_filter.nil? || active_filter == "all" %>
