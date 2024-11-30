@@ -42,7 +42,7 @@ class TandaRecordingsController < ApplicationController
     recording = Recording.find(params[:recording_id])
     authorize tanda.tanda_recordings.create!(recording:)
     recordings = TandaRecommendation.new(tanda).recommend_recordings
-    tanda.update!(title: TandaTitleGenerator.generate(recordings))
+    tanda.update!(title: TandaTitleGenerator.generate_from_recordings(recordings))
     tanda.attach_default_image unless tanda.image.attached?
 
     redirect_to tanda_path(tanda)
@@ -52,7 +52,7 @@ class TandaRecordingsController < ApplicationController
     authorize tanda_recording = TandaRecording.find(params[:id])
     tanda = tanda_recording.tanda
     recordings = TandaRecommendation.new(tanda).recommend_recordings
-    tanda.update!(title: TandaTitleGenerator.generate(recordings))
+    tanda.update!(title: TandaTitleGenerator.generate_from_recordings(recordings))
     tanda_recording.destroy
 
     redirect_to tanda_path(tanda)
