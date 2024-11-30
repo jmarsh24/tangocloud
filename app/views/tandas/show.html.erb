@@ -4,79 +4,83 @@
     <%= heroicon "chevron-left", size: :sm, class: "text-neutral-500 dark:text-neutral-400" %>
   <% end %>
   <h1 class="text-3xl font-bold text-center"><%= @tanda.title %></h1>
-  <p class="text-sm text-neutral-500 dark:text-neutral-400">
-    <%= @tanda.public? ? "Public Playlist" : "Private Playlist" %>
-  </p>
-  <% if Current.user == @tanda.user %>
-    <%= link_to "Edit Tanda", edit_tanda_path(@tanda), class: "btn btn-primary", data: { turbo_frame: "modal" } %>
-  <% else %>
-    <%= button_to "Add to Library", add_to_library_tanda_path(@tanda), method: :post, class: "btn btn-secondary" %>
-  <% end %>
-</div>
-<div class="container max-w-lg flex flex-col justify-center py-8 gap-8">
-  <div class="flex flex-col gap-6">
-    <h2 class="text-2xl font-semibold text-center">Tanda Recordings</h2>
-    <% if policy(@tanda).edit? %>
-      <div 
+  <div class="flex items-center gap-4">
+    <%= image_tag @tanda.image, class: "w-24 h-24 object-cover rounded-lg shadow-md border border-neutral-200 dark:border-neutral-700" %>
+    <div class="flex flex-col justify-between gap-2">
+      <p class="text-sm text-neutral-500 dark:text-neutral-400">
+        <%= @tanda.public? ? "Public Playlist" : "Private Playlist" %>
+      </p>
+      <% if Current.user == @tanda.user %>
+        <%= link_to "Edit Tanda", edit_tanda_path(@tanda), class: "btn btn-primary", data: { turbo_frame: "modal" } %>
+      <% else %>
+        <%= button_to "Add to Library", add_to_library_tanda_path(@tanda), method: :post, class: "btn btn-secondary" %>
+      <% end %>
+    </div>
+  </div>
+  <div class="container max-w-lg flex flex-col justify-center py-8 gap-8">
+    <div class="flex flex-col gap-6">
+      <h2 class="text-2xl font-semibold text-center">Tanda Recordings</h2>
+      <% if policy(@tanda).edit? %>
+        <div 
           id="tanda-recordings" 
           data-controller="sortable" 
           data-sortable-url-value="<%= reorder_tanda_recording_path(id: ":id") %>" 
           class="flex flex-col gap-4">
-        <% if @tanda_recordings.any? %>
-          <%= render @tanda_recordings %>
-        <% else %>
-          <p class="text-center text-neutral-500">No songs added to the Tanda yet. Use the search below in order to find recordings to add to the Tanda.</p>
-        <% end %>
-      </div>
-    <% else %>
-      <div id="tanda-recordings" class="flex flex-col gap-4">
-        <div 
+          <% if @tanda_recordings.any? %>
+            <%= render @tanda_recordings %>
+          <% else %>
+            <p class="text-center text-neutral-500">No songs added to the Tanda yet. Use the search below in order to find recordings to add to the Tanda.</p>
+          <% end %>
+        </div>
+      <% else %>
+        <div id="tanda-recordings" class="flex flex-col gap-4">
+          <div 
         id="tanda-recordings" 
         data-controller="sortable" 
         data-sortable-url-value="<%= reorder_tanda_recording_path(id: ":id") %>" 
         class="flex flex-col gap-4">
-          <% if @tanda_recodings.present? %>
-            <%= render @tanda_recordings %>
-          <% end %>
+            <% if @tanda_recodings.present? %>
+              <%= render @tanda_recordings %>
+            <% end %>
+          </div>
         </div>
-      </div>
-    <% end %>
-  </div>
-  <% if policy(@tanda).edit? %>
-    <div class="flex-1 flex flex-col sm:flex-row gap-4">
-      <div class="w-full flex flex-col md:flex-row gap-8">
-        <div class="w-full flex flex-col gap-4">
-          <h2 class="text-2xl font-semibold">Search Recordings</h2>
-          <div class="flex flex-col gap-4 w-full">
-            <%= form_with url: tanda_recordings_path, method: :get, data: { turbo_stream: true }, class: "flex flex-col gap-4" do |form| %>
-              <%= form.hidden_field :tanda_id, value: @tanda.id %>
-              <div class="flex items-center gap-2 p-2 bg-neutral-200 dark:bg-neutral-800 rounded-lg">
-                <%= heroicon("magnifying-glass", size: :md, class: "text-neutral-600 dark:text-neutral-300" ) %>
-                <%= form.text_field :query,
+      <% end %>
+    </div>
+    <% if policy(@tanda).edit? %>
+      <div class="flex-1 flex flex-col sm:flex-row gap-4">
+        <div class="w-full flex flex-col md:flex-row gap-8">
+          <div class="w-full flex flex-col gap-4">
+            <h2 class="text-2xl font-semibold">Search Recordings</h2>
+            <div class="flex flex-col gap-4 w-full">
+              <%= form_with url: tanda_recordings_path, method: :get, data: { turbo_stream: true }, class: "flex flex-col gap-4" do |form| %>
+                <%= form.hidden_field :tanda_id, value: @tanda.id %>
+                <div class="flex items-center gap-2 p-2 bg-neutral-200 dark:bg-neutral-800 rounded-lg">
+                  <%= heroicon("magnifying-glass", size: :md, class: "text-neutral-600 dark:text-neutral-300" ) %>
+                  <%= form.text_field :query,
                                     autofocus: true,
                                     autocomplete: "off",
                                     id: "tanda-recording-search",
                                     placeholder: "Search by orchestra, year, or singers...",
                                     data: { controller: "auto-submit", action: "keydown->auto-submit#submit", suggestion_target: "input" },
                                     class: "w-full p-2 bg-neutral-200 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 outline-none" %>
-              </div>
-            <% end %>
-          </div>
-          <%= turbo_frame_tag "recording-results", src: tanda_recordings_path(tanda_id: @tanda.id), refresh: :morph, target: "_top" do %>
-            <div class="animate-pulse flex flex-col gap-4">
-              <% 10.times do %>
-                <div class="flex items-center gap-4 p-4 bg-neutral-200 dark:bg-neutral-800 rounded-lg">
-                  <div class="w-10 h-10 bg-neutral-300 dark:bg-neutral-700 rounded-full"></div>
-                  <div class="flex-1 space-y-2">
-                    <div class="h-4 bg-neutral-300 dark:bg-neutral-700 rounded"></div>
-                    <div class="h-3 bg-neutral-300 dark:bg-neutral-700 rounded w-5/6"></div>
-                  </div>
                 </div>
               <% end %>
             </div>
-          <% end %>
+            <%= turbo_frame_tag "recording-results", src: tanda_recordings_path(tanda_id: @tanda.id), refresh: :morph, target: "_top" do %>
+              <div class="animate-pulse flex flex-col gap-4">
+                <% 10.times do %>
+                  <div class="flex items-center gap-4 p-4 bg-neutral-200 dark:bg-neutral-800 rounded-lg">
+                    <div class="w-10 h-10 bg-neutral-300 dark:bg-neutral-700 rounded-full"></div>
+                    <div class="flex-1 space-y-2">
+                      <div class="h-4 bg-neutral-300 dark:bg-neutral-700 rounded"></div>
+                      <div class="h-3 bg-neutral-300 dark:bg-neutral-700 rounded w-5/6"></div>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
         </div>
       </div>
-    </div>
-  <% end %>
-</div>
+    <% end %>
+  </div>
