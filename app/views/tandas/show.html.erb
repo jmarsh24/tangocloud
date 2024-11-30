@@ -62,18 +62,8 @@
               </div>
             <% end %>
           </div>
-          <div id="recording-results" role="listbox" aria-live="polite" class="flex flex-col gap-4 mt-4">
-            <div class="w-full flex flex-col gap-4">
-              <% if @recommended_recordings.present? %>
-                <h2 class="text-2xl font-semibold">Suggested Recordings</h2>
-                <div id="recording-suggestions" class="flex flex-col gap-4">
-                  <%= render partial: "recordings/results", locals: { recordings: @recommended_recordings, tanda: @tanda } %>
-                </div>
-              <% else %>
-                <p class="text-neutral-500">Use the search above in order to find recordings to add to the Tanda. Once you add a recording TangoCloud will provide recommendations</p>
-              <% end %>
-            </div>
-          </div>
+          <%= turbo_frame_tag "recording-results", src: tanda_recordings_path(tanda_id: @tanda.id) do %>
+          <% end %>
         </div>
       </div>
     </div>

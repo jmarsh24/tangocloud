@@ -2,8 +2,9 @@
 <div class="w-full flex items-center gap-4 p-2 rounded-lg overflow-hidden bg-neutral-900 hover:bg-neutral-800">
   <div class="flex flex-1">
     <%= form_with url: load_music_library_recording_path(recording), method: :post, class: "flex w-full items-center gap-4" do |form| %>
-      <%= render partial: "recordings/recording", locals: { recording: recording } %>
-      <%= form.submit "preview", class: "btn btn-secondary btn-sm" %>
+      <button type="submit" class="flex w-full items-center gap-4 bg-transparent border-0 p-0 hover:cursor-pointer">
+        <%= render partial: "recordings/recording", locals: { recording: recording } %>
+      </button>
     <% end %>
   </div>
   <div>

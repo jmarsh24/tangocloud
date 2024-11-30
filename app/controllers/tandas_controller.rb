@@ -55,35 +55,6 @@ class TandasController < ApplicationController
         ]
       )
       .rank(:position)
-
-    # Initialize recommendations
-    @recommended_recordings = []
-
-    # Only make recommendations if @tanda_recordings are present
-    if @tanda_recordings.present?
-      recommended_recordings = RecordingRecommendation.new(@tanda.recordings.order(position: :asc)).recommend_recordings
-
-      orchestra_ids = @tanda_recordings.joins(:recording).select("DISTINCT recordings.orchestra_id").pluck(:orchestra_id)
-      singer_ids = @tanda_recordings.flat_map { _1.recording.singers.pluck(:id) }.uniq
-      recording_ids = @tanda_recordings.pluck(:recording_id)
-
-      recordings_with_orchestra = Recording.where(orchestra_id: orchestra_ids)
-        .where.not(id: recording_ids)
-        .where("recordings.year BETWEEN ? AND ?", @tanda_recordings.first.recording.year - 5, @tanda_recordings.first.recording.year + 5)
-
-      recordings_with_singers = Recording.joins(:singers)
-        .where(singers: {id: singer_ids})
-        .where.not(id: recording_ids)
-        .where("recordings.year BETWEEN ? AND ?", @tanda_recordings.first.recording.year - 5, @tanda_recordings.first.recording.year + 5)
-
-      additional_recommendations = (recordings_with_orchestra + recordings_with_singers)
-        .uniq
-        .sort_by(&:popularity_score)
-        .reverse
-        .take(10)
-
-      @recommended_recordings = (recommended_recordings + additional_recommendations).shuffle.take(5)
-    end
   end
 
   def new

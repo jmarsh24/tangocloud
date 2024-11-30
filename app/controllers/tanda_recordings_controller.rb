@@ -1,78 +1,86 @@
 class TandaRecordingsController < ApplicationController
   include ActionView::RecordIdentifier
+  include Turbo::ForceTurboResponse
 
-  before_action :set_tanda_recording, only: [:destroy, :reorder]
+  force_turbo_response only: :index
 
   def index
     authorize tanda = Tanda.find(params[:tanda_id])
 
-    @recordings = if params[:query].present?
-      Recording.search(params[:query], limit: 10)
+    recordings = if params[:query].present?
+      Recording.search(
+        params[:query],
+        limit: 10,
+        misspellings: {below: 10}
+      )
     else
-      Recording.all.limit(10)
+      tanda_recordings = tanda.tanda_recordings.includes(:recording)
+
+      return [] if tanda_recordings.blank?
+
+      TandaRecommendation.new(tanda).recommend_recordings
     end
 
     respond_to do |format|
+      format.html do
+        render partial: "results", locals: {recordings:, tanda:}
+      end
       format.turbo_stream do
-        render turbo_stream: turbo_stream.update(
+        render turbo_stream: turbo_stream.replace(
           "recording-results",
-          partial: "tanda_recordings/results",
-          locals: {recordings: @recordings, tanda:}
+          partial: "results",
+          locals: {recordings:, tanda:},
+          method: :morph
         )
       end
     end
   end
 
   def create
-    @tanda = Tanda.find(params[:tanda_id])
-    @recording = Recording.find(params[:recording_id])
-    authorize @tanda_recording = @tanda.tanda_recordings.create!(recording: @recording)
-    @recommended_recordings = RecordingRecommendation.new(@tanda.recordings.order(position: :asc)).recommend_recordings
+    tanda = Tanda.find(params[:tanda_id])
+    recording = Recording.find(params[:recording_id])
+    authorize tanda_recording = tanda.tanda_recordings.create!(recording:)
+    recordings = RecordingRecommendation.new(tanda).recommend_recordings
 
     respond_to do |format|
       format.turbo_stream do
-        if @recommended_recordings.any?
+        if recordings.any?
           render turbo_stream: [
-            turbo_stream.append("tanda-recordings", partial: "tanda_recordings/tanda_recording", locals: {tanda_recording: @tanda_recording}),
-            turbo_stream.replace("recording-suggestions", partial: "recordings/results", locals: {recordings: @recommended_recordings, tanda: @tanda})
+            turbo_stream.append("tanda-recordings", partial: "tanda_recordings/tanda_recording", locals: {tanda_recording:}),
+            turbo_stream.replace("recording-results", partial: "results", locals: {recordings:, tanda:})
           ]
         else
-          render turbo_stream: turbo_stream.append("tanda-recordings", partial: "tanda_recordings/tanda_recording", locals: {tanda_recording: @tanda_recording})
+          render turbo_stream: turbo_stream.append("tanda-recordings", partial: "tanda_recordings/tanda_recording", locals: {tanda_recording:})
         end
       end
-      format.html { redirect_to tanda_path(@tanda), notice: "Recording added to Tanda successfully." }
     end
   end
 
   def destroy
-    tanda = @tanda_recording.tanda
-    @recommended_recordings = RecordingRecommendation.new(tanda.recordings.order(position: :asc)).recommend_recordings
-    @tanda_recording.destroy
+    authorize tanda_recording = TandaRecording.find(params[:id])
+    tanda = tanda_recording.tanda
+    recordings = RecordingRecommendation.new(tanda).recommend_recordings
+    tanda_recording.destroy
 
     respond_to do |format|
       format.turbo_stream do
-        if @recommended_recordings.any?
+        if recordings.present?
           render turbo_stream: [
-            turbo_stream.remove(dom_id(@tanda_recording)),
-            turbo_stream.replace("recording-suggestions", partial: "recordings/results", locals: {recordings: @recommended_recordings, tanda:})
+            turbo_stream.remove(dom_id(tanda_recording)),
+            turbo_stream.replace("recording-results", partial: "results", locals: {recordings:, tanda:})
           ]
         else
-          render turbo_stream: turbo_stream.remove(dom_id(@tanda_recording))
+          render turbo_stream: turbo_stream.remove(dom_id(tanda_recording))
         end
       end
-      format.html { redirect_to tanda_path(@tanda_recording.tanda), notice: "Recording removed from Tanda successfully." }
     end
   end
 
   def reorder
-    @tanda_recording.update(position_position: params[:position], tanda_id: @tanda_recording.tanda_id)
+    authorize tanda_recording = TandaRecording.find(params[:id])
+
+    tanda_recording.update(position_position: params[:position], tanda_id: tanda_recording.tanda_id)
 
     head :ok
-  end
-
-  private
-
-  def set_tanda_recording
-    authorize @tanda_recording = TandaRecording.find(params[:id])
   end
 end

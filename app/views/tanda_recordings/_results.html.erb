@@ -1,8 +1,10 @@
 <%# locals: {recordings:, tanda:} %>
-<div class="flex flex-col gap-4">
-  <% if recordings.any? %>
-    <%= render collection: recordings, partial: 'tandas/recording_form', locals: { tanda: }, as: :recording %>
-  <% else %>
-    <p class="text-neutral-500">No recordings found.</p>
-  <% end %>
-</div>
+<%= turbo_frame_tag "recording-results" do %>
+  <div class="flex flex-col gap-4">
+    <% if recordings.present? %>
+      <%= render collection: recordings, partial: 'recording_form', locals: { tanda: }, as: :recording %>
+    <% else %>
+      <p class="text-neutral-500">Use the search above in order to find recordings to add to the Tanda. Once you add a recording TangoCloud will provide recommendations</p>
+    <% end %>
+  </div>
+<% end %>

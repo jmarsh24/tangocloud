@@ -10,13 +10,6 @@ export default class extends Controller {
   }
 
   submit() {
-    const currentValue = this.element.value.trim();
-
-    if (currentValue.length === 0 || currentValue === this.lastValue) {
-      return;
-    }
-
-    this.lastValue = currentValue;
     this.element.form.requestSubmit();
   }
 }
