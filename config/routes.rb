@@ -145,7 +145,9 @@ Rails.application.routes.draw do
   post "search/recording/load", to: "searches/recordings#load", as: :load_search_recording
   post "queue/recording/load", to: "queues/recordings#load", as: :load_queue_recording
 
-  resources :digital_remaster, only: [:new, :create]
+  resources :digital_remaster, only: [:new, :create] do
+    resource :bpm, only: [:show, :update]
+  end
 
   get "service-worker" => "rails/pwa#service_worker", :as => :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", :as => :pwa_manifest
