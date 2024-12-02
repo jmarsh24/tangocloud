@@ -41,7 +41,8 @@ class Recording::Query
     year_ranges = []
     year_ranges << PRE_1935 if years_array.any? { |y| y < 1935 }
     year_ranges << "1935-1939" if years_array.any? { |y| (1935..1939).cover?(y) }
-    year_ranges << "1940-1949" if years_array.any? { |y| (1940..1949).cover?(y) }
+    year_ranges << "1940-1944" if years_array.any? { |y| (1940..1944).cover?(y) }
+    year_ranges << "1945-1949" if years_array.any? { |y| (1945..1949).cover?(y) }
     year_ranges << "1950-1954" if years_array.any? { |y| (1950..1954).cover?(y) }
     year_ranges << "1955-1959" if years_array.any? { |y| (1955..1959).cover?(y) }
     year_ranges << POST_1960 if years_array.any? { |y| y >= 1960 }
