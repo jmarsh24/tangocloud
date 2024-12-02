@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   include Authenticable
   include Pundit::Authorization
+  include DetectDevice
 
   after_action :verify_authorized
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
