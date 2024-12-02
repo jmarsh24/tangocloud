@@ -1,0 +1,213 @@
+tango_artists:
+  francisco-canaro:
+    - francisco-lomuto
+    - edgardo-donato
+    - orquesta-tipica-victor
+    - juan-d-arienzo
+    - alfredo-de-angelis
+  osvaldo-fresedo:
+    - carlos-di-sarli
+    - miguel-calo
+    - roberto-firpo
+    - julio-de-caro
+    - francisco-canaro
+  julio-de-caro:
+    - pedro-laurenz
+    - osvaldo-pugliese
+    - anibal-troilo
+    - astor-piazzolla
+    - osvaldo-fresedo
+  juan-d-arienzo:
+    - rodolfo-biagi
+    - ricardo-tanturi
+    - enrique-rodriguez
+    - angel-d-agostino
+    - hector-varela
+    - francisco-canaro
+    - alfredo-de-angelis
+  anibal-troilo:
+    - pedro-laurenz
+    - osvaldo-pugliese
+    - astor-piazzolla
+    - alfredo-gobbi
+    - jose-basso
+    - miguel-calo
+    - horacio-salgan
+    - francini-pontier
+  carlos-di-sarli:
+    - miguel-calo
+    - osvaldo-fresedo
+    - florindo-sassone
+    - lucio-demare
+    - angel-d-agostino
+    - alfredo-gobbi
+    - domingo-federico
+  osvaldo-pugliese:
+    - pedro-laurenz
+    - anibal-troilo
+    - astor-piazzolla
+    - alfredo-gobbi
+    - horacio-salgan
+    - carlos-di-sarli
+    - julio-de-caro
+  miguel-calo:
+    - domingo-federico
+    - osmar-maderna
+    - angel-d-agostino
+    - lucio-demare
+    - jose-garcia
+    - francini-pontier
+  rodolfo-biagi:
+    - juan-d-arienzo
+    - angel-d-agostino
+    - lucio-demare
+    - carlos-di-sarli
+    - ricardo-tanturi
+  ricardo-tanturi:
+    - juan-d-arienzo
+    - lucio-demare
+    - miguel-calo
+    - anibal-troilo
+    - angel-d-agostino
+  enrique-rodriguez:
+    - juan-d-arienzo
+    - edgardo-donato
+    - alfredo-de-angelis
+    - angel-d-agostino
+    - miguel-calo
+  angel-d-agostino:
+    - juan-d-arienzo
+    - lucio-demare
+    - anibal-troilo
+    - domingo-federico
+    - ricardo-tanturi
+  lucio-demare:
+    - anibal-troilo
+    - miguel-calo
+    - alfredo-de-angelis
+    - ricardo-tanturi
+    - pedro-laurenz
+  pedro-laurenz:
+    - osvaldo-pugliese
+    - anibal-troilo
+    - lucio-demare
+    - horacio-salgan
+    - julio-de-caro
+  jose-garcia:
+    - lucio-demare
+    - miguel-calo
+    - angel-d-agostino
+    - ricardo-tanturi
+    - anibal-troilo
+    - carlos-di-sarli
+  ricardo-malerba:
+    - miguel-calo
+    - angel-d-agostino
+    - enrique-rodriguez
+    - ricardo-tanturi
+    - jose-garcia
+  manuel-buzon:
+    - pedro-laurenz
+    - alfredo-gobbi
+    - anibal-troilo
+    - lucio-demare
+    - ricardo-tanturi
+    - osvaldo-pugliese
+  alfredo-de-angelis:
+    - francisco-canaro
+    - enrique-rodriguez
+    - miguel-calo
+    - osvaldo-fresedo
+    - anibal-troilo
+  horacio-salgan:
+    - osvaldo-pugliese
+    - pedro-laurenz
+    - anibal-troilo
+    - astor-piazzolla
+    - alfredo-gobbi
+    - osvaldo-fresedo
+  alfredo-gobbi:
+    - carlos-di-sarli
+    - osvaldo-pugliese
+    - francini-pontier
+    - jose-basso
+    - anibal-troilo
+  astor-piazzolla:
+    - horacio-salgan
+    - osvaldo-pugliese
+    - pedro-laurenz
+    - anibal-troilo
+    - jose-basso
+  anibal-troilo-y-astor-piazzolla:
+    - anibal-troilo
+    - astor-piazzolla
+    - jose-basso
+    - osvaldo-pugliese
+    - horacio-salgan
+    - pedro-laurenz
+  domingo-federico:
+    - miguel-calo
+    - osmar-maderna
+    - angel-d-agostino
+    - enrique-francini
+    - armando-pontier
+  fulvio-salamanca:
+    - juan-d-arienzo
+    - carlos-di-sarli
+    - osmar-maderna
+    - rodolfo-biagi
+    - hector-varela
+  jose-basso:
+    - anibal-troilo
+    - astor-piazzolla
+    - alfredo-gobbi
+    - francini-pontier
+    - pedro-laurenz
+  francini-pontier:
+    - miguel-calo
+    - anibal-troilo
+    - armando-pontier
+    - enrique-francini
+    - osmar-maderna
+  francisco-rotundo:
+    - anibal-troilo
+    - jose-basso
+    - miguel-calo
+    - francini-pontier
+    - alfredo-gobbi
+  armando-pontier:
+    - francini-pontier
+    - miguel-calo
+    - enrique-francini
+    - jose-basso
+    - osmar-maderna
+  enrique-francini:
+    - francini-pontier
+    - miguel-calo
+    - armando-pontier
+    - jose-basso
+    - osmar-maderna
+  florindo-sassone:
+    - carlos-di-sarli
+    - osvaldo-fresedo
+    - hector-varela
+    - osmar-maderna
+    - astor-piazzolla
+  hector-varela:
+    - florindo-sassone
+    - fulvio-salamanca
+    - juan-d-arienzo
+    - alfredo-de-angelis
+    - miguel-calo
+  osmar-maderna:
+    - miguel-calo
+    - francini-pontier
+    - domingo-federico
+    - florindo-sassone
+    - simbolo-osmar-maderna
+  donato-racciatti:
+    - juan-d-arienzo
+    - edgardo-donato
+    - rodolfo-biagi
+    - alfredo-de-angelis
+    - hector-varela
