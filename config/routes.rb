@@ -88,6 +88,9 @@ Rails.application.routes.draw do
   end
 
   resources :tanda_recordings, only: [:index, :create, :destroy] do
+    collection do
+      post :index
+    end
     patch :reorder, on: :member
   end
 

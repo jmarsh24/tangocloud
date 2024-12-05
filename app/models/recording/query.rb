@@ -118,6 +118,19 @@ class Recording::Query
     end
   end
 
+  def orchestras
+    if orchestra.present?
+      Orchestra.where(slug: orchestra)
+    else
+      Orchestra
+        .joins(:recordings)
+        .where(recordings: {id: recording_ids})
+        .group("orchestras.id")
+        .select("orchestras.*, COUNT(recordings.id) AS recording_count")
+        .order("recording_count DESC")
+    end
+  end
+
   private
 
   def filter_by_orchestra(scope)

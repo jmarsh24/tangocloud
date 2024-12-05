@@ -1,5 +1,6 @@
 class Tanda < ApplicationRecord
   include Playlistable
+  belongs_to :genre, optional: true
 
   searchkick word_start: [:title, :subtitle, :description, :recordings, :orchestras, :singers, :recording_titles]
 

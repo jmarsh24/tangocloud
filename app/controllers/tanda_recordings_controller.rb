@@ -7,30 +7,47 @@ class TandaRecordingsController < ApplicationController
   def index
     authorize tanda = Tanda.find(params[:tanda_id])
 
-    recordings = if params[:query].present?
-      Recording.search(
-        params[:query],
-        limit: 10,
-        misspellings: {below: 10},
-        order: {_score: :desc}
-      )
-    elsif tanda.tanda_recordings.present?
-      TandaRecommendation.new(tanda).recommend_recordings
-    else
-      Recording.none
-    end
+    where_clause = {}
+    where_clause[:genre] = tanda.genre.name if tanda.genre.present?
+    where_clause[:orchestra] = params[:orchestra] if params[:orchestra].present?
+    where_clause[:singer] = params[:singer] if params[:singer].present?
+    where_clause[:year] = {all: params[:year].map(&:to_i)} if params[:year].present?
 
-    orchestras = Orchestra.all.order(recordings_count: :desc)
+    search_results = Recording.search(
+      params[:query].presence || "*",
+      where: where_clause,
+      aggs: {
+        orchestra: {where: where_clause},
+        singer: {where: where_clause},
+        year: {where: where_clause}
+      },
+      order: {_score: :desc},
+      boost_by: {popularity_score: {factor: 2, modifier: "log1p"}},
+      limit: 10,
+      misspellings: {below: 10},
+      smart_aggs: false
+    )
+
+    orchestras = search_results.aggs.dig("orchestra", "buckets") || []
+    singers = search_results.aggs.dig("singer", "buckets") || []
+    years = (search_results.aggs.dig("year", "buckets") || []).sort_by { _1["key"] }
+
+    recordings = search_results.results
 
     respond_to do |format|
-      format.html do
-        render partial: "results", locals: {recordings:, tanda:, orchestras:}
-      end
       format.turbo_stream do
-        render turbo_stream: turbo_stream.replace(
-          "recording-results",
-          partial: "results",
-          locals: {recordings:, tanda:, orchestras:},
+        render turbo_stream: turbo_stream.update(
+          "recordings-and-filters",
+          partial: "recordings_and_filters",
+          locals: {
+            tanda: tanda,
+            query: params[:query],
+            recordings: recordings,
+            filters: where_clause,
+            orchestras: orchestras,
+            singers: singers,
+            years: years
+          },
           method: :morph
         )
       end

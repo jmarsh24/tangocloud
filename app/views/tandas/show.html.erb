@@ -15,7 +15,7 @@
       <% if Current.user == @tanda.user %>
         <%= link_to "Edit Tanda", edit_tanda_path(@tanda), class: "btn btn-primary", data: { turbo_frame: "modal" } %>
       <% else %>
-        <%= button_to "Add to Library", add_to_library_tanda_path(@tanda), method: :post, class: "btn btn-secondary" %>
+        <%= button_to "Add to Library", add_to_library_tanda_path(@tanda), class: "btn btn-secondary" %>
       <% end %>
     </div>
   </div>
@@ -53,36 +53,25 @@
         <div class="w-full flex flex-col md:flex-row gap-8">
           <div class="w-full flex flex-col gap-4">
             <h2 class="text-2xl font-semibold">Search Recordings</h2>
-            <div class="flex flex-col gap-4 w-full">
-              <%= form_with url: tanda_recordings_path, method: :get, data: { turbo_stream: true }, class: "flex flex-col gap-4" do |form| %>
-                <%= form.hidden_field :tanda_id, value: @tanda.id %>
-                <div class="flex items-center gap-2 p-2 bg-neutral-200 dark:bg-neutral-800 rounded-lg">
-                  <%= heroicon("magnifying-glass", size: :md, class: "text-neutral-600 dark:text-neutral-300" ) %>
-                  <%= form.text_field :query,
-                                    autofocus: true,
-                                    autocomplete: "off",
-                                    id: "tanda-recording-search",
-                                    placeholder: "Search by orchestra, year, or singers...",
-                                    data: { controller: "auto-submit", action: "keydown->auto-submit#submit", suggestion_target: "input" },
-                                    class: "w-full p-2 bg-neutral-200 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 outline-none" %>
-                </div>
-              <% end %>
-            </div>
-            <%= turbo_frame_tag "recording-results", src: tanda_recordings_path(tanda_id: @tanda.id), refresh: :morph, target: "_top" do %>
-              <div class="animate-pulse flex flex-col gap-4">
-                <% 10.times do %>
-                  <div class="flex items-center gap-4 p-4 bg-neutral-200 dark:bg-neutral-800 rounded-lg">
-                    <div class="w-10 h-10 bg-neutral-300 dark:bg-neutral-700 rounded-full"></div>
-                    <div class="flex-1 space-y-2">
-                      <div class="h-4 bg-neutral-300 dark:bg-neutral-700 rounded"></div>
-                      <div class="h-3 bg-neutral-300 dark:bg-neutral-700 rounded w-5/6"></div>
-                    </div>
-                  </div>
-                <% end %>
+            <%= form_with url: tanda_recordings_path, class: "flex flex-col gap-4", data: { controller: "auto-submit" } do |form| %>
+              <%= form.hidden_field :tanda_id, value: @tanda.id %>
+              <div class="flex items-center gap-2 p-2 bg-neutral-200 dark:bg-neutral-800 rounded-lg">
+                <%= heroicon("magnifying-glass", size: :md, class: "text-neutral-600 dark:text-neutral-300" ) %>
+                <%= form.text_field :query,
+                autofocus: true,
+                autocomplete: "off",
+                id: "tanda-recording-search",
+                placeholder: "Search by orchestra, year, or singers...",
+                data: { action: "keydown->auto-submit#submit" },
+                class: "w-full p-2 bg-neutral-200 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 outline-none" %>
               </div>
             <% end %>
+            <div id="recordings-and-filters">
+              <%= render partial: "tanda_recordings/recordings_and_filters", locals: { recordings: nil, orchestras: @orchestras, singers: @singers, years: @years, filters: @filters, tanda: @tanda, query: @query } %>
+            </div>
           </div>
         </div>
       </div>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
+</div>

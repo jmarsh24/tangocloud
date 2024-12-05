@@ -1,7 +1,7 @@
 class TandasController < ApplicationController
   include RemoteModal
 
-  respond_with_remote_modal only: [:edit]
+  respond_with_remote_modal only: [:new, :edit]
 
   before_action :set_tanda, only: [:show, :edit, :update]
 
@@ -40,6 +40,9 @@ class TandasController < ApplicationController
   end
 
   def show
+    @filters = params.permit(:orchestra, :year, :singer).to_h
+    @filters[:genre] = @tanda.genre.slug if @tanda.genre.present?
+
     @tanda_recordings = @tanda
       .tanda_recordings
       .includes(
@@ -55,21 +58,39 @@ class TandasController < ApplicationController
         ]
       )
       .rank(:position)
+
+    filters = {genre: @tanda.genre.name} if @tanda.genre.present?
+
+    search_results = Recording.search(
+      "*",
+      where: filters,
+      aggs: [:orchestra, :singer, :year],
+      limit: 10
+    )
+
+    @orchestras = search_results.aggs["orchestra"]["buckets"]
+    @singers = search_results.aggs["singer"]["buckets"]
+    @years = search_results.aggs["year"]["buckets"].sort_by! { _1["key"] }
+    @recordings = search_results.results
+    @filters = {}
+    @query = ""
   end
 
   def new
-    title = TandaTitleGenerator.generate_new_title_for_user(current_user)
-    @tanda = Tanda.create!(title:, user: current_user)
-    @user_library.library_items.create!(item: @tanda)
+    @tanda = Tanda.new
     authorize @tanda
-    redirect_to tanda_path(@tanda)
+    @filtered_genres = Genre.where(name: ["Tango", "Milonga", "Vals"])
   end
 
   def create
-    @tanda = Tanda.new(tanda_params.merge(user: current_user))
+    title = TandaTitleGenerator.generate_new_title_for_user(current_user)
+    @tanda = Tanda.new(tanda_params.merge(title:, user: current_user))
     authorize @tanda
+
     @tanda.save!
+
     @user_library.library_items.create!(item: @tanda)
+
     redirect_to tanda_path(@tanda)
   end
 
@@ -84,7 +105,7 @@ class TandasController < ApplicationController
   private
 
   def tanda_params
-    params.require(:tanda).permit(:title, :subtitle, :description, :public, :image)
+    params.require(:tanda).permit(:title, :subtitle, :description, :public, :image, :genre_id)
   end
 
   def set_tanda

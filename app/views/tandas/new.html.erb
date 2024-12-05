@@ -1,0 +1,21 @@
+<div class="flex flex-col gap-4 items-center">
+  <h1 class="text-2xl font-bold mb-4">Create a New Tanda</h1>
+  <%= form_with model: @tanda, url: tandas_path, class: "flex flex-col gap-4 items-center" do |f| %>
+    <div class="form-control">
+      <h3 class="mb-5 text-lg font-medium text-gray-900 dark:text-white">Pick A Genre</h3>
+      <ul class="grid w-full gap-6 md:grid-cols-3">
+        <% @filtered_genres.each do |genre| %>
+          <li>
+            <%= f.radio_button :genre_id, genre.id, id: "#{genre.name.downcase}-radio", class: "hidden peer", required: true %>
+            <label for="<%= genre.name.downcase %>-radio" class="btn peer-checked:btn-primary peer-checked:text-white w-full">
+              <%= genre.name %>
+            </label>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="form-actions">
+      <%= f.submit "Create Tanda", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>

@@ -1,5 +1,8 @@
 class Recording < ApplicationRecord
-  searchkick word_start: [:title, :orchestra_name, :orchestra_display_name, :singer_name, :composers, :lyricists, :orchestra_periods, :genre], text_middle: [:combined], callbacks: :async
+  searchkick word_start: [:title, :orchestra, :orchestra_display_name, :singer_name, :composers, :lyricists, :orchestra_periods, :genre],
+    text_middle: [:combined],
+    filterable: [:orchestra, :singer, :genre],
+    callbacks: :async
 
   belongs_to :orchestra, optional: true, counter_cache: true
   belongs_to :composition
@@ -66,9 +69,10 @@ class Recording < ApplicationRecord
       composers: composition&.composers&.map(&:name),
       lyricists: composition&.lyricists&.map(&:name),
       orchestra_periods: orchestra&.orchestra_periods&.map(&:name),
+      orchestra: orchestra&.display_name,
       orchestra_name: orchestra&.name,
       orchestra_display_name: orchestra&.display_name,
-      singer_name: singers.present? ? singers.map(&:name) : "Instrumental",
+      singer: singers.present? ? singers.map(&:display_name) : "Instrumental",
       genre: genre&.name,
       year: year,
       year_suffix: year ? year.to_s[-2..] : nil,
