@@ -63,17 +63,17 @@ class TandaRecordingsController < ApplicationController
   def create
     tanda = Tanda.find(params[:tanda_id])
     recording = Recording.find(params[:recording_id])
-    tanda_recording = authorize tanda.tanda_recordings.create!(recording:)
+    authorize tanda.tanda_recordings.create!(recording:)
     recordings = TandaRecommendation.new(tanda).recommend_recordings
     tanda.update!(title: TandaTitleGenerator.generate_from_recordings(recordings))
     tanda.attach_default_image unless tanda.image.attached?
 
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: turbo_stream.append(
+        render turbo_stream: turbo_stream.update(
           "tanda-recordings",
-          partial: "tanda_recording",
-          locals: {tanda_recording:}
+          partial: "tanda_recordings/tanda_recordings",
+          locals: {tanda_recordings: tanda.tanda_recordings}
         )
       end
     end
@@ -88,7 +88,11 @@ class TandaRecordingsController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: turbo_stream.remove(tanda_recording)
+        render turbo_stream: turbo_stream.update(
+          "tanda-recordings",
+          partial: "tanda_recordings/tanda_recordings",
+          locals: {tanda_recordings: tanda.tanda_recordings}
+        )
       end
     end
   end
