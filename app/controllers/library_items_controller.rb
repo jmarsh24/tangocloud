@@ -19,7 +19,7 @@ class LibraryItemsController < ApplicationController
       format.turbo_stream do
         render turbo_stream:
           turbo_stream.update("library-items",
-            partial: "library_items/index",
+            partial: "library_items/library_items",
             locals: {library_items:,
                      active_filter: params[:type]},
             method: :morph)

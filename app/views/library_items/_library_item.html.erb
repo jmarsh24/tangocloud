@@ -1,11 +1,11 @@
-<%# locals: { library_item:, active_filter: } %>
-<% cache([library_item, active_filter]) do %>
-  <div 
-    id=<%= dom_id(library_item) %>
-    data-sortable-handle
-    data-sortable-id="<%= library_item.id %>" 
-    class="flex items-stretch align-stetch bg-neutral-900 text-white rounded-sm overflow-hidden hover:bg-neutral-800 transition group"
-  >
+<%# locals: { library_item: } %>
+<div 
+  id=<%= dom_id(library_item) %>
+  data-sortable-handle
+  data-sortable-id="<%= library_item.id %>" 
+  class="flex items-stretch align-stetch bg-neutral-900 text-white rounded-sm overflow-hidden hover:bg-neutral-800 transition group"
+>
+  <% cache([library_item.item]) do %>
     <%= link_to library_item.item, class: "flex-1" do %>
       <div class="flex items-center gap-4">
         <% if library_item.item.image&.attached? %>
@@ -15,23 +15,18 @@
           <h2 class="text-xs font-medium text-white hover:text-orange-400 line-clamp-2">
             <%= library_item.item.title %>
           </h2>
-          <% if active_filter.nil? || active_filter == "all" %>
-            <p class="text-xs text-neutral-400">
-              <%= library_item.item.is_a?(Tanda) ? "Tanda" : "Playlist" %>
-            </p>
-          <% end %>
         </div>
       </div>
     <% end %>
-    <%= form_with url: library_item_path(library_item), method: :delete do %>
-      <button 
-        type="submit" 
-        class="h-full bg-red-600 hover:bg-red-500 text-white text-sm rounded-sm flex items-center justify-center"
-      >
-        <span class="hidden px-2 py-1 group-hover:block">
-          <%= heroicon "trash", size: :xs %>
-        </span>
-      </button>
-    <% end %>
+  <% end %>
+  <%= form_with url: library_item_path(library_item), method: :delete do %>
+    <button 
+      type="submit" 
+      class="h-full bg-red-600 hover:bg-red-500 text-white text-sm rounded-sm flex items-center justify-center"
+    >
+      <span class="hidden px-2 py-1 group-hover:block">
+        <%= heroicon "trash", size: :xs %>
+      </span>
+    </button>
   </div>
 <% end %>

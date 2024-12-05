@@ -14,7 +14,7 @@
         <nav id="user-library" class="hidden xl:block h-full overflow-y-auto no-scrollbar w-80 pl-4 py-2">
           <h1 class="text-xl font-bold dark:text-neutral-300">Your Library</h1>
           <div id="library-items" class="flex flex-col gap-4">
-            <%= render partial: "library_items/index", locals: { library_items: @user_library.library_items, active_filter: nil } %>
+            <%= render partial: "library_items/library_items", locals: { library_items: @user_library.library_items, active_filter: nil } %>
           </div>
         </nav>
         <main id="main-content" class="h-full overflow-y-auto no-scrollbar pt-2 pb-16">
