@@ -12,6 +12,11 @@
       <p class="text-sm text-neutral-500 dark:text-neutral-400">
         <%= @tanda.public? ? "Public Tanda" : "Private Tanda" %>
       </p>
+      <% if @tanda.genre.present? %>
+        <p class="text-sm text-neutral-500 dark:text-neutral-400">
+          Genre: <%= @tanda.genre.name %>
+        </p>
+      <% end %>
       <% if Current.user == @tanda.user %>
         <%= link_to "Edit Tanda", edit_tanda_path(@tanda), class: "btn btn-primary", data: { turbo_frame: "modal" } %>
       <% else %>

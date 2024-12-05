@@ -6,16 +6,13 @@
       <ul class="grid w-full gap-6 md:grid-cols-3">
         <% @filtered_genres.each do |genre| %>
           <li>
-            <%= f.radio_button :genre_id, genre.id, id: "#{genre.name.downcase}-radio", class: "hidden peer", required: true %>
+            <%= f.radio_button :genre_id, genre.id, id: "#{genre.name.downcase}-radio", class: "hidden peer", required: true, data: { controller: "auto-submit", action: "change->auto-submit#submit" } %>
             <label for="<%= genre.name.downcase %>-radio" class="btn peer-checked:btn-primary peer-checked:text-white w-full">
               <%= genre.name %>
             </label>
           </li>
         <% end %>
       </ul>
-    </div>
-    <div class="form-actions">
-      <%= f.submit "Create Tanda", class: "btn btn-primary" %>
     </div>
   <% end %>
 </div>
