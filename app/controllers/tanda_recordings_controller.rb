@@ -23,9 +23,10 @@ class TandaRecordingsController < ApplicationController
       },
       order: {_score: :desc},
       boost_by: {popularity_score: {factor: 2, modifier: "log1p"}},
-      limit: 10,
       misspellings: {below: 10},
-      smart_aggs: false
+      smart_aggs: false,
+      limit: 100,
+      includes: [:composition, :orchestra, :singers, :genre, digital_remasters: [:audio_variants]]
     )
 
     orchestras = search_results.aggs.dig("orchestra", "buckets") || []
