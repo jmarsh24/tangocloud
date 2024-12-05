@@ -78,11 +78,18 @@ class TandaRecordingsController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: turbo_stream.update(
-          "tanda-recordings",
-          partial: "tanda_recordings/tanda_recordings",
-          locals: {tanda_recordings: tanda.tanda_recordings, suggested_recordings:}
-        )
+        render turbo_stream: [
+          turbo_stream.update(
+            "tanda-title",
+            partial: "tandas/title",
+            locals: {title: tanda.title}
+          ),
+          turbo_stream.update(
+            "tanda-recordings",
+            partial: "tanda_recordings/tanda_recordings",
+            locals: {tanda_recordings: tanda.tanda_recordings, suggested_recordings:}
+          )
+        ]
       end
     end
   end
@@ -90,8 +97,8 @@ class TandaRecordingsController < ApplicationController
   def destroy
     authorize tanda_recording = TandaRecording.find(params[:id])
     tanda = tanda_recording.tanda
-    tanda.update!(title: TandaTitleGenerator.generate_from_recordings(tanda.recordings))
     tanda_recording.destroy
+    tanda.update!(title: TandaTitleGenerator.generate_from_recordings(tanda.recordings))
 
     if tanda.tanda_recordings.size <= 5
       suggested_limit = [4 - tanda.tanda_recordings.size, 0].max
@@ -104,11 +111,18 @@ class TandaRecordingsController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: turbo_stream.update(
-          "tanda-recordings",
-          partial: "tanda_recordings/tanda_recordings",
-          locals: {tanda_recordings: tanda.tanda_recordings, suggested_recordings:}
-        )
+        render turbo_stream: [
+          turbo_stream.update(
+            "tanda-title",
+            partial: "tandas/title",
+            locals: {title: tanda.title}
+          ),
+          turbo_stream.update(
+            "tanda-recordings",
+            partial: "tanda_recordings/tanda_recordings",
+            locals: {tanda_recordings: tanda.tanda_recordings, suggested_recordings:}
+          )
+        ]
       end
     end
   end

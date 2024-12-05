@@ -3,7 +3,9 @@
   <%= link_to "javascript:history.back()", class: "absolute left-4 top-6 flex items-center gap-2 p-2 rounded-full bg-neutral-200 dark:bg-neutral-800 text-sm text-neutral-700 dark:text-neutral-400 hover:bg-neutral-300 dark:hover:bg-neutral-700" do %>
     <%= heroicon "chevron-left", size: :sm, class: "text-neutral-500 dark:text-neutral-400" %>
   <% end %>
-  <h1 class="text-3xl font-bold text-center"><%= @tanda.title %></h1>
+  <h1 id="tanda-title">
+    <%= render "title", title: @tanda.title %>
+  </h1>
   <div class="flex items-center gap-4">
     <% if @tanda.image.attached? %>
       <%= image_tag @tanda.image, class: "w-24 h-24 object-cover rounded-lg shadow-md border border-neutral-200 dark:border-neutral-700" %>
