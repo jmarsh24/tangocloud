@@ -1,4 +1,4 @@
-<%# locals: { recordings:, orchestras:, soloists:, singers:, years:, filters:, tanda:} %>
+<%# locals: { recordings:, orchestras:, soloists:, singers:, years:, filters:, tanda:, suggested_orchestras:} %>
 <div class="flex flex-col gap-4">
   <%= form_with url: search_tanda_recordings_path, class: "flex flex-col gap-4", data: { controller: "auto-submit" } do |form| %>
     <%= form.hidden_field :tanda_id, value: tanda.id %>
@@ -87,9 +87,20 @@
     <% if recordings.present? %>
       <%= render collection: recordings, partial: "recording_form", locals: { tanda: tanda }, as: :recording %>
     <% else %>
-      <p class="text-neutral-500">
-        No results found for your search. Try adjusting your query or filters.
-      </p>
+      <section>
+        <h3 class="text-neutral-500">Unsure about what you want to add? Quickly start creating a tanda by choosing an orchestra below!</h3>
+        <div class="flex flex-wrap gap-4 px-4 py-4">
+          <% suggested_orchestras.each do |orchestra| %>
+            <%= form_with url: search_tanda_recordings_path do |form| %>
+              <%= form.hidden_field :tanda_id, value: tanda.id %>
+              <%= form.hidden_field :orchestra, value: orchestra.display_name %>
+              <button type="submit">
+                <%= render orchestra %>
+              </button>
+            <% end %>
+          <% end %>
+        </div>
+      </section>
     <% end %>
   </div>
 </div>

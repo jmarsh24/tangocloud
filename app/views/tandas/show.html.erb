@@ -64,7 +64,15 @@
               </div>
             <% end %>
             <div id="recordings-and-filters">
-              <%= render partial: "tanda_recordings/recordings_and_filters", locals: { recordings: nil, orchestras: @orchestras, singers: @singers, soloists: @soloists, years: @years, filters: @filters, tanda: @tanda } %>
+              <%= render partial: "tanda_recordings/recordings_and_filters", locals: { 
+                recordings: nil, 
+                orchestras: @orchestras, 
+                singers: @singers, 
+                soloists: @soloists, 
+                years: @years, 
+                filters: @filters, 
+                tanda: @tanda, 
+                suggested_orchestras: @suggested_orchestras } %>
             </div>
           </div>
         </div>
