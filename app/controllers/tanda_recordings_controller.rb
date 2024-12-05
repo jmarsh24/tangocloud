@@ -52,7 +52,8 @@ class TandaRecordingsController < ApplicationController
             orchestras: orchestras,
             singers: singers,
             soloists: soloists,
-            years: years
+            years: years,
+            suggested_orchestras: nil
           },
           method: :morph
         )
