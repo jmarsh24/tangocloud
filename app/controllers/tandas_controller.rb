@@ -69,7 +69,15 @@ class TandasController < ApplicationController
       limit: 0
     )
 
-    @suggested_recordings = TandaRecommendation.new(@tanda).recommend_recordings(limit: (4 - @tanda.tanda_recordings.size))
+    if @tanda.tanda_recordings.size <= 5
+      suggested_limit = [4 - @tanda.tanda_recordings.size, 0].max
+      if suggested_limit.positive?
+        @suggested_recordings = TandaRecommendation.new(@tanda).recommend_recordings(limit: suggested_limit)
+      end
+    else
+      @suggested_recordings = []
+    end
+
     @suggested_orchestras = Orchestra.order(recordings_count: :desc).limit(36)
 
     @orchestras = search_results.aggs["orchestra"]["buckets"]

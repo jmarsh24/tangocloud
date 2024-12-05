@@ -64,9 +64,17 @@ class TandaRecordingsController < ApplicationController
     tanda = Tanda.find(params[:tanda_id])
     recording = Recording.find(params[:recording_id])
     authorize tanda.tanda_recordings.create!(recording:)
-    suggested_recordings = TandaRecommendation.new(tanda).recommend_recordings(limit: (4 - tanda.tanda_recordings.size))
     tanda.update!(title: TandaTitleGenerator.generate_from_recordings(tanda.recordings))
     tanda.attach_default_image unless tanda.image.attached?
+
+    if tanda.tanda_recordings.size <= 5
+      suggested_limit = [4 - tanda.tanda_recordings.size, 0].max
+      if suggested_limit.positive?
+        suggested_recordings = TandaRecommendation.new(tanda).recommend_recordings(limit: suggested_limit)
+      end
+    else
+      suggested_recordings = []
+    end
 
     respond_to do |format|
       format.turbo_stream do
@@ -85,7 +93,14 @@ class TandaRecordingsController < ApplicationController
     tanda.update!(title: TandaTitleGenerator.generate_from_recordings(tanda.recordings))
     tanda_recording.destroy
 
-    suggested_recordings = TandaRecommendation.new(tanda).recommend_recordings(limit: (4 - tanda.tanda_recordings.size))
+    if tanda.tanda_recordings.size <= 5
+      suggested_limit = [4 - tanda.tanda_recordings.size, 0].max
+      if suggested_limit.positive?
+        suggested_recordings = TandaRecommendation.new(tanda).recommend_recordings(limit: suggested_limit)
+      end
+    else
+      suggested_recordings = []
+    end
 
     respond_to do |format|
       format.turbo_stream do
