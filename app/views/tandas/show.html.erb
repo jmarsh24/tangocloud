@@ -35,16 +35,14 @@
           <% end %>
         </div>
       <% else %>
-        <div id="tanda-recordings" class="flex flex-col gap-4">
-          <div 
-        id="tanda-recordings" 
-        data-controller="sortable" 
-        data-sortable-url-value="<%= reorder_tanda_recording_path(id: ":id") %>" 
-        class="flex flex-col gap-4">
-            <% if @tanda_recodings.present? %>
-              <%= render @tanda_recordings %>
-            <% end %>
-          </div>
+        <div 
+            id="tanda-recordings" 
+            data-controller="sortable" 
+            data-sortable-url-value="<%= reorder_tanda_recording_path(id: ":id") %>" 
+            class="flex flex-col gap-4">
+          <% if @tanda_recodings.present? %>
+            <%= render @tanda_recordings %>
+          <% end %>
         </div>
       <% end %>
     </div>
@@ -53,7 +51,7 @@
         <div class="w-full flex flex-col md:flex-row gap-8">
           <div class="w-full flex flex-col gap-4">
             <h2 class="text-2xl font-semibold">Search Recordings</h2>
-            <%= form_with url: tanda_recordings_path, class: "flex flex-col gap-4", data: { controller: "auto-submit" } do |form| %>
+            <%= form_with url: search_tanda_recordings_path, class: "flex flex-col gap-4", data: { controller: "auto-submit" } do |form| %>
               <%= form.hidden_field :tanda_id, value: @tanda.id %>
               <div class="flex items-center gap-2 p-2 bg-neutral-200 dark:bg-neutral-800 rounded-lg">
                 <%= heroicon("magnifying-glass", size: :md, class: "text-neutral-600 dark:text-neutral-300" ) %>
@@ -67,7 +65,7 @@
               </div>
             <% end %>
             <div id="recordings-and-filters">
-              <%= render partial: "tanda_recordings/recordings_and_filters", locals: { recordings: nil, orchestras: @orchestras, singers: @singers, years: @years, filters: @filters, tanda: @tanda, query: @query } %>
+              <%= render partial: "tanda_recordings/recordings_and_filters", locals: { recordings: nil, orchestras: @orchestras, singers: @singers, soloists: @soloists, years: @years, filters: @filters, tanda: @tanda } %>
             </div>
           </div>
         </div>

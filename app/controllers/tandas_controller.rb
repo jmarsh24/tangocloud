@@ -64,16 +64,17 @@ class TandasController < ApplicationController
     search_results = Recording.search(
       "*",
       where: filters,
-      aggs: [:orchestra, :singer, :year],
-      limit: 10
+      aggs: [:orchestra, :singer, :year, :soloist],
+      smart_aggs: false,
+      limit: 0
     )
 
     @orchestras = search_results.aggs["orchestra"]["buckets"]
     @singers = search_results.aggs["singer"]["buckets"]
+    @soloists = search_results.aggs["soloist"]["buckets"]
     @years = search_results.aggs["year"]["buckets"].sort_by! { _1["key"] }
     @recordings = search_results.results
     @filters = {}
-    @query = ""
   end
 
   def new

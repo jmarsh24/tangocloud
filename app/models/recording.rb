@@ -1,7 +1,7 @@
 class Recording < ApplicationRecord
   searchkick word_start: [:title, :orchestra, :orchestra_display_name, :singer_name, :composers, :lyricists, :orchestra_periods, :genre],
     text_middle: [:combined],
-    filterable: [:orchestra, :singer, :genre],
+    filterable: [:orchestra, :singer, :genre, :soloist],
     callbacks: :async
 
   belongs_to :orchestra, optional: true, counter_cache: true
@@ -51,19 +51,23 @@ class Recording < ApplicationRecord
   private
 
   scope :search_import, -> {
-                          includes(
-                            :composition,
-                            :orchestra,
-                            :singers,
-                            :genre,
-                            :record_label,
-                            :time_period,
-                            composition: [:composers, :lyricists],
-                            orchestra: [:orchestra_periods]
-                          )
-                        }
+    includes(
+      :composition,
+      :orchestra,
+      :genre,
+      :record_label,
+      :time_period,
+      :singers,
+      recording_singers: [:person],
+      composition: [:composers, :lyricists],
+      orchestra: [:orchestra_periods]
+    )
+  }
 
   def search_data
+    singers_names = singers.present? ? singers.map(&:display_name) : "Instrumental"
+    soloist_names = recording_singers.select(&:soloist).map { _1.person.display_name }
+
     {
       title: composition.title,
       composers: composition&.composers&.map(&:name),
@@ -72,12 +76,13 @@ class Recording < ApplicationRecord
       orchestra: orchestra&.display_name,
       orchestra_name: orchestra&.name,
       orchestra_display_name: orchestra&.display_name,
-      singer: singers.present? ? singers.map(&:display_name) : "Instrumental",
+      singer: singers_names,
+      soloist: soloist_names,
       genre: genre&.name,
       year: year,
       year_suffix: year ? year.to_s[-2..] : nil,
       popularity_score: popularity_score,
-      combined: "#{composition.title} #{composition.composers.map(&:name).join(" ")}#{orchestra.display_name} #{orchestra.name} #{singers.present? ? singers.map(&:name) : "Instrumental"} #{genre.name} #{year} #{year.to_s[-2..]}"
+      combined: "#{composition.title} #{composition.composers.map(&:name).join(" ")} #{orchestra&.display_name} #{orchestra&.name} #{singers_names} #{genre&.name} #{year} #{year.to_s[-2..]}"
     }
   end
 

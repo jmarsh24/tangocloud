@@ -1,7 +1,6 @@
-<%# locals: { recordings: nil, orchestras: [], singers: [], years: [], filters: {}, tanda:, query: "" } %>
+<%# locals: { recordings:, orchestras:, soloists:, singers:, years:, filters:, tanda:} %>
 <div class="flex flex-col gap-4">
-  <%= form_with url: tanda_recordings_path, class: "flex flex-col gap-4", data: { controller: "auto-submit" } do |form| %>
-    <%= form.hidden_field :query, value: query %>
+  <%= form_with url: search_tanda_recordings_path, class: "flex flex-col gap-4", data: { controller: "auto-submit" } do |form| %>
     <%= form.hidden_field :tanda_id, value: tanda.id %>
     <% if orchestras.present? %>
       <div class="flex flex-col gap-2">
@@ -23,7 +22,7 @@
         </div>
       </div>
     <% end %>
-    <% if orchestras.present? && singers.present? %>
+    <% if filters[:orchestra].present? && singers.present? %>
       <div class="flex flex-col gap-2">
         <h3 class="text-sm text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Singers</h3>
         <div class="overflow-x-auto flex gap-2 no-scrollbar">
@@ -33,6 +32,26 @@
               <%= selected ? "bg-orange-500 text-white border-transparent" : "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-500" %>">
               <%= form.check_box :singer, { multiple: true, checked: selected, class: "hidden", data: { action: "change->auto-submit#submit" } }, singer["key"], nil %>
               <%= singer["key"] %>
+              <% if selected %>
+                <div class="text-white bg-transparent rounded-full border">
+                  <%= heroicon("x-mark", variant: :outline, size: :xxs) %>
+                </div>
+              <% end %>
+            </label>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+    <% if soloists.present? && filters[:orchestra].blank? %>
+      <div class="flex flex-col gap-2">
+        <h3 class="text-sm text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Soloists</h3>
+        <div class="overflow-x-auto flex gap-2 no-scrollbar">
+          <% soloists.each do |option| %>
+            <% selected = filters[:soloist]&.include?(option["key"]) %>
+            <label class="btn btn-xs btn-outline font-normal whitespace-nowrap rounded-full text-xs md:text-sm cursor-pointer flex items-center gap-1 
+              <%= selected ? "bg-orange-500 text-white border-transparent" : "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-500" %>">
+              <%= form.check_box :soloist, { multiple: true, checked: selected, class: "hidden", data: { action: "change->auto-submit#submit" } }, option["key"], nil %>
+              <%= option["key"] %>
               <% if selected %>
                 <div class="text-white bg-transparent rounded-full border">
                   <%= heroicon("x-mark", variant: :outline, size: :xxs) %>
@@ -64,7 +83,7 @@
       </div>
     <% end %>
   <% end %>
-  <div>
+  <div class="flex flex-col gap-2">
     <% if recordings.present? %>
       <%= render collection: recordings, partial: "recording_form", locals: { tanda: tanda }, as: :recording %>
     <% else %>
