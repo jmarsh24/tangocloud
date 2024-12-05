@@ -69,6 +69,8 @@ class TandasController < ApplicationController
       limit: 0
     )
 
+    @suggested_recordings = TandaRecommendation.new(@tanda).recommend_recordings(limit: (4 - @tanda.tanda_recordings.size))
+
     @orchestras = search_results.aggs["orchestra"]["buckets"]
     @singers = search_results.aggs["singer"]["buckets"]
     @soloists = search_results.aggs["soloist"]["buckets"]

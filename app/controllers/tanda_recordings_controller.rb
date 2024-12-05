@@ -64,8 +64,8 @@ class TandaRecordingsController < ApplicationController
     tanda = Tanda.find(params[:tanda_id])
     recording = Recording.find(params[:recording_id])
     authorize tanda.tanda_recordings.create!(recording:)
-    recordings = TandaRecommendation.new(tanda).recommend_recordings
-    tanda.update!(title: TandaTitleGenerator.generate_from_recordings(recordings))
+    suggested_recordings = TandaRecommendation.new(tanda).recommend_recordings(limit: (4 - tanda.tanda_recordings.size))
+    tanda.update!(title: TandaTitleGenerator.generate_from_recordings(tanda.recordings))
     tanda.attach_default_image unless tanda.image.attached?
 
     respond_to do |format|
@@ -73,7 +73,7 @@ class TandaRecordingsController < ApplicationController
         render turbo_stream: turbo_stream.update(
           "tanda-recordings",
           partial: "tanda_recordings/tanda_recordings",
-          locals: {tanda_recordings: tanda.tanda_recordings}
+          locals: {tanda_recordings: tanda.tanda_recordings, suggested_recordings:}
         )
       end
     end
@@ -82,16 +82,17 @@ class TandaRecordingsController < ApplicationController
   def destroy
     authorize tanda_recording = TandaRecording.find(params[:id])
     tanda = tanda_recording.tanda
-    recordings = TandaRecommendation.new(tanda).recommend_recordings
-    tanda.update!(title: TandaTitleGenerator.generate_from_recordings(recordings))
+    tanda.update!(title: TandaTitleGenerator.generate_from_recordings(tanda.recordings))
     tanda_recording.destroy
+
+    suggested_recordings = TandaRecommendation.new(tanda).recommend_recordings(limit: (4 - tanda.tanda_recordings.size))
 
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: turbo_stream.update(
           "tanda-recordings",
           partial: "tanda_recordings/tanda_recordings",
-          locals: {tanda_recordings: tanda.tanda_recordings}
+          locals: {tanda_recordings: tanda.tanda_recordings, suggested_recordings:}
         )
       end
     end

@@ -1,5 +1,12 @@
+<%# locals: {tanda_recordings:, suggested_recordings: nil} %>
 <% if tanda_recordings.any? %>
   <%= render tanda_recordings %>
+  <% if suggested_recordings.present? %>
+    <div class="flex flex-col gap-2">
+      <h3 class="text-lg font-semibold text-center">Suggested Recordings</h3>
+      <%= render partial: "tanda_recordings/recording_form", collection: suggested_recordings, locals: { tanda: tanda_recordings.take.tanda }, as: :recording %>
+    </div>
+  <% end %>
 <% else %>
   <p class="text-center text-neutral-500">
     No songs added to the Tanda yet. Use the search below in order to find recordings to add to the Tanda.

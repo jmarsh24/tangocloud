@@ -1,25 +1,24 @@
 class TandaRecommendation
-  def initialize(tanda, top_n = 10)
+  def initialize(tanda)
     @tanda = tanda
     @tanda_recordings = tanda.tanda_recordings.includes(recording: [:composition, :orchestra, :genre, :singers])
     @recordings = @tanda_recordings.map(&:recording)
     @recording_ids = @recordings.map(&:id)
-    @top_n = top_n
   end
 
-  def recommend_recordings
+  def recommend_recordings(limit: 10)
     return [] if @tanda_recordings.blank?
 
-    recommended_recordings = recommend_from_tandas
+    recommended_recordings = recommend_from_tandas(limit:)
 
-    additional_recommendations = recommend_from_orchestra_and_singers
+    additional_recommendations = recommend_from_orchestra_and_singers(limit:)
 
-    (recommended_recordings + additional_recommendations).uniq.shuffle.take(@top_n)
+    (recommended_recordings + additional_recommendations).uniq.shuffle.take(limit)
   end
 
   private
 
-  def recommend_from_tandas
+  def recommend_from_tandas(limit:)
     tandas = Tanda.joins(:tanda_recordings).where(tanda_recordings: {recording_id: @recording_ids}).distinct
 
     next_recordings = TandaRecording.where(tanda_id: tandas.select(:id))
@@ -30,12 +29,12 @@ class TandaRecommendation
     last_positions = TandaRecording.where(recording_id: last_recording.id, tanda_id: tandas.select(:id)).pluck(:tanda_id, :position).to_h
 
     scores = calculate_scores(next_recordings, last_positions)
-    recommended_ids = scores.sort_by { |_, score| -score }.map(&:first).take(@top_n)
+    recommended_ids = scores.sort_by { |_, score| -score }.map(&:first).take(limit)
 
     Recording.where(id: recommended_ids)
   end
 
-  def recommend_from_orchestra_and_singers
+  def recommend_from_orchestra_and_singers(limit:)
     orchestra_ids = @tanda_recordings.joins(:recording).select("DISTINCT recordings.orchestra_id").pluck(:orchestra_id)
     singer_ids = @tanda_recordings.flat_map { |tr| tr.recording.singers.pluck(:id) }.uniq
     recording_ids = @tanda_recordings.pluck(:recording_id)
@@ -53,7 +52,7 @@ class TandaRecommendation
       .uniq
       .sort_by(&:popularity_score)
       .reverse
-      .take(@top_n)
+      .take(limit)
   end
 
   def calculate_scores(next_recordings, last_positions)
