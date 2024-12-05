@@ -5,17 +5,17 @@
     <%= form.hidden_field :tanda_id, value: tanda.id %>
     <% if orchestras.present? %>
       <div class="flex flex-col gap-2">
-        <h3 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Orchestras</h3>
+        <h3 class="text-sm text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Orchestras</h3>
         <div class="overflow-x-auto flex gap-2 no-scrollbar">
           <% orchestras.each do |orchestra| %>
             <% selected = filters[:orchestra]&.include?(orchestra["key"]) %>
-            <label class="btn btn-xs btn-outline whitespace-nowrap rounded-full text-xs md:text-sm cursor-pointer flex items-center gap-2 
+            <label class="btn btn-xs btn-outline font-normal whitespace-nowrap rounded-full text-xs md:text-sm cursor-pointer flex items-center gap-1 
               <%= selected ? "bg-orange-500 text-white border-transparent" : "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-500" %>">
               <%= form.check_box :orchestra, { multiple: true, checked: selected, class: "hidden", data: { action: "change->auto-submit#submit" } }, orchestra["key"], nil %>
               <%= orchestra["key"] %>
               <% if selected %>
-                <div class="text-white bg-transparent">
-                  <%= heroicon("x-mark", variant: :outline, size: :xs) %>
+                <div class="text-white bg-transparent rounded-full border">
+                  <%= heroicon("x-mark", variant: :outline, size: :xxs) %>
                 </div>
               <% end %>
             </label>
@@ -25,17 +25,17 @@
     <% end %>
     <% if singers.present? %>
       <div class="flex flex-col gap-2">
-        <h3 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Singers</h3>
+        <h3 class="text-sm text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Singers</h3>
         <div class="overflow-x-auto flex gap-2 no-scrollbar">
           <% singers.each do |singer| %>
             <% selected = filters[:singer]&.include?(singer["key"]) %>
-            <label class="btn btn-xs btn-outline whitespace-nowrap rounded-full text-xs md:text-sm cursor-pointer flex items-center gap-2 
+            <label class="btn btn-xs btn-outline font-normal whitespace-nowrap rounded-full text-xs md:text-sm cursor-pointer flex items-center gap-1 
               <%= selected ? "bg-orange-500 text-white border-transparent" : "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-500" %>">
               <%= form.check_box :singer, { multiple: true, checked: selected, class: "hidden", data: { action: "change->auto-submit#submit" } }, singer["key"], nil %>
               <%= singer["key"] %>
               <% if selected %>
-                <div class="text-white bg-transparent">
-                  <%= heroicon("x-mark", variant: :outline, size: :xs) %>
+                <div class="text-white bg-transparent rounded-full border">
+                  <%= heroicon("x-mark", variant: :outline, size: :xxs) %>
                 </div>
               <% end %>
             </label>
@@ -45,17 +45,17 @@
     <% end %>
     <% if years.present? %>
       <div class="flex flex-col gap-2">
-        <h3 class="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Years</h3>
+        <h3 class="text-sm text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Years</h3>
         <div class="flex flex-wrap gap-2">
           <% years.each do |year| %>
-            <% selected = filters.dig(:year, :all)&.include?(year["key"]) %>
-            <label class="btn btn-xs btn-outline whitespace-nowrap rounded-full text-xs md:text-sm cursor-pointer flex items-center gap-2 
+            <% selected = filters.dig(:year)&.include?(year["key"]) %>
+            <label class="btn btn-xs btn-outline font-normal whitespace-nowrap rounded-full text-xs md:text-sm cursor-pointer flex items-center gap-1 
               <%= selected ? "bg-orange-500 text-white border-transparent" : "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-500" %>">
               <%= form.check_box :year, { multiple: true, checked: selected, class: "hidden", data: { action: "change->auto-submit#submit" } }, year["key"], nil %>
               <%= year["key"] %>
               <% if selected %>
-                <div class="text-white bg-transparent">
-                  <%= heroicon("x-mark", variant: :outline, size: :xs) %>
+                <div class="text-white bg-transparent rounded-full border">
+                  <%= heroicon("x-mark", variant: :outline, size: :xxs) %>
                 </div>
               <% end %>
             </label>

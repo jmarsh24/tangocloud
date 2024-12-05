@@ -11,7 +11,7 @@ class TandaRecordingsController < ApplicationController
     where_clause[:genre] = tanda.genre.name if tanda.genre.present?
     where_clause[:orchestra] = params[:orchestra] if params[:orchestra].present?
     where_clause[:singer] = params[:singer] if params[:singer].present?
-    where_clause[:year] = {all: params[:year].map(&:to_i)} if params[:year].present?
+    where_clause[:year] = params[:year].map(&:to_i) if params[:year].present?
 
     search_results = Recording.search(
       params[:query].presence || "*",
@@ -19,7 +19,7 @@ class TandaRecordingsController < ApplicationController
       aggs: {
         orchestra: {where: where_clause},
         singer: {where: where_clause},
-        year: {where: where_clause}
+        year: {where: where_clause.except(:year)}
       },
       order: {_score: :desc},
       boost_by: {popularity_score: {factor: 2, modifier: "log1p"}},
