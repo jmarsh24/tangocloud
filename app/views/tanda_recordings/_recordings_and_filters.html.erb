@@ -51,7 +51,9 @@
         </ol>
       </div>
     <% else %>
-      <%= render partial: "tanda_recordings/suggested_orchestras", locals: { suggested_orchestras: suggested_orchestras, tanda: tanda } %>
+      <% if suggested_orchestras.present? %>
+        <%= render partial: "tanda_recordings/suggested_orchestras", locals: { suggested_orchestras: suggested_orchestras, tanda: tanda } %>
+      <% end %>
     <% end %>
   </div>
 </div>

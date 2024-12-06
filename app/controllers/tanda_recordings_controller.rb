@@ -46,6 +46,8 @@ class TandaRecordingsController < ApplicationController
       []
     end
 
+    suggested_orchestras = Orchestra.with_attached_image.order(recordings_count: :desc).limit(36) if recordings.blank?
+
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: turbo_stream.update(
@@ -59,7 +61,7 @@ class TandaRecordingsController < ApplicationController
             singers: singers,
             soloists: soloists,
             years: years,
-            suggested_orchestras: nil
+            suggested_orchestras:
           },
           method: :morph
         )
