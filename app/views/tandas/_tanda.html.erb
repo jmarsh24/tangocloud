@@ -43,15 +43,13 @@
           <%= render collection: tanda.recordings, partial: "tandas/recording", locals: { tanda: }, as: :recording %>
         </div>
         <div class="flex w-full justify-between items-center mt-2">
-          <!-- Play Button -->
           <%= form_with url: load_tanda_recording_path(tanda_id: tanda.id, id: tanda.recordings.first.id), method: :post do %>
             <button type="submit" class="btn btn-neutral btn-md btn-circle flex items-center justify-center opacity-85">
               <%= heroicon "play", size: :sm, variant: :solid, class: "fill-white-500" %>
             </button>
           <% end %>
           <div class="text-sm text-gray-400 line-clamp-1">
-            <% total_minutes, remaining_seconds = tanda.duration.divmod(60) %>
-            <%= "#{total_minutes} min #{remaining_seconds} sec" %>
+            <%= formatted_tanda_duration(@tanda) %>
           </div>
         </div>
       </div>

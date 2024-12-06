@@ -24,6 +24,9 @@
       <% else %>
         <%= button_to "Add to Library", add_to_library_tanda_path(@tanda), class: "btn btn-secondary" %>
       <% end %>
+      <div class="text-sm text-gray-400 line-clamp-1">
+        <%= formatted_tanda_duration(@tanda) %>
+      </div>
     </div>
   </div>
   <div class="container max-w-lg flex flex-col justify-center py-8 gap-8">
