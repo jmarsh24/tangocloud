@@ -107,9 +107,7 @@ export default class extends Controller {
       navigator.mediaSession.setActionHandler("previoustrack", () =>
         this.previous()
       );
-      navigator.mediaSession.setActionHandler("seekto", () => this.seekTo());
     }
-    navigator.mediaSession.setActionHandler("seekto", (event) => this.seekTo(event));
   }
 
   play() {
@@ -201,17 +199,6 @@ export default class extends Controller {
 
   seekToPercentage(percentage) {
     this.wavesurfer.seekTo(percentage);
-  }
-
-  seekTo(event) {
-    const seekTime = event.seekTime;
-    const duration = this.wavesurfer.getDuration();
-
-    if (seekTime >= 0 && seekTime <= duration) {
-      this.wavesurfer.seekTo(seekTime / duration);
-      this.updateTime(seekTime);
-      navigator.mediaSession.playbackState = this.playingValue ? "playing" : "paused";
-    }
   }
 
   updateProgress() {
