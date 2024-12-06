@@ -39,16 +39,30 @@ class TandaRecommendation
     singer_ids = @tanda_recordings.flat_map { |tr| tr.recording.singers.pluck(:id) }.uniq
     recording_ids = @tanda_recordings.pluck(:recording_id)
 
-    recordings_with_orchestra = Recording.where(orchestra_id: orchestra_ids)
-      .where.not(id: recording_ids)
-      .where("recordings.year BETWEEN ? AND ?", @tanda_recordings.first.recording.year - 5, @tanda_recordings.first.recording.year + 5)
+    year_range = (@tanda_recordings.first.recording.year - 5)..(@tanda_recordings.first.recording.year + 5)
 
-    recordings_with_singers = Recording.joins(:singers)
+    # Recordings with both matching orchestra and singers
+    recordings_with_both = Recording
+      .joins(:singers)
+      .where(orchestra_id: orchestra_ids, singers: {id: singer_ids})
+      .where.not(id: recording_ids)
+      .where(year: year_range)
+
+    # Recordings with matching orchestra but not necessarily singers
+    recordings_with_orchestra = Recording
+      .where(orchestra_id: orchestra_ids)
+      .where.not(id: recording_ids)
+      .where(year: year_range)
+
+    # Recordings with matching singers but not necessarily orchestra
+    recordings_with_singers = Recording
+      .joins(:singers)
       .where(singers: {id: singer_ids})
       .where.not(id: recording_ids)
-      .where("recordings.year BETWEEN ? AND ?", @tanda_recordings.first.recording.year - 5, @tanda_recordings.first.recording.year + 5)
+      .where(year: year_range)
 
-    (recordings_with_orchestra + recordings_with_singers)
+    # Combine results with prioritization
+    (recordings_with_both.to_a * 2 + recordings_with_orchestra.to_a + recordings_with_singers.to_a)
       .uniq
       .sort_by(&:popularity_score)
       .reverse
