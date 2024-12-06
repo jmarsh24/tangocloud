@@ -1,5 +1,5 @@
 <%# locals: { tanda:, recording: } %>
-<div class="flex gap-2 p-2 items-center hover:cursor-pointer rounded-lg overflow-hidden bg-neutral-950 hover:bg-neutral-800">
+<div id="recording-form-<%= recording.id %>" class="flex gap-2 p-2 items-center hover:cursor-pointer rounded-lg overflow-hidden bg-neutral-950 hover:bg-neutral-800">
   <div class="flex flex-1">
     <%= form_with url: load_music_library_recording_path(recording), class: "flex w-full items-center gap-4" do |form| %>
       <button type="submit" class="flex w-full items-center gap-4 bg-transparent border-0 p-0 hover:cursor-pointer">
@@ -8,7 +8,7 @@
     <% end %>
   </div>
   <div>
-    <%= form_with url: tanda_recordings_path(tanda_id: tanda.id, recording_id: recording.id), class: "flex items-center" do |form| %>
+    <%= form_with url: tanda_recordings_path(tanda_id: tanda.id, recording_id: recording.id), class: "flex items-center", method: :post, data: { turbo_frame: "_top" } do |form| %>
       <%= form.submit "Add", class: "btn btn-primary btn-sm" %>
     <% end %>
   </div>

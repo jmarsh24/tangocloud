@@ -97,7 +97,8 @@ class TandaRecordingsController < ApplicationController
             "tanda-recordings",
             partial: "tanda_recordings/tanda_recordings",
             locals: {tanda_recordings:, suggested_recordings:}
-          )
+          ),
+          turbo_stream.remove("recording-form-#{recording.id}") # Dynamically remove the form
         ]
       end
     end
