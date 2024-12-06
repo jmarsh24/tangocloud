@@ -30,5 +30,6 @@ class ApplicationController < ActionController::Base
 
   def set_user_library
     @user_library = policy_scope(UserLibrary).find_or_create_by!(user: Current.user) if Current&.user
+    @library_items = @user_library&.library_items&.includes(item: {image_attachment: :blob})&.order(:row_order)&.all
   end
 end

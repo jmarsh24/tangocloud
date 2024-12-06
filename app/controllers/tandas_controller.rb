@@ -78,7 +78,7 @@ class TandasController < ApplicationController
       @suggested_recordings = []
     end
 
-    @suggested_orchestras = Orchestra.order(recordings_count: :desc).limit(36)
+    @suggested_orchestras = Orchestra.with_attached_image.order(recordings_count: :desc).limit(36)
 
     @orchestras = search_results.aggs["orchestra"]["buckets"]
     @singers = search_results.aggs["singer"]["buckets"]

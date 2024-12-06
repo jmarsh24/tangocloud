@@ -41,7 +41,7 @@ class TandaRecordingsController < ApplicationController
     recording_results = search_results.results
 
     recordings = if recording_results.present?
-      search_results.results.group_by(&:year).sort.to_h
+      search_results.results.group_by(&:year)
     else
       []
     end
@@ -83,6 +83,8 @@ class TandaRecordingsController < ApplicationController
       suggested_recordings = []
     end
 
+    tanda_recordings = tanda.tanda_recordings.includes(recording: [:composition, :orchestra, :singers, :genre, digital_remasters: [:audio_variants, album: [album_art_attachment: :blob]]])
+
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: [
@@ -94,7 +96,7 @@ class TandaRecordingsController < ApplicationController
           turbo_stream.update(
             "tanda-recordings",
             partial: "tanda_recordings/tanda_recordings",
-            locals: {tanda_recordings: tanda.tanda_recordings, suggested_recordings:}
+            locals: {tanda_recordings:, suggested_recordings:}
           )
         ]
       end
@@ -116,6 +118,8 @@ class TandaRecordingsController < ApplicationController
       suggested_recordings = []
     end
 
+    tanda_recordings = tanda.tanda_recordings.includes(recording: [:composition, :orchestra, :singers, :genre, digital_remasters: [:audio_variants, album: [album_art_attachment: :blob]]])
+
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: [
@@ -127,7 +131,7 @@ class TandaRecordingsController < ApplicationController
           turbo_stream.update(
             "tanda-recordings",
             partial: "tanda_recordings/tanda_recordings",
-            locals: {tanda_recordings: tanda.tanda_recordings, suggested_recordings:}
+            locals: {tanda_recordings:, suggested_recordings:}
           )
         ]
       end

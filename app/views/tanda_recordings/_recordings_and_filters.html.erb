@@ -4,64 +4,13 @@
     <%= form_with url: search_tanda_recordings_path, class: "flex flex-col gap-4", data: { controller: "auto-submit" } do |form| %>
       <%= form.hidden_field :tanda_id, value: tanda.id %>
       <% if orchestras.present? %>
-        <div class="flex flex-col gap-2">
-          <h3 class="text-sm text-neutral-500 dark:text-neutral-400 uppercase tracking-wide pl-2">Orchestras</h3>
-          <div class="overflow-x-auto flex gap-2 no-scrollbar pl-2">
-            <% orchestras.each do |orchestra| %>
-              <% selected = filters[:orchestra]&.include?(orchestra["key"]) %>
-              <label class="btn btn-xs btn-outline font-normal whitespace-nowrap rounded-full text-xs md:text-sm cursor-pointer flex items-center gap-1 
-              <%= selected ? "bg-orange-500 text-white border-transparent" : "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-500" %>">
-                <%= form.check_box :orchestra, { multiple: true, checked: selected, class: "hidden", data: { action: "change->auto-submit#submit" } }, orchestra["key"], nil %>
-                <%= orchestra["key"] %>
-                <% if selected %>
-                  <div class="text-white bg-transparent rounded-full border">
-                    <%= heroicon("x-mark", variant: :outline, size: :xxs) %>
-                  </div>
-                <% end %>
-              </label>
-            <% end %>
-          </div>
-        </div>
+        <%= render partial: "tanda_recordings/filters", locals: { filters: filters, options: orchestras, filter_key: :orchestra, label: "Orchestras", form:} %>
       <% end %>
       <% if filters[:orchestra].present? && singers.present? %>
-        <div class="flex flex-col gap-2">
-          <h3 class="text-sm text-neutral-500 dark:text-neutral-400 uppercase tracking-wide pl-2">Singers</h3>
-          <div class="overflow-x-auto flex gap-2 no-scrollbar pl-2">
-            <% singers.each do |singer| %>
-              <% selected = filters[:singer]&.include?(singer["key"]) %>
-              <label class="btn btn-xs btn-outline font-normal whitespace-nowrap rounded-full text-xs md:text-sm cursor-pointer flex items-center gap-1 
-              <%= selected ? "bg-orange-500 text-white border-transparent" : "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-500" %>">
-                <%= form.check_box :singer, { multiple: true, checked: selected, class: "hidden", data: { action: "change->auto-submit#submit" } }, singer["key"], nil %>
-                <%= singer["key"] %>
-                <% if selected %>
-                  <div class="text-white bg-transparent rounded-full border">
-                    <%= heroicon("x-mark", variant: :outline, size: :xxs) %>
-                  </div>
-                <% end %>
-              </label>
-            <% end %>
-          </div>
-        </div>
+        <%= render partial: "tanda_recordings/filters", locals: { filters: filters, options: singers, filter_key: :singer, label: "Singers", form: } %>
       <% end %>
       <% if soloists.present? && filters[:orchestra].blank? %>
-        <div class="flex flex-col gap-2">
-          <h3 class="text-sm text-neutral-500 dark:text-neutral-400 uppercase tracking-wide pl-2">Soloists</h3>
-          <div class="overflow-x-auto flex gap-2 no-scrollbar pl-2">
-            <% soloists.each do |option| %>
-              <% selected = filters[:soloist]&.include?(option["key"]) %>
-              <label class="btn btn-xs btn-outline font-normal whitespace-nowrap rounded-full text-xs md:text-sm cursor-pointer flex items-center gap-1 
-              <%= selected ? "bg-orange-500 text-white border-transparent" : "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-500" %>">
-                <%= form.check_box :soloist, { multiple: true, checked: selected, class: "hidden", data: { action: "change->auto-submit#submit" } }, option["key"], nil %>
-                <%= option["key"] %>
-                <% if selected %>
-                  <div class="text-white bg-transparent rounded-full border">
-                    <%= heroicon("x-mark", variant: :outline, size: :xxs) %>
-                  </div>
-                <% end %>
-              </label>
-            <% end %>
-          </div>
-        </div>
+        <%= render partial: "tanda_recordings/filters", locals: { filters: filters, options: soloists, filter_key: :soloist, label: "Soloists", form:} %>
       <% end %>
       <% if years.present? %>
         <div class="flex flex-col gap-2">
@@ -102,21 +51,7 @@
         </ol>
       </div>
     <% else %>
-      <section class="flex flex-col gap-4">
-        <h2>Suggestions</h2>
-        <h3 class="text-neutral-500">Unsure about what you want to add? Quickly start creating a tanda by choosing an orchestra below!</h3>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <% suggested_orchestras.each do |orchestra| %>
-            <%= form_with url: search_tanda_recordings_path, class: "max-w-full h-auto" do |form| %>
-              <%= form.hidden_field :tanda_id, value: tanda.id %>
-              <%= form.hidden_field :orchestra, value: orchestra.display_name %>
-              <button type="submit" class="flex items-center justify-center max-w-full h-auto">
-                <%= render orchestra %>
-              </button>
-            <% end %>
-          <% end %>
-        </div>
-      </section>
+      <%= render partial: "tanda_recordings/suggested_orchestras", locals: { suggested_orchestras: suggested_orchestras, tanda: tanda } %>
     <% end %>
   </div>
 </div>
