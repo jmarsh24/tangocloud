@@ -38,7 +38,13 @@ class TandaRecordingsController < ApplicationController
     soloists = search_results.aggs.dig("soloist", "buckets") || []
     years = (search_results.aggs.dig("year", "buckets") || []).sort_by { _1["key"] }
 
-    recordings = search_results.results
+    recording_results = search_results.results
+
+    recordings = if recording_results.present?
+      search_results.results.group_by(&:year).sort.to_h
+    else
+      []
+    end
 
     respond_to do |format|
       format.turbo_stream do
