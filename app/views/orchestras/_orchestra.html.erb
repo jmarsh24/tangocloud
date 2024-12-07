@@ -1,6 +1,6 @@
 <%# locals: {orchestra: } %>
 <% cache(orchestra) do %>
-  <div class="relative w-36 h-36 rounded-lg overflow-hidden snap-start">
+  <div class="relative w-32 h-32 rounded-lg overflow-hidden snap-start">
     <% if orchestra.image.attached? %>
       <%= image_tag orchestra.image, class: "absolute inset-0 max-w-full h-auto aspect-square object-cover" %>
     <% else %>
