@@ -38,9 +38,13 @@
           <section>
             <h2 class="text-2xl font-bold text-neutral-900 dark:text-neutral-300 px-4"><%= type.to_s.titleize %></h2>
             <% case type %>
-            <% when :playlists, :orchestras, :tandas %>
+            <% when :playlists, :tandas %>
               <div class="flex flex-wrap gap-4 px-4 py-4">
                 <%= render collection: items.take(filter_type == "all" ? 8 : items.size), partial: "#{type.to_s.pluralize}/#{type.to_s.singularize}" %>
+              </div>
+            <% when :orchestras %>
+              <div class="grid grid-cols-1 gap-3 px-4 py-4">
+                <%= render collection: items.take(filter_type == "all" ? 8 : items.size), partial: "orchestras/orchestra_link", as: :orchestra %>
               </div>
             <% when :recordings %>
               <div class="grid grid-cols-1 gap-3 px-4 py-4">

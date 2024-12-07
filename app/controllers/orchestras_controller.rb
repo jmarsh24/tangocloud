@@ -4,7 +4,18 @@ class OrchestrasController < ApplicationController
   skip_after_action :verify_authorized, only: :show
 
   def index
-    @orchestras = policy_scope(Orchestra.ordered_by_recordings).limit(100).with_attached_image
+    @filters = params.permit(:sort, :order).to_h
+
+    sort_column = case @filters[:sort]
+    when "sort_name" then "sort_name"
+    when "recordings_count" then "recordings_count"
+    else "sort_name"
+    end
+    sort_direction = (@filters[:order] == "asc") ? :asc : :desc
+
+    @orchestras = policy_scope(Orchestra)
+      .order("#{sort_column} #{sort_direction}")
+      .with_attached_image
     authorize Orchestra
   end
 

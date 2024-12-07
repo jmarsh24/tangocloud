@@ -1,6 +1,22 @@
 class TandaPolicy < ApplicationPolicy
+  def new?
+    user.admin? || user.tester? || user.editor?
+  end
+
+  def edit?
+    record.user == user && (user.admin? || user.tester? || user.editor?)
+  end
+
   def index?
     user.admin? || user.tester? || user.editor?
+  end
+
+  def create?
+    user.admin? || user.tester? || user.editor?
+  end
+
+  def update?
+    record.user == user && (user.admin? || user.tester? || user.editor?)
   end
 
   def show?
@@ -13,6 +29,10 @@ class TandaPolicy < ApplicationPolicy
 
   def add_to_library?
     user.admin? || user.tester? || user.editor?
+  end
+
+  def add_recordings?
+    record.user == user && (user.admin? || user.tester? || user.editor?)
   end
 
   class Scope < Scope

@@ -1,22 +1,18 @@
 import { Controller } from "@hotwired/stimulus";
-import { useDebounce } from 'stimulus-use'
+import { useDebounce } from "stimulus-use";
 
 // Connects to data-controller="auto-submit"
 export default class extends Controller {
-  static debounces = ['submit']
+  static debounces = ["submit"];
 
-  initialize () {
-    useDebounce(this)
+  initialize() {
+    useDebounce(this);
   }
 
   submit() {
-    const currentValue = this.element.value.trim();
-
-    if (currentValue.length === 0 || currentValue === this.lastValue) {
-      return;
+    const form = this.element.closest("form");
+    if (form) {
+      form.requestSubmit();
     }
-
-    this.lastValue = currentValue;
-    this.element.form.requestSubmit();
   }
 }
