@@ -17,7 +17,7 @@
               background_class
             ) %>">
       <div class="w-full flex flex-col gap-4 z-20">
-        <div class="w-full flex justify-start gap-4">
+        <%= link_to tanda_path(tanda), class: "w-full flex justify-start gap-4" do %>
           <div class="relative w-24 flex items-center justify-center">
             <% if tanda.recordings.first.orchestra.image.attached? %>
               <%= image_tag tanda.recordings.first.orchestra.image, alt: tanda.recordings.first.orchestra.name, class: "rounded-lg object-cover aspect-square h-full" %>
@@ -38,7 +38,7 @@
               </div>
             </div>
           </div>
-        </div>
+        <% end %>
         <div class="flex w-full flex-col z-20 relative border-b border-neutral-500">
           <%= render collection: tanda.recordings, partial: "tandas/recording", locals: { tanda: }, as: :recording %>
         </div>

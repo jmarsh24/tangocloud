@@ -59,7 +59,7 @@
       <% else %>
         <div id="tanda-recordings" 
             class="flex flex-col gap-4">
-          <% if @tanda_recodings.present? %>
+          <% if @tanda_recordings.present? %>
             <%= render "tanda_recordings/tanda_recordings", tanda_recordings: @tanda_recordings, suggested_recordings: nil %>
           <% end %>
         </div>
