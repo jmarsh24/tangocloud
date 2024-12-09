@@ -24,7 +24,7 @@ class SearchController < ApplicationController
       },
       highlight: {
         fields: {lyrics: {fragment_size: 200}},
-        tag: '<strong class="font-bold">'
+        tag: '<strong class="font-bold text-orange-500">'
       },
       limit: 100,
       indices_boost: indices_boost,
