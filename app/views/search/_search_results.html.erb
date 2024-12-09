@@ -56,7 +56,7 @@
               </div>
             <% when :compositions %>
               <div class="grid grid-cols-1 gap-3 px-4 py-4">
-                <% items.take(filter_type == "all" ? 8 : items.size).each do |item| %>
+                <% items.take(filter_type == "all" ? 4 : items.size).each do |item| %>
                   <% if item.is_a?(Hash) && item[:model].is_a?(Composition) %>
                     <%= render partial: "search/composition", locals: {composition: item[:model], highlights: item[:highlights]} %>
                   <% else %>

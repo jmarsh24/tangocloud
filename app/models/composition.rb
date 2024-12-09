@@ -1,6 +1,6 @@
 class Composition < ApplicationRecord
   searchkick word_start: [:title, :composers, :lyricists, :recording_titles, :recording_orchestras, :recording_singers, :genre],
-    text_middle: [:combined, :lyrics],
+    word_middle: [:combined, :lyrics],
     filterable: [:composer_names, :lyricist_names, :genre],
     callbacks: :async
 
