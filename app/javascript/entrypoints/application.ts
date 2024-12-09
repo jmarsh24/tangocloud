@@ -24,7 +24,10 @@ declare global {
 
 const application = Application.start();
 
-application.debug = false;
+const isDebugEnvironment = ["development", "staging"].includes(
+  process.env.RAILS_ENV || ""
+);
+application.debug = isDebugEnvironment;
 window.Stimulus = application;
 
 const controllers = import.meta.glob("../**/*_controller.{js,ts}", {
