@@ -2,7 +2,7 @@
 <% cache([query, grouped_results, filter_type]) do %>
   <div class="w-full max-w-screen-md mx-auto flex flex-col gap-4">
     <div class="flex justify-start gap-2 px-2 py-2 overflow-x-auto no-scrollbar whitespace-nowrap">
-      <% filters = [:all, :playlists, :orchestras, :recordings, :tandas] %>
+      <% filters = [:all, :playlists, :orchestras, :recordings, :tandas, :compositions] %>
       <% filters.each do |type| %>
         <% if filter_type == type.to_s.singularize || type == :all && filter_type == "all" %>
           <span class="btn btn-sm btn-primary"><%= type.to_s.titleize %></span>
@@ -38,9 +38,13 @@
           <section>
             <h2 class="text-2xl font-bold text-neutral-900 dark:text-neutral-300 px-4"><%= type.to_s.titleize %></h2>
             <% case type %>
-            <% when :playlists, :tandas %>
+            <% when :tandas %>
               <div class="flex flex-wrap gap-4 px-4 py-4">
-                <%= render collection: items.take(filter_type == "all" ? 8 : items.size), partial: "#{type.to_s.pluralize}/#{type.to_s.singularize}" %>
+                <%= render collection: items.take(filter_type == "all" ? 8 : items.size), partial: "tandas/tanda" %>
+              </div>
+            <% when :playlists %>
+              <div class="flex flex-wrap gap-4 px-4 py-4">
+                <%= render collection: items.take(filter_type == "all" ? 8 : items.size), partial: "playlists/playlist" %>
               </div>
             <% when :orchestras %>
               <div class="grid grid-cols-1 gap-3 px-4 py-4">
@@ -49,6 +53,10 @@
             <% when :recordings %>
               <div class="grid grid-cols-1 gap-3 px-4 py-4">
                 <%= render collection: items.take(filter_type == "all" ? 8 : items.size), partial: "music_libraries/recording_form", as: :recording %>
+              </div>
+            <% when :compositions %>
+              <div class="grid grid-cols-1 gap-3 px-4 py-4">
+                <%= render collection: items.take(filter_type == "all" ? 8 : items.size), partial: "search/composition", as: :composition %>
               </div>
             <% end %>
             <% if filter_type == "all" && items.length > 8 %>

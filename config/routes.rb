@@ -104,6 +104,8 @@ Rails.application.routes.draw do
     resource :like, only: [:create, :destroy], module: :recordings
   end
 
+  resources :compositions, only: [:show]
+
   resources :playlists, only: [:index, :show] do
     resources :recordings, only: [] do
       member do

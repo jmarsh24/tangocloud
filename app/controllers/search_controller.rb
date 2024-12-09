@@ -11,16 +11,21 @@ class SearchController < ApplicationController
       Orchestra => 10.0,
       Recording => 2.0,
       Tanda => 1.2,
-      Playlist => 1.0
+      Playlist => 1.0,
+      Composition => 10.0
     }
 
     search_options = {
-      models: [Playlist, Recording, Orchestra, Tanda],
+      models: [Playlist, Recording, Orchestra, Tanda, Composition],
       model_includes: {
         Playlist => [:user, image_attachment: :blob],
-        Recording => [:composition, :orchestra, :genre, :singers, digital_remasters: [:audio_variants, album: [:album_art_attachment]]],
-        Orchestra => [:genres, recordings: [:composition, :genre, :singers, digital_remasters: [album: [:album_art_attachment]]]],
-        Tanda => [:user, recordings: [:composition, :orchestra, :genre, :singers, digital_remasters: [:audio_variants, album: [:album_art_attachment]]]]
+        Recording => [:composition, :orchestra, :genre, :singers, digital_remasters: [:audio_variants, album: [album_art_attachment: :blob]]],
+        Orchestra => [:genres, recordings: [:composition, :genre, :singers, digital_remasters: [album: [album_art_attachment: :blob]]]],
+        Tanda => [:user, recordings: [:composition, :orchestra, :genre, :singers, digital_remasters: [:audio_variants, album: [album_art_attachment: :blob]]]],
+        Composition => [:composers, :lyricists, :lyrics, recordings: [:orchestra, :genre, :singers, digital_remasters: [album: [album_art_attachment: :blob]]]]
+      },
+      highlight: {
+        fields: {lyrics: {}}
       },
       limit: 100,
       indices_boost: indices_boost,
