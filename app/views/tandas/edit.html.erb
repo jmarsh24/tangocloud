@@ -1,0 +1,39 @@
+<%= form_with model: @tanda, class: "flex flex-col gap-4" do |form| %>
+  <div class="form-control">
+    <%= form.label :title, "Title", class: "label font-semibold text-neutral-600 dark:text-neutral-200" %>
+    <%= form.text_area :title, 
+          readonly: true, 
+          rows: 2,
+          class: "textarea textarea-bordered w-full dark:bg-neutral-800 dark:text-neutral-500 bg-neutral-200 border-neutral-300 cursor-not-allowed" %>
+    <p class="text-sm text-neutral-500 mt-2">
+      The title is auto-generated and cannot be edited.
+    </p>
+  </div>
+  <!--  <div class="form-control">-->
+  <%#= form.label :subtitle, "Subtitle", class: "label font-semibold text-neutral-600 dark:text-neutral-200" %>
+  <%#= form.text_field :subtitle, rows: 3, class: "input input-bordered w-full dark:bg-neutral-800 dark:text-white" %>
+  <!--  </div>
+  <div class="form-control">
+    <%#= form.label :description, "Description", class: "label font-semibold text-neutral-600 dark:text-neutral-200" %>-->
+  <%#= form.text_area :description, rows: 5, class: "textarea textarea-bordered w-full dark:bg-neutral-800 dark:text-white" %>
+  <!--  </div>-->
+  <div class="form-control">
+    <%= form.label :public, class: "label cursor-pointer flex items-center justify-start gap-3 text-neutral-600 dark:text-neutral-200" do %>
+      <%= form.check_box :public, class: "checkbox checkbox-primary dark:bg-neutral-800" %>
+      <span>Public</span>
+    <% end %>
+  </div>
+  <div class="form-control">
+    <%= form.label :image, "Upload Image", class: "label font-semibold text-neutral-600 dark:text-neutral-200" %>
+    <%= form.file_field :image, class: "file-input file-input-bordered w-full dark:bg-neutral-800 dark:text-white" %>
+    <% if @tanda.image.attached? %>
+      <div class="mt-4">
+        <p class="text-sm text-neutral-500 dark:text-neutral-400">Current Image:</p>
+        <%= image_tag @tanda.image, class: "w-32 h-32 rounded-lg object-cover shadow-md" %>
+      </div>
+    <% end %>
+  </div>
+  <div class="form-control">
+    <%= form.submit "Update Tanda", class: "btn btn-primary w-full" %>
+  </div>
+<% end %>

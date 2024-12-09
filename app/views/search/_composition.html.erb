@@ -1,0 +1,36 @@
+<%# locals: {composition:, highlights: nil} %>
+<% cache(composition) do %>
+  <%= link_to composition_path(composition), class: "flex flex-auto gap-2 items-center overflow-hidden relative text-neutral-800 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-lg p-2 transition" do %>
+    <% album_image = composition.recordings.first&.digital_remasters&.first&.album&.album_art %>
+    <% if album_image.present? %>
+      <%= image_tag album_image, class: "h-16 rounded-full aspect-square object-cover" %>
+    <% else %>
+      <div class="h-16 w-16 rounded-full bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center text-sm text-neutral-500">
+        No Image
+      </div>
+    <% end %>
+    <div class="flex flex-auto flex-col items-start text-left overflow-hidden">
+      <div class="text-sm font-semibold text-nowrap" title="<%= composition.title %>">
+        <%= composition.title %>
+      </div>
+      <% if composition.composers.present? %>
+        <div class="text-xs text-gray-500 text-nowrap" title="Composers: <%= composition.composers.map(&:name).join(', ') %>">
+          Composers: <%= composition.composers.map(&:name).join(", ") %>
+        </div>
+      <% end %>
+      <% if composition.lyricists.present? %>
+        <div class="text-xs text-gray-500 text-nowrap" title="Lyricists: <%= composition.lyricists.map(&:name).join(', ') %>">
+          Lyricists: <%= composition.lyricists.map(&:name).join(", ") %>
+        </div>
+      <% end %>
+      <div class="text-xs text-gray-500 text-nowrap">
+        <%= "#{composition.recordings.size} Recordings" %>
+      </div>
+      <% if highlights && highlights[:lyrics].present? %>
+        <div class="text-sm font-extralight text-neutral-700 dark:text-neutral-300">
+          <p class="italic"><%= highlights[:lyrics].join(" ... ").html_safe %></p>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

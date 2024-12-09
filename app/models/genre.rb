@@ -1,8 +1,11 @@
 class Genre < ApplicationRecord
   include FriendlyId
   friendly_id :name, use: :slugged
+
   searchkick word_start: [:name]
+
   has_many :recordings, dependent: :destroy
+  has_many :tandas, dependent: :nullify
 
   validates :name, presence: true
 

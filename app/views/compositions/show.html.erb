@@ -1,0 +1,56 @@
+<% cache(@composition) do %>
+  <div class="relative flex flex-auto flex-col gap-4 p-4 py-24 bg-white dark:bg-neutral-900 rounded-lg shadow-md">
+    <%= link_to "javascript:history.back()", class: "absolute left-4 top-6 flex items-center gap-2 p-2 rounded-full bg-neutral-200 text-sm text-neutral-700 dark:bg-neutral-800 dark:text-neutral-400 hover:bg-neutral-300 dark:hover:bg-neutral-700" do %>
+      <%= heroicon "chevron-left", size: :sm, class: "text-neutral-500 dark:text-neutral-400" %>
+    <% end %>
+    <div class="text-lg font-semibold text-neutral-800 dark:text-neutral-200">
+      <%= @composition.title %>
+    </div>
+    <% if @composition.composers.present? %>
+      <div class="text-sm text-gray-600 dark:text-gray-400">
+        <strong>Composers</strong>
+        <div class="flex items-center gap-2 mt-2">
+          <% @composition.composers.each do |composer| %>
+            <div class="flex items-center gap-2">
+              <% if composer.image.attached? %>
+                <%= image_tag composer.image, class: "w-8 h-8 rounded-full object-cover" %>
+              <% end %>
+              <span><%= composer.name %></span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+    <% if @composition.lyricists.present? %>
+      <div class="text-sm text-gray-600 dark:text-gray-400">
+        <strong>Lyricists</strong>
+        <div class="flex items-center gap-2 mt-2">
+          <% @composition.lyricists.each do |lyricist| %>
+            <div class="flex items-center gap-2">
+              <% if lyricist.image.attached? %>
+                <%= image_tag lyricist.image, class: "w-8 h-8 rounded-full object-cover" %>
+              <% end %>
+              <span><%= lyricist.name %></span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+    <% if @composition.lyrics.present? %>
+      <div class="text-sm text-gray-600 dark:text-gray-400">
+        <strong>Lyrics</strong>
+        <div class="mt-2 p-3 bg-gray-100 dark:bg-neutral-800 rounded-lg text-neutral-800 dark:text-neutral-300 text-xs whitespace-pre-line">
+          <% @composition.lyrics.each do |lyric| %>
+            <p><%= lyric.text %> (<%= lyric.language.name %>)</p>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+    <% if @composition.recordings.present? %>
+      <div class="text-sm text-gray-600 dark:text-gray-400">
+        <strong>Number of Recordings:</strong> <%= @composition.recordings.size %>
+      </div>
+      <%= render collection: @composition.recordings, partial: "search/recording_form", as: :recording %>
+    <% end %>
+  </div>
+<% end %>

@@ -4,12 +4,16 @@
       <%= heroicon("magnifying-glass", variant: :outline, size: :md) %>
       <%= form.text_field :query, 
                          type: "search", 
+                         id: "mobile-global-search",
                          inputmode: "search",
-                         spellcheck: false, 
+                         spellcheck: false,
                          autocorrect: "off",
-                         data: { controller: "auto-submit", action: "keydown->auto-submit#submit" }, 
-                         placeholder: "Search for music...", 
-                         class: "w-full placeholder-neutral-500 dark:placeholder-neutral-400 text-sm focus:outline-none bg-transparent" %>
+                         data: { 
+                            controller: "search", 
+                            action: "keydown->search#submit focus->search#focus", 
+                            "search-search-path-value": search_path }, 
+      placeholder: "Search for music...", 
+      class: "w-full placeholder-neutral-500 dark:placeholder-neutral-400 text-sm focus:outline-none bg-transparent" %>
     </label>
   </div>
 <% end %>

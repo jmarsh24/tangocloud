@@ -74,7 +74,7 @@
             class: "btn btn-neutral btn-md btn-square", 
             aria: { label: "Share recording" }, 
             data: { controller: "social-share", 
-            action: "keydown->social-share#share:prevent", 
+            action: "click->social-share#share:prevent", 
               "social-share-url-value": recording_path(recording.id) } do %>
               <%= heroicon("arrow-up-on-square", size: :md) %>
             <% end %>

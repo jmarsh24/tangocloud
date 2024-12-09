@@ -87,7 +87,14 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :tandas do
+  resources :tanda_recordings, only: [:create, :destroy] do
+    collection do
+      post :search
+    end
+    patch :reorder, on: :member
+  end
+
+  resources :tandas, only: [:new, :create, :show, :edit, :update] do
     member do
       post "add_to_library", to: "user_libraries#add_tanda"
     end
@@ -96,6 +103,8 @@ Rails.application.routes.draw do
   resources :recordings, only: [:show, :index] do
     resource :like, only: [:create, :destroy], module: :recordings
   end
+
+  resources :compositions, only: [:show]
 
   resources :playlists, only: [:index, :show] do
     resources :recordings, only: [] do

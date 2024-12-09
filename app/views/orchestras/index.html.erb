@@ -1,15 +1,32 @@
 <div class="flex flex-col items-center gap-2 px-4 xl:px-0">
   <h1 class="md:max-w-screen-md col-span-full text-3xl font-semibold text-neutral-900 dark:text-neutral-100">Orchestras</h1>
-  <% if @orchestras.present? %>
-    <div class="grid gap-4 grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8">
-      <%= render @orchestras %>
+  <div class="flex justify-end px-2">
+    <div class="flex items-center gap-2">
+      <%= link_to orchestras_path(@filters.merge(sort: "sort_name", order: @filters[:sort] == "sort_name" && @filters[:order] == "asc" ? "desc" : "asc")), 
+                class: class_names(
+                  "flex items-center gap-1 px-2 py-1 rounded-md text-sm font-medium bg-neutral-200 text-neutral-700 hover:bg-neutral-300",
+                  "dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700",
+                  { "dark:bg-neutral-600 text-white": @filters[:sort] == "sort_name" }
+                ) do %>
+        Name
+        <% if @filters[:sort] == "sort_name" %>
+          <%= heroicon @filters[:order] == "asc" ? "chevron-up" : "chevron-down", size: :xs %>
+        <% end %>
+      <% end %>
+      <%= link_to orchestras_path(@filters.merge(sort: "recordings_count", order: @filters[:sort] == "recordings_count" && @filters[:order] == "asc" ? "desc" : "asc")), 
+                class: class_names(
+                  "flex items-center gap-1 px-2 py-1 rounded-md text-sm font-medium bg-neutral-200 text-neutral-700 hover:bg-neutral-300",
+                  "dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700",
+                  { "dark:bg-neutral-600 text-white": @filters[:sort] == "recordings_count" }
+                ) do %>
+        Recordings
+        <% if @filters[:sort] == "recordings_count" %>
+          <%= heroicon @filters[:order] == "asc" ? "chevron-up" : "chevron-down", size: :xs %>
+        <% end %>
+      <% end %>
     </div>
-  <% else %>
-    <div class="flex flex-col items-center gap-4 py-8">
-      <div class="text-center">
-        <%= inline_svg_tag("logos/tangocloud-logo-with-text.svg", class: "w-36 h-auto mx-auto dark:fill-neutral-100") %>
-      </div>
-      <p class="text-center text-neutral-600 dark:text-neutral-300">No Orchestras found.</p>
-    </div>
-  <% end %>
+  </div>
+  <div class="grid gap-4 grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8">
+    <%= render collection: @orchestras, partial: "orchestras/orchestra_link", as: :orchestra %>
+  </div>
 </div>

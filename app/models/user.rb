@@ -31,6 +31,8 @@ class User < ApplicationRecord
     format: {with: /\A[a-zA-Z0-9_]+\z/, message: "only allows letters, numbers, and underscores"},
     allow_nil: true
 
+  after_create :initialize_user_resources
+
   class << self
     def find_by_email_or_username(email_or_username)
       find_by(email: email_or_username) || find_by(username: email_or_username)
@@ -60,6 +62,12 @@ class User < ApplicationRecord
       username:,
       email:
     }
+  end
+
+  def initialize_user_resources
+    create_playback_session!
+    create_playback_queue!
+    create_user_library!
   end
 end
 

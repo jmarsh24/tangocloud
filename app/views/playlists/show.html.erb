@@ -23,15 +23,34 @@
       <% if @playlist.image.attached? %>
         <%= image_tag @playlist.image, class: "w-64 h-64 md:w-24 md:h-24 rounded-lg object-cover" %>
       <% end %>
-      <h1 class="text-2xl font-bold dark:text-neutral-300">
-        <%= @playlist.title %>
-      </h1>
+      <div class="flex items-center gap-4">
+        <h1 class="text-2xl font-bold dark:text-neutral-300">
+          <%= @playlist.title %>
+        </h1>
+        <%= ui_dropdown align: :end do |c| %>
+          <% c.with_toggle_open do %>
+            <%= heroicon "ellipsis-horizontal", variant: :outline, size: :sm %>
+          <% end %>
+          <% c.with_toggle_close do %>
+            <%= heroicon "ellipsis-horizontal", variant: :outline, size: :sm %>
+          <% end %>
+          <% if Current.user == @playlist.user %>
+            <% c.with_menu_item_button_to(edit_playlist_path(@playlist)) do %>
+              <%= heroicon "pencil", variant: :outline, size: :sm %>
+              <span>Edit details</span>
+            <% end %>
+          <% end %>
+          <% c.with_menu_item_button_to(add_to_library_playlist_path(@playlist), method: :post) do %>
+            <%= heroicon "plus", variant: :outline, size: :sm %>
+            <span>Add to Library</span>
+          <% end %>
+        <% end %>
+      </div>
       <% if @playlist.user %>
         <p class="text-sm text-center dark:text-neutral-400">
           <%= @playlist.user.username %>
         </p>
       <% end %>
-      <%= button_to 'Add to Library', add_to_library_playlist_path(@playlist), class: "btn btn-primary" %>
       <div class="flex w-full flex-col gap-2">
         <%= render collection: @playlist_items, partial: "playlists/playlist_item" %>
       </div>

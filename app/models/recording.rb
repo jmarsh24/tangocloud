@@ -1,5 +1,8 @@
 class Recording < ApplicationRecord
-  searchkick word_start: [:title, :orchestra_name, :singer_name, :composers, :lyricists, :orchestra_periods, :genre]
+  searchkick word_start: [:title, :orchestra, :orchestra_display_name, :singer_name, :composers, :lyricists, :orchestra_periods, :genre],
+    text_middle: [:combined],
+    filterable: [:orchestra, :singer, :genre, :soloist],
+    callbacks: :async
 
   belongs_to :orchestra, optional: true, counter_cache: true
   belongs_to :composition
@@ -20,6 +23,7 @@ class Recording < ApplicationRecord
   has_many :playlist_items, as: :item, dependent: :destroy
   has_many :tandas, through: :playlist_items
   has_many :waveforms, through: :digital_remasters
+  has_many :albums, through: :digital_remasters
   has_many :tanda_recordings, dependent: :destroy
   has_many :tandas, through: :tanda_recordings
   has_many :external_identifiers, dependent: :destroy
@@ -41,36 +45,45 @@ class Recording < ApplicationRecord
      album: [album_art_attachment: :blob]])
   }
 
-  scope :search_import, -> {
-                          includes(
-                            :composition,
-                            :orchestra,
-                            :singers,
-                            :genre,
-                            :record_label,
-                            :time_period,
-                            composition: [:composers, :lyricists],
-                            orchestra: [:orchestra_periods]
-                          )
-                        }
-
   def liked_by?(user)
     likes.exists?(user:)
   end
 
   private
 
+  scope :search_import, -> {
+    includes(
+      :composition,
+      :orchestra,
+      :genre,
+      :record_label,
+      :time_period,
+      :singers,
+      recording_singers: [:person],
+      composition: [:composers, :lyricists],
+      orchestra: [:orchestra_periods]
+    )
+  }
+
   def search_data
+    singers_names = singers.present? ? singers.map(&:display_name) : "Instrumental"
+    soloist_names = recording_singers.select(&:soloist).map { _1.person.display_name }
+
     {
       title: composition.title,
       composers: composition&.composers&.map(&:name),
       lyricists: composition&.lyricists&.map(&:name),
       orchestra_periods: orchestra&.orchestra_periods&.map(&:name),
+      orchestra: orchestra&.display_name,
       orchestra_name: orchestra&.name,
-      singer_name: singers.present? ? singers.map(&:name) : "Instrumental",
+      orchestra_display_name: orchestra&.display_name,
+      singer: singers_names,
+      soloist: soloist_names,
       genre: genre&.name,
       year: year,
-      popularity_score: popularity_score
+      year_suffix: year ? year.to_s[-2..] : nil,
+      popularity_score: popularity_score,
+      combined: "#{composition.title} #{composition.composers.map(&:name).join(" ")} #{orchestra&.display_name} #{orchestra&.name} #{singers_names} #{genre&.name} #{year} #{year.to_s[-2..]}"
     }
   end
 

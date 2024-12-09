@@ -1,0 +1,15 @@
+  <% content_for :meta_tags do %>
+  <meta property="og:title" content="<%= tanda.title %>">
+  <meta property="og:description" content="Explore this tanda featuring selected recordings.">
+  <% if tanda.image.attached? %>
+    <meta property="og:image" content="<%= url_for(tanda.image) %>">
+  <% end %>
+  <meta property="og:type" content="music.playlist">
+  <meta property="og:url" content="<%= tanda_url(tanda) %>">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<%= tanda.title %>">
+  <meta name="twitter:description" content="Explore this tanda featuring selected recordings.">
+  <% if tanda.image.attached? %>
+    <meta name="twitter:image" content="<%= url_for(tanda.image) %>">
+  <% end %>
+<% end %>

@@ -74,8 +74,9 @@ gem "thruster", require: false
 # External Services
 gem "aws-sdk-s3", require: false
 gem "newrelic_rpm"
-gem "sentry-rails"
 gem "sentry-ruby"
+gem "sentry-rails"
+gem "stackprof"
 
 group :development, :test do
   gem "debug", platforms: %i[mri windows], require: "debug/prelude"
