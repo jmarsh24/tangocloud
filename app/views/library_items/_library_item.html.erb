@@ -3,13 +3,13 @@
   id=<%= dom_id(library_item) %>
   data-sortable-handle
   data-sortable-id="<%= library_item.id %>" 
-  class="flex items-stretch align-stetch bg-neutral-900 text-white rounded-sm overflow-hidden hover:bg-neutral-800 transition group"
+  class="flex items-stretch align-stretch bg-neutral-900 text-white rounded-lg hover:bg-neutral-800 transition group p-2"
 >
   <% cache([library_item.item]) do %>
     <%= link_to library_item.item, class: "flex-1" do %>
       <div class="flex items-center gap-4">
         <% if library_item.item.image&.attached? %>
-          <%= image_tag library_item.item.image, class: "w-10 aspect-square object-cover" %>
+          <%= image_tag library_item.item.image, class: "w-10 aspect-square object-cover rounded-md" %>
         <% end %>
         <div class="flex-1 p-2">
           <h2 class="text-xs font-medium text-white hover:text-orange-400 line-clamp-2">
@@ -19,14 +19,18 @@
       </div>
     <% end %>
   <% end %>
-  <%= form_with url: library_item_path(library_item), method: :delete do %>
-    <button 
-      type="submit" 
-      class="h-full bg-red-600 hover:bg-red-500 text-white text-sm rounded-sm flex items-center justify-center"
-    >
-      <span class="hidden px-2 py-1 group-hover:block">
-        <%= heroicon "trash", size: :xs %>
-      </span>
-    </button>
+  <div class="flex items-center gap-2">
+    <%= ui_dropdown align: :end do |c| %>
+      <% c.with_toggle_open do %>
+        <%= heroicon "ellipsis-vertical", variant: :outline, size: :sm %>
+      <% end %>
+      <% c.with_toggle_close do %>
+        <%= heroicon "ellipsis-vertical", variant: :outline, size: :sm %>
+      <% end %>
+      <% c.with_menu_item_button_to(library_item_path(library_item), method: :delete) do %>
+        <%= heroicon "trash", variant: :outline, size: :sm %>
+        <span>Remove from your library</span>
+      <% end %>
+    <% end %>
   </div>
-<% end %>
+</div>

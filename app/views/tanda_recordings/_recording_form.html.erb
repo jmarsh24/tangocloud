@@ -3,7 +3,7 @@
   <div class="flex flex-1">
     <%= form_with url: load_music_library_recording_path(recording), class: "flex w-full items-center gap-4" do |form| %>
       <button type="submit" class="flex w-full items-center gap-4 bg-transparent border-0 p-0 hover:cursor-pointer">
-        <%= render partial: "recordings/recording", locals: { recording: recording } %>
+        <%= render partial: "recordings/recording", locals: { recording: } %>
       </button>
     <% end %>
   </div>
