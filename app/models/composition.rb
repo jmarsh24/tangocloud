@@ -10,6 +10,7 @@ class Composition < ApplicationRecord
   has_many :lyrics, through: :composition_lyrics
   has_many :composers, -> { where(composition_roles: {role: "composer"}) }, through: :composition_roles, source: :person
   has_many :lyricists, -> { where(composition_roles: {role: "lyricist"}) }, through: :composition_roles, source: :person
+  has_many :digital_remasters, through: :recordings
 
   validates :title, presence: true
 

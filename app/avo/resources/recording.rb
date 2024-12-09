@@ -33,6 +33,7 @@ class Avo::Resources::Recording < Avo::BaseResource
     field :time_period, as: :belongs_to
     field :el_recodo_song, as: :belongs_to
     field :digital_remasters, as: :has_many
+    field :albums, as: :has_many, through: :digital_remasters
     field :audio_variants, as: :has_many, through: :digital_remasters
     field :recording_singers, as: :has_many
     field :singers, as: :has_many, through: :recording_singers

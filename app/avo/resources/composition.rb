@@ -13,5 +13,6 @@ class Avo::Resources::Composition < Avo::BaseResource
     field :composition_lyrics, as: :has_many
     field :lyrics, as: :has_many
     field :composition_roles, as: :has_many
+    field :digital_remasters, as: :has_many
   end
 end
