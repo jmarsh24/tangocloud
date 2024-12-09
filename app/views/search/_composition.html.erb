@@ -24,11 +24,10 @@
         </div>
       <% end %>
       <div class="text-xs text-gray-500 text-nowrap">
-        Recordings: <%= composition.recordings.size %>
+        <%= "#{composition.recordings.size} Recordings" %>
       </div>
       <% if highlights && highlights[:lyrics].present? %>
         <div class="text-sm font-extralight text-neutral-700 dark:text-neutral-300">
-          <h4>Lyrics</h4>
           <p class="italic"><%= highlights[:lyrics].join(" ... ").html_safe %></p>
         </div>
       <% end %>
