@@ -59,7 +59,8 @@ class SearchController < ApplicationController
             query: @query,
             grouped_results: @grouped_results,
             filter_type: @filter_type
-          }
+          },
+          method: :morph
         )
       end
     end
