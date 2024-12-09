@@ -29,7 +29,7 @@
       <% if highlights && highlights[:lyrics].present? %>
         <div class="text-sm font-extralight text-neutral-700 dark:text-neutral-300">
           <h4>Lyrics</h4>
-          <p class="italic"><%= highlights[:lyrics].html_safe %></p>
+          <p class="italic"><%= highlights[:lyrics].join(" ... ").html_safe %></p>
         </div>
       <% end %>
     </div>

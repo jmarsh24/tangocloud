@@ -23,7 +23,7 @@ class SearchController < ApplicationController
         Composition => [:composers, :lyricists, :lyrics, recordings: [:orchestra, :genre, :singers, digital_remasters: [album: [album_art_attachment: :blob]]]]
       },
       highlight: {
-        fields: {lyrics: {fragment_size: 200}},
+        fields: {lyrics: {fragment_size: 48}},
         tag: '<strong class="font-bold text-orange-500">'
       },
       limit: 100,
@@ -36,7 +36,7 @@ class SearchController < ApplicationController
       search_options[:models] = [@filter_type.classify.constantize]
     end
 
-    @results = Searchkick.search(@query, **search_options).with_highlights
+    @results = Searchkick.search(@query, **search_options).with_highlights(multiple: true)
 
     @grouped_results = @results.each_with_object({}) do |(result, highlights), grouped|
       if result.is_a?(Composition)
