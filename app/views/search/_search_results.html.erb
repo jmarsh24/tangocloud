@@ -56,13 +56,19 @@
               </div>
             <% when :compositions %>
               <div class="grid grid-cols-1 gap-3 px-4 py-4">
-                <%= render collection: items.take(filter_type == "all" ? 8 : items.size), partial: "search/composition", as: :composition %>
+                <% items.take(filter_type == "all" ? 8 : items.size).each do |item| %>
+                  <% if item.is_a?(Hash) && item[:model].is_a?(Composition) %>
+                    <%= render partial: "search/composition", locals: {composition: item[:model], highlights: item[:highlights]} %>
+                  <% else %>
+                    <%= render partial: "search/composition", locals: {composition: item} %>
+                  <% end %>
+                <% end %>
               </div>
             <% end %>
             <% if filter_type == "all" && items.length > 8 %>
               <div class="text-center mt-4">
                 <a href="<%= search_path(query: query, filter: type.to_s.singularize) %>" 
-                   class="btn btn-sm btn-neutral">Show More <%= type.to_s.titleize %></a>
+             class="btn btn-sm btn-neutral">Show More <%= type.to_s.titleize %></a>
               </div>
             <% end %>
           </section>

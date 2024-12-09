@@ -1,6 +1,4 @@
 class SearchController < ApplicationController
-  skip_after_action :verify_authorized, only: [:index]
-
   def index
     authorize :search, :index?
 
@@ -12,7 +10,7 @@ class SearchController < ApplicationController
       Recording => 2.0,
       Tanda => 1.2,
       Playlist => 1.0,
-      Composition => 10.0
+      Composition => 1.0
     }
 
     search_options = {
@@ -25,7 +23,8 @@ class SearchController < ApplicationController
         Composition => [:composers, :lyricists, :lyrics, recordings: [:orchestra, :genre, :singers, digital_remasters: [album: [album_art_attachment: :blob]]]]
       },
       highlight: {
-        fields: {lyrics: {}}
+        fields: {lyrics: {fragment_size: 200}},
+        tag: "<strong>"
       },
       limit: 100,
       indices_boost: indices_boost,
@@ -37,8 +36,18 @@ class SearchController < ApplicationController
       search_options[:models] = [@filter_type.classify.constantize]
     end
 
-    @results = Searchkick.search(@query, **search_options)
-    @grouped_results = @results.group_by { |result| result.class.name.downcase.pluralize.to_sym }
+    @results = Searchkick.search(@query, **search_options).with_highlights
+
+    @grouped_results = @results.each_with_object({}) do |(result, highlights), grouped|
+      if result.is_a?(Composition)
+        grouped[:compositions] ||= []
+        grouped[:compositions] << {model: result, highlights: highlights}
+      else
+        key = result.class.name.downcase.pluralize.to_sym
+        grouped[key] ||= []
+        grouped[key] << result
+      end
+    end
 
     respond_to do |format|
       format.html
