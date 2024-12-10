@@ -1,0 +1,19 @@
+<%# locals: { filters:, options:, filter_key:, label:, form: } %>
+<div class="flex flex-col gap-2">
+  <h3 class="text-sm text-neutral-500 dark:text-neutral-400 uppercase tracking-wide pl-2"><%= label %></h3>
+  <div class="overflow-x-auto flex gap-2 no-scrollbar pl-2">
+    <% options.each do |option| %>
+      <% selected = filters[filter_key]&.include?(option["key"]) %>
+      <label class="btn btn-xs btn-outline font-normal whitespace-nowrap rounded-full text-xs md:text-sm cursor-pointer flex items-center gap-1 
+      <%= selected ? "bg-orange-500 text-white border-transparent" : "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-500" %>">
+        <%= form.check_box filter_key, { multiple: true, checked: selected, class: "hidden", data: { action: "change->auto-submit#submit" } }, option["key"], nil %>
+        <%= option["key"] %>
+        <% if selected %>
+          <div class="text-white bg-transparent rounded-full border">
+            <%= heroicon("x-mark", variant: :outline, size: :xxs) %>
+          </div>
+        <% end %>
+      </label>
+    <% end %>
+  </div>
+</div>

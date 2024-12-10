@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_28_231030) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_02_174538) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_catalog.plpgsql"
@@ -560,6 +560,8 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_28_231030) do
     t.string "slug"
     t.integer "recordings_count", default: 0, null: false
     t.integer "duration", default: 0, null: false
+    t.uuid "genre_id"
+    t.index ["genre_id"], name: "index_tandas_on_genre_id"
     t.index ["public"], name: "index_tandas_on_public"
     t.index ["user_id"], name: "index_tandas_on_user_id"
   end
@@ -667,6 +669,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_28_231030) do
   add_foreign_key "taggings", "users"
   add_foreign_key "tanda_recordings", "recordings"
   add_foreign_key "tanda_recordings", "tandas"
+  add_foreign_key "tandas", "genres"
   add_foreign_key "user_libraries", "users"
   add_foreign_key "waveforms", "digital_remasters"
   add_foreign_key "waveforms", "waveform_data"

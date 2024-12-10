@@ -13,13 +13,13 @@ class LibraryItemsController < ApplicationController
       library_items
     end
 
-    library_items = library_items.includes(:item).order(:row_order).all
+    library_items = library_items.includes(item: {image_attachment: :blob}).order(:row_order).all
 
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream:
           turbo_stream.update("library-items",
-            partial: "library_items/index",
+            partial: "library_items/library_items",
             locals: {library_items:,
                      active_filter: params[:type]},
             method: :morph)

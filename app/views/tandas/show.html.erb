@@ -1,30 +1,102 @@
-<% cache(@tanda) do %>
-  <% content_for :meta_tags do %>
-    <meta property="og:title" content="<%= @tanda.title %>">
-    <meta property="og:description" content="Explore this tanda featuring selected recordings.">
-    <% if @tanda.image.attached? %>
-      <meta property="og:image" content="<%= url_for(@tanda.image) %>">
-    <% end %>
-    <meta property="og:type" content="music.playlist">
-    <meta property="og:url" content="<%= tanda_url(@tanda) %>">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="<%= @tanda.title %>">
-    <meta name="twitter:description" content="Explore this tanda featuring selected recordings.">
-    <% if @tanda.image.attached? %>
-      <meta name="twitter:image" content="<%= url_for(@tanda.image) %>">
-    <% end %>
+<%= render "meta_tags", tanda: @tanda %>
+<div class="relative flex flex-col items-center gap-6 p-6 rounded-xl">
+  <%= link_to "javascript:history.back()", class: "absolute left-4 top-6 flex items-center gap-2 p-2 rounded-full bg-neutral-200 dark:bg-neutral-800 text-sm text-neutral-700 dark:text-neutral-400 hover:bg-neutral-300 dark:hover:bg-neutral-700" do %>
+    <%= heroicon "chevron-left", size: :sm, class: "text-neutral-500 dark:text-neutral-400" %>
   <% end %>
-  <div class="relative flex flex-col p-6 gap-8 items-center dark:bg-black">
-    <%= link_to "javascript:history.back()", class: "absolute left-4 top-6 flex items-center gap-2 p-2 rounded-full bg-neutral-200 text-sm text-neutral-700 dark:bg-neutral-800 dark:text-neutral-400 hover:bg-neutral-300 dark:hover:bg-neutral-700" do %>
-      <%= heroicon "chevron-left", size: :sm, class: "text-neutral-500 dark:text-neutral-400" %>
-    <% end %>
+  <h1 id="tanda-title">
+    <%= render "title", title: @tanda.title %>
+  </h1>
+  <div class="flex items-center gap-4">
     <% if @tanda.image.attached? %>
-      <%= image_tag @tanda.image, class: "w-64 h-64 md:w-24 md:h-24 rounded-lg object-cover" %>
+      <%= image_tag @tanda.image, class: "w-24 h-24 object-cover rounded-lg shadow-md border border-neutral-200 dark:border-neutral-700" %>
     <% end %>
-    <h1><%= @tanda.title %></h1>
-    <%= button_to 'Add to Library', add_to_library_tanda_path(@tanda), class: "btn btn-primary" %>
-    <div class="flex flex-col gap-2">
-      <%= render collection: @recordings, partial: "recording_form", locals: { tanda: @tanda }, as: :recording %>
+    <div class="flex flex-col justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <%= ui_dropdown align: :end do |c| %>
+          <% c.with_toggle_open do %>
+            <%= heroicon "ellipsis-horizontal", variant: :outline, size: :sm %>
+          <% end %>
+          <% c.with_toggle_close do %>
+            <%= heroicon "ellipsis-horizontal", variant: :outline, size: :sm %>
+          <% end %>
+          <% if Current.user == @tanda.user %>
+            <% c.with_menu_item_button_to(edit_tanda_path(@tanda)) do %>
+              <%= heroicon "pencil", variant: :outline, size: :sm %>
+              <span>Edit details</span>
+            <% end %>
+          <% end %>
+          <% c.with_menu_item_button_to(add_to_library_tanda_path(@tanda)) do %>
+            <%= heroicon "plus", variant: :outline, size: :sm %>
+            <span>Add to Library</span>
+          <% end %>
+        <% end %>
+      </div>
+      <p class="text-sm text-neutral-500 dark:text-neutral-400">
+        <%= @tanda.public? ? "Public Tanda" : "Private Tanda" %>
+      </p>
+      <% if @tanda.genre.present? %>
+        <p class="text-sm text-neutral-500 dark:text-neutral-400">
+          Genre: <%= @tanda.genre.name %>
+        </p>
+      <% end %>
+      <div class="text-sm text-gray-400 line-clamp-1">
+        <%= formatted_tanda_duration(@tanda) %>
+      </div>
     </div>
   </div>
-<% end %>
+  <div class="container max-w-lg flex flex-col justify-center py-8 gap-8">
+    <div class="flex flex-col gap-6">
+      <h2 class="text-2xl font-semibold text-center">Recordings</h2>
+      <% if policy(@tanda).edit? %>
+        <div 
+          id="tanda-recordings" 
+          data-controller="sortable" 
+          data-sortable-url-value="<%= reorder_tanda_recording_path(id: ":id") %>"
+          class="flex flex-col gap-4"
+          >
+          <%= render "tanda_recordings/tanda_recordings", tanda_recordings: @tanda_recordings, suggested_recordings: @suggested_recordings %>
+        </div>
+      <% else %>
+        <div id="tanda-recordings" 
+            class="flex flex-col gap-4">
+          <% if @tanda_recordings.present? %>
+            <%= render "tanda_recordings/tanda_recordings", tanda_recordings: @tanda_recordings, suggested_recordings: nil %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+    <% if policy(@tanda).edit? %>
+      <div class="flex-1 flex flex-col sm:flex-row gap-4">
+        <div class="w-full flex flex-col md:flex-row gap-8">
+          <div class="w-full flex flex-col gap-4">
+            <h2 class="text-2xl font-semibold">Search Recordings</h2>
+            <%= form_with url: search_tanda_recordings_path, class: "flex flex-col gap-4", data: { controller: "auto-submit" } do |form| %>
+              <%= form.hidden_field :tanda_id, value: @tanda.id %>
+              <div class="flex items-center gap-2 p-2 bg-neutral-200 dark:bg-neutral-800 rounded-lg">
+                <%= heroicon("magnifying-glass", size: :md, class: "text-neutral-600 dark:text-neutral-300" ) %>
+                <%= form.text_field :query,
+                autofocus: true,
+                autocomplete: "off",
+                id: "tanda-recording-search",
+                placeholder: "Search by orchestra, year, or singers...",
+                data: { action: "keydown->auto-submit#submit" },
+                class: "w-full p-2 bg-neutral-200 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-400 outline-none" %>
+              </div>
+            <% end %>
+            <div id="recordings-and-filters">
+              <%= render partial: "tanda_recordings/recordings_and_filters", locals: { 
+                recordings: nil, 
+                orchestras: @orchestras, 
+                singers: @singers, 
+                soloists: @soloists, 
+                years: @years, 
+                filters: @filters, 
+                tanda: @tanda, 
+                suggested_orchestras: @suggested_orchestras } %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -7,8 +7,15 @@
 }
 
 .menu li form.button_to button {
-  display: block;
+  display: inline-flex;
   width: 100%;
   text-align: start;
-  padding: 0.5rem 1rem;
+  align-items: center;
+  padding: 12px 8px 12px 12px;
+}
+
+
+.dropdown-middle {
+  transform: translateX(-50%);
+  left: 50%;
 }

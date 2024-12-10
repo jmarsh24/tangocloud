@@ -1,3 +1,4 @@
+<%# locals: { tanda: } %>
 <% cache(tanda) do %>
   <%= form_with url: load_tanda_recording_path(tanda_id: tanda.id, id: tanda.recordings.first.id) do %>
     <% genre_name = tanda.recordings.first.genre.name.downcase %>
@@ -16,7 +17,7 @@
               background_class
             ) %>">
       <div class="w-full flex flex-col gap-4 z-20">
-        <div class="w-full flex justify-start gap-4">
+        <%= link_to tanda_path(tanda), class: "w-full flex justify-start gap-4" do %>
           <div class="relative w-24 flex items-center justify-center">
             <% if tanda.recordings.first.orchestra.image.attached? %>
               <%= image_tag tanda.recordings.first.orchestra.image, alt: tanda.recordings.first.orchestra.name, class: "rounded-lg object-cover aspect-square h-full" %>
@@ -37,20 +38,19 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="flex w-full flex-col z-20 relative border-b border-neutral-500">
-        <%= render collection: tanda.recordings, partial: "tandas/recording", locals: { tanda: }, as: :recording %>
-      </div>
-      <div class="flex w-full justify-between items-center mt-2">
-        <%= form_with url: load_tanda_recording_path(tanda_id: tanda.id, id: tanda.recordings.first.id), method: :post do %>
-          <button type="submit" class="btn btn-neutral btn-md btn-circle flex items-center justify-center opacity-85">
-            <%= heroicon "play", size: :sm, variant: :solid, class: "fill-white-500" %>
-          </button>
         <% end %>
-        <div class="text-sm text-gray-400 line-clamp-1">
-          <% total_minutes, remaining_seconds = tanda.duration.divmod(60) %>
-          <%= "#{tanda.recordings_count} recordings, #{total_minutes} min #{remaining_seconds} sec" %>
+        <div class="flex w-full flex-col z-20 relative border-b border-neutral-500">
+          <%= render collection: tanda.recordings, partial: "tandas/recording", locals: { tanda: }, as: :recording %>
+        </div>
+        <div class="flex w-full justify-between items-center mt-2">
+          <%= form_with url: load_tanda_recording_path(tanda_id: tanda.id, id: tanda.recordings.first.id), method: :post do %>
+            <button type="submit" class="btn btn-neutral btn-md btn-circle flex items-center justify-center opacity-85">
+              <%= heroicon "play", size: :sm, variant: :solid, class: "fill-white-500" %>
+            </button>
+          <% end %>
+          <div class="text-sm text-gray-400 line-clamp-1">
+            <%= formatted_tanda_duration(tanda) %>
+          </div>
         </div>
       </div>
     </div>

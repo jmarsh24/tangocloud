@@ -1,5 +1,6 @@
 module IconHelper
   SIZE_CLASSES = {
+    xxs: "h-3 w-3",
     xs: "h-4 w-4",
     sm: "h-5 w-5",
     md: "h-6 w-6",

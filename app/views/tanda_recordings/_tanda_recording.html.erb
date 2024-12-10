@@ -1,0 +1,26 @@
+<%# locals: { tanda_recording: } %>
+<div 
+  id="<%= dom_id(tanda_recording) %>"
+  data-sortable-id=<%= tanda_recording.id %>
+  class="w-full flex p-2 gap-2 items-center bg-neutral-900 hover:cursor-pointer rounded-lg hover:bg-neutral-800"
+  data-sortable-handle>
+  <%= form_with url: load_tanda_recording_path(tanda_recording.tanda, id: tanda_recording.recording.id), class: "flex w-full gap-4 items-center" do |form| %>
+    <%= button_tag type: :submit, class: "flex w-full gap-4 items-center text-left" do %>
+      <%= render partial: "recordings/recording", locals: { recording: tanda_recording.recording } %>
+    <% end %>
+  <% end %>
+  <div class="flex items-center gap-2">
+    <%= ui_dropdown align: :end, content_classes: "mt-5 shadow-xl", id: "user_navbar_toggle" do |c| %>
+      <% c.with_toggle_open do %>
+        <%= heroicon "ellipsis-vertical", variant: :outline, size: :sm %>
+      <% end %>
+      <% c.with_toggle_close do %>
+        <%= heroicon "ellipsis-vertical", variant: :outline, size: :sm %>
+      <% end %>
+      <% c.with_menu_item_button_to tanda_recording_path(tanda_recording), method: :delete do %>
+        <%= heroicon "trash", variant: :outline, size: :sm %>
+        <span>Remove from this tanda</span>
+      <% end %>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+<%# locals: { recordings:, orchestras:, soloists:, singers:, years:, filters:, tanda:, suggested_orchestras:} %>
+<div class="flex flex-col gap-4">
+  <div class="bg-neutral-800 rounded-lg py-2">
+    <%= form_with url: search_tanda_recordings_path, class: "flex flex-col gap-4", data: { controller: "auto-submit" } do |form| %>
+      <%= form.hidden_field :tanda_id, value: tanda.id %>
+      <% if orchestras.present? %>
+        <%= render partial: "tanda_recordings/filters", locals: { filters: filters, options: orchestras, filter_key: :orchestra, label: "Orchestras", form:} %>
+      <% end %>
+      <% if filters[:orchestra].present? && singers.present? %>
+        <%= render partial: "tanda_recordings/filters", locals: { filters: filters, options: singers, filter_key: :singer, label: "Singers", form: } %>
+      <% end %>
+      <% if soloists.present? && filters[:orchestra].blank? %>
+        <%= render partial: "tanda_recordings/filters", locals: { filters: filters, options: soloists, filter_key: :soloist, label: "Soloists", form:} %>
+      <% end %>
+      <% if years.present? %>
+        <div class="flex flex-col gap-2">
+          <h3 class="text-sm text-neutral-500 dark:text-neutral-400 uppercase tracking-wide pl-2">Years</h3>
+          <div class="flex flex-wrap gap-2 pl-2">
+            <% years.each do |year| %>
+              <% selected = filters.dig(:year)&.include?(year["key"]) %>
+              <label class="btn btn-xs btn-outline font-normal whitespace-nowrap rounded-full text-xs md:text-sm cursor-pointer flex items-center gap-1 
+              <%= selected ? "bg-orange-500 text-white border-transparent" : "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-500" %>">
+                <%= form.check_box :year, { multiple: true, checked: selected, class: "hidden", data: { action: "change->auto-submit#submit" } }, year["key"], nil %>
+                <%= year["key"] %>
+                <% if selected %>
+                  <div class="text-white bg-transparent rounded-full border">
+                    <%= heroicon("x-mark", variant: :outline, size: :xxs) %>
+                  </div>
+                <% end %>
+              </label>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="flex flex-col gap-2">
+    <% if recordings.present? %>
+      <h2>Results</h2>
+      <div class="flex flex-col gap-4">
+        <ol class="relative flex flex-col gap-6 pl-4 border-s border-neutral-200 dark:border-neutral-700">
+          <% recordings.each do |year, recordings_in_year| %>
+            <li class="flex flex-col gap-6">
+              <div class="absolute w-3 h-3 bg-neutral-200 rounded-full -start-1.5 border border-white dark:border-neutral-900 dark:bg-neutral-700"></div>
+              <time class="text-sm font-normal leading-none text-neutral-400 dark:text-neutral-500">Recordings from <%= year %></time>
+              <div class="flex flex-col gap-2">
+                <%= render partial: "recording_form", collection: recordings_in_year, locals: { tanda: tanda }, as: :recording %>
+              </div>
+            </li>
+          <% end %>
+        </ol>
+      </div>
+    <% else %>
+      <% if suggested_orchestras.present? %>
+        <%= render partial: "tanda_recordings/suggested_orchestras", locals: { suggested_orchestras: suggested_orchestras, tanda: tanda } %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

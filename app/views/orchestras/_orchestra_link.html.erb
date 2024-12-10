@@ -1,0 +1,6 @@
+<%# locals: {orchestra:} %>
+<% cache([:orchestra_link, orchestra]) do %>
+  <%= link_to orchestra, class: "snap-start group hover:opacity-80" do %>
+    <%= render partial: "orchestras/orchestra", locals: { orchestra: } %>
+  <% end %>
+<% end %>

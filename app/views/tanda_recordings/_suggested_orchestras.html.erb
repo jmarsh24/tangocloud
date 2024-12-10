@@ -1,0 +1,18 @@
+<%# locals: { suggested_orchestras:, tanda: } %>
+<section class="flex flex-col gap-4">
+  <h2>Suggestions</h2>
+  <h3 class="text-neutral-500">
+    Unsure about what you want to add? Quickly start creating a tanda by choosing an orchestra below!
+  </h3>
+  <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+    <% suggested_orchestras.each do |orchestra| %>
+      <%= form_with url: search_tanda_recordings_path, class: "max-w-full h-auto" do |form| %>
+        <%= form.hidden_field :tanda_id, value: tanda.id %>
+        <%= form.hidden_field :orchestra, value: orchestra.display_name %>
+        <button type="submit" class="flex items-center justify-center max-w-full h-auto">
+          <%= render orchestra %>
+        </button>
+      <% end %>
+    <% end %>
+  </div>
+</section>
