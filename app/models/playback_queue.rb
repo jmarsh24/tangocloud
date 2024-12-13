@@ -16,8 +16,7 @@ class PlaybackQueue < ApplicationRecord
         playlist_items = shuffle ? item.playlist_items.shuffle : item.playlist_items
         playlist_items.map(&:item)
       when Tanda
-        tanda_items = shuffle ? item.tanda_recordings.shuffle : item.tanda_recordings
-        tanda_items
+        [item]
       when Recording
         [item]
       end

@@ -31,7 +31,7 @@ class QueueManager
     validate_item_type!(item)
 
     ActiveRecord::Base.transaction do
-      if item.is_a?(Recording)
+      if item.is_a?(Recording) || item.is_a?(Tanda)
         set_now_playing(item)
       else
         @playback_queue.load_as_current_item(item, shuffle: shuffle)
