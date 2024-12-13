@@ -14,6 +14,7 @@ class QueuesController < ApplicationController
 
   def play_now
     item = find_item(params[:item_type], params[:item_id])
+
     ActiveRecord::Base.transaction do
       if params[:parent_id].present? && params[:parent_type].present?
         parent = find_item(params[:parent_type], params[:parent_id])
@@ -30,17 +31,21 @@ class QueuesController < ApplicationController
 
   def add_to
     item = find_item(params[:type], params[:id])
+
     queue_manager.load_item(item)
+
     respond_with_updated_queue
   end
 
   def clear
     queue_manager.clear_next_up!
+
     respond_with_updated_queue
   end
 
   def shuffle
     queue_manager.shuffle!
+
     respond_with_updated_queue
   end
 
@@ -70,11 +75,10 @@ class QueuesController < ApplicationController
   def respond_with_updated_queue
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: turbo_stream.update(
-          "queue",
-          partial: "queues/queue",
-          locals: {playback_queue: @playback_queue, playback_session: @playback_session, now_playing: @now_playing}
-        )
+        render turbo_stream: [
+          turbo_stream.update("music-player", partial: "shared/music_player", locals: {now_playing: @now_playing, playback_session: @playback_session}, method: "morph"),
+          turbo_stream.update("queue", partial: "queues/queue", locals: {playback_queue: @playback_queue, playback_session: @playback_session, now_playing: @now_playing})
+        ]
       end
     end
   end

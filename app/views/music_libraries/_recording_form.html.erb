@@ -1,7 +1,7 @@
 <%# locals: (recording:) %>
 <% cache([:music_library, recording]) do %>
   <div class="flex gap-2 p-2 items-center hover:cursor-pointer rounded-lg overflow-hidden bg-neutral-950 hover:bg-neutral-800 snap-start">
-    <%= form_with url: add_to_queues_path(item_type: "recording", item_id: recording.id), class: "flex flex-1 w-full h-full gap-4 items-stretch" do |form| %>
+    <%= form_with url: play_now_queues_path(item_type: "recording", item_id: recording.id), class: "flex flex-1 w-full h-full gap-4 items-stretch" do |form| %>
       <%= button_tag type: :submit, class: "flex flex-1 w-full h-full gap-4 items-center text-left" do %>
         <%= render "recordings/recording", recording: %>
       <% end %>
