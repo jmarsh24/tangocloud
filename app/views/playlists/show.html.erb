@@ -49,6 +49,10 @@
             <span>Edit details</span>
           <% end %>
         <% end %>
+        <% c.with_menu_item_button_to(add_to_queues_path(item_type: "playlist", item_id: @playlist.id)) do %>
+          <%= heroicon "plus", variant: :outline, size: :sm %>
+          <span>Add to queue</span>
+        <% end %>
         <% c.with_menu_item_button_to(add_to_library_playlist_path(@playlist), method: :post) do %>
           <%= heroicon "plus", variant: :outline, size: :sm %>
           <span>Add to Library</span>

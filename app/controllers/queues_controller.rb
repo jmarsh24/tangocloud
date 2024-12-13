@@ -35,9 +35,11 @@ class QueuesController < ApplicationController
     ActiveRecord::Base.transaction do
       if item.is_a?(Recording)
         queue_manager.add_to_queue([item])
-      else
-        items_to_add = fetch_items_from_parent(item, shuffle: params[:shuffle] == "true")
+      elsif item.is_a?(Playlist)
+        items_to_add = item.playlist_items.map(&:item)
         queue_manager.add_to_queue(items_to_add)
+      elsif item.is_a?(Tanda)
+        queue_manager.add_to_queue([item])
       end
     end
 

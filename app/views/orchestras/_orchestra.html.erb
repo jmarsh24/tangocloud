@@ -1,14 +1,15 @@
-<%# locals: {orchestra: } %>
+<%# locals: { orchestra: } %>
 <% cache(orchestra) do %>
-  <div class="relative w-32 h-32 rounded-lg overflow-hidden snap-start">
-    <% if orchestra.image.attached? %>
-      <%= image_tag orchestra.image, class: "absolute inset-0 max-w-full h-auto aspect-square object-cover" %>
-    <% else %>
-      <div class="absolute inset-0 max-w-full h-auto bg-neutral-200 dark:bg-neutral-800"></div>
-    <% end %>
-    <div class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black to-transparent pointer-events-none"></div>
-    <div class="absolute bottom-0 left-0 right-0 px-2 py-1">
-      <h2 class="relative text-xs font-semibold text-white truncate">
+  <div class="flex flex-col items-center w-32">
+    <div class="block w-full h-32 rounded-lg overflow-hidden">
+      <% if orchestra.image.attached? %>
+        <%= image_tag orchestra.image, class: "w-full h-full object-cover" %>
+      <% else %>
+        <div class="w-full h-full bg-neutral-200 dark:bg-neutral-800"></div>
+      <% end %>
+    </div>
+    <div class="mt-2 text-center">
+      <h2 class="text-sm font-semibold text-neutral-800 dark:text-neutral-100 break-words">
         <%= orchestra.display_name %>
       </h2>
     </div>

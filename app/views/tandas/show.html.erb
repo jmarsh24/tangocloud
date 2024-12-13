@@ -20,10 +20,14 @@
             <%= heroicon "ellipsis-horizontal", variant: :outline, size: :sm %>
           <% end %>
           <% if Current.user == @tanda.user %>
-            <% c.with_menu_item_button_to(edit_tanda_path(@tanda)) do %>
+            <% c.with_menu_item_link_to(edit_tanda_path(@tanda), data: {turbo_frame: "modal"}) do %>
               <%= heroicon "pencil", variant: :outline, size: :sm %>
               <span>Edit details</span>
             <% end %>
+          <% end %>
+          <% c.with_menu_item_button_to(add_to_queues_path(item_type: "tanda", item_id: @tanda.id)) do %>
+            <%= heroicon "plus", variant: :outline, size: :sm %>
+            <span>Add to queue</span>
           <% end %>
           <% c.with_menu_item_button_to(add_to_library_tanda_path(@tanda)) do %>
             <%= heroicon "plus", variant: :outline, size: :sm %>

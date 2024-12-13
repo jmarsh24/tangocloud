@@ -100,7 +100,7 @@ Rails.application.routes.draw do
 
   resources :compositions, only: [:show]
 
-  resources :tandas, only: [:new, :create, :show, :edit, :update, :index] do
+  resources :tandas do
     member do
       post "add_to_library", to: "user_libraries#add_tanda"
     end

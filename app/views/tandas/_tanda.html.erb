@@ -1,15 +1,14 @@
 <%# locals: { tanda: } %>
 <% cache(tanda) do %>
-  <% genre_name = tanda.recordings.first.genre.name.downcase %>
+  <% recordings = tanda.recordings.to_a %>
+  <% first_recording = recordings.first %>
+  <% genre_name = first_recording&.genre&.name&.downcase %>
   <% background_class =
-      if genre_name == "tango"
-        "bg-tango"
-      elsif genre_name == "milonga"
-        "bg-milonga"
-      elsif genre_name == "vals"
-        "bg-vals"
-      else
-        "bg-default"
+      case genre_name
+      when "tango" then "bg-tango"
+      when "milonga" then "bg-milonga"
+      when "vals" then "bg-vals"
+      else "bg-default"
       end %>
   <div class="<%= class_names(
       'w-full group snap-start flex flex-col rounded-xl text-neutral-200 transition-transform duration-200 p-4 gap-4 relative',
@@ -18,29 +17,38 @@
     <div class="w-full flex flex-col gap-4">
       <%= link_to tanda_path(tanda), class: "w-full flex justify-start gap-4" do %>
         <div class="relative w-24 flex items-center justify-center">
-          <% if tanda.recordings.first.orchestra.image.attached? %>
-            <%= image_tag tanda.recordings.first.orchestra.image, alt: tanda.recordings.first.orchestra.name, class: "rounded-lg object-cover aspect-square h-full" %>
+          <% if first_recording&.orchestra&.image&.attached? %>
+            <%= image_tag first_recording.orchestra.image, alt: first_recording.orchestra.name, class: "rounded-lg object-cover aspect-square h-full" %>
+          <% else %>
+            <div class="rounded-lg object-cover aspect-square h-full bg-gray-200 flex items-center justify-center text-gray-500">
+              No Image
+            </div>
           <% end %>
         </div>
         <div class="flex flex-col gap-4">
           <div class="flex items-start flex-col gap-1">
             <div class="text-xl font-bold line-clamp-1" title="<%= tanda.title %>">
-              <%= tanda.recordings.first.orchestra.display_name %>
+              <%= first_recording&.orchestra&.display_name || tanda.title || "Unknown Title" %>
             </div>
-            <div class="text-sm text-gray-400 line-clamp-1" title="<%= tanda.recordings.first.genre.name %>">
-              <%= tanda.recordings.first.genre.name %>
+            <div class="text-sm text-gray-400 line-clamp-1" title="<%= genre_name %>">
+              <%= genre_name&.capitalize || "Unknown Genre" %>
             </div>
             <div class="text-sm text-gray-400 line-clamp-1">
-              <% recordings = tanda.recordings.to_a %>
-              <% year_range = "#{recordings.map(&:year).min} - #{recordings.map(&:year).max}" %>
-              <%= year_range %>
+              <% if recordings.present? %>
+                <% year_range = "#{recordings.map(&:year).compact.min} - #{recordings.map(&:year).compact.max}" %>
+                <%= year_range %>
+              <% else %>
+                No recordings available
+              <% end %>
             </div>
           </div>
         </div>
       <% end %>
-      <div class="flex w-full flex-col z-20 relative border-b border-neutral-500">
-        <%= render collection: tanda.recordings, partial: "tandas/recording", locals: { tanda: }, as: :recording %>
-      </div>
+      <% if recordings.present? %>
+        <div class="flex w-full flex-col z-20 relative border-b border-neutral-500">
+          <%= render collection: recordings, partial: "tandas/recording", locals: { tanda: }, as: :recording %>
+        </div>
+      <% end %>
       <div class="flex w-full justify-between items-center mt-2">
         <%= form_with url: add_to_queues_path(type: "tanda", id: tanda.id), method: :post do %>
           <button type="submit" class="btn btn-neutral btn-md btn-circle flex items-center justify-center opacity-85">
@@ -48,7 +56,7 @@
           </button>
         <% end %>
         <div class="text-sm text-gray-400 line-clamp-1">
-          <%= formatted_tanda_duration(tanda) %>
+          <%= formatted_tanda_duration(tanda) if recordings.present? %>
         </div>
         <div class="flex w-full justify-end mt-4">
           <%= ui_dropdown align: :end do |c| %>
@@ -58,7 +66,7 @@
             <% c.with_toggle_close do %>
               <%= heroicon "ellipsis-horizontal", variant: :outline, size: :sm, class: "cursor-pointer" %>
             <% end %>
-            <% c.with_menu_item_button_to(add_to_queues_path(type: "tanda", id: tanda.id)) do %>
+            <% c.with_menu_item_button_to(add_to_queues_path(item_type: "tanda", item_id: tanda.id)) do %>
               <%= heroicon "plus", variant: :outline, size: :sm %>
               <span>Add to Queue</span>
             <% end %>
