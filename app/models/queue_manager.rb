@@ -9,7 +9,7 @@ class QueueManager
     validate_item_type!(recording)
 
     ActiveRecord::Base.transaction do
-      @playback_queue.clear_items!
+      @playback_queue.clear_next_up!
 
       @playback_queue.update!(current_item: parent)
 
@@ -23,7 +23,7 @@ class QueueManager
 
       set_now_playing(now_playing_item)
 
-      @playback_queue.add_items(queue_items, source: :next_up)
+      @playback_queue.add_items(queue_items, source: :auto_queue)
     end
   end
 

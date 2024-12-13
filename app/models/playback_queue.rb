@@ -60,11 +60,11 @@ class PlaybackQueue < ApplicationRecord
   end
 
   def clear_next_up!
-    queue_items.next_up.destroy_all
+    queue_items.next_up.delete_all
   end
 
   def clear_items!
-    queue_items.destroy_all
+    queue_items.delete_all
   end
 
   def shuffle!
