@@ -1,6 +1,6 @@
 <%# locals: (now_playing: nil, playback_session: nil) %>
 <% if now_playing && playback_session %>
-  <% recording = now_playing.item_type? == "Tanda" ? now_playing.item.tanda_recordings.find_by(position: now_playing.position).recording : now_playing.item %>
+  <% recording = now_playing.item_type == "Tanda" ? now_playing.item.tanda_recordings.find_by(position: now_playing.position).recording : now_playing.item %>
   <% if recording %>
     <div
       id="music-player"

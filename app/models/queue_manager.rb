@@ -31,10 +31,13 @@ class QueueManager
     validate_item_type!(item)
 
     ActiveRecord::Base.transaction do
-      @playback_queue.load_as_current_item(item, shuffle: shuffle)
-
-      first_queue_item = @playback_queue.queue_items.order(:row_order).first
-      set_now_playing(first_queue_item&.item)
+      if item.is_a?(Recording)
+        set_now_playing(item)
+      else
+        @playback_queue.load_as_current_item(item, shuffle: shuffle)
+        first_queue_item = @playback_queue.queue_items.order(:row_order).first
+        set_now_playing(first_queue_item&.item)
+      end
     end
   end
 
@@ -63,7 +66,7 @@ class QueueManager
   private
 
   def set_now_playing(item)
-    @now_playing.update!(item:, position: 0)
+    @now_playing.update!(item:, position: 0, item_type: item.class.name)
   end
 
   def validate_item_type!(item)
