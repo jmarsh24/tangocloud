@@ -55,6 +55,10 @@ class QueueManager
     end
   end
 
+  def add_to_queue(items)
+    @playback_queue.add_items(items, source: :next_up)
+  end
+
   def shuffle!
     @playback_queue.shuffle!
   end

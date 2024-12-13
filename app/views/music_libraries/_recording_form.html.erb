@@ -1,9 +1,49 @@
 <%# locals: (recording:) %>
 <% cache([:music_library, recording]) do %>
-  <div class="flex gap-2 p-2 items-center hover:cursor-pointer rounded-lg overflow-hidden bg-neutral-950 hover:bg-neutral-800 snap-start">
-    <%= form_with url: play_now_queues_path(item_type: "recording", item_id: recording.id), class: "flex flex-1 w-full h-full gap-4 items-stretch" do |form| %>
-      <%= button_tag type: :submit, class: "flex flex-1 w-full h-full gap-4 items-center text-left" do %>
-        <%= render "recordings/recording", recording: %>
+  <div class="flex flex-auto gap-2 items-center relative">
+    <%= image_tag recording.digital_remasters.first.album.album_art, class: "h-16 rounded-full aspect-square object-cover" %>
+    <div class="flex flex-auto flex-col items-start text-left overflow-hidden">
+      <div class="text-sm font-semibold text-nowrap" title="<%= recording.composition.title %>">
+        <%= recording.composition.title %>
+      </div>
+      <div class="text-xs text-gray-500 text-nowrap" title="<%= recording.orchestra.name %>">
+        <%= recording.orchestra.name %>
+      </div>
+      <div class="text-xs text-gray-500 text-nowrap" title="<% if recording.singers.present? %> - <%= recording.singers.map(&:name).join(', ') %><% end %>">
+        <% if recording.singers.present? %>
+          <%= recording.singers.map(&:name).join(", ") %>
+        <% else %>
+          Instrumental
+        <% end %>
+      </div>
+      <div class="text-xs text-gray-500 text-nowrap" title="<%= recording.genre.name %> - <%= recording.year %>">
+        <%= recording.genre.name[0]&.upcase %> - <%= recording.year %>
+      </div>
+    </div>
+    <div class="absolute bottom-0 right-0 flex justify-end">
+      <% popularity_level = (recording.popularity_score / 16.67).ceil %>
+      <svg width="30" height="10" aria-label="Popularity" class="text-neutral-500">
+        <% 6.times do |i| %>
+          <rect 
+          x="<%= i * 5 %>" 
+          y="0" 
+          width="2" 
+          height="7" 
+          class="<%= i < popularity_level ? 'fill-current text-neutral-400' : 'fill-current text-neutral-600' %>">
+          </rect>
+        <% end %>
+      </svg>
+    </div>
+    <%= ui_dropdown align: :end do |c| %>
+      <% c.with_toggle_open do %>
+        <%= heroicon "ellipsis-horizontal", variant: :outline, size: :sm, class: "cursor-pointer" %>
+      <% end %>
+      <% c.with_toggle_close do %>
+        <%= heroicon "ellipsis-horizontal", variant: :outline, size: :sm, class: "cursor-pointer" %>
+      <% end %>
+      <% c.with_menu_item_button_to(add_to_queues_path(item_type: "recording", item_id: recording.id)) do %>
+        <%= heroicon "plus", variant: :outline, size: :sm %>
+        <span>Add to queue</span>
       <% end %>
     <% end %>
   </div>

@@ -30,9 +30,16 @@ class QueuesController < ApplicationController
   end
 
   def add_to
-    item = find_item(params[:type], params[:id])
+    item = find_item(params[:item_type], params[:item_id])
 
-    queue_manager.load_item(item)
+    ActiveRecord::Base.transaction do
+      if item.is_a?(Recording)
+        queue_manager.add_to_queue([item])
+      else
+        items_to_add = fetch_items_from_parent(item, shuffle: params[:shuffle] == "true")
+        queue_manager.add_to_queue(items_to_add)
+      end
+    end
 
     respond_with_updated_queue
   end
