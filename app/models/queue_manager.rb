@@ -9,7 +9,7 @@ class QueueManager
     validate_item_type!(recording)
 
     ActiveRecord::Base.transaction do
-      @playback_queue.clear_next_up!
+      @playback_queue.clear_items!
 
       @playback_queue.update!(current_item: parent)
 
