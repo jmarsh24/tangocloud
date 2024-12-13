@@ -23,13 +23,13 @@
         </div>
         <div class="flex flex-col gap-4">
           <div class="flex items-start flex-col gap-1">
-            <div class="text-xl font-bold line-clamp-1" title="<%= tanda.title %>">
+            <div class="text-sm font-bold line-clamp-1" title="<%= tanda.title %>">
               <%= first_recording&.orchestra&.display_name || "Unknown Orchestra" %>
             </div>
-            <div class="text-sm text-gray-400 line-clamp-1" title="<%= genre_name %>">
+            <div class="text-xs text-gray-400 line-clamp-1" title="<%= genre_name %>">
               <%= genre_name&.capitalize || "Unknown Genre" %>
             </div>
-            <div class="text-sm text-gray-400 line-clamp-1">
+            <div class="text-xs text-gray-400 line-clamp-1">
               <% if recordings.present? %>
                 <% year_range = "#{recordings.map(&:year).compact.min} - #{recordings.map(&:year).compact.max}" %>
                 <%= year_range %>
@@ -46,32 +46,30 @@
         </div>
       <% end %>
       <div class="flex w-full justify-between items-center mt-2">
-        <div class="text-sm text-gray-400 line-clamp-1">
+        <div class="text-xs text-gray-400 line-clamp-1">
           <%= formatted_tanda_duration(tanda) if recordings.present? %>
         </div>
-        <div class="flex w-full justify-end mt-4">
-          <%= ui_dropdown align: :end do |c| %>
-            <% c.with_toggle_open do %>
-              <%= heroicon "ellipsis-horizontal", variant: :outline, size: :sm, class: "cursor-pointer" %>
-            <% end %>
-            <% c.with_toggle_close do %>
-              <%= heroicon "ellipsis-horizontal", variant: :outline, size: :sm, class: "cursor-pointer" %>
-            <% end %>
-            <% c.with_menu_item_button_to(add_to_queues_path(type: "tanda", id: tanda.id)) do %>
-              <%= heroicon "plus", variant: :outline, size: :sm %>
-              <span>Add to Queue</span>
-            <% end %>
-            <% c.with_menu_item_link_to(tanda_path(tanda)) do %>
-              <span>Show Tanda</span>
-            <% end %>
-            <% if queue_item %>
-              <% c.with_menu_item_button_to(queue_item_path(queue_item), method: :delete) do %>
-                <%= heroicon "trash", variant: :outline, size: :sm %>
-                <span>Remove from queue</span>
-              <% end %>
+        <%= ui_dropdown align: :end do |c| %>
+          <% c.with_toggle_open do %>
+            <%= heroicon "ellipsis-horizontal", variant: :outline, size: :sm, class: "cursor-pointer" %>
+          <% end %>
+          <% c.with_toggle_close do %>
+            <%= heroicon "ellipsis-horizontal", variant: :outline, size: :sm, class: "cursor-pointer" %>
+          <% end %>
+          <% c.with_menu_item_button_to(add_to_queues_path(type: "tanda", id: tanda.id)) do %>
+            <%= heroicon "plus", variant: :outline, size: :sm %>
+            <span>Add to Queue</span>
+          <% end %>
+          <% c.with_menu_item_link_to(tanda_path(tanda)) do %>
+            <span>Show Tanda</span>
+          <% end %>
+          <% if queue_item %>
+            <% c.with_menu_item_button_to(queue_item_path(queue_item), method: :delete) do %>
+              <%= heroicon "trash", variant: :outline, size: :sm %>
+              <span>Remove from queue</span>
             <% end %>
           <% end %>
-        </div>
+        <% end %>
       </div>
     </div>
   </div>
