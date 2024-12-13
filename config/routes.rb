@@ -54,18 +54,23 @@ Rails.application.routes.draw do
     post :update_volume, on: :member
     post :mute, on: :member
     post :unmute, on: :member
+    post :previous_tanda, on: :member
+    post :skip_tanda, on: :member
   end
 
-  resource :queue, only: [:show] do
+  resources :queues, only: [:show] do
     collection do
-      post :add
-      post :select
-      delete :remove
+      post :play_next
+      post :play_now
+      post :add_to
+      post :clear
     end
   end
 
-  resources :queue_items, only: [] do
-    patch :reorder, on: :member
+  resources :queue_items, only: [:destroy] do
+    member do
+      patch :reorder
+    end
   end
 
   resources :library_items, only: [:destroy] do
@@ -75,16 +80,11 @@ Rails.application.routes.draw do
     end
   end
 
-  concern :queueable do
-    post "queue/add", to: "queues#add", as: :add_to_queue
-    post "queue/select", to: "queues#select", as: :select_recording
-    delete "queue/remove", to: "queues#remove", as: :remove_from_queue
-  end
-
-  resources :playlists do
+  resources :playlists, only: [:index, :show] do
     member do
       post "add_to_library", to: "user_libraries#add_playlist"
     end
+    resources :tandas, only: [:index, :show]
   end
 
   resources :tanda_recordings, only: [:create, :destroy] do
@@ -94,38 +94,15 @@ Rails.application.routes.draw do
     patch :reorder, on: :member
   end
 
-  resources :tandas, only: [:new, :create, :show, :edit, :update] do
-    member do
-      post "add_to_library", to: "user_libraries#add_tanda"
-    end
-  end
-
   resources :recordings, only: [:show, :index] do
     resource :like, only: [:create, :destroy], module: :recordings
   end
 
   resources :compositions, only: [:show]
 
-  resources :playlists, only: [:index, :show] do
-    resources :recordings, only: [] do
-      member do
-        post "load", to: "playlists/recordings#load"
-      end
-    end
-    resources :tandas, only: [:index, :show] do
-      resources :recordings, only: [] do
-        member do
-          post "load", to: "tandas/recordings#load"
-        end
-      end
-    end
-  end
-
-  resources :tandas, only: [:index, :show] do
-    resources :recordings, only: [] do
-      member do
-        post "load", to: "tandas/recordings#load"
-      end
+  resources :tandas, only: [:new, :create, :show, :edit, :update, :index] do
+    member do
+      post "add_to_library", to: "user_libraries#add_tanda"
     end
     resources :tags, only: [:create, :destroy], module: :tandas do
       collection do
@@ -134,21 +111,9 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :orchestras, only: [:index, :show] do
-    resources :recordings, only: [] do
-      member do
-        post "load", to: "orchestras/recordings#load"
-      end
-    end
-  end
+  resources :orchestras, only: [:index, :show]
 
-  resource :music_library, only: [:show] do
-    resources :recordings, only: [] do
-      member do
-        post "load", to: "music_libraries/recordings#load"
-      end
-    end
-  end
+  resource :music_library, only: [:show]
 
   get "search", to: "search#index"
   post "search/recording/load", to: "searches/recordings#load", as: :load_search_recording

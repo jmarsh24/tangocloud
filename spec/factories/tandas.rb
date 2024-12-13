@@ -57,4 +57,5 @@ end
 #  slug             :string
 #  recordings_count :integer          default(0), not null
 #  duration         :integer          default(0), not null
+#  genre_id         :uuid
 #

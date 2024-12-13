@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   after_action :verify_authorized
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  before_action :set_playback_session_and_queue
+  before_action :set_playback_context
   before_action :set_user_library
 
   private
@@ -16,15 +16,12 @@ class ApplicationController < ActionController::Base
     redirect_back(fallback_location: sign_in_path)
   end
 
-  def set_playback_session_and_queue
+  def set_playback_context
     if current_user
       @playback_session = PlaybackSession.find_or_create_by(user: current_user)
       @playback_queue = policy_scope(PlaybackQueue).find_or_create_by(user: current_user)
-      @playback_queue.ensure_default_items
-      @queue_items = @playback_queue.queue_items
-        .including_item_associations
-        .rank(:row_order)
-        .offset(1)
+      @now_playing = NowPlaying.find_or_create_by(user: current_user)
+      @current_item = @playback_queue.current_item
     end
   end
 

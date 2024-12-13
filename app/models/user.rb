@@ -16,6 +16,7 @@ class User < ApplicationRecord
   has_many :shared_orchestras, through: :shares, source: :shareable, source_type: "Orchestra"
   has_many :shared_tandas, through: :shares, source: :shareable, source_type: "Tanda"
   has_many :playbacks, dependent: :destroy
+  has_one :now_playing
 
   has_one :user_library, dependent: :destroy
   has_one :playback_queue, dependent: :destroy

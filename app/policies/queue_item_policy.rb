@@ -1,4 +1,8 @@
 class QueueItemPolicy < ApplicationPolicy
+  def destroy?
+    user == record.playback_queue.user
+  end
+
   def reorder?
     user == record.playback_queue.user
   end

@@ -12,6 +12,5 @@ tester_la_cumparsita:
 #  item_type         :string           not null
 #  item_id           :uuid             not null
 #  row_order         :integer
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
+#  source            :enum             default("next_up")
 #

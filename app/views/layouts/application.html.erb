@@ -20,15 +20,13 @@
         <main id="main-content" class="h-full overflow-y-auto no-scrollbar pt-2 pb-16">
           <%= yield %>
         </main>
-        <aside id="sidebar-queue" 
+        <aside id="queue" 
                class="hidden xl:block col-span-1 h-full overflow-y-auto no-scrollbar w-80 pr-4 py-2" 
                data-turbo-permanent>
-          <%= render partial: "queues/queue", 
-                     locals: { 
-                       playback_queue: @playback_queue, 
-                       queue_items: @queue_items, 
-                       playback_session: @playback_session 
-                     } %>
+          <%= render partial: "queues/queue", locals: { 
+            playback_queue: @playback_queue, 
+            playback_session: @playback_session,
+            now_playing: @now_playing } %>
         </aside>
       </div>
     </div>
@@ -36,8 +34,8 @@
       <div id="music-player" data-turbo-permanent>
         <%= render partial: "shared/music_player", 
                    locals: { 
+                     now_playing: @now_playing,
                      playback_session: @playback_session, 
-                     playback_queue: @playback_queue 
                    } %>
       </div>
       <%= render "shared/tab_navigation" %>

@@ -1,10 +1,50 @@
-<%# locals: (recording:) %>
-<% cache([:queue, :recording_form, recording]) do %>
-  <div class="w-full flex gap-2 p-2 items-center hover:cursor-pointer rounded-lg overflow-hidden bg-neutral-950 hover:bg-neutral-800">
-    <%= form_with url: load_queue_recording_path(id: recording.id), class: "flex w-full gap-4 items-center" do |form| %>
-      <%= button_tag type: :submit, class: "flex w-full gap-4 items-center text-left" do %>
-        <%= render "queues/recording", recording: %>
+<%# locals: (queue_item:) %>
+<% cache([:queue, :recording_form, queue_item]) do %>
+  <div class="w-full flex gap-2 p-2 items-center hover:cursor-pointer rounded-lg bg-neutral-950 hover:bg-neutral-800" data-sortable-handle>
+    <div class="flex w-full gap-4 items-center">
+      <%= form_with url: load_queue_recording_path(id: queue_item.item.id), class: "flex w-full gap-4 items-center" do |form| %>
+        <%= button_tag type: :submit, class: "flex w-full gap-4 items-center text-left" do %>
+          <% cache([queue_item]) do %>
+            <% recording = queue_item.item %>
+            <div class="flex flex-auto gap-2 items-center relative">
+              <%= image_tag recording.digital_remasters.first.album.album_art, class: "h-16 rounded-full aspect-square object-cover" %>
+              <div class="flex flex-auto flex-col items-start text-left">
+                <div class="text-sm font-semibold text-nowrap" title="<%= recording.composition.title %>">
+                  <%= recording.composition.title %>
+                </div>
+                <div class="text-xs text-gray-500 text-nowrap" title="<%= recording.orchestra.name %>">
+                  <%= recording.orchestra.name %>
+                </div>
+                <% singers_title = recording.singers.present? ? recording.singers.map(&:name).join(", ") : "Instrumental" %>
+                <div class="text-xs text-gray-500 text-nowrap" title="<%= singers_title %>">
+                  <% if recording.singers.present? %>
+                    <%= recording.singers.map(&:name).join(", ") %>
+                  <% else %>
+                    Instrumental
+                  <% end %>
+                </div>
+                <div class="text-xs text-gray-500 text-nowrap" title="<%= recording.genre.name %> - <%= recording.year %>">
+                  <%= recording.genre.name[0]&.upcase %> - <%= recording.year %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
       <% end %>
-    <% end %>
+    </div>
+    <div class="flex w-full justify-end mt-4">
+      <%= ui_dropdown align: :end do |c| %>
+        <% c.with_toggle_open do %>
+          <%= heroicon "ellipsis-horizontal", variant: :outline, size: :sm, class: "cursor-pointer" %>
+        <% end %>
+        <% c.with_toggle_close do %>
+          <%= heroicon "ellipsis-horizontal", variant: :outline, size: :sm, class: "cursor-pointer" %>
+        <% end %>
+        <% c.with_menu_item_button_to(queue_item_path(queue_item), method: :delete) do %>
+          <%= heroicon "trash", variant: :outline, size: :sm %>
+          <span>Remove from queue</span>
+        <% end %>
+      <% end %>
+    </div>
   </div>
 <% end %>

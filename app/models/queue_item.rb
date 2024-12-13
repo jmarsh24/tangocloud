@@ -1,15 +1,17 @@
 class QueueItem < ApplicationRecord
   include RankedModel
 
-  belongs_to :playback_queue
+  belongs_to :playback_queue, touch: true
   belongs_to :item, polymorphic: true
+
+  enum :source, {next_up: "next_up", auto_queue: "auto_queue"}
+
+  validates :item_type, inclusion: {in: %w[Playlist Tanda Recording]}
 
   ranks :row_order, with_same: :playback_queue_id
 
-  validates :playback_queue, presence: true
-  validates :item, presence: true
-  validates :item_type, presence: true
-
+  scope :next_up, -> { where(source: :next_up) }
+  scope :auto_queue, -> { where(source: :auto_queue) }
   scope :including_item_associations, -> {
     includes(
       item: [
@@ -36,6 +38,5 @@ end
 #  item_type         :string           not null
 #  item_id           :uuid             not null
 #  row_order         :integer
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
+#  source            :enum             default("next_up")
 #

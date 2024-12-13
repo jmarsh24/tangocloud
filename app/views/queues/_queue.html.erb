@@ -1,34 +1,48 @@
-<%# locals: (playback_queue:, queue_items:, playback_session:) %>
-<% cache([playback_queue, queue_items, playback_session]) do %>
+<%# locals: (now_playing:, playback_queue:, playback_session:) %>
+<% cache([now_playing, playback_queue, playback_session]) do %>
   <div 
     data-controller="mini-player" 
     data-mini-player-music-player-outlet="#music-player"
     data-mini-player-playing-value="<%= playback_session.playing %>"
     class="mini-player flex flex-col gap-4 dark:bg-black pt-16 sm:pt-0 group"
   >
-    <% if playback_queue.current_item %>
-      <%= link_to player_path(recording_id: playback_queue.current_item.item.id), data: { turbo_frame: "modal" }, class: "absolute left-4 top-4 flex items-center gap-2 p-2 rounded-full bg-neutral-200 text-sm text-neutral-700 dark:bg-neutral-800 dark:text-neutral-400 hover:bg-neutral-300 dark:hover:bg-neutral-700" do %>
+    <% if now_playing.item %>
+      <%= link_to player_path(recording_id: now_playing.item.is_a?(Recording) ? now_playing.item.id : nil), 
+                  data: { turbo_frame: "modal" }, 
+                  class: "absolute left-4 top-4 flex items-center gap-2 p-2 rounded-full bg-neutral-200 text-sm text-neutral-700 dark:bg-neutral-800 dark:text-neutral-400 hover:bg-neutral-300 dark:hover:bg-neutral-700" do %>
         <%= heroicon "chevron-left", size: :sm, class: "text-neutral-500 dark:text-neutral-400" %>
       <% end %>
       <h1 class="text-2xl font-bold dark:text-neutral-300">Now Playing</h1>
       <div id="now-playing" class="flex gap-4">
-        <%= image_tag playback_queue.current_item.item.digital_remasters.first.album.album_art, class: "w-16 h-16 md:w-20 md:h-20 rounded-md object-cover" %>
-        <div class="flex flex-col items-start justify-center text-left">
-          <div class="flex gap-2 text-sm font-semibold text-orange-500">
-            <%= inline_svg_tag("icons/svg_loaders/animated-audio.svg", class: class_names("hidden w-4 h-4 fill-orange-500 group-data-[mini-player-playing-value=true]:block")) %>
-            <%= inline_svg_tag("icons/svg_loaders/paused-audio.svg", class: class_names("hidden w-4 h-4 fill-orange-500 group-data-[mini-player-playing-value=false]:block")) %>
-            <%= playback_queue.current_item.item.composition.title %>
+        <% if now_playing.item.is_a?(Recording) %>
+          <%= image_tag now_playing.item.digital_remasters.first.album.album_art, class: "w-16 h-16 md:w-20 md:h-20 rounded-md object-cover" %>
+          <div class="flex flex-col items-start justify-center text-left">
+            <div class="flex gap-2 text-sm font-semibold text-orange-500">
+              <%= inline_svg_tag("icons/svg_loaders/animated-audio.svg", class: class_names("hidden w-4 h-4 fill-orange-500 group-data-[mini-player-playing-value=true]:block")) %>
+              <%= inline_svg_tag("icons/svg_loaders/paused-audio.svg", class: class_names("hidden w-4 h-4 fill-orange-500 group-data-[mini-player-playing-value=false]:block")) %>
+              <%= now_playing.item.composition.title %>
+            </div>
+            <div class="text-xs text-gray-500">
+              <%= now_playing.item.orchestra.display_name %>
+              <% if now_playing.item.singers.present? %>
+                &middot; <%= now_playing.item.singers.map(&:name).compact.join(", ") %>
+              <% end %>
+            </div>
+            <div class="text-xs text-gray-500">
+              <%= now_playing.item.genre.name %> - <%= now_playing.item.year %>
+            </div>
           </div>
-          <div class="text-xs text-gray-500">
-            <%= playback_queue.current_item.item.orchestra.display_name %>
-            <% if playback_queue.current_item.item.singers.present? %>
-              &middot; <%= playback_queue.current_item.item.singers.map(&:name).compact.join(", ") %>
-            <% end %>
+        <% elsif now_playing.item.is_a?(Tanda) %>
+          <div class="flex flex-col items-start justify-center text-left">
+            <div class="flex gap-2 text-sm font-semibold text-orange-500">
+              <%= inline_svg_tag("icons/svg_loaders/animated-audio.svg", class: class_names("hidden w-4 h-4 fill-orange-500 group-data-[mini-player-playing-value=true]:block")) %>
+              <%= inline_svg_tag("icons/svg_loaders/paused-audio.svg", class: class_names("hidden w-4 h-4 fill-orange-500 group-data-[mini-player-playing-value=false]:block")) %>
+            </div>
+            <div class="text-xs text-gray-500">
+              <%= render now_playing.item %>
+            </div>
           </div>
-          <div class="text-xs text-gray-500">
-            <%= playback_queue.current_item.item.genre.name %> - <%= playback_queue.current_item.item.year %>
-          </div>
-        </div>
+        <% end %>
       </div>
     <% end %>
     <div class="flex flex-col gap-8 sm:hidden">
@@ -61,15 +75,23 @@
         value="0"
         />
       </div>
-      <% if queue_items.present? %>
-        <h3 class="text-lg font-bold dark:text-neutral-300">Up Next</h3>
-        <div 
-        id="queue-items" 
-        data-controller="sortable" 
-        data-sortable-url-value="<%= reorder_queue_item_path(id: ":id") %>" 
-        class="flex flex-col gap-2 w-full"
-      >
-          <%= render collection: queue_items, partial: "queues/queue_item" %>
+      <% if playback_queue.queue_items.next_up.present? %>
+        <div class="flex gap-2 justify-between">
+          <h3 class="text-lg font-bold dark:text-neutral-300">Up Next</h3>
+          <%= button_to clear_queues_path, class: "btn btn-link" do %>
+            <span>Clear Queue</span>
+          <% end %>
+        </div>
+        <div id="queue-items" data-controller="sortable" data-sortable-url-value="<%= reorder_queue_item_path(id: ":id") %>" class="flex flex-col gap-2 w-full">
+          <%= render collection: playback_queue.queue_items.next_up, partial: "queues/queue_item" %>
+        </div>
+      <% end %>
+      <% if playback_queue.queue_items.auto_queue.present? %>
+        <div class="flex gap-2 justify-between">
+          <h3 class="text-lg font-bold dark:text-neutral-300">Next From <%= playback_queue.current_item.try(:title) || "Current Item" %></h3>
+        </div>
+        <div id="current-item-queue-items" class="flex flex-col gap-2 w-full">
+          <%= render collection: playback_queue.queue_items.auto_queue, partial: "queues/queue_item" %>
         </div>
       <% end %>
     </div>

@@ -84,9 +84,12 @@ end
 #
 # Table name: playback_queues
 #
-#  id              :uuid             not null, primary key
-#  user_id         :uuid             not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  current_item_id :uuid
+#  id                :uuid             not null, primary key
+#  user_id           :uuid             not null
+#  current_item_id   :uuid
+#  queue_type        :string           default("All"), not null
+#  current_item_type :string
+#  active            :boolean          default(FALSE), not null
+#  position          :integer          default(0), not null
+#  system            :boolean          default(FALSE), not null
 #

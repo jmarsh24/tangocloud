@@ -1,13 +1,14 @@
 <%# locales(queue_item:) %>
 <% cache(queue_item) do %>
   <div 
+    id=<%= dom_id(queue_item) %>
     data-sortable-id=<%= queue_item.id %> 
     class="w-full flex items-center gap-2 rounded-lg"
   >
     <% if queue_item.item.is_a?(Tanda) %>
-      <%= render partial: 'tandas/tanda', locals: { tanda: queue_item.item } %>
+      <%= render "queues/tanda", tanda: queue_item.item, queue_item: %>
     <% elsif queue_item.item.is_a?(Recording) %>
-      <%= render partial: 'queues/recording_form', locals: { recording: queue_item.item}, as: :recording %>
+      <%= render partial: "queues/recording_form", locals: {queue_item:} %>
     <% end %>
   </div>
 <% end %>

@@ -17,7 +17,7 @@ class Queues::RecordingsController < ApplicationController
         format.turbo_stream { head :ok }
       end
     else
-      playback_queue.play_recording(recording)
+      playback_queue.add_item(recording)
       playback_session.play(reset_position: true)
 
       queue_items = playback_queue.queue_items.including_item_associations.rank(:row_order).offset(1)
@@ -25,8 +25,8 @@ class Queues::RecordingsController < ApplicationController
       respond_to do |format|
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.update("music-player", partial: "shared/music_player", locals: {playback_queue:, playback_session:}, method: "morph"),
-            turbo_stream.update("sidebar-queue", partial: "queues/queue", locals: {playback_queue:, playback_session:, queue_items:}, method: "morph"),
+            turbo_stream.update("music-player", partial: "shared/music_player", locals: {now_playing:, playback_session:}, method: "morph"),
+            turbo_stream.update("queue", partial: "queues/queue", locals: {playback_queue:, playback_session:, queue_items:}, method: "morph"),
             turbo_stream.update("modal-queue", partial: "queues/queue", locals: {playback_queue:, playback_session:, queue_items:}, method: "morph")
           ]
         end

@@ -1,4 +1,4 @@
-<%# locals: { tanda: } %>
+<%# locals: { tanda:, queue_item: } %>
 <% cache(tanda) do %>
   <% genre_name = tanda.recordings.first.genre.name.downcase %>
   <% background_class =
@@ -12,7 +12,7 @@
         "bg-default"
       end %>
   <div class="<%= class_names(
-      'w-full group snap-start flex flex-col rounded-xl text-neutral-200 transition-transform duration-200 p-4 gap-4 relative',
+              'w-full group snap-start flex flex-col rounded-xl text-neutral-200 transition-transform duration-200 p-4 gap-4 relative',
               background_class
             ) %>">
     <div class="w-full flex flex-col gap-4">
@@ -42,14 +42,11 @@
         <%= render collection: tanda.recordings, partial: "tandas/recording", locals: { tanda: }, as: :recording %>
       </div>
       <div class="flex w-full justify-between items-center mt-2">
-        <%= form_with url: add_to_queues_path(type: "tanda", id: tanda.id), method: :post do %>
+        <%= form_with url: add_to_queues_path(type: "tanda", id: tanda.id) do %>
           <button type="submit" class="btn btn-neutral btn-md btn-circle flex items-center justify-center opacity-85">
             <%= heroicon "play", size: :sm, variant: :solid, class: "fill-white-500" %>
           </button>
         <% end %>
-        <div class="text-sm text-gray-400 line-clamp-1">
-          <%= formatted_tanda_duration(tanda) %>
-        </div>
         <div class="flex w-full justify-end mt-4">
           <%= ui_dropdown align: :end do |c| %>
             <% c.with_toggle_open do %>
@@ -66,7 +63,14 @@
               <%= heroicon "pencil", variant: :outline, size: :sm %>
               <span>Edit Tanda</span>
             <% end %>
+            <% c.with_menu_item_button_to(queue_item_path(queue_item), method: :delete) do %>
+              <%= heroicon "trash", variant: :outline, size: :sm %>
+              <span>Remove from queue</span>
+            <% end %>
           <% end %>
+        </div>
+        <div class="text-sm text-gray-400 line-clamp-1">
+          <%= formatted_tanda_duration(tanda) %>
         </div>
       </div>
     </div>
