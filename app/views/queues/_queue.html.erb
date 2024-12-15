@@ -32,7 +32,7 @@
         data-sortable-section="now_playing" 
         class="flex flex-col gap-4"
       >
-        <% playback_queue.queue_items.now_playing.order(:row_order).each do |now_playing_item| %>
+        <% playback_queue.queue_items.now_playing.rank(:row_order).each do |now_playing_item| %>
           <div 
             class="flex gap-4 bg-neutral-800 p-2 rounded-lg" 
             data-sortable-id="<%= now_playing_item.id %>" 
@@ -73,7 +73,7 @@
             <%= section == "next_up" ? "Up Next" : "Next From #{playback_queue.source.try(:title) || 'Current Item'}" %>
           </h3>
           <% if section == "next_up" %>
-            <%= button_to clear_queues_path, class: "btn btn-link" do %>
+            <%= button_to clear_queue_path, class: "link" do %>
               <span>Clear Queue</span>
             <% end %>
           <% end %>
@@ -85,7 +85,7 @@
           data-sortable-section="<%= section %>" 
           class="flex flex-col gap-2 w-full"
         >
-          <%= render collection: queue_items.public_send(section).order(:row_order), partial: "queues/queue_item" %>
+          <%= render collection: queue_items.public_send(section).rank(:row_order), partial: "queues/queue_item" %>
         </div>
       <% end %>
     <% end %>

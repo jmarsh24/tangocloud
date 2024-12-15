@@ -56,7 +56,7 @@ class Ui::DropdownComponent < ApplicationComponent
 
   def content_classes
     class_names(
-      "dropdown-content menu mt-2 w-max z-[1] rounded-lg shadow-2xl bg-white text-neutral",
+      "dropdown-content menu mt-2 w-max z-50 rounded-lg shadow-2xl bg-white text-neutral",
       "dark:bg-neutral-950 dark:text-white text-xs",
       attributes.delete(:content_classes)
     )

@@ -17,7 +17,7 @@ class QueuesController < ApplicationController
     ActiveRecord::Base.transaction do
       if params[:parent_id].present? && params[:parent_type].present?
         parent = find_item(params[:parent_type], params[:parent_id])
-        @playback_queue.load_source(parent, shuffle: params[:shuffle] == "true")
+        @playback_queue.load_source_with_recording(parent, item, shuffle: params[:shuffle] == "true")
       else
         @playback_queue.load_source(item, shuffle: params[:shuffle] == "true")
       end
@@ -30,17 +30,17 @@ class QueuesController < ApplicationController
 
   def add_to
     item = find_item(params[:item_type], params[:item_id])
-
     ActiveRecord::Base.transaction do
       items_to_add = case item
-      when Recording
-        [item]
       when Playlist
         item.playlist_items.map(&:item)
       when Tanda
         [item]
+      when Recording
+        [item]
       end
-      @playback_queue.add_items(items_to_add, source: :next_up)
+
+      @playback_queue.add_items(items_to_add, section: :next_up)
     end
 
     respond_with_updated_queue

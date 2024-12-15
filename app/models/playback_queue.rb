@@ -115,7 +115,7 @@ class PlaybackQueue < ApplicationRecord
         playlist_items = shuffle ? source.playlist_items.shuffle : source.playlist_items
         playlist_items.map(&:item)
       when Tanda
-        source.tanda_recordings.map(&:recording)
+        [source]
       when Recording
         [source]
       end
@@ -136,13 +136,11 @@ class PlaybackQueue < ApplicationRecord
 
   def add_item(item, position: :last, section: :next_up, tanda_id: nil, active: false)
     queue_item = queue_items.find_or_initialize_by(item:)
-    if queue_item.new_record?
-      queue_item.tanda_id = tanda_id
-      queue_item.active = active
-      queue_item.row_order_position = position if section == :next_up
-      queue_item.section = section
-      queue_item.save!
-    end
+    queue_item.tanda_id = tanda_id
+    queue_item.active = active
+    queue_item.row_order_position = position if section == :next_up
+    queue_item.section = section
+    queue_item.save!
     queue_item
   end
 
