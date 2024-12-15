@@ -4,6 +4,7 @@
     id=<%= dom_id(queue_item) %>
     data-sortable-id=<%= queue_item.id %> 
     class="w-full flex items-center gap-2 rounded-lg"
+    data-sortable-handle
   >
     <% if queue_item.item.is_a?(Tanda) %>
       <%= render "queues/tanda", tanda: queue_item.item, queue_item: %>
