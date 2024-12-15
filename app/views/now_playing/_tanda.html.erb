@@ -1,0 +1,15 @@
+<%# locals: { tanda: } %>
+<% cache(tanda) do %>
+  <% recordings = tanda.recordings.to_a %>
+  <% first_recording = recordings.first %>
+  <% genre_name = first_recording&.genre&.name&.downcase %>
+  <div class="w-full group snap-start flex flex-col rounded-xl text-neutral-200 transition-transform duration-200 p-4 gap-4 relative">
+    <div class="w-full flex flex-col gap-4">
+      <% if recordings.present? %>
+        <div class="flex w-full flex-col z-20 relative border-b border-neutral-500">
+          <%= render collection: recordings, partial: "tandas/recording", as: :recording %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

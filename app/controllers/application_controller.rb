@@ -20,8 +20,9 @@ class ApplicationController < ActionController::Base
     if current_user
       @playback_session = PlaybackSession.find_or_create_by(user: current_user)
       @playback_queue = policy_scope(PlaybackQueue).find_or_create_by(user: current_user)
-      @now_playing = NowPlaying.find_or_create_by(user: current_user)
-      @current_item = @playback_queue.current_item
+      @queue_items = @playback_queue.queue_items
+        .including_item_associations
+        .rank(:row_order)
     end
   end
 

@@ -26,7 +26,7 @@
           <%= render partial: "queues/queue", locals: { 
             playback_queue: @playback_queue, 
             playback_session: @playback_session,
-            now_playing: @now_playing } %>
+            queue_items: @queue_items } %>
         </aside>
       </div>
     </div>
@@ -34,7 +34,7 @@
       <div id="music-player" data-turbo-permanent>
         <%= render partial: "shared/music_player", 
                    locals: { 
-                     now_playing: @now_playing,
+                     playback_queue: @playback_queue,
                      playback_session: @playback_session, 
                    } %>
       </div>

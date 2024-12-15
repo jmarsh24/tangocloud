@@ -21,7 +21,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_12_123651) do
   create_enum "acr_cloud_recognition_status", ["pending", "processing", "completed", "failed"]
   create_enum "audio_file_status", ["pending", "processing", "completed", "failed"]
   create_enum "composition_role_type", ["composer", "lyricist"]
-  create_enum "queue_item_source", ["next_up", "auto_queue"]
+  create_enum "queue_section_type", ["now_playing", "next_up", "auto_queue"]
   create_enum "recording_type", ["studio", "live"]
   create_enum "repeat_mode_type", ["off", "one", "all"]
   create_enum "shuffle_mode_type", ["off", "on", "smart"]
@@ -295,13 +295,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_12_123651) do
     t.index ["language_id"], name: "index_lyrics_on_language_id"
   end
 
-  create_table "now_playings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "user_id", null: false
-    t.string "item_type", null: false
-    t.uuid "item_id", null: false
-    t.integer "position", default: 0, null: false
-  end
-
   create_table "orchestra_periods", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -378,8 +371,8 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_12_123651) do
   create_table "playback_queues", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id", null: false
     t.uuid "current_item_id"
-    t.string "queue_type", default: "All", null: false
-    t.string "current_item_type"
+    t.string "source_type"
+    t.uuid "source_id"
     t.boolean "active", default: false, null: false
     t.integer "position", default: 0, null: false
     t.boolean "system", default: false, null: false
@@ -447,10 +440,13 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_12_123651) do
     t.string "item_type", null: false
     t.uuid "item_id", null: false
     t.integer "row_order"
-    t.enum "source", default: "next_up", enum_type: "queue_item_source"
+    t.enum "section", default: "next_up", enum_type: "queue_section_type"
+    t.boolean "active", default: false, null: false
+    t.uuid "tanda_id"
     t.index ["item_type", "item_id"], name: "index_queue_items_on_item"
     t.index ["playback_queue_id", "row_order"], name: "index_queue_items_on_playback_queue_id_and_row_order", unique: true
     t.index ["playback_queue_id"], name: "index_queue_items_on_playback_queue_id"
+    t.index ["tanda_id"], name: "index_queue_items_on_tanda_id"
   end
 
   create_table "record_labels", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

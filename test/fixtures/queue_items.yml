@@ -12,5 +12,7 @@ tester_la_cumparsita:
 #  item_type         :string           not null
 #  item_id           :uuid             not null
 #  row_order         :integer
-#  source            :enum             default("next_up")
+#  section           :enum             default("next_up")
+#  active            :boolean          default(FALSE), not null
+#  tanda_id          :uuid
 #

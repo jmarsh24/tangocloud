@@ -2,7 +2,7 @@ class UpdatePlaybackSystemTables < ActiveRecord::Migration[8.0]
   def change
     create_enum :shuffle_mode_type, %w[off on smart]
     create_enum :repeat_mode_type, %w[off one all]
-    create_enum :queue_item_source, %w[next_up auto_queue]
+    create_enum :queue_section_type, %w[now_playing next_up auto_queue]
 
     change_table :playback_sessions, bulk: true do |t|
       t.boolean :active, default: false, null: false
@@ -10,23 +10,18 @@ class UpdatePlaybackSystemTables < ActiveRecord::Migration[8.0]
       t.enum :repeat_mode, enum_type: :repeat_mode_type, default: "off", null: false
     end
 
-    create_table :now_playings, id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-      t.uuid :user_id, null: false
-      t.string :item_type, null: false
-      t.uuid :item_id, null: false
-      t.integer :position, default: 0, null: false
-    end
-
     change_table :playback_queues, bulk: true do |t|
-      t.string :queue_type, null: false, default: "All"
-      t.string :current_item_type
+      t.string :source_type
+      t.uuid :source_id
       t.boolean :active, default: false, null: false
       t.integer :position, default: 0, null: false
       t.boolean :system, default: false, null: false
     end
 
     change_table :queue_items, bulk: true do |t|
-      t.enum :source, enum_type: :queue_item_source, default: "next_up"
+      t.enum :section, enum_type: :queue_section_type, default: "next_up"
+      t.boolean :active, default: false, null: false
+      t.references :tanda, type: :uuid, index: true
     end
 
     remove_column :playback_sessions, :created_at, :datetime

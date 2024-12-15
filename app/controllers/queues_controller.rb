@@ -6,10 +6,9 @@ class QueuesController < ApplicationController
   before_action :authorize_playback_queue, only: [:show, :play_now, :add_to, :clear, :shuffle]
 
   def show
-    @playback_queue_items = @playback_queue.queue_items
+    @queue_items = @playback_queue.queue_items
       .including_item_associations
       .rank(:row_order)
-      .offset(1)
   end
 
   def play_now
@@ -18,9 +17,9 @@ class QueuesController < ApplicationController
     ActiveRecord::Base.transaction do
       if params[:parent_id].present? && params[:parent_type].present?
         parent = find_item(params[:parent_type], params[:parent_id])
-        queue_manager.load_parent_with_recording(parent, item, shuffle: params[:shuffle] == "true")
+        @playback_queue.load_source(parent, shuffle: params[:shuffle] == "true")
       else
-        queue_manager.load_item(item, shuffle: params[:shuffle] == "true")
+        @playback_queue.load_source(item, shuffle: params[:shuffle] == "true")
       end
 
       playback_session.play(reset_position: true)
@@ -33,27 +32,28 @@ class QueuesController < ApplicationController
     item = find_item(params[:item_type], params[:item_id])
 
     ActiveRecord::Base.transaction do
-      if item.is_a?(Recording)
-        queue_manager.add_to_queue([item])
-      elsif item.is_a?(Playlist)
-        items_to_add = item.playlist_items.map(&:item)
-        queue_manager.add_to_queue(items_to_add)
-      elsif item.is_a?(Tanda)
-        queue_manager.add_to_queue([item])
+      items_to_add = case item
+      when Recording
+        [item]
+      when Playlist
+        item.playlist_items.map(&:item)
+      when Tanda
+        [item]
       end
+      @playback_queue.add_items(items_to_add, source: :next_up)
     end
 
     respond_with_updated_queue
   end
 
   def clear
-    queue_manager.clear_next_up!
+    @playback_queue.clear_next_up!
 
     respond_with_updated_queue
   end
 
   def shuffle
-    queue_manager.shuffle!
+    @playback_queue.shuffle!
 
     respond_with_updated_queue
   end
@@ -66,15 +66,11 @@ class QueuesController < ApplicationController
 
   def find_item(type, id)
     klass = type.capitalize.constantize
-    raise ArgumentError, "Invalid item type" unless QueueItem.validators_on(:item_type).first.options[:in].include?(klass.name)
+    raise ArgumentError, "Invalid item type" unless klass.in?([Recording, Playlist, Tanda])
 
     klass.find(id)
   rescue NameError
     raise ArgumentError, "Invalid item type"
-  end
-
-  def queue_manager
-    @queue_manager ||= QueueManager.new(playback_queue: @playback_queue, now_playing: @now_playing)
   end
 
   def playback_session
@@ -85,10 +81,17 @@ class QueuesController < ApplicationController
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: [
-          turbo_stream.update("music-player", partial: "shared/music_player", locals: {now_playing: @now_playing, playback_session: @playback_session}, method: "morph"),
-          turbo_stream.update("queue", partial: "queues/queue", locals: {playback_queue: @playback_queue, playback_session: @playback_session, now_playing: @now_playing})
+          turbo_stream.update("music-player", partial: "shared/music_player", locals: {playback_queue: @playback_queue, playback_session: @playback_session}),
+          turbo_stream.update("queue", partial: "queues/queue", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @playback_queue.queue_items.including_item_associations.rank(:row_order)})
         ]
       end
+    end
+  end
+
+  def reorder_queue_after_now_playing(item)
+    items = @playback_queue.queue_items.where.not(item: item).order(:row_order)
+    items.each_with_index do |queue_item, index|
+      queue_item.update!(row_order: index + 1)
     end
   end
 end

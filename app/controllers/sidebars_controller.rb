@@ -7,12 +7,11 @@ class SidebarsController < ApplicationController
 
     @playback_session = PlaybackSession.find_or_create_by(user: current_user)
 
-    @playback_queue_items = @playback_queue.queue_items
+    @queue_items = @playback_queue.queue_items
       .including_item_associations
       .rank(:row_order)
-      .offset(1)
 
-    render partial: "show", locals: {playback_queue: @playback_queue, queue_items: @playback_queue_items, playback_session: @playback_session}
+    render partial: "show", locals: {playback_queue: @playback_queue, queue_items: @ueue_items, playback_session: @playback_session}
   end
 
   private

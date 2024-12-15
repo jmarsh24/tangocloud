@@ -1,6 +1,6 @@
-<%# locals: (now_playing: nil, playback_session: nil) %>
-<% if now_playing && playback_session %>
-  <% recording = now_playing.item_type == "Tanda" ? now_playing.item.tanda_recordings.find_by(position: now_playing.position).recording : now_playing.item %>
+<%# locals: (playback_queue: nil, playback_session: nil) %>
+<% if playback_queue && playback_session %>
+  <% recording = playback_queue.active_item&.item %>
   <% if recording %>
     <div
       id="music-player"
@@ -51,9 +51,6 @@
           </div>
         <% end %>
         <div class="flex justify-end gap-4 col-span-1 md:justify-center items-center">
-          <%= button_to previous_tanda_player_path, data: { music_player_target: "nextButton"}, class: "btn btn-neutral btn-md btn-square" do %>
-            <%= icon("skip-backward", variant: :solid, size: :md) %>
-          <% end %>
           <%= button_to previous_player_path, data: { music_player_target: "previousButton"}, class: "hidden md:inline-flex btn btn-neutral btn-md btn-square" do %>
             <%= heroicon("rewind", variant: :solid) %>
           <% end %>
@@ -69,9 +66,6 @@
           <% end %>
           <%= button_to next_player_path, data: { music_player_target: "nextButton"}, class: "btn btn-neutral btn-md btn-square" do %>
             <%= heroicon("forward", variant: :solid) %>
-          <% end %>
-          <%= button_to skip_tanda_player_path, data: { music_player_target: "nextButton"}, class: "btn btn-neutral btn-md btn-square" do %>
-            <%= icon("skip-forward", variant: :solid, size: :md) %>
           <% end %>
         </div>
         <div class="hidden md:flex items-center justify-end gap-4">
