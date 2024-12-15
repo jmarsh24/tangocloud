@@ -1,7 +1,7 @@
 <%# locals: (playlist:, recording:) %>
 <% cache([playlist, recording]) do %>
   <div class="flex gap-2 p-2 items-center hover:cursor-pointer rounded-lg bg-neutral-950 hover:bg-neutral-800">
-    <%= form_with url: play_now_queues_path(parent_type: "playlist", parent_id: playlist.id, item_type: "recording", item_id: recording.id), class: "flex flex-1 gap-4 items-center w-full" do |form| %>
+    <%= form_with url: play_now_queue_path(parent_type: "playlist", parent_id: playlist.id, item_type: "recording", item_id: recording.id), class: "flex flex-1 gap-4 items-center w-full" do |form| %>
       <%= button_tag type: :submit, class: "flex w-full gap-4 items-center text-left w-full" do %>
         <%= render partial: "recordings/recording", locals: { recording: } %>
       <% end %>
@@ -13,7 +13,7 @@
       <% c.with_toggle_close do %>
         <%= heroicon "ellipsis-horizontal", variant: :outline, size: :sm, class: "cursor-pointer" %>
       <% end %>
-      <% c.with_menu_item_button_to(add_to_queues_path(item_type: "recording", item_id: recording.id)) do %>
+      <% c.with_menu_item_button_to(add_to_queue_path(item_type: "recording", item_id: recording.id)) do %>
         <%= heroicon "plus", variant: :outline, size: :sm %>
         <span>Add to queue</span>
       <% end %>

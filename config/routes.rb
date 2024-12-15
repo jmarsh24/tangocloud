@@ -58,7 +58,7 @@ Rails.application.routes.draw do
     post :skip_tanda, on: :member
   end
 
-  resources :queues, only: [:show] do
+  resource :queue, only: [:show] do
     collection do
       post :play_next
       post :play_now

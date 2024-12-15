@@ -29,10 +29,10 @@
         </h1>
       </div>
       <div class="flex justify-center items-center gap-4">
-        <%= button_to play_now_queues_path, params: { item_type: "Playlist", item_id: @playlist.id }, class: "btn btn-primary" do %>
+        <%= button_to play_now_queue_path, params: { item_type: "Playlist", item_id: @playlist.id }, class: "btn btn-primary" do %>
           <%= heroicon "play", variant: :solid, size: :sm %>
         <% end %>
-        <%= button_to play_now_queues_path, params: { item_type: "Playlist", item_id: @playlist.id, shuffle: true }, class: "btn btn-neutral" do %>
+        <%= button_to play_now_queue_path, params: { item_type: "Playlist", item_id: @playlist.id, shuffle: true }, class: "btn btn-neutral" do %>
           <%= heroicon "arrow-right-left", variant: :outline, size: :sm %>
           <span>Shuffle</span>
         <% end %>
@@ -49,7 +49,7 @@
               <span>Edit details</span>
             <% end %>
           <% end %>
-          <% c.with_menu_item_button_to(add_to_queues_path(item_type: "playlist", item_id: @playlist.id)) do %>
+          <% c.with_menu_item_button_to(add_to_queue_path(item_type: "playlist", item_id: @playlist.id)) do %>
             <%= heroicon "plus", variant: :outline, size: :sm %>
             <span>Add to queue</span>
           <% end %>

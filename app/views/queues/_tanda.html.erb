@@ -21,7 +21,7 @@
           <% c.with_toggle_close do %>
             <%= heroicon "ellipsis-horizontal", variant: :outline, size: :sm, class: "cursor-pointer" %>
           <% end %>
-          <% c.with_menu_item_button_to(add_to_queues_path(type: "tanda", id: tanda.id)) do %>
+          <% c.with_menu_item_button_to(add_to_queue_path(type: "tanda", id: tanda.id)) do %>
             <%= heroicon "plus", variant: :outline, size: :sm %>
             <span>Add to Queue</span>
           <% end %>

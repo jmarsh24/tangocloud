@@ -23,7 +23,7 @@
         <%= formatted_tanda_duration(@tanda) %>
       </div>
       <div class="flex items-center gap-2">
-        <%= button_to play_now_queues_path, params: { item_type: "Tanda", item_id: @tanda.id }, class: "btn btn-primary" do %>
+        <%= button_to play_now_queue_path, params: { item_type: "Tanda", item_id: @tanda.id }, class: "btn btn-primary" do %>
           <%= heroicon "play", variant: :solid, size: :sm %>
         <% end %>
         <%= ui_dropdown align: :end do |c| %>
@@ -39,7 +39,7 @@
               <span>Edit details</span>
             <% end %>
           <% end %>
-          <% c.with_menu_item_button_to(add_to_queues_path(item_type: "tanda", item_id: @tanda.id)) do %>
+          <% c.with_menu_item_button_to(add_to_queue_path(item_type: "tanda", item_id: @tanda.id)) do %>
             <%= heroicon "plus", variant: :outline, size: :sm %>
             <span>Add to queue</span>
           <% end %>

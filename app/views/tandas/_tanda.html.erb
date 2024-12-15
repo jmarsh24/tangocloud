@@ -50,7 +50,7 @@
         </div>
       <% end %>
       <div class="flex w-full justify-between items-center mt-2">
-        <%= form_with url: add_to_queues_path(type: "tanda", id: tanda.id), method: :post do %>
+        <%= form_with url: add_to_queue_path(type: "tanda", id: tanda.id), method: :post do %>
           <button type="submit" class="btn btn-neutral btn-md btn-circle flex items-center justify-center opacity-85">
             <%= heroicon "play", size: :sm, variant: :solid, class: "fill-white-500" %>
           </button>
@@ -66,7 +66,7 @@
             <% c.with_toggle_close do %>
               <%= heroicon "ellipsis-horizontal", variant: :outline, size: :sm, class: "cursor-pointer" %>
             <% end %>
-            <% c.with_menu_item_button_to(add_to_queues_path(item_type: "tanda", item_id: tanda.id)) do %>
+            <% c.with_menu_item_button_to(add_to_queue_path(item_type: "tanda", item_id: tanda.id)) do %>
               <%= heroicon "plus", variant: :outline, size: :sm %>
               <span>Add to Queue</span>
             <% end %>

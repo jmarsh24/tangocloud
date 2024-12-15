@@ -27,7 +27,7 @@
       <% c.with_toggle_close do %>
         <%= heroicon "ellipsis-vertical", variant: :outline, size: :sm %>
       <% end %>
-      <% c.with_menu_item_button_to(add_to_queues_path(item_type: library_item.item.class.name, item_id: library_item.item.id)) do %>
+      <% c.with_menu_item_button_to(add_to_queue_path(item_type: library_item.item.class.name, item_id: library_item.item.id)) do %>
         <%= heroicon "plus", variant: :outline, size: :sm %>
         <span>Add to queue</span>
       <% end %>

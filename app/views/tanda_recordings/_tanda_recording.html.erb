@@ -4,7 +4,7 @@
   data-sortable-id=<%= tanda_recording.id %>
   class="w-full flex p-2 gap-2 items-center bg-neutral-900 hover:cursor-pointer rounded-lg hover:bg-neutral-800"
   data-sortable-handle>
-  <%= form_with url: play_now_queues_path(parent_type: "tanda", parent_id: tanda_recording.tanda_id, item_type: "recording", item_id: tanda_recording.recording_id), class: "flex w-full gap-4 items-center" do |form| %>
+  <%= form_with url: play_now_queue_path(parent_type: "tanda", parent_id: tanda_recording.tanda_id, item_type: "recording", item_id: tanda_recording.recording_id), class: "flex w-full gap-4 items-center" do |form| %>
     <%= button_tag type: :submit, class: "flex w-full gap-4 items-center text-left" do %>
       <%= render partial: "recordings/recording", locals: { recording: tanda_recording.recording } %>
     <% end %>
@@ -17,7 +17,7 @@
       <% c.with_toggle_close do %>
         <%= heroicon "ellipsis-vertical", variant: :outline, size: :sm %>
       <% end %>
-      <% c.with_menu_item_button_to(add_to_queues_path(item_type: "recording", item_id: tanda_recording.recording.id)) do %>
+      <% c.with_menu_item_button_to(add_to_queue_path(item_type: "recording", item_id: tanda_recording.recording.id)) do %>
         <%= heroicon "plus", variant: :outline, size: :sm %>
         <span>Add to queue</span>
       <% end %>
