@@ -1,39 +1,43 @@
 <%# locals: (recording:) %>
 <% cache([:music_library, recording]) do %>
-  <div class="flex flex-auto gap-2 items-center relative">
-    <%= image_tag recording.digital_remasters.first.album.album_art, class: "h-16 rounded-full aspect-square object-cover" %>
-    <div class="flex flex-auto flex-col items-start text-left overflow-hidden">
-      <div class="text-sm font-semibold text-nowrap" title="<%= recording.composition.title %>">
-        <%= recording.composition.title %>
-      </div>
-      <div class="text-xs text-gray-500 text-nowrap" title="<%= recording.orchestra.name %>">
-        <%= recording.orchestra.name %>
-      </div>
-      <div class="text-xs text-gray-500 text-nowrap" title="<% if recording.singers.present? %> - <%= recording.singers.map(&:name).join(', ') %><% end %>">
-        <% if recording.singers.present? %>
-          <%= recording.singers.map(&:name).join(", ") %>
-        <% else %>
-          Instrumental
-        <% end %>
-      </div>
-      <div class="text-xs text-gray-500 text-nowrap" title="<%= recording.genre.name %> - <%= recording.year %>">
-        <%= recording.genre.name[0]&.upcase %> - <%= recording.year %>
-      </div>
-    </div>
-    <div class="absolute bottom-0 right-0 flex justify-end">
-      <% popularity_level = (recording.popularity_score / 16.67).ceil %>
-      <svg width="30" height="10" aria-label="Popularity" class="text-neutral-500">
-        <% 6.times do |i| %>
-          <rect 
-          x="<%= i * 5 %>" 
-          y="0" 
-          width="2" 
-          height="7" 
-          class="<%= i < popularity_level ? 'fill-current text-neutral-400' : 'fill-current text-neutral-600' %>">
-          </rect>
-        <% end %>
-      </svg>
-    </div>
+  <div class="w-full flex flex-auto gap-2 items-center relative">
+    <%= form_with url: play_now_queue_path(item_type: "recording", item_id: recording.id), class: "w-full" do |f| %>
+      <button type="submit" class="flex items-center w-full relative">
+        <%= image_tag recording.digital_remasters.first.album.album_art, class: "h-16 rounded-full aspect-square object-cover" %>
+        <div class="flex flex-auto flex-col items-start text-left overflow-hidden ml-2">
+          <div class="text-sm font-semibold" title="<%= recording.composition.title %>">
+            <%= recording.composition.title %>
+          </div>
+          <div class="text-xs text-gray-500" title="<%= recording.orchestra.name %>">
+            <%= recording.orchestra.name %>
+          </div>
+          <div class="text-xs text-gray-500" title="<% if recording.singers.present? %><%= recording.singers.map(&:name).join(', ') %><% else %>Instrumental<% end %>">
+            <% if recording.singers.present? %>
+              <%= recording.singers.map(&:name).join(", ") %>
+            <% else %>
+              Instrumental
+            <% end %>
+          </div>
+          <div class="text-xs text-gray-500" title="<%= recording.genre.name %> - <%= recording.year %>">
+            <%= recording.genre.name[0]&.upcase %> - <%= recording.year %>
+          </div>
+        </div>
+        <div class="absolute bottom-0 right-0 flex items-center">
+          <% popularity_level = (recording.popularity_score / 16.67).ceil %>
+          <svg width="30" height="10" aria-label="Popularity" class="text-neutral-500">
+            <% 6.times do |i| %>
+              <rect 
+            x="<%= i * 5 %>" 
+            y="0" 
+            width="2" 
+            height="7" 
+            class="<%= i < popularity_level ? 'fill-current text-neutral-400' : 'fill-current text-neutral-600' %>">
+              </rect>
+            <% end %>
+          </svg>
+        </div>
+      </button>
+    <% end %>
     <%= ui_dropdown align: :end do |c| %>
       <% c.with_toggle_open do %>
         <%= heroicon "ellipsis-horizontal", variant: :outline, size: :sm, class: "cursor-pointer" %>

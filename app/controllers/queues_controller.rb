@@ -17,7 +17,8 @@ class QueuesController < ApplicationController
     ActiveRecord::Base.transaction do
       if params[:parent_id].present? && params[:parent_type].present?
         parent = find_item(params[:parent_type], params[:parent_id])
-        @playback_queue.load_source_with_recording(parent, item, shuffle: params[:shuffle] == "true")
+
+        @playback_queue.load_source_with_item(parent, item)
       else
         @playback_queue.load_source(item, shuffle: params[:shuffle] == "true")
       end

@@ -105,24 +105,35 @@ class PlaybackQueue < ApplicationRecord
     end
   end
 
-  def load_source_with_recording(source, item, shuffle: false)
+  def load_source_with_item(source, item)
     ActiveRecord::Base.transaction do
       clear_items!
 
+      # Set the queue's source to the provided source
       update!(source:)
 
       items_to_add = case source
       when Playlist
-        playlist_items = shuffle ? source.playlist_items.shuffle : source.playlist_items
-        playlist_items.map(&:item)
+        source.playlist_items.map(&:item)
       when Tanda
         [source]
       when Recording
         [source]
       end
 
-      now_playing_item = items_to_add.shift
-      add_item(now_playing_item, section: :now_playing, active: true) if now_playing_item
+      # Add the provided `item` (Tanda or Recording) to `auto_queue`
+      if item.is_a?(Tanda)
+        # Enqueue the recordings from the Tanda as auto_queue items
+        tanda_recordings = item.tanda_recordings.map(&:recording)
+        tanda_recordings.each_with_index do |recording, index|
+          add_item(recording, position: index + 1, section: :now_playing, tanda_id: item.id, active: index.zero?)
+        end
+      else
+        # Add the single item (Recording) as auto_queue
+        add_item(item, section: :auto_queue)
+      end
+
+      # Add the remaining playlist items (excluding `now_playing_item`) to `auto_queue`
       add_items(items_to_add, section: :auto_queue) unless items_to_add.empty?
     end
   end

@@ -36,8 +36,8 @@ class PlaylistsController < ApplicationController
       .strict_loading
       .where(item_type: "Tanda", playlist_id: @playlist.id)
       .includes(
+        playlist: :user,
         item: [
-          :user,
           recordings: [
             :composition,
             :orchestra,
