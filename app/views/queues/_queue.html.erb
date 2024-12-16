@@ -14,16 +14,7 @@
       <% end %>
       <h1 class="text-2xl font-bold dark:text-neutral-300">Now Playing</h1>
       <p class="text-sm text-gray-500 dark:text-neutral-400">
-        <%= if playback_queue.active_item
-              if playback_queue.active_item.tanda_id
-                Tanda.find(playback_queue.active_item.tanda_id).title
-              else
-                playback_queue.active_item.item.try(:title)
-              end
-            else
-              "Queue"
-            end
-        %>
+        <%= playback_queue.active_item&.tanda_id && Tanda.find(playback_queue.active_item.tanda_id).title %>
       </p>
       <div 
         id="now-playing" 

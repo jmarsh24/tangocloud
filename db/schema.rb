@@ -444,7 +444,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_12_123651) do
     t.boolean "active", default: false, null: false
     t.uuid "tanda_id"
     t.index ["item_type", "item_id"], name: "index_queue_items_on_item"
-    t.index ["playback_queue_id", "row_order"], name: "index_queue_items_on_playback_queue_id_and_row_order", unique: true
+    t.index ["playback_queue_id", "section", "row_order"], name: "idx_on_playback_queue_id_section_row_order_0aaaa44271", unique: true
     t.index ["playback_queue_id"], name: "index_queue_items_on_playback_queue_id"
     t.index ["tanda_id"], name: "index_queue_items_on_tanda_id"
   end

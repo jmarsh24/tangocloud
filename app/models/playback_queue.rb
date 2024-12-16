@@ -66,9 +66,6 @@ class PlaybackQueue < ApplicationRecord
             # Add the single item to now_playing
             add_item(next_item.item, section: :now_playing, active: true)
           end
-
-          # Remove the item from the auto queue
-          next_item.destroy
         end
       end
     end
@@ -82,7 +79,8 @@ class PlaybackQueue < ApplicationRecord
 
       items_to_add = case source
       when Playlist
-        source.playlist_items.map(&:item)
+        playlist_items = shuffle ? source.playlist_items.shuffle : source.playlist_items
+        playlist_items.map(&:item)
       when Tanda
         [source]
       when Recording
@@ -97,8 +95,8 @@ class PlaybackQueue < ApplicationRecord
         tanda_recordings.each_with_index do |recording, index|
           add_item(recording, position: index + 1, section: :now_playing, tanda_id: now_playing_item.id, active: index.zero?)
         end
-      else
-        add_items(now_playing_item, section: :now_playing)
+      elsif now_playing_item
+        add_item(now_playing_item, section: :now_playing, active: true)
       end
       add_items(items_to_add, section: :auto_queue) unless items_to_add.empty?
     end
@@ -121,7 +119,7 @@ class PlaybackQueue < ApplicationRecord
       end
 
       now_playing_item = items_to_add.shift
-      add_item(now_playing_item, section: :now_playing) if now_playing_item
+      add_item(now_playing_item, section: :now_playing, active: true) if now_playing_item
       add_items(items_to_add, section: :auto_queue) unless items_to_add.empty?
     end
   end
