@@ -32,7 +32,7 @@ class PlaybackQueue < ApplicationRecord
       end
 
       # If no more items in now_playing or no active item, proceed to next item in the queue
-      next_item = queue_items.next_up.order(:row_order).first
+      next_item = queue_items.next_up.order(:row_order).first || queue_items.auto_queue.order(:row_order).first
 
       if next_item
         # Handle the new item
@@ -47,7 +47,7 @@ class PlaybackQueue < ApplicationRecord
           add_item(next_item.item, section: :now_playing, active: true)
         end
 
-        # Remove the next item from the queue
+        # Remove the next item from its original section
         next_item.destroy
       else
         # Refill the auto queue if no next item is found
@@ -66,6 +66,9 @@ class PlaybackQueue < ApplicationRecord
             # Add the single item to now_playing
             add_item(next_item.item, section: :now_playing, active: true)
           end
+
+          # Remove the refilled item from auto_queue
+          next_item.destroy
         end
       end
     end
@@ -79,8 +82,7 @@ class PlaybackQueue < ApplicationRecord
 
       items_to_add = case source
       when Playlist
-        playlist_items = shuffle ? source.playlist_items.shuffle : source.playlist_items
-        playlist_items.map(&:item)
+        source.playlist_items.map(&:item)
       when Tanda
         [source]
       when Recording
