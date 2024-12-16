@@ -82,7 +82,8 @@ class PlaybackQueue < ApplicationRecord
 
       items_to_add = case source
       when Playlist
-        source.playlist_items.map(&:item)
+        playlist_items = shuffle ? source.playlist_items.shuffle : source.playlist_items
+        playlist_items.map(&:item)
       when Tanda
         [source]
       when Recording
