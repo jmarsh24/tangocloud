@@ -29,6 +29,43 @@ class QueuesController < ApplicationController
     respond_with_updated_queue
   end
 
+  def play_now_with_search
+    recording = Recording.find(params[:id])
+    authorize recording, :play?
+
+    filters = params.permit(:orchestra, :year, :genre, :orchestra_period, :singer).to_h.compact_blank
+    sort_params = params.permit(:sort, :order).to_h.compact_blank
+
+    sort_column = case sort_params[:sort]
+    when "year" then "recordings.year"
+    when "popularity" then "recordings.popularity_score"
+    else "recordings.popularity_score"
+    end
+
+    sort_direction = (sort_params[:order] == "desc") ? :desc : :asc
+
+    query = Recording::Query.new(filters.merge(items: 200))
+
+    all_recordings = query.results.order("#{sort_column} #{sort_direction}").to_a
+
+    recording_index = all_recordings.index(recording)
+
+    ActiveRecord::Base.transaction do
+      if recording_index
+        now_playing = [recording]
+        auto_queue = all_recordings[recording_index + 1..]
+
+        @playback_queue.load_recordings(now_playing + auto_queue, start_with: recording)
+      else
+        @playback_queue.load_recordings(all_recordings, start_with: recording)
+      end
+
+      playback_session.play(reset_position: true)
+    end
+
+    respond_with_updated_queue
+  end
+
   def add_to
     item = find_item(params[:item_type], params[:item_id])
     ActiveRecord::Base.transaction do
@@ -86,13 +123,6 @@ class QueuesController < ApplicationController
           turbo_stream.update("queue", partial: "queues/queue", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @playback_queue.queue_items.including_item_associations.rank(:row_order)})
         ]
       end
-    end
-  end
-
-  def reorder_queue_after_now_playing(item)
-    items = @playback_queue.queue_items.where.not(item: item).order(:row_order)
-    items.each_with_index do |queue_item, index|
-      queue_item.update!(row_order: index + 1)
     end
   end
 end

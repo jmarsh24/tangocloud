@@ -62,6 +62,7 @@ Rails.application.routes.draw do
     collection do
       post :play_next
       post :play_now
+      post :play_now_with_search
       post :add_to
       post :clear
     end

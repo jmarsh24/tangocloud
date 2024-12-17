@@ -1,6 +1,6 @@
 <%# locals: { tanda:, queue_item: nil } %>
 <% cache(tanda) do %>
-  <% recordings = tanda.recordings.to_a %>
+  <% recordings = tanda.tanda_recordings.order(:position).map(&:recording) %>
   <% first_recording = recordings.first %>
   <% genre_name = first_recording&.genre&.name&.downcase %>
   <div class="w-full group snap-start flex flex-col rounded-xl bg-neutral-800 text-neutral-200 transition-transform duration-200 p-4 gap-4 relative">

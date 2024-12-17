@@ -11,7 +11,7 @@ class OrchestrasController < ApplicationController
     when "recordings_count" then "recordings_count"
     else "sort_name"
     end
-    sort_direction = (@filters[:order] == "asc") ? :asc : :desc
+    sort_direction = (@filters[:order] == "desc") ? :asc : :desc
 
     @orchestras = policy_scope(Orchestra)
       .order("#{sort_column} #{sort_direction}")

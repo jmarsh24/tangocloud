@@ -1,6 +1,6 @@
 class PlaybackQueue < ApplicationRecord
   belongs_to :user
-  belongs_to :source, polymorphic: true
+  belongs_to :source, polymorphic: true, optional: true
 
   has_many :queue_items, -> { rank(:row_order) }, dependent: :destroy
 
@@ -12,62 +12,47 @@ class PlaybackQueue < ApplicationRecord
 
   def play_next!
     ActiveRecord::Base.transaction do
-      # Deactivate the current active item
       current_active = queue_items.find_by(active: true)
       if current_active
         current_active.update!(active: false)
 
-        # Check if there is a next item in now_playing
         now_playing_items = queue_items.now_playing.order(:row_order)
         next_now_playing_item = now_playing_items.where("row_order > ?", current_active.row_order).first
 
         if next_now_playing_item
-          # Set the next item in now_playing as active
           next_now_playing_item.update!(active: true)
           return
         else
-          # Clear now_playing when it finishes
           queue_items.now_playing.delete_all
         end
       end
 
-      # If no more items in now_playing or no active item, proceed to next item in the queue
       next_item = queue_items.next_up.order(:row_order).first || queue_items.auto_queue.order(:row_order).first
 
       if next_item
-        # Handle the new item
         if next_item.item.is_a?(Tanda)
-          # Add recordings from the Tanda to now_playing
           tanda_recordings = next_item.item.tanda_recordings.map(&:recording)
           tanda_recordings.each_with_index do |recording, index|
             add_item(recording, section: :now_playing, tanda_id: next_item.item.id, active: index.zero?)
           end
         else
-          # Add the single item to now_playing
           add_item(next_item.item, section: :now_playing, active: true)
         end
 
-        # Remove the next item from its original section
         next_item.destroy
       else
-        # Refill the auto queue if no next item is found
         refill_auto_queue
-
         next_item = queue_items.auto_queue.order(:row_order).first
         if next_item
-          # Handle the refilled item
           if next_item.item.is_a?(Tanda)
-            # Add recordings from the Tanda to now_playing
             tanda_recordings = next_item.item.tanda_recordings.map(&:recording)
             tanda_recordings.each_with_index do |recording, index|
               add_item(recording, section: :now_playing, tanda_id: next_item.item.id, active: index.zero?)
             end
           else
-            # Add the single item to now_playing
             add_item(next_item.item, section: :now_playing, active: true)
           end
 
-          # Remove the refilled item from auto_queue
           next_item.destroy
         end
       end
@@ -82,10 +67,10 @@ class PlaybackQueue < ApplicationRecord
 
       items_to_add = case source
       when Playlist
-        playlist_items = shuffle ? source.playlist_items.shuffle : source.playlist_items
+        playlist_items = shuffle ? source.playlist_items.shuffle : source.playlist_items.rank(:position)
         playlist_items.map(&:item)
       when Tanda
-        [source]
+        source.tanda_recordings.map(&:recording)
       when Recording
         [source]
       end
@@ -93,7 +78,7 @@ class PlaybackQueue < ApplicationRecord
       now_playing_item = items_to_add.shift
 
       if now_playing_item.is_a?(Tanda)
-        tanda_recordings = now_playing_item.tanda_recordings.map(&:recording)
+        tanda_recordings = now_playing_item.tanda_recordings.rank(:position).map(&:recording)
 
         tanda_recordings.each_with_index do |recording, index|
           add_item(recording, position: index + 1, section: :now_playing, tanda_id: now_playing_item.id, active: index.zero?)
@@ -109,48 +94,76 @@ class PlaybackQueue < ApplicationRecord
     ActiveRecord::Base.transaction do
       clear_items!
 
-      # Set the queue's source to the provided source
       update!(source:)
 
       items_to_add = case source
       when Playlist
-        source.playlist_items.map(&:item)
+        playlist_items = source.playlist_items.rank(:position).map(&:item)
+        playlist_items.drop_while { _1 != item }.drop(1)
       when Tanda
-        [source]
+        source.tanda_recordings.rank(:position).map(&:recording)
       when Recording
         [source]
       end
 
-      # Add the provided `item` (Tanda or Recording) to `auto_queue`
       if item.is_a?(Tanda)
-        # Enqueue the recordings from the Tanda as auto_queue items
         tanda_recordings = item.tanda_recordings.map(&:recording)
         tanda_recordings.each_with_index do |recording, index|
           add_item(recording, position: index + 1, section: :now_playing, tanda_id: item.id, active: index.zero?)
         end
+        add_items(items_to_add, section: :auto_queue) unless items_to_add.empty?
+      elsif source.is_a?(Tanda)
+        recordings = source.tanda_recordings.rank(:position).map(&:recording)
+
+        recordings.each_with_index do |recording, index|
+          add_item(recording, position: index, section: :now_playing, tanda_id: source.id, active: item == recording)
+        end
       else
-        # Add the single item (Recording) as auto_queue
-        add_item(item, section: :auto_queue)
+        add_item(item, section: :now_playing, active: true)
+        add_items(items_to_add, section: :auto_queue) unless items_to_add.empty?
+      end
+    end
+  end
+
+  def load_recordings(recordings, start_with:)
+    ActiveRecord::Base.transaction do
+      clear_items!
+      update!(source: nil)
+
+      now_playing = [start_with]
+      auto_queue = recordings - now_playing
+
+      now_playing.each_with_index do |recording, index|
+        add_item(recording, section: :now_playing, active: index.zero?)
       end
 
-      # Add the remaining playlist items (excluding `now_playing_item`) to `auto_queue`
-      add_items(items_to_add, section: :auto_queue) unless items_to_add.empty?
+      add_items(auto_queue, section: :auto_queue)
     end
   end
 
   def add_items(items, position: :last, section: :next_up, tanda_id: nil)
-    ActiveRecord::Base.transaction do
-      items.each_with_index do |item, index|
-        add_item(item, position: ((position == :last) ? :last : index + 1), section:, tanda_id:)
-      end
+    return if items.empty?
+
+    batch_data = items.map.with_index do |item, index|
+      {
+        playback_queue_id: id,
+        item_type: item.class.name,
+        item_id: item.id,
+        tanda_id: tanda_id,
+        section: section,
+        active: false,
+        row_order: (position == :last) ? nil : index + 1
+      }
     end
+
+    QueueItem.insert_all(batch_data)
   end
 
   def add_item(item, position: :last, section: :next_up, tanda_id: nil, active: false)
-    queue_item = queue_items.find_or_initialize_by(item:)
+    queue_item = queue_items.create!(item:)
     queue_item.tanda_id = tanda_id
     queue_item.active = active
-    queue_item.row_order_position = position if section == :next_up
+    queue_item.row_order_position = position
     queue_item.section = section
     queue_item.save!
     queue_item
