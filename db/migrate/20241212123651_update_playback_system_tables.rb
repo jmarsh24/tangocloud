@@ -32,8 +32,6 @@ class UpdatePlaybackSystemTables < ActiveRecord::Migration[8.0]
     remove_column :playback_sessions, :updated_at, :datetime
     remove_column :playback_queues, :created_at, :datetime
     remove_column :playback_queues, :updated_at, :datetime
-    remove_column :queue_items, :created_at, :datetime
-    remove_column :queue_items, :updated_at, :datetime
     remove_foreign_key :playback_queues, column: :current_item_id
   end
 end
