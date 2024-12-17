@@ -61,12 +61,12 @@
         <% end %>
       </div>
       <div 
-    id="next_up" 
-    data-controller="sortable" 
-    data-sortable-url-value="<%= reorder_queue_item_path(id: ':id') %>" 
-    data-sortable-section="next_up" 
-    class="flex flex-col gap-2 w-full"
-  >
+        id="next_up" 
+        data-controller="sortable" 
+        data-sortable-url-value="<%= reorder_queue_item_path(id: ':id') %>" 
+        data-sortable-section="next_up" 
+        class="flex flex-col gap-2 w-full"
+      >
         <%= render collection: queue_items.next_up.rank(:row_order), partial: "queues/queue_item" %>
       </div>
     <% end %>
@@ -77,12 +77,12 @@
         </h3>
       </div>
       <div 
-    id="auto_queue" 
-    data-controller="sortable" 
-    data-sortable-url-value="<%= reorder_queue_item_path(id: ':id') %>" 
-    data-sortable-section="auto_queue" 
-    class="flex flex-col gap-2 w-full"
-  >
+        id="auto_queue" 
+        data-controller="sortable" 
+        data-sortable-url-value="<%= reorder_queue_item_path(id: ':id') %>" 
+        data-sortable-section="auto_queue" 
+        class="flex flex-col gap-2 w-full"
+      >
         <%= render collection: queue_items.auto_queue.rank(:row_order), partial: "queues/queue_item" %>
       </div>
     <% end %>

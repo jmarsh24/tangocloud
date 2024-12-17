@@ -6,9 +6,34 @@ class QueuesController < ApplicationController
   before_action :authorize_playback_queue, only: [:show, :play_now, :add_to, :clear, :shuffle]
 
   def show
-    @queue_items = @playback_queue.queue_items
-      .including_item_associations
-      .rank(:row_order)
+    queue_items = @playback_queue.queue_items.rank(:row_order)
+
+    recording_items = queue_items
+      .strict_loading
+      .where(item_type: "Recording").includes(
+        item: [
+          :composition,
+          :genre,
+          :singers,
+          :orchestra
+        ]
+      )
+
+    tanda_items = queue_items
+      .strict_loading
+      .where(item_type: "Tanda")
+      .includes(
+        item: [
+          recordings: [
+            :composition,
+            :genre,
+            :singers,
+            :orchestra
+          ]
+        ]
+      )
+
+    @queue_items = (recording_items + tanda_items).sort_by(&:row_order)
   end
 
   def play_now
