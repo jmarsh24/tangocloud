@@ -1,5 +1,5 @@
 class UpdatePlaybackSystemTables < ActiveRecord::Migration[8.0]
-  def change
+  def up
     create_enum :shuffle_mode_type, %w[off on smart]
     create_enum :repeat_mode_type, %w[off one all]
     create_enum :queue_section_type, %w[now_playing next_up auto_queue played]
@@ -25,13 +25,38 @@ class UpdatePlaybackSystemTables < ActiveRecord::Migration[8.0]
     end
 
     remove_index :queue_items, name: "index_queue_items_on_playback_queue_id_and_row_order"
-
     add_index :queue_items, [:playback_queue_id, :section, :row_order], unique: true
 
     remove_column :playback_sessions, :created_at, :datetime
     remove_column :playback_sessions, :updated_at, :datetime
-    remove_column :playback_queues, :created_at, :datetime
-    remove_column :playback_queues, :updated_at, :datetime
     remove_foreign_key :playback_queues, column: :current_item_id
+  end
+
+  def down
+    add_foreign_key :playback_queues, :queue_items, column: :current_item_id
+
+    add_column :playback_sessions, :created_at, :datetime, precision: 6, null: false, default: -> { "CURRENT_TIMESTAMP" }
+    add_column :playback_sessions, :updated_at, :datetime, precision: 6, null: false, default: -> { "CURRENT_TIMESTAMP" }
+
+    remove_index :queue_items, [:playback_queue_id, :section, :row_order]
+    add_index :queue_items, [:playback_queue_id, :row_order], unique: true, name: "index_queue_items_on_playback_queue_id_and_row_order"
+
+    change_table :queue_items, bulk: true do |t|
+      t.remove :section, type: :enum
+      t.remove :active, type: :boolean
+      t.remove_references :tanda, type: :uuid
+    end
+
+    change_table :playback_queues, bulk: true do |t|
+      t.remove :source_type, :source_id, :active, :position, :system
+    end
+
+    change_table :playback_sessions, bulk: true do |t|
+      t.remove :active, :shuffle_mode, :repeat_mode
+    end
+
+    execute "DROP TYPE shuffle_mode_type;"
+    execute "DROP TYPE repeat_mode_type;"
+    execute "DROP TYPE queue_section_type;"
   end
 end
