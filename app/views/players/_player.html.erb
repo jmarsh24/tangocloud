@@ -61,60 +61,60 @@
     </div>
     <div class="flex gap-2">
       <div class="flex gap-2">
-        <%= link_to queues_path, class: "btn btn-neutral btn-square sm:hidden", data: { turbo_frame: "modal" }, aria: { label: "Add to queue" } do %>
-          <%= heroicon("queue-list", size: :md) %>
-        <% end %>
-        <%= button_tag type: "button", class: "btn btn-neutral btn-square", aria: { label: "Share recording" }, data: { controller: "social-share", action: "click->social-share#share:prevent", "social-share-url-value": recording_path(recording.id) } do %>
-          <%= heroicon("arrow-up-on-square", size: :md) %>
-        <% end %>
-        <div id="like-button">
-          <%= render partial: "players/like_button", locals: {recording:, user: Current.user } %>
+        <%#= link_to queue_path, class: "btn btn-neutral btn-square sm:hidden", data: { turbo_frame: "modal" }, aria: { label: "Add to queue" } do %>
+          <%#= heroicon("queue-list", size: :md) %>
+          <%# end %>
+          <%= button_tag type: "button", class: "btn btn-neutral btn-square", aria: { label: "Share recording" }, data: { controller: "social-share", action: "click->social-share#share:prevent", "social-share-url-value": recording_path(recording.id) } do %>
+            <%= heroicon("arrow-up-on-square", size: :md) %>
+          <% end %>
+          <div id="like-button">
+            <%= render partial: "players/like_button", locals: {recording:, user: Current.user } %>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="card bg-neutral-100 dark:bg-neutral-800 p-4 rounded-lg space-y-4 mt-4">
-      <div class="flex flex-col gap-4">
-        <div>
-          <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-100"><%= recording.title %></h2>
-          <p class="text-sm text-neutral-500 dark:text-neutral-400">Title</p>
-        </div>
-        <% if recording.orchestra.present? %>
+      <div class="card bg-neutral-100 dark:bg-neutral-800 p-4 rounded-lg space-y-4 mt-4">
+        <div class="flex flex-col gap-4">
           <div>
-            <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-200"><%= recording.orchestra.display_name %></h2>
-            <p class="text-sm text-neutral-500 dark:text-neutral-400">Orchestra</p>
+            <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-100"><%= recording.title %></h2>
+            <p class="text-sm text-neutral-500 dark:text-neutral-400">Title</p>
           </div>
-        <% end %>
-        <% if recording.singers.any? %>
+          <% if recording.orchestra.present? %>
+            <div>
+              <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-200"><%= recording.orchestra.display_name %></h2>
+              <p class="text-sm text-neutral-500 dark:text-neutral-400">Orchestra</p>
+            </div>
+          <% end %>
+          <% if recording.singers.any? %>
+            <div>
+              <% recording.singers.each do |singer| %>
+                <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-200"><%= singer.display_name %></h2>
+                <p class="text-sm text-neutral-500 dark:text-neutral-400">Singer</p>
+              <% end %>
+            </div>
+          <% else %>
+            <div>
+              <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-200">Instrumental</h2>
+              <p class="text-sm text-neutral-500 dark:text-neutral-400">Type</p>
+            </div>
+          <% end %>
           <div>
-            <% recording.singers.each do |singer| %>
-              <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-200"><%= singer.display_name %></h2>
-              <p class="text-sm text-neutral-500 dark:text-neutral-400">Singer</p>
+            <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-200"><%= recording.genre.name %></h2>
+            <p class="text-sm text-neutral-500 dark:text-neutral-400">Genre</p>
+          </div>
+          <div>
+            <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-200"><%= recording.year %></h2>
+            <p class="text-sm text-neutral-500 dark:text-neutral-400">Year</p>
+          </div>
+        </div>
+      </div>
+      <% if recording.lyrics.any? %>
+        <div class="card flex gap-8 bg-neutral-100 dark:bg-neutral-800 p-4 rounded-lg">
+          <h2 class="text-xl font-black text-neutral-800 dark:text-neutral-200">Lyrics</h2>
+          <div class="text-lg font-bold text-neutral-700 dark:text-neutral-300 text-center">
+            <% recording.lyrics.first.text.split("\n\n").each do |paragraph| %>
+              <p><%= paragraph.gsub("\n", "<br>").html_safe %></p>
             <% end %>
           </div>
-        <% else %>
-          <div>
-            <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-200">Instrumental</h2>
-            <p class="text-sm text-neutral-500 dark:text-neutral-400">Type</p>
-          </div>
-        <% end %>
-        <div>
-          <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-200"><%= recording.genre.name %></h2>
-          <p class="text-sm text-neutral-500 dark:text-neutral-400">Genre</p>
         </div>
-        <div>
-          <h2 class="text-lg font-semibold text-neutral-800 dark:text-neutral-200"><%= recording.year %></h2>
-          <p class="text-sm text-neutral-500 dark:text-neutral-400">Year</p>
-        </div>
-      </div>
+      <% end %>
     </div>
-    <% if recording.lyrics.any? %>
-      <div class="card flex gap-8 bg-neutral-100 dark:bg-neutral-800 p-4 rounded-lg">
-        <h2 class="text-xl font-black text-neutral-800 dark:text-neutral-200">Lyrics</h2>
-        <div class="text-lg font-bold text-neutral-700 dark:text-neutral-300 text-center">
-          <% recording.lyrics.first.text.split("\n\n").each do |paragraph| %>
-            <p><%= paragraph.gsub("\n", "<br>").html_safe %></p>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
-  </div>
