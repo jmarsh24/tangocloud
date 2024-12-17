@@ -5,7 +5,7 @@ class QueueItem < ApplicationRecord
   belongs_to :item, polymorphic: true
   belongs_to :tanda, optional: true
 
-  enum :section, {now_playing: "now_playing", next_up: "next_up", auto_queue: "auto_queue"}
+  enum :section, {now_playing: "now_playing", next_up: "next_up", auto_queue: "auto_queue", played: "played"}
 
   validates :item_type, inclusion: {in: %w[Tanda Recording]}
 
@@ -14,6 +14,7 @@ class QueueItem < ApplicationRecord
   scope :now_playing, -> { where(section: :now_playing) }
   scope :next_up, -> { where(section: :next_up) }
   scope :auto_queue, -> { where(section: :auto_queue) }
+  scope :played, -> { where(section: :played) }
   scope :active_item, -> { where(active: true) }
   scope :including_item_associations, -> {
     includes(

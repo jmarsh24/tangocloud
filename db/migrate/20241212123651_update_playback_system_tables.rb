@@ -2,7 +2,7 @@ class UpdatePlaybackSystemTables < ActiveRecord::Migration[8.0]
   def change
     create_enum :shuffle_mode_type, %w[off on smart]
     create_enum :repeat_mode_type, %w[off one all]
-    create_enum :queue_section_type, %w[now_playing next_up auto_queue]
+    create_enum :queue_section_type, %w[now_playing next_up auto_queue played]
 
     change_table :playback_sessions, bulk: true do |t|
       t.boolean :active, default: false, null: false
@@ -34,6 +34,6 @@ class UpdatePlaybackSystemTables < ActiveRecord::Migration[8.0]
     remove_column :playback_queues, :updated_at, :datetime
     remove_column :queue_items, :created_at, :datetime
     remove_column :queue_items, :updated_at, :datetime
-    # remove_foreign_key :playback_queues, column: :current_item_id
+    remove_foreign_key :playback_queues, column: :current_item_id
   end
 end

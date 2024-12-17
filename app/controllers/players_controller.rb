@@ -34,7 +34,7 @@ class PlayersController < ApplicationController
   def previous
     authorize @playback_queue
 
-    @playback_queue.previous
+    @playback_queue.previous!
 
     update_view_with_current_state
   end

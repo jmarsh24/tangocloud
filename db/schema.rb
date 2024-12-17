@@ -21,7 +21,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_12_123651) do
   create_enum "acr_cloud_recognition_status", ["pending", "processing", "completed", "failed"]
   create_enum "audio_file_status", ["pending", "processing", "completed", "failed"]
   create_enum "composition_role_type", ["composer", "lyricist"]
-  create_enum "queue_section_type", ["now_playing", "next_up", "auto_queue"]
+  create_enum "queue_section_type", ["now_playing", "next_up", "auto_queue", "played"]
   create_enum "recording_type", ["studio", "live"]
   create_enum "repeat_mode_type", ["off", "one", "all"]
   create_enum "shuffle_mode_type", ["off", "on", "smart"]

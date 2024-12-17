@@ -23,7 +23,17 @@ class PlaybackQueue < ApplicationRecord
           next_now_playing_item.update!(active: true)
           return
         else
-          queue_items.now_playing.delete_all
+          tanda_id = now_playing_items.first.tanda_id
+          if tanda_id
+            tanda = Tanda.find(tanda_id)
+            add_item(tanda, section: :played)
+          else
+            now_playing_items.each do |item|
+              add_item(item.item, section: :played)
+            end
+          end
+
+          now_playing_items.delete_all
         end
       end
 
@@ -38,7 +48,6 @@ class PlaybackQueue < ApplicationRecord
         else
           add_item(next_item.item, section: :now_playing, active: true)
         end
-
         next_item.destroy
       else
         refill_auto_queue
@@ -52,9 +61,57 @@ class PlaybackQueue < ApplicationRecord
           else
             add_item(next_item.item, section: :now_playing, active: true)
           end
-
           next_item.destroy
         end
+      end
+    end
+  end
+
+  def previous!
+    ActiveRecord::Base.transaction do
+      current_active = queue_items.find_by(active: true)
+
+      return unless current_active
+
+      now_playing_items = queue_items.now_playing.order(:row_order)
+
+      if now_playing_items.size > 1
+        current_index = now_playing_items.index(current_active)
+
+        if current_index > 0
+          current_active.update!(active: false)
+
+          previous_item = now_playing_items[current_index - 1]
+          previous_item.update!(active: true)
+          return
+        else
+          tanda_id = now_playing_items.first.tanda_id
+
+          if tanda_id
+            tanda = Tanda.find(tanda_id)
+            add_item(tanda, section: :next_up, position: :first)
+            now_playing_items.delete_all
+            return
+          end
+        end
+      end
+
+      current_active.update!(active: false)
+
+      played_items = queue_items.where(section: :played).order(:row_order)
+      last_played_item = played_items.last
+
+      if last_played_item
+        if last_played_item.item.is_a?(Tanda)
+          tanda_recordings = last_played_item.item.tanda_recordings.rank(:position).map(&:recording)
+          tanda_recordings.each_with_index do |recording, index|
+            active = index == tanda_recordings.size - 1
+            add_item(recording, section: :now_playing, tanda_id: last_played_item.item.id, active:, position: index + 1)
+          end
+        else
+          add_item(last_played_item.item, section: :now_playing, active: true)
+        end
+        last_played_item.destroy
       end
     end
   end
