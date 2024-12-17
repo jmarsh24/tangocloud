@@ -18,9 +18,9 @@ class PlaylistsController < ApplicationController
         playlist: :user,
         item: [
           :composition,
-          :orchestra,
           :genre,
           :singers,
+          orchestra: {image_attachment: :blob},
           digital_remasters: [
             audio_variants: [
               audio_file_attachment: :blob
@@ -40,9 +40,9 @@ class PlaylistsController < ApplicationController
         item: [
           recordings: [
             :composition,
-            :orchestra,
             :genre,
             :singers,
+            orchestra: {image_attachment: :blob},
             digital_remasters: [
               audio_variants: [
                 audio_file_attachment: :blob
