@@ -7,6 +7,14 @@ class QueueItemPolicy < ApplicationPolicy
     user == record.playback_queue.user
   end
 
+  def play?
+    user == record.playback_queue.user
+  end
+
+  def activate?
+    user == record.playback_queue.user
+  end
+
   class Scope < Scope
     # NOTE: Be explicit about which records you allow access to!
     def resolve

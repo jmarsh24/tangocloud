@@ -70,6 +70,8 @@ Rails.application.routes.draw do
 
   resources :queue_items, only: [:destroy] do
     member do
+      post :activate
+      post :play
       patch :reorder
     end
   end

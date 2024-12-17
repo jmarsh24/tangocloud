@@ -70,12 +70,11 @@ class PlaybackQueue < ApplicationRecord
   def previous!
     ActiveRecord::Base.transaction do
       current_active = queue_items.find_by(active: true)
-      return unless current_active # Exit early if no active item
+      return unless current_active
 
       now_playing_items = queue_items.now_playing.order(:row_order)
       played_items = queue_items.played.order(:row_order)
 
-      # Step 1: Navigate within the current Tanda if it exists
       if current_active.tanda_id
         current_tanda_items = now_playing_items.where(tanda_id: current_active.tanda_id)
         current_index = current_tanda_items.index(current_active)
@@ -85,21 +84,18 @@ class PlaybackQueue < ApplicationRecord
         end
 
         if current_index > 0
-          # Move to the previous recording in the Tanda
           current_active.update!(active: false)
           previous_item = current_tanda_items[current_index - 1]
           previous_item.update!(active: true)
           return
         else
-          # Already at the first recording; move the Tanda to next_up
           tanda_id = current_active.tanda_id
           tanda = Tanda.find(tanda_id)
-          add_item(tanda, section: :next_up, position: :first)
+          add_item(tanda, section: :auto_queue, position: :first)
           now_playing_items.where(tanda_id: tanda_id).delete_all
         end
       end
 
-      # Step 2: Bring the last played Tanda or recording into now_playing
       if played_items.any?
         last_played_item = played_items.last.item
 
@@ -111,11 +107,52 @@ class PlaybackQueue < ApplicationRecord
             add_item(tanda_recording.recording, section: :now_playing, tanda_id: last_played_item.id, active:, position: index + 1)
           end
         elsif last_played_item.is_a?(Recording)
-          add_item(last_played_item, section: :next_up, active: true)
+          add_item(last_played_item, section: :auto_queue, active: true)
         end
 
-        # Remove the restored item from played
         played_items.last.destroy
+      end
+    end
+  end
+
+  def play_item!(queue_item)
+    ActiveRecord::Base.transaction do
+      now_playing_items = queue_items.now_playing.order(:row_order)
+      now_playing_items.each do |item|
+        add_item(item.item, section: :played, position: :last, tanda_id: item.tanda_id)
+      end
+      now_playing_items.delete_all
+
+      auto_queue_items = queue_items.auto_queue.order(:row_order)
+      queue_item_index = auto_queue_items.index(queue_item)
+
+      if queue_item_index
+        items_to_move = auto_queue_items[0..queue_item_index]
+        items_to_move.each do |item|
+          add_item(item.item, section: :played, position: :last, tanda_id: item.tanda_id)
+        end
+
+        queue_items.where(id: items_to_move.map(&:id)).delete_all
+      end
+
+      if queue_item.item.is_a?(Tanda)
+        tanda = queue_item.item
+        tanda.tanda_recordings.rank(:position).each_with_index do |tanda_recording, index|
+          add_item(
+            tanda_recording.recording,
+            section: :now_playing,
+            active: index.zero?,
+            tanda_id: tanda.id,
+            position: index + 1
+          )
+        end
+      else
+        add_item(
+          queue_item.item,
+          section: :now_playing,
+          active: true,
+          position: 1
+        )
       end
     end
   end

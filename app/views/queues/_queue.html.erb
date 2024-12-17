@@ -25,28 +25,29 @@
       >
         <% queue_items.now_playing.rank(:row_order).each do |now_playing_item| %>
           <div 
-            class="flex gap-4 bg-neutral-800 p-2 rounded-lg" 
+            class="flex gap-4 bg-neutral-800 p-2 rounded-lg hover:bg-neutral-700 cursor-pointer" 
             data-sortable-id="<%= now_playing_item.id %>" 
             data-sortable-handle
           >
-            <div class="flex flex-col items-start justify-center text-left">
-              <div class="<%= class_names('flex gap-2 text-sm font-semibold', 'text-orange-500' => now_playing_item.active?) %>">
-                <% if now_playing_item.active? %>
-                  <%= inline_svg_tag("icons/svg_loaders/animated-audio.svg", class: class_names("hidden w-4 h-4 fill-orange-500 group-data-[mini-player-playing-value=true]:block")) %>
-                  <%= inline_svg_tag("icons/svg_loaders/paused-audio.svg", class: class_names("hidden w-4 h-4 fill-orange-500 group-data-[mini-player-playing-value=false]:block")) %>
-                <% end %>
-                <%= now_playing_item.item.composition.title %>
+            <%= button_to activate_queue_item_path(now_playing_item), method: :post, remote: true, class: "flex w-full text-left" do %>
+              <div class="flex flex-col items-start justify-center text-left">
+                <div class="<%= class_names('flex gap-2 text-sm font-semibold', 'text-orange-500' => now_playing_item.active?) %>">
+                  <% if now_playing_item.active? %>
+                    <%= inline_svg_tag("icons/svg_loaders/animated-audio.svg", class: "w-4 h-4 fill-orange-500") %>
+                  <% end %>
+                  <%= now_playing_item.item.composition.title %>
+                </div>
+                <div class="text-xs text-gray-500">
+                  <%= now_playing_item.item.orchestra.display_name %>
+                  <% if now_playing_item.item.singers.present? %>
+                    &middot; <%= now_playing_item.item.singers.map(&:name).join(", ") %>
+                  <% end %>
+                </div>
+                <div class="text-xs text-gray-500">
+                  <%= now_playing_item.item.genre.name %> - <%= now_playing_item.item.year %>
+                </div>
               </div>
-              <div class="text-xs text-gray-500">
-                <%= now_playing_item.item.orchestra.display_name %>
-                <% if now_playing_item.item.singers.present? %>
-                  &middot; <%= now_playing_item.item.singers.map(&:name).compact.join(", ") %>
-                <% end %>
-              </div>
-              <div class="text-xs text-gray-500">
-                <%= now_playing_item.item.genre.name %> - <%= now_playing_item.item.year %>
-              </div>
-            </div>
+            <% end %>
           </div>
         <% end %>
       </div>
