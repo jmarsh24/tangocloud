@@ -73,7 +73,7 @@ class PlaybackQueue < ApplicationRecord
       return unless current_active # Exit early if no active item
 
       now_playing_items = queue_items.now_playing.order(:row_order)
-      played_items = queue_items.where(section: :played).order(:row_order)
+      played_items = queue_items.played.order(:row_order)
 
       # Step 1: Navigate within the current Tanda if it exists
       if current_active.tanda_id
