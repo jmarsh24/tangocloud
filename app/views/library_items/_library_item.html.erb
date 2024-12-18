@@ -27,7 +27,14 @@
       <% c.with_toggle_close do %>
         <%= heroicon "ellipsis-vertical", variant: :outline, size: :sm %>
       <% end %>
-      <% c.with_menu_item_button_to(library_item_path(library_item), method: :delete) do %>
+      <% c.with_menu_item_button_to(add_to_queue_path(item_type: library_item.item.class.name, item_id: library_item.item.id)) do %>
+        <%= heroicon "plus", variant: :outline, size: :sm %>
+        <span>Add to queue</span>
+      <% end %>
+      <% c.with_menu_item_button_to(library_item_path(library_item), method: :delete, data: { 
+        turbo_confirm: "Are you sure you want to delete <strong>#{library_item.item.title}</strong> from <strong>Your Library</strong>?",
+        turbo_confirm_title: "Delete from your library?"
+        }) do %>
         <%= heroicon "trash", variant: :outline, size: :sm %>
         <span>Remove from your library</span>
       <% end %>

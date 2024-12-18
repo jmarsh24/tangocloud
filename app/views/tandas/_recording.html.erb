@@ -1,5 +1,6 @@
+<%# locals: { recording: } %>
 <% cache(recording) do %>
-  <div class="flex flex-auto gap-2 items-center overflow-hidden relative border-t border-neutral-500 last:border-b-0 min-h-[72px]">
+  <div class="flex flex-auto gap-2 items-center relative border-t border-neutral-500 last:border-b-0 min-h-[72px]">
     <div class="flex flex-grow flex-col items-start text-left justify-center overflow-hidden">
       <div class="flex items-center justify-between w-full">
         <div class="text-sm text-neutral-200 font-semibold text-nowrap" title="<%= recording.composition.title %>">

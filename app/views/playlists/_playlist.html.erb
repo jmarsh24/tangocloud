@@ -1,19 +1,20 @@
 <%# locals: { playlist: } %>
 <% cache(playlist) do %>
-  <%= link_to playlist, class: "relative block w-32 h-32 rounded-lg overflow-hidden snap-start group" do %>
-    <% if playlist.image.present? %>
-      <%= image_tag playlist.image, class: "absolute inset-0 w-full h-full object-cover" %>
-    <% else %>
-      <div class="absolute inset-0 w-full h-full bg-neutral-200 dark:bg-neutral-800"></div>
+  <div class="flex flex-col items-center w-32">
+    <%= link_to playlist, class: "block w-full h-32 rounded-lg overflow-hidden group" do %>
+      <% if playlist.image.present? %>
+        <%= image_tag playlist.image, class: "w-full h-full object-cover" %>
+      <% else %>
+        <div class="w-full h-full bg-neutral-200 dark:bg-neutral-800"></div>
+      <% end %>
     <% end %>
-    <div class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black to-transparent pointer-events-none"></div>
-    <div class="absolute bottom-0 left-0 right-0 px-2 py-1">
-      <h2 class="relative text-xs font-semibold text-white truncate">
+    <div class="mt-2 text-center">
+      <h2 class="text-sm font-semibold text-neutral-800 dark:text-neutral-100">
         <%= playlist.title %>
       </h2>
-      <p class="relative text-xs font-extralight text-white truncate">
+      <p class="text-xs font-light text-neutral-600 dark:text-neutral-400">
         <%= playlist.subtitle %>
       </p>
     </div>
-  <% end %>
+  </div>
 <% end %>

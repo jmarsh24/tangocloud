@@ -29,12 +29,13 @@ end
 #
 # Table name: playback_sessions
 #
-#  id         :uuid             not null, primary key
-#  user_id    :uuid             not null
-#  playing    :boolean          default(FALSE), not null
-#  position   :integer          default(0), not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  volume     :integer          default(100)
-#  muted      :boolean          default(FALSE)
+#  id           :uuid             not null, primary key
+#  user_id      :uuid             not null
+#  playing      :boolean          default(FALSE), not null
+#  position     :integer          default(0), not null
+#  volume       :integer          default(100)
+#  muted        :boolean          default(FALSE)
+#  active       :boolean          default(FALSE), not null
+#  shuffle_mode :enum             default("off"), not null
+#  repeat_mode  :enum             default("off"), not null
 #

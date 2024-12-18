@@ -1,7 +1,7 @@
 <%# locals: { tanda:, recording: } %>
 <div id="recording-form-<%= recording.id %>" class="flex gap-2 p-2 items-center hover:cursor-pointer rounded-lg overflow-hidden bg-neutral-950 hover:bg-neutral-800">
   <div class="flex flex-1">
-    <%= form_with url: load_music_library_recording_path(recording), class: "flex w-full items-center gap-4" do |form| %>
+    <%= form_with url: play_now_queue_path(item_type: "recording", item_id: recording.id), class: "flex w-full items-center gap-4" do |form| %>
       <button type="submit" class="flex w-full items-center gap-4 bg-transparent border-0 p-0 hover:cursor-pointer">
         <%= render partial: "recordings/recording", locals: { recording: } %>
       </button>

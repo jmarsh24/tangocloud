@@ -1,5 +1,17 @@
 class QueueItemPolicy < ApplicationPolicy
+  def destroy?
+    user == record.playback_queue.user
+  end
+
   def reorder?
+    user == record.playback_queue.user
+  end
+
+  def play?
+    user == record.playback_queue.user
+  end
+
+  def activate?
     user == record.playback_queue.user
   end
 

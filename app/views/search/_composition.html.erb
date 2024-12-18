@@ -1,6 +1,6 @@
 <%# locals: {composition:, highlights: nil} %>
 <% cache(composition) do %>
-  <%= link_to composition_path(composition), class: "flex flex-auto gap-2 items-center overflow-hidden relative text-neutral-800 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-lg p-2 transition" do %>
+  <%= link_to composition_path(composition), class: "flex flex-auto gap-2 items-center relative text-neutral-800 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-lg p-2 transition" do %>
     <% album_image = composition.recordings.first&.digital_remasters&.first&.album&.album_art %>
     <% if album_image.present? %>
       <%= image_tag album_image, class: "h-16 rounded-full aspect-square object-cover" %>

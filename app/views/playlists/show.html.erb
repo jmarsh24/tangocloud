@@ -19,7 +19,7 @@
       class: "absolute left-4 top-4 flex items-center gap-2 p-2 rounded-full bg-neutral-200 text-sm text-neutral-700 dark:bg-neutral-800 dark:text-neutral-400 hover:bg-neutral-300 dark:hover:bg-neutral-700" do %>
       <%= heroicon "chevron-left", size: :sm, class: "text-neutral-500 dark:text-neutral-400" %>
     <% end %>
-    <div class="w-full md:max-w-screen-md flex flex-col gap-4 items-center pt-4">
+    <div class="md:max-w-screen-md flex flex-col gap-4 items-center pt-4">
       <% if @playlist.image.attached? %>
         <%= image_tag @playlist.image, class: "w-64 h-64 md:w-24 md:h-24 rounded-lg object-cover" %>
       <% end %>
@@ -27,6 +27,15 @@
         <h1 class="text-2xl font-bold dark:text-neutral-300">
           <%= @playlist.title %>
         </h1>
+      </div>
+      <div class="flex justify-center items-center gap-4">
+        <%= button_to play_now_queue_path, params: { item_type: "Playlist", item_id: @playlist.id }, class: "btn btn-primary" do %>
+          <%= heroicon "play", variant: :solid, size: :sm %>
+        <% end %>
+        <%= button_to play_now_queue_path, params: { item_type: "Playlist", item_id: @playlist.id, shuffle: true }, class: "btn btn-neutral" do %>
+          <%= heroicon "arrow-right-left", variant: :outline, size: :sm %>
+          <span>Shuffle</span>
+        <% end %>
         <%= ui_dropdown align: :end do |c| %>
           <% c.with_toggle_open do %>
             <%= heroicon "ellipsis-horizontal", variant: :outline, size: :sm %>
@@ -40,20 +49,24 @@
               <span>Edit details</span>
             <% end %>
           <% end %>
+          <% c.with_menu_item_button_to(add_to_queue_path(item_type: "playlist", item_id: @playlist.id)) do %>
+            <%= heroicon "plus", variant: :outline, size: :sm %>
+            <span>Add to queue</span>
+          <% end %>
           <% c.with_menu_item_button_to(add_to_library_playlist_path(@playlist), method: :post) do %>
             <%= heroicon "plus", variant: :outline, size: :sm %>
             <span>Add to Library</span>
           <% end %>
         <% end %>
       </div>
-      <% if @playlist.user %>
-        <p class="text-sm text-center dark:text-neutral-400">
-          <%= @playlist.user.username %>
-        </p>
-      <% end %>
-      <div class="flex w-full flex-col gap-2">
-        <%= render collection: @playlist_items, partial: "playlists/playlist_item" %>
-      </div>
+    </div>
+    <% if @playlist.user %>
+      <p class="text-sm text-center dark:text-neutral-400">
+        <%= @playlist.user.username %>
+      </p>
+    <% end %>
+    <div class="flex w-full flex-col gap-2">
+      <%= render collection: @playlist_items, partial: "playlists/playlist_item" %>
     </div>
   </div>
 <% end %>

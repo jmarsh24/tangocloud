@@ -15,6 +15,7 @@ TurboPower.initialize(Turbo.StreamActions);
 
 import { Application } from "@hotwired/stimulus";
 import { registerControllers } from "stimulus-vite-helpers";
+import { setupTurboConfirm } from "../turbo_confirm";
 
 declare global {
   interface Window {
@@ -35,4 +36,4 @@ const controllers = import.meta.glob("../**/*_controller.{js,ts}", {
 });
 registerControllers(application, controllers);
 
-export { application };
+setupTurboConfirm();

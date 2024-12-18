@@ -1,6 +1,6 @@
 <%# locals(recording:) %>
 <% cache(recording) do %>
-  <div class="flex flex-auto gap-2 items-center overflow-hidden relative">
+  <div class="flex flex-auto gap-2 items-center relative">
     <%= image_tag recording.digital_remasters.first.album.album_art, class: "h-16 rounded-full aspect-square object-cover" %>
     <div class="flex flex-auto flex-col items-start text-left overflow-hidden">
       <div class="text-sm font-semibold text-nowrap" title="<%= recording.composition.title %>">

@@ -13,8 +13,12 @@ module IconHelper
     inline_svg_tag "icons/heroicons/#{variant}/#{icon_name.to_s.tr("_", "-")}.svg", class: classes
   end
 
-  def icon(icon_name, size: :md, **options)
+  def icon(icon_name, size: :md, variant: :outline, **options)
     classes = class_names(SIZE_CLASSES[size], options.delete(:class))
-    inline_svg_tag("icons/icn-#{icon_name}.svg", class: classes, **options)
+    if variant
+      inline_svg_tag("icons/#{variant}/#{icon_name}.svg", class: classes, **options)
+    else
+      inline_svg_tag("icons/#{icon_name}.svg", class: classes, **options)
+    end
   end
 end

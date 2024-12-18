@@ -1,19 +1,9 @@
-<%# locals: { tanda: } %>
-<% cache(tanda) do %>
+<%# locals: { playlist:, tanda: } %>
+<% cache([playlist, tanda]) do %>
   <% recordings = tanda.recordings.to_a %>
   <% first_recording = recordings.first %>
   <% genre_name = first_recording&.genre&.name&.downcase %>
-  <% background_class =
-      case genre_name
-      when "tango" then "bg-tango"
-      when "milonga" then "bg-milonga"
-      when "vals" then "bg-vals"
-      else "bg-default"
-      end %>
-  <div class="<%= class_names(
-      'w-full group snap-start flex flex-col rounded-xl text-neutral-200 transition-transform duration-200 p-4 gap-4 relative',
-              background_class
-            ) %>">
+  <div class="w-full group snap-start flex flex-col rounded-xl text-neutral-200 transition-transform duration-200 p-4 gap-4 relative">
     <div class="w-full flex flex-col gap-4">
       <%= link_to tanda_path(tanda), class: "w-full flex justify-start gap-4" do %>
         <div class="relative w-24 flex items-center justify-center">
@@ -50,7 +40,7 @@
         </div>
       <% end %>
       <div class="flex w-full gap-2 justify-between items-center">
-        <%= form_with url: play_now_queue_path(item_type: "tanda", item_id: tanda.id), method: :post do %>
+        <%= form_with url: play_now_queue_path(parent_type: "playlist", parent_id: playlist.id, item_type: "tanda", item_id: tanda.id) do %>
           <button type="submit" class="btn btn-neutral btn-md btn-circle flex items-center justify-center opacity-85">
             <%= heroicon "play", size: :sm, variant: :solid, class: "fill-white-500" %>
           </button>

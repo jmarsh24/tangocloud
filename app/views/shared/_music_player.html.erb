@@ -1,6 +1,6 @@
 <%# locals: (playback_queue: nil, playback_session: nil) %>
 <% if playback_queue && playback_session %>
-  <% recording = playback_queue.current_item&.item %>
+  <% recording = playback_queue.active_item&.item %>
   <% if recording %>
     <div
       id="music-player"

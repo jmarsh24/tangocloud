@@ -1,0 +1,45 @@
+<%# locals: { tanda:, queue_item: nil } %>
+<% cache([tanda, queue_item]) do %>
+  <% recordings = tanda.recordings %>
+  <% first_recording = recordings.first %>
+  <% genre_name = first_recording&.genre&.name&.downcase %>
+  <div class="w-full group snap-start flex flex-col rounded-xl bg-neutral-800 text-neutral-200 transition-transform duration-200 p-4 gap-4 relative">
+    <div class="w-full flex flex-col gap-4">
+      <%= form_with url: play_queue_item_path(queue_item), class: "flex w-full gap-4 items-center" do |form| %>
+        <%= button_tag type: :submit, class: "flex w-full gap-4 items-center text-left" do %>
+          <% if recordings.present? %>
+            <div class="flex w-full flex-col z-20 relative border-b border-neutral-500">
+              <%= render collection: recordings, partial: "tandas/recording", locals: { tanda: }, as: :recording %>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+      <div class="flex w-full justify-between items-center mt-2">
+        <div class="text-xs text-gray-400 line-clamp-1">
+          <%= formatted_tanda_duration(tanda) %>
+        </div>
+        <%= ui_dropdown align: :end do |c| %>
+          <% c.with_toggle_open do %>
+            <%= heroicon "ellipsis-horizontal", variant: :outline, size: :sm, class: "cursor-pointer" %>
+          <% end %>
+          <% c.with_toggle_close do %>
+            <%= heroicon "ellipsis-horizontal", variant: :outline, size: :sm, class: "cursor-pointer" %>
+          <% end %>
+          <% c.with_menu_item_button_to(add_to_queue_path(item_type: "tanda", item_id: tanda.id)) do %>
+            <%= heroicon "plus", variant: :outline, size: :sm %>
+            <span>Add to Queue</span>
+          <% end %>
+          <% c.with_menu_item_link_to(tanda_path(tanda)) do %>
+            <span>Show Tanda</span>
+          <% end %>
+          <% if queue_item %>
+            <% c.with_menu_item_button_to(queue_item_path(queue_item), method: :delete) do %>
+              <%= heroicon "trash", variant: :outline, size: :sm %>
+              <span>Remove from queue</span>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

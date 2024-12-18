@@ -15,6 +15,10 @@ class PlaylistPolicy < ApplicationPolicy
     user.admin? || user.tester? || user.editor?
   end
 
+  def play_now?
+    user.admin? || user.tester? || user.editor?
+  end
+
   class Scope < Scope
     # NOTE: Be explicit about which records you allow access to!
     def resolve

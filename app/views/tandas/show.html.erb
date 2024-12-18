@@ -11,26 +11,6 @@
       <%= image_tag @tanda.image, class: "w-24 h-24 object-cover rounded-lg shadow-md border border-neutral-200 dark:border-neutral-700" %>
     <% end %>
     <div class="flex flex-col justify-between gap-2">
-      <div class="flex items-center gap-2">
-        <%= ui_dropdown align: :end do |c| %>
-          <% c.with_toggle_open do %>
-            <%= heroicon "ellipsis-horizontal", variant: :outline, size: :sm %>
-          <% end %>
-          <% c.with_toggle_close do %>
-            <%= heroicon "ellipsis-horizontal", variant: :outline, size: :sm %>
-          <% end %>
-          <% if Current.user == @tanda.user %>
-            <% c.with_menu_item_button_to(edit_tanda_path(@tanda)) do %>
-              <%= heroicon "pencil", variant: :outline, size: :sm %>
-              <span>Edit details</span>
-            <% end %>
-          <% end %>
-          <% c.with_menu_item_button_to(add_to_library_tanda_path(@tanda)) do %>
-            <%= heroicon "plus", variant: :outline, size: :sm %>
-            <span>Add to Library</span>
-          <% end %>
-        <% end %>
-      </div>
       <p class="text-sm text-neutral-500 dark:text-neutral-400">
         <%= @tanda.public? ? "Public Tanda" : "Private Tanda" %>
       </p>
@@ -41,6 +21,33 @@
       <% end %>
       <div class="text-sm text-gray-400 line-clamp-1">
         <%= formatted_tanda_duration(@tanda) %>
+      </div>
+      <div class="flex items-center gap-2">
+        <%= button_to play_now_queue_path, params: { item_type: "Tanda", item_id: @tanda.id }, class: "btn btn-primary" do %>
+          <%= heroicon "play", variant: :solid, size: :sm %>
+        <% end %>
+        <%= ui_dropdown align: :end do |c| %>
+          <% c.with_toggle_open do %>
+            <%= heroicon "ellipsis-horizontal", variant: :outline, size: :sm %>
+          <% end %>
+          <% c.with_toggle_close do %>
+            <%= heroicon "ellipsis-horizontal", variant: :outline, size: :sm %>
+          <% end %>
+          <% if Current.user == @tanda.user %>
+            <% c.with_menu_item_link_to(edit_tanda_path(@tanda), data: {turbo_frame: "modal"}) do %>
+              <%= heroicon "pencil", variant: :outline, size: :sm %>
+              <span>Edit details</span>
+            <% end %>
+          <% end %>
+          <% c.with_menu_item_button_to(add_to_queue_path(item_type: "tanda", item_id: @tanda.id)) do %>
+            <%= heroicon "plus", variant: :outline, size: :sm %>
+            <span>Add to queue</span>
+          <% end %>
+          <% c.with_menu_item_button_to(add_to_library_tanda_path(@tanda)) do %>
+            <%= heroicon "plus", variant: :outline, size: :sm %>
+            <span>Add to Library</span>
+          <% end %>
+        <% end %>
       </div>
     </div>
   </div>

@@ -18,9 +18,9 @@ class PlaylistsController < ApplicationController
         playlist: :user,
         item: [
           :composition,
-          :orchestra,
           :genre,
           :singers,
+          orchestra: {image_attachment: :blob},
           digital_remasters: [
             audio_variants: [
               audio_file_attachment: :blob
@@ -36,19 +36,16 @@ class PlaylistsController < ApplicationController
       .strict_loading
       .where(item_type: "Tanda", playlist_id: @playlist.id)
       .includes(
+        playlist: :user,
         item: [
-          :user,
           recordings: [
             :composition,
-            :orchestra,
             :genre,
             :singers,
+            orchestra: {image_attachment: :blob},
             digital_remasters: [
               audio_variants: [
                 audio_file_attachment: :blob
-              ],
-              album: [
-                album_art_attachment: :blob
               ]
             ]
           ]

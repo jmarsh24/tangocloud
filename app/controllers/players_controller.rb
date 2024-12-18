@@ -19,46 +19,24 @@ class PlayersController < ApplicationController
 
   def pause
     authorize @playback_session
-    @playback_session.play(reset_position: true)
+    @playback_session.pause
     head :ok
   end
 
   def next
     authorize @playback_queue
 
-    @playback_queue.next_item
+    @playback_queue.play_next!
 
-    @recording = @playback_queue.current_item&.item
-
-    @playback_queue_items = @playback_queue.queue_items.including_item_associations.rank(:row_order).offset(1)
-
-    @playback_session.play(reset_position: true)
-
-    render turbo_stream: [
-      turbo_stream.update("music-player", partial: "shared/music_player", locals: {playback_queue: @playback_queue, playback_session: @playback_session}, method: "morph"),
-      turbo_stream.update("sidebar-queue", partial: "queues/queue", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @playback_queue_items}, method: "morph"),
-      turbo_stream.update("modal-queue", partial: "queues/queue", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @playback_queue_items}, method: "morph"),
-      turbo_stream.update("modal-now-playing", partial: "players/player", locals: {playback_session: @playback_session, recording: @recording}, method: "morph")
-    ]
+    update_view_with_current_state
   end
 
   def previous
     authorize @playback_queue
 
-    @playback_queue.previous_item
+    @playback_queue.previous!
 
-    @recording = @playback_queue.current_item&.item
-
-    @playback_queue_items = @playback_queue.queue_items.including_item_associations.rank(:row_order).offset(1)
-
-    @playback_session.play(reset_position: true)
-
-    render turbo_stream: [
-      turbo_stream.update("music-player", partial: "shared/music_player", locals: {playback_queue: @playback_queue, playback_session: @playback_session}, method: "morph"),
-      turbo_stream.update("sidebar-queue", partial: "queues/queue", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @playback_queue_items}, method: "morph"),
-      turbo_stream.update("modal-queue", partial: "queues/queue", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @playback_queue_items}, method: "morph"),
-      turbo_stream.update("modal-now-playing", partial: "players/player", locals: {playback_session: @playback_session, recording: @recording}, method: "morph")
-    ]
+    update_view_with_current_state
   end
 
   def update_volume
@@ -88,5 +66,16 @@ class PlayersController < ApplicationController
 
     @playback_session.update!(position: 0, playing: false)
     head :ok
+  end
+
+  def update_view_with_current_state
+    @queue_items = @playback_queue.queue_items.including_item_associations.rank(:row_order)
+
+    render turbo_stream: [
+      turbo_stream.update("music-player", partial: "shared/music_player", locals: {playback_queue: @playback_queue, playback_session: @playback_session}, method: "morph"),
+      turbo_stream.update("queue", partial: "queues/queue", locals: {playback_queue: @playback_queue, playback_session: @playback_session, queue_items: @queue_items}, method: "morph")
+      # turbo_stream.update("modal-queue", partial: "queues/queue", locals: {playback_queue: @playback_queue, playback_session: @playback_session, now_playing: @now_playing}, method: "morph"),
+      # turbo_stream.update("modal-now-playing", partial: "players/player", locals: {playback_session: @playback_session, recording: @recording}, method: "morph")
+    ]
   end
 end
