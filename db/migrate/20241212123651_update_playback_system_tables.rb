@@ -26,9 +26,6 @@ class UpdatePlaybackSystemTables < ActiveRecord::Migration[8.0]
 
     remove_index :queue_items, name: "index_queue_items_on_playback_queue_id_and_row_order"
     add_index :queue_items, [:playback_queue_id, :section, :row_order], unique: true
-
-    remove_column :playback_sessions, :created_at, :datetime
-    remove_column :playback_sessions, :updated_at, :datetime
     remove_foreign_key :playback_queues, column: :current_item_id
   end
 
