@@ -386,6 +386,8 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_12_123651) do
     t.integer "position", default: 0, null: false
     t.integer "volume", default: 100
     t.boolean "muted", default: false
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.boolean "active", default: false, null: false
     t.enum "shuffle_mode", default: "off", null: false, enum_type: "shuffle_mode_type"
     t.enum "repeat_mode", default: "off", null: false, enum_type: "repeat_mode_type"
@@ -440,6 +442,8 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_12_123651) do
     t.string "item_type", null: false
     t.uuid "item_id", null: false
     t.integer "row_order"
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.enum "section", default: "next_up", enum_type: "queue_section_type"
     t.boolean "active", default: false, null: false
     t.uuid "tanda_id"

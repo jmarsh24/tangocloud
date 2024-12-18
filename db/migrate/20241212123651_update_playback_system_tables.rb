@@ -24,19 +24,13 @@ class UpdatePlaybackSystemTables < ActiveRecord::Migration[8.0]
       t.references :tanda, type: :uuid, index: true
     end
 
-    remove_index :queue_items, name: "index_queue_items_on_playback_queue_id_and_row_order"
     add_index :queue_items, [:playback_queue_id, :section, :row_order], unique: true
     remove_foreign_key :playback_queues, column: :current_item_id
   end
 
   def down
     add_foreign_key :playback_queues, :queue_items, column: :current_item_id
-
-    add_column :playback_sessions, :created_at, :datetime, precision: 6, null: false, default: -> { "CURRENT_TIMESTAMP" }
-    add_column :playback_sessions, :updated_at, :datetime, precision: 6, null: false, default: -> { "CURRENT_TIMESTAMP" }
-
     remove_index :queue_items, [:playback_queue_id, :section, :row_order]
-    add_index :queue_items, [:playback_queue_id, :row_order], unique: true, name: "index_queue_items_on_playback_queue_id_and_row_order"
 
     change_table :queue_items, bulk: true do |t|
       t.remove :section, type: :enum
@@ -55,5 +49,9 @@ class UpdatePlaybackSystemTables < ActiveRecord::Migration[8.0]
     execute "DROP TYPE shuffle_mode_type;"
     execute "DROP TYPE repeat_mode_type;"
     execute "DROP TYPE queue_section_type;"
+
+    # drop these after running
+    add_timestamps :queue_items, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    add_timestamps :playback_sessions, default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 end
