@@ -39,7 +39,6 @@ class QueueItemsController < ApplicationController
   def play
     queue_item = @playback_queue.queue_items.find(params[:id])
     authorize queue_item
-
     @playback_queue.play_item!(queue_item)
 
     @playback_session.play(reset_position: true)

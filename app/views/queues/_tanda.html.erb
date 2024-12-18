@@ -1,5 +1,5 @@
 <%# locals: { tanda:, queue_item: nil } %>
-<% cache(tanda) do %>
+<% cache([tanda, queue_item]) do %>
   <% recordings = tanda.recordings %>
   <% first_recording = recordings.first %>
   <% genre_name = first_recording&.genre&.name&.downcase %>
